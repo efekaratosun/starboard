@@ -11,13 +11,13 @@ function weekStrip(key){
   if (key < shiftDays(t, -6)){ const c = shiftDays(key, 3); end = c > t ? t : c; }
   const days = [];
   for (let i = 6; i >= 0; i--) days.push(shiftDays(end, -i));
-  return `<div class="wk" role="group" aria-label="Gün seç">${days.map(k => {
+  return `<div class="wk" role="group" aria-label="${tx("Gün seç")}">${days.map(k => {
     const lv = dayLevel(k);
     return `<button class="wk-d" data-wk="${k}" data-lv="${lv}" aria-current="${k === key}"
       aria-label="${prettyDate(k)} ${weekdayName(k)}, ${k === t ? "bugün, " : ""}${LV_WORD[lv] || ""}">
       <span class="wk-n">${k === t ? "Bugün" : WD_SHORT[isoWeekday(k)]}</span><b class="num">${+k.slice(8)}</b><i></i></button>`;
   }).join("")}</div>
-  ${key !== t ? `<div class="wk-back"><button class="link" id="back-today">Bugüne dön</button></div>` : ""}`;
+  ${key !== t ? `<div class="wk-back"><button class="link" id="back-today">${tx("Bugüne dön")}</button></div>` : ""}`;
 }
 
 /* ---- akşam kapanış satırı ----
@@ -91,7 +91,7 @@ function goalHero(key, sc){
       <span class="gh-n num${bump ? " bump" : ""}" aria-label="${sc.total} hedeften ${sc.done} tamam"><b class="roll" data-v="${rollFrom}" data-to="${sc.done}">${rollHTML(rollFrom)}</b>/${sc.total}</span>
     </div>
     <div class="gh-t"><b>${title}</b><i>${sub}</i>
-      <button class="gh-s" id="gh-cal">${icon("star4")}<span>${streak} günlük seri · bu hafta ${w.n}/7</span></button></div>
+      <button class="gh-s" id="gh-cal">${icon("star4")}<span>${tx("{0} günlük seri · bu hafta {1}/7", [(streak), (w.n)])}</span></button></div>
   </div>`;
 }
 
@@ -103,21 +103,21 @@ function goalEditor(kind, entry, program, key){
   const now = key === today();
   const logged = !!(entry.log && entry.log.length);
   switch (kind){
-    case "weigh": return `<div class="g-f"><label for="i-weight">Kilo (kg)</label>
+    case "weigh": return `<div class="g-f"><label for="i-weight">${tx("Kilo (kg)")}</label>
       <input id="i-weight" type="number" inputmode="decimal" value="${val(entry.weight)}" placeholder="—"></div>`;
     case "sleep": return sleepHTML(entry);
     case "water": return `
-      <div class="lbl-row"><span class="lbl">Bardak bardak işaretle</span><span class="lbl-v num">${val(entry.water) || 0}${program ? ` / ${program.water}` : ""} ml</span></div>
+      <div class="lbl-row"><span class="lbl">${tx("Bardak bardak işaretle")}</span><span class="lbl-v num">${val(entry.water) || 0}${program ? ` / ${program.water}` : ""} ml</span></div>
       ${cupsHTML(entry.water, program && program.water)}
-      <div class="water-exact"><label for="i-water">Tam miktar (ml)</label>
+      <div class="water-exact"><label for="i-water">${tx("Tam miktar (ml)")}</label>
         <input id="i-water" type="number" inputmode="numeric" value="${val(entry.water)}" placeholder="—"></div>`;
-    case "kcal": return `<div class="g-f"><label for="i-kcal">Kalori (kcal)</label>
+    case "kcal": return `<div class="g-f"><label for="i-kcal">${tx("Kalori (kcal)")}</label>
         <input id="i-kcal" type="number" inputmode="numeric" value="${val(entry.kcal)}" placeholder="—"${logged ? " disabled" : ""}></div>
       ${logged
-        ? `<div class="metric-note" style="margin-top:7px">Beslenme günlüğündeki ${entry.log.length} kalemden hesaplandı.</div>`
+        ? `<div class="metric-note" style="margin-top:7px">${tx("Beslenme günlüğündeki {0} kalemden hesaplandı.", [(entry.log.length)])}</div>`
         : `<div class="chips"><button class="chip" data-add-kcal="200">+200</button><button class="chip" data-add-kcal="400">+400</button><button class="chip" data-add-kcal="600">+600</button></div>`}
       <button class="ghost" data-goto="kcal" style="margin-top:12px">${logged ? "Beslenme günlüğünü aç" : "Yediklerini tek tek gir"}</button>`;
-    case "steps": return `<div class="g-f"><label for="i-steps">Adım sayısı</label>
+    case "steps": return `<div class="g-f"><label for="i-steps">${tx("Adım sayısı")}</label>
         <input id="i-steps" type="number" inputmode="numeric" value="${val(entry.steps)}" placeholder="—"></div>`;
     case "train": {
       const ses = program.training.days.find(d => d.wd === isoWeekday(key));
@@ -136,7 +136,7 @@ function goalRow(t, entry, program, key){
     return `<div class="g" data-done="${t.done ? 1 : 0}"${t.suggested ? "" : " data-own"}>
       <div class="g-h">
         <button class="check" data-done="${t.done ? 1 : 0}" data-id="${t.id}" aria-label="${esc(t.title)}: tamamlandı olarak işaretle"></button>
-        <span class="g-m"><b>${esc(t.title)}</b>${t.rt ? `<i>her gün tekrar eder</i>` : ""}</span>
+        <span class="g-m"><b>${esc(t.title)}</b>${t.rt ? `<i>${tx("her gün tekrar eder")}</i>` : ""}</span>
         ${t.suggested ? "" : `<button class="del" data-del="${t.id}" aria-label="${esc(t.title)}: sil">×</button>`}
       </div></div>`;
   }
@@ -151,7 +151,7 @@ function goalRow(t, entry, program, key){
       ${iconBox(ic)}
       <span class="g-m"><b>${esc(info.title)}</b><i${info.warn ? ` class="warn"` : ""}>${esc(info.txt)}</i>
         ${info.ok ? "" : `<span class="task-bar"><i style="width:${clamp(info.pct * 100, 0, 100).toFixed(0)}%"></i></span>`}</span>
-      ${info.ok ? `<span class="g-ok" aria-label="tamam">${icon("star4")}</span>`
+      ${info.ok ? `<span class="g-ok" aria-label="${tx("tamam")}">${icon("star4")}</span>`
                 : `<svg class="ico task-chev" aria-hidden="true"><use href="#i-next"/></svg>`}
     </button>
     ${open ? `<div class="g-b${goalJust === kind ? " anim" : ""}"><div class="g-bi">${goalEditor(kind, entry, program, key)}</div></div>` : ""}
@@ -175,14 +175,14 @@ function todayView(entry, program, key){
   ${eveningLine(entry, program, key)}
   ${program ? goalHero(key, sc) : `<section class="welcome">
     <span class="brand-i">${BRAND_SVG}</span>
-    <b>Starboard hazır</b>
-    <i>Kilonu girdiğinde günün hedefleri burada belirir.</i>
-    <button id="np-go">Kilonu gir</button>
+    <b>${tx("Starboard hazır")}</b>
+    <i>${tx("Kilonu girdiğinde günün hedefleri burada belirir.")}</i>
+    <button id="np-go">${tx("Kilonu gir")}</button>
   </section>`}
 
   <section class="gl" id="goal-list">
     ${rows}
-    <button class="ghost" id="goal-add">＋ Hedef ekle</button>
+    <button class="ghost" id="goal-add">${tx("＋ Hedef ekle")}</button>
   </section>
 
   ${notice && now ? `<div class="notice">${iconBox("day")}<div>${esc(notice)}</div></div>` : ""}
@@ -356,10 +356,10 @@ function goToTask(kind, key){
 
 function taskRow(t, info){
   return `<div class="task" data-done="${t.done?1:0}">
-    <button class="check" data-done="${t.done?1:0}" data-id="${t.id}" aria-label="Tamamlandı olarak işaretle"></button>
+    <button class="check" data-done="${t.done?1:0}" data-id="${t.id}" aria-label="${tx("Tamamlandı olarak işaretle")}"></button>
     ${info ? `<button class="task-title task-go" data-goto="${taskKind(t)}" aria-label="${esc(t.title)}: ${GOTO_LABEL[taskKind(t)]}">` : `<span class="task-title">`}<span class="tt">${esc(t.title)}</span>${info ? `<span class="task-sub${info.warn ? " warn" : ""}">${info.warn ? "⚠️ " : ""}${esc(info.txt)}</span>
       ${info.ok ? "" : `<span class="task-bar"><i style="width:${clamp(info.pct*100,0,100).toFixed(0)}%"></i></span>`}` : ""}${info ? `</button><svg class="ico task-chev" aria-hidden="true"><use href="#i-next"/></svg>` : `</span>`}
-    ${t.suggested ? "" : `<button class="del" data-del="${t.id}" aria-label="Sil">×</button>`}
+    ${t.suggested ? "" : `<button class="del" data-del="${t.id}" aria-label="${tx("Sil")}">×</button>`}
   </div>`;
 }
 

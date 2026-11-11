@@ -6,10 +6,10 @@ const BODY = [["bel","Bel"],["gogus","Göğüs"],["kalca","Kalça"],["kol","Kol"
 function bodySection(entry){
   const b = entry.body || {};
   const filled = BODY.filter(([k]) => typeof b[k] === "number").length;
-  return `<section><h2>Vücut ölçüleri <span class="count">${filled ? `${filled}/${BODY.length} · cm` : "cm"}</span></h2>
+  return `<section><h2>${tx("Vücut ölçüleri")} <span class="count">${filled ? `${filled}/${BODY.length} · cm` : "cm"}</span></h2>
     <div class="entry">
       <div class="entry-main" style="display:flex;align-items:center;gap:12px">
-        <label for="bd-yag" style="flex:1;margin:0">Yağ oranı (%)</label>
+        <label for="bd-yag" style="flex:1;margin:0">${tx("Yağ oranı (%)")}</label>
         <input id="bd-yag" type="number" inputmode="decimal" value="${typeof b.yag==="number"?b.yag:""}" placeholder="${state.profile.bodyFat ?? "—"}" style="flex:0 0 100px">
       </div></div>
     ${BODY.map(([k,l]) => `<div class="entry">
@@ -17,7 +17,7 @@ function bodySection(entry){
         <label for="bd-${k}" style="flex:1;margin:0">${l}</label>
         <input id="bd-${k}" type="number" inputmode="decimal" value="${typeof b[k]==="number"?b[k]:""}" placeholder="—" style="flex:0 0 100px">
       </div></div>`).join("")}
-    <div class="metric-note" style="margin-top:10px">Haftada bir, sabah aç karnına ölç.</div></section>`;
+    <div class="metric-note" style="margin-top:10px">${tx("Haftada bir, sabah aç karnına ölç.")}</div></section>`;
 }
 
 /* ---- haftalık özet ---- */
@@ -44,7 +44,7 @@ function weeklySummary(){
   const row = (l, v, note) => `<div class="macro"><span class="lbl">${l}${note?`<div class="metric-note">${note}</div>`:""}</span><span class="v num">${v}</span></div>`;
 
   return `<section>
-    <h2>Son 7 gün</h2>
+    <h2>${tx("Son 7 gün")}</h2>
     ${row("Ortalama kalori", avg !== null ? `${avg} kcal` : "—", avg !== null ? `hedef ${program.kcal} kcal` : "kalori girilmemiş")}
     ${row("Hedef bandında gün", kcals.length ? `${inBand}/${kcals.length}` : "—", "±%10 aralığı")}
     ${row("Kilo değişimi", wch !== null ? `${wch>0?"+":""}${wch.toFixed(2)} kg` : "—", wch !== null ? "iki haftalık ortalama farkı" : "trend için daha fazla ölçüm gerekli")}
@@ -180,7 +180,7 @@ function skySVG(ws, big){
            : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${fut ? 1.6 : 2.4}" fill="${fut ? "var(--star-off)" : "var(--sky-muted)"}" opacity="${fut ? 1 : .75}"/>`}
     </g>`;
   }).join("");
-  return `<svg class="sky-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Haftanın takımyıldızı">${dust}${lines}${stars}</svg>`;
+  return `<svg class="sky-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${tx("Haftanın takımyıldızı")}">${dust}${lines}${stars}</svg>`;
 }
 
 function skyCard(){
@@ -189,12 +189,12 @@ function skyCard(){
   const streak = streakNow();
   return `<section class="sky">
     <div class="sky-head">
-      <div><div class="sky-t">Bu haftanın takımyıldızı</div>
+      <div><div class="sky-t">${tx("Bu haftanın takımyıldızı")}</div>
         <div class="sky-s">${w.name ? `“${w.name}” belirdi · ${w.n}/7 yıldız` : `${w.n}/7 yıldız`}</div></div>
-      <div class="sky-n"><b class="num">${streak}</b><span>günlük seri</span></div>
+      <div class="sky-n"><b class="num">${streak}</b><span>${tx("günlük seri")}</span></div>
     </div>
     ${skySVG(ws, true)}
-    <div class="sky-note">Haftada beş yıldız takımyıldızı açar. Toplam ${starTotal()} yıldız.</div>
+    <div class="sky-note">${tx("Haftada beş yıldız takımyıldızı açar. Toplam {0} yıldız.", [(starTotal())])}</div>
   </section>`;
 }
 
@@ -203,7 +203,7 @@ function skyGallery(){
   const weeks = Array.from({ length:6 }, (_, i) => shiftDays(ws, -7 * i));
   const fmt = k => new Date(k + "T12:00:00").toLocaleDateString(locale(), { day:"numeric", month:"short" });
   return `<section>
-    <h2>Gökyüzün <span class="count">son 6 hafta</span></h2>
+    <h2>${tx("Gökyüzün")} <span class="count">${tx("son 6 hafta")}</span></h2>
     <div class="sky-grid">${weeks.map(k => { const w = weekInfo(k); return `<figure class="sky-mini">
       ${skySVG(k, false)}
       <figcaption><b>${w.name ? w.name : `${w.n}/7`}</b><span>${fmt(k)} – ${fmt(shiftDays(k, 6))}</span></figcaption>
@@ -257,13 +257,13 @@ function sleepHTML(entry){
   const d = sleepDur(bed, wake);
   return `<div class="entry sl-entry">${iconBox("rest")}
     <div class="entry-main">
-      <div class="lbl-row"><span class="lbl">Uyku</span><span class="lbl-v num">${has ? durTxt(Math.round(entry.sleep*60)) : "henüz girilmedi"}</span></div>
+      <div class="lbl-row"><span class="lbl">${tx("Uyku")}</span><span class="lbl-v num">${has ? durTxt(Math.round(entry.sleep*60)) : "henüz girilmedi"}</span></div>
       <button class="sl-toggle" id="sl-toggle" aria-expanded="false" aria-controls="sl-more">
         <span>${has ? `${hm(bed)} → ${hm(wake)}` : "Saatleri gir"}</span>
         <svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
       <div class="sl-more" id="sl-more" hidden>
       <div class="dial-wrap">
-        <svg id="sl-dial" class="dial" viewBox="0 0 240 240" role="group" aria-label="Uyku saati kadranı">
+        <svg id="sl-dial" class="dial" viewBox="0 0 240 240" role="group" aria-label="${tx("Uyku saati kadranı")}">
           <defs><linearGradient id="sl-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--sleep)"/><stop offset="1" stop-color="var(--water)"/></linearGradient></defs>
           <circle cx="120" cy="120" r="${DIAL.r}" class="dial-track"/>
           <path id="sl-arc" class="dial-arc" d="${dialArc(bed, wake)}"/>
@@ -274,8 +274,8 @@ function sleepHTML(entry){
           ${handle("sl-h-wake", wake, "☀️", "Kalkış saati")}
         </svg>
       </div>
-      <div class="dial-legend num"><span>🌙 Yattım <b id="sl-bed-v">${hm(bed)}</b></span><span>☀️ Kalktım <b id="sl-wake-v">${hm(wake)}</b></span></div>
-      <div class="metric-note" style="text-align:center;margin-top:6px">Ayı ve güneşi sürükle.</div>
+      <div class="dial-legend num"><span>${tx("🌙 Yattım")} <b id="sl-bed-v">${hm(bed)}</b></span><span>${tx("☀️ Kalktım")} <b id="sl-wake-v">${hm(wake)}</b></span></div>
+      <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Ayı ve güneşi sürükle.")}</div>
       </div>
     </div></div>`;
 }
@@ -367,14 +367,14 @@ function prBoard(){
   const all = records();
   const list = all.slice(0, 8);
   return `<section>
-    <h2>Kişisel rekorlar ${all.length ? `<span class="count">${all.length} hareket</span>` : ""}</h2>
+    <h2>Kişisel rekorlar ${all.length ? `<span class="count">${tx("{0} hareket", [(all.length)])}</span>` : ""}</h2>
     ${list.length ? `<div class="prs">${list.map(r => `<div class="pr${r.k === today() ? " new" : ""}">
       <svg class="pr-cup" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cup"/></svg>
       <div class="pr-m"><span class="pr-n">${esc(parseEx(r.name, venueOf(currentProgram())).name)}</span>
         <span class="pr-v num">${esc(r.text)}</span></div>
       <span class="pr-d">${r.k === today() ? "bugün" : prettyDate(r.k)}</span>
     </div>`).join("")}</div>`
-    : `<div class="empty">Antrenman kaydı girdikçe her hareketin en iyisi burada birikir.</div>`}
+    : `<div class="empty">${tx("Antrenman kaydı girdikçe her hareketin en iyisi burada birikir.")}</div>`}
   </section>`;
 }
 
@@ -405,8 +405,8 @@ function celebrate(){
       `<i style="left:${(Math.random()*100).toFixed(1)}%;animation-delay:${(Math.random()*.5).toFixed(2)}s;--r:${Math.round(Math.random()*360)}deg;background:var(${cols[i % cols.length]})"></i>`).join(""))
     + `<div class="party-card" role="status">
         <svg class="party-star" viewBox="-8 -8 16 16" aria-hidden="true"><path d="M0-6.5 1.6-1.6 6.5 0 1.6 1.6 0 6.5-1.6 1.6-6.5 0-1.6-1.6Z" fill="var(--star)"/></svg>
-        <b>Bugün tamam!</b><span>Takımyıldızına bir yıldız eklendi. Seri: ${streakNow()} gün.</span>
-        <button id="party-ok">Harika</button></div>`;
+        <b>${tx("Bugün tamam!")}</b><span>${tx("Takımyıldızına bir yıldız eklendi. Seri: {0} gün.", [(streakNow())])}</span>
+        <button id="party-ok">${tx("Harika")}</button></div>`;
   document.body.appendChild(el);
   const close = () => sheetOut(el);
   el.querySelector("#party-ok").onclick = close;
@@ -463,10 +463,10 @@ function openAvatarSheet(){
   el.className = "sheet-bg";
   const preview = () => `<div class="bc-fig big" style="--av:${col}">${avatarSVG(key, 1, Math.max(wp, .55), { happy:true, star:false }, "pv")}</div>`;
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
-    <div class="sheet-h"><b id="sh-t">Avatarın</b><button class="sheet-x" aria-label="Kapat">×</button></div>
+    <div class="sheet-h"><b id="sh-t">${tx("Avatarın")}</b><button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
     <div id="sh-pv" class="sh-pv">${preview()}</div>
-    <div class="sh-l">Şekil</div>${avatarPicker(key, "sh")}
-    <div class="sh-l">Renk</div>${colorPicker(col, "sh")}    <div class="row" style="margin-top:16px"><button id="sh-save">Kaydet</button><button class="ghost" id="sh-cancel" style="flex:0 0 100px">Vazgeç</button></div>
+    <div class="sh-l">${tx("Şekil")}</div>${avatarPicker(key, "sh")}
+    <div class="sh-l">${tx("Renk")}</div>${colorPicker(col, "sh")}    <div class="row" style="margin-top:16px"><button id="sh-save">${tx("Kaydet")}</button><button class="ghost" id="sh-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button></div>
   </div>`;
   document.body.appendChild(el);
   const sheet = el.querySelector(".sheet");
@@ -514,7 +514,7 @@ function bodyCard(){
   const wp = program ? clamp((e.water || 0) / program.water, 0, 1) : 0;
   const yTop = (58 - 55 * wp).toFixed(1);
   const mood = avatarMood(e, program);
-  const fig = `<button class="bc-fig" id="bc-fig" style="--av:${avColor(p)}" aria-label="Avatarını değiştir">
+  const fig = `<button class="bc-fig" id="bc-fig" style="--av:${avColor(p)}" aria-label="${tx("Avatarını değiştir")}">
     ${avatarSVG(avKey(p), sx, wp, mood, "bc")}
     <span class="bc-water num">💧 %${Math.round(wp*100)}</span>
     ${mood.line ? `<span class="bc-mood">${mood.line}</span>` : ""}
@@ -523,8 +523,8 @@ function bodyCard(){
   const [bmiTxt, bmiCls] = bmi !== null ? bmiClass(bmi) : ["", ""];
   const [bfTxt, bfCls] = bf !== null ? fatClass(bf, p.sex) : ["", ""];
   const stats = `<div class="stats">
-    <div class="stat"><b>${p.height}<small> cm</small></b><span>Boy</span></div>
-    <div class="stat"><b>${w !== null ? kg1(w) : "—"}<small> kg</small></b><span>Kilo</span></div>
+    <div class="stat"><b>${p.height}<small> ${tx("cm")}</small></b><span>${tx("Boy")}</span></div>
+    <div class="stat"><b>${w !== null ? kg1(w) : "—"}<small> ${tx("kg")}</small></b><span>${tx("Kilo")}</span></div>
     <div class="stat"><b>${bf !== null ? kg1(bf) : "—"}<small> %</small></b><span>Yağ oranı${bfTxt ? ` <em class="tag ${bfCls}">${bfTxt}</em>` : ""}</span></div>
     <div class="stat"><b>${bmi !== null ? kg1(bmi) : "—"}</b><span>BMI${bmiTxt ? ` <em class="tag ${bmiCls}">${bmiTxt}</em>` : ""}</span></div>
   </div>`;
@@ -547,18 +547,18 @@ function bodyCard(){
       : right ? `bu tempoyla ~${Math.max(1, Math.ceil(left / Math.abs(rate)))} hafta`
       : rate === null ? "tempo için iki haftalık tartı gerekli" : "son hafta hedefin tersine gitti";
     journey = `<div class="bc-sec">
-      <div class="bc-h"><span>Hedefe yolculuk</span><b class="num">%${Math.round(pct * 100)}</b></div>
+      <div class="bc-h"><span>${tx("Hedefe yolculuk")}</span><b class="num">%${Math.round(pct * 100)}</b></div>
       <div class="jr"><div class="jr-fill" style="width:${(pct*100).toFixed(1)}%"></div><span class="jr-now" style="left:${(pct*100).toFixed(1)}%"></span></div>
-      <div class="jr-lbl num"><span><b>${kg1(start)}</b>başlangıç</span><span class="mid"><b>${kg1(w)}</b>şimdi</span><span class="end"><b>${kg1(target)}</b>hedef</span></div>
+      <div class="jr-lbl num"><span><b>${kg1(start)}</b>${tx("başlangıç")}</span><span class="mid"><b>${kg1(w)}</b>${tx("şimdi")}</span><span class="end"><b>${kg1(target)}</b>${tx("hedef")}</span></div>
       <div class="bc-note">${Math.abs(gone) >= 0.05 ? `${kg1(Math.abs(gone))} kg ${gone > 0 ? "verdin" : "aldın"} · ` : ""}${reached ? "" : `${kg1(left)} kg kaldı · `}${eta}</div>
     </div>`;
   } else {
     journey = `<div class="bc-sec">
-      <div class="bc-h"><span>Hedefe yolculuk</span></div>
-      <div class="tw-row"><label for="tw" class="tw-l">Hedef kilon kaç?</label>
-        <input id="tw" type="number" inputmode="decimal" placeholder="kg">
-        <button id="tw-save">Kaydet</button></div>
-      <div class="bc-note">Hedef kilonu girince ilerlemen burada görünür.</div>
+      <div class="bc-h"><span>${tx("Hedefe yolculuk")}</span></div>
+      <div class="tw-row"><label for="tw" class="tw-l">${tx("Hedef kilon kaç?")}</label>
+        <input id="tw" type="number" inputmode="decimal" placeholder="${tx("kg")}">
+        <button id="tw-save">${tx("Kaydet")}</button></div>
+      <div class="bc-note">${tx("Hedef kilonu girince ilerlemen burada görünür.")}</div>
     </div>`;
   }
 
@@ -567,16 +567,16 @@ function bodyCard(){
   if (bf !== null && w !== null){
     const fatKg = w * bf / 100, lean = w - fatKg;
     comp = `<div class="bc-sec">
-      <div class="bc-h"><span>Vücut kompozisyonu</span></div>
+      <div class="bc-h"><span>${tx("Vücut kompozisyonu")}</span></div>
       <div class="comp" role="img" aria-label="Yağsız kütle ${kg1(lean)} kg, yağ ${kg1(fatKg)} kg">
         <i class="lean" style="width:${(100 - bf).toFixed(1)}%"></i><i class="fat" style="width:${bf.toFixed(1)}%"></i></div>
-      <div class="comp-lbl num"><span><i class="dot lean"></i>Yağsız <b>${kg1(lean)} kg</b></span><span><i class="dot fat"></i>Yağ <b>${kg1(fatKg)} kg</b></span></div>
+      <div class="comp-lbl num"><span><i class="dot lean"></i>${tx("Yağsız")} <b>${tx("{0} kg", [(kg1(lean))])}</b></span><span><i class="dot fat"></i>${tx("Yağ")} <b>${tx("{0} kg", [(kg1(fatKg))])}</b></span></div>
       <div class="bc-note">${neutral ? "Fit aralık erkekte %14–17, kadında %21–24; ortalama erkekte %18–24, kadında %25–31 (ACE). Etiket iki sınırın ortalamasına göre verilir."
         : `${female ? "Kadında" : "Erkekte"} fit aralık %${female ? "21–24" : "14–17"}, ortalama %${female ? "25–31" : "18–24"} (ACE).`}</div>
     </div>`;
   } else {
-    comp = `<div class="bc-sec"><div class="bc-h"><span>Vücut kompozisyonu</span></div>
-      <div class="bc-note">Yağ oranını girince vücut bileşimin burada görünür.</div></div>`;
+    comp = `<div class="bc-sec"><div class="bc-h"><span>${tx("Vücut kompozisyonu")}</span></div>
+      <div class="bc-note">${tx("Yağ oranını girince vücut bileşimin burada görünür.")}</div></div>`;
   }
 
   return `<section class="bc">

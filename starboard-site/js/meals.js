@@ -71,16 +71,16 @@ function recipeCard(r, idx){
   return `<section>
     <div class="item rec" data-recipe="${idx}">${iconBox(r.i)}
       <div class="item-main"><h3>${r.n}</h3>
-        <p>${r.t} · ${r.srv} porsiyon · P${m.serving.p} K${m.serving.c} Y${m.serving.f} · lif ${m.serving.lif} g</p></div>
-      <span class="k num">${m.serving.kcal} kcal</span>
+        <p>${tx("{0} · {1} porsiyon · P{2} K{3} Y{4} · lif {5} g", [(r.t), (r.srv), (m.serving.p), (m.serving.c), (m.serving.f), (m.serving.lif)])}</p></div>
+      <span class="k num">${tx("{0} kcal", [(m.serving.kcal)])}</span>
     </div>
     ${open ? `<div class="rec-body">
-      <h4>Malzemeler (${r.srv} porsiyon)</h4>
+      <h4>${tx("Malzemeler ({0} porsiyon)", [(r.srv)])}</h4>
       ${r.ing.map(([k,g]) => { const f = FOODS[k]; return f
         ? `<div class="rec-ing"><span>${f.n}</span><span>${f.unit ? `${Math.round(g/f.unit)} ${f.unitName}` : `${g} g`}</span></div>` : ""; }).join("")}
-      <h4>Hazırlanışı</h4>
+      <h4>${tx("Hazırlanışı")}</h4>
       <ol>${r.steps.map(s => `<li>${s}</li>`).join("")}</ol>
-      <button class="ghost" data-recipe-add="${idx}" style="margin-top:6px">Günlüğüme 1 porsiyon ekle</button>
+      <button class="ghost" data-recipe-add="${idx}" style="margin-top:6px">${tx("Günlüğüme 1 porsiyon ekle")}</button>
     </div>` : ""}
   </section>`;
 }
@@ -118,25 +118,25 @@ function recipeList(){
       matchScore(r.n, q) > 0
       || norm(CAT_WORDS[r.i] || "").includes(q)
       || r.ing.some(([k]) => FOODS[k] && norm(FOODS[k].n).includes(q)));
-    if (!hits.length) return `<section><div class="empty">"${esc(recipeQuery)}" için tarif bulunamadı. Yemek adı ya da malzeme adıyla arayabilirsin.</div></section>`;
-    return `<div class="metric-note" style="margin:0 4px 12px">${hits.length} tarif bulundu</div>`
+    if (!hits.length) return `<section><div class="empty">${tx("\"{0}\" için tarif bulunamadı. Yemek adı ya da malzeme adıyla arayabilirsin.", [(esc(recipeQuery))])}</div></section>`;
+    return `<div class="metric-note" style="margin:0 4px 12px">${tx("{0} tarif bulundu", [(hits.length)])}</div>`
       + hits.map(([r,i]) => recipeCard(r,i)).join("");
   }
   const pool = RECIPES.map((r,i) => [r,i]).filter(([r]) => recipeFits(r));
-  if (!pool.length) return `<section><div class="empty">Beslenme türüne uyan hazır tarif yok.</div></section>`;
+  if (!pool.length) return `<section><div class="empty">${tx("Beslenme türüne uyan hazır tarif yok.")}</div></section>`;
   const start = recipeOffset % pool.length;
   const idxs = [0,1,2].map(k => pool[(start + k) % pool.length]);
   return (currentDiet() !== "hepsi"
-      ? `<div class="metric-note" style="margin:0 4px 12px">${DIETS[currentDiet()]} beslenmeye uyan ${pool.length} tarif</div>` : "")
+      ? `<div class="metric-note" style="margin:0 4px 12px">${tx("{0} beslenmeye uyan {1} tarif", [(DIETS[currentDiet()]), (pool.length)])}</div>` : "")
     + idxs.map(([r,i]) => recipeCard(r, i)).join("")
-    + `<section><button class="ghost" id="rec-more">Başka tarifler göster</button></section>`;
+    + `<section><button class="ghost" id="rec-more">${tx("Başka tarifler göster")}</button></section>`;
 }
 
 function recipesView(){
   return `
   <section>
-    <h2>Tarifler <span class="count">${RECIPES.length} tarif</span></h2>
-    <input id="rec-q" type="text" placeholder="Ara: karnıyarık, mercimek, tavuk…" value="${esc(recipeQuery)}" autocomplete="off">  </section>
+    <h2>${tx("Tarifler")} <span class="count">${tx("{0} tarif", [(RECIPES.length)])}</span></h2>
+    <input id="rec-q" type="text" placeholder="${tx("Ara: karnıyarık, mercimek, tavuk…")}" value="${esc(recipeQuery)}" autocomplete="off">  </section>
   <div id="rec-results">${recipeList()}</div>`;
 }
 
@@ -166,21 +166,21 @@ function logView(program, entry){
   return `
   ${favBlock(entry)}
   <section>
-    <h2>${onToday() ? "Bugün aldığın" : "O gün aldığın"} <span class="count">${tot.kcal} / ${program.kcal} kcal</span></h2>
+    <h2>${onToday() ? "Bugün aldığın" : "O gün aldığın"} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
     ${macroRow("Kalori", tot.kcal, program.kcal, "", "grain", "band")}
     ${macroRow("Protein", tot.p, program.protein, " g", "poultry", "mp")}
     ${macroRow("Karbonhidrat", tot.c, program.carb, " g", "bread", "mc")}
     ${macroRow("Yağ", tot.f, program.fat, " g", "oil", "mf")}
     ${macroRow("Lif", tot.lif, fib, " g", "veg", "ml")}
-    ${tot.kcal > program.kcal * 1.1 ? `<div class="metric-note" style="margin-top:12px"><b class="out">Hedefi ${tot.kcal-program.kcal} kcal aştın.</b></div>`
-      : tot.kcal ? `<div class="metric-note" style="margin-top:12px">Hedefe ${Math.max(program.kcal-tot.kcal,0)} kcal kaldı.</div>` : ""}
+    ${tot.kcal > program.kcal * 1.1 ? `<div class="metric-note" style="margin-top:12px"><b class="out">${tx("Hedefi {0} kcal aştın.", [(tot.kcal-program.kcal)])}</b></div>`
+      : tot.kcal ? `<div class="metric-note" style="margin-top:12px">${tx("Hedefe {0} kcal kaldı.", [(Math.max(program.kcal-tot.kcal,0))])}</div>` : ""}
   </section>
 
   ${log.length ? microSection(tot.micros) : ""}
 
   ${mealCards(entry)}
   ${mealManager()}
-  <div class="foot">Değerler ortalamadır.</div>`;
+  <div class="foot">${tx("Değerler ortalamadır.")}</div>`;
 }
 
 /* ---- dünün aynısı ----
@@ -215,19 +215,19 @@ function mealCards(entry){
     const items = log.filter(x => slotOf(x) === k);
     const yIt = items.length ? [] : ydayLog().filter(x => slotOf(x) === k);
     return `<section>
-      <h2>${esc(l)}${items.length ? `<span class="count">${kcalOf(items)} kcal</span>` : ""}</h2>
+      <h2>${esc(l)}${items.length ? `<span class="count">${tx("{0} kcal", [(kcalOf(items))])}</span>` : ""}</h2>
       ${items.length ? items.map(logLine).join("")
-        : `<div class="empty">Bu öğüne henüz bir şey eklemedin.</div>`}
+        : `<div class="empty">${tx("Bu öğüne henüz bir şey eklemedin.")}</div>`}
       ${addOpen === k ? addPanel()
-        : `<button class="ghost" data-addfood="${k}" style="margin-top:12px">Besin ekle</button>
+        : `<button class="ghost" data-addfood="${k}" style="margin-top:12px">${tx("Besin ekle")}</button>
            ${yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
-             ↺ ${onToday() ? "Dünküyle" : "Bir önceki günle"} aynı (${yIt.length} kalem · ${kcalOf(yIt)} kcal)</button>` : ""}`}
+             ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [(onToday() ? "Dünküyle" : "Bir önceki günle"), (yIt.length), (kcalOf(yIt))])}</button>` : ""}`}
     </section>`;
   });
 
   const other = log.filter(x => slotOf(x) === "__other");
   if (other.length) cards.push(`<section>
-    <h2>Diğer <span class="count">${kcalOf(other)} kcal</span></h2>
+    <h2>${tx("Diğer")} <span class="count">${tx("{0} kcal", [(kcalOf(other))])}</span></h2>
     ${other.map(logLine).join("")}  </section>`);
 
   return cards.join("");
@@ -237,13 +237,13 @@ function mealCards(entry){
    olduğu için ayrıca "hangi öğün" sormaya gerek kalmıyor. */
 function addPanel(){
   return `<div class="pick" style="margin-top:12px">
-    <input id="food-q" type="text" placeholder="Ara: karnıyarık, hellim, kivi…" value="${esc(logQuery)}" autocomplete="off">
+    <input id="food-q" type="text" placeholder="${tx("Ara: karnıyarık, hellim, kivi…")}" value="${esc(logQuery)}" autocomplete="off">
     ${logQuery.trim().length >= 2 ? "" : catChips()}
     <div class="res" id="food-results">${resultsHTML()}</div>
     ${logPick ? pickCard() : ""}
     <div class="row" style="margin-top:12px">
-      <button class="ghost" id="custom-toggle">Kendim tanımlayayım</button>
-      <button class="ghost" id="add-close" style="flex:0 0 92px">Kapat</button>
+      <button class="ghost" id="custom-toggle">${tx("Kendim tanımlayayım")}</button>
+      <button class="ghost" id="add-close" style="flex:0 0 92px">${tx("Kapat")}</button>
     </div>
     <div id="custom-form"></div>
   </div>`;
@@ -254,21 +254,21 @@ function mealManager(){
   const shares = mealShares(list);
   const T = MEAL_TIMES.find(x => x.key === mealAddTime) || MEAL_TIMES[1];
   return `<section>
-    <h2>Öğünlerim <span class="count">${list.length}</span></h2>
+    <h2>${tx("Öğünlerim")} <span class="count">${list.length}</span></h2>
     ${list.map((m,i) => `<div class="rt">${iconBox(m.cat === "kahvalti" ? "egg" : m.cat === "ara" ? "fruit" : "grain")}
-      <div class="m"><h3>${esc(m.name)}</h3><p>günlük hedefin %${Math.round(shares[i]*100)} kadarı · ${m.h}:00 civarı</p></div>
-      ${list.length > 1 ? `<button class="del" data-meal-del="${m.id}" aria-label="Öğünü kaldır">×</button>` : ""}
+      <div class="m"><h3>${esc(m.name)}</h3><p>${tx("günlük hedefin %{0} kadarı · {1}:00 civarı", [(Math.round(shares[i]*100)), (m.h)])}</p></div>
+      ${list.length > 1 ? `<button class="del" data-meal-del="${m.id}" aria-label="${tx("Öğünü kaldır")}">×</button>` : ""}
     </div>`).join("")}
     ${mealAddOpen ? `<div class="pick">
-      <div class="field"><label for="ml-name">Öğün adı</label>
-        <input id="ml-name" type="text" placeholder="Örn. Öğle yemeği" autocomplete="off"></div>
-      <label>Ne zaman</label>
+      <div class="field"><label for="ml-name">${tx("Öğün adı")}</label>
+        <input id="ml-name" type="text" placeholder="${tx("Örn. Öğle yemeği")}" autocomplete="off"></div>
+      <label>${tx("Ne zaman")}</label>
       <div class="chips">${MEAL_TIMES.map(x =>
         `<button class="chip${mealAddTime===x.key?" sel":""}" data-meal-time="${x.key}">${x.label}</button>`).join("")}</div>
       <div class="row" style="margin-top:14px">
-        <button id="ml-save">Ekle</button>
-        <button class="ghost" id="ml-cancel" style="flex:0 0 100px">Vazgeç</button>
-      </div>    </div>` : `<button class="ghost" id="ml-add" style="margin-top:12px">Öğün ekle</button>`}
+        <button id="ml-save">${tx("Ekle")}</button>
+        <button class="ghost" id="ml-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button>
+      </div>    </div>` : `<button class="ghost" id="ml-add" style="margin-top:12px">${tx("Öğün ekle")}</button>`}
   </section>`;
 }
 
@@ -283,7 +283,7 @@ function logBySlot(log){
   if (other.length) groups.push(["__other", "Diğer", other]);
   return groups.filter(([,,items]) => items.length).map(([,l,items]) => {
     const kc = items.reduce((a,it) => a + (it.p*4+it.c*4+it.f*9)*it.g/100, 0);
-    return `<div class="slot-head"><span>${l}</span><span class="num">${Math.round(kc)} kcal</span></div>
+    return `<div class="slot-head"><span>${l}</span><span class="num">${tx("{0} kcal", [(Math.round(kc))])}</span></div>
       ${items.map(logLine).join("")}`;
   }).join("");
 }
@@ -293,8 +293,8 @@ function logLine(it){
   return `<div class="log-line${open ? " editing" : ""}">${iconBox(it.i || "grain")}
     <button class="m log-tap" data-log-edit="${it.id}" aria-expanded="${open}" aria-label="${esc(it.n)}, porsiyonu düzenle">
       <span class="lt-h">${esc(it.n)}</span><span class="lt-p">${amountText(it)} · P${Math.round(it.p*it.g/100)} K${Math.round(it.c*it.g/100)} Y${Math.round(it.f*it.g/100)}</span></button>
-    <span class="k num">${Math.round((it.p*4+it.c*4+it.f*9)*it.g/100)} kcal</span>
-    <button class="del" data-log-del="${it.id}" aria-label="Sil">×</button></div>
+    <span class="k num">${tx("{0} kcal", [(Math.round((it.p*4+it.c*4+it.f*9)*it.g/100))])}</span>
+    <button class="del" data-log-del="${it.id}" aria-label="${tx("Sil")}">×</button></div>
     ${open ? logEditor(it) : ""}`;
 }
 
@@ -317,19 +317,19 @@ function logEditor(it){
   const unit = f && f.unit;
   const val = unit ? +(it.g / f.unit).toFixed(2) : it.g;
   return `<div class="pick log-edit">
-    <div class="lbl-row"><label for="le-amt">Miktar (${unit ? esc(f.unitName) : "g"})</label>
-      <span class="lbl-v num" id="le-kcal">${Math.round((it.p*4+it.c*4+it.f*9)*it.g/100)} kcal</span></div>
+    <div class="lbl-row"><label for="le-amt">${tx("Miktar ({0})", [(unit ? esc(f.unitName) : "g")])}</label>
+      <span class="lbl-v num" id="le-kcal">${tx("{0} kcal", [(Math.round((it.p*4+it.c*4+it.f*9)*it.g/100))])}</span></div>
     <div class="le-row">
-      <button class="lf-sb" data-le-step="-1" aria-label="Azalt">−</button>
+      <button class="lf-sb" data-le-step="-1" aria-label="${tx("Azalt")}">−</button>
       <input id="le-amt" type="number" inputmode="decimal" value="${val}" data-unit="${unit ? f.unit : 1}">
-      <button class="lf-sb" data-le-step="1" aria-label="Artır">+</button>
+      <button class="lf-sb" data-le-step="1" aria-label="${tx("Artır")}">+</button>
     </div>
     <div class="chips">${portionChips(f).map(([g,l]) => `<button class="chip${Math.abs(g - it.g) < 1 ? " sel" : ""}" data-le-g="${g}">${esc(l)}</button>`).join("")}</div>
-    <label for="le-slot" style="margin-top:12px">Öğün</label>
+    <label for="le-slot" style="margin-top:12px">${tx("Öğün")}</label>
     <select id="le-slot">${slotList().map(([k,l]) => `<option value="${k}"${(it.slot || "") === k ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>
     <div class="row" style="margin-top:14px">
-      <button id="le-save">Kaydet</button>
-      <button class="ghost" id="le-cancel" style="flex:0 0 100px">Vazgeç</button>
+      <button id="le-save">${tx("Kaydet")}</button>
+      <button class="ghost" id="le-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button>
     </div>
   </div>`;
 }
@@ -340,11 +340,11 @@ function favBlock(entry){
   const yLog = (state.days[y] && state.days[y].log) || [];
   if (!favs.length && !yLog.length) return "";
   return `<section class="favs">
-    <h2>Sık yediklerin <span class="count">dokun, eklensin</span></h2>
+    <h2>${tx("Sık yediklerin")} <span class="count">${tx("dokun, eklensin")}</span></h2>
     ${favs.length ? `<div class="fav">${favs.map(([k,c]) =>
       `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${c.g} g</button>`).join("")}</div>`
-      : `<div class="empty">Besin ekledikçe sık kullandıkların burada birikecek.</div>`}
-    ${yLog.length ? `<button class="ghost rep" id="copy-y" style="margin-top:14px">↺ ${onToday() ? "Dünün" : "Bir önceki günün"} tamamını kopyala (${yLog.length} kalem)</button>` : ""}
+      : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`}
+    ${yLog.length ? `<button class="ghost rep" id="copy-y" style="margin-top:14px">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? "Dünün" : "Bir önceki günün"), (yLog.length)])}</button>` : ""}
   </section>`;
 }
 
@@ -382,7 +382,7 @@ function foodRow(k, f){
   const per = f.unit ? ` · 1 ${f.unitName} ${Math.round((f.p*4+f.c*4+f.f*9)*f.unit/100)} kcal`
     : P.length ? ` · 1 ${P[0].n} ${Math.round((f.p*4+f.c*4+f.f*9)*P[0].g/100)} kcal` : "";
   return `<div class="item" data-food="${k}">${iconBox(f.i || "grain")}
-    <div class="item-main"><h3>${esc(f.n)}</h3><p>100 g: ${Math.round(f.p*4+f.c*4+f.f*9)} kcal${per}</p></div>
+    <div class="item-main"><h3>${esc(f.n)}</h3><p>${tx("100 g: {0} kcal{1}", [(Math.round(f.p*4+f.c*4+f.f*9)), (per)])}</p></div>
     <span class="add">+</span></div>`;
 }
 
@@ -455,13 +455,13 @@ function resultsHTML(){
   const q = norm(logQuery.trim());
   if (q.length >= 2){
     const hits = searchFoods(logQuery, 12);
-    if (!hits.length) return `<div class="empty" style="padding-top:12px">Bulunamadı. Aşağıdan kendin tanımlayabilirsin.</div>`;
+    if (!hits.length) return `<div class="empty" style="padding-top:12px">${tx("Bulunamadı. Aşağıdan kendin tanımlayabilirsin.")}</div>`;
     return hits.map(([k,f]) => foodRow(k,f)).join("");
   }
   if (logCat){
     const list = allFoods().filter(([,f]) => foodCat(f) === logCat)
       .sort((a,b) => a[1].n.localeCompare(b[1].n, "tr"));
-    return `<div class="metric-note" style="margin:12px 4px 0">${CAT_LABELS[logCat]} · ${list.length} kalem</div>`
+    return `<div class="metric-note" style="margin:12px 4px 0">${tx("{0} · {1} kalem", [(CAT_LABELS[logCat]), (list.length)])}</div>`
       + list.map(([k,f]) => foodRow(k,f)).join("");
   }
   return "";
@@ -508,14 +508,14 @@ function pickCard(){
   else chips = [50,100,150,200].map(c => [c, `${c} g`]);
   return `<div class="pick" style="background:var(--surface);margin-top:14px">
     <h3>${esc(f.n)}</h3>
-    <label for="pick-amt">Miktar (${f.unit ? f.unitName : "g"})</label>
+    <label for="pick-amt">${tx("Miktar ({0})", [(f.unit ? f.unitName : "g")])}</label>
     <input id="pick-amt" type="number" inputmode="decimal" value="${def}">
     <div class="chips">${chips.map(([v,l]) => `<button class="chip" data-amt="${v}">${esc(l)}</button>`).join("")}</div>
     ${f.unit ? `<div class="metric-note" style="margin-top:9px">1 ${esc(f.unitName)} ≈ ${f.unit} g</div>`
       : P.length ? `<div class="metric-note" style="margin-top:9px">${P.map(x => `1 ${esc(x.n)} ≈ ${x.g} g`).join(" · ")}</div>` : ""}
     <div class="row" style="margin-top:14px">
-      <button id="pick-add">Ekle</button>
-      <button class="ghost" id="pick-cancel" style="flex:0 0 100px">Vazgeç</button>
+      <button id="pick-add">${tx("Ekle")}</button>
+      <button class="ghost" id="pick-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button>
     </div>
   </div>`;
 }
@@ -524,9 +524,9 @@ function fixResults(){
   const q = norm(fixQuery.trim());
   if (q.length < 2) return "";
   const hits = searchFoods(fixQuery, 8);
-  if (!hits.length) return `<div class="empty" style="padding-top:10px">Bulunamadı.</div>`;
+  if (!hits.length) return `<div class="empty" style="padding-top:10px">${tx("Bulunamadı.")}</div>`;
   return hits.map(([k,f]) => `<div class="item" data-fixfood="${k}">${iconBox(f.i || "grain")}
-    <div class="item-main"><h3>${esc(f.n)}</h3><p>100 g: ${Math.round(f.p*4+f.c*4+f.f*9)} kcal</p></div>
+    <div class="item-main"><h3>${esc(f.n)}</h3><p>${tx("100 g: {0} kcal", [(Math.round(f.p*4+f.c*4+f.f*9))])}</p></div>
     <span class="add">+</span></div>`).join("");
 }
 
@@ -534,14 +534,14 @@ function fixPicker(){
   const f = fixPick ? foodOf(fixPick) : null;
   const chips = f && f.unit ? [1,2,3] : [50,100,150,200];
   return `<div class="pick">
-    <label for="fix-q">Ne yiyeceksin?</label>
-    <input id="fix-q" type="text" placeholder="Ara: yumurta, döner, muz…" value="${esc(fixQuery)}" autocomplete="off">
+    <label for="fix-q">${tx("Ne yiyeceksin?")}</label>
+    <input id="fix-q" type="text" placeholder="${tx("Ara: yumurta, döner, muz…")}" value="${esc(fixQuery)}" autocomplete="off">
     <div class="res" id="fix-res">${fixResults()}</div>
     ${f ? `<div style="margin-top:14px">
-      <label for="fix-amt">${esc(f.n)} — miktar (${f.unit ? f.unitName : "g"})</label>
+      <label for="fix-amt">${tx("{0} — miktar ({1})", [(esc(f.n)), (f.unit ? f.unitName : "g")])}</label>
       <input id="fix-amt" type="number" inputmode="decimal" value="${f.unit ? 1 : 100}">
       <div class="chips">${chips.map(c => `<button class="chip" data-fixamt="${c}">${c} ${f.unit?f.unitName:"g"}</button>`).join("")}</div>
-      <button id="fix-save" style="margin-top:12px">Bu öğüne ekle</button>
+      <button id="fix-save" style="margin-top:12px">${tx("Bu öğüne ekle")}</button>
     </div>` : ""}  </div>`;
 }
 
@@ -551,21 +551,21 @@ function prefsSection(){
   const known = Object.keys(usage).filter(k => usage[k] >= 2).length;
 
   return `<section>
-    <h2>Önerileri kendine göre ayarla</h2>
-    <label for="diet-sel">Beslenme türü</label>
+    <h2>${tx("Önerileri kendine göre ayarla")}</h2>
+    <label for="diet-sel">${tx("Beslenme türü")}</label>
     <select id="diet-sel" style="margin-bottom:14px">${Object.entries(DIETS)
       .map(([k,l]) => `<option value="${k}"${currentDiet()===k?" selected":""}>${l}</option>`).join("")}</select>
     <div class="chips">
       <button class="chip${prefs.useMine?" sel":""}" id="use-mine">
         <svg class="ico" style="width:14px;height:14px;flex:0 0 14px;vertical-align:-2px" aria-hidden="true"><use href="#i-repeat"/></svg>
-        Sık yediğim besinlerle kur</button>
+        ${tx("Sık yediğim besinlerle kur")}</button>
     </div>    ${currentDiet() !== "hepsi" ? `<div class="metric-note" style="margin-top:10px">
       ${DIETS[currentDiet()]} seçili: ${Object.keys(FOODS).filter(k => foodAllowed(k, currentDiet())).length}
       besin uygun, kalanı önerilerden çıkarıldı. Günlüğe istediğini yazmaya devam edebilirsin.</div>` : ""}
     ${prefs.exclude.length ? `<div style="margin-top:14px">
-      <div class="metric-note" style="margin-bottom:8px">Önerilerden çıkardıkların:</div>
+      <div class="metric-note" style="margin-bottom:8px">${tx("Önerilerden çıkardıkların:")}</div>
       <div class="chips">${prefs.exclude.map(k => `<button class="chip" data-munex="${k}">
-        ${esc((FOODS[k]||{n:k}).n)} <span style="opacity:.6">geri al</span></button>`).join("")}</div>
+        ${esc((FOODS[k]||{n:k}).n)} <span style="opacity:.6">${tx("geri al")}</span></button>`).join("")}</div>
     </div>` : ""}
   </section>`;
 }
@@ -576,7 +576,7 @@ function planView(program){
 
   return `
   <section>
-    <h2>${plan.setName} <span class="count">${plan.total.kcal} kcal</span></h2>
+    <h2>${plan.setName} <span class="count">${tx("{0} kcal", [(plan.total.kcal)])}</span></h2>
     ${macroRow("Kalori", plan.total.kcal, program.kcal, "", "grain", "band")}
     ${macroRow("Protein", plan.total.p, program.protein, " g", "poultry", "mp")}
     ${macroRow("Karbonhidrat", plan.total.c, program.carb, " g", "bread", "mc")}
@@ -584,13 +584,13 @@ function planView(program){
     ${macroRow("Lif", plan.total.lif, fiberTarget(program), " g", "veg", "ml")}
     ${off > program.kcal * 0.08 ? `<div class="metric-note" style="margin-top:12px">
       <b class="out">Bu kombinasyon hedeften ${off} kcal ${plan.total.kcal>program.kcal?"yüksek":"düşük"}.</b>
-      Yağlı besinler kendi yağını da getirdiği için bazı setler düşük kalorili hedeflere oturmuyor; başka kombinasyon dene.</div>` : ""}
-    <button class="ghost" id="reroll" style="margin-top:14px">Başka kombinasyon</button>
+      ${tx("Yağlı besinler kendi yağını da getirdiği için bazı setler düşük kalorili hedeflere oturmuyor; başka kombinasyon dene.")}</div>` : ""}
+    <button class="ghost" id="reroll" style="margin-top:14px">${tx("Başka kombinasyon")}</button>
   </section>
   ${prefsSection()}
   ${microSection(plan.micros)}
   ${plan.meals.map(m => `<section>
-    <h2>${m.name} <span class="count">${m.kcal} kcal</span></h2>
+    <h2>${m.name} <span class="count">${tx("{0} kcal", [(m.kcal)])}</span></h2>
     ${m.items.map(i => {
       const rec = i.key ? recipeFor(i.key) : null;
       return `<div class="item">${iconBox(i.icon)}
@@ -599,16 +599,16 @@ function planView(program){
              <h3>${esc(i.text)}</h3>
              <p>${i.fixed?"senin girdiğin · ":""}${rec.idx >= 0 ? "tarifi gör" : rec.uses + " tarifte kullanılıyor"}</p>
            </button><svg class="ico chev" aria-hidden="true"><use href="#i-next"/></svg>`
-        : `<div class="item-main"><h3>${esc(i.text)}</h3>${i.fixed?`<p>senin girdiğin</p>`:""}</div>`}
+        : `<div class="item-main"><h3>${esc(i.text)}</h3>${i.fixed?`<p>${tx("senin girdiğin")}</p>`:""}</div>`}
       ${i.fixed
-        ? `<button class="del" data-fixdel="${m.slot}|${i.key}" aria-label="Kaldır">×</button>`
-        : i.key ? `<button class="del" data-mex="${i.key}" aria-label="Bu besini önerilerden çıkar">×</button>` : ""}
+        ? `<button class="del" data-fixdel="${m.slot}|${i.key}" aria-label="${tx("Kaldır")}">×</button>`
+        : i.key ? `<button class="del" data-mex="${i.key}" aria-label="${tx("Bu besini önerilerden çıkar")}">×</button>` : ""}
     </div>`; }).join("")}
-    ${m.full ? `<div class="metric-note" style="margin-top:10px">Bu öğün doldu.</div>` : ""}
+    ${m.full ? `<div class="metric-note" style="margin-top:10px">${tx("Bu öğün doldu.")}</div>` : ""}
     <button class="ghost" data-fixadd="${m.slot}" style="margin-top:12px">${fixSlot===m.slot?"Kapat":"Kendi yiyeceğini ekle"}</button>
     ${fixSlot===m.slot ? fixPicker() : ""}
   </section>`).join("")}
-  <div class="foot">Miktarlar çiğ ağırlıktır.</div>`;
+  <div class="foot">${tx("Miktarlar çiğ ağırlıktır.")}</div>`;
 }
 
 function wireMeals(entry){
@@ -898,15 +898,15 @@ function wireMealsRest(entry){
     const box = document.getElementById("custom-form");
     if (box.innerHTML) { box.innerHTML = ""; return; }
     box.innerHTML = `<div class="pick">
-      <h3>Kendi besinin</h3>
-      <div class="field"><label for="cf-n">Ad</label><input id="cf-n" type="text" placeholder="Annemin mercimek köftesi"></div>
+      <h3>${tx("Kendi besinin")}</h3>
+      <div class="field"><label for="cf-n">${tx("Ad")}</label><input id="cf-n" type="text" placeholder="${tx("Annemin mercimek köftesi")}"></div>
       <div class="row">
-        <div class="field"><label for="cf-p">Protein</label><input id="cf-p" type="number" inputmode="decimal" placeholder="g/100g"></div>
-        <div class="field"><label for="cf-c">Karb.</label><input id="cf-c" type="number" inputmode="decimal" placeholder="g/100g"></div>
-        <div class="field"><label for="cf-f">Yağ</label><input id="cf-f" type="number" inputmode="decimal" placeholder="g/100g"></div>
+        <div class="field"><label for="cf-p">${tx("Protein")}</label><input id="cf-p" type="number" inputmode="decimal" placeholder="g/100g"></div>
+        <div class="field"><label for="cf-c">${tx("Karb.")}</label><input id="cf-c" type="number" inputmode="decimal" placeholder="g/100g"></div>
+        <div class="field"><label for="cf-f">${tx("Yağ")}</label><input id="cf-f" type="number" inputmode="decimal" placeholder="g/100g"></div>
       </div>
-      <button id="cf-save">Kaydet</button>
-      <div class="metric-note" style="margin-top:10px">Değerler 100 g başına.</div>
+      <button id="cf-save">${tx("Kaydet")}</button>
+      <div class="metric-note" style="margin-top:10px">${tx("Değerler 100 g başına.")}</div>
     </div>`;
     document.getElementById("cf-save").onclick = async () => {
       const n = document.getElementById("cf-n").value.trim();

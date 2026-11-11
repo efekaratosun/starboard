@@ -3,10 +3,10 @@
 /* ---- ortak bölümler ---- */
 function trainingSection(p, picker){
   if (p.training.none) return `<section>
-    <h2>Spor programın kapalı</h2>
-    <div class="metric-note">Program kurulu değil.</div>
-    <button class="ghost" id="plan-on" style="margin-top:12px">Spor programı kur</button>
-    <button class="ghost" id="own-edit" style="margin-top:8px">Kendi programını yaz</button>
+    <h2>${tx("Spor programın kapalı")}</h2>
+    <div class="metric-note">${tx("Program kurulu değil.")}</div>
+    <button class="ghost" id="plan-on" style="margin-top:12px">${tx("Spor programı kur")}</button>
+    <button class="ghost" id="own-edit" style="margin-top:8px">${tx("Kendi programını yaz")}</button>
   </section>`;
   const wd = isoWeekday(today());
   const cur = p.training.id;
@@ -16,21 +16,21 @@ function trainingSection(p, picker){
   const list = Object.entries(PROGRAMS).filter(([,x]) => x.venue === venue);
 
   return `<section>
-    <h2>${p.training.title} <span class="count">${p.training.freq} gün</span></h2>
-    ${picker ? `<div class="field"><label for="venue-pick">Antrenman türü</label>
+    <h2>${p.training.title} <span class="count">${tx("{0} gün", [(p.training.freq)])}</span></h2>
+    ${picker ? `<div class="field"><label for="venue-pick">${tx("Antrenman türü")}</label>
       <select id="venue-pick">${Object.entries(VENUE).map(([k,v])=>
         `<option value="${k}"${venue===k?" selected":""}>${v.label}</option>`).join("")}</select></div>
       <div class="pills" style="margin-bottom:14px">${list.map(([k,x]) =>
-        `<button class="pill${k===cur?" on":""}" data-prog="${k}" style="cursor:pointer">${x.label} · ${x.freq} gün</button>`).join("")}</div>
+        `<button class="pill${k===cur?" on":""}" data-prog="${k}" style="cursor:pointer">${tx("{0} · {1} gün", [(x.label), (x.freq)])}</button>`).join("")}</div>
       <div class="own${custom ? " on" : ""}">
-        <div><b>Kendi programın</b><i>${ownN ? `${ownN} gün yazıldı${custom ? " · kullanılıyor" : ""}` : "Gün gün hareket, set ve tekrarı sen yaz."}</i></div>
-        ${ownN && !custom ? `<button class="ghost" id="own-use">Kullan</button>` : ""}
+        <div><b>${tx("Kendi programın")}</b><i>${ownN ? `${ownN} gün yazıldı${custom ? " · kullanılıyor" : ""}` : "Gün gün hareket, set ve tekrarı sen yaz."}</i></div>
+        ${ownN && !custom ? `<button class="ghost" id="own-use">${tx("Kullan")}</button>` : ""}
         <button class="ghost" id="own-edit">${ownN ? "Düzenle" : "Yaz"}</button>
       </div>
 ` : ""}
     ${p.training.days.map(d => `<div class="item${picker && d.wd===wd?" today":""}">
       ${iconBox(d.icon, !d.b)}
-      <div class="item-main"><h3>${WD_NAMES[d.wd]} · ${d.t}${picker && d.wd===wd?`<span class="badge">bugün</span>`:""}</h3>${d.b?`<p>${d.b}</p>`:""}</div>
+      <div class="item-main"><h3>${WD_NAMES[d.wd]} · ${d.t}${picker && d.wd===wd?`<span class="badge">${tx("bugün")}</span>`:""}</h3>${d.b?`<p>${d.b}</p>`:""}</div>
     </div>`).join("")}
     <div class="metric-note" style="margin-top:12px">${p.training.note}<br>${p.training.cardio}</div>
     ${(state.profile.avoid || []).length ? `<div class="metric-note" style="margin-top:10px">
@@ -59,9 +59,9 @@ function render(){
   const party = onToday() && !wasAll && allDoneNow() && render.ready;
   const noProgram = `<section class="welcome">
     <span class="brand-i">${BRAND_SVG}</span>
-    <b>Starboard hazır</b>
-    <i>Kilonu girdiğinde kalori hedefin ve antrenman programın burada belirir.</i>
-    <button id="np-go">Kilonu gir</button>
+    <b>${tx("Starboard hazır")}</b>
+    <i>${tx("Kilonu girdiğinde kalori hedefin ve antrenman programın burada belirir.")}</i>
+    <button id="np-go">${tx("Kilonu gir")}</button>
   </section>`;
   const titles = { today: onToday() ? greetTitle() : prettyDate(t), plan:"Programın", meals:"Beslenme", calendar:"Takvim" };
   const subs = { today: onToday() ? `${prettyDate(t)} · ${weekdayName(t)}` : `${weekdayName(t)} · geçmiş gün`,
@@ -71,11 +71,11 @@ function render(){
 
   /* Geçmiş gün şeridi: hangi sekmede olursan ol hangi güne yazdığın görünsün. */
   const pastBar = (!onToday() && tab !== "settings" && tab !== "calendar" && tab !== "today") ? `<div class="notice past">
-    <div class="pd-t">${prettyDate(t)} · ${weekdayName(t)} gününe yazıyorsun.</div>
+    <div class="pd-t">${tx("{0} · {1} gününe yazıyorsun.", [(prettyDate(t)), (weekdayName(t))])}</div>
     <div class="pd-row">
-      <button class="ghost" id="pd-prev">‹ Önceki gün</button>
-      <button class="ghost" id="pd-next">Sonraki gün ›</button>
-      <button class="ghost" id="back-today">Bugüne dön</button>
+      <button class="ghost" id="pd-prev">${tx("‹ Önceki gün")}</button>
+      <button class="ghost" id="pd-next">${tx("Sonraki gün ›")}</button>
+      <button class="ghost" id="back-today">${tx("Bugüne dön")}</button>
     </div></div>` : "";
 
   let body = "";
@@ -86,8 +86,8 @@ function render(){
       + (meTab === "set" ? settingsView()
        : meTab === "chart" ? chartsView()
        : bodyCard() + bodySection(te)
-         + `<section><h2>Değerlendirme</h2>${program ? evaluate(te, state.profile, program, lastWeight()).join("")
-              : `<div class="empty">Kilonu gir, hedefler hesaplansın.</div>`}</section>`);
+         + `<section><h2>${tx("Değerlendirme")}</h2>${program ? evaluate(te, state.profile, program, lastWeight()).join("")
+              : `<div class="empty">${tx("Kilonu gir, hedefler hesaplansın.")}</div>`}</section>`);
   }
   else if (tab === "today") body = todayView(entry, program, t);
   else if (tab === "plan") body = program ? `<div class="seg">${[["log","Kaydım"],["program","Program"],["howto","Nasıl yapılır"]].map(([k,l]) =>
@@ -107,11 +107,11 @@ function render(){
         <svg class="ico" aria-hidden="true"><use href="#${tab==="settings"?"i-close":bodyIcon(state.profile)}"/></svg></button>
     </header>
     <main>${pastBar}${body}</main>
-    <nav class="tabbar" aria-label="Sayfalar"><i class="tab-ind" aria-hidden="true"></i>
+    <nav class="tabbar" aria-label="${tx("Sayfalar")}"><i class="tab-ind" aria-hidden="true"></i>
       ${(() => { const tb = ([k,ic,l]) => `<button data-tab="${k}" aria-current="${tab===k}">
           <svg class="ico" aria-hidden="true"><use href="#${ic}"/></svg>${l}</button>`;
         return tb(["today","i-day","Bugün"]) + tb(["plan","i-plan","Program"])
-          + `<button class="fab" id="fab" aria-label="Hızlı giriş">
+          + `<button class="fab" id="fab" aria-label="${tx("Hızlı giriş")}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>`
           + tb(["meals","i-grain","Beslenme"]) + tb(["calendar","i-today","Takvim"]); })()}
     </nav>`;

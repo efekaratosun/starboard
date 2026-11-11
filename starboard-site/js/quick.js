@@ -28,58 +28,58 @@ function openQuickSheet(){
 
     el.querySelector("#qs-b").innerHTML = `
       <div class="qs-row">
-        <div class="qs-h">${iconBox("dairy")}<div><b>Su</b>
+        <div class="qs-h">${iconBox("dairy")}<div><b>${tx("Su")}</b>
           <i>${e.water || 0}${program ? ` / ${program.water}` : ""} ml</i></div></div>
         <div class="chips">
           <button class="chip" data-qw="250">+250</button>
           <button class="chip" data-qw="500">+500</button>
           <button class="chip" data-qw="1000">+1000</button>
-          ${rw ? `<button class="chip rep" data-qwset="${rw}">↺ önceki gün ${rw} ml</button>` : ""}
-          ${e.water ? `<button class="chip" data-qwset="0">Sıfırla</button>` : ""}
+          ${rw ? `<button class="chip rep" data-qwset="${rw}">${tx("↺ önceki gün {0} ml", [(rw)])}</button>` : ""}
+          ${e.water ? `<button class="chip" data-qwset="0">${tx("Sıfırla")}</button>` : ""}
         </div>
       </div>
 
       <div class="qs-row">
-        <div class="qs-h">${iconBox("legs")}<div><b>Kilo</b>
+        <div class="qs-h">${iconBox("legs")}<div><b>${tx("Kilo")}</b>
           <i>${typeof e.weight === "number" ? `${past ? "o gün" : "bugün"} ${kg1(e.weight)} kg girildi`
               : lw !== null ? `son ölçüm ${kg1(lw)} kg` : "henüz ölçüm yok"}</i></div></div>
         <div class="row">
           <input id="qs-w" type="text" inputmode="decimal" placeholder="${lw !== null ? kg1(lw) : "kg"}"
             value="${typeof e.weight === "number" ? fmtN(e.weight) : ""}" style="flex:2">
-          <button id="qs-w-ok" style="flex:0 0 92px">Kaydet</button>
+          <button id="qs-w-ok" style="flex:0 0 92px">${tx("Kaydet")}</button>
         </div>
       </div>
 
       ${stepGoal() ? `<div class="qs-row">
-        <div class="qs-h">${iconBox("walk")}<div><b>Adım</b>
-          <i>${e.steps || 0} / ${stepGoal()} adım</i></div></div>
+        <div class="qs-h">${iconBox("walk")}<div><b>${tx("Adım")}</b>
+          <i>${tx("{0} / {1} adım", [(e.steps || 0), (stepGoal())])}</i></div></div>
         <div class="row">
-          <input id="qs-st" type="text" inputmode="numeric" placeholder="adım sayısı"
+          <input id="qs-st" type="text" inputmode="numeric" placeholder="${tx("adım sayısı")}"
             value="${typeof e.steps === "number" ? e.steps : ""}" style="flex:2">
-          <button id="qs-st-ok" style="flex:0 0 92px">Kaydet</button>
+          <button id="qs-st-ok" style="flex:0 0 92px">${tx("Kaydet")}</button>
         </div>
       </div>` : ""}
 
       <div class="qs-row">
-        <div class="qs-h">${iconBox("rest")}<div><b>Uyku</b>
+        <div class="qs-h">${iconBox("rest")}<div><b>${tx("Uyku")}</b>
           <i>${typeof e.sleep === "number" ? durTxt(Math.round(e.sleep * 60)) : "henüz girilmedi"}</i></div></div>
         <div class="qs-times">
-          <input id="qs-bed" type="time" value="${hm(bed)}" aria-label="Yattığın saat">
+          <input id="qs-bed" type="time" value="${hm(bed)}" aria-label="${tx("Yattığın saat")}">
           <span aria-hidden="true">→</span>
-          <input id="qs-wake" type="time" value="${hm(wake)}" aria-label="Kalktığın saat">
+          <input id="qs-wake" type="time" value="${hm(wake)}" aria-label="${tx("Kalktığın saat")}">
         </div>
-        <button id="qs-s-ok" style="margin-top:9px">Uykuyu kaydet</button>
+        <button id="qs-s-ok" style="margin-top:9px">${tx("Uykuyu kaydet")}</button>
       </div>
 
       <div class="qs-row">
-        <div class="qs-h">${iconBox("grain")}<div><b>Kalori</b>
+        <div class="qs-h">${iconBox("grain")}<div><b>${tx("Kalori")}</b>
           <i>${logged ? `günlükteki ${e.log.length} kalemden ${e.kcal || 0} kcal`
               : `${e.kcal || 0}${program ? ` / ${program.kcal}` : ""} kcal`}</i></div></div>
         ${logged ? "" : `<div class="chips">
           <button class="chip" data-qk="200">+200</button>
           <button class="chip" data-qk="400">+400</button>
           <button class="chip" data-qk="600">+600</button>
-          ${rk ? `<button class="chip rep" data-qkset="${rk}">↺ önceki gün ${rk} kcal</button>` : ""}
+          ${rk ? `<button class="chip rep" data-qkset="${rk}">${tx("↺ önceki gün {0} kcal", [(rk)])}</button>` : ""}
         </div>`}
         <button class="qs-go" id="qs-meals" style="margin-top:10px">
           ${logged ? "Beslenme günlüğünü aç" : "Yediklerini tek tek gir"}
@@ -87,17 +87,17 @@ function openQuickSheet(){
       </div>
 
       ${session && session.b ? `<div class="qs-row">
-        <div class="qs-h">${iconBox(session.icon)}<div><b>Antrenman</b><i>${esc(session.t)}</i></div></div>
-        <button class="qs-go" id="qs-train">Antrenmanı kaydet
+        <div class="qs-h">${iconBox(session.icon)}<div><b>${tx("Antrenman")}</b><i>${esc(session.t)}</i></div></div>
+        <button class="qs-go" id="qs-train">${tx("Antrenmanı kaydet")}
           <svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
       </div>` : ""}
 
       <div class="qs-row">
-        <div class="qs-h">${iconBox("day")}<div><b>Görev</b>
+        <div class="qs-h">${iconBox("day")}<div><b>${tx("Görev")}</b>
           <i>${e.tasks.filter(t => !t.suggested).length} kendi görevin var</i></div></div>
         <div class="row">
-          <input id="qs-t" type="text" placeholder="Yeni görev" style="flex:2">
-          <button id="qs-t-ok" style="flex:0 0 92px">Ekle</button>
+          <input id="qs-t" type="text" placeholder="${tx("Yeni görev")}" style="flex:2">
+          <button id="qs-t-ok" style="flex:0 0 92px">${tx("Ekle")}</button>
         </div>
       </div>`;
     wire();
@@ -169,9 +169,9 @@ function openQuickSheet(){
 
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="qs-t-h">
     <div class="sheet-h"><span class="qs-logo">${BRAND_SVG}</span>
-      <b id="qs-t-h">Hızlı giriş</b>
-      <button class="sheet-x" aria-label="Kapat">×</button></div>
-    ${past ? `<div class="metric-note" style="margin:-2px 0 4px">${prettyDate(k)} gününe yazılıyor.</div>` : ""}
+      <b id="qs-t-h">${tx("Hızlı giriş")}</b>
+      <button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
+    ${past ? `<div class="metric-note" style="margin:-2px 0 4px">${tx("{0} gününe yazılıyor.", [(prettyDate(k))])}</div>` : ""}
     <div id="qs-b"></div>
   </div>`;
   document.body.appendChild(el);
@@ -197,21 +197,21 @@ function openGoalSheet(key){
     const have = new Set((state.routines || []).map(r => r.title));
     const ideas = ROUTINE_IDEAS.filter(x => x !== "10 bin adım" && !have.has(x));
     el.querySelector("#gs-b").innerHTML = `
-      <h3 class="gs-h">Hazır hedefler</h3>
+      <h3 class="gs-h">${tx("Hazır hedefler")}</h3>
       <div class="gs-row">${iconBox("walk")}
-        <div class="gs-m"><b>Adım sayısı</b><i>${sg ? `Günde ${sg} adım` : "Kapalı"}</i></div>
+        <div class="gs-m"><b>${tx("Adım sayısı")}</b><i>${sg ? `Günde ${sg} adım` : "Kapalı"}</i></div>
         <button class="chip${sg ? " sel" : ""}" id="gs-st-t" aria-pressed="${!!sg}">${sg ? "Açık" : "Aç"}</button></div>
       ${sg ? `<div class="row" style="margin-top:10px">
-        <input id="gs-st-n" type="number" inputmode="numeric" value="${sg}" aria-label="Günlük adım hedefi" style="flex:2">
-        <button id="gs-st-ok" style="flex:0 0 110px">Güncelle</button></div>` : ""}      ${ideas.length ? `<label style="margin-top:18px">Her gün tekrar edenler</label>
+        <input id="gs-st-n" type="number" inputmode="numeric" value="${sg}" aria-label="${tx("Günlük adım hedefi")}" style="flex:2">
+        <button id="gs-st-ok" style="flex:0 0 110px">${tx("Güncelle")}</button></div>` : ""}      ${ideas.length ? `<label style="margin-top:18px">${tx("Her gün tekrar edenler")}</label>
         <div class="chips">${ideas.map(x => `<button class="chip" data-gs-idea="${esc(x)}">+ ${esc(x)}</button>`).join("")}</div>` : ""}
-      <h3 class="gs-h" style="margin-top:24px">Kendi hedefin</h3>
+      <h3 class="gs-h" style="margin-top:24px">${tx("Kendi hedefin")}</h3>
       <div class="row">
-        <input id="gs-t" type="text" placeholder="örn. 20 sayfa kitap" aria-label="Kendi hedefin" style="flex:2">
-        <button id="gs-t-ok" style="flex:0 0 86px">Ekle</button>
+        <input id="gs-t" type="text" placeholder="${tx("örn. 20 sayfa kitap")}" aria-label="${tx("Kendi hedefin")}" style="flex:2">
+        <button id="gs-t-ok" style="flex:0 0 86px">${tx("Ekle")}</button>
       </div>
       <div class="chips" style="margin-top:8px">
-        <button class="chip${rep ? " sel" : ""}" id="gs-rep" aria-pressed="${rep}">Her gün tekrarla</button>
+        <button class="chip${rep ? " sel" : ""}" id="gs-rep" aria-pressed="${rep}">${tx("Her gün tekrarla")}</button>
       </div>`;
 
     const e = ensureDay(key);
@@ -250,8 +250,8 @@ function openGoalSheet(key){
   };
 
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="gs-h">
-    <div class="sheet-h"><b id="gs-h">Hedef ekle</b>
-      <button class="sheet-x" aria-label="Kapat">×</button></div>
+    <div class="sheet-h"><b id="gs-h">${tx("Hedef ekle")}</b>
+      <button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
     <div id="gs-b"></div>
   </div>`;
   document.body.appendChild(el);
@@ -278,19 +278,19 @@ function openProgramEditor(){
   const draw = focusLast => {
     const d = day();
     el.querySelector("#pe-b").innerHTML = `
-      <div class="pe-days" role="group" aria-label="Gün seç">${[1,2,3,4,5,6,7].map(n =>
+      <div class="pe-days" role="group" aria-label="${tx("Gün seç")}">${[1,2,3,4,5,6,7].map(n =>
         `<button class="chip${n === sel ? " sel" : ""}${filled(n) ? " has" : ""}" data-pe-day="${n}"
            aria-pressed="${n === sel}" aria-label="${WD_NAMES[n]}${filled(n) ? ", hareket var" : ""}">${WD_SHORT[n]}</button>`).join("")}</div>
-      <div class="field"><label for="pe-t">${WD_NAMES[sel]} antrenmanının adı</label>
-        <input id="pe-t" type="text" value="${esc(d.t || "")}" placeholder="örn. Göğüs ve kol" maxlength="40"></div>
-      ${d.ex.length ? `<div class="pe-head" aria-hidden="true"><span>Hareket</span><span>Set</span><span>Tekrar</span><span></span></div>`
-        : `<div class="empty" style="margin:6px 0 4px">Hareket eklemezsen ${WD_NAMES[sel]} dinlenme günü sayılır.</div>`}
+      <div class="field"><label for="pe-t">${tx("{0} antrenmanının adı", [(WD_NAMES[sel])])}</label>
+        <input id="pe-t" type="text" value="${esc(d.t || "")}" placeholder="${tx("örn. Göğüs ve kol")}" maxlength="40"></div>
+      ${d.ex.length ? `<div class="pe-head" aria-hidden="true"><span>${tx("Hareket")}</span><span>${tx("Set")}</span><span>${tx("Tekrar")}</span><span></span></div>`
+        : `<div class="empty" style="margin:6px 0 4px">${tx("Hareket eklemezsen {0} dinlenme günü sayılır.", [(WD_NAMES[sel])])}</div>`}
       ${d.ex.map((x, i) => `<div class="pe-x">
-        <input data-pe-n="${i}" type="text" value="${esc(x.n || "")}" placeholder="Hareket" aria-label="Hareket adı" maxlength="40">
-        <input data-pe-s="${i}" type="text" inputmode="numeric" value="${esc(x.s ?? "")}" aria-label="Set sayısı">
-        <input data-pe-r="${i}" type="text" inputmode="numeric" value="${esc(x.r ?? "")}" aria-label="Tekrar sayısı">
-        <button class="del" data-pe-del="${i}" aria-label="Hareketi sil">×</button></div>`).join("")}
-      <button class="ghost" id="pe-add" style="margin-top:10px">＋ Hareket ekle</button>`;
+        <input data-pe-n="${i}" type="text" value="${esc(x.n || "")}" placeholder="${tx("Hareket")}" aria-label="${tx("Hareket adı")}" maxlength="40">
+        <input data-pe-s="${i}" type="text" inputmode="numeric" value="${esc(x.s ?? "")}" aria-label="${tx("Set sayısı")}">
+        <input data-pe-r="${i}" type="text" inputmode="numeric" value="${esc(x.r ?? "")}" aria-label="${tx("Tekrar sayısı")}">
+        <button class="del" data-pe-del="${i}" aria-label="${tx("Hareketi sil")}">×</button></div>`).join("")}
+      <button class="ghost" id="pe-add" style="margin-top:10px">${tx("＋ Hareket ekle")}</button>`;
 
     el.querySelectorAll("[data-pe-day]").forEach(b => b.onclick = () => { sel = +b.dataset.peDay; draw(); });
     el.querySelector("#pe-t").oninput = ev => { d.t = ev.target.value; };
@@ -328,13 +328,13 @@ function openProgramEditor(){
   };
 
   el.innerHTML = `<div class="sheet pe" role="dialog" aria-modal="true" aria-labelledby="pe-h">
-    <div class="sheet-h"><b id="pe-h">Kendi programın</b>
-      <button class="sheet-x" aria-label="Kapat">×</button></div>
-    <div class="metric-note" style="margin:-2px 0 14px">Boş günler dinlenme olur.</div>
+    <div class="sheet-h"><b id="pe-h">${tx("Kendi programın")}</b>
+      <button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
+    <div class="metric-note" style="margin:-2px 0 14px">${tx("Boş günler dinlenme olur.")}</div>
     <div id="pe-b"></div>
     <div class="row pe-foot">
-      <button id="pe-ok">Kaydet ve kullan</button>
-      <button class="ghost" id="pe-no" style="flex:0 0 104px">Vazgeç</button>
+      <button id="pe-ok">${tx("Kaydet ve kullan")}</button>
+      <button class="ghost" id="pe-no" style="flex:0 0 104px">${tx("Vazgeç")}</button>
     </div>
   </div>`;
   document.body.appendChild(el);

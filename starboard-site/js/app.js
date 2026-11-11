@@ -188,16 +188,16 @@ const themeClass = t => (t === "dark" || (t === "auto" && sysDark())) ? "thm-dar
 
 function themeMock(t){
   return `<div class="tp ${themeClass(t)}" aria-hidden="true">
-    <div class="tp-h"><div><b>İyi akşamlar, Efe</b><i>Bugün 2 görevin kaldı.</i></div><span class="tp-gear"></span></div>
-    <div class="tp-sky"><b>Bu haftanın takımyıldızı</b><i>5/7 yıldız yandı</i>
+    <div class="tp-h"><div><b>${tx("İyi akşamlar, Efe")}</b><i>${tx("Bugün 2 görevin kaldı.")}</i></div><span class="tp-gear"></span></div>
+    <div class="tp-sky"><b>${tx("Bu haftanın takımyıldızı")}</b><i>${tx("5/7 yıldız yandı")}</i>
       <svg viewBox="0 0 120 34"><path d="M8 24 34 12 60 20 86 8 112 16" fill="none" stroke="var(--star)" stroke-width="1.2" opacity=".7"/>
         ${[[8,24],[34,12],[60,20],[86,8],[112,16]].map(([x,y],i)=>
           `<circle cx="${x}" cy="${y}" r="${i<3?2.6:1.6}" fill="${i<3?"var(--star)":"var(--star-off)"}"/>`).join("")}</svg></div>
     <div class="tp-card"><div class="tp-hero"><span class="tp-ring"></span>
-      <div><b>420 kcal</b><i>hedefe kalan</i></div></div></div>
+      <div><b>${tx("420 kcal")}</b><i>${tx("hedefe kalan")}</i></div></div></div>
     <div class="tp-card">
-      <div class="tp-task"><span class="tp-ck on"></span><span>2.200 kcal hedefini tut</span></div>
-      <div class="tp-task"><span class="tp-ck"></span><span>2.800 ml su iç</span></div>
+      <div class="tp-task"><span class="tp-ck on"></span><span>${tx("2.200 kcal hedefini tut")}</span></div>
+      <div class="tp-task"><span class="tp-ck"></span><span>${tx("2.800 ml su iç")}</span></div>
       <div class="tp-chart"><i style="height:38%"></i><i style="height:62%"></i><i style="height:50%"></i><i style="height:78%"></i><i style="height:66%"></i></div>
     </div>
     <div class="tp-bar">${[0,1,2,3,4].map(i => `<i class="${i===1?"on":""}"></i>`).join("")}</div>
@@ -221,14 +221,14 @@ function openThemeSheet(cur, onPick){
       : "Her zaman açık kalır, telefonun ayarı ne olursa olsun.";
   };
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tp-t">
-    <div class="sheet-h"><b id="tp-t">Tema</b><button class="sheet-x" aria-label="Kapat">×</button></div>
-    <div class="seg" role="tablist" aria-label="Tema seçenekleri">${THEMES.map(([k,l]) =>
+    <div class="sheet-h"><b id="tp-t">${tx("Tema")}</b><button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
+    <div class="seg" role="tablist" aria-label="${tx("Tema seçenekleri")}">${THEMES.map(([k,l]) =>
       `<button data-tp="${k}" role="tab" aria-current="false" aria-selected="false">${l}</button>`).join("")}</div>
     <div id="tp-box"></div>
     <div class="metric-note" id="tp-note" style="margin-top:12px"></div>
     <div class="row" style="margin-top:16px">
-      <button id="tp-ok">Bunu kullan</button>
-      <button class="ghost" id="tp-cancel" style="flex:0 0 100px">Vazgeç</button>
+      <button id="tp-ok">${tx("Bunu kullan")}</button>
+      <button class="ghost" id="tp-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button>
     </div>
   </div>`;
   document.body.appendChild(el);

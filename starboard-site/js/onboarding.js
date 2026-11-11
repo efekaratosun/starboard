@@ -165,7 +165,7 @@ const obCards = (field, rows, cls, isNum) => `<div class="ocs${cls ? " " + cls :
 const obChips = (attr, rows) => `<div class="chips on-chips">${rows.map(([v, l, on]) =>
   `<button type="button" class="chip${on ? " sel" : ""}" data-${attr}="${v}" aria-pressed="${!!on}">${l}</button>`).join("")}</div>`;
 const og = (title, inner, opt, id) => `<div class="og"${id ? ` id="${id}"` : ""}>
-  <div class="og-t">${title}${opt ? ` <span>isteğe bağlı</span>` : ""}</div>${inner}</div>`;
+  <div class="og-t">${title}${opt ? ` <span>${tx("isteğe bağlı")}</span>` : ""}</div>${inner}</div>`;
 
 /* ---- dönen rakamlar ---- */
 const ROLL_COL = "0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9";
@@ -304,11 +304,11 @@ const OB_STEPS = [
         if (!ob.avatar) ob.avatar = ob.sex === "female" ? "f" : ob.sex === "male" ? "m" : "n";
         if (!ob.avColor) ob.avColor = avColor({ sex: ob.sex });
         av = og("Avatarın", `<div class="av-field" id="av-field" style="--av:${ob.avColor}">${avatarPicker(ob.avatar, "on")}
-          <div class="sh-l">Renk</div>${colorPicker(ob.avColor, "on")}</div>`, false, "og-av");
+          <div class="sh-l">${tx("Renk")}</div>${colorPicker(ob.avColor, "on")}</div>`, false, "og-av");
       }
-      return og("Adın", `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" placeholder="Adın" autocomplete="given-name" maxlength="30" aria-label="Adın">`, true)
+      return og("Adın", `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" placeholder="${tx("Adın")}" autocomplete="given-name" maxlength="30" aria-label="${tx("Adın")}">`, true)
         + og("Cinsiyet", obCards("sex", [["male", OB_ICON.sex.male, "Erkek"], ["female", OB_ICON.sex.female, "Kadın"], ["none", OB_ICON.sex.none, "Belirtmem"]], "tri")
-            + `<div class="metric-note" style="margin-top:8px">Kalori hesabında kullanılır.</div>`)
+            + `<div class="metric-note" style="margin-top:8px">${tx("Kalori hesabında kullanılır.")}</div>`)
         + av;
     },
     read: () => { const v = obVal("ob-name"); if (v !== null) ob.name = v.trim().slice(0, 30); },
@@ -326,7 +326,7 @@ const OB_STEPS = [
         + og("Kilo", obRuler("weight", 30, 200, 0.5, 10, 10, 2, "kg", true))
         + `<div class="og-row">`
         + og("Yaş", `<input id="ob-age" type="number" inputmode="numeric" value="${ob.age ?? ""}" placeholder="30">`)
-        + og("Yağ oranı (%)", `<input id="ob-bf" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="bilmiyorsan boş">`, true)
+        + og("Yağ oranı (%)", `<input id="ob-bf" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}">`, true)
         + `</div>`;
     },
     read: () => { ob.age = num(obVal("ob-age")); ob.bodyFat = num(obVal("ob-bf")); },
@@ -347,7 +347,7 @@ const OB_STEPS = [
         + og("Hangi günler?", obChips("obday", [1,2,3,4,5,6,7].map(n => [n, WD_SHORT[n], ob.days.includes(n)]))
             + `<div class="metric-note" id="day-note" style="margin-top:10px">${dayNote(ob.venue, ob.activity, ob.days)}</div>`)
         + og("Kaçınman gereken bölge", obChips("obavoid", AVOID_ZONES.map(([k, l]) => [k, l, ob.avoid.includes(k)]))
-            + `<div class="metric-note" style="margin-top:10px">Ağrın varsa önce bir hekime görün.</div>`, true)
+            + `<div class="metric-note" style="margin-top:10px">${tx("Ağrın varsa önce bir hekime görün.")}</div>`, true)
         + `</div>`;
       return og("Spor programı", `<div class="ocs" data-field="plan">
           ${obCard(!ob.noPlan, "on", "plan", "Program kur")}
@@ -368,14 +368,14 @@ let obBusy = false;
 function obWelcome(){
   return `<div class="on-q on-w">
     <span class="on-logo">${OB_LOGO}</span>
-    <h1>Starboard</h1>
-    <p class="on-tag">Sağlığın için tek bir pano.</p>
+    <h1>${tx("Starboard")}</h1>
+    <p class="on-tag">${tx("Sağlığın için tek bir pano.")}</p>
     <ul class="on-feat">
-      <li>${iconBox("day")}<span><b>Günün hedefleri tek listede</b></span></li>
-      <li>${iconBox("plan")}<span><b>Sana göre kurulur</b></span></li>
-      <li>${iconBox("star4")}<span><b>Her tamamlanan gün bir yıldız</b></span></li>
+      <li>${iconBox("day")}<span><b>${tx("Günün hedefleri tek listede")}</b></span></li>
+      <li>${iconBox("plan")}<span><b>${tx("Sana göre kurulur")}</b></span></li>
+      <li>${iconBox("star4")}<span><b>${tx("Her tamamlanan gün bir yıldız")}</b></span></li>
     </ul>
-    <div class="on-foot">Veriler yalnızca bu cihazda saklanır.</div>
+    <div class="on-foot">${tx("Veriler yalnızca bu cihazda saklanır.")}</div>
   </div>`;
 }
 
@@ -384,7 +384,7 @@ const OB_BUILD = ["Kalori ihtiyacın hesaplanıyor", "Protein ve su hedefin ayar
 function obBuild(){
   return `<div class="on-q on-w on-build">
     <span class="on-lw"><span class="on-orbit" aria-hidden="true"><i></i><i></i><i></i></span><span class="on-logo">${OB_LOGO}</span></span>
-    <h1>Planın hazırlanıyor</h1>
+    <h1>${tx("Planın hazırlanıyor")}</h1>
     <p class="on-tag" id="ob-bl" role="status">${OB_BUILD[0]}</p>
   </div>`;
 }
@@ -397,8 +397,8 @@ function obSummary(){
   return `<div class="on-q on-s">
     <span class="on-logo sm">${OB_LOGO}</span>
     <h1>${ob.name ? `${esc(ob.name)}, planın hazır` : "Planın hazır"}</h1>
-    <p class="on-tag">${GOAL[ob.goal].label} hedefine göre günlük hedeflerin:</p>
-    <div class="os-k"><b class="num" id="os-kn" data-to="${p.kcal}">${p.kcal}</b><span>kcal / gün</span></div>
+    <p class="on-tag">${tx("{0} hedefine göre günlük hedeflerin:", [(GOAL[ob.goal].label)])}</p>
+    <div class="os-k"><b class="num" id="os-kn" data-to="${p.kcal}">${p.kcal}</b><span>${tx("kcal / gün")}</span></div>
     <div class="os-g">
       ${tile("poultry", p.protein, " g", "protein")}
       ${tile("dairy", (p.water / 1000).toFixed(1).replace(".", ","), " L", "su")}
@@ -407,7 +407,7 @@ function obSummary(){
     <div class="os-p">${iconBox(tr.none ? "rest" : "plan")}<span><b>${tr.none ? "Spor programı yok" : esc(tr.title)}</b>
       <i>${tr.none ? "İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin."
         : `Haftada ${tr.freq} gün · ${tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", ")}`}</i></span></div>
-    <div class="metric-note" style="text-align:center;margin-top:14px">Hepsini sonradan değiştirebilirsin.</div>
+    <div class="metric-note" style="text-align:center;margin-top:14px">${tx("Hepsini sonradan değiştirebilirsin.")}</div>
   </div>`;
 }
 
@@ -466,12 +466,12 @@ function renderOnboarding(dir){
     app.innerHTML = `<div class="on-bg" id="on-bg" aria-hidden="true"><i></i><i></i>${[0,1,2,3,4,5].map(() => `<b>${icon("star4")}</b>`).join("")}</div>
     <main class="on">
       <div class="on-top hide" id="on-top">
-        <button class="on-back" id="ob-back" aria-label="Geri">${icon("prev")}</button>
+        <button class="on-back" id="ob-back" aria-label="${tx("Geri")}">${icon("prev")}</button>
         <div class="on-bar" id="on-bar" role="progressbar" aria-valuemin="1"><i></i></div>
         <span class="on-cnt num" id="on-cnt"></span>
       </div>
       <div class="on-stage" id="on-stage"></div>
-      <div class="on-nav" id="on-nav"><button id="ob-next">İleri</button></div>
+      <div class="on-nav" id="on-nav"><button id="ob-next">${tx("İleri")}</button></div>
     </main>`;
     stage = document.getElementById("on-stage");
   }

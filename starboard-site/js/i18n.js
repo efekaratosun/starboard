@@ -1,8 +1,9 @@
 "use strict";
 
 /* ---------------- dil ----------------
-   Kaynak dil Türkçedir: kodda metinler Türkçe yazılır ve t("...") içine alınır.
-   Başka bir dil seçiliyse t() aynı metni o dilin sözlüğünde (js/lang/*.js) arar;
+   Kaynak dil Türkçedir: kodda metinler Türkçe yazılır ve tx("...") içine alınır.
+   Değişken içeren metinlerde yer tutucu kullanılır: tx("{0} tarif bulundu", [n]).
+   Başka bir dil seçiliyse tx() aynı metni o dilin sözlüğünde (js/lang/*.js) arar;
    bulamazsa Türkçesini gösterir ve eksik listesine yazar. Dil değişince sayfa
    yeniden yüklenir, çünkü bazı metinler yükleme anında hazırlanır. */
 const LANGS = [["tr", "Türkçe"], ["en", "English"]];
@@ -15,7 +16,7 @@ let LANG = "tr";
 try { const saved = localStorage.getItem(LANG_KEY); if (saved && LOCALES[saved]) LANG = saved; } catch(e){}
 document.documentElement.lang = LANG;
 
-function t(s, vars){
+function tx(s, vars){
   let out = s;
   if (LANG !== "tr"){
     const d = I18N[LANG];

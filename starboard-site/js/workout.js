@@ -21,9 +21,9 @@ function freeCard(entry, key){
     ${f ? `<div class="item">${iconBox(FREE_ICON[f.k] || "plan")}
         <div class="item-main"><h3>${esc(freeLabel(f))}</h3>
           <p>${f.min ? `${f.min} dakika` : "süre girilmedi"}${f.note ? ` · ${esc(f.note)}` : ""}</p></div>
-        <button class="del" id="free-del" aria-label="Sil">×</button></div>
-      <button class="ghost" id="free-add" style="margin-top:12px">Değiştir</button>`
-     : `<button id="free-add">Antrenman ekle</button>`}
+        <button class="del" id="free-del" aria-label="${tx("Sil")}">×</button></div>
+      <button class="ghost" id="free-add" style="margin-top:12px">${tx("Değiştir")}</button>`
+     : `<button id="free-add">${tx("Antrenman ekle")}</button>`}
   </section>`;
 }
 
@@ -36,21 +36,21 @@ function openFreeSheet(key, onDone){
   const close = () => { sheetOut(el); document.removeEventListener("keydown", esc2); };
 
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="fr-t">
-    <div class="sheet-h"><b id="fr-t">Antrenman ekle</b>
-      <button class="sheet-x" aria-label="Kapat">×</button></div>
-    ${key === today() ? "" : `<div class="metric-note" style="margin:-2px 0 12px">${prettyDate(key)} gününe yazılır.</div>`}
-    <label>Ne yaptın?</label>
+    <div class="sheet-h"><b id="fr-t">${tx("Antrenman ekle")}</b>
+      <button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
+    ${key === today() ? "" : `<div class="metric-note" style="margin:-2px 0 12px">${tx("{0} gününe yazılır.", [(prettyDate(key))])}</div>`}
+    <label>${tx("Ne yaptın?")}</label>
     <div class="chips" id="fr-kinds">${FREE_KINDS.map(([k, l]) =>
       `<button class="chip${sel === k ? " sel" : ""}" data-frk="${k}">${l}</button>`).join("")}</div>
-    <div class="field" style="margin-top:16px"><label for="fr-min">Kaç dakika?</label>
-      <input id="fr-min" type="number" inputmode="numeric" placeholder="örn. 40"
+    <div class="field" style="margin-top:16px"><label for="fr-min">${tx("Kaç dakika?")}</label>
+      <input id="fr-min" type="number" inputmode="numeric" placeholder="${tx("örn. 40")}"
         value="${e.free && e.free.min ? e.free.min : ""}"></div>
-    <div class="field"><label for="fr-note">Not <span style="opacity:.7">(isteğe bağlı)</span></label>
-      <input id="fr-note" type="text" placeholder="örn. tempolu, 5 km"
+    <div class="field"><label for="fr-note">${tx("Not")} <span style="opacity:.7">${tx("(isteğe bağlı)")}</span></label>
+      <input id="fr-note" type="text" placeholder="${tx("örn. tempolu, 5 km")}"
         value="${e.free && e.free.note ? esc(e.free.note) : ""}"></div>
     <div class="row" style="margin-top:16px">
-      <button id="fr-ok">Kaydet</button>
-      <button class="ghost" id="fr-no" style="flex:0 0 110px">Vazgeç</button>
+      <button id="fr-ok">${tx("Kaydet")}</button>
+      <button class="ghost" id="fr-no" style="flex:0 0 110px">${tx("Vazgeç")}</button>
     </div></div>`;
   document.body.appendChild(el);
   document.addEventListener("keydown", esc2);
@@ -211,9 +211,9 @@ function liftInput(i, f, k, val, ph, dec, label){
 
 function stepper(i, cur, max, unit){
   return `<div class="lf-step">
-    <button class="lf-sb" data-lstep="${i}" data-d="-1" aria-label="Azalt"${cur <= 0 ? " disabled" : ""}>−</button>
+    <button class="lf-sb" data-lstep="${i}" data-d="-1" aria-label="${tx("Azalt")}"${cur <= 0 ? " disabled" : ""}>−</button>
     <div class="lf-sv num"><b>${cur}</b> / ${max} <span>${unit}</span></div>
-    <button class="lf-sb" data-lstep="${i}" data-d="1" aria-label="Artır"${cur >= max ? " disabled" : ""}>+</button>
+    <button class="lf-sb" data-lstep="${i}" data-d="1" aria-label="${tx("Artır")}"${cur >= max ? " disabled" : ""}>+</button>
   </div>`;
 }
 
@@ -238,14 +238,14 @@ function liftBody(i, ex, cur, prev){
     case "sw": return `${stepper(i, cur.n || 0, ex.n, "× " + ex.d + " m")}<div class="lf-row">${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,"Süre (dk)")}</div>`;
     case "sd": return `<div class="lf-row">${liftInput(i,"m",undefined,cur.m,ex.d,false,"Mesafe (m)")}${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,"Süre (dk)")}</div>`;
     case "c":  return `<div class="lf-row">${liftInput(i,"min",undefined,cur.min,ex.tg || "",true,"Süre (dk)")}${ex.km ? liftInput(i,"km",undefined,cur.km,prev && prev.km || "",true,"Mesafe (km)") : ""}</div>
-                 ${cur.min && cur.km ? `<div class="metric-note">Tempo: <b>${pace(cur.min, cur.km)}</b></div>` : ""}`;
+                 ${cur.min && cur.km ? `<div class="metric-note">${tx("Tempo:")} <b>${pace(cur.min, cur.km)}</b></div>` : ""}`;
     default:   return "";
   }
 }
 
 function howLink(name){
   const ids = guidesFor(name);
-  return ids.length ? `<button class="how-link" data-howgo="${ids[0]}">Nasıl yapılır</button>` : "";
+  return ids.length ? `<button class="how-link" data-howgo="${ids[0]}">${tx("Nasıl yapılır")}</button>` : "";
 }
 
 /* ---- antrenman kaydı ----
@@ -260,9 +260,9 @@ function trainLogView(entry, program, key){
   if (none) return `
     ${freeCard(entry, key)}
     <section>
-      <h2>Spor programın kapalı</h2>
-      <div class="metric-note">Program kurulu değil. Ayarlar'dan açabilirsin.</div>
-      <button class="ghost" id="plan-on" style="margin-top:12px">Spor programı kur</button>
+      <h2>${tx("Spor programın kapalı")}</h2>
+      <div class="metric-note">${tx("Program kurulu değil. Ayarlar'dan açabilirsin.")}</div>
+      <button class="ghost" id="plan-on" style="margin-top:12px">${tx("Spor programı kur")}</button>
     </section>
     ${prBoard()}`;
 
@@ -281,7 +281,7 @@ function trainLogView(entry, program, key){
 
   return `
   <section>
-    <h2>${esc(session.t)} <span class="count">${doneN}/${list.length} hareket</span></h2>
+    <h2>${esc(session.t)} <span class="count">${tx("{0}/{1} hareket", [(doneN), (list.length)])}</span></h2>
     <div class="metric-note" style="margin-bottom:13px">${esc(session.b)}</div>
     <button id="wo-start">${doneN ? "Antrenman moduna dön" : "Antrenman modunu başlat"}</button>  </section>
   ${liftsSection(entry, session, key)}
@@ -301,7 +301,7 @@ function nextSessionCard(program, key){
   }
   if (!best) return "";
   return `<section>
-    <h2>Sıradaki antrenman</h2>
+    <h2>${tx("Sıradaki antrenman")}</h2>
     <div class="item">${iconBox(best.icon)}
       <div class="item-main"><h3>${esc(best.t)}</h3>
         <p>${WD_NAMES[best.wd]}${bestGap === 1 ? " · yarın" : ` · ${bestGap} gün sonra`}</p></div></div>
@@ -416,7 +416,7 @@ function askSheet({ title, body, ok, cancel }){
     const close = v => { if (done) return; done = true; sheetOut(el); resolve(v); };
     el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ask-t">
       <div class="sheet-h"><b id="ask-t">${title}</b>
-        <button class="sheet-x" aria-label="Kapat">×</button></div>
+        <button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
       <div class="metric-note" style="margin:2px 0 4px">${body}</div>
       <div class="row" style="margin-top:16px">
         <button id="ask-ok">${ok}</button>
@@ -437,7 +437,7 @@ async function guardKcal(entry){
   if (!manual || (entry.log && entry.log.length)) return true;
   const yes = await askSheet({
     title: "Kalori nereden hesaplansın?",
-    body: `Bu güne elle <b>${entry.kcal} kcal</b> girilmişti. Beslenme günlüğüne kalem eklersen kalori bundan sonra günlükten hesaplanır ve elle girdiğin değer kaybolur.`,
+    body: `Bu güne elle <b>${tx("{0} kcal", [(entry.kcal)])}</b> girilmişti. Beslenme günlüğüne kalem eklersen kalori bundan sonra günlükten hesaplanır ve elle girdiğin değer kaybolur.`,
     ok: "Günlükten hesapla", cancel: "Vazgeç" });
   if (yes) delete entry.kcalManual;
   return yes;

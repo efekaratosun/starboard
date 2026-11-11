@@ -8,91 +8,91 @@ function settingsView(){
 
   return `
   <section>
-    <h2>Profil</h2>
-    <div class="field"><label for="s-nm">Adın</label><input id="s-nm" type="text" value="${esc(p.name || "")}" placeholder="Seni nasıl selamlayalım?" autocomplete="given-name"></div>
+    <h2>${tx("Profil")}</h2>
+    <div class="field"><label for="s-nm">${tx("Adın")}</label><input id="s-nm" type="text" value="${esc(p.name || "")}" placeholder="${tx("Seni nasıl selamlayalım?")}" autocomplete="given-name"></div>
     <div class="row">
-      <div class="field"><label for="s-h">Boy (cm)</label><input id="s-h" type="number" inputmode="decimal" value="${p.height}"></div>
-      <div class="field"><label for="s-age">Yaş</label><input id="s-age" type="number" inputmode="numeric" value="${p.age}"></div>
+      <div class="field"><label for="s-h">${tx("Boy (cm)")}</label><input id="s-h" type="number" inputmode="decimal" value="${p.height}"></div>
+      <div class="field"><label for="s-age">${tx("Yaş")}</label><input id="s-age" type="number" inputmode="numeric" value="${p.age}"></div>
     </div>
-    <div class="field"><label for="s-tw">Hedef kilo (kg)</label>
-      <input id="s-tw" type="number" inputmode="decimal" value="${p.targetWeight ?? ""}" placeholder="isteğe bağlı"></div>
-    <div class="field"><label for="s-bf">Yağ oranı (%)</label>
-      <input id="s-bf" type="number" inputmode="decimal" value="${p.bodyFat ?? ""}" placeholder="bilmiyorsan boş"></div>
-    <div class="field"><label for="s-sex">Cinsiyet</label>
-      <select id="s-sex"><option value="male"${sel(p.sex,"male")}>Erkek</option><option value="female"${sel(p.sex,"female")}>Kadın</option><option value="none"${sel(p.sex,"none")}>Belirtmek istemiyorum</option></select></div>
-    <div class="field" id="s-av-field" style="--av:${avColor(p)}"><label>Avatarın</label>${avatarPicker(avKey(p),"st")}
+    <div class="field"><label for="s-tw">${tx("Hedef kilo (kg)")}</label>
+      <input id="s-tw" type="number" inputmode="decimal" value="${p.targetWeight ?? ""}" placeholder="${tx("isteğe bağlı")}"></div>
+    <div class="field"><label for="s-bf">${tx("Yağ oranı (%)")}</label>
+      <input id="s-bf" type="number" inputmode="decimal" value="${p.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}"></div>
+    <div class="field"><label for="s-sex">${tx("Cinsiyet")}</label>
+      <select id="s-sex"><option value="male"${sel(p.sex,"male")}>${tx("Erkek")}</option><option value="female"${sel(p.sex,"female")}>${tx("Kadın")}</option><option value="none"${sel(p.sex,"none")}>${tx("Belirtmek istemiyorum")}</option></select></div>
+    <div class="field" id="s-av-field" style="--av:${avColor(p)}"><label>${tx("Avatarın")}</label>${avatarPicker(avKey(p),"st")}
       <div style="margin-top:10px">${colorPicker(avColor(p),"st")}</div></div>
-    <div class="field"><label for="s-act">Aktivite seviyesi</label>
+    <div class="field"><label for="s-act">${tx("Aktivite seviyesi")}</label>
       <select id="s-act">${Object.entries(ACTIVITY).map(([k,v])=>`<option value="${k}"${sel(p.activity,k)}>${v.label} (${v.d})</option>`).join("")}</select></div>
-    <div class="field"><label for="s-goal">Hedef</label>
+    <div class="field"><label for="s-goal">${tx("Hedef")}</label>
       <select id="s-goal">${Object.entries(GOAL).map(([k,v])=>`<option value="${k}"${sel(p.goal,k)}>${v.label}</option>`).join("")}</select></div>
-    <button id="s-save">Kaydet</button>
+    <button id="s-save">${tx("Kaydet")}</button>
   </section>
 
   <section>
-    <h2>Kişiselleştirme</h2>
-    <label>Dil</label>
+    <h2>${tx("Kişiselleştirme")}</h2>
+    <label>${tx("Dil")}</label>
     <div class="chips">${LANGS.map(([k,l]) =>
       `<button class="chip${LANG === k ? " sel" : ""}" data-slang="${k}">${l}</button>`).join("")}</div>
     <div style="height:16px"></div>
-    <label>Tema</label>
+    <label>${tx("Tema")}</label>
     <div class="chips">${THEMES.map(([k,l]) =>
       `<button class="chip${(p.theme || "auto") === k ? " sel" : ""}" data-sth="${k}">${l}</button>`).join("")}</div>
     <div style="height:16px"></div>
-    <label>Spor programı</label>
+    <label>${tx("Spor programı")}</label>
     <div class="chips">
-      <button class="chip${p.noPlan ? "" : " sel"}" data-splan="on">Açık</button>
-      <button class="chip${p.noPlan ? " sel" : ""}" data-splan="off">Kapalı</button>
+      <button class="chip${p.noPlan ? "" : " sel"}" data-splan="on">${tx("Açık")}</button>
+      <button class="chip${p.noPlan ? " sel" : ""}" data-splan="off">${tx("Kapalı")}</button>
     </div>
     <div style="height:16px"></div>
     ${p.noPlan ? "" : `
-    <label>Antrenman günlerin</label>
+    <label>${tx("Antrenman günlerin")}</label>
     <div class="chips">${[1,2,3,4,5,6,7].map(n =>
       `<button class="chip${(p.days || []).includes(n) ? " sel" : ""}" data-sday="${n}">${WD_SHORT[n]}</button>`).join("")}</div>
     <div class="metric-note" style="margin:8px 0 16px">${(p.days || []).length >= 3 ? dayNote(p.venue || "gym", p.activity, p.days) : "Gün seçilmemiş."}</div>`}
-    <label>Kaçındığın yerler</label>
+    <label>${tx("Kaçındığın yerler")}</label>
     <div class="chips">${AVOID_ZONES.map(([k,l]) =>
       `<button class="chip${(p.avoid || []).includes(k) ? " sel" : ""}" data-savoid="${k}">${l}</button>`).join("")}</div>
     <div style="height:16px"></div>
-    <label>Uyku hedefin</label>
+    <label>${tx("Uyku hedefin")}</label>
     <div class="chips">${[6,7,8,9].map(n =>
-      `<button class="chip${sleepMin() === n ? " sel" : ""}" data-ssleep="${n}">${n}-${n+2} saat</button>`).join("")}</div>
+      `<button class="chip${sleepMin() === n ? " sel" : ""}" data-ssleep="${n}">${tx("{0}-{1} saat", [(n), (n+2)])}</button>`).join("")}</div>
   </section>
 
   <section>
-    <h2>Tekrar eden görevler <span class="count">${routines.length}</span></h2>
+    <h2>${tx("Tekrar eden görevler")} <span class="count">${routines.length}</span></h2>
     ${routines.length ? routines.map(r => `<div class="rt">${iconBox("repeat")}
       <div class="m"><h3>${esc(r.title)}</h3><p>${r.days.length === 7 ? "Her gün" : r.days.map(d => WD_SHORT[d]).join(", ")}</p></div>
-      <button class="del" data-rt-del="${r.id}" aria-label="Sil">×</button></div>`).join("")
-      : `<div class="empty">Her gün tekrarlanmasını istediğin görevleri buraya ekle: ilaç, vitamin, yürüyüş.</div>`}
-    <div class="field" style="margin-top:14px"><label for="rt-title">Yeni tekrar eden görev</label>
-      <input id="rt-title" type="text" placeholder="Örn. D vitamini al"></div>
+      <button class="del" data-rt-del="${r.id}" aria-label="${tx("Sil")}">×</button></div>`).join("")
+      : `<div class="empty">${tx("Her gün tekrarlanmasını istediğin görevleri buraya ekle: ilaç, vitamin, yürüyüş.")}</div>`}
+    <div class="field" style="margin-top:14px"><label for="rt-title">${tx("Yeni tekrar eden görev")}</label>
+      <input id="rt-title" type="text" placeholder="${tx("Örn. D vitamini al")}"></div>
     <div class="chips" style="margin-bottom:12px">
       ${[1,2,3,4,5,6,7].map(d => `<button class="chip sel" data-rt-day="${d}">${WD_SHORT[d]}</button>`).join("")}
     </div>
-    <button class="ghost" id="rt-add">Ekle</button>
+    <button class="ghost" id="rt-add">${tx("Ekle")}</button>
   </section>
 
   <section>
-    <h2>Kalori düzeltmesi</h2>
-    <div class="macro"><span class="lbl">Haftalık yenilemenin biriktirdiği fark</span>
+    <h2>${tx("Kalori düzeltmesi")}</h2>
+    <div class="macro"><span class="lbl">${tx("Haftalık yenilemenin biriktirdiği fark")}</span>
       <span class="v num">${(state.adjustment||0) > 0 ? "+" : ""}${state.adjustment||0} kcal</span></div>
-    <button class="ghost" id="s-reset-adj" style="margin-top:12px">Düzeltmeyi sıfırla</button>
+    <button class="ghost" id="s-reset-adj" style="margin-top:12px">${tx("Düzeltmeyi sıfırla")}</button>
   </section>
 
   <section>
-    <h2>Yedekleme</h2>
-    <button class="ghost" id="s-export">JSON olarak indir</button>
-    <div class="field" style="margin-top:14px"><label for="s-import">Yedekten geri yükle</label>
+    <h2>${tx("Yedekleme")}</h2>
+    <button class="ghost" id="s-export">${tx("JSON olarak indir")}</button>
+    <div class="field" style="margin-top:14px"><label for="s-import">${tx("Yedekten geri yükle")}</label>
       <input id="s-import" type="file" accept="application/json,.json"></div>
-    <div class="metric-note" id="imp-status">Ayda bir yedek al.</div>
+    <div class="metric-note" id="imp-status">${tx("Ayda bir yedek al.")}</div>
   </section>
 
   <div class="brand-foot">
     <span class="brand-i">${BRAND_SVG}</span>
-    <div><b>Starboard</b><i>Sürüm ${APP_VERSION} · veriler yalnızca bu cihazda saklanır, hiçbir yere gönderilmez.</i></div>
+    <div><b>${tx("Starboard")}</b><i>${tx("Sürüm {0} · veriler yalnızca bu cihazda saklanır, hiçbir yere gönderilmez.", [(APP_VERSION)])}</i></div>
   </div>
-  <div class="foot"><button class="link" id="reset">Tüm verileri sil</button></div>`;
+  <div class="foot"><button class="link" id="reset">${tx("Tüm verileri sil")}</button></div>`;
 }
 
 function wireSettings(){

@@ -231,25 +231,25 @@ function calendarView(){
   return `
   <section>
     <div class="cal-head">
-      <button class="cal-nav" id="cal-prev" aria-label="Önceki ay"><svg class="ico" aria-hidden="true"><use href="#i-prev"/></svg></button>
+      <button class="cal-nav" id="cal-prev" aria-label="${tx("Önceki ay")}"><svg class="ico" aria-hidden="true"><use href="#i-prev"/></svg></button>
       <div class="m">${monthLabel}</div>
-      <button class="cal-nav" id="cal-next" aria-label="Sonraki ay" ${calMonth >= thisMonth ? "disabled" : ""}><svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
+      <button class="cal-nav" id="cal-next" aria-label="${tx("Sonraki ay")}" ${calMonth >= thisMonth ? "disabled" : ""}><svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
     </div>
     <div class="cal-grid">
       ${["Pt","Sa","Ça","Pe","Cu","Ct","Pz"].map(w => `<div class="cal-wd">${w}</div>`).join("")}
       ${cells.join("")}
     </div>
     <div class="cal-scale">
-      <i data-lv="e"></i><span>veri yok</span>
+      <i data-lv="e"></i><span>${tx("veri yok")}</span>
       ${[1,2,3,4,5].map(n => `<i data-lv="${n}"></i>`).join("")}
-      <span>görevler tamam</span>
-      <i data-lv="t"></i><span>bugün tamam</span>
+      <span>${tx("görevler tamam")}</span>
+      <i data-lv="t"></i><span>${tx("bugün tamam")}</span>
     </div>
     <div class="cal-key">
-      <span><i class="m-w"></i>kilo</span>
-      <span><i class="m-k"></i>kalori hedefte</span>
-      <span><i class="m-k out"></i>hedef dışında</span>
-      <span><svg class="ico cal-lift" aria-hidden="true"><use href="#i-plan"/></svg>antrenman</span>
+      <span><i class="m-w"></i>${tx("kilo")}</span>
+      <span><i class="m-k"></i>${tx("kalori hedefte")}</span>
+      <span><i class="m-k out"></i>${tx("hedef dışında")}</span>
+      <span><svg class="ico cal-lift" aria-hidden="true"><use href="#i-plan"/></svg>${tx("antrenman")}</span>
     </div>
   </section>
 
@@ -257,13 +257,13 @@ function calendarView(){
   <section>
     <h2>${monthLabel}</h2>
     <div class="cal-stats">
-      <div class="stat"><b>${pctOf(sum.full, sum.days)}</b><span>tam gün</span></div>
-      <div class="stat"><b>${pctOf(sum.empty, sum.days)}</b><span>boş gün</span></div>
-      <div class="stat"><b>${streakNow()}</b><span>güncel seri</span></div>
-      <div class="stat"><b>${sum.best}</b><span>en uzun seri</span></div>
+      <div class="stat"><b>${pctOf(sum.full, sum.days)}</b><span>${tx("tam gün")}</span></div>
+      <div class="stat"><b>${pctOf(sum.empty, sum.days)}</b><span>${tx("boş gün")}</span></div>
+      <div class="stat"><b>${streakNow()}</b><span>${tx("güncel seri")}</span></div>
+      <div class="stat"><b>${sum.best}</b><span>${tx("en uzun seri")}</span></div>
     </div>
     ${monthCompare(sum)}
-    <div class="metric-note" style="margin-top:8px">Oranlar ${monthLabel} içinde geçen ${sum.days} güne göre. Seriler her zaman bugüne kadar sayılır.</div>
+    <div class="metric-note" style="margin-top:8px">${tx("Oranlar {0} içinde geçen {1} güne göre. Seriler her zaman bugüne kadar sayılır.", [(monthLabel), (sum.days)])}</div>
   </section>
   <div id="day-detail">${dayDetail()}</div>`;
 }
@@ -312,9 +312,9 @@ function marksLabel(k, program){
    Takvimde bir güne dokununca o gün buraya açılır; düzenlemek istersen
    giriş ekranına oradan geçilir. Sekme değiştirmeden gezinmeyi sağlar. */
 function dayDetail(){
-  if (!calSel) return `<section><div class="empty">Bir güne dokun: o günün özeti burada açılır.</div></section>`;
+  if (!calSel) return `<section><div class="empty">${tx("Bir güne dokun: o günün özeti burada açılır.")}</div></section>`;
   const k = calSel, t = today();
-  if (k > t) return `<section><div class="empty">${prettyDate(k)} henüz gelmedi.</div></section>`;
+  if (k > t) return `<section><div class="empty">${tx("{0} henüz gelmedi.", [(prettyDate(k))])}</div></section>`;
 
   const d = state.days[k] || {};
   const program = currentProgram();
@@ -335,8 +335,7 @@ function dayDetail(){
       <div><b>${prettyDate(k)}</b><i>${weekdayName(k)}${k === t ? " · bugün" : ""}</i></div>
       <button class="ghost" id="dd-edit">${empty ? "Veri gir" : "Düzenle"}</button>
     </div>
-    ${empty ? `<div class="empty" style="margin-top:14px">Bu güne hiç veri girilmemiş.${
-        k === t ? " Gün bitmediği için takvimde kırmızı görünmüyor." : " Takvimde kırmızı görünmesinin sebebi bu."}</div>` : `
+    ${empty ? `<div class="empty" style="margin-top:14px">${tx("Bu güne hiç veri girilmemiş.{0}", [(k === t ? " Gün bitmediği için takvimde kırmızı görünmüyor." : " Takvimde kırmızı görünmesinin sebebi bu.")])}</div>` : `
     ${row("Kilo", typeof d.weight === "number" ? `${kg1(d.weight)} kg` : "—")}
     ${row("Kalori", typeof d.kcal === "number" ? `${d.kcal} kcal` : "—",
         typeof d.kcal === "number" && program

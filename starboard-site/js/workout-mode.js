@@ -72,7 +72,7 @@ function woChips(cur, max, unit){
   return `<div class="wo-chips" role="group" aria-label="Tamamlanan ${unit}">${Array.from({ length:max }, (_, i) =>
     `<button class="wo-chip${i < cur ? " on" : ""}" data-wc="${i+1}" aria-pressed="${i < cur}"
       aria-label="${i+1}. ${unit}">${i+1}</button>`).join("")}</div>
-    <div class="wo-note">${cur}/${max} ${unit} tamam. Kaçıncı ${unit} bittiyse ona dokun; aynısına tekrar dokunursan geri alır.</div>`;
+    <div class="wo-note">${tx("{0}/{1} {2} tamam. Kaçıncı {3} bittiyse ona dokun; aynısına tekrar dokunursan geri alır.", [(cur), (max), (unit), (unit)])}</div>`;
 }
 
 function woBody(ex, name, rec, prev){
@@ -83,7 +83,7 @@ function woBody(ex, name, rec, prev){
       const canCopy = !all && (prev || (ex.t !== "w" && tgNum(ex.tg) !== null));
       return `${canCopy ? `<button class="ghost wo-copy" id="wo-copy">${prev ? "Hepsi geçen seferki gibi" : "Hepsini hedefe göre doldur"}</button>` : ""}
         <div class="wo-sets">${Array.from({ length:n }, (_, k) => woSetRow(ex, rec, prev, k)).join("")}</div>
-        <div class="wo-note">Değerler ${prev ? "geçen antrenmandan" : "programdaki hedeften"} geliyor. Aynıysa ✓'e bas, farklıysa − / + ile düzelt ya da sayıya dokunup yaz.</div>`;
+        <div class="wo-note">${tx("Değerler {0} geliyor. Aynıysa ✓'e bas, farklıysa − / + ile düzelt ya da sayıya dokunup yaz.", [(prev ? "geçen antrenmandan" : "programdaki hedeften")])}</div>`;
     }
     case "wc": {
       const s = { kg: rec.kg ?? (prev && prev.kg) ?? null };
@@ -97,7 +97,7 @@ function woBody(ex, name, rec, prev){
     case "c": {
       const min = rec.min ?? tgNum(ex.tg), km = rec.km ?? (prev && prev.km) ?? null;
       return `<div class="wo-fields">${woField("min", min, "dakika", "")}${ex.km ? woField("km", km, "km", "") : ""}</div>
-        ${rec.min && rec.km ? `<div class="wo-note">Tempo: <b>${pace(rec.min, rec.km)}</b></div>`
+        ${rec.min && rec.km ? `<div class="wo-note">${tx("Tempo:")} <b>${pace(rec.min, rec.km)}</b></div>`
           : ""}`;
     }
     default:
@@ -112,8 +112,8 @@ function woScreen(){
   const nDone = list.filter(n => liftHas(lifts[n])).length;
 
   if (woDone || woIdx >= list.length){
-    return `<div class="wo-top"><button class="wo-x" id="wo-x" aria-label="Kapat">×</button>
-      <span class="wo-count">ÖZET</span><span style="flex:0 0 38px"></span></div>
+    return `<div class="wo-top"><button class="wo-x" id="wo-x" aria-label="${tx("Kapat")}">×</button>
+      <span class="wo-count">${tx("ÖZET")}</span><span style="flex:0 0 38px"></span></div>
     <div class="wo-main">
       <div class="wo-done"><b>${nDone === list.length ? "Antrenman tamam 💪" : "Kaydedildi"}</b>
         <span>${nDone}/${list.length} hareket kaydettin.${nDone < list.length ? " Eksikleri sonra da girebilirsin." : ""}</span></div>
@@ -127,8 +127,8 @@ function woScreen(){
       }).join("")}</section>
     </div>
     <div class="wo-nav"><div>
-      <button class="ghost wo-prev" id="wo-back">Geri</button>
-      <button id="wo-finish">Bitir</button>
+      <button class="ghost wo-prev" id="wo-back">${tx("Geri")}</button>
+      <button id="wo-finish">${tx("Bitir")}</button>
     </div></div>`;
   }
 
@@ -139,8 +139,8 @@ function woScreen(){
   const ids = guidesFor(name);
 
   return `<div class="wo-top">
-      <button class="wo-x" id="wo-x" aria-label="Antrenman modunu kapat">×</button>
-      <span class="wo-count">HAREKET ${woIdx+1} / ${list.length}</span>
+      <button class="wo-x" id="wo-x" aria-label="${tx("Antrenman modunu kapat")}">×</button>
+      <span class="wo-count">${tx("HAREKET {0} / {1}", [(woIdx+1), (list.length)])}</span>
       <span style="flex:0 0 38px"></span>
     </div>
     <div class="wo-dots" aria-hidden="true">${list.map((n, i) =>
@@ -149,11 +149,11 @@ function woScreen(){
       <div class="wo-h">${esc(ex.name)}</div>
       <div class="wo-s">${esc(ex.sub || "")}${ex.sub && LIFT_KIND[ex.t] ? " · " : ""}${LIFT_KIND[ex.t] || ""}</div>
       <div class="wo-last">${ps ? `Geçen sefer: <b>${esc(ps)}</b> · ${prettyDate(prev.k)}` : "Bu hareketi ilk kez kaydediyorsun."}
-        ${ids.length ? `<button class="how-link" data-wohow="${ids[0]}">Nasıl yapılır</button>` : ""}</div>
+        ${ids.length ? `<button class="how-link" data-wohow="${ids[0]}">${tx("Nasıl yapılır")}</button>` : ""}</div>
       ${woBody(ex, name, rec, prev)}
     </div>
     <div class="wo-nav"><div>
-      <button class="ghost wo-prev" id="wo-back"${woIdx ? "" : " disabled"}>Geri</button>
+      <button class="ghost wo-prev" id="wo-back"${woIdx ? "" : " disabled"}>${tx("Geri")}</button>
       <button id="wo-next">${woIdx === list.length - 1 ? "Bitir" : "Sonraki hareket"}</button>
     </div></div>`;
 }
@@ -335,7 +335,7 @@ function howCard(id){
       <span>${esc(g.n)}</span><svg class="ico fold-c" aria-hidden="true"><use href="#i-next"/></svg>
     </button>
     ${open ? `<div class="how-b"><ol>${g.s.map(x => `<li>${x}</li>`).join("")}</ol>
-      <div class="how-x"><b>Dikkat:</b> ${g.x}</div></div>` : ""}
+      <div class="how-x"><b>${tx("Dikkat:")}</b> ${g.x}</div></div>` : ""}
   </div>`;
 }
 
@@ -345,7 +345,7 @@ function howList(program){
   if (q.length >= 2){
     const hits = GUIDE.filter(g => matchScore(g.n, q) > 0);
     body = `<section>${hits.length ? hits.map(g => howCard(g.id)).join("")
-      : `<div class="empty">"${esc(howQuery)}" için anlatım bulunamadı.</div>`}</section>`;
+      : `<div class="empty">${tx("\"{0}\" için anlatım bulunamadı.", [(esc(howQuery))])}</div>`}</section>`;
   } else {
     const seen = new Set();
     body = program.training.days.filter(d => d.b).map(d => {
@@ -361,8 +361,8 @@ function howList(program){
 
 function howtoView(program){
   return `<section>
-    <input id="how-q" type="text" placeholder="Hareket ara: squat, barfiks, plank…" value="${esc(howQuery)}" autocomplete="off">
-    <div class="metric-note" style="margin-top:10px">Ağrı hissedersen dur.</div>
+    <input id="how-q" type="text" placeholder="${tx("Hareket ara: squat, barfiks, plank…")}" value="${esc(howQuery)}" autocomplete="off">
+    <div class="metric-note" style="margin-top:10px">${tx("Ağrı hissedersen dur.")}</div>
   </section>
   <div id="how-res">${howList(program)}</div>`;
 }

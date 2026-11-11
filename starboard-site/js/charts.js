@@ -48,7 +48,7 @@ function trendChart(series, o){
   o = o || {};
   const dec = o.dec ?? 0, unit = o.unit || "";
   if (series.length < 2)
-    return `<div class="empty">Grafik için en az iki günlük veri gerekiyor. Şu an ${series.length} kayıt var.</div>`;
+    return `<div class="empty">${tx("Grafik için en az iki günlük veri gerekiyor. Şu an {0} kayıt var.", [(series.length)])}</div>`;
 
   const W = 320, H = 168, L = 34, R = 10, T = 16, B = 24;
   const bar = o.kind === "bar";
@@ -250,7 +250,7 @@ function chartsView(){
     sleep.length >= 2 ? bandNote(`Bant senin uyku hedefin: ${sleepBand()[0]}–${sleepBand()[1]} saat.`) : "")}
   ${card("Yağ oranı", yag.length >= 2 ? `${(yag[yag.length-1].v - yag[0].v) > 0 ? "+" : ""}${fmtN(+(yag[yag.length-1].v - yag[0].v).toFixed(1))} puan` : "",
     yag.length >= 2 ? trendChart(yag, { color:"fat", dec:1, unit:"%", band:[fT[1], fT[3]], label:"yağ oranı" })
-      : `<div class="empty">Yağ oranını girdikçe grafik oluşur.${yag.length ? " Şu an 1 ölçüm var." : ""}</div>`,
+      : `<div class="empty">${tx("Yağ oranını girdikçe grafik oluşur.{0}", [(yag.length ? " Şu an 1 ölçüm var." : "")])}</div>`,
     yag.length >= 2 ? (() => {
       const v = yag[yag.length-1].v, inside = v >= fT[1] && v <= fT[3];
       return bandNote(`Fit–ortalama aralığı %${fmtN(fT[1])}–${fmtN(fT[3])} (ACE); ${inside ? "şu an bu aralıktasın" : v < fT[1] ? "şu an bu aralığın altındasın" : "şu an bu aralığın üstündesin"}. Ev tartılarının ölçümü günden güne birkaç puan oynar; haftada bir, aynı saatte ölç.`);
