@@ -1,0 +1,46 @@
+{
+  "app": "starboard",
+  "v": 1,
+  "exportedAt": "2026-11-11T15:03:20.412Z",
+  "state": {
+    "profile": {
+      "height": 178, "age": 30, "startWeight": 82, "name": "Test", "bodyFat": 20,
+      "sex": "male", "avatar": "m", "avColor": "#2F7BEA",
+      "activity": "moderate", "goal": "maintain", "noPlan": false,
+      "venue": "gym", "days": [1, 2, 4, 5], "avoid": [], "sleepMin": 7,
+      "theme": "auto", "targetWeight": 76, "programId": "gym_ul4"
+    },
+    "adjustment": 0,
+    "lastRefreshAt": null,
+    "days": {
+      "2026-11-11": {
+        "weight": 82,
+        "tasks": [
+          { "id": 1794409267131.034, "title": "Dinlenme günü — 20 dk esneme", "done": false, "suggested": true },
+          { "id": 1794409267131.8716, "title": "Kaloriyi 2493–3047 kcal arasında tut", "done": false, "suggested": true, "kind": "kcal" },
+          { "id": 1794409267131.863, "title": "131 g protein al", "done": false, "suggested": true, "kind": "protein" },
+          { "id": 1794409267131.1082, "title": "2870 ml su iç", "done": false, "suggested": true, "kind": "water" },
+          { "id": 1794409267131.354, "title": "7-9 saat uyu", "done": false, "suggested": true, "kind": "sleep" },
+          { "id": 1794409267131.6638, "title": "Sabah kilo ölçümü", "done": true, "suggested": true, "kind": "weigh" }
+        ],
+        "seeded": true
+      },
+      "2026-11-10": { "weight": 82.2, "sleep": 7.5, "water": 1700, "kcal": 2050, "tasks": [] },
+      "2026-11-09": { "weight": 82.4, "sleep": 8, "water": 1900, "kcal": 2100, "tasks": [] },
+      "2026-11-08": { "weight": 82.6, "sleep": 7, "water": 2100, "kcal": 2150, "tasks": [] },
+      "2026-11-07": { "weight": 82.8, "sleep": 7.5, "water": 2300, "kcal": 2200, "tasks": [] },
+      "2026-11-06": { "weight": 83, "sleep": 8, "water": 2500, "kcal": 2250, "tasks": [] }
+    },
+    "mealPrefs": {
+      "exclude": [], "useMine": false, "fixed": {}, "diet": "hepsi",
+      "meals": [
+        { "id": "m0mwc8y3sq", "name": "Kahvaltı", "h": 8, "cat": "kahvalti", "w": 30 },
+        { "id": "m1mwc8y3sq", "name": "Öğle", "h": 13, "cat": "ogle", "w": 35 },
+        { "id": "m2mwc8y3sq", "name": "Ara öğün", "h": 16, "cat": "ara", "w": 15 },
+        { "id": "m3mwc8y3sq", "name": "Akşam", "h": 20, "cat": "aksam", "w": 35 }
+      ]
+    },
+    "routines": [],
+    "starred": 1
+  }
+}

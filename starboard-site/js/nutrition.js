@@ -1,0 +1,1069 @@
+"use strict";
+
+/* ---------------- beslenme önerileri ---------------- */
+/* 100 g ham/pişmemiş ürün başına yaklaşık makrolar. */
+const FOODS = {
+  /* p/c/f/lif: 100 g başına gram. v: o besinin kayda değer kaynağı olduğu mikro besinler. */
+  yumurta:{n:"Yumurta", p:12.6, c:0.8, f:10, lif:0, unit:50, unitName:"adet", i:"egg", v:["A","D","B12"]},
+  yumurtabeyaz:{n:"Yumurta beyazı", a:"yumurta akı", p:11, c:0.7, f:0.2, lif:0, unit:33, unitName:"adet", i:"egg"},
+  tavuk:{n:"Tavuk göğsü", por:[{n:"porsiyon",g:150},{n:"bütün göğüs",g:220}], p:31, c:0, f:3.6, lif:0, i:"poultry", v:["B6","B12","çinko"]},
+  tavukbut:{n:"Tavuk but (derisiz)", por:[{n:"adet",g:110},{n:"porsiyon",g:150}], p:24, c:0, f:8, lif:0, i:"poultry", v:["B12","çinko"]},
+  hindi:{n:"Hindi göğsü", por:[{n:"porsiyon",g:150}], p:29, c:0, f:2, lif:0, i:"poultry", v:["B6","B12"]},
+  ton:{n:"Ton balığı (suda)", a:"konserve ton", por:[{n:"kutu",g:110},{n:"porsiyon",g:100}], p:26, c:0, f:1, lif:0, i:"fish", v:["D","B12"]},
+  somon:{n:"Somon", por:[{n:"porsiyon",g:150},{n:"fileto",g:180}], p:20, c:0, f:13, lif:0, i:"fish", v:["D","B12","omega3"]},
+  hamsi:{n:"Hamsi", por:[{n:"porsiyon",g:200},{n:"adet",g:12,s:[5,10,15]}], p:20, c:0, f:8, lif:0, i:"fish", v:["D","B12","omega3","kalsiyum"]},
+  uskumru:{n:"Uskumru", por:[{n:"porsiyon",g:180}], p:19, c:0, f:14, lif:0, i:"fish", v:["D","B12","omega3"]},
+  alabalik:{n:"Alabalık", por:[{n:"adet",g:200}], p:20, c:0, f:6, lif:0, i:"fish", v:["D","B12","omega3"]},
+  levrek:{n:"Levrek", por:[{n:"adet",g:200}], p:18, c:0, f:4, lif:0, i:"fish", v:["B12"]},
+  cipura:{n:"Çipura", por:[{n:"adet",g:200}], p:20, c:0, f:5, lif:0, i:"fish", v:["B12"]},
+  karides:{n:"Karides", por:[{n:"porsiyon",g:150},{n:"adet",g:12,s:[5,10,15]}], p:20, c:0, f:1, lif:0, i:"fish", v:["B12","çinko"]},
+  kofte:{n:"Yağsız dana kıyma", a:"kıyma", por:[{n:"porsiyon",g:125}], p:26, c:0, f:9, lif:0, i:"meat", v:["demir","B12","çinko"]},
+  biftek:{n:"Dana biftek", por:[{n:"porsiyon",g:180}], p:27, c:0, f:8, lif:0, i:"meat", v:["demir","B12","çinko"]},
+  kuzu:{n:"Kuzu eti", por:[{n:"porsiyon",g:150}], p:25, c:0, f:16, lif:0, i:"meat", v:["demir","B12","çinko"]},
+  karaciger:{n:"Dana karaciğer", por:[{n:"porsiyon",g:150}], p:20, c:4, f:5, lif:0, i:"meat", v:["A","demir","B12","folat"]},
+  doner:{n:"Et döner", a:"döner", por:[{n:"porsiyon",g:150}], p:20, c:2, f:18, lif:0.3, i:"meat", v:["demir","B12"]},
+  sucuk:{n:"Sucuk", por:[{n:"dilim",g:8,s:[3,5,10]}], p:22, c:2, f:40, lif:0, i:"meat"},
+  sosis:{n:"Sosis", por:[{n:"adet",g:50}], p:12, c:3, f:25, lif:0, i:"meat"},
+  pastirma:{n:"Pastırma", por:[{n:"dilim",g:8,s:[3,5,10]}], p:33, c:1, f:12, lif:0, i:"meat", v:["demir","B12"]},
+  kokorec:{n:"Kokoreç", por:[{n:"porsiyon",g:200}], p:18, c:5, f:20, lif:0.3, i:"meat"},
+
+  suzme:{n:"Süzme yoğurt", a:"yoğurt", por:[{n:"kase",g:150},{n:"yemek kaşığı",g:20}], p:10, c:4, f:5, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  yogurt:{n:"Yoğurt (tam yağlı)", por:[{n:"kase",g:150},{n:"yemek kaşığı",g:20}], p:3.5, c:4.7, f:3.3, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  lor:{n:"Lor peyniri", por:[{n:"yemek kaşığı",g:25},{n:"kase",g:150}], p:18, c:3, f:5, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  beyazpeynir:{n:"Beyaz peynir", a:"peynir inek", por:[{n:"dilim",g:30},{n:"kibrit kutusu",g:30}], p:17, c:2, f:22, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  kasar:{n:"Kaşar peyniri", a:"peynir", por:[{n:"dilim",g:20}], p:25, c:2, f:27, lif:0, i:"dairy", v:["kalsiyum","B12","A"]},
+  ayran:{n:"Ayran", por:{n:"bardak",g:200}, p:2, c:3, f:1.5, lif:0, i:"dairy", v:["kalsiyum"]},
+  sut:{n:"Süt (yarım yağlı)", a:"inek sütü", por:{n:"bardak",g:200}, p:3.4, c:4.8, f:1.8, lif:0, i:"dairy", v:["kalsiyum","B12","D"]},
+  kefir:{n:"Kefir", por:{n:"bardak",g:200}, p:3.3, c:4, f:1, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  whey:{n:"Protein tozu (whey)", cat:"spor", a:"protein tozu whey protein", p:80, c:8, f:6, lif:1, unit:30, unitName:"ölçek", i:"dairy"},
+  cacik:{n:"Cacık", por:{n:"kase",g:150}, p:2.5, c:4, f:2, lif:0.5, i:"dairy", v:["kalsiyum"]},
+  haydari:{n:"Haydari", por:[{n:"yemek kaşığı",g:20},{n:"kase",g:120}], p:6, c:4, f:12, lif:0.4, i:"dairy", v:["kalsiyum"]},
+
+  mercimek:{n:"Kırmızı mercimek (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:24, c:60, f:1.5, lif:11, i:"legume", v:["folat","demir","magnezyum"]},
+  yesilmercimek:{n:"Yeşil mercimek (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:25, c:60, f:1, lif:11, i:"legume", v:["folat","demir","magnezyum"]},
+  nohut:{n:"Nohut (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:19, c:61, f:6, lif:12, i:"legume", v:["folat","demir","magnezyum"]},
+  kurufasulye:{n:"Kuru fasulye (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:21, c:60, f:1.5, lif:15, i:"legume", v:["folat","demir","magnezyum"]},
+  barbunya:{n:"Barbunya (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:22, c:57, f:1.5, lif:15, i:"legume", v:["folat","demir"]},
+  bezelye:{n:"Bezelye", por:[{n:"kase",g:150},{n:"yemek kaşığı",g:15}], p:5, c:14, f:0.4, lif:5, i:"legume", v:["C","folat","K"]},
+  tofu:{n:"Tofu", por:[{n:"porsiyon",g:100},{n:"dilim",g:40}], p:17, c:2, f:9, lif:1, i:"legume", v:["kalsiyum","demir"]},
+  soya:{n:"Soya kıyması (kuru)", por:[{n:"porsiyon",g:40},{n:"su bardağı",g:90}], p:52, c:30, f:1, lif:6, i:"legume", v:["demir","folat"]},
+  humus:{n:"Humus", por:[{n:"yemek kaşığı",g:20},{n:"kase",g:100}], p:8, c:14, f:10, lif:6, i:"legume", v:["folat","demir"]},
+  seitan:{n:"Seitan", por:[{n:"porsiyon",g:100}], p:25, c:14, f:2, lif:1, i:"legume", v:["demir"]},
+  tempeh:{n:"Tempeh", por:[{n:"porsiyon",g:100}], p:19, c:9, f:11, lif:6, i:"legume", v:["demir","magnezyum"]},
+  vegankiyma:{n:"Bitkisel kıyma", por:[{n:"porsiyon",g:100}], p:20, c:6, f:10, lif:4, i:"legume", v:["demir","B12"]},
+  soyafasulye:{n:"Soya fasulyesi (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:36, c:30, f:20, lif:9, i:"legume", v:["demir","folat","magnezyum"]},
+  borulce:{n:"Börülce (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:24, c:60, f:2, lif:11, i:"legume", v:["folat","demir"]},
+  masfasulye:{n:"Maş fasulyesi (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:24, c:63, f:1, lif:16, i:"legume", v:["folat","demir","magnezyum"]},
+  bakla:{n:"Bakla (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:26, c:58, f:1.5, lif:25, i:"legume", v:["folat","demir","magnezyum"]},
+  siyahfasulye:{n:"Siyah fasulye (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:180}], p:22, c:62, f:1.4, lif:15, i:"legume", v:["folat","demir","magnezyum"]},
+  nohutunu:{n:"Nohut unu", por:[{n:"yemek kaşığı",g:10},{n:"su bardağı",g:110}], p:22, c:58, f:6, lif:11, i:"legume", v:["folat","demir"]},
+  bezelyeproteini:{n:"Bezelye proteini tozu", a:"protein tozu vegan", p:80, c:5, f:7, lif:3, unit:30, unitName:"ölçek", i:"legume", cat:"spor", v:["demir"]},
+  edamame:{n:"Edamame", por:[{n:"kase",g:100}], p:11, c:9, f:5, lif:5, i:"legume", v:["folat","demir","magnezyum"]},
+
+  cottage:{n:"Süzme peynir (cottage)", a:"süzme peynir", por:[{n:"yemek kaşığı",g:25},{n:"kase",g:150}], p:11, c:3.4, f:4.3, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  skyr:{n:"Yüksek proteinli yoğurt", a:"proteinli yoğurt protein", por:{n:"kase",g:150}, p:10, c:4, f:0.2, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  ricotta:{n:"Ricotta", por:[{n:"yemek kaşığı",g:25}], p:11, c:3, f:13, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+
+  susam:{n:"Susam", por:[{n:"yemek kaşığı",g:9}], p:17, c:23, f:50, lif:12, i:"nuts", v:["kalsiyum","demir","magnezyum"]},
+  ketentohumu:{n:"Keten tohumu", por:[{n:"yemek kaşığı",g:10}], p:18, c:29, f:42, lif:27, i:"nuts", v:["omega3","magnezyum"]},
+  pekan:{n:"Pekan cevizi", por:[{n:"avuç",g:25}], p:9, c:14, f:72, lif:10, i:"nuts", v:["E","magnezyum"]},
+  hindistancevizi:{n:"Hindistan cevizi (kuru)", por:[{n:"yemek kaşığı",g:6}], p:7, c:24, f:65, lif:16, i:"nuts", v:["magnezyum","demir"]},
+  hindistancevizyagi:{n:"Hindistan cevizi yağı", por:[{n:"yemek kaşığı",g:13},{n:"tatlı kaşığı",g:5}], p:0, c:0, f:100, lif:0, i:"oil"},
+
+  karabugday:{n:"Karabuğday (kuru)", por:[{n:"porsiyon",g:60}], p:13, c:72, f:3.4, lif:10, i:"grain", v:["magnezyum","demir"]},
+  amarant:{n:"Amarant (kuru)", por:[{n:"porsiyon",g:60}], p:14, c:65, f:7, lif:7, i:"grain", v:["magnezyum","demir","kalsiyum"]},
+  polenta:{n:"Mısır irmiği (polenta)", por:[{n:"porsiyon",g:50}], p:8, c:79, f:3.5, lif:7, i:"grain", v:["magnezyum"]},
+  pirincunu:{n:"Pirinç unu", por:[{n:"yemek kaşığı",g:10}], p:6, c:80, f:1.4, lif:2.4, i:"grain"},
+  glutensizmakarna:{n:"Glutensiz makarna (kuru)", por:[{n:"porsiyon",g:80}], p:7, c:78, f:1.5, lif:3, i:"grain"},
+  kestane:{n:"Kestane", por:[{n:"adet",g:10,s:[3,5,10]}], p:2, c:45, f:2, lif:8, i:"grain", v:["C","potasyum"]},
+  soyasutu:{n:"Soya sütü (zenginleştirilmiş)", por:{n:"bardak",g:200}, p:3.3, c:1.8, f:1.8, lif:0.5, i:"legume", cat:"kahvaltilik", v:["kalsiyum","B12"]},
+  bitkiselyogurt:{n:"Bitkisel yoğurt (soya)", por:[{n:"kase",g:150}], p:4, c:5, f:3, lif:0.8, i:"legume", cat:"kahvaltilik", v:["kalsiyum"]},
+  piyaz:{n:"Piyaz", por:[{n:"porsiyon",g:200}], p:6, c:16, f:7, lif:5, i:"legume", v:["folat","C"]},
+
+  yulaf:{n:"Yulaf ezmesi", por:[{n:"porsiyon",g:40},{n:"yemek kaşığı",g:10}], p:13, c:60, f:7, lif:10, i:"grain", v:["magnezyum","demir"]},
+  pirinc:{n:"Pirinç (kuru)", por:[{n:"porsiyon",g:75},{n:"su bardağı",g:180}], p:7, c:78, f:0.6, lif:1.3, i:"grain"},
+  pilav:{n:"Pilav (pişmiş)", a:"pirinç pilavı", por:[{n:"porsiyon",g:180},{n:"yemek kaşığı",g:25}], p:2.7, c:28, f:1.5, lif:0.6, i:"grain"},
+  bulgur:{n:"Bulgur (kuru)", por:[{n:"porsiyon",g:75},{n:"su bardağı",g:170}], p:12, c:76, f:1.5, lif:12, i:"grain", v:["magnezyum"]},
+  bulgurpilav:{n:"Bulgur pilavı (pişmiş)", a:"bulgur", por:[{n:"porsiyon",g:180},{n:"yemek kaşığı",g:25}], p:3, c:19, f:2, lif:4, i:"grain"},
+  makarna:{n:"Tam buğday makarna (kuru)", por:[{n:"porsiyon",g:80}], p:13, c:71, f:2.5, lif:8, i:"grain", v:["magnezyum"]},
+  makarnapis:{n:"Makarna (pişmiş)", a:"makarna", por:[{n:"porsiyon",g:200}], p:5, c:25, f:1, lif:2.5, i:"grain"},
+  kinoa:{n:"Kinoa (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:170}], p:14, c:64, f:6, lif:7, i:"grain", v:["magnezyum","demir","folat"]},
+  kuskus:{n:"Kuskus (kuru)", por:[{n:"porsiyon",g:60},{n:"su bardağı",g:175}], p:13, c:72, f:1, lif:5, i:"grain"},
+  misir:{n:"Mısır", por:{n:"koçan",g:90}, p:3.3, c:19, f:1.2, lif:2.7, i:"grain"},
+  granola:{n:"Granola", por:[{n:"kase",g:50},{n:"yemek kaşığı",g:10}], p:10, c:60, f:18, lif:7, i:"grain", v:["magnezyum"]},
+  gevrek:{n:"Mısır gevreği", por:[{n:"kase",g:30}], p:7, c:84, f:1, lif:3, i:"grain"},
+  ekmek:{n:"Tam buğday ekmeği", por:[{n:"dilim",g:30},{n:"çeyrek ekmek",g:60}], p:9, c:43, f:3, lif:7, i:"bread", v:["magnezyum"]},
+  beyazekmek:{n:"Beyaz ekmek", por:[{n:"dilim",g:25},{n:"çeyrek ekmek",g:60}], p:8, c:49, f:1.5, lif:2.7, i:"bread"},
+  simit:{n:"Simit", p:9, c:55, f:4, lif:3, unit:100, unitName:"adet", i:"bread"},
+  yufka:{n:"Lavaş / yufka", por:{n:"adet",g:60}, p:8, c:53, f:2, lif:2, i:"bread"},
+  tost:{n:"Kaşarlı tost", a:"peynirli tost", por:{n:"adet",g:150}, p:13, c:30, f:13, lif:2, i:"bread", v:["kalsiyum"]},
+  pogaca:{n:"Poğaça", por:{n:"adet",g:70}, p:7, c:38, f:16, lif:1.8, i:"bread"},
+  acma:{n:"Açma", por:{n:"adet",g:80}, p:8, c:45, f:10, lif:2, i:"bread"},
+
+  patates:{n:"Patates", por:[{n:"adet",g:150},{n:"porsiyon",g:200}], p:2, c:17, f:0.1, lif:2.2, i:"potato", v:["C","potasyum"]},
+  haslanmispatates:{n:"Haşlanmış patates", a:"patates", por:{n:"adet",g:150}, p:2, c:20, f:0.1, lif:1.8, i:"potato", v:["C","potasyum"]},
+  patateskizartma:{n:"Patates kızartması", a:"patates", por:[{n:"porsiyon",g:120}], p:3, c:36, f:15, lif:3.8, i:"potato", v:["potasyum"]},
+  tatlipatates:{n:"Tatlı patates", por:{n:"adet",g:130}, p:1.6, c:20, f:0.1, lif:3, i:"potato", v:["A","C","potasyum"]},
+  kumpir:{n:"Kumpir", por:[{n:"adet",g:450}], p:4, c:25, f:9, lif:2.5, i:"potato", v:["potasyum"]},
+
+  domates:{n:"Domates", por:[{n:"adet",g:120},{n:"dilim",g:20}], p:0.9, c:3.9, f:0.2, lif:1.2, i:"veg", v:["C","A","potasyum"]},
+  salatalik:{n:"Salatalık", por:{n:"adet",g:150}, p:0.7, c:3.6, f:0.1, lif:0.5, i:"veg", v:["K"]},
+  marul:{n:"Marul", por:{n:"yaprak",g:12}, p:1.4, c:2.9, f:0.2, lif:1.3, i:"veg", v:["A","K","folat"]},
+  brokoli:{n:"Brokoli", por:[{n:"porsiyon",g:150},{n:"kase",g:90}], p:2.8, c:7, f:0.4, lif:2.6, i:"veg", v:["C","K","folat"]},
+  ispanak:{n:"Ispanak", por:[{n:"kase",g:30},{n:"demet",g:250}], p:2.9, c:3.6, f:0.4, lif:2.2, i:"veg", v:["A","K","folat","demir","magnezyum"]},
+  ispanakyemek:{n:"Ispanak yemeği", por:[{n:"porsiyon",g:200}], p:3, c:6, f:5, lif:3, i:"veg", v:["A","K","folat","demir"]},
+  kirmizibiber:{n:"Kırmızı biber", por:{n:"adet",g:120}, p:1, c:6, f:0.3, lif:2.1, i:"veg", v:["C","A"]},
+  kabak:{n:"Kabak", por:{n:"adet",g:200}, p:1.2, c:3.1, f:0.3, lif:1, i:"veg", v:["C"]},
+  patlican:{n:"Patlıcan", por:{n:"adet",g:250}, p:1, c:6, f:0.2, lif:3, i:"veg", v:["potasyum"]},
+  havuc:{n:"Havuç", por:{n:"adet",g:80}, p:0.9, c:10, f:0.2, lif:2.8, i:"veg", v:["A","K"]},
+  sogan:{n:"Soğan", por:{n:"adet",g:110}, p:1.1, c:9, f:0.1, lif:1.7, i:"veg", v:["C"]},
+  pirasa:{n:"Pırasa yemeği", por:[{n:"porsiyon",g:200}], p:1.5, c:8, f:5, lif:3, i:"veg", v:["A","K","C"]},
+  turlu:{n:"Sebze türlü", por:[{n:"porsiyon",g:200}], p:2, c:8, f:5, lif:2.5, i:"veg", v:["A","C","potasyum"]},
+  un:{n:"Buğday unu", por:[{n:"yemek kaşığı",g:10},{n:"su bardağı",g:110}], p:10, c:76, f:1, lif:2.7, i:"grain"},
+  sehriye:{n:"Şehriye", por:[{n:"yemek kaşığı",g:12}], p:11, c:73, f:1.5, lif:3, i:"grain"},
+  seker:{n:"Toz şeker", por:[{n:"küp",g:3,s:[1,2,3]},{n:"tatlı kaşığı",g:5}], p:0, c:100, f:0, lif:0, i:"fruit"},
+  pirasacig:{n:"Pırasa (çiğ)", por:[{n:"adet",g:200}], p:1.5, c:14, f:0.3, lif:1.8, i:"veg", v:["A","K","C"]},
+  tazefasulye:{n:"Taze fasulye (çiğ)", por:[{n:"porsiyon",g:150}], p:1.8, c:7, f:0.2, lif:3.4, i:"veg", v:["K","C","folat"]},
+  zeytinyaglifasulye:{n:"Zeytinyağlı taze fasulye", por:[{n:"porsiyon",g:200}], p:2, c:7, f:6, lif:3, i:"veg", v:["K","C"]},
+  cobansalata:{n:"Çoban salata", por:[{n:"kase",g:150}], p:1, c:4, f:3, lif:1.5, i:"veg", v:["C","A"]},
+  ezme:{n:"Acılı ezme", por:[{n:"yemek kaşığı",g:20}], p:1.5, c:7, f:5, lif:2, i:"veg", v:["C","A"]},
+  mucver:{n:"Mücver", por:[{n:"adet",g:60}], p:5, c:12, f:10, lif:2, i:"veg", v:["C","A"]},
+
+  elma:{n:"Elma", por:{n:"adet",g:180}, p:0.3, c:14, f:0.2, lif:2.4, i:"fruit", v:["C"]},
+  portakal:{n:"Portakal", por:{n:"adet",g:140}, p:0.9, c:12, f:0.1, lif:2.4, i:"fruit", v:["C","folat"]},
+  cilek:{n:"Çilek", por:[{n:"kase",g:150},{n:"adet",g:15}], p:0.7, c:8, f:0.3, lif:2, i:"fruit", v:["C","folat"]},
+  uzum:{n:"Üzüm", por:[{n:"kase",g:150}], p:0.7, c:18, f:0.2, lif:0.9, i:"fruit", v:["K"]},
+  karpuz:{n:"Karpuz", por:[{n:"dilim",g:300}], p:0.6, c:8, f:0.2, lif:0.4, i:"fruit", v:["A","C"]},
+  muz:{n:"Muz", por:[{n:"adet",g:120},{n:"yarım",g:60}], p:1.1, c:23, f:0.3, lif:2.6, i:"fruit", v:["B6","potasyum"]},
+  kurukayisi:{n:"Kuru kayısı", por:{n:"adet",g:8}, p:3.4, c:63, f:0.5, lif:7, i:"fruit", v:["A","demir","potasyum"]},
+  hurma:{n:"Hurma", por:{n:"adet",g:8}, p:2.5, c:75, f:0.4, lif:8, i:"fruit", v:["potasyum","magnezyum"]},
+  incir:{n:"İncir", por:{n:"adet",g:50}, p:0.8, c:19, f:0.3, lif:2.9, i:"fruit", v:["potasyum"]},
+  yabanmersini:{n:"Yaban mersini", por:[{n:"avuç",g:40},{n:"kase",g:145}], p:0.7, c:14, f:0.3, lif:2.4, i:"fruit", v:["C","K"]},
+  bal:{n:"Bal", por:[{n:"yemek kaşığı",g:21},{n:"tatlı kaşığı",g:7}], p:0.3, c:82, f:0, lif:0.2, i:"fruit"},
+  recel:{n:"Reçel", por:{n:"yemek kaşığı",g:20}, p:0.5, c:65, f:0, lif:1, i:"fruit"},
+  meyvesuyu:{n:"Meyve suyu", por:{n:"bardak",g:200}, p:0.5, c:11, f:0.1, lif:0.2, i:"fruit", v:["C"]},
+  kola:{n:"Kola", por:{n:"bardak",g:200}, p:0, c:10.6, f:0, lif:0, i:"fruit"},
+  salgam:{n:"Şalgam suyu", por:{n:"bardak",g:200}, p:0.5, c:3, f:0, lif:0.5, i:"fruit", v:["C"]},
+  boza:{n:"Boza", por:{n:"bardak",g:200}, p:1.5, c:18, f:0.1, lif:1, i:"fruit"},
+  salep:{n:"Salep", por:{n:"bardak",g:200}, p:3, c:22, f:3, lif:0.3, i:"dairy", v:["kalsiyum"]},
+  turkkahvesi:{n:"Türk kahvesi (sade)", por:{n:"fincan",g:60}, p:0.2, c:0.6, f:0, lif:0, i:"fruit"},
+  cay:{n:"Çay (şekersiz)", por:{n:"bardak",g:200}, p:0, c:0.3, f:0, lif:0, i:"fruit"},
+
+  zeytinyagi:{n:"Zeytinyağı", por:[{n:"yemek kaşığı",g:13},{n:"tatlı kaşığı",g:5}], p:0, c:0, f:100, lif:0, i:"oil", v:["E","K"]},
+  aycicekyagi:{n:"Ayçiçek yağı", por:{n:"yemek kaşığı",g:13}, p:0, c:0, f:100, lif:0, i:"oil", v:["E"]},
+  tereyagi:{n:"Tereyağı", por:[{n:"yemek kaşığı",g:14},{n:"tatlı kaşığı",g:5}], p:0.9, c:0.1, f:81, lif:0, i:"oil", v:["A"]},
+  zeytin:{n:"Zeytin", por:{n:"adet",g:4}, p:1, c:6, f:15, lif:3.3, i:"oil", v:["E","demir"]},
+  badem:{n:"Badem", por:{n:"avuç",g:25}, p:21, c:22, f:50, lif:12.5, i:"nuts", v:["E","magnezyum","kalsiyum"]},
+  findik:{n:"Fındık", por:{n:"avuç",g:25}, p:15, c:17, f:61, lif:10, i:"nuts", v:["E","magnezyum"]},
+  ceviz:{n:"Ceviz", por:{n:"avuç",g:25}, p:15, c:14, f:65, lif:6.7, i:"nuts", v:["omega3","magnezyum"]},
+  antepfistigi:{n:"Antep fıstığı", por:{n:"avuç",g:25}, p:20, c:28, f:45, lif:10, i:"nuts", v:["B6","E","potasyum"]},
+  kaju:{n:"Kaju", por:{n:"avuç",g:25}, p:18, c:30, f:44, lif:3.3, i:"nuts", v:["magnezyum","demir","çinko"]},
+  tahin:{n:"Tahin", por:[{n:"yemek kaşığı",g:15},{n:"tatlı kaşığı",g:5}], p:17, c:21, f:54, lif:9, i:"nuts", v:["kalsiyum","demir","magnezyum"]},
+  fistikezmesi:{n:"Yer fıstığı ezmesi", por:[{n:"yemek kaşığı",g:16},{n:"tatlı kaşığı",g:6}], p:25, c:20, f:50, lif:6, i:"nuts", v:["E","magnezyum"]},
+  avokado:{n:"Avokado", por:{n:"adet",g:150}, p:2, c:9, f:15, lif:6.7, i:"avocado", v:["E","K","folat","potasyum"]},
+
+  /* --- Türk mutfağı --- */
+  menemen:{n:"Menemen", por:[{n:"porsiyon",g:250}], p:6, c:5, f:9, lif:1.2, i:"egg", v:["A","C","B12"]},
+  sucuklu:{n:"Sucuklu yumurta", a:"yumurta", por:[{n:"porsiyon",g:150}], p:13, c:2, f:25, lif:0, i:"egg", v:["B12","demir"]},
+  karniyarik:{n:"Karnıyarık", por:[{n:"adet",g:250}], p:5, c:8, f:9, lif:3, i:"veg", v:["demir","potasyum"]},
+  imambayildi:{n:"İmambayıldı", por:[{n:"adet",g:200}], p:1.5, c:9, f:8, lif:3.5, i:"veg", v:["E","potasyum"]},
+  hunkarbegendi:{n:"Hünkarbeğendi", por:[{n:"porsiyon",g:300}], p:9, c:9, f:12, lif:2, i:"meat", v:["demir","kalsiyum","B12"]},
+  kurufasulyeyemek:{n:"Etli kuru fasulye", por:[{n:"porsiyon",g:250}], p:7, c:14, f:5, lif:5, i:"legume", v:["demir","folat","B12"]},
+  etlinohut:{n:"Etli nohut", por:[{n:"porsiyon",g:250}], p:7, c:15, f:5, lif:5, i:"legume", v:["demir","folat","B12"]},
+  manti:{n:"Mantı", por:[{n:"porsiyon",g:250}], p:8, c:30, f:9, lif:2, i:"grain", v:["kalsiyum","B12"]},
+  iclikofte:{n:"İçli köfte", por:[{n:"adet",g:60}], p:8, c:25, f:12, lif:3, i:"grain", v:["demir","B12"]},
+  cigkofte:{n:"Çiğ köfte", por:[{n:"adet",g:20,s:[5,10,15]},{n:"dürüm",g:200}], p:6, c:38, f:3, lif:6, i:"grain", v:["C","magnezyum"]},
+  kisir:{n:"Kısır", por:[{n:"porsiyon",g:150}], p:4, c:32, f:6, lif:5, i:"grain", v:["C","magnezyum"]},
+  yapraksarma:{n:"Yaprak sarma", por:[{n:"adet",g:25,s:[3,6,10]}], p:3, c:22, f:8, lif:3, i:"grain", v:["K","E"]},
+  lahanasarma:{n:"Lahana sarma", por:[{n:"adet",g:40,s:[2,4,6]}], p:3, c:16, f:6, lif:3, i:"grain", v:["C","K"]},
+  biberdolma:{n:"Biber dolma", por:[{n:"adet",g:150}], p:4, c:16, f:7, lif:3, i:"grain", v:["C","A"]},
+  suborek:{n:"Su böreği", por:{n:"dilim",g:120}, p:9, c:25, f:12, lif:1.5, i:"bread", v:["kalsiyum"]},
+  sigaraboregi:{n:"Sigara böreği", por:{n:"adet",g:35}, p:8, c:28, f:16, lif:1.5, i:"bread", v:["kalsiyum"]},
+  kiymaliborek:{n:"Kıymalı börek", por:{n:"dilim",g:120}, p:9, c:26, f:14, lif:1.5, i:"bread", v:["demir","B12"]},
+  gozleme:{n:"Gözleme", por:{n:"adet",g:180}, p:8, c:30, f:10, lif:2, i:"bread", v:["kalsiyum"]},
+  kiymalipide:{n:"Kıymalı pide", por:{n:"adet",g:250}, p:12, c:30, f:9, lif:2, i:"grain", v:["demir","B12"]},
+  kasarlipide:{n:"Kaşarlı pide", por:{n:"adet",g:250}, p:13, c:29, f:12, lif:2, i:"grain", v:["kalsiyum","B12"]},
+  lahmacun:{n:"Lahmacun", p:10, c:33, f:8, lif:3, unit:130, unitName:"adet", i:"grain", v:["demir","C"]},
+  pizza:{n:"Pizza", por:{n:"dilim",g:110}, p:11, c:28, f:10, lif:2, i:"grain", v:["kalsiyum"]},
+  iskender:{n:"İskender", por:[{n:"porsiyon",g:350}], p:15, c:20, f:17, lif:1.5, i:"meat", v:["demir","B12","kalsiyum"]},
+  adanakebap:{n:"Adana kebap", por:[{n:"şiş",g:100},{n:"porsiyon",g:200}], p:18, c:2, f:22, lif:0.5, i:"meat", v:["demir","B12","çinko"]},
+  tavuksis:{n:"Tavuk şiş", por:[{n:"şiş",g:100},{n:"porsiyon",g:200}], p:26, c:1, f:8, lif:0.3, i:"poultry", v:["B6","B12"]},
+  izgarakofte:{n:"Izgara köfte", por:[{n:"porsiyon",g:150},{n:"adet",g:30}], p:18, c:4, f:16, lif:0.6, i:"meat", v:["demir","B12","çinko"]},
+  tavuksote:{n:"Tavuk sote", a:"tavuk", por:[{n:"porsiyon",g:250}], p:20, c:5, f:7, lif:1, i:"poultry", v:["B6","C","B12"]},
+  tavukdurum:{n:"Tavuk dürüm", por:[{n:"adet",g:300}], p:14, c:25, f:10, lif:2, i:"bread", v:["B6","C"]},
+  balikekmek:{n:"Balık ekmek", por:[{n:"adet",g:300}], p:14, c:22, f:8, lif:1.5, i:"fish", v:["D","B12","omega3"]},
+  midyedolma:{n:"Midye dolma", por:[{n:"adet",g:20,s:[5,10,15]}], p:5, c:25, f:5, lif:1, i:"fish", v:["demir","B12"]},
+  mercimekcorba:{n:"Mercimek çorbası", por:{n:"kase",g:250}, p:4, c:12, f:2, lif:2, i:"legume", v:["folat","demir"]},
+  ezogelin:{n:"Ezogelin çorbası", por:{n:"kase",g:250}, p:3, c:13, f:3, lif:2, i:"legume", v:["folat","demir"]},
+  yaylacorba:{n:"Yayla çorbası", por:{n:"kase",g:250}, p:3, c:10, f:3, lif:0.6, i:"dairy", v:["kalsiyum"]},
+  tarhana:{n:"Tarhana çorbası", por:{n:"kase",g:250}, p:4, c:14, f:3, lif:2, i:"grain", v:["kalsiyum","B12"]},
+
+  sutlac:{n:"Sütlaç", por:{n:"kase",g:150}, p:4, c:20, f:3, lif:0.3, i:"dairy", v:["kalsiyum"]},
+  kazandibi:{n:"Kazandibi", por:{n:"porsiyon",g:120}, p:4, c:25, f:4, lif:0.2, i:"dairy", v:["kalsiyum"]},
+  dondurma:{n:"Dondurma", por:{n:"top",g:60}, p:3.5, c:24, f:11, lif:0.7, i:"dairy", v:["kalsiyum"]},
+  baklava:{n:"Baklava", por:{n:"dilim",g:45}, p:6, c:40, f:20, lif:1.5, i:"grain", v:["E"]},
+  kunefe:{n:"Künefe", por:{n:"porsiyon",g:150}, p:8, c:35, f:17, lif:1, i:"grain", v:["kalsiyum"]},
+  kadayif:{n:"Tel kadayıf tatlısı", por:{n:"porsiyon",g:120}, p:5, c:40, f:15, lif:1.5, i:"grain"},
+  revani:{n:"Revani", por:{n:"dilim",g:80}, p:4, c:45, f:10, lif:0.8, i:"grain"},
+  asure:{n:"Aşure", por:{n:"kase",g:200}, p:3, c:30, f:3, lif:2, i:"grain", v:["demir"]},
+  tahinhelva:{n:"Tahin helvası", por:[{n:"dilim",g:40}], p:12, c:45, f:30, lif:3, i:"nuts", v:["kalsiyum","demir","magnezyum"]},
+  lokum:{n:"Lokum", por:{n:"adet",g:12}, p:0.3, c:80, f:0.2, lif:0.5, i:"fruit"},
+  bitter:{n:"Bitter çikolata", por:{n:"kare",g:10}, p:7.8, c:46, f:43, lif:11, i:"nuts", v:["demir","magnezyum"]},
+  sutlucikolata:{n:"Sütlü çikolata", por:{n:"kare",g:10}, p:7.6, c:59, f:30, lif:3.4, i:"nuts", v:["kalsiyum"]},
+  /* --- şarküteri --- */
+  salam:{n:"Dana salam", por:[{n:"dilim",g:10}], p:18, c:2, f:22, lif:0, i:"meat", cat:"sarkuteri", v:["B12","demir"]},
+  hindisalam:{n:"Hindi salam", a:"salam", por:[{n:"dilim",g:10}], p:15, c:3, f:10, lif:0, i:"meat", cat:"sarkuteri", v:["B12"]},
+  jambon:{n:"Hindi jambon", a:"jambon hindi", por:[{n:"dilim",g:12}], p:18, c:2, f:5, lif:0, i:"meat", cat:"sarkuteri", v:["B12"]},
+  fumehindi:{n:"Füme hindi göğsü", a:"hindi füme", por:[{n:"dilim",g:12}], p:22, c:1, f:3, lif:0, i:"poultry", cat:"sarkuteri", v:["B12","B6"]},
+  kavurma:{n:"Kavurma", por:[{n:"yemek kaşığı",g:20},{n:"porsiyon",g:100}], p:26, c:0, f:22, lif:0, i:"meat", cat:"sarkuteri", v:["demir","B12","çinko"]},
+  danarosto:{n:"Dana rosto (dilimli)", por:[{n:"dilim",g:15}], p:25, c:1, f:8, lif:0, i:"meat", cat:"sarkuteri", v:["demir","B12"]},
+  sardalya:{n:"Sardalya konservesi", por:[{n:"kutu",g:90},{n:"adet",g:20}], p:25, c:0, f:11, lif:0, i:"fish", cat:"sarkuteri", v:["D","B12","omega3","kalsiyum"]},
+  fumesomon:{n:"Füme somon", por:[{n:"dilim",g:15}], p:18, c:0, f:4.3, lif:0, i:"fish", cat:"sarkuteri", v:["D","B12","omega3"]},
+  tulum:{n:"Tulum peyniri", por:[{n:"dilim",g:30}], p:25, c:1, f:28, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum","B12"]},
+  orgupeyniri:{n:"Örgü peyniri", por:[{n:"parça",g:25}], p:22, c:2, f:22, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum","B12"]},
+  dilpeyniri:{n:"Dil peyniri", por:[{n:"dilim",g:25}], p:20, c:2, f:22, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"]},
+  mihalic:{n:"Mihaliç peyniri", por:[{n:"dilim",g:20}], p:26, c:1, f:26, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum","B12"]},
+  hellim:{n:"Hellim", por:[{n:"dilim",g:30}], p:22, c:2, f:25, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"]},
+  labne:{n:"Labne", por:[{n:"yemek kaşığı",g:20}], p:6, c:4, f:24, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum","A"]},
+  krempeynir:{n:"Krem peynir", por:[{n:"yemek kaşığı",g:15}], p:6, c:4, f:30, lif:0, i:"dairy", cat:"sarkuteri", v:["A"]},
+
+  /* --- kahvaltılık --- */
+  yesilzeytin:{n:"Yeşil zeytin", por:{n:"adet",g:4}, p:1.5, c:4, f:15, lif:3.3, i:"oil", cat:"kahvaltilik", v:["E"]},
+  pekmez:{n:"Üzüm pekmezi", por:{n:"yemek kaşığı",g:21}, p:0.5, c:70, f:0, lif:0.5, i:"fruit", cat:"kahvaltilik", v:["demir","potasyum"]},
+  kaymak:{n:"Kaymak", por:[{n:"yemek kaşığı",g:15}], p:3, c:2, f:60, lif:0, i:"dairy", cat:"kahvaltilik", v:["A"]},
+  omlet:{n:"Omlet", por:[{n:"porsiyon",g:130}], p:11, c:1, f:12, lif:0, i:"egg", cat:"kahvaltilik", v:["A","D","B12"]},
+  musli:{n:"Müsli", por:[{n:"kase",g:50}], p:11, c:60, f:10, lif:8, i:"grain", cat:"kahvaltilik", v:["magnezyum","demir"]},
+  findikezmesi:{n:"Fındık ezmesi", por:[{n:"yemek kaşığı",g:16},{n:"tatlı kaşığı",g:6}], p:13, c:17, f:62, lif:7, i:"nuts", cat:"kahvaltilik", v:["E","magnezyum"]},
+  kakaolukrem:{n:"Kakaolu fındık kreması", por:{n:"yemek kaşığı",g:18}, p:6, c:57, f:31, lif:3, i:"nuts", cat:"kahvaltilik"},
+  cavdarekmek:{n:"Çavdar ekmeği", por:{n:"dilim",g:30}, p:9, c:48, f:3, lif:8, i:"bread", cat:"kahvaltilik", v:["magnezyum"]},
+  kepekliekmek:{n:"Kepekli ekmek", por:{n:"dilim",g:30}, p:10, c:41, f:3.5, lif:9, i:"bread", cat:"kahvaltilik", v:["magnezyum"]},
+
+  /* --- ara öğün --- */
+  proteinbar:{n:"Protein bar", a:"bar", por:[{n:"adet",g:60}], p:30, c:40, f:14, lif:5, i:"nuts", cat:"spor"},
+  meyveliyogurt:{n:"Meyveli yoğurt", por:{n:"kase",g:150}, p:4, c:12, f:2, lif:0.3, i:"dairy", cat:"ara", v:["kalsiyum"]},
+  kuruuzum:{n:"Kuru üzüm", por:{n:"avuç",g:25}, p:3, c:79, f:0.5, lif:3.7, i:"fruit", cat:"ara", v:["demir","potasyum"]},
+  kuruincir:{n:"Kuru incir", por:{n:"adet",g:20}, p:3.3, c:64, f:0.9, lif:9.8, i:"fruit", cat:"ara", v:["kalsiyum","demir","magnezyum"]},
+  leblebi:{n:"Leblebi", por:[{n:"avuç",g:30}], p:21, c:58, f:6, lif:11, i:"legume", cat:"ara", v:["demir","folat","magnezyum"]},
+  aycekirdegi:{n:"Ay çekirdeği", por:{n:"avuç",g:25}, p:21, c:20, f:51, lif:8.6, i:"nuts", cat:"ara", v:["E","magnezyum"]},
+  kabakcekirdegi:{n:"Kabak çekirdeği", por:{n:"avuç",g:25}, p:30, c:11, f:49, lif:6, i:"nuts", cat:"ara", v:["magnezyum","demir","çinko"]},
+  yerfistigi:{n:"Yer fıstığı", por:{n:"avuç",g:25}, p:26, c:16, f:49, lif:8.5, i:"nuts", cat:"ara", v:["E","magnezyum","folat"]},
+  kraker:{n:"Tuzlu kraker", por:{n:"adet",g:6}, p:9, c:70, f:12, lif:3, i:"grain", cat:"ara"},
+  biskuvi:{n:"Bisküvi", por:{n:"adet",g:12}, p:7, c:70, f:18, lif:2, i:"grain", cat:"ara"},
+  yulafbar:{n:"Yulaf barı", por:[{n:"adet",g:40}], p:8, c:62, f:16, lif:6, i:"grain", cat:"spor", v:["magnezyum"]},
+  galeta:{n:"Pirinç patlağı / galeta", a:"pirinç patlağı rice cake", por:[{n:"adet",g:9,s:[1,2,3]}], p:8, c:80, f:3, lif:4, i:"grain", cat:"ara"},
+  cips:{n:"Patates cipsi", por:[{n:"küçük paket",g:40},{n:"avuç",g:20}], p:6, c:53, f:33, lif:4, i:"potato", cat:"ara", v:["potasyum"]},
+  patlamismisir:{n:"Patlamış mısır", por:[{n:"kase",g:30},{n:"paket",g:90}], p:11, c:57, f:12, lif:13, i:"grain", cat:"ara", v:["magnezyum"]},
+
+  /* --- ana yemek --- */
+  karnabaharyemek:{n:"Karnabahar yemeği", por:[{n:"porsiyon",g:200}], p:2, c:6, f:4, lif:2.5, i:"veg", cat:"yemek", v:["C","K"]},
+  bamya:{n:"Bamya yemeği", por:[{n:"porsiyon",g:200}], p:2, c:7, f:5, lif:3, i:"veg", cat:"yemek", v:["C","K","folat"]},
+  enginar:{n:"Zeytinyağlı enginar", por:[{n:"porsiyon",g:200}], p:3, c:11, f:5, lif:5, i:"veg", cat:"yemek", v:["folat","K","C"]},
+  kabakdolma:{n:"Kabak dolma", por:[{n:"adet",g:150}], p:3, c:12, f:6, lif:2, i:"grain", cat:"yemek", v:["C"]},
+  etlilahana:{n:"Etli lahana", por:[{n:"porsiyon",g:300}], p:4, c:9, f:6, lif:2.5, i:"veg", cat:"yemek", v:["C","demir"]},
+  firintavuk:{n:"Fırın tavuk", por:[{n:"porsiyon",g:200}], p:25, c:2, f:12, lif:0.2, i:"poultry", cat:"yemek", v:["B6","B12"]},
+  sinitzel:{n:"Tavuk şinitzel", por:[{n:"adet",g:150}], p:20, c:18, f:14, lif:1, i:"poultry", cat:"yemek", v:["B6"]},
+  izgarabalik:{n:"Izgara balık", por:[{n:"porsiyon",g:200}], p:22, c:0, f:6, lif:0, i:"fish", cat:"yemek", v:["D","B12","omega3"]},
+  soslumakarna:{n:"Soslu makarna", por:[{n:"porsiyon",g:250}], p:6, c:26, f:6, lif:2, i:"grain", cat:"yemek", v:["C"]},
+  musakka:{n:"Musakka", por:[{n:"porsiyon",g:250}], p:6, c:8, f:9, lif:2.5, i:"veg", cat:"yemek", v:["demir","B12"]},
+  guvec:{n:"Etli güveç", por:[{n:"porsiyon",g:300}], p:8, c:8, f:7, lif:2, i:"meat", cat:"yemek", v:["demir","B12"]},
+  tantuni:{n:"Tantuni", por:[{n:"dürüm",g:250},{n:"porsiyon",g:200}], p:15, c:22, f:12, lif:2, i:"bread", cat:"yemek", v:["demir","B12"]},
+  cigborek:{n:"Çiğ börek", por:[{n:"adet",g:120}], p:10, c:28, f:16, lif:1.5, i:"bread", cat:"yemek"},
+  domatescorba:{n:"Domates çorbası", por:{n:"kase",g:250}, p:2, c:8, f:3, lif:1, i:"veg", cat:"yemek", v:["C","A"]},
+  tavukcorba:{n:"Tavuk suyu çorbası", por:{n:"kase",g:250}, p:3, c:6, f:2, lif:0.5, i:"poultry", cat:"yemek"},
+  iskembe:{n:"İşkembe çorbası", por:{n:"kase",g:250}, p:6, c:4, f:6, lif:0.2, i:"meat", cat:"yemek", v:["B12"]},
+
+  /* --- meyve --- */
+  armut:{n:"Armut", por:{n:"adet",g:170}, p:0.4, c:15, f:0.1, lif:3.1, i:"fruit", v:["C","K"]},
+  seftali:{n:"Şeftali", por:{n:"adet",g:150}, p:0.9, c:10, f:0.3, lif:1.5, i:"fruit", v:["C","A"]},
+  kayisi:{n:"Kayısı", por:{n:"adet",g:35}, p:1.4, c:11, f:0.4, lif:2, i:"fruit", v:["A","C"]},
+  erik:{n:"Erik", por:{n:"adet",g:65}, p:0.7, c:11, f:0.3, lif:1.4, i:"fruit", v:["C","K"]},
+  kiraz:{n:"Kiraz", por:[{n:"kase",g:140},{n:"adet",g:8,s:[5,10,15]}], p:1, c:16, f:0.3, lif:2.1, i:"fruit", v:["C","potasyum"]},
+  visne:{n:"Vişne", por:[{n:"kase",g:150}], p:1, c:12, f:0.3, lif:1.6, i:"fruit", v:["C","A"]},
+  kavun:{n:"Kavun", por:[{n:"dilim",g:200}], p:0.8, c:8, f:0.2, lif:0.9, i:"fruit", v:["A","C"]},
+  ananas:{n:"Ananas", por:[{n:"dilim",g:80}], p:0.5, c:13, f:0.1, lif:1.4, i:"fruit", v:["C"]},
+  kivi:{n:"Kivi", por:{n:"adet",g:75}, p:1.1, c:15, f:0.5, lif:3, i:"fruit", v:["C","K"]},
+  mandalina:{n:"Mandalina", por:{n:"adet",g:90}, p:0.8, c:13, f:0.3, lif:1.8, i:"fruit", v:["C","A"]},
+  greyfurt:{n:"Greyfurt", por:{n:"adet",g:250}, p:0.8, c:8, f:0.1, lif:1.1, i:"fruit", v:["C","A"]},
+  nar:{n:"Nar", por:{n:"adet",g:280}, p:1.7, c:19, f:1.2, lif:4, i:"fruit", v:["C","K","folat"]},
+  ahududu:{n:"Ahududu", por:[{n:"avuç",g:40}], p:1.2, c:12, f:0.7, lif:6.5, i:"fruit", v:["C","K"]},
+  bogurtlen:{n:"Böğürtlen", por:[{n:"avuç",g:40}], p:1.4, c:10, f:0.5, lif:5.3, i:"fruit", v:["C","K"]},
+  trabzonhurmasi:{n:"Trabzon hurması", por:{n:"adet",g:170}, p:0.6, c:18, f:0.2, lif:3.6, i:"fruit", v:["A","C"]},
+  limon:{n:"Limon", por:{n:"adet",g:60}, p:1.1, c:9, f:0.3, lif:2.8, i:"fruit", v:["C"]},
+
+  /* --- sebze --- */
+  karnabahar:{n:"Karnabahar", por:[{n:"porsiyon",g:150}], p:1.9, c:5, f:0.3, lif:2, i:"veg", v:["C","K","folat"]},
+  lahana:{n:"Beyaz lahana", por:[{n:"kase",g:90}], p:1.3, c:6, f:0.1, lif:2.5, i:"veg", v:["C","K"]},
+  kirmizilahana:{n:"Kırmızı lahana", por:[{n:"kase",g:90}], p:1.4, c:7, f:0.2, lif:2.1, i:"veg", v:["C","K"]},
+  brukselahanasi:{n:"Brüksel lahanası", por:[{n:"porsiyon",g:100},{n:"adet",g:15}], p:3.4, c:9, f:0.3, lif:3.8, i:"veg", v:["C","K","folat"]},
+  karalahana:{n:"Kara lahana", por:[{n:"porsiyon",g:150}], p:3.3, c:6, f:0.7, lif:2, i:"veg", v:["A","C","K"]},
+  kereviz:{n:"Kereviz", por:[{n:"porsiyon",g:100}], p:0.7, c:3, f:0.2, lif:1.6, i:"veg", v:["K"]},
+  turp:{n:"Turp", por:{n:"adet",g:15}, p:0.7, c:3.4, f:0.1, lif:1.6, i:"veg", v:["C"]},
+  roka:{n:"Roka", por:{n:"demet",g:40}, p:2.6, c:3.7, f:0.7, lif:1.6, i:"veg", v:["A","K","folat"]},
+  semizotu:{n:"Semizotu", por:[{n:"demet",g:100}], p:1.3, c:3.4, f:0.4, lif:0.9, i:"veg", v:["A","C","omega3"]},
+  maydanoz:{n:"Maydanoz", por:{n:"demet",g:30}, p:3, c:6, f:0.8, lif:3.3, i:"veg", v:["A","C","K","demir"]},
+  dereotu:{n:"Dereotu", por:{n:"demet",g:25}, p:3.5, c:7, f:1.1, lif:2.1, i:"veg", v:["A","C"]},
+  mantar:{n:"Mantar", por:{n:"adet",g:18}, p:3.1, c:3.3, f:0.3, lif:1, i:"veg", v:["D","B6"]},
+  sarimsak:{n:"Sarımsak", por:{n:"diş",g:4}, p:6, c:33, f:0.5, lif:2.1, i:"veg", v:["C","B6"]},
+  yesilbiber:{n:"Yeşil biber", por:{n:"adet",g:30}, p:0.9, c:4.6, f:0.2, lif:1.7, i:"veg", v:["C"]},
+  balkabagi:{n:"Bal kabağı", por:[{n:"porsiyon",g:200}], p:1, c:7, f:0.1, lif:0.5, i:"veg", v:["A","C"]},
+  pancar:{n:"Pancar", por:{n:"adet",g:85}, p:1.6, c:10, f:0.2, lif:2.8, i:"veg", v:["folat","potasyum"]},
+  kuskonmaz:{n:"Kuşkonmaz", por:[{n:"porsiyon",g:100},{n:"adet",g:20}], p:2.2, c:3.9, f:0.1, lif:2.1, i:"veg", v:["K","folat","A"]},
+  /* --- spor besinleri ve protein tozları --- */
+  wheyizolat:{n:"Whey izolat", a:"protein tozu izole", p:90, c:2, f:1, lif:0, unit:30, unitName:"ölçek", i:"dairy", cat:"spor"},
+  kazein:{n:"Kazein protein", a:"protein tozu gece", p:78, c:8, f:2, lif:0, unit:33, unitName:"ölçek", i:"dairy", cat:"spor"},
+  gainer:{n:"Kilo aldırıcı (gainer)", a:"mass gainer protein tozu", p:22, c:68, f:4, lif:1, unit:50, unitName:"ölçek", i:"dairy", cat:"spor"},
+  bitkiselprotein:{n:"Bitkisel protein tozu", a:"vegan protein tozu", p:75, c:8, f:6, lif:4, unit:33, unitName:"ölçek", i:"legume", cat:"spor"},
+  kolajen:{n:"Kolajen tozu", a:"collagen", p:90, c:0, f:0, lif:0, unit:10, unitName:"ölçek", i:"dairy", cat:"spor"},
+  kreatin:{n:"Kreatin", a:"creatine monohidrat", p:0, c:0, f:0, lif:0, unit:5, unitName:"ölçek", i:"dairy", cat:"spor"},
+  maltodekstrin:{n:"Maltodekstrin", a:"karbonhidrat tozu", p:0, c:95, f:0, lif:0, unit:30, unitName:"ölçek", i:"grain", cat:"spor"},
+  proteinpancake:{n:"Protein pancake karışımı", a:"pankek", p:30, c:45, f:5, lif:4, unit:50, unitName:"ölçek", i:"grain", cat:"spor"},
+  proteinpuding:{n:"Protein puding", p:10, c:6, f:1.5, lif:0, i:"dairy", cat:"spor", v:["kalsiyum"], por:[{n:"kase",g:200}]},
+  proteinsut:{n:"Proteinli süt", a:"protein içecek", p:6, c:4.5, f:1.5, lif:0, i:"dairy", cat:"spor", v:["kalsiyum","B12"], por:[{n:"şişe",g:500},{n:"bardak",g:200}]},
+  proteinshake:{n:"Hazır protein içeceği", a:"protein shake", p:7, c:3, f:1, lif:0, i:"dairy", cat:"spor", por:[{n:"şişe",g:330}]},
+  proteingofret:{n:"Proteinli gofret", p:25, c:45, f:20, lif:3, i:"grain", cat:"spor", por:[{n:"adet",g:40}]},
+  proteinkurabiye:{n:"Protein kurabiyesi", a:"cookie", p:20, c:45, f:18, lif:5, i:"grain", cat:"spor", por:[{n:"adet",g:75}]},
+  proteincips:{n:"Protein cipsi", p:40, c:30, f:15, lif:3, i:"potato", cat:"spor", por:[{n:"paket",g:30}]},
+  enerjijeli:{n:"Enerji jeli", a:"jel", p:0, c:62, f:0, lif:0, i:"fruit", cat:"spor", por:[{n:"adet",g:40}]},
+  izotonik:{n:"İzotonik içecek", a:"sporcu içeceği", p:0, c:6, f:0, lif:0, i:"fruit", cat:"spor", por:[{n:"şişe",g:500}]},
+  enerjibar:{n:"Enerji barı (hurmalı)", p:6, c:62, f:16, lif:7, i:"fruit", cat:"spor", por:[{n:"adet",g:45}]},
+
+  /* --- şarküteri --- */
+  tavukfume:{n:"Tavuk füme", a:"füme tavuk göğsü", p:20, c:2, f:4, lif:0, i:"poultry", cat:"sarkuteri", v:["B6","B12"], por:[{n:"dilim",g:12}]},
+  danafume:{n:"Dana füme", a:"füme dana", p:25, c:1, f:6, lif:0, i:"meat", cat:"sarkuteri", v:["demir","B12"], por:[{n:"dilim",g:12}]},
+  hindisucuk:{n:"Hindi sucuk", p:18, c:3, f:20, lif:0, i:"poultry", cat:"sarkuteri", por:[{n:"dilim",g:8}]},
+  tavuksosis:{n:"Tavuk sosis", p:13, c:4, f:14, lif:0, i:"poultry", cat:"sarkuteri", por:[{n:"adet",g:45}]},
+  hindisosis:{n:"Hindi sosis", p:13, c:3, f:12, lif:0, i:"poultry", cat:"sarkuteri", por:[{n:"adet",g:45}]},
+  macarsalam:{n:"Macar salam", p:20, c:1, f:35, lif:0, i:"meat", cat:"sarkuteri", por:[{n:"dilim",g:8}]},
+  tavuksalam:{n:"Tavuk salam", p:14, c:3, f:12, lif:0, i:"poultry", cat:"sarkuteri", por:[{n:"dilim",g:10}]},
+  danajambon:{n:"Dana jambon", p:19, c:1, f:4, lif:0, i:"meat", cat:"sarkuteri", v:["B12"], por:[{n:"dilim",g:12}]},
+  tonyagli:{n:"Ton balığı (yağlı)", a:"konserve", p:25, c:0, f:8, lif:0, i:"fish", cat:"sarkuteri", v:["D","B12"], por:[{n:"kutu",g:110}]},
+  uskumrukonserve:{n:"Uskumru konservesi", p:21, c:0, f:12, lif:0, i:"fish", cat:"sarkuteri", v:["D","B12","omega3"], por:[{n:"kutu",g:110}]},
+  ezine:{n:"Ezine peyniri", a:"beyaz peynir", p:16, c:1.5, f:23, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum","B12"], por:[{n:"dilim",g:30}]},
+  lightbeyaz:{n:"Light beyaz peynir", a:"yağsız az yağlı", p:20, c:2, f:10, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"dilim",g:30}]},
+  kecipeyniri:{n:"Keçi peyniri", p:21, c:1, f:26, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"dilim",g:30}]},
+  cokelek:{n:"Çökelek", p:15, c:3, f:4, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"yemek kaşığı",g:20},{n:"kase",g:120}]},
+  gravyer:{n:"Gravyer", p:29, c:0.4, f:32, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum","B12"], por:[{n:"dilim",g:20}]},
+  parmesan:{n:"Parmesan", p:35, c:3, f:28, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"yemek kaşığı",g:5}]},
+  cheddar:{n:"Cheddar", p:25, c:1.3, f:33, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"dilim",g:20}]},
+  mozzarella:{n:"Mozzarella", p:22, c:2, f:17, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"dilim",g:25},{n:"top",g:125}]},
+  lightkasar:{n:"Light kaşar", p:28, c:2, f:15, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"dilim",g:20}]},
+  kuflupeynir:{n:"Küflü peynir (rokfor)", p:21, c:2, f:30, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:"dilim",g:20}]},
+  kozbiber:{n:"Közlenmiş biber (kavanoz)", p:1, c:5, f:3, lif:1.5, i:"veg", cat:"sarkuteri", v:["C","A"], por:[{n:"adet",g:40}]},
+  kurudomates:{n:"Kurutulmuş domates (yağda)", p:5, c:20, f:14, lif:5, i:"veg", cat:"sarkuteri", v:["C"], por:[{n:"adet",g:8,s:[2,5,10]}]},
+  zeytinezmesi:{n:"Zeytin ezmesi", p:1.5, c:4, f:25, lif:3, i:"oil", cat:"sarkuteri", v:["E"], por:[{n:"yemek kaşığı",g:15}]}
+};
+
+/* Mikro besin adları ve nereden alınacağına dair kısa öneriler. */
+const NUTRIENTS = {
+  A:{n:"A vitamini", src:"havuç, ıspanak, tatlı patates"},
+  C:{n:"C vitamini", src:"kırmızı biber, portakal, brokoli"},
+  D:{n:"D vitamini", src:"somon, uskumru, yumurta"},
+  E:{n:"E vitamini", src:"badem, zeytinyağı, avokado"},
+  K:{n:"K vitamini", src:"ıspanak, brokoli, marul"},
+  B6:{n:"B6", src:"tavuk, muz, antep fıstığı"},
+  B12:{n:"B12", src:"et, balık, süt ürünleri; bitkisel beslenmede zenginleştirilmiş ürün veya takviye"},
+  folat:{n:"Folat", src:"mercimek, ıspanak, nohut"},
+  demir:{n:"Demir", src:"kırmızı et, mercimek, ıspanak"},
+  kalsiyum:{n:"Kalsiyum", src:"yoğurt, peynir, tahin"},
+  magnezyum:{n:"Magnezyum", src:"yulaf, badem, bulgur"},
+  potasyum:{n:"Potasyum", src:"muz, patates, avokado"},
+  çinko:{n:"Çinko", src:"kırmızı et, kaju, karides"},
+  omega3:{n:"Omega-3", src:"somon, ceviz, uskumru"}
+};
+
+/* Tarifler malzemelerini besin veritabanından alıyor; makrolar oradan hesaplanıyor. */
+const RECIPES = [
+  { n:"Mercimek çorbası", srv:4, t:"35 dk", i:"legume",
+    ing:[["mercimek",200],["sogan",80],["havuc",80],["patates",100],["zeytinyagi",20]],
+    steps:["Soğanı zeytinyağında pembeleşene kadar kavur.","Doğranmış havuç ve patatesi ekle, 3-4 dakika çevir.","Yıkanmış mercimeği ve 1.5 litre suyu ilave et.","Mercimekler dağılana kadar 25 dakika kaynat.","Blenderdan geçir, tuz ve kimyonla tatlandır."] },
+
+  { n:"Fırında somon", srv:2, t:"25 dk", i:"fish",
+    ing:[["somon",300],["zeytinyagi",15],["patates",300],["kirmizibiber",100]],
+    steps:["Fırını 200°C'ye ısıt.","Patates ve biberi dilimleyip zeytinyağıyla harmanla, tepsiye yay.","15 dakika pişir, sonra somonu üzerine yerleştir.","10-12 dakika daha pişir; somon çatalla ayrıldığında hazır.","Limon ve karabiberle servis et."] },
+
+  { n:"Tavuk sote", srv:3, t:"25 dk", i:"poultry",
+    ing:[["tavuk",450],["kirmizibiber",150],["sogan",100],["domates",150],["zeytinyagi",20]],
+    steps:["Tavuğu kuşbaşı doğra, yüksek ateşte mühürle.","Soğan ve biberi ekleyip 5 dakika kavur.","Rendelenmiş domatesi ilave et.","Suyunu çekene kadar 10 dakika pişir.","Bulgur pilavıyla servis et."] },
+
+  { n:"Etli kuru fasulye", srv:4, t:"1 sa 15 dk", i:"legume",
+    ing:[["kurufasulye",300],["kofte",200],["sogan",100],["zeytinyagi",25],["domates",100]],
+    steps:["Fasulyeyi bir gece önceden ıslat.","Eti soğanla birlikte kavur.","Domates salçası ve fasulyeyi ekle, üzerini geçecek kadar su koy.","Kısık ateşte 1 saat pişir.","Pilav ve turşuyla servis et."] },
+
+  { n:"Karnıyarık", srv:4, t:"50 dk", i:"veg",
+    ing:[["patlican",600],["kofte",250],["sogan",120],["domates",150],["kirmizibiber",80],["zeytinyagi",30]],
+    steps:["Patlıcanları alacalı soyup tuzlu suda beklet.","Zeytinyağında kızart veya fırında 180°C'de 20 dakika pişir.","Kıymayı soğan ve biberle kavur, domatesi ekle.","Patlıcanları yarıp içlerini harçla doldur.","Üzerine biber ve domates koyup 25 dakika fırınla."] },
+
+  { n:"Mücver", srv:3, t:"30 dk", i:"veg",
+    ing:[["kabak",500],["yumurta",100],["ekmek",40],["beyazpeynir",60],["zeytinyagi",30]],
+    steps:["Kabakları rendeleyip suyunu iyice sık.","Yumurta, ufalanmış peynir ve galeta ununu ekle.","Dereotu ve karabiberle karıştır.","Tavada zeytinyağıyla iki tarafını pişir.","Cacıkla servis et."] },
+
+  { n:"Yulaflı protein kasesi", srv:1, t:"10 dk", i:"grain",
+    ing:[["yulaf",60],["suzme",150],["muz",100],["ceviz",15],["bal",10]],
+    steps:["Yulafı sıcak sütle veya suyla ıslatıp 5 dakika beklet.","Süzme yoğurdu üzerine ekle.","Muzu dilimle, cevizi kır.","Bal gezdirip tarçın serp."] },
+
+  { n:"Kısır", srv:4, t:"30 dk", i:"grain",
+    ing:[["bulgur",250],["domates",150],["sogan",80],["zeytinyagi",40],["marul",100]],
+    steps:["İnce bulguru sıcak suyla ıslatıp 15 dakika demlendir.","Salça, zeytinyağı ve nar ekşisini ekleyip yoğur.","Doğranmış soğan, domates ve maydanozu karıştır.","Marul yaprağıyla servis et."] },
+
+  { n:"Izgara köfte", srv:4, t:"30 dk", i:"meat",
+    ing:[["kofte",500],["sogan",80],["ekmek",50],["yumurta",50]],
+    steps:["Kıymayı rendelenmiş soğan, galeta unu ve yumurtayla yoğur.","Kimyon, karabiber ve tuz ekle, 30 dakika buzdolabında dinlendir.","Köfte şekli ver.","Izgarada her yüzü 4-5 dakika pişir.","Közlenmiş biber ve ezmeyle servis et."] },
+
+  { n:"Menemen", srv:2, t:"15 dk", i:"egg",
+    ing:[["yumurta",150],["domates",200],["kirmizibiber",120],["zeytinyagi",20]],
+    steps:["Biberleri zeytinyağında yumuşayana kadar kavur.","Kabuğu soyulmuş domatesi ekle, suyunu çekene kadar pişir.","Yumurtaları kırıp hafifçe karıştır.","Kıvamı alınca ocaktan al, taze ekmekle servis et."] },
+
+  { n:"Zeytinyağlı taze fasulye", srv:4, t:"45 dk", i:"veg",
+    ing:[["tazefasulye",600],["sogan",100],["domates",120],["zeytinyagi",50]],
+    steps:["Fasulyelerin kılçığını al, ikiye böl.","Soğanı zeytinyağında kavur, domatesi ekle.","Fasulyeleri ve az miktarda suyu ilave et.","Kısık ateşte 35 dakika pişir, soğuk servis et."] },
+
+  { n:"Tavuklu bulgur pilavı", srv:4, t:"35 dk", i:"grain",
+    ing:[["bulgur",300],["tavuk",400],["sogan",100],["domates",100],["zeytinyagi",25]],
+    steps:["Tavuğu kuşbaşı doğrayıp kavur, kenara al.","Soğanı zeytinyağında kavur, salça ve domatesi ekle.","Bulguru ilave edip 2 dakika çevir.","1.5 ölçü sıcak su ekle, tavuğu geri koy.","Suyunu çekene kadar 15 dakika kısık ateşte pişir, 10 dakika demlendir."] },
+
+  { n:"İmambayıldı", srv:4, t:"55 dk", i:"veg",
+    ing:[["patlican",700],["sogan",150],["domates",150],["kirmizibiber",60],["zeytinyagi",60]],
+    steps:["Patlıcanları alacalı soy, tuzlu suda 15 dakika beklet.","Zeytinyağında her tarafını hafifçe kızart, tepsiye al.","Soğanı ince doğrayıp bol zeytinyağında pembeleştir, sarımsak ekle.","Domates ve biberi ilave edip 10 dakika pişir.","Patlıcanları yarıp içlerini doldur, üzerine sıcak su gezdir.","180°C fırında 25 dakika pişir, ılıyınca servis et."] },
+
+  { n:"Etli nohut", srv:4, t:"1 sa 10 dk", i:"legume",
+    ing:[["nohut",250],["kofte",200],["sogan",100],["domates",120],["zeytinyagi",25]],
+    steps:["Nohutu bir gece önceden ıslat.","Kuşbaşı eti kavur, soğanı ekleyip pembeleştir.","Salça ve domatesi ilave et, 2 dakika çevir.","Nohut ve sıcak suyu ekle, kısık ateşte 50 dakika pişir.","Pilavla servis et."] },
+
+  { n:"Ezogelin çorbası", srv:4, t:"35 dk", i:"legume",
+    ing:[["mercimek",150],["pirinc",50],["bulgur",50],["sogan",80],["tereyagi",25]],
+    steps:["Soğanı tereyağında kavur, salçayı ekle.","Mercimek, pirinç ve bulguru ilave et.","1.5 litre su ekleyip 25 dakika kaynat.","Nane, pul biber ve tuzla tatlandır.","İstersen blenderdan kısa geçir."] },
+
+  { n:"Yayla çorbası", srv:4, t:"30 dk", i:"dairy",
+    ing:[["yogurt",400],["pirinc",80],["yumurta",50],["tereyagi",25]],
+    steps:["Pirinci 1 litre suda yumuşayana kadar haşla.","Yoğurt, yumurta ve bir kaşık unu çırp.","Terbiyeyi sıcak sudan azar azar ekleyerek ılıştır.","Çorbaya yavaşça karıştırarak ekle, kaynamaya bırakma.","Tereyağında naneyi yakıp üzerine gezdir."] },
+
+  { n:"Tavuk şiş", srv:4, t:"30 dk + marine", i:"poultry",
+    ing:[["tavuk",600],["yogurt",100],["kirmizibiber",150],["zeytinyagi",25]],
+    steps:["Tavuğu kuşbaşı doğra.","Yoğurt, zeytinyağı, salça ve baharatlarla harmanla.","En az 2 saat, tercihen bir gece buzdolabında beklet.","Şişlere biberle dönüşümlü diz.","Izgarada her yüzü 4-5 dakika pişir."] },
+
+  { n:"Zeytinyağlı yaprak sarma", srv:6, t:"1 sa 15 dk", i:"grain",
+    ing:[["pirinc",250],["sogan",150],["domates",80],["zeytinyagi",70]],
+    steps:["Soğanı zeytinyağında kavur, pirinci ekleyip çevir.","Domates, kuş üzümü, dolmalık fıstık ve baharatları karıştır.","İç harcı ılıt.","Salamura asma yapraklarını tek tek sar.","Tencereye diz, üzerini geçecek kadar su ve limon ekle.","Kısık ateşte 45 dakika pişir, soğuk servis et."] },
+
+  { n:"Etli biber dolma", srv:4, t:"1 sa", i:"grain",
+    ing:[["kirmizibiber",600],["pirinc",150],["kofte",150],["sogan",80],["zeytinyagi",30]],
+    steps:["Biberlerin çekirdeğini temizle.","Kıyma, pirinç, soğan, salça ve baharatları yoğur.","Harcı biberlere üçte iki oranında doldur.","Tencereye diz, yarısına kadar su ekle.","Kısık ateşte 45 dakika pişir."] },
+
+  { n:"Mercimek köftesi", srv:6, t:"40 dk", i:"legume",
+    ing:[["mercimek",200],["bulgur",150],["sogan",100],["zeytinyagi",40]],
+    steps:["Mercimeği iki katı suda yumuşayana kadar haşla.","Sıcakken ince bulguru ekle, kapağı kapatıp 15 dakika demlendir.","Soğanı zeytinyağında kavur, salçayla birlikte harca ekle.","Maydanoz, yeşil soğan ve baharatları karıştır.","Avuçta şekillendirip marul yaprağıyla servis et."] },
+
+  { n:"Fırında tavuk but ve sebze", srv:4, t:"1 sa", i:"poultry",
+    ing:[["tavukbut",700],["patates",400],["havuc",200],["zeytinyagi",30]],
+    steps:["Butları zeytinyağı, salça, sarımsak ve baharatla ovala.","Patates ve havucu iri doğra, tepsiye yay.","Butları üzerine yerleştir, yarım bardak su ekle.","Folyoyla kapatıp 190°C'de 40 dakika pişir.","Folyoyu açıp 15 dakika daha kızart."] },
+
+  { n:"Sebze türlüsü", srv:4, t:"50 dk", i:"veg",
+    ing:[["patlican",250],["kabak",250],["kirmizibiber",150],["patates",200],["domates",150],["zeytinyagi",40]],
+    steps:["Bütün sebzeleri iri kuşbaşı doğra.","Soğanı zeytinyağında kavur, salçayı ekle.","Sert sebzelerden başlayarak sırayla ilave et.","Domatesi ve bir bardak sıcak suyu ekle.","Kapağı kapalı, kısık ateşte 35 dakika pişir."] },
+
+  { n:"Zeytinyağlı pırasa", srv:4, t:"40 dk", i:"veg",
+    ing:[["pirasacig",700],["havuc",150],["pirinc",50],["zeytinyagi",50]],
+    steps:["Pırasaları halka, havucu yarım ay doğra.","Zeytinyağında 5 dakika soteleyip pirinci ekle.","Bir çay bardağı su, tuz ve şeker ilave et.","Kısık ateşte 25 dakika pişir.","Limon sıkarak ılık veya soğuk servis et."] },
+
+  { n:"Yumurtalı ıspanak", srv:3, t:"25 dk", i:"veg",
+    ing:[["ispanak",500],["yumurta",150],["sogan",80],["zeytinyagi",25]],
+    steps:["Ispanağı yıka, iri doğra.","Soğanı zeytinyağında kavur.","Ispanağı ekleyip suyunu salıp çekene kadar pişir.","Ortalarını açıp yumurtaları kır.","Kapağı kapatıp yumurtalar tutana kadar pişir, süzme yoğurtla servis et."] },
+
+  { n:"Barbunya pilaki", srv:4, t:"1 sa 20 dk", i:"legume",
+    ing:[["barbunya",250],["sogan",100],["havuc",150],["patates",150],["zeytinyagi",50]],
+    steps:["Barbunyayı bir gece ıslatıp haşla.","Soğan, havuç ve patatesi zeytinyağında kavur.","Domates salçası ve şeker ekle.","Barbunyayı ve haşlama suyunu ilave et.","Kısık ateşte 40 dakika pişir, soğuk servis et."] },
+
+  { n:"Hamsi tava", srv:4, t:"25 dk", i:"fish",
+    ing:[["hamsi",700],["un",80],["zeytinyagi",40]],
+    steps:["Hamsileri temizle, tuzlu suda 10 dakika beklet.","Süzüp mısır unu veya buğday ununa bula.","Kızgın yağda her yüzü 2-3 dakika kızart.","Kağıt havluda fazla yağını al.","Roka, limon ve soğan salatasıyla servis et."] },
+
+  { n:"Balık buğulama", srv:4, t:"40 dk", i:"fish",
+    ing:[["levrek",700],["domates",200],["kirmizibiber",100],["sogan",100],["zeytinyagi",30]],
+    steps:["Balıkları temizleyip tuz ve limonla ovala.","Sebzeleri halka doğra, tepsiye yay.","Balıkları üzerine yerleştir.","Zeytinyağı, defne yaprağı ve yarım bardak su ekle.","190°C fırında 25-30 dakika pişir."] },
+
+  { n:"Etli patates yemeği", srv:4, t:"50 dk", i:"meat",
+    ing:[["patates",600],["kofte",250],["sogan",100],["domates",100],["zeytinyagi",25]],
+    steps:["Kuşbaşı eti mühürle, soğanı ekleyip kavur.","Salça ve domatesi ilave et.","İri doğranmış patatesleri ekle, üzerini geçecek kadar sıcak su koy.","Kısık ateşte 35 dakika pişir."] },
+
+  { n:"Nohut salatası", srv:4, t:"15 dk", i:"legume",
+    ing:[["nohut",200],["domates",150],["sogan",80],["marul",100],["zeytinyagi",40]],
+    steps:["Haşlanmış nohutu süz.","Domates, soğan ve maydanozu ince doğra.","Zeytinyağı, limon ve nar ekşisiyle sos hazırla.","Karıştırıp 15 dakika buzdolabında beklet."] },
+
+  { n:"Piyaz", srv:4, t:"20 dk", i:"legume",
+    ing:[["kurufasulye",250],["yumurta",100],["domates",120],["sogan",100],["zeytinyagi",40]],
+    steps:["Fasulyeyi haşlayıp süz, ılıt.","Yumurtaları haşlayıp dilimle.","Soğanı ince doğrayıp sumakla ovala.","Tahin, limon ve zeytinyağını çırparak sos yap.","Hepsini tabakta birleştir."] },
+
+  { n:"Cacık", srv:4, t:"10 dk", i:"dairy",
+    ing:[["yogurt",500],["salatalik",300],["zeytinyagi",15]],
+    steps:["Salatalığı rendele veya küp doğra.","Yoğurdu bir miktar soğuk suyla açarak çırp.","Sarımsak, tuz ve kuru nane ekle.","Üzerine zeytinyağı gezdirip soğuk servis et."] },
+
+  { n:"Sütlaç", srv:6, t:"45 dk", i:"dairy",
+    ing:[["sut",1000],["pirinc",100],["seker",150]],
+    steps:["Pirinci az suda yumuşayana kadar haşla.","Sütü ekleyip karıştırarak kaynat.","Şekeri ilave et, kıvam alana kadar 15 dakika pişir.","Kaselere paylaştır, fırında üstünü kızartabilirsin.","Soğuduktan sonra tarçınla servis et."] }
+];
+
+const MEAL_SETS = [
+  { name:"Klasik", meals:[
+    { name:"Kahvaltı", share:.25, p:"yumurta", c:"ekmek", f:"zeytinyagi", extra:"Domates, salatalık, yeşillik" },
+    { name:"Öğle",     share:.30, p:"tavuk",   c:"pirinc", f:"zeytinyagi", extra:"Mevsim salata" },
+    { name:"Ara öğün", share:.15, p:"suzme",   c:"muz",    f:"badem" },
+    { name:"Akşam",    share:.30, p:"ton",     c:"patates", f:"avokado", extra:"Buharda brokoli" }
+  ]},
+  { name:"Ev yemeği", meals:[
+    { name:"Kahvaltı", share:.25, p:"lor",    c:"yulaf",   f:"findik", extra:"Tarçın, bir avuç yaban mersini" },
+    { name:"Öğle",     share:.30, p:"kofte",  c:"bulgur",  f:"zeytinyagi", extra:"Cacık" },
+    { name:"Ara öğün", share:.15, p:"suzme",  c:"ekmek",   f:"tahin" },
+    { name:"Akşam",    share:.30, p:"hindi",  c:"pirinc",  f:"zeytinyagi", extra:"Mercimek çorbası, yeşil salata" }
+  ]},
+  { name:"Balık ağırlıklı", meals:[
+    { name:"Kahvaltı", share:.25, p:"yumurta", c:"yulaf",   f:"badem", extra:"Yeşillik" },
+    { name:"Öğle",     share:.30, p:"somon",   c:"patates", f:"zeytinyagi", extra:"Kuşkonmaz veya brokoli" },
+    { name:"Ara öğün", share:.15, p:"suzme",   c:"muz",     f:"tahin" },
+    { name:"Akşam",    share:.30, p:"hindi",   c:"makarna", f:"zeytinyagi", extra:"Közlenmiş sebze" }
+  ]},
+  { name:"Bitkisel ağırlıklı", meals:[
+    { name:"Kahvaltı", share:.25, p:"suzme", c:"yulaf",   f:"findik", extra:"Tarçın, elma" },
+    { name:"Öğle",     share:.30, p:"tofu",  c:"bulgur",  f:"zeytinyagi", extra:"Roka, limon" },
+    { name:"Ara öğün", share:.15, p:"lor",   c:"ekmek",   f:"badem" },
+    { name:"Akşam",    share:.30, p:"soya",  c:"patates", f:"tahin", extra:"Haşlanmış sebze, mercimek çorbası" }
+  ]},
+  { name:"Yüksek proteinli", meals:[
+    { name:"Kahvaltı", share:.25, p:"yumurta", c:"yulaf",   f:"badem", extra:"Ispanak, domates" },
+    { name:"Öğle",     share:.30, p:"tavuk",   c:"bulgur",  f:"zeytinyagi", extra:"Çoban salata" },
+    { name:"Ara öğün", share:.15, p:"whey",    c:"muz",     f:"fistikezmesi" },
+    { name:"Akşam",    share:.30, p:"kofte",   c:"patates", f:"avokado", extra:"Izgara sebze" }
+  ]},
+  { name:"Türk kahvaltısı ağırlıklı", meals:[
+    { name:"Kahvaltı", share:.25, p:"beyazpeynir", c:"ekmek",   f:"zeytin", extra:"Domates, salatalık, yeşil biber" },
+    { name:"Öğle",     share:.30, p:"hindi",       c:"bulgur",  f:"zeytinyagi", extra:"Cacık" },
+    { name:"Ara öğün", share:.15, p:"suzme",       c:"incir",   f:"ceviz" },
+    { name:"Akşam",    share:.30, p:"tavukbut",    c:"pirinc",  f:"zeytinyagi", extra:"Mevsim salata" }
+  ]},
+  { name:"Bütçe dostu", meals:[
+    { name:"Kahvaltı", share:.25, p:"yumurta",  c:"ekmek",   f:"zeytin", extra:"Domates, çay" },
+    { name:"Öğle",     share:.30, p:"mercimek", c:"patates", f:"zeytinyagi", extra:"Turşu, yeşillik" },
+    { name:"Ara öğün", share:.15, p:"yogurt",   c:"muz",     f:"tahin" },
+    { name:"Akşam",    share:.30, p:"tavukbut", c:"bulgur",  f:"zeytinyagi", extra:"Soğan salatası" }
+  ]},
+  { name:"Deniz ürünleri", meals:[
+    { name:"Kahvaltı", share:.25, p:"yumurta", c:"yulaf",   f:"ceviz", extra:"Yeşillik" },
+    { name:"Öğle",     share:.30, p:"hamsi",   c:"patates", f:"zeytinyagi", extra:"Roka, limon, soğan" },
+    { name:"Ara öğün", share:.15, p:"suzme",   c:"elma",    f:"badem" },
+    { name:"Akşam",    share:.30, p:"karides", c:"pirinc",  f:"zeytinyagi", extra:"Buharda brokoli" }
+  ]},
+  { name:"Vejetaryen", meals:[
+    { name:"Kahvaltı", share:.25, p:"lor",   c:"yulaf",   f:"badem", extra:"Yaban mersini" },
+    { name:"Öğle",     share:.30, p:"soya",  c:"kinoa",   f:"zeytinyagi", extra:"Ispanak salatası" },
+    { name:"Ara öğün", share:.15, p:"suzme", c:"elma",    f:"ceviz" },
+    { name:"Akşam",    share:.30, p:"tofu",  c:"patates", f:"tahin", extra:"Fırında sebze" }
+  ]},
+  { name:"Hazırlığı kolay", meals:[
+    { name:"Kahvaltı", share:.25, p:"suzme", c:"granola", f:"badem", extra:"Muz dilimleri" },
+    { name:"Öğle",     share:.30, p:"ton",   c:"makarna", f:"zeytinyagi", extra:"Konserve mısır, marul" },
+    { name:"Ara öğün", share:.15, p:"whey",  c:"muz",     f:"fistikezmesi" },
+    { name:"Akşam",    share:.30, p:"tavuk", c:"haslanmispatates", f:"avokado", extra:"Hazır salata" }
+  ]},
+  { name:"Şarküteri kahvaltısı", meals:[
+    { name:"Kahvaltı", share:.25, p:"beyazpeynir", c:"ekmek",  f:"yesilzeytin", extra:"Domates, salatalık, yeşil biber" },
+    { name:"Öğle",     share:.30, p:"fumehindi",   c:"bulgur", f:"zeytinyagi", extra:"Roka salatası" },
+    { name:"Ara öğün", share:.15, p:"suzme",       c:"kuruincir", f:"badem" },
+    { name:"Akşam",    share:.30, p:"tavuk",       c:"pirinc", f:"zeytinyagi", extra:"Közlenmiş sebze" }
+  ]},
+  { name:"Hafif ve sebzeli", meals:[
+    { name:"Kahvaltı", share:.25, p:"omlet", c:"cavdarekmek", f:"avokado", extra:"Ispanak, domates" },
+    { name:"Öğle",     share:.30, p:"tavuk", c:"tatlipatates", f:"zeytinyagi", extra:"Brokoli, kuşkonmaz" },
+    { name:"Ara öğün", share:.15, p:"suzme", c:"elma",  f:"ceviz" },
+    { name:"Akşam",    share:.30, p:"ton",   c:"haslanmispatates", f:"zeytinyagi", extra:"Karnabahar, roka" }
+  ]},
+  { name:"Yüksek lifli", meals:[
+    { name:"Kahvaltı", share:.25, p:"lor",   c:"yulaf",       f:"badem", extra:"Ahududu, tarçın" },
+    { name:"Öğle",     share:.30, p:"mercimek", c:"bulgur",   f:"zeytinyagi", extra:"Yeşil salata" },
+    { name:"Ara öğün", share:.15, p:"suzme", c:"armut",       f:"fistikezmesi" },
+    { name:"Akşam",    share:.30, p:"tavuk", c:"kurufasulye", f:"zeytinyagi", extra:"Turşu, maydanoz" }
+  ]},
+  { name:"Ofiste kolay", meals:[
+    { name:"Kahvaltı", share:.25, p:"suzme",      c:"musli",   f:"findik", extra:"Kuru üzüm" },
+    { name:"Öğle",     share:.30, p:"ton",        c:"makarna", f:"zeytinyagi", extra:"Marul, mısır" },
+    { name:"Ara öğün", share:.15, p:"proteinbar", c:"muz",     f:"badem" },
+    { name:"Akşam",    share:.30, p:"firintavuk", c:"haslanmispatates", f:"avokado", extra:"Çoban salata" }
+  ]},
+  { name:"Kırmızı et ağırlıklı", meals:[
+    { name:"Kahvaltı", share:.25, p:"yumurta", c:"ekmek",   f:"tereyagi", extra:"Domates, zeytin" },
+    { name:"Öğle",     share:.30, p:"biftek",  c:"pirinc",  f:"zeytinyagi", extra:"Közlenmiş biber" },
+    { name:"Ara öğün", share:.15, p:"suzme",   c:"hurma",   f:"ceviz" },
+    { name:"Akşam",    share:.30, p:"kofte",   c:"patates", f:"zeytinyagi", extra:"Ezme, yeşillik" }
+  ]},
+  { name:"Akdeniz", meals:[
+    { name:"Kahvaltı", share:.25, p:"beyazpeynir", c:"cavdarekmek", f:"zeytin", extra:"Domates, maydanoz" },
+    { name:"Öğle",     share:.30, p:"somon",       c:"kinoa",  f:"zeytinyagi", extra:"Kuşkonmaz, limon" },
+    { name:"Ara öğün", share:.15, p:"yogurt",      c:"nar",    f:"badem" },
+    { name:"Akşam",    share:.30, p:"karides",     c:"bulgur", f:"zeytinyagi", extra:"Roka, kiraz domates" }
+  ]},
+  { name:"Vegan ağırlıklı", meals:[
+    { name:"Kahvaltı", share:.25, p:"tofu",     c:"yulaf",   f:"findik", extra:"Muz, tarçın" },
+    { name:"Öğle",     share:.30, p:"soya",     c:"kinoa",   f:"tahin", extra:"Roka, limon" },
+    { name:"Ara öğün", share:.15, p:"leblebi",  c:"muz",     f:"yerfistigi" },
+    { name:"Akşam",    share:.30, p:"mercimek", c:"patates", f:"zeytinyagi", extra:"Haşlanmış sebze" }
+  ]},
+  { name:"Hacim dönemi", meals:[
+    { name:"Kahvaltı", share:.25, p:"yumurta", c:"musli",   f:"fistikezmesi", extra:"Süt, muz" },
+    { name:"Öğle",     share:.30, p:"kofte",   c:"makarna", f:"zeytinyagi", extra:"Ayran" },
+    { name:"Ara öğün", share:.15, p:"whey",    c:"hurma",   f:"findik" },
+    { name:"Akşam",    share:.30, p:"somon",   c:"pirinc",  f:"avokado", extra:"Fırında sebze" }
+  ]}
+];
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function portion(food, grams){
+  const g = Math.round(grams / 5) * 5;
+  if (food.unit) {
+    const units = Math.max(1, Math.round(g / food.unit));
+    return { text:`${food.n} — ${units} ${food.unitName}`, g: units * food.unit };
+  }
+  /* Gramaj değişmez (hedef tutturma bozulmasın); yakın bir porsiyon katı
+     varsa yanına "≈ 2 dilim" diye yaklaşık karşılığı yazılır. */
+  /* Birincil ölçüde yarımlar da olur ("≈ 0,5 kase"); ikincil ölçüde yalnız
+     tam katlar ("≈ 2 tatlı kaşığı"), "≈ 0,5 bütün göğüs" gibi tuhaflıklar olmasın. */
+  const P = porsOf(food);
+  for (let i = 0; i < P.length; i++){
+    const x = P[i], u = g / x.g;
+    const r = i === 0 ? Math.round(u * 2) / 2 : Math.round(u);
+    if (r >= (i === 0 ? 0.5 : 1) && r <= 12 && Math.abs(u - r) / r < 0.15)
+      return { text:`${food.n} — ${g} g (≈ ${nfmt(r)} ${x.n})`, g };
+  }
+  return { text:`${food.n} — ${g} g`, g };
+}
+
+/* Kullanıcının günlüğüne girdiği besinlerin kaç kez geçtiği. */
+function foodUsage(){
+  const u = {};
+  for (const k of Object.keys(state.days))
+    for (const it of (state.days[k].log || [])) if (it.k) u[it.k] = (u[it.k] || 0) + 1;
+  return u;
+}
+
+/* Bir besinin hangi rolü üstlenebileceği: kalorisinin çoğu hangi makrodan geliyor? */
+let ROLE_CACHE = null;
+function roleCandidates(role){
+  if (!ROLE_CACHE){
+    ROLE_CACHE = { p:[], c:[], f:[] };
+    for (const [k,f] of Object.entries(FOODS)){
+      const kcal = f.p*4 + f.c*4 + f.f*9;
+      if (kcal < 40) continue;
+      /* Eşik 0.25: baklagiller kendi karbonhidratını taşısa da protein kaynağıdır. */
+      if (f.p >= 15 && f.p*4/kcal >= 0.25) ROLE_CACHE.p.push(k);
+      if (f.c >= 15 && f.c*4/kcal >= 0.55) ROLE_CACHE.c.push(k);
+      if (f.f >= 35 && f.f*9/kcal >= 0.60) ROLE_CACHE.f.push(k);
+    }
+  }
+  return ROLE_CACHE[role];
+}
+
+/* Bir öğün gözü için besin seç: dışlanmışsa değiştir, "benim besinlerim" açıksa
+   aynı rolü oynayan ve en çok yediğin besinle değiştir. */
+function resolveSlot(orig, role, opts, used){
+  const free = k => !opts.exclude.has(k) && !used.has(k) && FOODS[k];
+  const byUse = list => list.slice().sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
+
+  if (opts.useMine){
+    const mine = byUse(roleCandidates(role).filter(k => free(k) && (opts.usage[k]||0) >= 2));
+    if (mine.length) return mine[0];
+  }
+  if (free(orig)) return orig;
+  let alt = byUse(roleCandidates(role).filter(k => free(k) && !NO_SUGGEST.has(k)));
+  if (!alt.length) alt = byUse(roleCandidates(role).filter(k => !opts.exclude.has(k) && FOODS[k]));
+  /* Uygun hiçbir şey yoksa yasak besini geçirmektense boş dön. */
+  return alt.length ? alt[0] : null;
+}
+
+/* Kullanıcının yediklerine en yakın kombinasyonlar başa gelsin. */
+function setOrder(usage){
+  return MEAL_SETS.map((s,i) => [i, s.meals.reduce((a,m) =>
+      a + (usage[m.p]||0) + (usage[m.c]||0) + (usage[m.f]||0), 0)])
+    .sort((a,b) => b[1] - a[1])
+    .map(x => x[0]);
+}
+
+/* Öğünler tek kaynaktan gelir: kullanıcı ekleyip silebilir, hem günlük
+   hem öneri motoru aynı listeyi kullanır. h = tipik saat (sıralama ve
+   "hangi öğün" varsayılanı için), cat = öneri motorunun besin kategorileri. */
+const DEFAULT_MEALS = [
+  { id:"kahvalti", name:"Kahvaltı",     w:30, h:8,  cat:"kahvalti" },
+  { id:"ara",      name:"Ara öğün",     w:20, h:15, cat:"ara" },
+  { id:"aksam",    name:"Akşam öğünü",  w:50, h:20, cat:"aksam" }
+];
+/* Yeni öğün eklerken sunulan zaman dilimleri */
+const MEAL_TIMES = [
+  { key:"sabah",  label:"Sabah",  h:8,  cat:"kahvalti", w:30 },
+  { key:"oglen",  label:"Öğlen",  h:13, cat:"ogle",     w:40 },
+  { key:"ikindi", label:"İkindi", h:16, cat:"ara",      w:15 },
+  { key:"aksam",  label:"Akşam",  h:20, cat:"aksam",    w:40 },
+  { key:"gece",   label:"Gece",   h:23, cat:"ara",      w:15 }
+];
+const LEGACY_MEALS = { ogle:{name:"Öğle", w:40, h:13, cat:"ogle"} };
+
+function userMeals(){
+  const p = mealPrefs();
+  if (!Array.isArray(p.meals) || !p.meals.length) p.meals = DEFAULT_MEALS.map(m => ({...m}));
+  return p.meals.slice().sort((a,b) => (a.h ?? 12) - (b.h ?? 12));
+}
+function slotList(){ return userMeals().map(m => [m.id, m.name]); }
+function slotLabel(id){
+  const m = userMeals().find(x => x.id === id);
+  return m ? m.name : (LEGACY_MEALS[id] ? LEGACY_MEALS[id].name : "Diğer");
+}
+function mealShares(list){
+  const t = list.reduce((a,m) => a + (m.w || 1), 0) || 1;
+  return list.map(m => (m.w || 1) / t);
+}
+
+/* Eski kayıtlarda geçen ama listede olmayan öğünleri geri kazandırır,
+   böylece "Öğle" gibi kalemler ve onlara bağlı girişler kaybolmaz. */
+function migrateMeals(){
+  const p = mealPrefs();
+  if (!Array.isArray(p.meals) || !p.meals.length) p.meals = DEFAULT_MEALS.map(m => ({...m}));
+  const have = new Set(p.meals.map(m => m.id));
+  const seen = new Set();
+  for (const k of Object.keys(state.days || {}))
+    for (const it of (state.days[k].log || [])) if (it.slot) seen.add(it.slot);
+  for (const sId of Object.keys(p.fixed || {})) if ((p.fixed[sId] || []).length) seen.add(sId);
+  let added = false;
+  for (const sId of seen) if (!have.has(sId)){
+    const L = LEGACY_MEALS[sId];
+    p.meals.push(L ? { id:sId, ...L } : { id:sId, name:"Diğer öğün", w:20, h:12, cat:"ogle" });
+    have.add(sId); added = true;
+  }
+  return added;
+}
+
+function mealPrefs(){
+  const p = state.mealPrefs || (state.mealPrefs = { exclude:[], useMine:false, fixed:{} });
+  if (!Array.isArray(p.exclude)) p.exclude = [];
+  if (!p.fixed || typeof p.fixed !== "object") p.fixed = {};
+  if (!p.diet) p.diet = "hepsi";
+  if (!Array.isArray(p.meals) || !p.meals.length) p.meals = DEFAULT_MEALS.map(m => ({...m}));
+  return p;
+}
+
+function fixedOf(slot){
+  return (mealPrefs().fixed[slot] || []).filter(x => FOODS[x.k] || (state.customFoods||{})[x.k]);
+}
+
+function foodOf(k){ return FOODS[k] || (state.customFoods||{})[k]; }
+
+/* Beslenme türleri. Bir besinin uygunluğu çoğunlukla simgesinden çıkar;
+   simgesi ele vermeyen yemekler (içinde kıyma olan karnıyarık gibi) elle listelenir. */
+const DIETS = { hepsi:"Hepsi", vejetaryen:"Vejetaryen", vegan:"Vegan",
+  pesketaryen:"Pesketaryen", glutensiz:"Glutensiz", laktozsuz:"Laktozsuz" };
+
+/* Simgesi et değil ama içinde et var. */
+const HAS_MEAT = new Set(["karniyarik","kurufasulyeyemek","etlinohut","etlilahana","manti",
+  "iclikofte","kiymalipide","kiymaliborek","tantuni","lahmacun","musakka","cigborek",
+  "kumpir","sucuklu","tavukdurum","hunkarbegendi"]);
+
+/* Simgesi süt/yumurta değil ama içinde var. */
+const HAS_DAIRY_EGG = new Set(["tereyagi","tost","kasarlipide","suborek","sigaraboregi",
+  "gozleme","kunefe","mucver","tarhana","kakaolukrem","sutlucikolata","proteinbar",
+  "pogaca","acma","baklava","kadayif","revani","bal","yulafbar","pizza","manti",
+  "iskender","sinitzel","hunkarbegendi"]);
+
+/* Laktoz içeren, süt simgesi taşımayanlar. */
+const HAS_LACTOSE = new Set(["tereyagi","tost","kasarlipide","suborek","sigaraboregi",
+  "gozleme","kunefe","mucver","tarhana","kakaolukrem","sutlucikolata","proteinbar",
+  "manti","iskender","hunkarbegendi"]);
+
+const HAS_GLUTEN = new Set(["ekmek","beyazekmek","cavdarekmek","kepekliekmek","simit","yufka",
+  "tost","pogaca","acma","makarna","makarnapis","kuskus","bulgur","bulgurpilav","un","sehriye",
+  "kisir","manti","iclikofte","cigkofte","lahmacun","kiymalipide","kasarlipide","pizza",
+  "suborek","sigaraboregi","kiymaliborek","gozleme","cigborek","tantuni","tavukdurum",
+  "baklava","kunefe","kadayif","revani","biskuvi","kraker","gevrek","granola","musli",
+  "yulafbar","sinitzel","soslumakarna","seitan","tarhana","galeta","boza","asure","iskender"]);
+
+function foodAllowed(k, diet){
+  const f = FOODS[k];
+  if (!f || !diet || diet === "hepsi") return true;
+  const meat = f.i === "meat" || f.i === "poultry" || HAS_MEAT.has(k);
+  const fish = f.i === "fish";
+  const dairyEgg = f.i === "dairy" || f.i === "egg" || HAS_DAIRY_EGG.has(k);
+  switch (diet){
+    case "vegan":       return !meat && !fish && !dairyEgg;
+    case "vejetaryen":  return !meat && !fish;
+    case "pesketaryen": return !meat;
+    case "glutensiz":   return !HAS_GLUTEN.has(k);
+    case "laktozsuz":   return !(f.i === "dairy" || HAS_LACTOSE.has(k));
+    default: return true;
+  }
+}
+
+function currentDiet(){ return mealPrefs().diet || "hepsi"; }
+
+
+function solveTrio(P, C, F, tp, tc, tf, tk){
+  let gp = 0, gc = 0, gf = 0;
+  const capP = P.unit ? 250 : 400;
+  const capC = C.c < 25 ? 500 : 350;
+  /* Üç kaynak da üç makroya birden katkı verdiği için tek geçişte çözülmüyor. */
+  for (let i = 0; i < 8; i++){
+    gp = clamp((tp - gc*C.p/100 - gf*F.p/100) / (P.p/100), 0, capP);
+    gc = clamp((tc - gp*P.c/100 - gf*F.c/100) / (C.c/100), 0, capC);
+    gf = clamp((tf - gp*P.f/100 - gc*C.f/100) / (F.f/100), 0, 90);
+  }
+  const kcalOf = (fo,g) => (fo.p*4 + fo.c*4 + fo.f*9) * g/100;
+  let excess = kcalOf(P,gp) + kcalOf(C,gc) + kcalOf(F,gf) - tk;
+  /* Fazlayı önce karbonhidrattan, sonra yağdan, en son proteinden (en fazla %20) kıs. */
+  if (excess > 0 && gc > 0){ const per=(C.p*4+C.c*4+C.f*9)/100; const cut=Math.min(gc, excess/per); gc-=cut; excess-=cut*per; }
+  if (excess > 0 && gf > 0){ const per=(F.p*4+F.c*4+F.f*9)/100; const cut=Math.min(gf, excess/per); gf-=cut; excess-=cut*per; }
+  if (excess > 0 && gp > 0){ const per=(P.p*4+P.c*4+P.f*9)/100; gp-=Math.min(gp*0.2, excess/per); }
+
+  const sum = { p:0, c:0, f:0, lif:0 };
+  for (const [fo,g] of [[P,gp],[C,gc],[F,gf]]){
+    sum.p += fo.p*g/100; sum.c += fo.c*g/100; sum.f += fo.f*g/100; sum.lif += (fo.lif||0)*g/100;
+  }
+  sum.kcal = sum.p*4 + sum.c*4 + sum.f*9;
+  return { gp, gc, gf, sum };
+}
+
+/* Öğüne yakışmayan eşleşmeler çıkmasın diye her öğünün kabul ettiği kategoriler. */
+const SIDES = ["Yanına mevsim salata", "Yanına domates, salatalık, yeşillik",
+  "Yanına turşu ve maydanoz", "Yanına buharda brokoli veya kabak"];
+
+const SLOT_CATS = {
+  kahvalti:{ p:["kahvaltilik","sut","sarkuteri","baklagil"], c:["tahil","meyve","kahvaltilik"], f:["kuruyemis","yag","meyve"] },
+  ogle:    { p:["et","balik","baklagil","sut","yemek"], c:["tahil","sebze","baklagil"], f:["yag","kuruyemis","meyve"] },
+  ara:     { p:["sut","ara","kuruyemis","kahvaltilik","baklagil"], c:["meyve","tahil","ara"], f:["kuruyemis","yag","meyve"] },
+  aksam:   { p:["et","balik","baklagil","yemek","sut"], c:["tahil","sebze","baklagil"], f:["yag","kuruyemis","meyve"] }
+};
+
+/* Tatlı, cips, gazlı içecek gibi kalemler otomatik öneriye girmez. */
+const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahinhelva","asure",
+  "sutlucikolata","bitter","dondurma","kazandibi","sutlac","cips","kola","meyvesuyu","kraker",
+  "biskuvi","seker","un","kakaolukrem","recel","bal","pekmez","salep","boza","salgam","cay",
+  "turkkahvesi","sosis","sucuk","patateskizartma","aycicekyagi","kaymak","krempeynir","gevrek",
+  "galeta","proteinbar","yulafbar","whey",
+  "wheyizolat","kazein","gainer","bitkiselprotein","kolajen","kreatin","maltodekstrin",
+  "proteinpancake","proteinpuding","proteinsut","proteinshake","proteingofret","proteinkurabiye",
+  "proteincips","enerjijeli","izotonik","enerjibar","macarsalam","kuflupeynir","zeytinezmesi","kurudomates",
+  /* tek başına yenmeyen malzemeler */
+  "pirincunu","nohutunu","sehriye","polenta"]);
+
+/* Kalan makro hedefine en iyi oturan üçlüyü arar. */
+function pickTrio(slot, t, opts, used, variant){
+  const cats = SLOT_CATS[slot] || SLOT_CATS.ogle;
+  const pool = role => {
+    const ok = new Set(cats[role]);
+    const list = roleCandidates(role).filter(k => FOODS[k] && !opts.exclude.has(k)
+      && !used.has(k) && !NO_SUGGEST.has(k) && ok.has(foodCat(FOODS[k]))
+      /* kahvaltıya balık konservesi yakışmıyor */
+      && !(slot === "kahvalti" && FOODS[k].i === "fish"));
+    list.sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
+    if (!list.length){
+      /* Diyet havuzu daraldıysa aynı besinin gün içinde tekrarına izin ver. */
+      const relaxed = roleCandidates(role).filter(k => FOODS[k] && !opts.exclude.has(k)
+        && !NO_SUGGEST.has(k) && ok.has(foodCat(FOODS[k]))
+        && !(slot === "kahvalti" && FOODS[k].i === "fish"));
+      if (!relaxed.length) return [];
+      relaxed.sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
+      return relaxed.slice(0, 6);
+    }
+    /* Varyanta göre listeyi kaydır: "başka kombinasyon" gerçekten başkasını versin. */
+    const step = role === "p" ? 3 : role === "c" ? 5 : 2;
+    const off = (variant * step) % list.length;
+    const rot = list.slice(off).concat(list.slice(0, off));
+    return rot.slice(0, role === "c" ? 10 : role === "p" ? 8 : 6);
+  };
+
+  const ps = pool("p"), cs = pool("c"), fs = pool("f");
+  if (!ps.length || !cs.length || !fs.length) return null;
+
+  let best = null;
+  for (const pk of ps) for (const ck of cs) for (const fk of fs){
+    if (pk === ck || ck === fk || pk === fk) continue;
+    const r = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
+    let err = Math.abs(r.sum.kcal - t.kcal)
+            + 4 * Math.abs(r.sum.p - t.p)
+            + Math.abs(r.sum.c - t.c)
+            + 2 * Math.abs(r.sum.f - t.f);
+    /* Bileşeni düşen ya da tabağa sığmayacak kadar büyük porsiyonlar tercih edilmesin. */
+    if (r.gc < 20) err += 80;
+    if (r.gf < 5) err += 50;
+    if (r.gp > 280) err += (r.gp - 280) * 0.8;
+    if (r.gc > 300) err += (r.gc - 300) * 0.4;
+    if (!best || err < best.err) best = { err, pk, ck, fk, r };
+  }
+  return best;
+}
+
+function buildMeals(program, variantIndex){
+  const prefs = mealPrefs();
+  const usage = foodUsage();
+  const diet = currentDiet();
+  const exclude = new Set(prefs.exclude);
+  if (diet !== "hepsi")
+    for (const k of Object.keys(FOODS)) if (!foodAllowed(k, diet)) exclude.add(k);
+  const opts = { exclude, useMine:!!prefs.useMine, usage, diet };
+  const order = setOrder(usage);
+  const set = MEAL_SETS[order[((variantIndex % order.length) + order.length) % order.length]];
+
+  /* Öğün listesi kullanıcıdan gelir; hazır kombinasyonun besin üçlüleri
+     bu listeye sırayla dağıtılır (öğün sayısı şablondan fazlaysa başa döner). */
+  const mealList = userMeals();
+  const shares = mealShares(mealList);
+  /* Şablonlar her zaman [Kahvaltı, Öğle, Ara öğün, Akşam] sırasında.
+     Öğüne sırasıyla değil türüyle eşlenir: üç öğünlü düzende "Ara öğün"
+     öğle şablonunu, "Akşam" ara öğün şablonunu almasın. Büyük öğünün
+     ikinci tabağı farklı bir ana öğün şablonundan gelir. */
+  const TPL_OF   = { kahvalti:0, ogle:1, ara:2, aksam:3 };
+  const TPL_ALT  = { kahvalti:2, ogle:3, ara:0, aksam:1 };
+  const tplFor = (mm, plate) => set.meals[
+    (plate ? TPL_ALT : TPL_OF)[mm.cat] ?? (plate ? 3 : 1)];
+
+  /* 1) Kullanıcının sabitlediği yiyecekler öğün öğün toplanır. */
+  const fixed = mealList.map((mm, idx) => {
+    const slot = mm.id;
+    const acc = { slot, items:[], p:0, c:0, f:0, lif:0, kcal:0, micros:new Set() };
+    for (const x of fixedOf(slot)){
+      const fo = foodOf(x.k);
+      acc.items.push({ text: portion(fo, x.g).text, icon: fo.i, key:x.k, fixed:true, g:x.g });
+      acc.p += fo.p*x.g/100; acc.c += fo.c*x.g/100; acc.f += fo.f*x.g/100; acc.lif += (fo.lif||0)*x.g/100;
+      (fo.v || []).forEach(v => acc.micros.add(v));
+    }
+    acc.kcal = acc.p*4 + acc.c*4 + acc.f*9;
+    return acc;
+  });
+
+  const anyFixed = fixed.some(f => f.items.length);
+  /* Diyet seçiliyse hazır setleri zorlamak yerine üreticiyi kullan:
+     kategori farkındalığı olduğu için daha tutarlı öğün çıkarıyor. */
+  const generate = anyFixed || diet !== "hepsi";
+  const dayFix = fixed.reduce((a,x) => ({ p:a.p+x.p, c:a.c+x.c, f:a.f+x.f, lif:a.lif+x.lif, kcal:a.kcal+x.kcal }),
+                              { p:0, c:0, f:0, lif:0, kcal:0 });
+
+  /* 2) Günün kalan hedefi, hâlâ yeri olan öğünlere payları oranında bölünür. */
+  const rem = { p: Math.max(0, program.protein - dayFix.p),
+                c: Math.max(0, program.carb - dayFix.c),
+                f: Math.max(0, program.fat - dayFix.f),
+                kcal: Math.max(0, program.kcal - dayFix.kcal) };
+  const raw = mealList.map((mm,i) => Math.max(0, shares[i] - fixed[i].kcal / program.kcal));
+  const sumW = raw.reduce((a,b) => a+b, 0);
+  const w = raw.map(x => sumW > 0 ? x / sumW : 0);
+
+  const total = { p:0, c:0, f:0, lif:0, kcal:0 };
+  const micros = new Set();
+  const dayUsed = new Set();
+
+  const meals = mealList.map((mm, idx) => {
+    const m = tplFor(mm, 0);
+    const fx = fixed[idx];
+    fx.micros.forEach(v => micros.add(v));
+    total.p += fx.p; total.c += fx.c; total.f += fx.f; total.lif += fx.lif; total.kcal += fx.kcal;
+
+    const items = fx.items.slice();
+    const share = w[idx];
+    fx.items.forEach(it => dayUsed.add(it.key));
+
+    if (share <= 0.0001)
+      return { name:mm.name, slot:fx.slot, items, kcal:Math.round(fx.kcal), full: fx.items.length > 0 };
+
+    const t0 = { p: rem.p*share, c: rem.c*share, f: rem.f*share, kcal: rem.kcal*share };
+
+    /* Payı büyük bir öğün tek tabağa sığmaz (porsiyon tavanları var);
+       750 kcal üstünde ikinci bir tabak açılır — ana yemek + yan yemek. */
+    const plates = t0.kcal > 750 ? 2 : 1;
+    const t = { p:t0.p/plates, c:t0.c/plates, f:t0.f/plates, kcal:t0.kcal/plates };
+
+    const used = [];
+    /* Anlamsız kalan miktarlar listeye girmesin. */
+    const keep = (raw2, food) => food.unit ? raw2 >= food.unit*0.5 : (food.f >= 35 ? raw2 >= 5 : raw2 >= 20);
+    const put = (food, g, key) => {
+      if (!keep(g, food)) return;
+      const part = portion(food, g);
+      items.push({ text:part.text, icon:food.i, key });
+      used.push([food, part.g]);
+    };
+
+    let placed = 0;
+    for (let plate = 0; plate < plates; plate++){
+      /* 3) Sabitleme veya diyet varsa kalan hedefe göre yeni üçlü üretilir;
+            yoksa hazır kombinasyonun besinleri kullanılır. */
+      let pk, ck, fk, solved;
+      if (generate){
+        const best = pickTrio(mm.cat || "ogle", t, opts, dayUsed, variantIndex + plate);
+        if (best){ pk = best.pk; ck = best.ck; fk = best.fk; solved = best.r; }
+      }
+      if (!solved){
+        const src = tplFor(mm, plate);
+        pk = resolveSlot(src.p, "p", opts, dayUsed);
+        ck = resolveSlot(src.c, "c", opts, dayUsed);
+        fk = resolveSlot(src.f, "f", opts, dayUsed);
+        if (!pk || !ck || !fk) continue;
+        solved = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
+      }
+      dayUsed.add(pk); dayUsed.add(ck);
+      /* Zeytinyağı gibi sade yağlar her tabakta olabilir; tekrar yasağı
+         yedek seçimi sucuk gibi anlamsız yağ kaynaklarına itiyordu. */
+      if (FOODS[fk].i !== "oil") dayUsed.add(fk);
+      put(FOODS[pk], solved.gp, pk); put(FOODS[ck], solved.gc, ck); put(FOODS[fk], solved.gf, fk);
+      placed++;
+    }
+
+    if (!placed)
+      return { name:mm.name, slot:fx.slot, items, kcal:Math.round(fx.kcal), full: items.length > 0 };
+
+    if (m.extra && !generate) items.push({ text:m.extra, icon:"veg" });
+    else if (generate) items.push({ text: SIDES[(idx + variantIndex) % SIDES.length], icon:"veg" });
+
+    const sum = { p:0, c:0, f:0, lif:0 };
+    for (const [food, g] of used){
+      sum.p += food.p*g/100; sum.c += food.c*g/100; sum.f += food.f*g/100; sum.lif += (food.lif||0)*g/100;
+      (food.v || []).forEach(v => micros.add(v));
+    }
+    const kcal = sum.p*4 + sum.c*4 + sum.f*9;
+    total.p += sum.p; total.c += sum.c; total.f += sum.f; total.lif += sum.lif; total.kcal += kcal;
+
+    return { name:mm.name, slot:fx.slot, items, kcal:Math.round(fx.kcal + kcal) };
+  });
+
+  const label = diet === "hepsi" ? "Sana özel kombinasyon" : DIETS[diet] + " · sana özel";
+  return { setName: generate ? label : set.name, meals, micros, generated:generate,
+    total:{ p:Math.round(total.p), c:Math.round(total.c), f:Math.round(total.f),
+            lif:Math.round(total.lif), kcal:Math.round(total.kcal) } };
+}
+
+const STEP = 100, MAX_ADJ = 400, MIN_SAMPLES = 3;
+
+function avgWeights(state, fromKey, toKey){
+  const out = [];
+  for (const [k, d] of Object.entries(state.days))
+    if (k > fromKey && k <= toKey && typeof d.weight === "number") out.push(d.weight);
+  return out;
+}
+
+function weeklyRefresh(state){
+  const t = today();
+  if (state.lastRefreshAt && (new Date(t) - new Date(state.lastRefreshAt)) / 864e5 < 7) return null;
+
+  const cur = avgWeights(state, shiftDays(t,-7), t);
+  const prev = avgWeights(state, shiftDays(t,-14), shiftDays(t,-7));
+  if (cur.length < MIN_SAMPLES || prev.length < MIN_SAMPLES)
+    return { msg:`Trend için yeterli veri yok (bu hafta ${cur.length}, geçen hafta ${prev.length} ölçüm). Haftada en az ${MIN_SAMPLES} gün tartıl.`, save:false };
+
+  const a = cur.reduce((x,y)=>x+y,0)/cur.length;
+  const b = prev.reduce((x,y)=>x+y,0)/prev.length;
+  const pct = (a - b) / b * 100;
+  const [lo, hi] = GOAL[state.profile.goal].range;
+
+  state.lastRefreshAt = t;
+  if (pct >= lo && pct <= hi)
+    return { msg:`Hedeflenen hızda ilerliyorsun (%${pct.toFixed(2)}/hafta). Kalori hedefi değişmiyor.`, save:true };
+
+  const tooSlow = state.profile.goal === "gain" ? pct < lo : pct > hi;
+  const delta = state.profile.goal === "gain" ? (tooSlow ? STEP : -STEP) : (tooSlow ? -STEP : STEP);
+  const next = clamp((state.adjustment||0) + delta, -MAX_ADJ, MAX_ADJ);
+  if (next === (state.adjustment||0))
+    return { msg:`Düzeltme sınırına (${MAX_ADJ} kcal) ulaşıldı. Hedefi daha fazla kaydırmak yerine aktivite seviyeni gözden geçir.`, save:true };
+
+  const applied = next - (state.adjustment||0);
+  state.adjustment = next;
+  return { msg:`Son hafta ortalaman ${a.toFixed(1)} kg (önceki hafta ${b.toFixed(1)} kg, %${pct.toFixed(2)}). Günlük hedef ${Math.abs(applied)} kcal ${applied<0?"düşürüldü":"artırıldı"}.`, save:true };
+}

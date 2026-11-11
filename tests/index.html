@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Starboard testleri</title>
+<style>
+body{font:14px/1.5 ui-monospace,Consolas,monospace;margin:20px;background:#fff;color:#111}
+#out{white-space:pre-wrap}
+#app{display:none}
+</style>
+</head>
+<body>
+<h1>Starboard testleri</h1>
+<pre id="out">Yükleniyor…</pre>
+<div id="app"></div>
+<script>
+/* Uygulamanın kodunu index.html'deki sırayla yükler (başlatma dosyaları hariç),
+   sonra tests.js içindeki testleri çalıştırır. Sonuç <html data-result> içine yazılır. */
+(async () => {
+  const out = document.getElementById("out");
+  const site = "../starboard-site/";
+  const load = src => new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = src; s.onload = res; s.onerror = () => rej(new Error("yüklenemedi: " + src));
+    document.body.appendChild(s);
+  });
+  try {
+    const html = await fetch(site + "index.html").then(r => r.text());
+    const srcs = [...html.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1])
+      .filter(s => !/(^|\/)(main|register-sw)\.js$/.test(s));
+    if (!srcs.length) throw new Error("index.html içinde kod dosyası bulunamadı");
+    for (const s of srcs) await load(site + s);
+    await load("tests.js");
+    const lines = []; let pass = 0, fail = 0;
+    for (const [name, fn] of window.STARBOARD_TESTS) {
+      try { await fn(); pass++; lines.push("GECTI  " + name); }
+      catch (e) { fail++; lines.push("KALDI  " + name + "\n         " + (e && e.message || e)); }
+    }
+    lines.push("", `SONUC: ${pass} gecti, ${fail} kaldi`);
+    out.textContent = lines.join("\n");
+    document.documentElement.dataset.result = fail ? "fail" : "pass";
+  } catch (e) {
+    out.textContent = "HATA: " + (e && e.message || e);
+    document.documentElement.dataset.result = "fail";
+  }
+})();
+</script>
+</body>
+</html>

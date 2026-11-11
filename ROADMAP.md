@@ -26,11 +26,13 @@ Bitti sayılır: Starboard herkese açık bir adreste çalışıyor ve bir deği
 
 Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 
-- [ ] Tek dosyayı modüllere böl (depolama, hesaplamalar, ekranlar, stiller) ve derleme adımı ekle
+- [x] Tek dosyayı ayrı dosyalara böl: 3 stil, 19 kod dosyası (`starboard-site/css`, `starboard-site/js`); ekran çıktısı eskisiyle birebir aynı
+- [x] Otomatik testler (`tests/`): her gönderimde çalışır, testler kalırsa site yayınlanmaz
+- [ ] Hesaplamaları ekran kodundan ayır (şu an bazı hesaplar HTML üretimiyle iç içe); derleme adımı Faz 3'te Node ile birlikte gelir
 - [ ] Çok dilli altyapı: tüm metinler koddan ayrılır, Türkçe ve İngilizce dil dosyaları; birimler (kg/lb, ml/oz) ve tarih biçimleri dile göre
 - [ ] Sürüm numarası ve değişiklik günlüğü
 - [ ] Veri şeması sürümleme: eski kayıtlar her güncellemede güvenle yeni biçime taşınsın
-- [ ] Hesaplamalar (kalori, makro, puan, yıldız) için otomatik testler
+- [ ] Test kapsamını genişlet: gün puanı, yıldızlar, haftalık yenileme
 - [ ] Depolama anahtarını (`saglik-takip-v1`) göçle birlikte yeniden adlandır
 
 Bitti sayılır: testler geçiyor, eski bir yedek dosyası yeni sürümde sorunsuz açılıyor.

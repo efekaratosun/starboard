@@ -1,7 +1,13 @@
 /* Starboard: çevrimdışı çalışma. Sayfa önce ağdan denenir (güncellemeler hemen gelsin),
    ağ yoksa önbellekten açılır. */
 const CACHE = "starboard-202611111733";
-const SHELL = ["./", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
+const SHELL = [
+  "./", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png",
+  "css/tokens.css", "css/components.css", "css/app.css",
+  "js/storage.js", "js/program.js", "js/nutrition.js", "js/evaluate.js", "js/app.js", "js/onboarding.js",
+  "js/router.js", "js/today.js", "js/meals.js", "js/workout.js", "js/quick.js", "js/ui.js", "js/workout-mode.js",
+  "js/widgets.js", "js/charts.js", "js/settings.js", "js/calendar.js", "js/main.js", "js/register-sw.js"
+];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

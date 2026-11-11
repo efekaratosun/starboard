@@ -1,0 +1,125 @@
+:root{
+  /* yüzeyler: sıcak beyaz zemin, beyaz kartlar */
+  --bg:#FFF6F2; --surface:#FFFFFF; --raise:#FFFFFF;
+  --ink:#241A22; --muted:#6E6270; --line:#F3E4DE;
+  --shell:#FFF0EA; --track:#F7E2DA; --tint:#FFE6DD;
+
+  /* marka: parlak mercan. --band yazı ve ince çizgiler (beyazda AA),
+     --band-vivid grafik ve dolgu, --grad hero öğeleri ve butonlar. */
+  --band:#C9340C; --band-vivid:#FF5A3C; --on-brand:#FFFFFF;
+  --grad:linear-gradient(135deg,#FF7A2F 0%,#FF3D6E 100%);
+  --grad-btn:linear-gradient(135deg,#D93A12 0%,#D6285C 100%);
+  --g1:#FF7A2F; --g2:#FF3D6E;
+  /* anlam renkleri: yazı / grafik */
+  --good:#0B8A4B; --good-vivid:#16C172; --off:#B45800; --bad:#D92D3A;
+
+  /* makrolar ve alanlar */
+  --mp:#FF3B5C; --mc:#FF9500; --mf:#F5B800; --ml:#34C759;
+  --sleep:#7C5CFF; --water:#0A9BFF;
+
+  /* besin grupları */
+  --g-veg:#2FAE35; --g-fruit:#F0368A; --g-meat:#E8323C; --g-fish:#0A8FEA;
+  --g-dairy:#4A6BFF; --g-grain:#E88A00; --g-nuts:#A0612A; --g-egg:#D9A300;
+
+  --male:#2F7BEA; --male-t:#E6F0FF; --female:#E84A93; --female-t:#FFE6F2;
+  --neutral:#7C4DFF; --neutral-t:#EFE8FF;
+
+  /* takvim yoğunluğu: kırmızıdan yeşile */
+  --d1:#FFA894; --d2:#FFC48A; --d3:#FFE07A; --d4:#A7E38A; --d5:#10A95C;
+  --dnone:#F4695C; --dnone-ink:#3A120E;
+  --dtoday:#35CBF0; --dtoday-ink:#04303D;
+  --cal4-ink:var(--ink); --cal5-ink:#FFFFFF; --cal-lo-ink:var(--ink);
+
+  /* takımyıldız: gece gökyüzü */
+  --sky1:#17124A; --sky2:#4B2A9C; --star:#FFD36B; --star-off:rgba(255,255,255,.28);
+  --sky-ink:#F6F2FF; --sky-muted:#CFC6F2;
+
+  /* sekme vurguları (varsayılan: mercan) */
+  --accent:#FF5A3C; --accent2:#FF3D6E;
+
+  --sh1:0 1px 2px rgba(80,30,20,.05), 0 8px 22px rgba(80,30,20,.07);
+  --sh2:0 2px 6px rgba(80,30,20,.07), 0 12px 30px rgba(80,30,20,.10);
+  --r:22px;
+  --font:"Nunito", ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+  --bg:#0B0A0E; --surface:#17161C; --raise:#272630;
+  --ink:#F6F4F7; --muted:#A8A3B0; --line:#262430;
+  --shell:#1F1E26; --track:#332F3D; --tint:#3A1D16;
+
+  --band:#FF7A55; --band-vivid:#FF6B42; --on-brand:#FFFFFF;
+  --grad:linear-gradient(135deg,#FF8A3D 0%,#FF4B6E 100%);
+  --grad-btn:linear-gradient(135deg,#D93A12 0%,#D6285C 100%);
+  --g1:#FF8A3D; --g2:#FF4B6E;
+  --good:#3EE08F; --good-vivid:#2FD483; --off:#FFB23F; --bad:#FF6B6B;
+
+  --mp:#FF5470; --mc:#FFA11A; --mf:#FFD23F; --ml:#5EE07A;
+  --sleep:#9C86FF; --water:#3DB2FF;
+
+  --g-veg:#5EDB5A; --g-fruit:#FF5CA8; --g-meat:#FF5A5A; --g-fish:#3DB2FF;
+  --g-dairy:#6F93FF; --g-grain:#FFB23F; --g-nuts:#D9A06B; --g-egg:#FFD23F;
+
+  --male:#5AA7FF; --male-t:#1C2A3D; --female:#FF7EB9; --female-t:#3A1F31;
+  --neutral:#A98BFF; --neutral-t:#2A2140;
+
+  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#8A6E14; --d4:#5FAE3C; --d5:#2FD483;
+  --dnone:#B03225; --dnone-ink:#FFE7E3;
+  --dtoday:#3BD9F5; --dtoday-ink:#062733;
+  --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);
+
+  --sky1:#0C0A20; --sky2:#2A1B5E; --star:#FFD36B; --star-off:rgba(255,255,255,.22);
+  --sky-ink:#F3EEFF; --sky-muted:#B9B0DA;
+
+  --sh1:0 1px 0 rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.42);
+  --sh2:0 2px 4px rgba(0,0,0,.45), 0 18px 44px rgba(0,0,0,.5);
+  --edge:inset 0 1px 0 color-mix(in srgb, #FFFFFF 7%, transparent);
+  }
+}
+:root[data-theme="dark"], .thm-dark{
+  --bg:#0B0A0E; --surface:#17161C; --raise:#272630;
+  --ink:#F6F4F7; --muted:#A8A3B0; --line:#262430;
+  --shell:#1F1E26; --track:#332F3D; --tint:#3A1D16;
+
+  --band:#FF7A55; --band-vivid:#FF6B42; --on-brand:#FFFFFF;
+  --grad:linear-gradient(135deg,#FF8A3D 0%,#FF4B6E 100%);
+  --grad-btn:linear-gradient(135deg,#D93A12 0%,#D6285C 100%);
+  --g1:#FF8A3D; --g2:#FF4B6E;
+  --good:#3EE08F; --good-vivid:#2FD483; --off:#FFB23F; --bad:#FF6B6B;
+
+  --mp:#FF5470; --mc:#FFA11A; --mf:#FFD23F; --ml:#5EE07A;
+  --sleep:#9C86FF; --water:#3DB2FF;
+
+  --g-veg:#5EDB5A; --g-fruit:#FF5CA8; --g-meat:#FF5A5A; --g-fish:#3DB2FF;
+  --g-dairy:#6F93FF; --g-grain:#FFB23F; --g-nuts:#D9A06B; --g-egg:#FFD23F;
+
+  --male:#5AA7FF; --male-t:#1C2A3D; --female:#FF7EB9; --female-t:#3A1F31;
+  --neutral:#A98BFF; --neutral-t:#2A2140;
+
+  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#8A6E14; --d4:#5FAE3C; --d5:#2FD483;
+  --dnone:#B03225; --dnone-ink:#FFE7E3;
+  --dtoday:#3BD9F5; --dtoday-ink:#062733;
+  --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);
+
+  --sky1:#0C0A20; --sky2:#2A1B5E; --star:#FFD36B; --star-off:rgba(255,255,255,.22);
+  --sky-ink:#F3EEFF; --sky-muted:#B9B0DA;
+
+  --sh1:0 1px 0 rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.42);
+  --sh2:0 2px 4px rgba(0,0,0,.45), 0 18px 44px rgba(0,0,0,.5);
+  --edge:inset 0 1px 0 color-mix(in srgb, #FFFFFF 7%, transparent);
+}
+/* Her sekme küçük bir vurgu rengi taşır; ana renk mercan kalır. */
+body[data-tab="today"]{--accent:#FF8A00;--accent2:#FF4E2A}
+body[data-tab="plan"]{--accent:#2F6BFF;--accent2:#7A4DFF}
+body[data-tab="meals"]{--accent:#2DBE4E;--accent2:#A6D90F}
+body[data-tab="calendar"]{--accent:#8A4DFF;--accent2:#E0409B}
+body[data-tab="settings"]{--accent:#6E6270;--accent2:#A89BAA}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:500 16px/1.5 var(--font);
+  padding-bottom:calc(140px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased;
+}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;letter-spacing:-.01em}
