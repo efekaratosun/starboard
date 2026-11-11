@@ -149,7 +149,7 @@ function goalRow(t, entry, program, key){
   return `<div class="g${open ? " open" : ""}${just ? " just" : ""}" data-done="${info.ok ? 1 : 0}" data-kind="${kind}">
     <button class="g-h" data-goal="${kind}" aria-expanded="${open}">
       ${iconBox(ic)}
-      <span class="g-m"><b>${esc(info.title)}</b><i${info.warn ? ` class="warn"` : ""}>${esc(info.txt)}</i>
+      <span class="g-m"><b>${esc(info.label || info.title)}</b><i${info.warn ? ` class="warn"` : ""}>${esc(info.txt)}</i>
         ${info.ok ? "" : `<span class="task-bar"><i style="width:${clamp(info.pct * 100, 0, 100).toFixed(0)}%"></i></span>`}</span>
       ${info.ok ? `<span class="g-ok" aria-label="${tx("tamam")}">${icon("star4")}</span>`
                 : `<svg class="ico task-chev" aria-hidden="true"><use href="#i-next"/></svg>`}
@@ -307,7 +307,10 @@ function autoInfo(t, entry, program, key){
       if (!ses || !ses.b) return null;
       const list = exercisesOf(ses);
       const n = list.filter(x => liftHas((entry.lifts || {})[x])).length;
-      return { title:tx("Antrenman: {0}", [(ses.t)]), ok: n === list.length, pct: n/list.length,
+      /* title kayıtta görevi tanıtır; ekranda gün adı zaten "Antrenman A" gibiyse önek tekrarlanmaz. */
+      const word = tx("Antrenman").toLocaleLowerCase();
+      const label = ses.t.toLocaleLowerCase().includes(word) ? ses.t : tx("Antrenman: {0}", [(ses.t)]);
+      return { title:tx("Antrenman: {0}", [(ses.t)]), label, ok: n === list.length, pct: n/list.length,
         txt:`${n}/${list.length} hareket kaydedildi`,
         why:tx("Antrenman kaydındaki bütün hareketler girilince işaretlenir.") };
     }
@@ -360,7 +363,7 @@ function goToTask(kind, key){
 function taskRow(t, info){
   return `<div class="task" data-done="${t.done?1:0}">
     <button class="check" data-done="${t.done?1:0}" data-id="${t.id}" aria-label="${tx("Tamamlandı olarak işaretle")}"></button>
-    ${info ? `<button class="task-title task-go" data-goto="${taskKind(t)}" aria-label="${esc(t.title)}: ${GOTO_LABEL[taskKind(t)]}">` : `<span class="task-title">`}<span class="tt">${esc(t.title)}</span>${info ? `<span class="task-sub${info.warn ? " warn" : ""}">${info.warn ? "⚠️ " : ""}${esc(info.txt)}</span>
+    ${info ? `<button class="task-title task-go" data-goto="${taskKind(t)}" aria-label="${esc(t.title)}: ${GOTO_LABEL[taskKind(t)]}">` : `<span class="task-title">`}<span class="tt">${esc((info && info.label) || t.title)}</span>${info ? `<span class="task-sub${info.warn ? " warn" : ""}">${info.warn ? "⚠️ " : ""}${esc(info.txt)}</span>
       ${info.ok ? "" : `<span class="task-bar"><i style="width:${clamp(info.pct*100,0,100).toFixed(0)}%"></i></span>`}` : ""}${info ? `</button><svg class="ico task-chev" aria-hidden="true"><use href="#i-next"/></svg>` : `</span>`}
     ${t.suggested ? "" : `<button class="del" data-del="${t.id}" aria-label="${tx("Sil")}">×</button>`}
   </div>`;
