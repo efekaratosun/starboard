@@ -141,6 +141,29 @@ test("öğünler: her öğün gerçek bir tabak gibi (tek et ya da balık, en fa
   }
 });
 
+test("öğünler: diyet seçiliyken de öğüne yakışan besinler çıkar", async () => {
+  const fixture = await loadFixture();
+  const legume = k => foodCat(FOODS[k]) === "baklagil";
+  for (const diet of ["vejetaryen", "vegan", "pesketaryen", "glutensiz", "laktozsuz"]) for (let v = 0; v < 4; v++) {
+    state = JSON.parse(JSON.stringify(fixture));
+    state.mealPrefs.diet = diet;
+    const p = buildProgram(profileOf({}), 82, 0);
+    const m = buildMeals(p, v);
+    const where = `${diet}, seçenek ${v}`;
+    m.meals.forEach((meal, i) => {
+      const keys = meal.items.map(x => x.key).filter(Boolean);
+      const cat = state.mealPrefs.meals.slice().sort((a, b) => a.h - b.h)[i].cat;
+      for (const k of keys) ok(foodAllowed(k, diet), `${meal.name}: ${k} bu diyete uymuyor · ${where}`);
+      ok(keys.filter(legume).length <= 1, `${meal.name}: birden çok baklagil (${keys.join(", ")}) · ${where}`);
+      if (cat === "kahvalti" || cat === "ara") {
+        ok(!keys.some(k => legume(k) && !READY_LEGUMES.has(k)), `${meal.name}: kuru baklagil (${keys.join(", ")}) · ${where}`);
+        ok(!keys.some(k => MEAL_GRAINS.has(k)), `${meal.name}: yemeklik tahıl (${keys.join(", ")}) · ${where}`);
+      }
+    });
+    ok(Math.abs(m.total.kcal - p.kcal) / p.kcal <= 0.1, `menü ${m.total.kcal} kcal, hedef ${p.kcal} kcal · ${where}`);
+  }
+});
+
 /* ---- ölçüm değerlendirme ---- */
 test("değerlendirme: az, yeterli ve fazla doğru etiketlenir", async () => {
   state = await loadFixture();

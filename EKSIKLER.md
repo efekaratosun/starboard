@@ -6,16 +6,19 @@ Tür: **hata** (yanlış çalışıyor), **eksik** (olması gereken yok), **gör
 
 ## Açık
 
-### 2. Diyet seçiliyken öğün önerileri gerçekçi değil
+Şu an açık madde yok. Bu liste yalnızca hemen yapılamayan ya da sonraya bırakılan işler içindir; bulunan sorunlar onay alınınca doğrudan düzeltilir.
+
+## Tamamlanan
+
+### 2. Diyet seçiliyken öğün önerileri gerçekçi değildi
 
 - Tür: hata
 - Ekran: Beslenme › Öneriler (beslenme türü "Hepsi" dışında bir şey seçiliyken)
-- Eklendi: 11 Kasım 2026
-- Durum: Vejetaryen seçiliyken (82 kg, erkek, kiloyu koru) kahvaltıya kuru kırmızı mercimek 80 g, kuru tam buğday makarna 60 g ve keten tohumu 40 g çıktı; ara öğüne kuru yeşil mercimek, pişmiş makarna ve tereyağı; akşama lor peyniri, kestane ve pirinç.
-- Beklenen: Öğüne yakışan besinler (kahvaltıda kahvaltılık, ara öğünde atıştırmalık) ve yenebilir biçimde porsiyonlar.
-- Not: Diyet seçiliyken öneriler hazır menülerden değil, makro hedefine en yakın üçlüyü arayan üreticiden (`pickTrio`) geliyor. Üretici yalnızca sayısal uyuma bakıyor; kuru baklagili kahvaltıya ya da ara öğüne koyabiliyor. 1 numaralı düzeltme bu yolu kapsamıyor.
-
-## Tamamlanan
+- Eklendi ve düzeltildi: 11 Kasım 2026
+- Sorun: Vejetaryen seçiliyken kahvaltıya kuru mercimek, makarna ve keten tohumu; ara öğüne kuru mercimek ve tereyağı çıkıyordu.
+- Neden: Üretici (`pickTrio`) yalnızca makro uyumuna bakıyordu; yumurta ve süzme yoğurdu protein kaynağı saymıyordu.
+- Çözüm: Kahvaltı ve ara öğüne kuru baklagil ve yemeklik tahıl konmuyor; ana öğüne kahvaltılık tahıl konmuyor. Yumurta ve süzme yoğurt protein kaynağı sayılıyor. Aynı öğünde iki baklagil olmuyor. Makro uyumu yakınsa alışıldık besinler (ekmek, yulaf, pirinç, bulgur, zeytinyağı) öne geçiyor. Susam, keten tohumu, kestane gibi kalemler öneriden çıkarıldı.
+- Sınır: Pirinç ya da bulgur aynı gün başka öğünde kullanıldıysa karabuğday, amarant gibi az bilinen tahıllar çıkabiliyor.
 
 ### 1. Öğün önerilerinde gerçekçi olmayan besin kombinasyonları
 

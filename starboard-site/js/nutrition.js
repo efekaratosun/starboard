@@ -846,7 +846,7 @@ const SIDES = ["Yanına mevsim salata", "Yanına domates, salatalık, yeşillik"
 const SLOT_CATS = {
   kahvalti:{ p:["kahvaltilik","sut","sarkuteri","baklagil"], c:["tahil","meyve","kahvaltilik"], f:["kuruyemis","yag","meyve"] },
   ogle:    { p:["et","balik","baklagil","sut","yemek"], c:["tahil","sebze","baklagil"], f:["yag","kuruyemis","meyve"] },
-  ara:     { p:["sut","ara","kuruyemis","kahvaltilik","baklagil"], c:["meyve","tahil","ara"], f:["kuruyemis","yag","meyve"] },
+  ara:     { p:["sut","ara","kuruyemis","kahvaltilik","baklagil"], c:["meyve","tahil","ara"], f:["kuruyemis","meyve"] },
   aksam:   { p:["et","balik","baklagil","yemek","sut"], c:["tahil","sebze","baklagil"], f:["yag","kuruyemis","meyve"] }
 };
 
@@ -860,23 +860,51 @@ const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahin
   "proteinpancake","proteinpuding","proteinsut","proteinshake","proteingofret","proteinkurabiye",
   "proteincips","enerjijeli","izotonik","enerjibar","macarsalam","kuflupeynir","zeytinezmesi","kurudomates",
   /* tek başına yenmeyen malzemeler */
-  "pirincunu","nohutunu","sehriye","polenta"]);
+  "pirincunu","nohutunu","sehriye","polenta","yufka","sarimsak","kestane",
+  /* öğünün yağını tek başına taşıyamayacak tohumlar ve yağlar */
+  "susam","ketentohumu","hindistancevizi","hindistancevizyagi"]);
+
+/* Kahvaltı ve ara öğün hafif öğünlerdir: pişirilip yemek olarak yenen tahıllar
+   ve kuru baklagiller bu öğünlere önerilmez. */
+const LIGHT_SLOTS = new Set(["kahvalti","ara"]);
+const MEAL_GRAINS = new Set(["pirinc","pilav","bulgur","bulgurpilav","makarna","makarnapis",
+  "glutensizmakarna","kinoa","kuskus","karabugday","amarant","misir","cigkofte","kisir"]);
+const READY_LEGUMES = new Set(["tofu","tempeh"]);
+/* Protein yoğunluğu eşiğin altında kalsa da bir öğünün proteinini taşıyabilen besinler. */
+const PROTEIN_EXTRA = ["yumurta","suzme"];
+/* Kahvaltıya yakışan tahıllar ana öğüne önerilmez. */
+const BREAKFAST_GRAINS = new Set(["yulaf","musli","simit","acma"]);
+/* Makro uyumu yakınsa o öğünün alışıldık besinleri öne geçer. */
+const MAIN_STAPLES = { p:[], c:["pirinc","bulgur","makarna","patates","kinoa"], f:["zeytinyagi","avokado"] };
+const STAPLES = {
+  kahvalti:{ p:["yumurta","suzme"], c:["ekmek","cavdarekmek","kepekliekmek","beyazekmek","yulaf","musli","simit"], f:[] },
+  ara:{ p:["suzme"], c:[], f:[] },
+  ogle:MAIN_STAPLES, aksam:MAIN_STAPLES
+};
 
 /* Kalan makro hedefine en iyi oturan üçlüyü arar. */
 function pickTrio(slot, t, opts, used, variant){
   const cats = SLOT_CATS[slot] || SLOT_CATS.ogle;
+  const light = LIGHT_SLOTS.has(slot);
+  const staples = STAPLES[slot] || MAIN_STAPLES;
   const pool = role => {
     const ok = new Set(cats[role]);
-    const list = roleCandidates(role).filter(k => FOODS[k] && !opts.exclude.has(k)
-      && !used.has(k) && !NO_SUGGEST.has(k) && ok.has(foodCat(FOODS[k]))
+    /* Yumurta ve yoğurt gibi besinler başa gelir: hafif öğünlerin doğal protein kaynakları. */
+    const all = role === "p"
+      ? PROTEIN_EXTRA.filter(k => FOODS[k]).concat(roleCandidates("p").filter(k => !PROTEIN_EXTRA.includes(k)))
+      : roleCandidates(role);
+    const fits = k => FOODS[k] && !opts.exclude.has(k) && !NO_SUGGEST.has(k) && ok.has(foodCat(FOODS[k]))
       /* kahvaltıya balık konservesi yakışmıyor */
-      && !(slot === "kahvalti" && FOODS[k].i === "fish"));
+      && !(slot === "kahvalti" && FOODS[k].i === "fish")
+      && !(light && role === "p" && foodCat(FOODS[k]) === "baklagil" && !READY_LEGUMES.has(k))
+      && !(light && role === "c" && MEAL_GRAINS.has(k))
+      && !(!light && role === "c" && BREAKFAST_GRAINS.has(k))
+      && !(k === "glutensizmakarna" && opts.diet !== "glutensiz");
+    const list = all.filter(k => fits(k) && !used.has(k));
     list.sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
     if (!list.length){
       /* Diyet havuzu daraldıysa aynı besinin gün içinde tekrarına izin ver. */
-      const relaxed = roleCandidates(role).filter(k => FOODS[k] && !opts.exclude.has(k)
-        && !NO_SUGGEST.has(k) && ok.has(foodCat(FOODS[k]))
-        && !(slot === "kahvalti" && FOODS[k].i === "fish"));
+      const relaxed = all.filter(fits);
       if (!relaxed.length) return [];
       relaxed.sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
       return relaxed.slice(0, 6);
@@ -894,6 +922,8 @@ function pickTrio(slot, t, opts, used, variant){
   let best = null;
   for (const pk of ps) for (const ck of cs) for (const fk of fs){
     if (pk === ck || ck === fk || pk === fk) continue;
+    /* Protein de karbonhidrat da baklagil olmasın (mercimeğin yanına nohut gibi). */
+    if (foodCat(FOODS[pk]) === "baklagil" && foodCat(FOODS[ck]) === "baklagil") continue;
     const r = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
     let err = Math.abs(r.sum.kcal - t.kcal)
             + 4 * Math.abs(r.sum.p - t.p)
@@ -904,6 +934,11 @@ function pickTrio(slot, t, opts, used, variant){
     if (r.gf < 5) err += 50;
     if (r.gp > 280) err += (r.gp - 280) * 0.8;
     if (r.gc > 300) err += (r.gc - 300) * 0.4;
+    if (staples.p.includes(pk)) err -= 40;
+    if (staples.c.includes(ck)) err -= 40;
+    if (staples.f.includes(fk)) err -= 40;
+    /* Tofu ve tempeh hafif öğünde ancak başka protein kalmadıysa (vegan) seçilsin. */
+    if (light && READY_LEGUMES.has(pk)) err += 60;
     if (!best || err < best.err) best = { err, pk, ck, fk, r };
   }
   return best;
