@@ -3,6 +3,16 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.3.0 (12 Kasım 2026)
+
+### Eklendi
+- Yeni kullanıcıda dil tarayıcıdan gelir: Türkçe tarayıcıda Türkçe, diğerlerinde İngilizce. Daha önce başlamış kullanıcılar Türkçe kalır.
+- Karşılama ekranında dil değiştirme bağlantısı.
+
+### Değişti
+- İngilizceden "beta" etiketi kaldırıldı.
+- Ölçüm değerlendirmesinin hesabı ekran kodundan ayrıldı; görünüm aynı.
+
 ## 1.2.0 (12 Kasım 2026)
 
 Web sitesi olarak ilk sürüm.

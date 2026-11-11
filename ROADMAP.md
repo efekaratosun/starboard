@@ -28,7 +28,7 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 
 - [x] Tek dosyayı ayrı dosyalara böl: 3 stil, 19 kod dosyası (`starboard-site/css`, `starboard-site/js`); ekran çıktısı eskisiyle birebir aynı
 - [x] Otomatik testler (`tests/`): her gönderimde çalışır, testler kalırsa site yayınlanmaz
-- [ ] Hesaplamaları ekran kodundan ayır (şu an bazı hesaplar HTML üretimiyle iç içe); derleme adımı Faz 3'te Node ile birlikte gelir
+- [ ] Hesaplamaları ekran kodundan ayır: ölçüm değerlendirmesi ayrıldı (`assess()` yalnızca sayı ve durum döndürür). Görev durumu (`autoInfo`) ve grafik hazırlığı hâlâ metin üretimiyle iç içe; derleme adımı Faz 3'te Node ile birlikte gelir
 - [x] Çok dilli altyapı: `tx()` çeviri işlevi, dil seçimi (Ayarlar), dile göre tarih ve gün adları
 - [x] Arayüz metinlerinin İngilizcesi: yaklaşık 1.100 metin çeviriye bağlandı, sözlükte 730 karşılık (`starboard-site/js/lang/en.js`)
 - [x] Beslenme içeriğinin İngilizcesi: 320 besin adı, porsiyon ölçüleri, mikro besinler, hazır menüler ve tarifler (`starboard-site/js/lang/en-food.js`, 630 karşılık)
@@ -37,10 +37,10 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [ ] İçeriğin uluslararası uyarlaması (Faz 2): çeviri tamam, ama besin ve tarif seçkisi hâlâ Türk mutfağı ağırlıklı
 - [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [ ] Birimler dile göre (kg/lb, ml/oz)
-- [ ] İngilizce "beta" etiketini kaldır ve tarayıcı diline göre otomatik seçim aç (içerik çevirisi bitince)
+- [x] İngilizcenin "beta" etiketi kalktı. Yeni kullanıcıda dil tarayıcıdan gelir (Türkçe değilse İngilizce); kaydı olan eski kullanıcı Türkçe kalır; karşılama ekranında dil bağlantısı var
 - [x] Sürüm numarası (`APP_VERSION`, şu an 1.2.0) ve değişiklik günlüğü (`CHANGELOG.md`)
 - [x] Veri şeması sürümleme: `SCHEMA` ve `MIGRATIONS` (`storage.js`); açılışta ve yedek yüklerken kayıt güncel biçime taşınır
-- [ ] Test kapsamını genişlet: gün puanı, yıldızlar, haftalık yenileme
+- [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 50 test)
 - [x] Depolama anahtarı `starboard-state` oldu; eski adla duran kayıt ilk açılışta taşınır ve yedek olarak yerinde kalır
 
 Bitti sayılır: testler geçiyor, eski bir yedek dosyası yeni sürümde sorunsuz açılıyor.
