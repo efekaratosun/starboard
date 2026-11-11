@@ -49,7 +49,7 @@ function settingsView(){
     <label>${tx("Antrenman günlerin")}</label>
     <div class="chips">${[1,2,3,4,5,6,7].map(n =>
       `<button class="chip${(p.days || []).includes(n) ? " sel" : ""}" data-sday="${n}">${WD_SHORT[n]}</button>`).join("")}</div>
-    <div class="metric-note" style="margin:8px 0 16px">${(p.days || []).length >= 3 ? dayNote(p.venue || "gym", p.activity, p.days) : "Gün seçilmemiş."}</div>`}
+    <div class="metric-note" style="margin:8px 0 16px">${(p.days || []).length >= 3 ? dayNote(p.venue || "gym", p.activity, p.days) : tx("Gün seçilmemiş.")}</div>`}
     <label>${tx("Kaçındığın yerler")}</label>
     <div class="chips">${AVOID_ZONES.map(([k,l]) =>
       `<button class="chip${(p.avoid || []).includes(k) ? " sel" : ""}" data-savoid="${k}">${l}</button>`).join("")}</div>
@@ -62,7 +62,7 @@ function settingsView(){
   <section>
     <h2>${tx("Tekrar eden görevler")} <span class="count">${routines.length}</span></h2>
     ${routines.length ? routines.map(r => `<div class="rt">${iconBox("repeat")}
-      <div class="m"><h3>${esc(r.title)}</h3><p>${r.days.length === 7 ? "Her gün" : r.days.map(d => WD_SHORT[d]).join(", ")}</p></div>
+      <div class="m"><h3>${esc(r.title)}</h3><p>${r.days.length === 7 ? tx("Her gün") : r.days.map(d => WD_SHORT[d]).join(", ")}</p></div>
       <button class="del" data-rt-del="${r.id}" aria-label="${tx("Sil")}">×</button></div>`).join("")
       : `<div class="empty">${tx("Her gün tekrarlanmasını istediğin görevleri buraya ekle: ilaç, vitamin, yürüyüş.")}</div>`}
     <div class="field" style="margin-top:14px"><label for="rt-title">${tx("Yeni tekrar eden görev")}</label>
@@ -156,10 +156,10 @@ function wireSettings(){
     p2.days = (p2.days || []).slice();
     const i = p2.days.indexOf(n);
     if (i >= 0){
-      if (p2.days.length <= 3){ toast("En az 3 antrenman günü gerekli."); return; }
+      if (p2.days.length <= 3){ toast(tx("En az 3 antrenman günü gerekli.")); return; }
       p2.days.splice(i, 1);
     } else {
-      if (p2.days.length >= 5){ toast("En fazla 5 gün seçebilirsin."); return; }
+      if (p2.days.length >= 5){ toast(tx("En fazla 5 gün seçebilirsin.")); return; }
       p2.days.push(n);
     }
     p2.days.sort((a, b2) => a - b2);
@@ -207,7 +207,7 @@ function wireSettings(){
   };
 
   document.getElementById("reset").onclick = async () => {
-    if (!confirm("Tüm veriler silinecek. Emin misin?")) return;
+    if (!confirm(tx("Tüm veriler silinecek. Emin misin?"))) return;
     state = null; notice = null; tab = "today";
     if (window.storage) { try { await window.storage.delete(KEY); } catch(e){} }
     try { localStorage.removeItem(KEY); } catch(e){}

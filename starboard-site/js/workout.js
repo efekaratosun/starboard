@@ -5,11 +5,11 @@
    yazılır: tür ve süre yeter. Görev değildir, zorunlu değildir; yapıldıysa
    kayda geçsin diye vardır. Takvimde program antrenmanıyla aynı işareti alır. */
 const FREE_KINDS = [
-  ["walk", "Yürüyüş"], ["run", "Koşu"], ["bike", "Bisiklet"],
-  ["swim", "Yüzme"], ["gym", "Ağırlık"], ["other", "Diğer"]
+  ["walk", tx("Yürüyüş")], ["run", tx("Koşu")], ["bike", tx("Bisiklet")],
+  ["swim", tx("Yüzme")], ["gym", tx("Ağırlık")], ["other", tx("Diğer")]
 ];
 const FREE_ICON = { walk:"walk", run:"walk", bike:"walk", swim:"walk", gym:"plan", other:"plan" };
-const freeLabel = f => (FREE_KINDS.find(([k]) => k === f.k) || ["", "Antrenman"])[1];
+const freeLabel = f => (FREE_KINDS.find(([k]) => k === f.k) || ["", tx("Antrenman")])[1];
 
 function hasFree(d){ return !!(d && d.free && d.free.k); }
 
@@ -17,10 +17,10 @@ function freeCard(entry, key){
   const f = entry.free;
   const now = key === today();
   return `<section>
-    <h2>${f ? "Kaydettiğin antrenman" : (now ? "Bugün antrenman yaptın mı?" : "O gün antrenman yaptın mı?")}</h2>
+    <h2>${f ? tx("Kaydettiğin antrenman") : (now ? tx("Bugün antrenman yaptın mı?") : tx("O gün antrenman yaptın mı?"))}</h2>
     ${f ? `<div class="item">${iconBox(FREE_ICON[f.k] || "plan")}
         <div class="item-main"><h3>${esc(freeLabel(f))}</h3>
-          <p>${f.min ? `${f.min} dakika` : "süre girilmedi"}${f.note ? ` · ${esc(f.note)}` : ""}</p></div>
+          <p>${f.min ? `${f.min} dakika` : tx("süre girilmedi")}${f.note ? ` · ${esc(f.note)}` : ""}</p></div>
         <button class="del" id="free-del" aria-label="${tx("Sil")}">×</button></div>
       <button class="ghost" id="free-add" style="margin-top:12px">${tx("Değiştir")}</button>`
      : `<button id="free-add">${tx("Antrenman ekle")}</button>`}
@@ -109,14 +109,14 @@ function parseEx(s, venue){
   let m;
   const base = s.replace(/\s*\d+\s*(×|set\b).*$/,"").trim() || s;
   if ((m = l.match(/^(\d+) tur:\s*(.*)$/)))
-    return { t:"n", n:+m[1], name:"Devre", sub:s.replace(/^\d+ tur:\s*/,"").replace(/ · /g,", "), unit:"tur" };
+    return { t:"n", n:+m[1], name:tx("Devre"), sub:s.replace(/^\d+ tur:\s*/,"").replace(/ · /g,", "), unit:"tur" };
   if ((m = l.match(/(\d+) tur\b/))){
     const rest = s.replace(/\s*\d+ tur\b/,"").trim();
-    if (/^\(/.test(rest)) return { t:"n", n:+m[1], name:"Koşu-yürüyüş aralığı", sub:`${m[1]} tur · ${rest.slice(1,-1)}`, unit:"tur" };
+    if (/^\(/.test(rest)) return { t:"n", n:+m[1], name:tx("Koşu-yürüyüş aralığı"), sub:`${m[1]} tur · ${rest.slice(1,-1)}`, unit:"tur" };
     return { t:"n", n:+m[1], name:rest || s, sub:m[1]+" tur", unit:"tur" };
   }
   if ((m = l.match(/^(\d+)\s*×\s*(\d+) dk koşu/)))
-    return { t:"n", n:+m[1], name:"Koşu", sub:s, unit:"blok" };
+    return { t:"n", n:+m[1], name:tx("Koşu"), sub:s, unit:"blok" };
   if ((m = l.match(/(\d+)×(\d+) m\b/))){
     if (venue === "swim") return { t:"sw", n:+m[1], d:+m[2], name:s.replace(/^\d+×\d+ m\s*/,"").replace(/^./,c=>c.toLocaleUpperCase("tr")), sub:`${m[1]} × ${m[2]} m` };
     return { t:"wc", n:+m[1], name:base, sub:`${m[1]} × ${m[2]} m`, unit:"set" };
@@ -124,7 +124,7 @@ function parseEx(s, venue){
   if ((m = l.match(/^(\d+) m (ısınma|soğuma)/)))
     return { t:"ok", name:m[2][0].toLocaleUpperCase("tr")+m[2].slice(1), sub:m[1]+" m" };
   if ((m = l.match(/^(\d+) m\s*(.*)$/)))
-    return { t:"sd", d:+m[1], name:(m[2]||"yüzme").replace(/^./,c=>c.toLocaleUpperCase("tr")), sub:m[1]+" m" };
+    return { t:"sd", d:+m[1], name:(m[2]||tx("yüzme")).replace(/^./,c=>c.toLocaleUpperCase("tr")), sub:m[1]+" m" };
   if (/(\d+)×(\d+) sn/.test(l) && /sprint/.test(l)){
     m = l.match(/(\d+)×(\d+) sn/);
     return { t:"n", n:+m[1], name:base, sub:`${m[1]} × ${m[2]} sn`, unit:"tekrar" };
@@ -141,7 +141,7 @@ function parseEx(s, venue){
   const heavy = /çantalı/.test(l) || ((venue === "gym" || venue === "kettlebell") && !BW_RX.test(l));
   if ((m = l.match(/(\d+)×(max|\d+(?:-\d+)?)( adım)?/))){
     const n = +m[1], tg = m[2];
-    const sub = `${n} set × ${tg === "max" ? "max" : tg}${m[3] ? " adım" : ""}`;
+    const sub = `${n} set × ${tg === "max" ? "max" : tg}${m[3] ? tx(" adım") : ""}`;
     if (heavy && (n > 6 || tg === "1")) return { t:"wc", n, name:base, sub:sub + (/her taraf/.test(l) ? " (her taraf)" : ""), unit:"set" };
     if (heavy) return { t:"w", n, tg, name:base, sub };
     return { t:"r", n, tg, name:base, sub, xkg:XKG_RX.test(l) };
@@ -198,11 +198,11 @@ function liftSummary(l, ex){
     case "sw": return `${l.n || 0}/${ex.n} × ${ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`;
     case "sd": return `${l.m || ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`;
     case "c":  return [l.min ? fmtN(l.min) + " dk" : "", l.km ? fmtN(l.km) + " km" : "", pace(l.min, l.km)].filter(Boolean).join(" · ");
-    default:   return l.ok ? "yapıldı" : "";
+    default:   return l.ok ? tx("yapıldı") : "";
   }
 }
 
-const LIFT_KIND = { w:"Ağırlık × tekrar", r:"Tekrar", t:"Süre", wc:"Ağırlık + set", n:"Tur", sw:"Tekrar + süre", sd:"Mesafe + süre", c:"Süre + mesafe", ok:"" };
+const LIFT_KIND = { w:tx("Ağırlık × tekrar"), r:tx("Tekrar"), t:tx("Süre"), wc:tx("Ağırlık + set"), n:tx("Tur"), sw:tx("Tekrar + süre"), sd:tx("Mesafe + süre"), c:tx("Süre + mesafe"), ok:"" };
 
 function liftInput(i, f, k, val, ph, dec, label){
   return `<label class="lf-cell">${label ? `<span>${label}</span>` : ""}<input type="number" inputmode="${dec?"decimal":"numeric"}"
@@ -232,12 +232,12 @@ function liftBody(i, ex, cur, prev){
       }).join("")}</div>`;
     case "r": case "t": return `<div class="lf-grid">${idx.map(k =>
         liftInput(i,"s",k,sets[k],(typeof pSets[k] === "number" ? pSets[k] : ex.tg),false,`${k+1}. set${ex.t==="t"?" · sn":""}`)).join("")}
-        ${ex.xkg ? liftInput(i,"kg2",undefined,cur.kg2,prev && prev.kg2 || "",true,"Ek kg") : ""}</div>`;
-    case "wc": return `<div class="lf-row">${liftInput(i,"kg",undefined,cur.kg,prev && prev.kg || "",true,"Ağırlık (kg)")}</div>${stepper(i, cur.n || 0, ex.n, ex.unit)}`;
+        ${ex.xkg ? liftInput(i,"kg2",undefined,cur.kg2,prev && prev.kg2 || "",true,tx("Ek kg")) : ""}</div>`;
+    case "wc": return `<div class="lf-row">${liftInput(i,"kg",undefined,cur.kg,prev && prev.kg || "",true,tx("Ağırlık (kg)"))}</div>${stepper(i, cur.n || 0, ex.n, ex.unit)}`;
     case "n":  return stepper(i, cur.n || 0, ex.n, ex.unit);
-    case "sw": return `${stepper(i, cur.n || 0, ex.n, "× " + ex.d + " m")}<div class="lf-row">${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,"Süre (dk)")}</div>`;
-    case "sd": return `<div class="lf-row">${liftInput(i,"m",undefined,cur.m,ex.d,false,"Mesafe (m)")}${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,"Süre (dk)")}</div>`;
-    case "c":  return `<div class="lf-row">${liftInput(i,"min",undefined,cur.min,ex.tg || "",true,"Süre (dk)")}${ex.km ? liftInput(i,"km",undefined,cur.km,prev && prev.km || "",true,"Mesafe (km)") : ""}</div>
+    case "sw": return `${stepper(i, cur.n || 0, ex.n, "× " + ex.d + " m")}<div class="lf-row">${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
+    case "sd": return `<div class="lf-row">${liftInput(i,"m",undefined,cur.m,ex.d,false,tx("Mesafe (m)"))}${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
+    case "c":  return `<div class="lf-row">${liftInput(i,"min",undefined,cur.min,ex.tg || "",true,tx("Süre (dk)"))}${ex.km ? liftInput(i,"km",undefined,cur.km,prev && prev.km || "",true,tx("Mesafe (km)")) : ""}</div>
                  ${cur.min && cur.km ? `<div class="metric-note">${tx("Tempo:")} <b>${pace(cur.min, cur.km)}</b></div>` : ""}`;
     default:   return "";
   }
@@ -268,7 +268,7 @@ function trainLogView(entry, program, key){
 
   if (!session || !session.b) return `
     <section>
-      <h2>${now ? "Bugün dinlenme" : "O gün dinlenme günüydü"}</h2>
+      <h2>${now ? tx("Bugün dinlenme") : tx("O gün dinlenme günüydü")}</h2>
       ${session && session.t && session.t !== "Dinlenme" ? `<div class="metric-note">${esc(session.t)}</div>` : ""}
     </section>
     ${freeCard(entry, key)}
@@ -283,7 +283,7 @@ function trainLogView(entry, program, key){
   <section>
     <h2>${esc(session.t)} <span class="count">${tx("{0}/{1} hareket", [(doneN), (list.length)])}</span></h2>
     <div class="metric-note" style="margin-bottom:13px">${esc(session.b)}</div>
-    <button id="wo-start">${doneN ? "Antrenman moduna dön" : "Antrenman modunu başlat"}</button>  </section>
+    <button id="wo-start">${doneN ? tx("Antrenman moduna dön") : tx("Antrenman modunu başlat")}</button>  </section>
   ${liftsSection(entry, session, key)}
   ${freeCard(entry, key)}
   ${prBoard()}`;
@@ -304,7 +304,7 @@ function nextSessionCard(program, key){
     <h2>${tx("Sıradaki antrenman")}</h2>
     <div class="item">${iconBox(best.icon)}
       <div class="item-main"><h3>${esc(best.t)}</h3>
-        <p>${WD_NAMES[best.wd]}${bestGap === 1 ? " · yarın" : ` · ${bestGap} gün sonra`}</p></div></div>
+        <p>${WD_NAMES[best.wd]}${bestGap === 1 ? tx(" · yarın") : tx(" · {0} gün sonra", [(bestGap)])}</p></div></div>
   </section>`;
 }
 
@@ -315,7 +315,7 @@ function liftsSection(entry, session, key){
   const venue = venueOf(currentProgram());
   const lifts = entry.lifts || {};
   const doneN = list.filter(n => liftHas(lifts[n])).length;
-  return fold("lifts", "Hareketleri tek tek gir", `${doneN}/${list.length}`, `
+  return fold("lifts", tx("Hareketleri tek tek gir"), `${doneN}/${list.length}`, `
     ${list.map((name, i) => {
       const ex = parseEx(name, venue);
       const cur = lifts[name] || {};
@@ -333,7 +333,7 @@ function liftsSection(entry, session, key){
           ${has ? `<svg class="ico lift-tick" aria-hidden="true"><use href="#i-check"/></svg>` : ""}
         </div>
         ${liftBody(i, ex, cur, prev)}
-        <div class="metric-note">${ps ? `Son: ${esc(ps)} · ${prettyDate(prev.k)}` : ""}</div>
+        <div class="metric-note">${ps ? tx("Son: {0} · {1}", [(esc(ps)), (prettyDate(prev.k))]) : ""}</div>
       </div>`;
     }).join("")}`);
 }
@@ -436,9 +436,9 @@ async function guardKcal(entry){
   const manual = entry.kcalManual && typeof entry.kcal === "number" && entry.kcal > 0;
   if (!manual || (entry.log && entry.log.length)) return true;
   const yes = await askSheet({
-    title: "Kalori nereden hesaplansın?",
+    title: tx("Kalori nereden hesaplansın?"),
     body: `Bu güne elle <b>${tx("{0} kcal", [(entry.kcal)])}</b> girilmişti. Beslenme günlüğüne kalem eklersen kalori bundan sonra günlükten hesaplanır ve elle girdiğin değer kaybolur.`,
-    ok: "Günlükten hesapla", cancel: "Vazgeç" });
+    ok: tx("Günlükten hesapla"), cancel: tx("Vazgeç") });
   if (yes) delete entry.kcalManual;
   return yes;
 }

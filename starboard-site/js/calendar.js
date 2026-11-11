@@ -186,11 +186,11 @@ function monthCompare(sum){
   const dF = Math.round(p(sum.full, sum.days) - p(sum.prev.full, sum.prev.days));
   const dE = Math.round(p(sum.empty, sum.days) - p(sum.prev.empty, sum.prev.days));
   const part = (n, iyi, kotu) => n === 0 ? null : `${Math.abs(n)} puan ${n > 0 ? iyi : kotu}`;
-  const bits = [part(dF, "daha çok tam gün", "daha az tam gün"),
-                part(dE, "daha çok boş gün", "daha az boş gün")].filter(Boolean);
+  const bits = [part(dF, tx("daha çok tam gün"), tx("daha az tam gün")),
+                part(dE, tx("daha çok boş gün"), tx("daha az boş gün"))].filter(Boolean);
   return `<div class="metric-note" style="margin-top:14px">${bits.length
-    ? `${sum.prevLabel} ayına göre ${bits.join(", ")}.`
-    : `${sum.prevLabel} ayıyla aynı oranda gidiyorsun.`}</div>`;
+    ? tx("{0} ayına göre {1}.", [(sum.prevLabel), (bits.join(", "))])
+    : tx("{0} ayıyla aynı oranda gidiyorsun.", [(sum.prevLabel)])}</div>`;
 }
 
 function calendarView(){
@@ -214,12 +214,12 @@ function calendarView(){
   
     const cls = ["cal-day", isFuture ? "future" : "", isToday ? "now" : "", calSel === k ? "sel" : ""]
       .filter(Boolean).join(" ");
-    const label = empty ? "hiç veri girilmemiş"
-      : r === null ? "kayıt yok"
-      : r >= 1 ? "tüm görevler tamam" : `görevlerin %${Math.round(r*100)}'i`;
+    const label = empty ? tx("hiç veri girilmemiş")
+      : r === null ? tx("kayıt yok")
+      : r >= 1 ? tx("tüm görevler tamam") : tx("görevlerin %{0}'i", [(Math.round(r*100))]);
 
     cells.push(`<button class="${cls}" data-day="${k}" data-lv="${lv}"
-        aria-label="${d} ${WD_NAMES[isoWeekday(k)]}, ${label}${isFuture ? "" : marksLabel(k, program) + " — özetini aç"}">
+        aria-label="${d} ${WD_NAMES[isoWeekday(k)]}, ${label}${isFuture ? "" : marksLabel(k, program) + tx(" — özetini aç")}">
       <span class="cal-n">${d}</span>
       ${isFuture ? "" : dayMarks(k, program)}
     </button>`);
@@ -236,7 +236,7 @@ function calendarView(){
       <button class="cal-nav" id="cal-next" aria-label="${tx("Sonraki ay")}" ${calMonth >= thisMonth ? "disabled" : ""}><svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
     </div>
     <div class="cal-grid">
-      ${["Pt","Sa","Ça","Pe","Cu","Ct","Pz"].map(w => `<div class="cal-wd">${w}</div>`).join("")}
+      ${[tx("Pt"),tx("Sa"),tx("Ça"),tx("Pe"),tx("Cu"),tx("Ct"),tx("Pz")].map(w => `<div class="cal-wd">${w}</div>`).join("")}
       ${cells.join("")}
     </div>
     <div class="cal-scale">
@@ -302,9 +302,9 @@ function marksLabel(k, program){
   const out = [];
   if (typeof d.weight === "number") out.push(`${kg1(d.weight)} kg`);
   const kc = kcalMark(k, program);
-  if (kc) out.push(`${d.kcal} kcal, hedef bandının ${kc === "ok" ? "içinde" : "dışında"}`);
+  if (kc) out.push(tx("{0} kcal, hedef bandının {1}", [(d.kcal), (kc === "ok" ? tx("içinde") : tx("dışında"))]));
   if (liftMark(k)) out.push(hasFree(state.days[k])
-    ? `${freeLabel(state.days[k].free)} kaydı var` : "antrenman kaydı var");
+    ? tx("{0} kaydı var", [(freeLabel(state.days[k].free))]) : tx("antrenman kaydı var"));
   return out.length ? ", " + out.join(", ") : "";
 }
 
@@ -332,21 +332,21 @@ function dayDetail(){
 
   return `<section>
     <div class="dd-h">
-      <div><b>${prettyDate(k)}</b><i>${weekdayName(k)}${k === t ? " · bugün" : ""}</i></div>
-      <button class="ghost" id="dd-edit">${empty ? "Veri gir" : "Düzenle"}</button>
+      <div><b>${prettyDate(k)}</b><i>${weekdayName(k)}${k === t ? tx(" · bugün") : ""}</i></div>
+      <button class="ghost" id="dd-edit">${empty ? tx("Veri gir") : tx("Düzenle")}</button>
     </div>
-    ${empty ? `<div class="empty" style="margin-top:14px">${tx("Bu güne hiç veri girilmemiş.{0}", [(k === t ? " Gün bitmediği için takvimde kırmızı görünmüyor." : " Takvimde kırmızı görünmesinin sebebi bu.")])}</div>` : `
-    ${row("Kilo", typeof d.weight === "number" ? `${kg1(d.weight)} kg` : "—")}
-    ${row("Kalori", typeof d.kcal === "number" ? `${d.kcal} kcal` : "—",
+    ${empty ? `<div class="empty" style="margin-top:14px">${tx("Bu güne hiç veri girilmemiş.{0}", [(k === t ? tx(" Gün bitmediği için takvimde kırmızı görünmüyor.") : tx(" Takvimde kırmızı görünmesinin sebebi bu."))])}</div>` : `
+    ${row(tx("Kilo"), typeof d.weight === "number" ? `${kg1(d.weight)} kg` : "—")}
+    ${row(tx("Kalori"), typeof d.kcal === "number" ? `${d.kcal} kcal` : "—",
         typeof d.kcal === "number" && program
-          ? (kcalMark(k, program) === "ok" ? "hedef bandında" : `hedef ${program.kcal} kcal`)
-          : logN ? `${logN} kalem girilmiş` : "")}
-    ${row("Uyku", typeof d.sleep === "number" ? durTxt(Math.round(d.sleep * 60)) : "—")}
-    ${row("Su", typeof d.water === "number" ? `${d.water} ml` : "—",
+          ? (kcalMark(k, program) === "ok" ? tx("hedef bandında") : `hedef ${program.kcal} kcal`)
+          : logN ? tx("{0} kalem girilmiş", [(logN)]) : "")}
+    ${row(tx("Uyku"), typeof d.sleep === "number" ? durTxt(Math.round(d.sleep * 60)) : "—")}
+    ${row(tx("Su"), typeof d.water === "number" ? `${d.water} ml` : "—",
         program && typeof d.water === "number" ? `hedef ${program.water} ml` : "")}
-    ${session && session.b ? row("Antrenman", `${liftN}/${exN.length}`, esc(session.t)) : ""}
-    ${hasFree(d) ? row("Antrenman", d.free.min ? `${d.free.min} dk` : "yapıldı", esc(freeLabel(d.free))) : ""}
-    ${tasks.length ? row("Görevler", `${doneT}/${tasks.length}`) : ""}`}
+    ${session && session.b ? row(tx("Antrenman"), `${liftN}/${exN.length}`, esc(session.t)) : ""}
+    ${hasFree(d) ? row(tx("Antrenman"), d.free.min ? `${d.free.min} dk` : tx("yapıldı"), esc(freeLabel(d.free))) : ""}
+    ${tasks.length ? row(tx("Görevler"), `${doneT}/${tasks.length}`) : ""}`}
   </section>`;
 }
 
@@ -363,7 +363,7 @@ function wireCalendar(){
 
   app.querySelectorAll("[data-day]").forEach(b => b.onclick = () => {
     const k = b.dataset.day;
-    if (k > today()) { toast("Gelecek bir gün; girişi o gün geldiğinde açılır."); return; }
+    if (k > today()) { toast(tx("Gelecek bir gün; girişi o gün geldiğinde açılır.")); return; }
     calSel = k;
     saveState(state); render();
     document.getElementById("day-detail")?.scrollIntoView({ behavior:"smooth", block:"center" });

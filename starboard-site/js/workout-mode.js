@@ -65,7 +65,7 @@ function woSetRow(ex, rec, prev, k){
   return `<div class="wo-set${on ? " on" : ""}">
     <span class="wo-no">${k+1}</span>
     <div class="wo-fields">${fields}</div>
-    <button class="wo-ok" data-wok="${k}" aria-pressed="${on}" aria-label="${k+1}. seti ${on ? "geri al" : "tamamlandı olarak işaretle"}">${woTick}</button>
+    <button class="wo-ok" data-wok="${k}" aria-pressed="${on}" aria-label="${k+1}. seti ${on ? "geri al" : tx("tamamlandı olarak işaretle")}">${woTick}</button>
   </div>`;
 }
 function woChips(cur, max, unit){
@@ -81,9 +81,9 @@ function woBody(ex, name, rec, prev){
       const n = ex.n || 1;
       const all = Array.from({ length:n }, (_, k) => woSetDone(ex, rec, k)).every(Boolean);
       const canCopy = !all && (prev || (ex.t !== "w" && tgNum(ex.tg) !== null));
-      return `${canCopy ? `<button class="ghost wo-copy" id="wo-copy">${prev ? "Hepsi geçen seferki gibi" : "Hepsini hedefe göre doldur"}</button>` : ""}
+      return `${canCopy ? `<button class="ghost wo-copy" id="wo-copy">${prev ? tx("Hepsi geçen seferki gibi") : tx("Hepsini hedefe göre doldur")}</button>` : ""}
         <div class="wo-sets">${Array.from({ length:n }, (_, k) => woSetRow(ex, rec, prev, k)).join("")}</div>
-        <div class="wo-note">${tx("Değerler {0} geliyor. Aynıysa ✓'e bas, farklıysa − / + ile düzelt ya da sayıya dokunup yaz.", [(prev ? "geçen antrenmandan" : "programdaki hedeften")])}</div>`;
+        <div class="wo-note">${tx("Değerler {0} geliyor. Aynıysa ✓'e bas, farklıysa − / + ile düzelt ya da sayıya dokunup yaz.", [(prev ? tx("geçen antrenmandan") : "programdaki hedeften")])}</div>`;
     }
     case "wc": {
       const s = { kg: rec.kg ?? (prev && prev.kg) ?? null };
@@ -101,7 +101,7 @@ function woBody(ex, name, rec, prev){
           : ""}`;
     }
     default:
-      return `<button class="wo-big${rec.ok ? " on" : ""}" id="wo-ok1" aria-pressed="${rec.ok ? "true" : "false"}">${woTick}${rec.ok ? "Yapıldı" : "Yaptım"}</button>`;
+      return `<button class="wo-big${rec.ok ? " on" : ""}" id="wo-ok1" aria-pressed="${rec.ok ? "true" : "false"}">${woTick}${rec.ok ? tx("Yapıldı") : tx("Yaptım")}</button>`;
   }
 }
 
@@ -115,14 +115,14 @@ function woScreen(){
     return `<div class="wo-top"><button class="wo-x" id="wo-x" aria-label="${tx("Kapat")}">×</button>
       <span class="wo-count">${tx("ÖZET")}</span><span style="flex:0 0 38px"></span></div>
     <div class="wo-main">
-      <div class="wo-done"><b>${nDone === list.length ? "Antrenman tamam 💪" : "Kaydedildi"}</b>
-        <span>${nDone}/${list.length} hareket kaydettin.${nDone < list.length ? " Eksikleri sonra da girebilirsin." : ""}</span></div>
+      <div class="wo-done"><b>${nDone === list.length ? tx("Antrenman tamam 💪") : tx("Kaydedildi")}</b>
+        <span>${nDone}/${list.length} hareket kaydettin.${nDone < list.length ? tx(" Eksikleri sonra da girebilirsin.") : ""}</span></div>
       <section style="margin-top:16px">${list.map(name => {
         const ex = parseEx(name, venue), rec = lifts[name];
         const has = liftHas(rec), sum = has ? liftSummary(rec, ex) : "";
         return `<div class="wo-sum${has ? "" : " skip"}">
           <svg class="ico" aria-hidden="true"><use href="#i-${has ? "check" : "cross"}"/></svg>
-          <div class="m"><h3>${esc(ex.name)}</h3><p>${has ? esc(sum || "yapıldı") : "girilmedi"}</p></div>
+          <div class="m"><h3>${esc(ex.name)}</h3><p>${has ? esc(sum || tx("yapıldı")) : "girilmedi"}</p></div>
         </div>`;
       }).join("")}</section>
     </div>
@@ -148,13 +148,13 @@ function woScreen(){
     <div class="wo-main">
       <div class="wo-h">${esc(ex.name)}</div>
       <div class="wo-s">${esc(ex.sub || "")}${ex.sub && LIFT_KIND[ex.t] ? " · " : ""}${LIFT_KIND[ex.t] || ""}</div>
-      <div class="wo-last">${ps ? `Geçen sefer: <b>${esc(ps)}</b> · ${prettyDate(prev.k)}` : "Bu hareketi ilk kez kaydediyorsun."}
+      <div class="wo-last">${ps ? `Geçen sefer: <b>${esc(ps)}</b> · ${prettyDate(prev.k)}` : tx("Bu hareketi ilk kez kaydediyorsun.")}
         ${ids.length ? `<button class="how-link" data-wohow="${ids[0]}">${tx("Nasıl yapılır")}</button>` : ""}</div>
       ${woBody(ex, name, rec, prev)}
     </div>
     <div class="wo-nav"><div>
       <button class="ghost wo-prev" id="wo-back"${woIdx ? "" : " disabled"}>${tx("Geri")}</button>
-      <button id="wo-next">${woIdx === list.length - 1 ? "Bitir" : "Sonraki hareket"}</button>
+      <button id="wo-next">${woIdx === list.length - 1 ? tx("Bitir") : tx("Sonraki hareket")}</button>
     </div></div>`;
 }
 
@@ -176,7 +176,7 @@ function openWorkout(){
   woEl.className = "wo";
   woEl.setAttribute("role", "dialog");
   woEl.setAttribute("aria-modal", "true");
-  woEl.setAttribute("aria-label", "Antrenman modu");
+  woEl.setAttribute("aria-label", tx("Antrenman modu"));
   document.body.appendChild(woEl);
   document.body.style.overflow = "hidden";
   drawWO();
@@ -249,12 +249,12 @@ function wireWO(){
     }
     if (ex.t === "w"){
       const r = val("r", k);
-      if (r === null || r === 0){ toast("Kaç tekrar yaptığını gir."); return; }
+      if (r === null || r === 0){ toast(tx("Kaç tekrar yaptığını gir.")); return; }
       const kg = val("kg", k);
       rec.sets[k] = kg === null ? { r } : { kg, r };
     } else {
       const v = val("s", k);
-      if (v === null || v === 0){ toast(ex.t === "t" ? "Kaç saniye tuttuğunu gir." : "Kaç tekrar yaptığını gir."); return; }
+      if (v === null || v === 0){ toast(ex.t === "t" ? tx("Kaç saniye tuttuğunu gir.") : tx("Kaç tekrar yaptığını gir.")); return; }
       rec.sets[k] = v;
     }
     for (let j = 0; j < rec.sets.length; j++) if (rec.sets[j] === undefined) rec.sets[j] = null;
@@ -282,7 +282,7 @@ function wireWO(){
       }
       n++;
     }
-    if (!n){ toast("Doldurulacak bir değer yok; sayıları elle gir."); return; }
+    if (!n){ toast(tx("Doldurulacak bir değer yok; sayıları elle gir.")); return; }
     for (let j = 0; j < rec.sets.length; j++) if (rec.sets[j] === undefined) rec.sets[j] = null;
     await save(); drawWO();
     checkPR(name, before);

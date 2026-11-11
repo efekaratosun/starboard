@@ -39,7 +39,7 @@ function mealsView(program){
              : mealTab === "log" ? logView(program, entry)
              : recipesView();
   return `<div class="seg">
-    ${[["log","Günlüğüm"],["plan","Öneriler"],["recipes","Tarifler"]].map(([k,l]) =>
+    ${[["log",tx("Günlüğüm")],["plan",tx("Öneriler")],["recipes",tx("Tarifler")]].map(([k,l]) =>
       `<button data-meal-tab="${k}" aria-current="${mealTab===k}">${l}</button>`).join("")}
   </div>` + body;
 }
@@ -87,9 +87,9 @@ function recipeCard(r, idx){
 
 /* Arama boşken üç tarif gösteriyoruz; "başka tarifler" listeyi kaydırıyor. */
 /* Tarifin türü de aranabilsin: "balık" yazınca hamsi ve somon tarifleri de çıksın. */
-const CAT_WORDS = { fish:"balık deniz ürünü", poultry:"tavuk kümes beyaz et", meat:"et kırmızı et kıyma",
-  legume:"baklagil bakliyat", veg:"sebze zeytinyağlı", grain:"tahıl hamur pilav",
-  dairy:"süt ürünü yoğurt", egg:"yumurta kahvaltı", nuts:"kuruyemiş", potato:"patates", bread:"hamur", fruit:"meyve tatlı" };
+const CAT_WORDS = { fish:tx("balık deniz ürünü"), poultry:tx("tavuk kümes beyaz et"), meat:tx("et kırmızı et kıyma"),
+  legume:"baklagil bakliyat", veg:tx("sebze zeytinyağlı"), grain:tx("tahıl hamur pilav"),
+  dairy:tx("süt ürünü yoğurt"), egg:tx("yumurta kahvaltı"), nuts:tx("kuruyemiş"), potato:"patates", bread:"hamur", fruit:tx("meyve tatlı") };
 
 const recipeFits = r => r.ing.every(([k]) => foodAllowed(k, currentDiet()));
 
@@ -149,7 +149,7 @@ function macroRow(label, got, target, unit, ic, color){
 function microSection(micros){
   const keys = Object.keys(NUTRIENTS);
   const missing = keys.filter(k => !micros.has(k));
-  return fold("micro", "Mikro besinler", `${keys.length - missing.length}/${keys.length}`, `
+  return fold("micro", tx("Mikro besinler"), `${keys.length - missing.length}/${keys.length}`, `
     <div class="pills">${keys.map(k => micros.has(k)
       ? `<span class="pill on"><svg class="ico"><use href="#i-check"/></svg>${NUTRIENTS[k].n}</span>`
       : `<span class="pill">${NUTRIENTS[k].n}</span>`).join("")}</div>
@@ -166,12 +166,12 @@ function logView(program, entry){
   return `
   ${favBlock(entry)}
   <section>
-    <h2>${onToday() ? "Bugün aldığın" : "O gün aldığın"} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
-    ${macroRow("Kalori", tot.kcal, program.kcal, "", "grain", "band")}
-    ${macroRow("Protein", tot.p, program.protein, " g", "poultry", "mp")}
-    ${macroRow("Karbonhidrat", tot.c, program.carb, " g", "bread", "mc")}
-    ${macroRow("Yağ", tot.f, program.fat, " g", "oil", "mf")}
-    ${macroRow("Lif", tot.lif, fib, " g", "veg", "ml")}
+    <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
+    ${macroRow(tx("Kalori"), tot.kcal, program.kcal, "", "grain", "band")}
+    ${macroRow(tx("Protein"), tot.p, program.protein, " g", "poultry", "mp")}
+    ${macroRow(tx("Karbonhidrat"), tot.c, program.carb, " g", "bread", "mc")}
+    ${macroRow(tx("Yağ"), tot.f, program.fat, " g", "oil", "mf")}
+    ${macroRow(tx("Lif"), tot.lif, fib, " g", "veg", "ml")}
     ${tot.kcal > program.kcal * 1.1 ? `<div class="metric-note" style="margin-top:12px"><b class="out">${tx("Hedefi {0} kcal aştın.", [(tot.kcal-program.kcal)])}</b></div>`
       : tot.kcal ? `<div class="metric-note" style="margin-top:12px">${tx("Hedefe {0} kcal kaldı.", [(Math.max(program.kcal-tot.kcal,0))])}</div>` : ""}
   </section>
@@ -221,7 +221,7 @@ function mealCards(entry){
       ${addOpen === k ? addPanel()
         : `<button class="ghost" data-addfood="${k}" style="margin-top:12px">${tx("Besin ekle")}</button>
            ${yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
-             ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [(onToday() ? "Dünküyle" : "Bir önceki günle"), (yIt.length), (kcalOf(yIt))])}</button>` : ""}`}
+             ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [(onToday() ? tx("Dünküyle") : tx("Bir önceki günle")), (yIt.length), (kcalOf(yIt))])}</button>` : ""}`}
     </section>`;
   });
 
@@ -280,7 +280,7 @@ function logBySlot(log){
   const slotOf = x => { const sId = x.slot || fallback; return known.has(sId) ? sId : "__other"; };
   const groups = list.map(([k,l]) => [k, l, log.filter(x => slotOf(x) === k)]);
   const other = log.filter(x => slotOf(x) === "__other");
-  if (other.length) groups.push(["__other", "Diğer", other]);
+  if (other.length) groups.push(["__other", tx("Diğer"), other]);
   return groups.filter(([,,items]) => items.length).map(([,l,items]) => {
     const kc = items.reduce((a,it) => a + (it.p*4+it.c*4+it.f*9)*it.g/100, 0);
     return `<div class="slot-head"><span>${l}</span><span class="num">${tx("{0} kcal", [(Math.round(kc))])}</span></div>
@@ -344,7 +344,7 @@ function favBlock(entry){
     ${favs.length ? `<div class="fav">${favs.map(([k,c]) =>
       `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${c.g} g</button>`).join("")}</div>`
       : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`}
-    ${yLog.length ? `<button class="ghost rep" id="copy-y" style="margin-top:14px">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? "Dünün" : "Bir önceki günün"), (yLog.length)])}</button>` : ""}
+    ${yLog.length ? `<button class="ghost rep" id="copy-y" style="margin-top:14px">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? tx("Dünün") : tx("Bir önceki günün")), (yLog.length)])}</button>` : ""}
   </section>`;
 }
 
@@ -365,9 +365,9 @@ const ICON_CAT = { poultry:"et", meat:"et", fish:"balik", dairy:"sut", egg:"kahv
   grain:"tahil", bread:"tahil", legume:"baklagil", veg:"sebze", potato:"sebze",
   fruit:"meyve", nuts:"kuruyemis", oil:"yag", avocado:"meyve" };
 
-const CAT_LABELS = { kahvaltilik:"Kahvaltılık", sarkuteri:"Şarküteri", spor:"Spor & protein", ara:"Ara öğün",
-  yemek:"Ana yemek", et:"Et & tavuk", balik:"Balık", sut:"Süt ürünleri", sebze:"Sebze",
-  meyve:"Meyve", tahil:"Tahıl & ekmek", baklagil:"Baklagil", kuruyemis:"Kuruyemiş", yag:"Yağ & zeytin" };
+const CAT_LABELS = { kahvaltilik:tx("Kahvaltılık"), sarkuteri:tx("Şarküteri"), spor:tx("Spor & protein"), ara:tx("Ara öğün"),
+  yemek:tx("Ana yemek"), et:tx("Et & tavuk"), balik:tx("Balık"), sut:tx("Süt ürünleri"), sebze:tx("Sebze"),
+  meyve:tx("Meyve"), tahil:tx("Tahıl & ekmek"), baklagil:tx("Baklagil"), kuruyemis:tx("Kuruyemiş"), yag:tx("Yağ & zeytin") };
 
 const foodCat = f => f.cat || ICON_CAT[f.i] || "tahil";
 
@@ -577,13 +577,13 @@ function planView(program){
   return `
   <section>
     <h2>${plan.setName} <span class="count">${tx("{0} kcal", [(plan.total.kcal)])}</span></h2>
-    ${macroRow("Kalori", plan.total.kcal, program.kcal, "", "grain", "band")}
-    ${macroRow("Protein", plan.total.p, program.protein, " g", "poultry", "mp")}
-    ${macroRow("Karbonhidrat", plan.total.c, program.carb, " g", "bread", "mc")}
-    ${macroRow("Yağ", plan.total.f, program.fat, " g", "oil", "mf")}
-    ${macroRow("Lif", plan.total.lif, fiberTarget(program), " g", "veg", "ml")}
+    ${macroRow(tx("Kalori"), plan.total.kcal, program.kcal, "", "grain", "band")}
+    ${macroRow(tx("Protein"), plan.total.p, program.protein, " g", "poultry", "mp")}
+    ${macroRow(tx("Karbonhidrat"), plan.total.c, program.carb, " g", "bread", "mc")}
+    ${macroRow(tx("Yağ"), plan.total.f, program.fat, " g", "oil", "mf")}
+    ${macroRow(tx("Lif"), plan.total.lif, fiberTarget(program), " g", "veg", "ml")}
     ${off > program.kcal * 0.08 ? `<div class="metric-note" style="margin-top:12px">
-      <b class="out">Bu kombinasyon hedeften ${off} kcal ${plan.total.kcal>program.kcal?"yüksek":"düşük"}.</b>
+      <b class="out">Bu kombinasyon hedeften ${off} kcal ${plan.total.kcal>program.kcal?tx("yüksek"):tx("düşük")}.</b>
       ${tx("Yağlı besinler kendi yağını da getirdiği için bazı setler düşük kalorili hedeflere oturmuyor; başka kombinasyon dene.")}</div>` : ""}
     <button class="ghost" id="reroll" style="margin-top:14px">${tx("Başka kombinasyon")}</button>
   </section>
@@ -597,7 +597,7 @@ function planView(program){
       ${rec
         ? `<button class="item-main tap" data-recipefor="${i.key}">
              <h3>${esc(i.text)}</h3>
-             <p>${i.fixed?"senin girdiğin · ":""}${rec.idx >= 0 ? "tarifi gör" : rec.uses + " tarifte kullanılıyor"}</p>
+             <p>${i.fixed?tx("senin girdiğin · "):""}${rec.idx >= 0 ? tx("tarifi gör") : rec.uses + tx(" tarifte kullanılıyor")}</p>
            </button><svg class="ico chev" aria-hidden="true"><use href="#i-next"/></svg>`
         : `<div class="item-main"><h3>${esc(i.text)}</h3>${i.fixed?`<p>${tx("senin girdiğin")}</p>`:""}</div>`}
       ${i.fixed
@@ -605,7 +605,7 @@ function planView(program){
         : i.key ? `<button class="del" data-mex="${i.key}" aria-label="${tx("Bu besini önerilerden çıkar")}">×</button>` : ""}
     </div>`; }).join("")}
     ${m.full ? `<div class="metric-note" style="margin-top:10px">${tx("Bu öğün doldu.")}</div>` : ""}
-    <button class="ghost" data-fixadd="${m.slot}" style="margin-top:12px">${fixSlot===m.slot?"Kapat":"Kendi yiyeceğini ekle"}</button>
+    <button class="ghost" data-fixadd="${m.slot}" style="margin-top:12px">${fixSlot===m.slot?tx("Kapat"):tx("Kendi yiyeceğini ekle")}</button>
     ${fixSlot===m.slot ? fixPicker() : ""}
   </section>`).join("")}
   <div class="foot">${tx("Miktarlar çiğ ağırlıktır.")}</div>`;
@@ -749,7 +749,7 @@ function wireMealsRest(entry){
     copyItems(entry, items);
     syncKcal(entry);                 /* günlük doldu, günün kalorisi de güncellensin */
     await saveState(state); render();
-    toast(`${items.length} kalem kopyalandı.`);
+    toast(tx("{0} kalem kopyalandı.", [(items.length)]));
   });
 
   app.querySelectorAll("[data-addfood]").forEach(b => b.onclick = () => {
@@ -827,13 +827,13 @@ function wireMealsRest(entry){
     document.getElementById("le-cancel").onclick = () => { editLog = null; render(); };
     document.getElementById("le-save").onclick = async () => {
       const g = grams();
-      if (!g){ toast("Geçerli bir miktar gir."); return; }
+      if (!g){ toast(tx("Geçerli bir miktar gir.")); return; }
       it.g = Math.round(g);
       it.slot = document.getElementById("le-slot").value;
       editLog = null;
       syncKcal(entry);
       await saveState(state); render();
-      toast("Porsiyon güncellendi.");
+      toast(tx("Porsiyon güncellendi."));
     };
   }
 

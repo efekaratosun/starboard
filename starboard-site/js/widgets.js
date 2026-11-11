@@ -1,7 +1,7 @@
 "use strict";
 
 /* ---- vücut ölçüleri ---- */
-const BODY = [["bel","Bel"],["gogus","Göğüs"],["kalca","Kalça"],["kol","Kol"],["bacak","Bacak"]];
+const BODY = [["bel",tx("Bel")],["gogus",tx("Göğüs")],["kalca",tx("Kalça")],["kol",tx("Kol")],["bacak",tx("Bacak")]];
 
 function bodySection(entry){
   const b = entry.body || {};
@@ -45,11 +45,11 @@ function weeklySummary(){
 
   return `<section>
     <h2>${tx("Son 7 gün")}</h2>
-    ${row("Ortalama kalori", avg !== null ? `${avg} kcal` : "—", avg !== null ? `hedef ${program.kcal} kcal` : "kalori girilmemiş")}
-    ${row("Hedef bandında gün", kcals.length ? `${inBand}/${kcals.length}` : "—", "±%10 aralığı")}
-    ${row("Kilo değişimi", wch !== null ? `${wch>0?"+":""}${wch.toFixed(2)} kg` : "—", wch !== null ? "iki haftalık ortalama farkı" : "trend için daha fazla ölçüm gerekli")}
-    ${row("Tamamlanan görev", tAll ? `%${Math.round(tDone/tAll*100)}` : "—", tAll ? `${tDone}/${tAll}` : "")}
-    ${row("Antrenman kaydı", `${lifts} gün`, "")}
+    ${row(tx("Ortalama kalori"), avg !== null ? `${avg} kcal` : "—", avg !== null ? `hedef ${program.kcal} kcal` : tx("kalori girilmemiş"))}
+    ${row(tx("Hedef bandında gün"), kcals.length ? `${inBand}/${kcals.length}` : "—", tx("±%10 aralığı"))}
+    ${row(tx("Kilo değişimi"), wch !== null ? `${wch>0?"+":""}${wch.toFixed(2)} kg` : "—", wch !== null ? tx("iki haftalık ortalama farkı") : tx("trend için daha fazla ölçüm gerekli"))}
+    ${row(tx("Tamamlanan görev"), tAll ? `%${Math.round(tDone/tAll*100)}` : "—", tAll ? `${tDone}/${tAll}` : "")}
+    ${row(tx("Antrenman kaydı"), tx("{0} gün", [(lifts)]), "")}
   </section>`;
 }
 
@@ -69,9 +69,9 @@ async function exportData(statusEl){
         say(`${filename} kaydedildi.`);
       } catch (e) {
         const c = e && e.code;
-        if (c === "declined") say("İndirme iptal edildi.");
-        else if (c === "rate_limited") say("Az önce bir indirme istendi, birkaç saniye sonra tekrar dene.");
-        else say("Bu ortamda dosya indirilemedi.");
+        if (c === "declined") say(tx("İndirme iptal edildi."));
+        else if (c === "rate_limited") say(tx("Az önce bir indirme istendi, birkaç saniye sonra tekrar dene."));
+        else say(tx("Bu ortamda dosya indirilemedi."));
       }
       return;
     }
@@ -90,27 +90,27 @@ function importData(file, statusEl){
   rd.onload = async () => {
     let data;
     try { data = JSON.parse(rd.result); }
-    catch(e){ statusEl.textContent = "Dosya okunamadı: geçerli bir JSON değil."; return; }
+    catch(e){ statusEl.textContent = tx("Dosya okunamadı: geçerli bir JSON değil."); return; }
     const incoming = data && data.state ? data.state : data;
     if (!incoming || !incoming.profile || !incoming.days){
-      statusEl.textContent = "Bu dosya bu uygulamanın yedeği gibi görünmüyor."; return;
+      statusEl.textContent = tx("Bu dosya bu uygulamanın yedeği gibi görünmüyor."); return;
     }
     const n = Object.keys(incoming.days).length;
-    if (!confirm(`${n} günlük kayıt yüklenecek ve mevcut verilerin silinecek. Devam edilsin mi?`)) return;
+    if (!confirm(tx("{0} günlük kayıt yüklenecek ve mevcut verilerin silinecek. Devam edilsin mi?", [(n)]))) return;
     state = incoming;
     state.v = 1;
     await saveState(state);
     tab = "today"; render(); window.scrollTo(0,0);
   };
-  rd.onerror = () => { statusEl.textContent = "Dosya okunamadı."; };
+  rd.onerror = () => { statusEl.textContent = tx("Dosya okunamadı."); };
   rd.readAsText(file);
 }
 
 /* ---- selamlama ---- */
 function greetTitle(){
   const h = new Date().getHours();
-  const [hi, ic] = h < 5 ? ["İyi geceler","🌙"] : h < 12 ? ["Günaydın","☀️"]
-                 : h < 18 ? ["İyi günler","🌤️"] : h < 22 ? ["İyi akşamlar","🌆"] : ["İyi geceler","🌙"];
+  const [hi, ic] = h < 5 ? [tx("İyi geceler"),"🌙"] : h < 12 ? [tx("Günaydın"),"☀️"]
+                 : h < 18 ? [tx("İyi günler"),"🌤️"] : h < 22 ? [tx("İyi akşamlar"),"🌆"] : [tx("İyi geceler"),"🌙"];
   const n = state.profile.name ? `, ${esc(state.profile.name)}` : "";
   return `${hi}${n} <span class="wave" aria-hidden="true">${ic}</span>`;
 }
@@ -118,15 +118,15 @@ function greetSub(program){
   const e = state.days[today()] || { tasks:[] };
   const all = e.tasks.length, left = e.tasks.filter(t => !t.done).length;
   const kcalLeft = program && typeof e.kcal === "number" ? program.kcal - e.kcal : null;
-  if (all && !left) return "Bugünkü her şeyi bitirdin, gökyüzünde bir yıldız daha yandı.";
+  if (all && !left) return tx("Bugünkü her şeyi bitirdin, gökyüzünde bir yıldız daha yandı.");
   const parts = [];
-  if (all) parts.push(`${left} görevin kaldı`);
+  if (all) parts.push(tx("{0} görevin kaldı", [(left)]));
   if (kcalLeft !== null && kcalLeft > 0) parts.push(`hedefe ${kcalLeft} kcal var`);
-  return parts.length ? "Bugün " + parts.join(", ") + "." : "Güne küçük bir adımla başla.";
+  return parts.length ? tx("Bugün ") + parts.join(", ") + "." : tx("Güne küçük bir adımla başla.");
 }
 
 /* ---- takımyıldız ---- */
-const CONST_NAMES = ["Kervan","Lale","Kayık","Yay","Kartal","Nar","Çınar","Martı","Fener","Pusula","Kule","Tulpar","Kandil","Çapa"];
+const CONST_NAMES = [tx("Kervan"),tx("Lale"),tx("Kayık"),tx("Yay"),tx("Kartal"),tx("Nar"),tx("Çınar"),tx("Martı"),tx("Fener"),tx("Pusula"),tx("Kule"),tx("Tulpar"),tx("Kandil"),tx("Çapa")];
 const weekStart = k => shiftDays(k, -(isoWeekday(k) - 1));
 function rng(seed){ let x = (seed >>> 0) || 1; return () => (x = (Math.imul(x, 1664525) + 1013904223) >>> 0) / 4294967296; }
 const seedOf = k => Number(k.replace(/-/g, ""));
@@ -172,7 +172,7 @@ function skySVG(ws, big){
   }
   const stars = pts.map(([x, y], i) => {
     const k = days[i], on = lit[i], isT = k === t, fut = k > t;
-    const label = `${WD_NAMES[isoWeekday(k)]}: ${fut ? "henüz gelmedi" : on ? "yıldız yandı" : "yanmadı"}`;
+    const label = `${WD_NAMES[isoWeekday(k)]}: ${fut ? tx("henüz gelmedi") : on ? tx("yıldız yandı") : tx("yanmadı")}`;
     return `<g><title>${label}</title>
       ${on ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${big ? 11 : 9}" fill="var(--star)" opacity=".18"/>` : ""}
       ${isT ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${big ? 9 : 7.5}" fill="none" stroke="var(--sky-ink)" stroke-width="1.2" stroke-dasharray="2 2.5" opacity=".8"/>` : ""}
@@ -190,7 +190,7 @@ function skyCard(){
   return `<section class="sky">
     <div class="sky-head">
       <div><div class="sky-t">${tx("Bu haftanın takımyıldızı")}</div>
-        <div class="sky-s">${w.name ? `“${w.name}” belirdi · ${w.n}/7 yıldız` : `${w.n}/7 yıldız`}</div></div>
+        <div class="sky-s">${w.name ? tx("“{0}” belirdi · {1}/7 yıldız", [(w.name), (w.n)]) : tx("{0}/7 yıldız", [(w.n)])}</div></div>
       <div class="sky-n"><b class="num">${streak}</b><span>${tx("günlük seri")}</span></div>
     </div>
     ${skySVG(ws, true)}
@@ -217,7 +217,7 @@ function cupsHTML(water, target){
   const n = Math.max(6, Math.min(14, Math.ceil((target || 2000) / CUP)));
   const full = Math.floor((water || 0) / CUP);
   return `<div class="cups" role="group" aria-label="Su bardakları, her biri ${CUP} ml">${Array.from({ length:n }, (_, i) =>
-    `<button class="cup${i < full ? " on" : ""}" data-cup="${i}" aria-label="${i+1}. bardak${i < full ? ", içildi" : ""}">
+    `<button class="cup${i < full ? " on" : ""}" data-cup="${i}" aria-label="${i+1}. bardak${i < full ? tx(", içildi") : ""}">
       <svg viewBox="0 0 24 28" aria-hidden="true"><path class="cup-f" d="M5.4 11.5h13.2l-1.2 12.3a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4z"/>
       <path class="cup-o" d="M4 3.5h16l-1.9 20.6a2.2 2.2 0 0 1-2.2 2H8.1a2.2 2.2 0 0 1-2.2-2z"/></svg></button>`).join("")}</div>`;
 }
@@ -257,9 +257,9 @@ function sleepHTML(entry){
   const d = sleepDur(bed, wake);
   return `<div class="entry sl-entry">${iconBox("rest")}
     <div class="entry-main">
-      <div class="lbl-row"><span class="lbl">${tx("Uyku")}</span><span class="lbl-v num">${has ? durTxt(Math.round(entry.sleep*60)) : "henüz girilmedi"}</span></div>
+      <div class="lbl-row"><span class="lbl">${tx("Uyku")}</span><span class="lbl-v num">${has ? durTxt(Math.round(entry.sleep*60)) : tx("henüz girilmedi")}</span></div>
       <button class="sl-toggle" id="sl-toggle" aria-expanded="false" aria-controls="sl-more">
-        <span>${has ? `${hm(bed)} → ${hm(wake)}` : "Saatleri gir"}</span>
+        <span>${has ? `${hm(bed)} → ${hm(wake)}` : tx("Saatleri gir")}</span>
         <svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
       <div class="sl-more" id="sl-more" hidden>
       <div class="dial-wrap">
@@ -270,8 +270,8 @@ function sleepHTML(entry){
           ${ticks}${labels}
           <text x="120" y="114" class="dial-dur num" id="sl-c1">${durTxt(d)}</text>
           <text x="120" y="134" class="dial-sub num" id="sl-c2">${hm(bed)} → ${hm(wake)}</text>
-          ${handle("sl-h-bed", bed, "🌙", "Yatış saati")}
-          ${handle("sl-h-wake", wake, "☀️", "Kalkış saati")}
+          ${handle("sl-h-bed", bed, "🌙", tx("Yatış saati"))}
+          ${handle("sl-h-wake", wake, "☀️", tx("Kalkış saati"))}
         </svg>
       </div>
       <div class="dial-legend num"><span>${tx("🌙 Yattım")} <b id="sl-bed-v">${hm(bed)}</b></span><span>${tx("☀️ Kalktım")} <b id="sl-wake-v">${hm(wake)}</b></span></div>
@@ -372,7 +372,7 @@ function prBoard(){
       <svg class="pr-cup" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cup"/></svg>
       <div class="pr-m"><span class="pr-n">${esc(parseEx(r.name, venueOf(currentProgram())).name)}</span>
         <span class="pr-v num">${esc(r.text)}</span></div>
-      <span class="pr-d">${r.k === today() ? "bugün" : prettyDate(r.k)}</span>
+      <span class="pr-d">${r.k === today() ? tx("bugün") : prettyDate(r.k)}</span>
     </div>`).join("")}</div>`
     : `<div class="empty">${tx("Antrenman kaydı girdikçe her hareketin en iyisi burada birikir.")}</div>`}
   </section>`;
@@ -383,7 +383,7 @@ function checkPR(name, before){
   const now = records().find(r => r.name === name);
   if (!now || now.k !== vKey()) return;
   if (before && now.val <= before.val + 0.001) return;
-  toast(`🏆 Yeni rekor: ${parseEx(name, venueOf(currentProgram())).name} · ${now.text}`);
+  toast(tx("🏆 Yeni rekor: {0} · {1}", [(parseEx(name, venueOf(currentProgram())).name), (now.text)]));
 }
 
 /* ---- kısa bilgi ---- */
@@ -480,7 +480,7 @@ function openAvatarSheet(){
   el.querySelector("#sh-cancel").onclick = close;
   el.querySelector("#sh-save").onclick = async () => {
     p.avatar = key; p.avColor = col;
-    await saveState(state); close(); render(); toast("Avatarın güncellendi.");
+    await saveState(state); close(); render(); toast(tx("Avatarın güncellendi."));
   };
   el.querySelector("#sh-save").focus();
 }
@@ -488,14 +488,14 @@ function openAvatarSheet(){
 /* ACE yağ oranı sınıfları (erkek / kadın). */
 function fatClass(bf, sex){
   const t = sex === "female" ? [14, 21, 25, 32] : sex === "male" ? [6, 14, 18, 25] : [10, 17.5, 21.5, 28.5];
-  if (bf < t[0]) return ["çok düşük", "warn"];
+  if (bf < t[0]) return [tx("çok düşük"), "warn"];
   if (bf < t[1]) return ["atletik", "ok"];
   if (bf < t[2]) return ["fit", "ok"];
   if (bf < t[3]) return ["ortalama", "ok"];
-  return ["yüksek", "bad"];
+  return [tx("yüksek"), "bad"];
 }
 function bmiClass(b){
-  return b < 18.5 ? ["zayıf","warn"] : b < 25 ? ["normal","ok"] : b < 30 ? ["kilolu","warn"] : ["obez","bad"];
+  return b < 18.5 ? [tx("zayıf"),"warn"] : b < 25 ? ["normal","ok"] : b < 30 ? ["kilolu","warn"] : ["obez","bad"];
 }
 const kg1 = v => v.toFixed(1).replace(".", ",");
 
@@ -543,14 +543,14 @@ function bodyCard(){
     const rate = cur.length && prev.length ? mean(cur) - mean(prev) : null;
     const right = rate !== null && (down ? rate < -0.05 : rate > 0.05);
     const reached = down ? w <= target : w >= target;
-    const eta = reached ? "Hedefe ulaştın 🎉"
+    const eta = reached ? tx("Hedefe ulaştın 🎉")
       : right ? `bu tempoyla ~${Math.max(1, Math.ceil(left / Math.abs(rate)))} hafta`
-      : rate === null ? "tempo için iki haftalık tartı gerekli" : "son hafta hedefin tersine gitti";
+      : rate === null ? tx("tempo için iki haftalık tartı gerekli") : "son hafta hedefin tersine gitti";
     journey = `<div class="bc-sec">
       <div class="bc-h"><span>${tx("Hedefe yolculuk")}</span><b class="num">%${Math.round(pct * 100)}</b></div>
       <div class="jr"><div class="jr-fill" style="width:${(pct*100).toFixed(1)}%"></div><span class="jr-now" style="left:${(pct*100).toFixed(1)}%"></span></div>
       <div class="jr-lbl num"><span><b>${kg1(start)}</b>${tx("başlangıç")}</span><span class="mid"><b>${kg1(w)}</b>${tx("şimdi")}</span><span class="end"><b>${kg1(target)}</b>${tx("hedef")}</span></div>
-      <div class="bc-note">${Math.abs(gone) >= 0.05 ? `${kg1(Math.abs(gone))} kg ${gone > 0 ? "verdin" : "aldın"} · ` : ""}${reached ? "" : `${kg1(left)} kg kaldı · `}${eta}</div>
+      <div class="bc-note">${Math.abs(gone) >= 0.05 ? `${kg1(Math.abs(gone))} kg ${gone > 0 ? "verdin" : tx("aldın")} · ` : ""}${reached ? "" : tx("{0} kg kaldı · ", [(kg1(left))])}${eta}</div>
     </div>`;
   } else {
     journey = `<div class="bc-sec">
@@ -571,8 +571,8 @@ function bodyCard(){
       <div class="comp" role="img" aria-label="Yağsız kütle ${kg1(lean)} kg, yağ ${kg1(fatKg)} kg">
         <i class="lean" style="width:${(100 - bf).toFixed(1)}%"></i><i class="fat" style="width:${bf.toFixed(1)}%"></i></div>
       <div class="comp-lbl num"><span><i class="dot lean"></i>${tx("Yağsız")} <b>${tx("{0} kg", [(kg1(lean))])}</b></span><span><i class="dot fat"></i>${tx("Yağ")} <b>${tx("{0} kg", [(kg1(fatKg))])}</b></span></div>
-      <div class="bc-note">${neutral ? "Fit aralık erkekte %14–17, kadında %21–24; ortalama erkekte %18–24, kadında %25–31 (ACE). Etiket iki sınırın ortalamasına göre verilir."
-        : `${female ? "Kadında" : "Erkekte"} fit aralık %${female ? "21–24" : "14–17"}, ortalama %${female ? "25–31" : "18–24"} (ACE).`}</div>
+      <div class="bc-note">${neutral ? tx("Fit aralık erkekte %14–17, kadında %21–24; ortalama erkekte %18–24, kadında %25–31 (ACE). Etiket iki sınırın ortalamasına göre verilir.")
+        : tx("{0} fit aralık %{1}, ortalama %{2} (ACE).", [(female ? tx("Kadında") : tx("Erkekte")), (female ? "21–24" : "14–17"), (female ? "25–31" : "18–24")])}</div>
     </div>`;
   } else {
     comp = `<div class="bc-sec"><div class="bc-h"><span>${tx("Vücut kompozisyonu")}</span></div>
@@ -594,7 +594,7 @@ function wireHome(){
   const i = document.getElementById("tw");
   const save = async () => {
     const n = num(i.value);
-    if (!n || n < 30 || n > 300){ toast("30 ile 300 kg arasında bir hedef gir."); return; }
+    if (!n || n < 30 || n > 300){ toast(tx("30 ile 300 kg arasında bir hedef gir.")); return; }
     state.profile.targetWeight = Math.round(n * 10) / 10;
     await saveState(state); render();
   };
@@ -611,7 +611,7 @@ function homeView(){
   const lbm = (w !== null && p.bodyFat > 0 && p.bodyFat < 70) ? w * (1 - p.bodyFat/100) : null;
   const change = (w !== null && typeof p.startWeight === "number") ? w - p.startWeight : null;
 
-  const bmiCat = bmi === null ? "" : bmi < 18.5 ? "zayıf" : bmi < 25 ? "normal" : bmi < 30 ? "kilolu" : "obez";
+  const bmiCat = bmi === null ? "" : bmi < 18.5 ? tx("zayıf") : bmi < 25 ? "normal" : bmi < 30 ? "kilolu" : "obez";
   const goalDown = p.goal === "lose";
 
   return `${bodyCard()}${chartsView()}`;

@@ -4,33 +4,33 @@
 
 /* Kaçınılacak bölge: hareketi daha güvenli bir karşılığıyla değiştirir,
    karşılığı yoksa programdan çıkarır. Sıra önemli: özel olan önce. */
-const AVOID_ZONES = [["diz","Diz"], ["bel","Bel"], ["omuz","Omuz"], ["bilek","Bilek"]];
+const AVOID_ZONES = [["diz",tx("Diz")], ["bel",tx("Bel")], ["omuz",tx("Omuz")], ["bilek",tx("Bilek")]];
 const AVOID_SWAP = {
   diz: [
-    [/pistol|shrimp|jump squat|lunge sıçrama|sıçrama/, "Glute bridge"],
-    [/bulgarian|split squat|lunge|step-up|duvar oturuşu/, "Glute bridge"],
-    [/leg press|leg extension|goblet squat|front squat|sandalye squat|çantalı squat|squat/, "Hip thrust"],
-    [/nordic|leg curl/, "Glute bridge"],
+    [/pistol|shrimp|jump squat|lunge sıçrama|sıçrama/, tx("Glute bridge")],
+    [/bulgarian|split squat|lunge|step-up|duvar oturuşu/, tx("Glute bridge")],
+    [/leg press|leg extension|goblet squat|front squat|sandalye squat|çantalı squat|squat/, tx("Hip thrust")],
+    [/nordic|leg curl/, tx("Glute bridge")],
     [/tepe sprint|merdiven sprint|sprint|koşu|yüksek diz|burpee|mountain climber|plank jack|ip atlama/, null]
   ],
   bel: [
-    [/romen deadlift|deadlift/, "Leg curl"],
-    [/barbell row|kettlebell row|havlu kürek|ters kürek|kürek/, "Face pull"],
-    [/swing|türk kalkışı|farmer|good morning/, "Goblet squat"],
-    [/superman|dragon flag|hollow rock|hollow hold/, "Dead bug"]
+    [/romen deadlift|deadlift/, tx("Leg curl")],
+    [/barbell row|kettlebell row|havlu kürek|ters kürek|kürek/, tx("Face pull")],
+    [/swing|türk kalkışı|farmer|good morning/, tx("Goblet squat")],
+    [/superman|dragon flag|hollow rock|hollow hold/, tx("Dead bug")]
   ],
   omuz: [
-    [/handstand şınav|handstand|pike şınav/, "Face pull"],
-    [/omuz press|tek kol press|dumbbell press/, "Face pull"],
-    [/dips/, "Triceps"],
-    [/muscle-up/, "Barfiks"],
+    [/handstand şınav|handstand|pike şınav/, tx("Face pull")],
+    [/omuz press|tek kol press|dumbbell press/, tx("Face pull")],
+    [/dips/, tx("Triceps")],
+    [/muscle-up/, tx("Barfiks")],
     [/yan omuz/, null]
   ],
   bilek: [
     [/handstand|l-sit|v-sit/, null],
-    [/elmas şınav|pike şınav|şınav/, "Sandalye dips"],
-    [/burpee|mountain climber|plank jack/, "Yüksek diz"],
-    [/plank serisi|yan plank|plank/, "Dead bug"]
+    [/elmas şınav|pike şınav|şınav/, tx("Sandalye dips")],
+    [/burpee|mountain climber|plank jack/, tx("Yüksek diz")],
+    [/plank serisi|yan plank|plank/, tx("Dead bug")]
   ]
 };
 
@@ -68,7 +68,7 @@ function applyAvoid(b, avoid){
   if (!avoid || !avoid.length || !b) return b;
   /* Devre metni tek parça; içinde kaçınılan hareket varsa devre tümden çıkar. */
   if (/^\d+ tur:/.test(b))
-    return avoid.some(z => zoneHits(b, z)) ? "Yürüyüş 30 dk" : b;
+    return avoid.some(z => zoneHits(b, z)) ? tx("Yürüyüş 30 dk") : b;
   const out = [], seen = new Set();
   for (const ex of b.split(" · ")){
     const cur = applyZones(ex, avoid);
@@ -77,7 +77,7 @@ function applyAvoid(b, avoid){
     if (seen.has(key)) continue;
     seen.add(key); out.push(cur);
   }
-  return out.length ? out.join(" · ") : "Yürüyüş 30 dk";
+  return out.length ? out.join(" · ") : tx("Yürüyüş 30 dk");
 }
 
 /* Uyku hedefi: alt sınır profilden, üst sınır iki saat üstü. */
@@ -92,10 +92,10 @@ function applyTheme(t){
 
 /* Öğün düzeni kalıpları: [ad, saat, kategori, ağırlık] */
 const MEAL_PRESETS = [
-  ["3 öğün", [["Kahvaltı",8,"kahvalti",30],["Öğle",13,"ogle",40],["Akşam",20,"aksam",40]]],
-  ["3 öğün + ara", [["Kahvaltı",8,"kahvalti",30],["Öğle",13,"ogle",35],["Ara öğün",16,"ara",15],["Akşam",20,"aksam",35]]],
-  ["2 öğün", [["Öğle",13,"ogle",45],["Akşam",20,"aksam",45]]],
-  ["5 öğün", [["Kahvaltı",8,"kahvalti",25],["Kuşluk",11,"ara",12],["Öğle",14,"ogle",30],["İkindi",17,"ara",12],["Akşam",20,"aksam",30]]]
+  [tx("3 öğün"), [[tx("Kahvaltı"),8,"kahvalti",30],[tx("Öğle"),13,"ogle",40],[tx("Akşam"),20,"aksam",40]]],
+  [tx("3 öğün + ara"), [[tx("Kahvaltı"),8,"kahvalti",30],[tx("Öğle"),13,"ogle",35],[tx("Ara öğün"),16,"ara",15],[tx("Akşam"),20,"aksam",35]]],
+  [tx("2 öğün"), [[tx("Öğle"),13,"ogle",45],[tx("Akşam"),20,"aksam",45]]],
+  [tx("5 öğün"), [[tx("Kahvaltı"),8,"kahvalti",25],[tx("Kuşluk"),11,"ara",12],[tx("Öğle"),14,"ogle",30],[tx("İkindi"),17,"ara",12],[tx("Akşam"),20,"aksam",30]]]
 ];
 function mealsFromPreset(i){
   const set = (MEAL_PRESETS[i] || MEAL_PRESETS[1])[1];
@@ -105,19 +105,19 @@ function mealsFromPreset(i){
 
 /* Sık elenen besinler: rozet başına bir veya daha çok kalem */
 const DISLIKE = [
-  ["Karaciğer / sakatat", ["karaciger","kokorec","iskembe"]],
-  ["Balık ve deniz ürünleri", ["somon","ton","hamsi","uskumru","alabalik","levrek","cipura","karides","izgarabalik","balikekmek","fumesomon","tonyagli","uskumrukonserve","sardalya","midyedolma"]],
-  ["Kırmızı et", ["kofte","biftek","kuzu","doner","sucuk","pastirma","kavurma","salam","macarsalam","danafume","danarosto","danajambon","iskender","adanakebap","izgarakofte","guvec"]],
-  ["Mantar", ["mantar"]],
-  ["Zeytin", ["zeytin","yesilzeytin","zeytinezmesi"]],
-  ["Patlıcan", ["patlican","karniyarik","imambayildi","musakka","hunkarbegendi"]],
-  ["Baklagil", ["mercimek","yesilmercimek","nohut","kurufasulye","barbunya","bakla","borulce","masfasulye","siyahfasulye","soyafasulye","piyaz"]],
-  ["Süt", ["sut","kefir","salep"]]
+  [tx("Karaciğer / sakatat"), ["karaciger","kokorec","iskembe"]],
+  [tx("Balık ve deniz ürünleri"), ["somon","ton","hamsi","uskumru","alabalik","levrek","cipura","karides","izgarabalik","balikekmek","fumesomon","tonyagli","uskumrukonserve","sardalya","midyedolma"]],
+  [tx("Kırmızı et"), ["kofte","biftek","kuzu","doner","sucuk","pastirma","kavurma","salam","macarsalam","danafume","danarosto","danajambon","iskender","adanakebap","izgarakofte","guvec"]],
+  [tx("Mantar"), ["mantar"]],
+  [tx("Zeytin"), ["zeytin","yesilzeytin","zeytinezmesi"]],
+  [tx("Patlıcan"), ["patlican","karniyarik","imambayildi","musakka","hunkarbegendi"]],
+  [tx("Baklagil"), ["mercimek","yesilmercimek","nohut","kurufasulye","barbunya","bakla","borulce","masfasulye","siyahfasulye","soyafasulye","piyaz"]],
+  [tx("Süt"), ["sut","kefir","salep"]]
 ];
 
 /* Hazır günlük hatırlatmalar */
-const ROUTINE_IDEAS = ["D vitamini", "Multivitamin", "Omega-3", "Magnezyum",
-  "İlaçlarımı al", "10 bin adım", "Esneme", "Akşam yürüyüşü"];
+const ROUTINE_IDEAS = ["D vitamini", tx("Multivitamin"), tx("Omega-3"), tx("Magnezyum"),
+  tx("İlaçlarımı al"), tx("10 bin adım"), tx("Esneme"), tx("Akşam yürüyüşü")];
 
 /* ---- ilk giriş: adım adım ---- */
 let obStep = 0, ob = null;
@@ -138,7 +138,7 @@ function dayNote(venue, activity, days){
   const prog = PROGRAMS[defaultProgramId(venue, activity, d)];
   const used = planDays({ days: d }, prog.freq);
   if (used.length === d.length) return "";
-  return `En fazla ${prog.freq} gün kullanılır.`;
+  return tx("En fazla {0} gün kullanılır.", [(prog.freq)]);
 }
 
 /* Marka işareti: ikonun aynısı, ilk adımda gösterilir. */
@@ -297,17 +297,17 @@ function obProfile(){
 const obVal = id => { const e = document.getElementById(id); return e ? e.value : null; };
 const OB_STEPS = [
   { id:"welcome" },
-  { id:"you", t:"Seni tanıyalım",
+  { id:"you", t:tx("Seni tanıyalım"),
     body: () => {
       let av = "";
       if (ob.sex){
         if (!ob.avatar) ob.avatar = ob.sex === "female" ? "f" : ob.sex === "male" ? "m" : "n";
         if (!ob.avColor) ob.avColor = avColor({ sex: ob.sex });
-        av = og("Avatarın", `<div class="av-field" id="av-field" style="--av:${ob.avColor}">${avatarPicker(ob.avatar, "on")}
+        av = og(tx("Avatarın"), `<div class="av-field" id="av-field" style="--av:${ob.avColor}">${avatarPicker(ob.avatar, "on")}
           <div class="sh-l">${tx("Renk")}</div>${colorPicker(ob.avColor, "on")}</div>`, false, "og-av");
       }
-      return og("Adın", `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" placeholder="${tx("Adın")}" autocomplete="given-name" maxlength="30" aria-label="${tx("Adın")}">`, true)
-        + og("Cinsiyet", obCards("sex", [["male", OB_ICON.sex.male, "Erkek"], ["female", OB_ICON.sex.female, "Kadın"], ["none", OB_ICON.sex.none, "Belirtmem"]], "tri")
+      return og(tx("Adın"), `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" placeholder="${tx("Adın")}" autocomplete="given-name" maxlength="30" aria-label="${tx("Adın")}">`, true)
+        + og(tx("Cinsiyet"), obCards("sex", [["male", OB_ICON.sex.male, tx("Erkek")], ["female", OB_ICON.sex.female, tx("Kadın")], ["none", OB_ICON.sex.none, tx("Belirtmem")]], "tri")
             + `<div class="metric-note" style="margin-top:8px">${tx("Kalori hesabında kullanılır.")}</div>`)
         + av;
     },
@@ -317,46 +317,46 @@ const OB_STEPS = [
       wireAvatar("on", k => { ob.avatar = k; });
       wireColor("on", c => { ob.avColor = c; document.getElementById("av-field").style.setProperty("--av", c); });
     },
-    valid: () => ob.sex ? "" : "Cinsiyet seç; istemiyorsan “Belirtmem” de." },
-  { id:"body", t:"Ölçülerin", s:"Cetveli sürükle ya da rakama dokun.",
+    valid: () => ob.sex ? "" : tx("Cinsiyet seç; istemiyorsan “Belirtmem” de.") },
+  { id:"body", t:tx("Ölçülerin"), s:tx("Cetveli sürükle ya da rakama dokun."),
     body: () => {
       if (ob.height == null) ob.height = ob.sex === "female" ? 163 : ob.sex === "male" ? 176 : 170;
       if (ob.weight == null) ob.weight = ob.sex === "female" ? 60 : ob.sex === "male" ? 78 : 70;
-      return og("Boy", obRuler("height", 120, 220, 1, 12, 10, 5, "cm", false))
-        + og("Kilo", obRuler("weight", 30, 200, 0.5, 10, 10, 2, "kg", true))
+      return og(tx("Boy"), obRuler("height", 120, 220, 1, 12, 10, 5, "cm", false))
+        + og(tx("Kilo"), obRuler("weight", 30, 200, 0.5, 10, 10, 2, "kg", true))
         + `<div class="og-row">`
-        + og("Yaş", `<input id="ob-age" type="number" inputmode="numeric" value="${ob.age ?? ""}" placeholder="30">`)
-        + og("Yağ oranı (%)", `<input id="ob-bf" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}">`, true)
+        + og(tx("Yaş"), `<input id="ob-age" type="number" inputmode="numeric" value="${ob.age ?? ""}" placeholder="30">`)
+        + og(tx("Yağ oranı (%)"), `<input id="ob-bf" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}">`, true)
         + `</div>`;
     },
     read: () => { ob.age = num(obVal("ob-age")); ob.bodyFat = num(obVal("ob-bf")); },
-    valid: () => !(ob.age >= 10 && ob.age <= 100) ? ["Yaşını 10 ile 100 arasında gir.", "ob-age"]
-      : ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? ["Yağ oranını %3 ile %60 arasında gir ya da boş bırak.", "ob-bf"] : "" },
-  { id:"goal", t:"Hedefin",
-    body: () => og("Ne istiyorsun?", obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label])))
-      + og("Hedef kilon (kg)", `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight ?? ""}" placeholder="${Math.round((ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
-      + og("Günlük hareketin", obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
-      + og("Uyku hedefin", obChips("obsleep", [6,7,8,9].map(n => [n, `${n}-${n+2} saat`, ob.sleepMin === n]))),
+    valid: () => !(ob.age >= 10 && ob.age <= 100) ? [tx("Yaşını 10 ile 100 arasında gir."), "ob-age"]
+      : ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "" },
+  { id:"goal", t:tx("Hedefin"),
+    body: () => og(tx("Ne istiyorsun?"), obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label])))
+      + og(tx("Hedef kilon (kg)"), `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight ?? ""}" placeholder="${Math.round((ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
+      + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
+      + og(tx("Uyku hedefin"), obChips("obsleep", [6,7,8,9].map(n => [n, `${n}-${n+2} saat`, ob.sleepMin === n]))),
     read: () => { ob.targetWeight = num(obVal("ob-tw")); },
-    valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : ["Hedef kiloyu 30 ile 300 kg arasında gir ya da boş bırak.", "ob-tw"] },
-  { id:"train", t:"Antrenman",
+    valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : [tx("Hedef kiloyu 30 ile 300 kg arasında gir ya da boş bırak."), "ob-tw"] },
+  { id:"train", t:tx("Antrenman"),
     body: () => {
       if (!ob.days) ob.days = OB_DEFAULT_DAYS(ob.activity);
       const more = ob.noPlan ? "" : `<div id="og-plan">`
-        + og("Nerede?", obCards("venue", Object.entries(VENUE).map(([k, v]) => [k, OB_ICON.venue[k] || "fullbody", v.label]), "duo"))
-        + og("Hangi günler?", obChips("obday", [1,2,3,4,5,6,7].map(n => [n, WD_SHORT[n], ob.days.includes(n)]))
+        + og(tx("Nerede?"), obCards("venue", Object.entries(VENUE).map(([k, v]) => [k, OB_ICON.venue[k] || "fullbody", v.label]), "duo"))
+        + og(tx("Hangi günler?"), obChips("obday", [1,2,3,4,5,6,7].map(n => [n, WD_SHORT[n], ob.days.includes(n)]))
             + `<div class="metric-note" id="day-note" style="margin-top:10px">${dayNote(ob.venue, ob.activity, ob.days)}</div>`)
-        + og("Kaçınman gereken bölge", obChips("obavoid", AVOID_ZONES.map(([k, l]) => [k, l, ob.avoid.includes(k)]))
+        + og(tx("Kaçınman gereken bölge"), obChips("obavoid", AVOID_ZONES.map(([k, l]) => [k, l, ob.avoid.includes(k)]))
             + `<div class="metric-note" style="margin-top:10px">${tx("Ağrın varsa önce bir hekime görün.")}</div>`, true)
         + `</div>`;
-      return og("Spor programı", `<div class="ocs" data-field="plan">
-          ${obCard(!ob.noPlan, "on", "plan", "Program kur")}
-          ${obCard(!!ob.noPlan, "off", "rest", "Şimdilik istemiyorum")}</div>`) + more;
+      return og(tx("Spor programı"), `<div class="ocs" data-field="plan">
+          ${obCard(!ob.noPlan, "on", "plan", tx("Program kur"))}
+          ${obCard(!!ob.noPlan, "off", "rest", tx("Şimdilik istemiyorum"))}</div>`) + more;
     } },
-  { id:"food", t:"Beslenme",
-    body: () => og("Nasıl besleniyorsun?", obCards("diet", Object.entries(DIETS).map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
-      + og("Günde kaç öğün?", obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, "", l, set.map(m => m[0]).join(" · ")]), "", true))
-      + og("Yemediklerin", obChips("obdis", DISLIKE.map(([l], i) => [i, l, ob.dislike.includes(i)])), true) },
+  { id:"food", t:tx("Beslenme"),
+    body: () => og(tx("Nasıl besleniyorsun?"), obCards("diet", Object.entries(DIETS).map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
+      + og(tx("Günde kaç öğün?"), obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, "", l, set.map(m => m[0]).join(" · ")]), "", true))
+      + og(tx("Yemediklerin"), obChips("obdis", DISLIKE.map(([l], i) => [i, l, ob.dislike.includes(i)])), true) },
   { id:"summary" }
 ];
 const obList = () => OB_STEPS;
@@ -380,7 +380,7 @@ function obWelcome(){
 }
 
 /* Sorular bitince kısa bir ara sahne: plan kurulurken logo çalışır. */
-const OB_BUILD = ["Kalori ihtiyacın hesaplanıyor", "Protein ve su hedefin ayarlanıyor", "Programın kuruluyor"];
+const OB_BUILD = [tx("Kalori ihtiyacın hesaplanıyor"), tx("Protein ve su hedefin ayarlanıyor"), tx("Programın kuruluyor")];
 function obBuild(){
   return `<div class="on-q on-w on-build">
     <span class="on-lw"><span class="on-orbit" aria-hidden="true"><i></i><i></i><i></i></span><span class="on-logo">${OB_LOGO}</span></span>
@@ -396,7 +396,7 @@ function obSummary(){
   const tile = (ic, v, u, l) => `<div class="os-t">${iconBox(ic)}<b class="num">${v}<small>${u}</small></b><i>${l}</i></div>`;
   return `<div class="on-q on-s">
     <span class="on-logo sm">${OB_LOGO}</span>
-    <h1>${ob.name ? `${esc(ob.name)}, planın hazır` : "Planın hazır"}</h1>
+    <h1>${ob.name ? tx("{0}, planın hazır", [(esc(ob.name))]) : tx("Planın hazır")}</h1>
     <p class="on-tag">${tx("{0} hedefine göre günlük hedeflerin:", [(GOAL[ob.goal].label)])}</p>
     <div class="os-k"><b class="num" id="os-kn" data-to="${p.kcal}">${p.kcal}</b><span>${tx("kcal / gün")}</span></div>
     <div class="os-g">
@@ -404,9 +404,9 @@ function obSummary(){
       ${tile("dairy", (p.water / 1000).toFixed(1).replace(".", ","), " L", "su")}
       ${tile("rest", `${ob.sleepMin}-${ob.sleepMin + 2}`, " sa", "uyku")}
     </div>
-    <div class="os-p">${iconBox(tr.none ? "rest" : "plan")}<span><b>${tr.none ? "Spor programı yok" : esc(tr.title)}</b>
-      <i>${tr.none ? "İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin."
-        : `Haftada ${tr.freq} gün · ${tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", ")}`}</i></span></div>
+    <div class="os-p">${iconBox(tr.none ? "rest" : "plan")}<span><b>${tr.none ? tx("Spor programı yok") : esc(tr.title)}</b>
+      <i>${tr.none ? tx("İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin.")
+        : tx("Haftada {0} gün · {1}", [(tr.freq), (tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", "))])}</i></span></div>
     <div class="metric-note" style="text-align:center;margin-top:14px">${tx("Hepsini sonradan değiştirebilirsin.")}</div>
   </div>`;
 }
@@ -481,11 +481,11 @@ function renderOnboarding(dir){
   const bar = document.getElementById("on-bar");
   bar.firstElementChild.style.width = (sum ? 100 : obStep / n * 100).toFixed(1) + "%";
   bar.setAttribute("aria-valuemax", n); bar.setAttribute("aria-valuenow", Math.min(obStep, n));
-  bar.setAttribute("aria-label", sum ? "Sorular tamam" : `Adım ${obStep} / ${n}`);
+  bar.setAttribute("aria-label", sum ? tx("Sorular tamam") : tx("Adım {0} / {1}", [(obStep), (n)]));
   document.getElementById("on-cnt").textContent = first || sum ? "" : `${obStep}/${n}`;
   document.getElementById("on-bg").style.setProperty("--p", (obStep / (list.length - 1)).toFixed(3));
   document.getElementById("on-nav").classList.remove("hide");
-  document.getElementById("ob-next").textContent = first ? "Başlayalım" : sum ? "Başla" : "İleri";
+  document.getElementById("ob-next").textContent = first ? tx("Başlayalım") : sum ? tx("Başla") : tx("İleri");
 
   obSwap(stage, dir, () => {
     obMount(stage, first ? obWelcome() : sum ? obSummary() : obQuestion(st), dir);
@@ -603,10 +603,10 @@ function wireOb(st, list, animate){
     ob.days = (ob.days || OB_DEFAULT_DAYS(ob.activity)).slice();
     const i = ob.days.indexOf(n);
     if (i >= 0){
-      if (ob.days.length <= 3){ toast("En az 3 antrenman günü gerekli."); return; }
+      if (ob.days.length <= 3){ toast(tx("En az 3 antrenman günü gerekli.")); return; }
       ob.days.splice(i, 1);
     } else {
-      if (ob.days.length >= 5){ toast("En fazla 5 gün seçebilirsin."); return; }
+      if (ob.days.length >= 5){ toast(tx("En fazla 5 gün seçebilirsin.")); return; }
       ob.days.push(n);
     }
     ob.days.sort((a, b2) => a - b2);

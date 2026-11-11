@@ -4,7 +4,7 @@
 /* ---- hafta şeridi ----
    Takvime gitmeden son yedi gün arasında gezilir; seçilen gün çok eskiyse
    şerit o günün çevresine kayar. */
-const LV_WORD = { e:"veri yok", t:"tamamlandı", 5:"tamamlandı", 4:"çoğu tamam", 3:"yarısı tamam", 2:"az tamam", 1:"başlandı" };
+const LV_WORD = { e:"veri yok", t:tx("tamamlandı"), 5:tx("tamamlandı"), 4:tx("çoğu tamam"), 3:tx("yarısı tamam"), 2:"az tamam", 1:tx("başlandı") };
 function weekStrip(key){
   const t = today();
   let end = t;
@@ -14,8 +14,8 @@ function weekStrip(key){
   return `<div class="wk" role="group" aria-label="${tx("Gün seç")}">${days.map(k => {
     const lv = dayLevel(k);
     return `<button class="wk-d" data-wk="${k}" data-lv="${lv}" aria-current="${k === key}"
-      aria-label="${prettyDate(k)} ${weekdayName(k)}, ${k === t ? "bugün, " : ""}${LV_WORD[lv] || ""}">
-      <span class="wk-n">${k === t ? "Bugün" : WD_SHORT[isoWeekday(k)]}</span><b class="num">${+k.slice(8)}</b><i></i></button>`;
+      aria-label="${prettyDate(k)} ${weekdayName(k)}, ${k === t ? tx("bugün, ") : ""}${LV_WORD[lv] || ""}">
+      <span class="wk-n">${k === t ? tx("Bugün") : WD_SHORT[isoWeekday(k)]}</span><b class="num">${+k.slice(8)}</b><i></i></button>`;
   }).join("")}</div>
   ${key !== t ? `<div class="wk-back"><button class="link" id="back-today">${tx("Bugüne dön")}</button></div>` : ""}`;
 }
@@ -23,7 +23,7 @@ function weekStrip(key){
 /* ---- akşam kapanış satırı ----
    21:00'den sonra günün durumu tek cümlede: kaç hedef tamam, ne eksik.
    Eksik olana dokununca girişi açılır. */
-const EVE_WORD = ["Hiçbir","Bir","İki","Üç","Dört","Beş","Altı","Yedi","Sekiz","Dokuz","On"];
+const EVE_WORD = [tx("Hiçbir"),tx("Bir"),tx("İki"),tx("Üç"),tx("Dört"),tx("Beş"),tx("Altı"),tx("Yedi"),tx("Sekiz"),tx("Dokuz"),tx("On")];
 function eveMiss(kind, entry, program, a){
   switch (kind){
     case "water": { const need = Math.round(program.water * 0.9); return `su ${Math.max(need - (entry.water || 0), 0)} ml eksik`; }
@@ -32,9 +32,9 @@ function eveMiss(kind, entry, program, a){
     case "kcal": { const B = kcalBand(program);
       if (typeof entry.kcal !== "number") return "kalori girilmedi";
       return entry.kcal > B.hi ? `kalori ${entry.kcal - B.hi} kcal fazla` : `kalori ${B.lo - entry.kcal} kcal eksik`; }
-    case "sleep": return typeof entry.sleep === "number" ? "uyku hedefin altında" : "uyku girilmedi";
+    case "sleep": return typeof entry.sleep === "number" ? tx("uyku hedefin altında") : "uyku girilmedi";
     case "weigh": return "kilo girilmedi";
-    case "steps": return `${Math.max(stepGoal() - (entry.steps || 0), 0)} adım eksik`;
+    case "steps": return tx("{0} adım eksik", [(Math.max(stepGoal() - (entry.steps || 0), 0))]);
     case "train": { const m = /^(\d+)\/(\d+)/.exec(a.txt || ""); return m ? `antrenmanda ${m[2] - m[1]} hareket eksik` : "antrenman eksik"; }
   }
   return "";
@@ -57,12 +57,12 @@ function eveningLine(entry, program, key){
     if (a.ok) done++; else miss.push([kind, eveMiss(kind, entry, program, a)]);
   }
   if (!total) return "";
-  const head = done >= total ? "Bütün hedefler tamam"
-             : done === 0 ? "Henüz tamamlanan hedef yok" : `${EVE_WORD[done] || done} hedef tamam`;
+  const head = done >= total ? tx("Bütün hedefler tamam")
+             : done === 0 ? tx("Henüz tamamlanan hedef yok") : `${EVE_WORD[done] || done} hedef tamam`;
   return `<div class="eve" role="status">${icon("star4")}
     <div><b>${head}</b>${miss.length ? ", " + miss.slice(0, 2).map(([k, txt]) =>
       `<button data-goto="${k}">${esc(txt)}</button>`).join(", ")
-      + (miss.length > 2 ? ` ve ${miss.length - 2} hedef daha` : "") + "." : "; bugünün yıldızı yandı."}</div></div>`;
+      + (miss.length > 2 ? ` ve ${miss.length - 2} hedef daha` : "") + "." : tx("; bugünün yıldızı yandı.")}</div></div>`;
 }
 
 /* ---- bugün ---- */
@@ -78,9 +78,9 @@ function goalHero(key, sc){
   const rollFrom = String(bump && !reduceMotion() ? _ringPrev[key].done : sc.done);
   _ringPrev[key] = { off, done: sc.done };
   const w = weekInfo(weekStart(today())), streak = streakNow();
-  const title = !sc.total ? "Hedef yok" : full ? (now ? "Bugün tamam" : "Gün tamam") : `${sc.total - sc.done} hedef kaldı`;
+  const title = !sc.total ? tx("Hedef yok") : full ? (now ? tx("Bugün tamam") : tx("Gün tamam")) : tx("{0} hedef kaldı", [(sc.total - sc.done)]);
   const sub = !now ? `${prettyDate(key)} · ${weekdayName(key)}`
-            : full ? "Bugünün yıldızı yandı." : "Satıra dokun, olduğu yerde gir.";
+            : full ? tx("Bugünün yıldızı yandı.") : tx("Satıra dokun, olduğu yerde gir.");
   return `<div class="gh${full ? " full" : ""}${now ? "" : " past"}">
     <div class="gh-ring">
       <svg viewBox="0 0 84 84" aria-hidden="true">
@@ -116,14 +116,14 @@ function goalEditor(kind, entry, program, key){
       ${logged
         ? `<div class="metric-note" style="margin-top:7px">${tx("Beslenme günlüğündeki {0} kalemden hesaplandı.", [(entry.log.length)])}</div>`
         : `<div class="chips"><button class="chip" data-add-kcal="200">+200</button><button class="chip" data-add-kcal="400">+400</button><button class="chip" data-add-kcal="600">+600</button></div>`}
-      <button class="ghost" data-goto="kcal" style="margin-top:12px">${logged ? "Beslenme günlüğünü aç" : "Yediklerini tek tek gir"}</button>`;
+      <button class="ghost" data-goto="kcal" style="margin-top:12px">${logged ? tx("Beslenme günlüğünü aç") : tx("Yediklerini tek tek gir")}</button>`;
     case "steps": return `<div class="g-f"><label for="i-steps">${tx("Adım sayısı")}</label>
         <input id="i-steps" type="number" inputmode="numeric" value="${val(entry.steps)}" placeholder="—"></div>`;
     case "train": {
       const ses = program.training.days.find(d => d.wd === isoWeekday(key));
       if (!ses) return "";
       return `<div class="metric-note">${esc(ses.b)}</div>
-        <button class="ghost" id="go-train" style="margin-top:12px">${now ? "Antrenmana başla" : "Antrenmanı kaydet"}</button>`;
+        <button class="ghost" id="go-train" style="margin-top:12px">${now ? tx("Antrenmana başla") : tx("Antrenmanı kaydet")}</button>`;
     }
   }
   return "";
@@ -194,7 +194,7 @@ function todayView(entry, program, key){
 function reviewCount(){
   const w = lastWeight();
   const n = Object.keys(state.days || {}).filter(k => typeof state.days[k].weight === "number").length;
-  return w !== null ? `${kg1(w)} kg · ${n} ölçüm` : "henüz ölçüm yok";
+  return w !== null ? tx("{0} kg · {1} ölçüm", [(kg1(w)), (n)]) : tx("henüz ölçüm yok");
 }
 
 /* ---- otomatik güncellenen program önerileri ----
@@ -213,22 +213,22 @@ function kcalBand(program){
   if (goal === "lose"){
     const lo = Math.round(Math.max(floor, G - 500, T - 1000)), hi = Math.round(G * 1.05);
     return { G, T, lo, hi,
-      okMsg: v => v < G ? `açığın ${T - v} kcal, güvenli aralıkta` : "hedefte",
-      overMsg: v => v > T ? "bakım kalorinin üstündesin, bugün açık oluşmadı" : `hedefin ${v - G} kcal üstündesin, açık küçüldü`,
+      okMsg: v => v < G ? tx("açığın {0} kcal, güvenli aralıkta", [(T - v)]) : "hedefte",
+      overMsg: v => v > T ? tx("bakım kalorinin üstündesin, bugün açık oluşmadı") : tx("hedefin {0} kcal üstündesin, açık küçüldü", [(v - G)]),
       underMsg: v => `açık ${T - v} kcal; bu kadar düşük kalori kas kaybı ve yorgunluk riskini artırır, ${lo} kcal altına inme` };
   }
   if (goal === "gain"){
     const lo = Math.round(T * 1.05), hi = Math.round(T * 1.20);
     return { G, T, lo, hi,
-      okMsg: v => `fazlalığın ${v - T} kcal`,
+      okMsg: v => tx("fazlalığın {0} kcal", [(v - T)]),
       overMsg: v => `fazlalık ${v - T} kcal; bu kadarı kas yerine çoğunlukla yağ olarak depolanır`,
-      underMsg: v => v < T ? "bakım kalorinin altındasın, kas kazanımı için fazlalık gerekli" : "fazlalık kas kazanımı için yetersiz kaldı" };
+      underMsg: v => v < T ? tx("bakım kalorinin altındasın, kas kazanımı için fazlalık gerekli") : tx("fazlalık kas kazanımı için yetersiz kaldı") };
   }
   const lo = Math.round(G * 0.9), hi = Math.round(G * 1.1);
   return { G, T, lo, hi,
-    okMsg: v => Math.abs(v - G) < 20 ? "tam hedefte" : v > G ? `hedefin ${v - G} kcal üstü, tolerans içinde` : `hedefin ${G - v} kcal altı, tolerans içinde`,
-    overMsg: v => `hedefin ${v - G} kcal üstündesin, uzun sürerse kilo artışı olur`,
-    underMsg: v => `hedefin ${G - v} kcal altındasın, uzun sürerse kilo kaybı olur` };
+    okMsg: v => Math.abs(v - G) < 20 ? "tam hedefte" : v > G ? tx("hedefin {0} kcal üstü, tolerans içinde", [(v - G)]) : tx("hedefin {0} kcal altı, tolerans içinde", [(G - v)]),
+    overMsg: v => tx("hedefin {0} kcal üstündesin, uzun sürerse kilo artışı olur", [(v - G)]),
+    underMsg: v => tx("hedefin {0} kcal altındasın, uzun sürerse kilo kaybı olur", [(G - v)]) };
 }
 
 function taskKind(t){
@@ -249,18 +249,18 @@ function autoInfo(t, entry, program, key){
       const B = kcalBand(program);
       const has = typeof entry.kcal === "number";
       const v = has ? entry.kcal : 0;
-      const title = `Kaloriyi ${B.lo}–${B.hi} kcal arasında tut`;
+      const title = tx("Kaloriyi {0}–{1} kcal arasında tut", [(B.lo), (B.hi)]);
       /* gün bitmeden az yemek henüz sorun değil; geçmiş günde gün zaten bitti */
       const late = key < today() || new Date().getHours() >= 20;
-      if (!has) return { title, ok:false, pct:0, txt:`Hedef ${B.G} kcal · kalori girilmedi`,
-        why:"Kalori ya da beslenme günlüğü girilince kendiliğinden işaretlenir." };
+      if (!has) return { title, ok:false, pct:0, txt:tx("Hedef {0} kcal · kalori girilmedi", [(B.G)]),
+        why:tx("Kalori ya da beslenme günlüğü girilince kendiliğinden işaretlenir.") };
       if (v > B.hi) return { title, ok:false, pct:1, warn:true, txt:`${v} kcal · ${B.overMsg(v)}`,
-        why:`Üst sınır ${B.hi} kcal. ${B.overMsg(v)}.` };
+        why:tx("Üst sınır {0} kcal. {1}.", [(B.hi), (B.overMsg(v))]) };
       if (v < B.lo){
         const gap = B.lo - v;
         return late
           ? { title, ok:false, pct:v/B.lo, warn:true, txt:`${v} kcal · ${B.underMsg(v)}`, why:B.underMsg(v) + "." }
-          : { title, ok:false, pct:v/B.lo, txt:`${v} kcal · aralığa ${gap} kcal kaldı`,
+          : { title, ok:false, pct:v/B.lo, txt:tx("{0} kcal · aralığa {1} kcal kaldı", [(v), (gap)]),
               why:`Alt sınır ${B.lo} kcal; ${gap} kcal daha alınca işaretlenir.` };
       }
       return { title, ok:true, pct:1, txt:`${v} kcal · ${B.okMsg(v)}` };
@@ -269,44 +269,44 @@ function autoInfo(t, entry, program, key){
       const has = entry.log && entry.log.length;
       const v = has ? logTotals(entry).p : 0, g = program.protein, need = Math.round(g*0.9);
       return { title:`${g} g protein al`, ok: v >= need, pct: v/need,
-        txt: has ? `${v} / ${g} g` : "Beslenme günlüğüne ekledikçe dolar",
-        why:`Hedefin %90'ı olan ${need} g'a ulaşınca işaretlenir. Şu an ${v} g.` };
+        txt: has ? `${v} / ${g} g` : tx("Beslenme günlüğüne ekledikçe dolar"),
+        why:tx("Hedefin %90'ı olan {0} g'a ulaşınca işaretlenir. Şu an {1} g.", [(need), (v)]) };
     }
     case "water": {
       const v = entry.water || 0, g = program.water, need = Math.round(g*0.9);
-      return { title:`${g} ml su iç`, ok: v >= need, pct: v/need, txt:`${v} / ${g} ml`,
-        why:`${need} ml'ye ulaşınca işaretlenir. ${Math.max(need - v, 0)} ml kaldı.` };
+      return { title:tx("{0} ml su iç", [(g)]), ok: v >= need, pct: v/need, txt:`${v} / ${g} ml`,
+        why:tx("{0} ml'ye ulaşınca işaretlenir. {1} ml kaldı.", [(need), (Math.max(need - v, 0))]) };
     }
     case "sleep": {
       const v = typeof entry.sleep === "number" ? entry.sleep : null;
       const [lo, hi] = sleepBand();
       const long = v !== null && v > hi + 0.5;
       return { title:`${lo}-${hi} saat uyu`, ok: v !== null && v >= lo, pct: v === null ? 0 : v/lo, warn: long || (v !== null && v < lo - 1),
-        txt: v === null ? "Uyku girilmedi" : durTxt(Math.round(v*60)) + (long ? ` · düzenli olarak ${hi} saati aşmak yorgunluk işareti olabilir` : v < lo ? ` · ${lo} saatin altında` : ""),
-        why: v === null ? "Uyku kadranıyla girince işaretlenir." : `Kendi hedefin en az ${lo} saat.` };
+        txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + (long ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(hi)]) : v < lo ? tx(" · {0} saatin altında", [(lo)]) : ""),
+        why: v === null ? tx("Uyku kadranıyla girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(lo)]) };
     }
     case "weigh": {
       const v = typeof entry.weight === "number" ? entry.weight : null;
-      const gun = key === today() ? "Bugün" : "O gün";
-    return { title:"Sabah kilo ölçümü", ok: v !== null, pct: v === null ? 0 : 1,
-        txt: v === null ? `${gun} tartılmadın` : `${v.toFixed(1)} kg girildi`,
-        why:`${gun}ün kilosu girilince işaretlenir.` };
+      const gun = key === today() ? tx("Bugün") : tx("O gün");
+    return { title:tx("Sabah kilo ölçümü"), ok: v !== null, pct: v === null ? 0 : 1,
+        txt: v === null ? tx("{0} tartılmadın", [(gun)]) : `${v.toFixed(1)} kg girildi`,
+        why:tx("{0}ün kilosu girilince işaretlenir.", [(gun)]) };
     }
     case "steps": {
       const g = stepGoal();
       if (!g) return null;
       const v = typeof entry.steps === "number" ? entry.steps : 0;
-      return { title:`${g} adım at`, ok: v >= g, pct: v/g, txt:`${v} / ${g} adım`,
-        why:`${g} adıma ulaşınca işaretlenir. ${Math.max(g - v, 0)} adım kaldı.` };
+      return { title:tx("{0} adım at", [(g)]), ok: v >= g, pct: v/g, txt:tx("{0} / {1} adım", [(v), (g)]),
+        why:tx("{0} adıma ulaşınca işaretlenir. {1} adım kaldı.", [(g), (Math.max(g - v, 0))]) };
     }
     case "train": {
       const ses = program.training.days.find(d => d.wd === isoWeekday(key));
       if (!ses || !ses.b) return null;
       const list = exercisesOf(ses);
       const n = list.filter(x => liftHas((entry.lifts || {})[x])).length;
-      return { title:`Antrenman: ${ses.t}`, ok: n === list.length, pct: n/list.length,
+      return { title:tx("Antrenman: {0}", [(ses.t)]), ok: n === list.length, pct: n/list.length,
         txt:`${n}/${list.length} hareket kaydedildi`,
-        why:"Antrenman kaydındaki bütün hareketler girilince işaretlenir." };
+        why:tx("Antrenman kaydındaki bütün hareketler girilince işaretlenir.") };
     }
   }
   return null;
@@ -329,8 +329,8 @@ function syncSuggested(entry, program, key){
 }
 
 /* Öneriye dokununca verinin girildiği yere gidilir. */
-const GOTO_LABEL = { kcal:"beslenme günlüğüne git", protein:"beslenme günlüğüne git", water:"su girişine git",
-  sleep:"uyku girişine git", weigh:"kilo girişine git", train:"antrenman kaydına git", steps:"adım girişine git" };
+const GOTO_LABEL = { kcal:tx("beslenme günlüğüne git"), protein:tx("beslenme günlüğüne git"), water:tx("su girişine git"),
+  sleep:tx("uyku girişine git"), weigh:tx("kilo girişine git"), train:tx("antrenman kaydına git"), steps:tx("adım girişine git") };
 function openFold(key){
   state.ui = state.ui || {}; state.ui.fold = state.ui.fold || {};
   state.ui.fold[key] = true;
@@ -457,7 +457,7 @@ function wireToday(entry, program, key){
     if (!t) return;
     const info = t.suggested ? autoInfo(t, entry, currentProgram(), key) : null;
     if (info){
-      toast(info.ok ? "Bu görev girdiğin verilerden işaretlendi." : `Henüz tamamlanmadı. ${info.why || ""}`);
+      toast(info.ok ? tx("Bu görev girdiğin verilerden işaretlendi.") : tx("Henüz tamamlanmadı. {0}", [(info.why || "")]));
       return;
     }
     t.done = !t.done;

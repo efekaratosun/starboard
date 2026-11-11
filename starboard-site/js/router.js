@@ -23,9 +23,9 @@ function trainingSection(p, picker){
       <div class="pills" style="margin-bottom:14px">${list.map(([k,x]) =>
         `<button class="pill${k===cur?" on":""}" data-prog="${k}" style="cursor:pointer">${tx("{0} · {1} gün", [(x.label), (x.freq)])}</button>`).join("")}</div>
       <div class="own${custom ? " on" : ""}">
-        <div><b>${tx("Kendi programın")}</b><i>${ownN ? `${ownN} gün yazıldı${custom ? " · kullanılıyor" : ""}` : "Gün gün hareket, set ve tekrarı sen yaz."}</i></div>
+        <div><b>${tx("Kendi programın")}</b><i>${ownN ? tx("{0} gün yazıldı{1}", [(ownN), (custom ? tx(" · kullanılıyor") : "")]) : tx("Gün gün hareket, set ve tekrarı sen yaz.")}</i></div>
         ${ownN && !custom ? `<button class="ghost" id="own-use">${tx("Kullan")}</button>` : ""}
-        <button class="ghost" id="own-edit">${ownN ? "Düzenle" : "Yaz"}</button>
+        <button class="ghost" id="own-edit">${ownN ? tx("Düzenle") : tx("Yaz")}</button>
       </div>
 ` : ""}
     ${p.training.days.map(d => `<div class="item${picker && d.wd===wd?" today":""}">
@@ -63,11 +63,11 @@ function render(){
     <i>${tx("Kilonu girdiğinde kalori hedefin ve antrenman programın burada belirir.")}</i>
     <button id="np-go">${tx("Kilonu gir")}</button>
   </section>`;
-  const titles = { today: onToday() ? greetTitle() : prettyDate(t), plan:"Programın", meals:"Beslenme", calendar:"Takvim" };
-  const subs = { today: onToday() ? `${prettyDate(t)} · ${weekdayName(t)}` : `${weekdayName(t)} · geçmiş gün`,
-                 plan: planTab === "log" && !onToday() && !(program && program.training.none) ? `${prettyDate(t)} antrenmanı` : "" };
+  const titles = { today: onToday() ? greetTitle() : prettyDate(t), plan:tx("Programın"), meals:tx("Beslenme"), calendar:tx("Takvim") };
+  const subs = { today: onToday() ? `${prettyDate(t)} · ${weekdayName(t)}` : tx("{0} · geçmiş gün", [(weekdayName(t))]),
+                 plan: planTab === "log" && !onToday() && !(program && program.training.none) ? tx("{0} antrenmanı", [(prettyDate(t))]) : "" };
 
-  titles.settings = "Ben";
+  titles.settings = tx("Ben");
 
   /* Geçmiş gün şeridi: hangi sekmede olursan ol hangi güne yazdığın görünsün. */
   const pastBar = (!onToday() && tab !== "settings" && tab !== "calendar" && tab !== "today") ? `<div class="notice past">
@@ -81,7 +81,7 @@ function render(){
   let body = "";
   if (tab === "settings"){
     const te = state.days[today()];
-    body = `<div class="seg">${[["body","Vücudum"],["chart","Grafikler"],["set","Ayarlar"]].map(([k,l]) =>
+    body = `<div class="seg">${[["body",tx("Vücudum")],["chart",tx("Grafikler")],["set",tx("Ayarlar")]].map(([k,l]) =>
       `<button data-me-tab="${k}" aria-current="${meTab===k}">${l}</button>`).join("")}</div>`
       + (meTab === "set" ? settingsView()
        : meTab === "chart" ? chartsView()
@@ -90,7 +90,7 @@ function render(){
               : `<div class="empty">${tx("Kilonu gir, hedefler hesaplansın.")}</div>`}</section>`);
   }
   else if (tab === "today") body = todayView(entry, program, t);
-  else if (tab === "plan") body = program ? `<div class="seg">${[["log","Kaydım"],["program","Program"],["howto","Nasıl yapılır"]].map(([k,l]) =>
+  else if (tab === "plan") body = program ? `<div class="seg">${[["log",tx("Kaydım")],["program",tx("Program")],["howto",tx("Nasıl yapılır")]].map(([k,l]) =>
       `<button data-plan-tab="${k}" aria-current="${planTab===k}">${l}</button>`).join("")}</div>`
       + (planTab === "howto" ? howtoView(program)
        : planTab === "log" ? trainLogView(entry, program, t)
@@ -102,7 +102,7 @@ function render(){
   app.innerHTML = `
     <header>
       <div class="htext"><h1>${titles[tab]}</h1>${subs[tab]?`<div class="sub">${subs[tab]}</div>`:""}</div>
-      <button class="gear${tab==="settings"?"":" me"}" id="gear" aria-label="${tab==="settings"?"Kapat":"Ben: vücudun, grafikler ve ayarlar"}"
+      <button class="gear${tab==="settings"?"":" me"}" id="gear" aria-label="${tab==="settings"?tx("Kapat"):tx("Ben: vücudun, grafikler ve ayarlar")}"
         ${tab==="settings"?"":`style="--av:${avColor(state.profile)}"`}>
         <svg class="ico" aria-hidden="true"><use href="#${tab==="settings"?"i-close":bodyIcon(state.profile)}"/></svg></button>
     </header>
@@ -110,10 +110,10 @@ function render(){
     <nav class="tabbar" aria-label="${tx("Sayfalar")}"><i class="tab-ind" aria-hidden="true"></i>
       ${(() => { const tb = ([k,ic,l]) => `<button data-tab="${k}" aria-current="${tab===k}">
           <svg class="ico" aria-hidden="true"><use href="#${ic}"/></svg>${l}</button>`;
-        return tb(["today","i-day","Bugün"]) + tb(["plan","i-plan","Program"])
+        return tb(["today","i-day",tx("Bugün")]) + tb(["plan","i-plan",tx("Program")])
           + `<button class="fab" id="fab" aria-label="${tx("Hızlı giriş")}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>`
-          + tb(["meals","i-grain","Beslenme"]) + tb(["calendar","i-today","Takvim"]); })()}
+          + tb(["meals","i-grain",tx("Beslenme")]) + tb(["calendar","i-today",tx("Takvim")]); })()}
     </nav>`;
 
   document.getElementById("fab").onclick = openQuickSheet;
@@ -184,7 +184,7 @@ function render(){
       state.profile.programId = defaultProgramId(state.profile.venue || "gym",
         state.profile.activity, state.profile.days);
       await saveState(state); render(); window.scrollTo(0,0);
-      toast("Program kuruldu. Günleri Ayarlar'dan değiştirebilirsin.");
+      toast(tx("Program kuruldu. Günleri Ayarlar'dan değiştirebilirsin."));
     };
     const oe = document.getElementById("own-edit");
     if (oe) oe.onclick = openProgramEditor;
@@ -192,7 +192,7 @@ function render(){
     if (ou) ou.onclick = async () => {
       state.profile.programId = "custom"; delete state.profile.noPlan;
       await saveState(state); render();
-      toast("Kendi programın kullanılıyor.");
+      toast(tx("Kendi programın kullanılıyor."));
     };
     const pick = document.getElementById("venue-pick");
     if (pick) pick.onchange = async () => {

@@ -134,12 +134,12 @@ function syncOptional(entry, k){
     const wantT = !!(day && day.b), wantR = !!(day && !day.b);
     if (entry.tasks.some(x => (isT(x) && !wantT) || (isR(x) && !wantR)))
       entry.tasks = entry.tasks.filter(x => !(isT(x) && !wantT) && !(isR(x) && !wantR));
-    if (wantT && !entry.tasks.some(isT)) entry.tasks.unshift({ id: Date.now()+Math.random(), title:"Antrenman: " + day.t, done:false, suggested:true });
-    if (wantR && !entry.tasks.some(isR)) entry.tasks.unshift({ id: Date.now()+Math.random(), title:"Dinlenme günü — 20 dk esneme", done:false, suggested:true });
+    if (wantT && !entry.tasks.some(isT)) entry.tasks.unshift({ id: Date.now()+Math.random(), title:tx("Antrenman: ") + day.t, done:false, suggested:true });
+    if (wantR && !entry.tasks.some(isR)) entry.tasks.unshift({ id: Date.now()+Math.random(), title:tx("Dinlenme günü — 20 dk esneme"), done:false, suggested:true });
   }
   const want = stepGoal();
   const i = entry.tasks.findIndex(x => x.suggested && taskKind(x) === "steps");
-  if (want && i < 0) entry.tasks.push({ id: Date.now()+Math.random(), title: want + " adım at", done:false, suggested:true, kind:"steps" });
+  if (want && i < 0) entry.tasks.push({ id: Date.now()+Math.random(), title: want + tx(" adım at"), done:false, suggested:true, kind:"steps" });
   if (!want && i >= 0) entry.tasks.splice(i, 1);
 }
 const app = document.getElementById("app");
@@ -182,7 +182,7 @@ function ensureToday(){
 /* ---- tema önizlemesi ----
    Seçilen tema, sayfanın geri kalanı değişmeden küçük bir uygulama maketinde
    gösterilir: maket kendi jeton kümesini taşır (.thm-light / .thm-dark). */
-const THEMES = [["auto","Telefonu izle"],["light","Açık"],["dark","Koyu"]];
+const THEMES = [["auto",tx("Telefonu izle")],["light",tx("Açık")],["dark",tx("Koyu")]];
 const sysDark = () => !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
 const themeClass = t => (t === "dark" || (t === "auto" && sysDark())) ? "thm-dark" : "thm-light";
 
@@ -216,9 +216,9 @@ function openThemeSheet(cur, onPick){
       b.setAttribute("aria-current", on); b.setAttribute("aria-selected", on);
     });
     el.querySelector("#tp-note").textContent = sel === "auto"
-      ? `Telefonun ayarı geçerli olur; şu an ${sysDark() ? "koyu" : "açık"} görünüyor ve akşam değişebilir.`
-      : sel === "dark" ? "Her zaman koyu kalır, telefonun ayarı ne olursa olsun."
-      : "Her zaman açık kalır, telefonun ayarı ne olursa olsun.";
+      ? `Telefonun ayarı geçerli olur; şu an ${sysDark() ? "koyu" : tx("açık")} görünüyor ve akşam değişebilir.`
+      : sel === "dark" ? tx("Her zaman koyu kalır, telefonun ayarı ne olursa olsun.")
+      : tx("Her zaman açık kalır, telefonun ayarı ne olursa olsun.");
   };
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tp-t">
     <div class="sheet-h"><b id="tp-t">${tx("Tema")}</b><button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
