@@ -489,13 +489,13 @@ function openAvatarSheet(){
 function fatClass(bf, sex){
   const t = sex === "female" ? [14, 21, 25, 32] : sex === "male" ? [6, 14, 18, 25] : [10, 17.5, 21.5, 28.5];
   if (bf < t[0]) return [tx("çok düşük"), "warn"];
-  if (bf < t[1]) return ["atletik", "ok"];
-  if (bf < t[2]) return ["fit", "ok"];
-  if (bf < t[3]) return ["ortalama", "ok"];
+  if (bf < t[1]) return [tx("atletik"), "ok"];
+  if (bf < t[2]) return [tx("fit"), "ok"];
+  if (bf < t[3]) return [tx("ortalama"), "ok"];
   return [tx("yüksek"), "bad"];
 }
 function bmiClass(b){
-  return b < 18.5 ? [tx("zayıf"),"warn"] : b < 25 ? ["normal","ok"] : b < 30 ? ["kilolu","warn"] : ["obez","bad"];
+  return b < 18.5 ? [tx("zayıf"),"warn"] : b < 25 ? [tx("normal"),"ok"] : b < 30 ? [tx("kilolu"),"warn"] : [tx("obez"),"bad"];
 }
 const kg1 = v => v.toFixed(1).replace(".", ",");
 
@@ -611,7 +611,7 @@ function homeView(){
   const lbm = (w !== null && p.bodyFat > 0 && p.bodyFat < 70) ? w * (1 - p.bodyFat/100) : null;
   const change = (w !== null && typeof p.startWeight === "number") ? w - p.startWeight : null;
 
-  const bmiCat = bmi === null ? "" : bmi < 18.5 ? tx("zayıf") : bmi < 25 ? "normal" : bmi < 30 ? "kilolu" : "obez";
+  const bmiCat = bmi === null ? "" : bmi < 18.5 ? tx("zayıf") : bmi < 25 ? tx("normal") : bmi < 30 ? tx("kilolu") : tx("obez");
   const goalDown = p.goal === "lose";
 
   return `${bodyCard()}${chartsView()}`;

@@ -18,6 +18,12 @@ Yol haritası: [ROADMAP.md](ROADMAP.md)
 `js/` altındaki dosyalar `index.html` içindeki sırayla yüklenir ve aynı genel kapsamı paylaşır; sıra önemlidir.
 Yeni bir dosya eklenince hem `index.html` hem `sw.js` içindeki listeye yazılmalıdır.
 
+## Çeviri
+
+Kaynak dil Türkçedir. Ekranda görünen her metin `tx("...")` içine yazılır; değişken içeren metinlerde yer tutucu kullanılır: `tx("{0} tarif bulundu", [n])`.
+İngilizce karşılıklar `starboard-site/js/lang/en.js` dosyasındadır; anahtar koddaki Türkçe metnin aynısıdır. Sözlükte olmayan metin İngilizce modda Türkçe görünür.
+Yeni metin eklerken `tx()` içine almak ve sözlüğe karşılığını yazmak gerekir.
+
 ## Yerelde çalıştırma
 
 Site (http://localhost:8765):

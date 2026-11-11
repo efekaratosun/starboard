@@ -29,7 +29,12 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Tek dosyayı ayrı dosyalara böl: 3 stil, 19 kod dosyası (`starboard-site/css`, `starboard-site/js`); ekran çıktısı eskisiyle birebir aynı
 - [x] Otomatik testler (`tests/`): her gönderimde çalışır, testler kalırsa site yayınlanmaz
 - [ ] Hesaplamaları ekran kodundan ayır (şu an bazı hesaplar HTML üretimiyle iç içe); derleme adımı Faz 3'te Node ile birlikte gelir
-- [ ] Çok dilli altyapı: tüm metinler koddan ayrılır, Türkçe ve İngilizce dil dosyaları; birimler (kg/lb, ml/oz) ve tarih biçimleri dile göre
+- [x] Çok dilli altyapı: `tx()` çeviri işlevi, dil seçimi (Ayarlar), dile göre tarih ve gün adları
+- [x] Arayüz metinlerinin İngilizcesi: yaklaşık 1.100 metin çeviriye bağlandı, sözlükte 730 karşılık (`starboard-site/js/lang/en.js`)
+- [ ] İçerik çevirisi: besin adları (320), tarifler, antrenman programları ve hareket anlatımları (yaklaşık 1.500 metin); Faz 2'deki uluslararası içerik uyarlamasıyla birlikte ele alınır
+- [ ] Kalan arayüz parçaları: küçük harfle başlayan kısa metinler ve kayıtlı görev başlıkları
+- [ ] Birimler dile göre (kg/lb, ml/oz)
+- [ ] İngilizce "beta" etiketini kaldır ve tarayıcı diline göre otomatik seçim aç (içerik çevirisi bitince)
 - [ ] Sürüm numarası ve değişiklik günlüğü
 - [ ] Veri şeması sürümleme: eski kayıtlar her güncellemede güvenle yeni biçime taşınsın
 - [ ] Test kapsamını genişlet: gün puanı, yıldızlar, haftalık yenileme

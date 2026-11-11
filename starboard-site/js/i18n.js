@@ -6,7 +6,8 @@
    Başka bir dil seçiliyse tx() aynı metni o dilin sözlüğünde (js/lang/*.js) arar;
    bulamazsa Türkçesini gösterir ve eksik listesine yazar. Dil değişince sayfa
    yeniden yüklenir, çünkü bazı metinler yükleme anında hazırlanır. */
-const LANGS = [["tr", "Türkçe"], ["en", "English"]];
+/* İngilizce "beta": arayüz çevrildi, içerik (besinler, tarifler, hareketler) henüz Türkçe. */
+const LANGS = [["tr", "Türkçe"], ["en", "English (beta)"]];
 const LOCALES = { tr:"tr-TR", en:"en-US" };
 const LANG_KEY = "starboard-lang";
 const I18N = { en: window.STARBOARD_EN || {} };

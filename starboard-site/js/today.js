@@ -234,6 +234,9 @@ function kcalBand(program){
 function taskKind(t){
   if (t.kind) return t.kind;
   const x = t.title || "";
+  /* Başlıklar görevin oluşturulduğu dilde kaydedilir; iki dil de tanınır. */
+  if (/^Workout:/.test(x)) return "train";
+  if (/^Walk [\d.,]+ steps$/.test(x)) return "steps";
   return /^Antrenman:/.test(x) ? "train" : /kcal hedefini tut/.test(x) ? "kcal"
        : /g protein al/.test(x) ? "protein" : /ml su iç/.test(x) ? "water"
        : /saat uyu/.test(x) ? "sleep" : /kilo ölçümü/.test(x) ? "weigh"
@@ -268,7 +271,7 @@ function autoInfo(t, entry, program, key){
     case "protein": {
       const has = entry.log && entry.log.length;
       const v = has ? logTotals(entry).p : 0, g = program.protein, need = Math.round(g*0.9);
-      return { title:`${g} g protein al`, ok: v >= need, pct: v/need,
+      return { title:tx("{0} g protein al", [g]), ok: v >= need, pct: v/need,
         txt: has ? `${v} / ${g} g` : tx("Beslenme günlüğüne ekledikçe dolar"),
         why:tx("Hedefin %90'ı olan {0} g'a ulaşınca işaretlenir. Şu an {1} g.", [(need), (v)]) };
     }
@@ -281,7 +284,7 @@ function autoInfo(t, entry, program, key){
       const v = typeof entry.sleep === "number" ? entry.sleep : null;
       const [lo, hi] = sleepBand();
       const long = v !== null && v > hi + 0.5;
-      return { title:`${lo}-${hi} saat uyu`, ok: v !== null && v >= lo, pct: v === null ? 0 : v/lo, warn: long || (v !== null && v < lo - 1),
+      return { title:tx("{0}-{1} saat uyu", [lo, hi]), ok: v !== null && v >= lo, pct: v === null ? 0 : v/lo, warn: long || (v !== null && v < lo - 1),
         txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + (long ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(hi)]) : v < lo ? tx(" · {0} saatin altında", [(lo)]) : ""),
         why: v === null ? tx("Uyku kadranıyla girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(lo)]) };
     }
@@ -289,7 +292,7 @@ function autoInfo(t, entry, program, key){
       const v = typeof entry.weight === "number" ? entry.weight : null;
       const gun = key === today() ? tx("Bugün") : tx("O gün");
     return { title:tx("Sabah kilo ölçümü"), ok: v !== null, pct: v === null ? 0 : 1,
-        txt: v === null ? tx("{0} tartılmadın", [(gun)]) : `${v.toFixed(1)} kg girildi`,
+        txt: v === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} kg girildi", [v.toFixed(1)]),
         why:tx("{0}ün kilosu girilince işaretlenir.", [(gun)]) };
     }
     case "steps": {

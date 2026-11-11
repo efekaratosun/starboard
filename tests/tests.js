@@ -195,4 +195,46 @@ test("ilk giriş: kayıt yokken karşılama ekranı çizilir", () => {
   ok(app.innerHTML.includes("Starboard"), "karşılama ekranı gelmedi");
 });
 
+/* ---- çeviri ---- */
+const withLang = async (lang, fn) => { const old = LANG; LANG = lang; try { return await fn(); } finally { LANG = old; } };
+
+test("çeviri: Türkçede metin aynen döner, yer tutucular dolar", () => {
+  eq(tx("Kaydet"), "Kaydet");
+  eq(tx("{0} tarif bulundu", [3]), "3 tarif bulundu");
+  eq(tx("{0} / {1} adım", [10, 20]), "10 / 20 adım");
+});
+test("çeviri: İngilizcede sözlükteki karşılık gelir, olmayan metin Türkçe kalır", async () => {
+  await withLang("en", () => {
+    eq(tx("Kaydet"), "Save");
+    eq(tx("{0} tarif bulundu", [3]), "3 recipes found");
+    eq(tx("{0} beslenmeye uyan {1} tarif", ["Vegan", 5]), "5 recipes for the Vegan diet", "yer tutucu sırası değişebilmeli");
+    eq(tx("Sözlükte olmayan bir metin"), "Sözlükte olmayan bir metin");
+  });
+});
+test("çeviri: sözlükteki her karşılık anahtarıyla aynı yer tutucuları taşır", () => {
+  const holes = s => [...new Set(s.match(/\{\d+\}/g) || [])].sort();
+  const bad = [];
+  for (const [k, v] of Object.entries(I18N.en)) {
+    const a = holes(k), b = holes(v);
+    /* Karşılık bir yer tutucuyu bilerek atlayabilir, ama anahtarda olmayanı kullanamaz. */
+    if (b.some(h => !a.includes(h)) || typeof v !== "string" || !v) bad.push(k);
+  }
+  eq(bad, [], "hatalı sözlük kayıtları");
+  ok(Object.keys(I18N.en).length > 600, "sözlük beklenenden küçük");
+});
+test("çeviri: İngilizce modda bütün sekmeler ve giriş ekranları çizilir", async () => {
+  const fixture = await loadFixture();
+  await withLang("en", () => {
+    state = fixture; migrateMeals(); notice = null; viewDate = null; ensureToday();
+    for (const t of ["today", "plan", "meals", "calendar", "settings"]) {
+      tab = t; render();
+      ok(app.innerHTML.length > 500, `${t} sekmesi boş çizildi`);
+    }
+    tab = "settings"; render();
+    ok(app.innerHTML.includes("My body") && app.innerHTML.includes("Settings"), "Ben sekmesi İngilizce çizilmedi");
+    state = null; tab = "today"; render();
+    ok(app.innerHTML.includes("One board for your health."), "karşılama ekranı İngilizce çizilmedi");
+  });
+});
+
 window.STARBOARD_TESTS = TESTS;

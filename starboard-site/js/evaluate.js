@@ -35,7 +35,7 @@ function bar(name, valText, value, low, high, note){
   const pos = clamp((value - min) / (max - min) * 100, 0, 100);
   const zl = (low - min) / (max - min) * 100, zw = span / (max - min) * 100;
   const status = value < low ? tx("Az") : value > high ? tx("Fazla") : tx("Yeterli");
-  const out = status !== "Yeterli";
+  const out = value < low || value > high;
   return `<div class="metric">
     <div class="metric-top"><span class="metric-name">${name}</span><span class="metric-val num">${valText}</span></div>
     <div class="track"><div class="zone" style="left:${zl}%;width:${zw}%"></div><div class="mark${out?" out":""}" style="left:${pos}%"></div></div>
