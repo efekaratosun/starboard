@@ -6,7 +6,14 @@ Tür: **hata** (yanlış çalışıyor), **eksik** (olması gereken yok), **gör
 
 ## Açık
 
-Şu an açık madde yok.
+### 2. Diyet seçiliyken öğün önerileri gerçekçi değil
+
+- Tür: hata
+- Ekran: Beslenme › Öneriler (beslenme türü "Hepsi" dışında bir şey seçiliyken)
+- Eklendi: 11 Kasım 2026
+- Durum: Vejetaryen seçiliyken (82 kg, erkek, kiloyu koru) kahvaltıya kuru kırmızı mercimek 80 g, kuru tam buğday makarna 60 g ve keten tohumu 40 g çıktı; ara öğüne kuru yeşil mercimek, pişmiş makarna ve tereyağı; akşama lor peyniri, kestane ve pirinç.
+- Beklenen: Öğüne yakışan besinler (kahvaltıda kahvaltılık, ara öğünde atıştırmalık) ve yenebilir biçimde porsiyonlar.
+- Not: Diyet seçiliyken öneriler hazır menülerden değil, makro hedefine en yakın üçlüyü arayan üreticiden (`pickTrio`) geliyor. Üretici yalnızca sayısal uyuma bakıyor; kuru baklagili kahvaltıya ya da ara öğüne koyabiliyor. 1 numaralı düzeltme bu yolu kapsamıyor.
 
 ## Tamamlanan
 
