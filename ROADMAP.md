@@ -32,7 +32,8 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Çok dilli altyapı: `tx()` çeviri işlevi, dil seçimi (Ayarlar), dile göre tarih ve gün adları
 - [x] Arayüz metinlerinin İngilizcesi: yaklaşık 1.100 metin çeviriye bağlandı, sözlükte 730 karşılık (`starboard-site/js/lang/en.js`)
 - [x] Beslenme içeriğinin İngilizcesi: 320 besin adı, porsiyon ölçüleri, mikro besinler, hazır menüler ve tarifler (`starboard-site/js/lang/en-food.js`, 630 karşılık)
-- [ ] Antrenman içeriğinin İngilizcesi: program adları, gün başlıkları, hareketler ve hareket anlatımları (yaklaşık 600 metin). Hareket adları kayıtlarda ve anlatım eşleşmesinde anahtar olarak kullanıldığı için önce adın gösterimden ayrılması gerekiyor
+- [x] Antrenman içeriğinin İngilizcesi: 16 program, gün başlıkları, 90 hareketin rehberi (`starboard-site/js/lang/en-workout.js`). Antrenman satırları kodda ve kayıtlarda Türkçe kalır, yalnızca ekranda `exText()` ile çevrilir; böylece dil değişince kayıtlar ve rekorlar kopmaz
+- [ ] Kullanıcının kendi yazdığı program ve kayıtlı görev başlıkları yazıldığı dilde kalır
 - [ ] İçeriğin uluslararası uyarlaması (Faz 2): çeviri tamam, ama besin ve tarif seçkisi hâlâ Türk mutfağı ağırlıklı
 - [ ] Kalan arayüz parçaları: küçük harfle başlayan kısa metinler ve kayıtlı görev başlıkları
 - [ ] Birimler dile göre (kg/lb, ml/oz)

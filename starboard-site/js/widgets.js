@@ -370,7 +370,7 @@ function prBoard(){
     <h2>${tx("Kişisel rekorlar")} ${all.length ? `<span class="count">${tx("{0} hareket", [(all.length)])}</span>` : ""}</h2>
     ${list.length ? `<div class="prs">${list.map(r => `<div class="pr${r.k === today() ? " new" : ""}">
       <svg class="pr-cup" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cup"/></svg>
-      <div class="pr-m"><span class="pr-n">${esc(parseEx(r.name, venueOf(currentProgram())).name)}</span>
+      <div class="pr-m"><span class="pr-n">${esc(exText(parseEx(r.name, venueOf(currentProgram())).name))}</span>
         <span class="pr-v num">${esc(r.text)}</span></div>
       <span class="pr-d">${r.k === today() ? tx("bugün") : prettyDate(r.k)}</span>
     </div>`).join("")}</div>`

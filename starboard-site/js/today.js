@@ -122,7 +122,7 @@ function goalEditor(kind, entry, program, key){
     case "train": {
       const ses = program.training.days.find(d => d.wd === isoWeekday(key));
       if (!ses) return "";
-      return `<div class="metric-note">${esc(ses.b)}</div>
+      return `<div class="metric-note">${esc(exText(ses.b))}</div>
         <button class="ghost" id="go-train" style="margin-top:12px">${now ? tx("Antrenmana başla") : tx("Antrenmanı kaydet")}</button>`;
     }
   }

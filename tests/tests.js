@@ -249,4 +249,38 @@ test("çeviri: İngilizce modda bütün sekmeler ve giriş ekranları çizilir",
   });
 });
 
+test("çeviri: antrenman satırları yalnızca gösterirken çevrilir", async () => {
+  /* Türkçede metin aynen döner. */
+  eq(exText("Omuz press 3×10 · 20 dk koşu"), "Omuz press 3×10 · 20 dk koşu");
+  await withLang("en", () => {
+    EX_KEYS = null;
+    eq(exText("Omuz press 3×10 · Kürek 3×10 · Plank 3×45 sn"), "Shoulder press 3×10 · Row 3×10 · Plank 3×45 s");
+    eq(exText("Çantalı Romen deadlift 3×10"), "Backpack Romanian deadlift 3×10");
+    eq(exText("5 tur: 30 sn yüksek diz · 30 sn şınav (60 sn ara)"), "5 rounds: 30 s high knees · 30 s push-up (60 s rest)");
+    eq(exText("3 set · %65 / %75 / %85 1TM"), "3 sets · %65 / %75 / %85 1RM");
+    /* Hazır programların hiçbir satırında Türkçe harf kalmamalı. */
+    const left = [];
+    for (const p of Object.values(PROGRAMS)) for (const d of p.s)
+      if (d.b && /[çğıöşüÇĞİÖŞÜ]/.test(exText(d.b))) left.push(exText(d.b));
+    eq(left, [], "çevrilmeden kalan antrenman satırları");
+  });
+  EX_KEYS = null;
+});
+test("çeviri: antrenman satırları kodda Türkçe kalır (ayrıştırma ve rehber buna bağlı)", () => {
+  /* Bu satırlar sözlüğe yazılırsa tx() onları ayrıştırmadan önce çevirir ve kayıtlar kopar. */
+  const inDict = [];
+  for (const p of Object.values(PROGRAMS)) for (const d of p.s)
+    if (d.b && Object.prototype.hasOwnProperty.call(I18N.en, d.b)) inDict.push(d.b);
+  eq(inDict, [], "sözlüğe yazılmış antrenman satırları");
+  const ex = parseEx("Omuz press 3×10", "gym");
+  eq([ex.t, ex.name, ex.n], ["w", "Omuz press", 3]);
+  ok(guidesFor("Omuz press 3×10").length === 1, "rehber eşleşmedi");
+});
+test("çeviri: hareket rehberinin adları ve adımları İngilizcede çevrilir", () => {
+  const missing = [];
+  for (const g of GUIDE) for (const s of [g.n, g.x, ...g.s])
+    if (!Object.prototype.hasOwnProperty.call(I18N.en, s)) missing.push(s);
+  eq(missing, [], "İngilizce karşılığı olmayan rehber metinleri");
+});
+
 window.STARBOARD_TESTS = TESTS;

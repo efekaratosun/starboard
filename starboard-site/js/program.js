@@ -155,12 +155,12 @@ const PROGRAMS = {
        {t:tx("Yüklü tüm vücut B"),b:tx("Çantalı Romen deadlift 4×10 · Pike şınav 3×10 · Bulgarian split squat 3×10 · Hollow hold 3×30 sn")},
        {t:tx("Yüklü tüm vücut C"),b:tx("Çantalı lunge 4×12 · Elmas şınav 3×12 · Ters kürek 3×10 · Dead bug 3×15")}]},
 
-  home_hiit4:{ venue:"home", label:"HIIT + kuvvet devresi", freq:4,
+  home_hiit4:{ venue:"home", label:tx("HIIT + kuvvet devresi"), freq:4,
     desc:tx("Kısa ve yoğun. Aralıklı devre günleriyle kuvvet günlerini dönüşümlü uygular, seans 25-30 dakika."),
     note:tx("Devre günlerinde nabız yüksek kalmalı; dinlenme sürelerini uzatma."),
-    s:[{t:"HIIT devresi A",b:"4 tur: 40 sn burpee · jump squat · mountain climber · plank jack (20 sn ara)"},
+    s:[{t:tx("HIIT devresi A"),b:"4 tur: 40 sn burpee · jump squat · mountain climber · plank jack (20 sn ara)"},
        {t:tx("Kuvvet · üst"),b:tx("Şınav 4×12 · Pike şınav 3×10 · Sandalye dips 3×12 · Havlu kürek 4×12")},
-       {t:"HIIT devresi B",b:tx("5 tur: 30 sn yüksek diz · 30 sn lunge sıçrama · 30 sn şınav (60 sn ara)")},
+       {t:tx("HIIT devresi B"),b:tx("5 tur: 30 sn yüksek diz · 30 sn lunge sıçrama · 30 sn şınav (60 sn ara)")},
        {t:tx("Kuvvet · alt"),b:tx("Squat 4×20 · Bulgarian split squat 3×12 · Glute bridge 4×20 · Calf raise 4×25")}]},
 
   out_c25k3:{ venue:"outdoor", label:tx("Sıfırdan 5 km koşu"), freq:3,

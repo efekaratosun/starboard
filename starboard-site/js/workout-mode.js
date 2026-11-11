@@ -88,9 +88,9 @@ function woBody(ex, name, rec, prev){
     case "wc": {
       const s = { kg: rec.kg ?? (prev && prev.kg) ?? null };
       return `<div class="wo-fields" style="margin-bottom:14px">${woField("kg", s.kg, "kg", "")}</div>
-        ${woChips(rec.n || 0, ex.n, ex.unit || "set")}`;
+        ${woChips(rec.n || 0, ex.n, exText(ex.unit || "set"))}`;
     }
-    case "n": return woChips(rec.n || 0, ex.n, ex.unit || "tur");
+    case "n": return woChips(rec.n || 0, ex.n, exText(ex.unit || "tur"));
     case "sw": return `${woChips(rec.n || 0, ex.n, "tekrar")}
       <div class="wo-fields" style="margin-top:14px">${woField("min", rec.min ?? (prev && prev.min) ?? null, "dakika", "")}</div>`;
     case "sd": return `<div class="wo-fields">${woField("m", rec.m ?? ex.d ?? null, "metre", "")}${woField("min", rec.min ?? (prev && prev.min) ?? null, "dakika", "")}</div>`;
@@ -122,7 +122,7 @@ function woScreen(){
         const has = liftHas(rec), sum = has ? liftSummary(rec, ex) : "";
         return `<div class="wo-sum${has ? "" : " skip"}">
           <svg class="ico" aria-hidden="true"><use href="#i-${has ? "check" : "cross"}"/></svg>
-          <div class="m"><h3>${esc(ex.name)}</h3><p>${has ? esc(sum || tx("yapıldı")) : "girilmedi"}</p></div>
+          <div class="m"><h3>${esc(exText(ex.name))}</h3><p>${has ? esc(sum || tx("yapıldı")) : tx("girilmedi")}</p></div>
         </div>`;
       }).join("")}</section>
     </div>
@@ -146,8 +146,8 @@ function woScreen(){
     <div class="wo-dots" aria-hidden="true">${list.map((n, i) =>
       `<i class="${i === woIdx ? "cur" : liftHas(lifts[n]) ? "on" : ""}"></i>`).join("")}</div>
     <div class="wo-main">
-      <div class="wo-h">${esc(ex.name)}</div>
-      <div class="wo-s">${esc(ex.sub || "")}${ex.sub && LIFT_KIND[ex.t] ? " · " : ""}${LIFT_KIND[ex.t] || ""}</div>
+      <div class="wo-h">${esc(exText(ex.name))}</div>
+      <div class="wo-s">${esc(exText(ex.sub || ""))}${ex.sub && LIFT_KIND[ex.t] ? " · " : ""}${LIFT_KIND[ex.t] || ""}</div>
       <div class="wo-last">${ps ? `Geçen sefer: <b>${esc(ps)}</b> · ${prettyDate(prev.k)}` : tx("Bu hareketi ilk kez kaydediyorsun.")}
         ${ids.length ? `<button class="how-link" data-wohow="${ids[0]}">${tx("Nasıl yapılır")}</button>` : ""}</div>
       ${woBody(ex, name, rec, prev)}

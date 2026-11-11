@@ -193,8 +193,8 @@ function liftSummary(l, ex){
     }
     case "r": { const r = numsOf(sets); return r.length ? `${r.join("-")} tekrar${l.kg2 ? ` · +${fmtN(l.kg2)} kg` : ""}` : ""; }
     case "t": { const r = numsOf(sets); return r.length ? `${r.join("-")} sn` : ""; }
-    case "wc": return `${l.kg ? fmtN(l.kg) + " kg · " : ""}${l.n || 0}/${ex.n} ${ex.unit}`;
-    case "n":  return `${l.n || 0}/${ex.n} ${ex.unit}`;
+    case "wc": return `${l.kg ? fmtN(l.kg) + " kg · " : ""}${l.n || 0}/${ex.n} ${exText(ex.unit)}`;
+    case "n":  return `${l.n || 0}/${ex.n} ${exText(ex.unit)}`;
     case "sw": return `${l.n || 0}/${ex.n} × ${ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`;
     case "sd": return `${l.m || ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`;
     case "c":  return [l.min ? fmtN(l.min) + " dk" : "", l.km ? fmtN(l.km) + " km" : "", pace(l.min, l.km)].filter(Boolean).join(" · ");
@@ -233,8 +233,8 @@ function liftBody(i, ex, cur, prev){
     case "r": case "t": return `<div class="lf-grid">${idx.map(k =>
         liftInput(i,"s",k,sets[k],(typeof pSets[k] === "number" ? pSets[k] : ex.tg),false,`${k+1}. set${ex.t==="t"?" · sn":""}`)).join("")}
         ${ex.xkg ? liftInput(i,"kg2",undefined,cur.kg2,prev && prev.kg2 || "",true,tx("Ek kg")) : ""}</div>`;
-    case "wc": return `<div class="lf-row">${liftInput(i,"kg",undefined,cur.kg,prev && prev.kg || "",true,tx("Ağırlık (kg)"))}</div>${stepper(i, cur.n || 0, ex.n, ex.unit)}`;
-    case "n":  return stepper(i, cur.n || 0, ex.n, ex.unit);
+    case "wc": return `<div class="lf-row">${liftInput(i,"kg",undefined,cur.kg,prev && prev.kg || "",true,tx("Ağırlık (kg)"))}</div>${stepper(i, cur.n || 0, ex.n, exText(ex.unit))}`;
+    case "n":  return stepper(i, cur.n || 0, ex.n, exText(ex.unit));
     case "sw": return `${stepper(i, cur.n || 0, ex.n, "× " + ex.d + " m")}<div class="lf-row">${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
     case "sd": return `<div class="lf-row">${liftInput(i,"m",undefined,cur.m,ex.d,false,tx("Mesafe (m)"))}${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
     case "c":  return `<div class="lf-row">${liftInput(i,"min",undefined,cur.min,ex.tg || "",true,tx("Süre (dk)"))}${ex.km ? liftInput(i,"km",undefined,cur.km,prev && prev.km || "",true,tx("Mesafe (km)")) : ""}</div>
@@ -269,7 +269,7 @@ function trainLogView(entry, program, key){
   if (!session || !session.b) return `
     <section>
       <h2>${now ? tx("Bugün dinlenme") : tx("O gün dinlenme günüydü")}</h2>
-      ${session && session.t && session.t !== "Dinlenme" ? `<div class="metric-note">${esc(session.t)}</div>` : ""}
+      ${session && session.t && session.icon !== "rest" ? `<div class="metric-note">${esc(session.t)}</div>` : ""}
     </section>
     ${freeCard(entry, key)}
     ${nextSessionCard(program, key)}
@@ -282,7 +282,7 @@ function trainLogView(entry, program, key){
   return `
   <section>
     <h2>${esc(session.t)} <span class="count">${tx("{0}/{1} hareket", [(doneN), (list.length)])}</span></h2>
-    <div class="metric-note" style="margin-bottom:13px">${esc(session.b)}</div>
+    <div class="metric-note" style="margin-bottom:13px">${esc(exText(session.b))}</div>
     <button id="wo-start">${doneN ? tx("Antrenman moduna dön") : tx("Antrenman modunu başlat")}</button>  </section>
   ${liftsSection(entry, session, key)}
   ${freeCard(entry, key)}
@@ -323,13 +323,13 @@ function liftsSection(entry, session, key){
       const has = liftHas(cur);
       const ps = prev ? liftSummary(prev, ex) : "";
       if (ex.t === "ok") return `<div class="lift lift-ok">
-        <button class="check" data-done="${cur.ok?1:0}" data-ltog="${i}" aria-label="${esc(ex.name)} tamamlandı"></button>
-        <div class="lift-main"><div class="lift-name">${esc(ex.name)}</div>${ex.sub?`<div class="lift-sub">${esc(ex.sub)}</div>`:""}${howLink(name)}</div>
+        <button class="check" data-done="${cur.ok?1:0}" data-ltog="${i}" aria-label="${esc(exText(ex.name))} ${tx("tamamlandı")}"></button>
+        <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>${ex.sub?`<div class="lift-sub">${esc(exText(ex.sub))}</div>`:""}${howLink(name)}</div>
       </div>`;
       return `<div class="lift${has?" on":""}">
         <div class="lift-head">
-          <div class="lift-main"><div class="lift-name">${esc(ex.name)}</div>
-            <div class="lift-sub">${esc(ex.sub)}${LIFT_KIND[ex.t] ? ` · ${LIFT_KIND[ex.t]}` : ""}</div>${howLink(name)}</div>
+          <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>
+            <div class="lift-sub">${esc(exText(ex.sub))}${LIFT_KIND[ex.t] ? ` · ${LIFT_KIND[ex.t]}` : ""}</div>${howLink(name)}</div>
           ${has ? `<svg class="ico lift-tick" aria-hidden="true"><use href="#i-check"/></svg>` : ""}
         </div>
         ${liftBody(i, ex, cur, prev)}

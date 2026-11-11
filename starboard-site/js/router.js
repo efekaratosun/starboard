@@ -30,9 +30,9 @@ function trainingSection(p, picker){
 ` : ""}
     ${p.training.days.map(d => `<div class="item${picker && d.wd===wd?" today":""}">
       ${iconBox(d.icon, !d.b)}
-      <div class="item-main"><h3>${WD_NAMES[d.wd]} · ${d.t}${picker && d.wd===wd?`<span class="badge">${tx("bugün")}</span>`:""}</h3>${d.b?`<p>${d.b}</p>`:""}</div>
+      <div class="item-main"><h3>${WD_NAMES[d.wd]} · ${d.t}${picker && d.wd===wd?`<span class="badge">${tx("bugün")}</span>`:""}</h3>${d.b?`<p>${exText(d.b)}</p>`:""}</div>
     </div>`).join("")}
-    <div class="metric-note" style="margin-top:12px">${p.training.note}<br>${p.training.cardio}</div>
+    <div class="metric-note" style="margin-top:12px">${p.training.note}<br>${exText(p.training.cardio)}</div>
     ${(state.profile.avoid || []).length ? `<div class="metric-note" style="margin-top:10px">
       ${state.profile.avoid.map(z => (AVOID_ZONES.find(x => x[0] === z) || [,z])[1]).join(" ve ")} için uyarlandı:
       o bölgeyi zorlayan hareketler daha güvenli karşılıklarıyla değişti ya da çıkarıldı. Ayarlar'dan değiştirebilirsin.</div>` : ""}
