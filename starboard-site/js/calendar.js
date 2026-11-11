@@ -172,7 +172,7 @@ function monthSummary(y, m, total){
   }
   cur = run;
   return { full, logged, empty, days: monthCount(y, m).days, best, cur, prev,
-           prevLabel: pm.toLocaleDateString("tr-TR", { month:"long" }) };
+           prevLabel: pm.toLocaleDateString(locale(), { month:"long" }) };
 }
 
 /* Oranlar tam sayıya yuvarlanır; gün yoksa çizgi. */
@@ -225,7 +225,7 @@ function calendarView(){
     </button>`);
   }
 
-  const monthLabel = new Date(y, m-1, 1).toLocaleDateString("tr-TR", { month:"long", year:"numeric" });
+  const monthLabel = new Date(y, m-1, 1).toLocaleDateString(locale(), { month:"long", year:"numeric" });
   const sum = monthSummary(y, m, total);
 
   return `

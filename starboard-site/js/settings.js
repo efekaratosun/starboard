@@ -31,6 +31,10 @@ function settingsView(){
 
   <section>
     <h2>Kişiselleştirme</h2>
+    <label>Dil</label>
+    <div class="chips">${LANGS.map(([k,l]) =>
+      `<button class="chip${LANG === k ? " sel" : ""}" data-slang="${k}">${l}</button>`).join("")}</div>
+    <div style="height:16px"></div>
     <label>Tema</label>
     <div class="chips">${THEMES.map(([k,l]) =>
       `<button class="chip${(p.theme || "auto") === k ? " sel" : ""}" data-sth="${k}">${l}</button>`).join("")}</div>
@@ -119,6 +123,7 @@ function wireSettings(){
   };
 
   const save = async () => { await saveState(state); render(); };
+  app.querySelectorAll("[data-slang]").forEach(b => b.onclick = () => setLang(b.dataset.slang));
   app.querySelectorAll("[data-sth]").forEach(b => b.onclick = () => {
     openThemeSheet(b.dataset.sth, async t => {
       state.profile.theme = t; applyTheme(t); await save();

@@ -201,7 +201,7 @@ function skyCard(){
 function skyGallery(){
   const ws = weekStart(today());
   const weeks = Array.from({ length:6 }, (_, i) => shiftDays(ws, -7 * i));
-  const fmt = k => new Date(k + "T12:00:00").toLocaleDateString("tr-TR", { day:"numeric", month:"short" });
+  const fmt = k => new Date(k + "T12:00:00").toLocaleDateString(locale(), { day:"numeric", month:"short" });
   return `<section>
     <h2>Gökyüzün <span class="count">son 6 hafta</span></h2>
     <div class="sky-grid">${weeks.map(k => { const w = weekInfo(k); return `<figure class="sky-mini">

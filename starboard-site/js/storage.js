@@ -24,8 +24,10 @@ const dayKey = d => new Date(d.getTime() - d.getTimezoneOffset()*6e4).toISOStrin
 const today = () => dayKey(new Date());
 const shiftDays = (key, n) => { const d = new Date(key + "T12:00:00"); d.setDate(d.getDate() + n); return dayKey(d); };
 const isoWeekday = key => { const w = new Date(key + "T12:00:00").getDay(); return w === 0 ? 7 : w; };
-const prettyDate = key => new Date(key + "T12:00:00").toLocaleDateString("tr-TR", { day:"numeric", month:"long" });
-const weekdayName = key => new Date(key + "T12:00:00").toLocaleDateString("tr-TR", { weekday:"long" });
-const WD_NAMES = ["","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"];
+const prettyDate = key => new Date(key + "T12:00:00").toLocaleDateString(locale(), { day:"numeric", month:"long" });
+const weekdayName = key => new Date(key + "T12:00:00").toLocaleDateString(locale(), { weekday:"long" });
+/* 1 Ocak 2024 pazartesi: başka dillerde gün adları tarayıcıdan alınır. */
+const wdNames = style => [""].concat([1,2,3,4,5,6,7].map(n => new Date(2024, 0, n).toLocaleDateString(locale(), { weekday:style })));
+const WD_NAMES = LANG === "tr" ? ["","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"] : wdNames("long");
 /* Kısaltmalar ayrı: "Pazartesi".slice(0,3) ile "Pazar".slice(0,3) aynı çıkıyor. */
-const WD_SHORT = ["","Pzt","Sal","Çar","Per","Cum","Cmt","Paz"];
+const WD_SHORT = LANG === "tr" ? ["","Pzt","Sal","Çar","Per","Cum","Cmt","Paz"] : wdNames("short");
