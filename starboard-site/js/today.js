@@ -118,8 +118,7 @@ function goalEditor(kind, entry, program, key){
         : `<div class="chips"><button class="chip" data-add-kcal="200">+200</button><button class="chip" data-add-kcal="400">+400</button><button class="chip" data-add-kcal="600">+600</button></div>`}
       <button class="ghost" data-goto="kcal" style="margin-top:12px">${logged ? "Beslenme günlüğünü aç" : "Yediklerini tek tek gir"}</button>`;
     case "steps": return `<div class="g-f"><label for="i-steps">Adım sayısı</label>
-        <input id="i-steps" type="number" inputmode="numeric" value="${val(entry.steps)}" placeholder="—"></div>
-      <div class="metric-note" style="margin-top:7px">Telefonundaki Sağlık uygulamasında ${now ? "bugün" : "o gün"} için yazan sayıyı gir.</div>`;
+        <input id="i-steps" type="number" inputmode="numeric" value="${val(entry.steps)}" placeholder="—"></div>`;
     case "train": {
       const ses = program.training.days.find(d => d.wd === isoWeekday(key));
       if (!ses) return "";

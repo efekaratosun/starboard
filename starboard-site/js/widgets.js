@@ -17,7 +17,7 @@ function bodySection(entry){
         <label for="bd-${k}" style="flex:1;margin:0">${l}</label>
         <input id="bd-${k}" type="number" inputmode="decimal" value="${typeof b[k]==="number"?b[k]:""}" placeholder="—" style="flex:0 0 100px">
       </div></div>`).join("")}
-    <div class="metric-note" style="margin-top:10px">Haftada bir, sabah aç karnına ölç. Yağ kaybında tartı haftalarca durup bel incelmeye devam edebilir. Girdiklerin bugüne yazılır.</div></section>`;
+    <div class="metric-note" style="margin-top:10px">Haftada bir, sabah aç karnına ölç.</div></section>`;
 }
 
 /* ---- haftalık özet ---- */
@@ -194,7 +194,7 @@ function skyCard(){
       <div class="sky-n"><b class="num">${streak}</b><span>günlük seri</span></div>
     </div>
     ${skySVG(ws, true)}
-    <div class="sky-note">Görevlerini bitirdiğin her gün bir yıldız yanar; haftada beş yıldız takımyıldızın adını açar. Toplam ${starTotal()} yıldız.</div>
+    <div class="sky-note">Haftada beş yıldız takımyıldızı açar. Toplam ${starTotal()} yıldız.</div>
   </section>`;
 }
 
@@ -373,8 +373,7 @@ function prBoard(){
       <div class="pr-m"><span class="pr-n">${esc(parseEx(r.name, venueOf(currentProgram())).name)}</span>
         <span class="pr-v num">${esc(r.text)}</span></div>
       <span class="pr-d">${r.k === today() ? "bugün" : prettyDate(r.k)}</span>
-    </div>`).join("")}</div>
-    <div class="metric-note" style="margin-top:12px">Ağırlıklı hareketlerde rekor, tahmini tek tekrar maksimumuna göre seçilir: ağırlık × (1 + tekrar ÷ 30). Böylece 60 kg × 8, 70 kg × 3'ten daha iyi sayılabilir.</div>`
+    </div>`).join("")}</div>`
     : `<div class="empty">Antrenman kaydı girdikçe her hareketin en iyisi burada birikir.</div>`}
   </section>`;
 }
@@ -467,9 +466,7 @@ function openAvatarSheet(){
     <div class="sheet-h"><b id="sh-t">Avatarın</b><button class="sheet-x" aria-label="Kapat">×</button></div>
     <div id="sh-pv" class="sh-pv">${preview()}</div>
     <div class="sh-l">Şekil</div>${avatarPicker(key, "sh")}
-    <div class="sh-l">Renk</div>${colorPicker(col, "sh")}
-    <div class="metric-note" style="margin:10px 0 0">Avatar gün içinde tepki verir: su içtikçe dolar, az uyursan uykulu görünür, antrenmanı bitirince parlar, kalori hedefini tutunca gülümser.</div>
-    <div class="row" style="margin-top:16px"><button id="sh-save">Kaydet</button><button class="ghost" id="sh-cancel" style="flex:0 0 100px">Vazgeç</button></div>
+    <div class="sh-l">Renk</div>${colorPicker(col, "sh")}    <div class="row" style="margin-top:16px"><button id="sh-save">Kaydet</button><button class="ghost" id="sh-cancel" style="flex:0 0 100px">Vazgeç</button></div>
   </div>`;
   document.body.appendChild(el);
   const sheet = el.querySelector(".sheet");
@@ -561,7 +558,7 @@ function bodyCard(){
       <div class="tw-row"><label for="tw" class="tw-l">Hedef kilon kaç?</label>
         <input id="tw" type="number" inputmode="decimal" placeholder="kg">
         <button id="tw-save">Kaydet</button></div>
-      <div class="bc-note">Hedefi girince başlangıçtan hedefe ilerlemen ve tahmini süre burada görünür.</div>
+      <div class="bc-note">Hedef kilonu girince ilerlemen burada görünür.</div>
     </div>`;
   }
 
@@ -579,7 +576,7 @@ function bodyCard(){
     </div>`;
   } else {
     comp = `<div class="bc-sec"><div class="bc-h"><span>Vücut kompozisyonu</span></div>
-      <div class="bc-note">Yağ oranını Bugün › Vücut ölçüleri'nden girersen kilonun ne kadarının yağ, ne kadarının kas ve diğer dokular olduğu burada ayrışır.</div></div>`;
+      <div class="bc-note">Yağ oranını girince vücut bileşimin burada görünür.</div></div>`;
   }
 
   return `<section class="bc">

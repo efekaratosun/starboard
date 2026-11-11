@@ -4,7 +4,7 @@
 function trainingSection(p, picker){
   if (p.training.none) return `<section>
     <h2>Spor programın kapalı</h2>
-    <div class="metric-note">Program kurulmadığı için görevlerinde antrenman yok. Yaptığın antrenmanları Kaydım bölümünden tek tek ekleyebilirsin.</div>
+    <div class="metric-note">Program kurulu değil.</div>
     <button class="ghost" id="plan-on" style="margin-top:12px">Spor programı kur</button>
     <button class="ghost" id="own-edit" style="margin-top:8px">Kendi programını yaz</button>
   </section>`;

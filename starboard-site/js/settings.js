@@ -27,7 +27,6 @@ function settingsView(){
     <div class="field"><label for="s-goal">Hedef</label>
       <select id="s-goal">${Object.entries(GOAL).map(([k,v])=>`<option value="${k}"${sel(p.goal,k)}>${v.label}</option>`).join("")}</select></div>
     <button id="s-save">Kaydet</button>
-    <div class="metric-note" style="margin-top:10px">Hedef veya aktivite değişirse kalori ve makro hedefleri yeniden hesaplanır.</div>
   </section>
 
   <section>
@@ -35,7 +34,7 @@ function settingsView(){
     <label>Tema</label>
     <div class="chips">${THEMES.map(([k,l]) =>
       `<button class="chip${(p.theme || "auto") === k ? " sel" : ""}" data-sth="${k}">${l}</button>`).join("")}</div>
-    <div class="metric-note" style="margin:8px 0 16px">Bir temaya dokununca önizlemesi açılır.</div>
+    <div style="height:16px"></div>
     <label>Spor programı</label>
     <div class="chips">
       <button class="chip${p.noPlan ? "" : " sel"}" data-splan="on">Açık</button>
@@ -52,7 +51,7 @@ function settingsView(){
     <label>Kaçındığın yerler</label>
     <div class="chips">${AVOID_ZONES.map(([k,l]) =>
       `<button class="chip${(p.avoid || []).includes(k) ? " sel" : ""}" data-savoid="${k}">${l}</button>`).join("")}</div>
-    <div class="metric-note" style="margin:8px 0 16px">Seçtiğin bölgeyi zorlayan hareketler programdan çıkar ya da daha güvenli bir karşılığıyla değişir.</div>
+    <div style="height:16px"></div>
     <label>Uyku hedefin</label>
     <div class="chips">${[6,7,8,9].map(n =>
       `<button class="chip${sleepMin() === n ? " sel" : ""}" data-ssleep="${n}">${n}-${n+2} saat</button>`).join("")}</div>
@@ -77,7 +76,6 @@ function settingsView(){
     <div class="macro"><span class="lbl">Haftalık yenilemenin biriktirdiği fark</span>
       <span class="v num">${(state.adjustment||0) > 0 ? "+" : ""}${state.adjustment||0} kcal</span></div>
     <button class="ghost" id="s-reset-adj" style="margin-top:12px">Düzeltmeyi sıfırla</button>
-    <div class="metric-note" style="margin-top:10px">Hedefini elle değiştirdiysen bunu sıfırlamak mantıklı olur; aksi halde iki düzeltme üst üste biner.</div>
   </section>
 
   <section>
@@ -85,7 +83,7 @@ function settingsView(){
     <button class="ghost" id="s-export">JSON olarak indir</button>
     <div class="field" style="margin-top:14px"><label for="s-import">Yedekten geri yükle</label>
       <input id="s-import" type="file" accept="application/json,.json"></div>
-    <div class="metric-note" id="imp-status">Safari uzun süre açılmayan sitelerin verisini temizleyebiliyor. Ayda bir yedek almak iyi olur; bu dosya ileride uygulamaya geçerken de işine yarar.</div>
+    <div class="metric-note" id="imp-status">Ayda bir yedek al.</div>
   </section>
 
   <div class="brand-foot">

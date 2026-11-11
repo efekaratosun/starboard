@@ -93,13 +93,12 @@ function woBody(ex, name, rec, prev){
     case "n": return woChips(rec.n || 0, ex.n, ex.unit || "tur");
     case "sw": return `${woChips(rec.n || 0, ex.n, "tekrar")}
       <div class="wo-fields" style="margin-top:14px">${woField("min", rec.min ?? (prev && prev.min) ?? null, "dakika", "")}</div>`;
-    case "sd": return `<div class="wo-fields">${woField("m", rec.m ?? ex.d ?? null, "metre", "")}${woField("min", rec.min ?? (prev && prev.min) ?? null, "dakika", "")}</div>
-      <div class="wo-note">Değerleri girdiğinde kaydedilir.</div>`;
+    case "sd": return `<div class="wo-fields">${woField("m", rec.m ?? ex.d ?? null, "metre", "")}${woField("min", rec.min ?? (prev && prev.min) ?? null, "dakika", "")}</div>`;
     case "c": {
       const min = rec.min ?? tgNum(ex.tg), km = rec.km ?? (prev && prev.km) ?? null;
       return `<div class="wo-fields">${woField("min", min, "dakika", "")}${ex.km ? woField("km", km, "km", "") : ""}</div>
         ${rec.min && rec.km ? `<div class="wo-note">Tempo: <b>${pace(rec.min, rec.km)}</b></div>`
-          : `<div class="wo-note">Değerleri girdiğinde kaydedilir.</div>`}`;
+          : ""}`;
     }
     default:
       return `<button class="wo-big${rec.ok ? " on" : ""}" id="wo-ok1" aria-pressed="${rec.ok ? "true" : "false"}">${woTick}${rec.ok ? "Yapıldı" : "Yaptım"}</button>`;
@@ -363,7 +362,7 @@ function howList(program){
 function howtoView(program){
   return `<section>
     <input id="how-q" type="text" placeholder="Hareket ara: squat, barfiks, plank…" value="${esc(howQuery)}" autocomplete="off">
-    <div class="metric-note" style="margin-top:10px">Programındaki hareketler günlere göre sıralı. Başka bir hareketi arayarak da bulabilirsin. Ağrı hissedersen dur; tekniği ağırlıktan önce oturt.</div>
+    <div class="metric-note" style="margin-top:10px">Ağrı hissedersen dur.</div>
   </section>
   <div id="how-res">${howList(program)}</div>`;
 }

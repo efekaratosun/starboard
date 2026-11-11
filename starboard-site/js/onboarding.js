@@ -311,7 +311,7 @@ const OB_STEPS = [
       }
       return og("Adın", `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" placeholder="Adın" autocomplete="given-name" maxlength="30" aria-label="Adın">`, true)
         + og("Cinsiyet", obCards("sex", [["male", OB_ICON.sex.male, "Erkek"], ["female", OB_ICON.sex.female, "Kadın"], ["none", OB_ICON.sex.none, "Belirtmem"]], "tri")
-            + `<div class="metric-note" style="margin-top:8px">Kalori hesabında kullanılır. Belirtmezsen iki cinsiyetin ortalaması alınır.</div>`)
+            + `<div class="metric-note" style="margin-top:8px">Kalori hesabında kullanılır.</div>`)
         + av;
     },
     read: () => { const v = obVal("ob-name"); if (v !== null) ob.name = v.trim().slice(0, 30); },
@@ -337,11 +337,9 @@ const OB_STEPS = [
       : ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? ["Yağ oranını %3 ile %60 arasında gir ya da boş bırak.", "ob-bf"] : "" },
   { id:"goal", t:"Hedefin", s:"Kalori ve makro hedeflerin bunlara göre kurulur.",
     body: () => og("Ne istiyorsun?", obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label, OB_GOAL_D[k]])))
-      + og("Hedef kilon (kg)", `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight ?? ""}" placeholder="${Math.round((ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">
-          <div class="metric-note" style="margin-top:7px">Girersen hedefe ilerlemen ve tahmini süre görünür.</div>`, true)
+      + og("Hedef kilon (kg)", `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight ?? ""}" placeholder="${Math.round((ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
       + og("Günlük hareketin", obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
-      + og("Uyku hedefin", obChips("obsleep", [6,7,8,9].map(n => [n, `${n}-${n+2} saat`, ob.sleepMin === n]))
-          + `<div class="metric-note" style="margin-top:8px">Yetişkinler için yaygın öneri 7 saat ve üstü.</div>`),
+      + og("Uyku hedefin", obChips("obsleep", [6,7,8,9].map(n => [n, `${n}-${n+2} saat`, ob.sleepMin === n]))),
     read: () => { ob.targetWeight = num(obVal("ob-tw")); },
     valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : ["Hedef kiloyu 30 ile 300 kg arasında gir ya da boş bırak.", "ob-tw"] },
   { id:"train", t:"Antrenman", s:"İstemezsen görevlerinde antrenman çıkmaz; sonra istediğin zaman kurarsın.",
@@ -352,7 +350,7 @@ const OB_STEPS = [
         + og("Hangi günler?", obChips("obday", [1,2,3,4,5,6,7].map(n => [n, WD_SHORT[n], ob.days.includes(n)]))
             + `<div class="metric-note" id="day-note" style="margin-top:10px">${dayNote(ob.venue, ob.activity, ob.days)}</div>`)
         + og("Kaçınman gereken bölge", obChips("obavoid", AVOID_ZONES.map(([k, l]) => [k, l, ob.avoid.includes(k)]))
-            + `<div class="metric-note" style="margin-top:10px">Seçtiğin bölgeyi zorlayan hareketler çıkar ya da değişir. Ağrın varsa önce bir hekime görün.</div>`, true)
+            + `<div class="metric-note" style="margin-top:10px">Ağrın varsa önce bir hekime görün.</div>`, true)
         + `</div>`;
       return og("Spor programı", `<div class="ocs" data-field="plan">
           ${obCard(!ob.noPlan, "on", "plan", "Program kur", "Haftalık antrenmanların görevlerine eklenir")}
@@ -361,8 +359,7 @@ const OB_STEPS = [
   { id:"food", t:"Beslenme", s:"Öneriler ve tarifler bu tercihlere göre gelir.",
     body: () => og("Nasıl besleniyorsun?", obCards("diet", Object.entries(DIETS).map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
       + og("Günde kaç öğün?", obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, "", l, set.map(m => m[0]).join(" · ")]), "", true))
-      + og("Yemediklerin", obChips("obdis", DISLIKE.map(([l], i) => [i, l, ob.dislike.includes(i)]))
-          + `<div class="metric-note" style="margin-top:10px">Seçtiklerin öneri ve tariflerde çıkmaz.</div>`, true) },
+      + og("Yemediklerin", obChips("obdis", DISLIKE.map(([l], i) => [i, l, ob.dislike.includes(i)])), true) },
   { id:"summary" }
 ];
 const obList = () => OB_STEPS;
@@ -413,7 +410,7 @@ function obSummary(){
     <div class="os-p">${iconBox(tr.none ? "rest" : "plan")}<span><b>${tr.none ? "Spor programı yok" : esc(tr.title)}</b>
       <i>${tr.none ? "İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin."
         : `Haftada ${tr.freq} gün · ${tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", ")}`}</i></span></div>
-    <div class="metric-note" style="text-align:center;margin-top:14px">Hepsini sonradan Ben sayfasından değiştirebilirsin. Kilon değiştikçe hedefler kendiliğinden güncellenir.</div>
+    <div class="metric-note" style="text-align:center;margin-top:14px">Hepsini sonradan değiştirebilirsin.</div>
   </div>`;
 }
 

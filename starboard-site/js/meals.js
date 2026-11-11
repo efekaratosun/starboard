@@ -123,7 +123,7 @@ function recipeList(){
       + hits.map(([r,i]) => recipeCard(r,i)).join("");
   }
   const pool = RECIPES.map((r,i) => [r,i]).filter(([r]) => recipeFits(r));
-  if (!pool.length) return `<section><div class="empty">Seçtiğin beslenme türüne uyan hazır tarif yok. Arama kutusundan tüm tariflere bakabilirsin.</div></section>`;
+  if (!pool.length) return `<section><div class="empty">Beslenme türüne uyan hazır tarif yok.</div></section>`;
   const start = recipeOffset % pool.length;
   const idxs = [0,1,2].map(k => pool[(start + k) % pool.length]);
   return (currentDiet() !== "hepsi"
@@ -136,9 +136,7 @@ function recipesView(){
   return `
   <section>
     <h2>Tarifler <span class="count">${RECIPES.length} tarif</span></h2>
-    <input id="rec-q" type="text" placeholder="Ara: karnıyarık, mercimek, tavuk…" value="${esc(recipeQuery)}" autocomplete="off">
-    <div class="metric-note" style="margin-top:10px">Yemek adıyla da malzemeyle de arayabilirsin. Değerler bir porsiyon içindir ve malzemelerden hesaplanır.</div>
-  </section>
+    <input id="rec-q" type="text" placeholder="Ara: karnıyarık, mercimek, tavuk…" value="${esc(recipeQuery)}" autocomplete="off">  </section>
   <div id="rec-results">${recipeList()}</div>`;
 }
 
@@ -157,8 +155,7 @@ function microSection(micros){
       : `<span class="pill">${NUTRIENTS[k].n}</span>`).join("")}</div>
     ${missing.length ? `<div class="metric-note" style="margin-top:14px">
       ${missing.slice(0,4).map(k => `<b>${NUTRIENTS[k].n}</b> için: ${NUTRIENTS[k].src}`).join("<br>")}
-    </div>` : `<div class="metric-note" style="margin-top:14px">On dört mikro besin kaynağının hepsinden bir şeyler almışsın.</div>`}
-    <div class="metric-note" style="margin-top:12px">Bu bölüm miligram ölçmez; hangi besin grubundan bir şey yediğini gösterir. Ayrıntısı aşağıda.</div>`);
+    </div>` : ""}`);
 }
 
 function logView(program, entry){
@@ -183,7 +180,7 @@ function logView(program, entry){
 
   ${mealCards(entry)}
   ${mealManager()}
-  <div class="foot">Değerler ortalamadır; markalı ürünlerde ambalajdaki bilgiyi kullanmak daha doğru olur. Günlüğe kayıt girdiğin sürece Bugün sekmesindeki kalori alanı buradan hesaplanır.</div>`;
+  <div class="foot">Değerler ortalamadır.</div>`;
 }
 
 /* ---- dünün aynısı ----
@@ -231,9 +228,7 @@ function mealCards(entry){
   const other = log.filter(x => slotOf(x) === "__other");
   if (other.length) cards.push(`<section>
     <h2>Diğer <span class="count">${kcalOf(other)} kcal</span></h2>
-    ${other.map(logLine).join("")}
-    <div class="metric-note" style="margin-top:10px">Kaldırdığın bir öğüne ait kayıtlar. Silebilir ya da o öğünü geri ekleyebilirsin.</div>
-  </section>`);
+    ${other.map(logLine).join("")}  </section>`);
 
   return cards.join("");
 }
@@ -273,9 +268,7 @@ function mealManager(){
       <div class="row" style="margin-top:14px">
         <button id="ml-save">Ekle</button>
         <button class="ghost" id="ml-cancel" style="flex:0 0 100px">Vazgeç</button>
-      </div>
-      <div class="metric-note" style="margin-top:10px">Eklediğin öğün hem günlükte hem önerilerde çıkar; günlük hedef öğünler arasında yeniden bölünür.</div>
-    </div>` : `<button class="ghost" id="ml-add" style="margin-top:12px">Öğün ekle</button>`}
+      </div>    </div>` : `<button class="ghost" id="ml-add" style="margin-top:12px">Öğün ekle</button>`}
   </section>`;
 }
 
@@ -549,9 +542,7 @@ function fixPicker(){
       <input id="fix-amt" type="number" inputmode="decimal" value="${f.unit ? 1 : 100}">
       <div class="chips">${chips.map(c => `<button class="chip" data-fixamt="${c}">${c} ${f.unit?f.unitName:"g"}</button>`).join("")}</div>
       <button id="fix-save" style="margin-top:12px">Bu öğüne ekle</button>
-    </div>` : ""}
-    <div class="metric-note" style="margin-top:10px">Eklediğin miktar hedeften düşülür, günün kalanı diğer öğünlere göre yeniden hesaplanır.</div>
-  </div>`;
+    </div>` : ""}  </div>`;
 }
 
 function prefsSection(){
@@ -617,11 +608,11 @@ function planView(program){
         ? `<button class="del" data-fixdel="${m.slot}|${i.key}" aria-label="Kaldır">×</button>`
         : i.key ? `<button class="del" data-mex="${i.key}" aria-label="Bu besini önerilerden çıkar">×</button>` : ""}
     </div>`; }).join("")}
-    ${m.full ? `<div class="metric-note" style="margin-top:10px">Bu öğün girdiklerinle doldu; günün kalanı diğer öğünlere dağıtıldı.</div>` : ""}
+    ${m.full ? `<div class="metric-note" style="margin-top:10px">Bu öğün doldu.</div>` : ""}
     <button class="ghost" data-fixadd="${m.slot}" style="margin-top:12px">${fixSlot===m.slot?"Kapat":"Kendi yiyeceğini ekle"}</button>
     ${fixSlot===m.slot ? fixPicker() : ""}
   </section>`).join("")}
-  <div class="foot">Miktarlar pişmemiş/ham ağırlıktır. Ortalama besin değerlerine göre hesaplandığı için markaya ve pişirmeye göre sapma olur.</div>`;
+  <div class="foot">Miktarlar çiğ ağırlıktır.</div>`;
 }
 
 function wireMeals(entry){
@@ -919,7 +910,7 @@ function wireMealsRest(entry){
         <div class="field"><label for="cf-f">Yağ</label><input id="cf-f" type="number" inputmode="decimal" placeholder="g/100g"></div>
       </div>
       <button id="cf-save">Kaydet</button>
-      <div class="metric-note" style="margin-top:10px">Değerleri 100 gram başına gir. Bir kere tanımladığın besin aramada çıkar.</div>
+      <div class="metric-note" style="margin-top:10px">Değerler 100 g başına.</div>
     </div>`;
     document.getElementById("cf-save").onclick = async () => {
       const n = document.getElementById("cf-n").value.trim();

@@ -23,7 +23,7 @@ function freeCard(entry, key){
           <p>${f.min ? `${f.min} dakika` : "süre girilmedi"}${f.note ? ` · ${esc(f.note)}` : ""}</p></div>
         <button class="del" id="free-del" aria-label="Sil">×</button></div>
       <button class="ghost" id="free-add" style="margin-top:12px">Değiştir</button>`
-     : `<div class="metric-note" style="margin-bottom:12px">Programında bu güne antrenman düşmüyor. Yine de bir şey yaptıysan buraya ekleyebilirsin; takvimde ve kayıtlarında görünür.</div>
+     : `<div class="metric-note" style="margin-bottom:12px">Bugün dinlenme günü.</div>
         <button id="free-add">Antrenman ekle</button>`}
   </section>`;
 }
@@ -262,7 +262,7 @@ function trainLogView(entry, program, key){
     ${freeCard(entry, key)}
     <section>
       <h2>Spor programın kapalı</h2>
-      <div class="metric-note">Aktivite seviyeni "Hareketsiz" seçtiğin için program kurulmadı ve görevlerinde antrenman çıkmıyor. Düzenli spora başlarsan Ayarlar'dan açabilirsin.</div>
+      <div class="metric-note">Program kurulu değil. Ayarlar'dan açabilirsin.</div>
       <button class="ghost" id="plan-on" style="margin-top:12px">Spor programı kur</button>
     </section>
     ${prBoard()}`;
@@ -284,9 +284,7 @@ function trainLogView(entry, program, key){
   <section>
     <h2>${esc(session.t)} <span class="count">${doneN}/${list.length} hareket</span></h2>
     <div class="metric-note" style="margin-bottom:13px">${esc(session.b)}</div>
-    <button id="wo-start">${doneN ? "Antrenman moduna dön" : "Antrenman modunu başlat"}</button>
-    <div class="metric-note" style="margin-top:10px">Hareketler tek tek tam ekranda gelir; her set geçen antrenmandaki değerle hazır gelir, ✓ ile onaylarsın. Tek bir hareketi sonradan düzeltmek istersen aşağıdaki listeyi aç.</div>
-  </section>
+    <button id="wo-start">${doneN ? "Antrenman moduna dön" : "Antrenman modunu başlat"}</button>  </section>
   ${liftsSection(entry, session, key)}
   ${freeCard(entry, key)}
   ${prBoard()}`;

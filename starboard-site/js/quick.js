@@ -204,9 +204,7 @@ function openGoalSheet(key){
         <button class="chip${sg ? " sel" : ""}" id="gs-st-t" aria-pressed="${!!sg}">${sg ? "Açık" : "Aç"}</button></div>
       ${sg ? `<div class="row" style="margin-top:10px">
         <input id="gs-st-n" type="number" inputmode="numeric" value="${sg}" aria-label="Günlük adım hedefi" style="flex:2">
-        <button id="gs-st-ok" style="flex:0 0 110px">Güncelle</button></div>` : ""}
-      <div class="metric-note" style="margin-top:10px">Adımı şimdilik elle girersin. Apple Sağlık ve Apple Watch'tan kendiliğinden çekme, uygulamanın iPhone sürümünde gelecek.</div>
-      ${ideas.length ? `<label style="margin-top:18px">Her gün tekrar edenler</label>
+        <button id="gs-st-ok" style="flex:0 0 110px">Güncelle</button></div>` : ""}      ${ideas.length ? `<label style="margin-top:18px">Her gün tekrar edenler</label>
         <div class="chips">${ideas.map(x => `<button class="chip" data-gs-idea="${esc(x)}">+ ${esc(x)}</button>`).join("")}</div>` : ""}
       <h3 class="gs-h" style="margin-top:24px">Kendi hedefin</h3>
       <div class="row">
@@ -333,7 +331,7 @@ function openProgramEditor(){
   el.innerHTML = `<div class="sheet pe" role="dialog" aria-modal="true" aria-labelledby="pe-h">
     <div class="sheet-h"><b id="pe-h">Kendi programın</b>
       <button class="sheet-x" aria-label="Kapat">×</button></div>
-    <div class="metric-note" style="margin:-2px 0 14px">Günü seç, hareketlerini yaz. Boş bıraktığın günler dinlenme olur.</div>
+    <div class="metric-note" style="margin:-2px 0 14px">Boş günler dinlenme olur.</div>
     <div id="pe-b"></div>
     <div class="row pe-foot">
       <button id="pe-ok">Kaydet ve kullan</button>
