@@ -137,10 +137,8 @@ function dayNote(venue, activity, days){
   const d = days.slice().sort((a,b) => a-b);
   const prog = PROGRAMS[defaultProgramId(venue, activity, d)];
   const used = planDays({ days: d }, prog.freq);
-  if (used.length === d.length)
-    return `${d.length} gün seçili: ${d.map(n => WD_NAMES[n]).join(", ")}. Program bu günlere kurulur.`;
-  return `Bu ortamda en fazla ${prog.freq} günlük program var. `
-    + `${used.map(n => WD_NAMES[n]).join(", ")} günleri kullanılacak, kalanı dinlenme olur.`;
+  if (used.length === d.length) return "";
+  return `En fazla ${prog.freq} gün kullanılır.`;
 }
 
 /* Marka işareti: ikonun aynısı, ilk adımda gösterilir. */
@@ -156,7 +154,6 @@ const OB_ICON = {
   venue:{ gym:"push", home:"core", outdoor:"run", calisthenics:"pull", kettlebell:"fullbody", mobility:"yoga", swim:"swim" },
   diet:{ hepsi:"meat", vejetaryen:"egg", vegan:"veg", pesketaryen:"fish", glutensiz:"potato", laktozsuz:"nuts" }
 };
-const OB_GOAL_D = { lose:"Kalori açığıyla, kası koruyarak", maintain:"Kilonu ve formunu tut", gain:"Hafif kalori fazlasıyla kas ekle" };
 
 function obCard(on, val, ic, label, desc){
   return `<button type="button" class="oc${on ? " on" : ""}" data-oc="${val}" aria-pressed="${on}">
@@ -300,7 +297,7 @@ function obProfile(){
 const obVal = id => { const e = document.getElementById(id); return e ? e.value : null; };
 const OB_STEPS = [
   { id:"welcome" },
-  { id:"you", t:"Seni tanıyalım", s:"Sana nasıl seslenelim, nasıl görünelim?",
+  { id:"you", t:"Seni tanıyalım",
     body: () => {
       let av = "";
       if (ob.sex){
@@ -321,7 +318,7 @@ const OB_STEPS = [
       wireColor("on", c => { ob.avColor = c; document.getElementById("av-field").style.setProperty("--av", c); });
     },
     valid: () => ob.sex ? "" : "Cinsiyet seç; istemiyorsan “Belirtmem” de." },
-  { id:"body", t:"Ölçülerin", s:"Cetveli sağa sola sürükle. Rakama dokunup elle de yazabilirsin.",
+  { id:"body", t:"Ölçülerin", s:"Cetveli sürükle ya da rakama dokun.",
     body: () => {
       if (ob.height == null) ob.height = ob.sex === "female" ? 163 : ob.sex === "male" ? 176 : 170;
       if (ob.weight == null) ob.weight = ob.sex === "female" ? 60 : ob.sex === "male" ? 78 : 70;
@@ -335,14 +332,14 @@ const OB_STEPS = [
     read: () => { ob.age = num(obVal("ob-age")); ob.bodyFat = num(obVal("ob-bf")); },
     valid: () => !(ob.age >= 10 && ob.age <= 100) ? ["Yaşını 10 ile 100 arasında gir.", "ob-age"]
       : ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? ["Yağ oranını %3 ile %60 arasında gir ya da boş bırak.", "ob-bf"] : "" },
-  { id:"goal", t:"Hedefin", s:"Kalori ve makro hedeflerin bunlara göre kurulur.",
-    body: () => og("Ne istiyorsun?", obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label, OB_GOAL_D[k]])))
+  { id:"goal", t:"Hedefin",
+    body: () => og("Ne istiyorsun?", obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label])))
       + og("Hedef kilon (kg)", `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight ?? ""}" placeholder="${Math.round((ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
       + og("Günlük hareketin", obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
       + og("Uyku hedefin", obChips("obsleep", [6,7,8,9].map(n => [n, `${n}-${n+2} saat`, ob.sleepMin === n]))),
     read: () => { ob.targetWeight = num(obVal("ob-tw")); },
     valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : ["Hedef kiloyu 30 ile 300 kg arasında gir ya da boş bırak.", "ob-tw"] },
-  { id:"train", t:"Antrenman", s:"İstemezsen görevlerinde antrenman çıkmaz; sonra istediğin zaman kurarsın.",
+  { id:"train", t:"Antrenman",
     body: () => {
       if (!ob.days) ob.days = OB_DEFAULT_DAYS(ob.activity);
       const more = ob.noPlan ? "" : `<div id="og-plan">`
@@ -353,10 +350,10 @@ const OB_STEPS = [
             + `<div class="metric-note" style="margin-top:10px">Ağrın varsa önce bir hekime görün.</div>`, true)
         + `</div>`;
       return og("Spor programı", `<div class="ocs" data-field="plan">
-          ${obCard(!ob.noPlan, "on", "plan", "Program kur", "Haftalık antrenmanların görevlerine eklenir")}
-          ${obCard(!!ob.noPlan, "off", "rest", "Şimdilik istemiyorum", "Spor yaptığın günleri tek tek ekleyebilirsin")}</div>`) + more;
+          ${obCard(!ob.noPlan, "on", "plan", "Program kur")}
+          ${obCard(!!ob.noPlan, "off", "rest", "Şimdilik istemiyorum")}</div>`) + more;
     } },
-  { id:"food", t:"Beslenme", s:"Öneriler ve tarifler bu tercihlere göre gelir.",
+  { id:"food", t:"Beslenme",
     body: () => og("Nasıl besleniyorsun?", obCards("diet", Object.entries(DIETS).map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
       + og("Günde kaç öğün?", obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, "", l, set.map(m => m[0]).join(" · ")]), "", true))
       + og("Yemediklerin", obChips("obdis", DISLIKE.map(([l], i) => [i, l, ob.dislike.includes(i)])), true) },
@@ -374,11 +371,11 @@ function obWelcome(){
     <h1>Starboard</h1>
     <p class="on-tag">Sağlığın için tek bir pano.</p>
     <ul class="on-feat">
-      <li>${iconBox("day")}<span><b>Günün hedefleri tek listede</b><i>Su, uyku, kalori ve antrenman; dokun, yerinde gir.</i></span></li>
-      <li>${iconBox("plan")}<span><b>Sana göre kurulur</b><i>Kalori, protein ve antrenman programın ölçülerinden hesaplanır.</i></span></li>
-      <li>${iconBox("star4")}<span><b>Her tamamlanan gün bir yıldız</b><i>Haftada beş yıldız takımyıldızını tamamlar.</i></span></li>
+      <li>${iconBox("day")}<span><b>Günün hedefleri tek listede</b></span></li>
+      <li>${iconBox("plan")}<span><b>Sana göre kurulur</b></span></li>
+      <li>${iconBox("star4")}<span><b>Her tamamlanan gün bir yıldız</b></span></li>
     </ul>
-    <div class="on-foot">Beş kısa ekran. Veriler yalnızca bu cihazda saklanır.</div>
+    <div class="on-foot">Veriler yalnızca bu cihazda saklanır.</div>
   </div>`;
 }
 

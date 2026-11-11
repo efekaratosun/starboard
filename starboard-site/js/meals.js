@@ -559,11 +559,7 @@ function prefsSection(){
       <button class="chip${prefs.useMine?" sel":""}" id="use-mine">
         <svg class="ico" style="width:14px;height:14px;flex:0 0 14px;vertical-align:-2px" aria-hidden="true"><use href="#i-repeat"/></svg>
         Sık yediğim besinlerle kur</button>
-    </div>
-    <div class="metric-note" style="margin-top:10px">${known
-      ? `Günlüğünde en az iki kez geçen ${known} besin var; bunlar önerilerde öncelikli kullanılıyor.`
-      : "Günlüğe besin girdikçe öneriler senin yediklerine yaklaşır. Şu an varsayılan kombinasyonlar gösteriliyor."}</div>
-    ${currentDiet() !== "hepsi" ? `<div class="metric-note" style="margin-top:10px">
+    </div>    ${currentDiet() !== "hepsi" ? `<div class="metric-note" style="margin-top:10px">
       ${DIETS[currentDiet()]} seçili: ${Object.keys(FOODS).filter(k => foodAllowed(k, currentDiet())).length}
       besin uygun, kalanı önerilerden çıkarıldı. Günlüğe istediğini yazmaya devam edebilirsin.</div>` : ""}
     ${prefs.exclude.length ? `<div style="margin-top:14px">

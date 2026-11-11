@@ -190,7 +190,7 @@ function skyCard(){
   return `<section class="sky">
     <div class="sky-head">
       <div><div class="sky-t">Bu haftanın takımyıldızı</div>
-        <div class="sky-s">${w.name ? `“${w.name}” belirdi · ${w.n}/7 yıldız` : `${w.n}/7 yıldız yandı${w.n ? "" : ", ilki bugün olabilir"}`}</div></div>
+        <div class="sky-s">${w.name ? `“${w.name}” belirdi · ${w.n}/7 yıldız` : `${w.n}/7 yıldız`}</div></div>
       <div class="sky-n"><b class="num">${streak}</b><span>günlük seri</span></div>
     </div>
     ${skySVG(ws, true)}
@@ -275,7 +275,7 @@ function sleepHTML(entry){
         </svg>
       </div>
       <div class="dial-legend num"><span>🌙 Yattım <b id="sl-bed-v">${hm(bed)}</b></span><span>☀️ Kalktım <b id="sl-wake-v">${hm(wake)}</b></span></div>
-      <div class="metric-note" style="text-align:center;margin-top:6px">${has ? "Ayı ve güneşi sürükleyerek değiştir; bırakınca kaydedilir." : "Ayı yattığın, güneşi kalktığın saate sürükle; bırakınca kaydedilir."}</div>
+      <div class="metric-note" style="text-align:center;margin-top:6px">Ayı ve güneşi sürükle.</div>
       </div>
     </div></div>`;
 }

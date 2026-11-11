@@ -171,8 +171,7 @@ function openQuickSheet(){
     <div class="sheet-h"><span class="qs-logo">${BRAND_SVG}</span>
       <b id="qs-t-h">Hızlı giriş</b>
       <button class="sheet-x" aria-label="Kapat">×</button></div>
-    <div class="metric-note" style="margin:-2px 0 4px">${past
-      ? `${prettyDate(k)} gününe yazılıyor.` : "Bugüne yazılıyor."}</div>
+    ${past ? `<div class="metric-note" style="margin:-2px 0 4px">${prettyDate(k)} gününe yazılıyor.</div>` : ""}
     <div id="qs-b"></div>
   </div>`;
   document.body.appendChild(el);

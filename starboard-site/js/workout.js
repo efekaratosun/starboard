@@ -23,8 +23,7 @@ function freeCard(entry, key){
           <p>${f.min ? `${f.min} dakika` : "süre girilmedi"}${f.note ? ` · ${esc(f.note)}` : ""}</p></div>
         <button class="del" id="free-del" aria-label="Sil">×</button></div>
       <button class="ghost" id="free-add" style="margin-top:12px">Değiştir</button>`
-     : `<div class="metric-note" style="margin-bottom:12px">Bugün dinlenme günü.</div>
-        <button id="free-add">Antrenman ekle</button>`}
+     : `<button id="free-add">Antrenman ekle</button>`}
   </section>`;
 }
 
@@ -39,7 +38,7 @@ function openFreeSheet(key, onDone){
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="fr-t">
     <div class="sheet-h"><b id="fr-t">Antrenman ekle</b>
       <button class="sheet-x" aria-label="Kapat">×</button></div>
-    <div class="metric-note" style="margin:-2px 0 12px">${prettyDate(key)} gününe yazılır.</div>
+    ${key === today() ? "" : `<div class="metric-note" style="margin:-2px 0 12px">${prettyDate(key)} gününe yazılır.</div>`}
     <label>Ne yaptın?</label>
     <div class="chips" id="fr-kinds">${FREE_KINDS.map(([k, l]) =>
       `<button class="chip${sel === k ? " sel" : ""}" data-frk="${k}">${l}</button>`).join("")}</div>
@@ -270,7 +269,7 @@ function trainLogView(entry, program, key){
   if (!session || !session.b) return `
     <section>
       <h2>${now ? "Bugün dinlenme" : "O gün dinlenme günüydü"}</h2>
-      <div class="metric-note">${session && session.t ? esc(session.t) + ". " : ""}Programında bu güne antrenman düşmüyor.</div>
+      ${session && session.t && session.t !== "Dinlenme" ? `<div class="metric-note">${esc(session.t)}</div>` : ""}
     </section>
     ${freeCard(entry, key)}
     ${nextSessionCard(program, key)}
@@ -334,7 +333,7 @@ function liftsSection(entry, session, key){
           ${has ? `<svg class="ico lift-tick" aria-hidden="true"><use href="#i-check"/></svg>` : ""}
         </div>
         ${liftBody(i, ex, cur, prev)}
-        <div class="metric-note">${ps ? `Son: ${esc(ps)} · ${prettyDate(prev.k)}` : "İlk kez kaydediyorsun."}</div>
+        <div class="metric-note">${ps ? `Son: ${esc(ps)} · ${prettyDate(prev.k)}` : ""}</div>
       </div>`;
     }).join("")}`);
 }

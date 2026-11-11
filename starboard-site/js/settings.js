@@ -40,14 +40,12 @@ function settingsView(){
       <button class="chip${p.noPlan ? "" : " sel"}" data-splan="on">Açık</button>
       <button class="chip${p.noPlan ? " sel" : ""}" data-splan="off">Kapalı</button>
     </div>
-    <div class="metric-note" style="margin:8px 0 16px">${p.noPlan
-      ? "Görevlerinde antrenman çıkmıyor. Yaptığın antrenmanları Program sekmesinden tek tek ekleyebilirsin."
-      : "Haftalık program kuruluyor ve görevlerine ekleniyor."}</div>
+    <div style="height:16px"></div>
     ${p.noPlan ? "" : `
     <label>Antrenman günlerin</label>
     <div class="chips">${[1,2,3,4,5,6,7].map(n =>
       `<button class="chip${(p.days || []).includes(n) ? " sel" : ""}" data-sday="${n}">${WD_SHORT[n]}</button>`).join("")}</div>
-    <div class="metric-note" style="margin:8px 0 16px">${(p.days || []).length >= 3 ? dayNote(p.venue || "gym", p.activity, p.days) : "Gün seçilmemiş; program varsayılan desene göre kuruluyor."}</div>`}
+    <div class="metric-note" style="margin:8px 0 16px">${(p.days || []).length >= 3 ? dayNote(p.venue || "gym", p.activity, p.days) : "Gün seçilmemiş."}</div>`}
     <label>Kaçındığın yerler</label>
     <div class="chips">${AVOID_ZONES.map(([k,l]) =>
       `<button class="chip${(p.avoid || []).includes(k) ? " sel" : ""}" data-savoid="${k}">${l}</button>`).join("")}</div>

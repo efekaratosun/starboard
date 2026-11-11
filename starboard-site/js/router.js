@@ -27,7 +27,7 @@ function trainingSection(p, picker){
         ${ownN && !custom ? `<button class="ghost" id="own-use">Kullan</button>` : ""}
         <button class="ghost" id="own-edit">${ownN ? "Düzenle" : "Yaz"}</button>
       </div>
-      ${p.training.desc ? `<div class="metric-note" style="margin-bottom:14px">${p.training.desc}</div>` : ""}` : ""}
+` : ""}
     ${p.training.days.map(d => `<div class="item${picker && d.wd===wd?" today":""}">
       ${iconBox(d.icon, !d.b)}
       <div class="item-main"><h3>${WD_NAMES[d.wd]} · ${d.t}${picker && d.wd===wd?`<span class="badge">bugün</span>`:""}</h3>${d.b?`<p>${d.b}</p>`:""}</div>
@@ -65,20 +65,13 @@ function render(){
   </section>`;
   const titles = { today: onToday() ? greetTitle() : prettyDate(t), plan:"Programın", meals:"Beslenme", calendar:"Takvim" };
   const subs = { today: onToday() ? `${prettyDate(t)} · ${weekdayName(t)}` : `${weekdayName(t)} · geçmiş gün`,
-                 plan: planTab === "howto" ? "Hareketlerin kısa anlatımı"
-                     : planTab === "log" ? (program && program.training.none
-                                             ? "Yaptığın antrenmanı buradan ekleyebilirsin"
-                                             : onToday() ? "Setleri gir, rekorların kendiliğinden güncellensin"
-                                                         : `${prettyDate(t)} antrenmanı`)
-                     : "Ortamı değiştirince plan yeniden kurulur",
-                 meals: mealTab === "log" ? "Yediklerini gir, makrolar otomatik toplansın" : "Hedefine göre gramajlanmış öğünler", calendar:"Güne dokun, o günün giriş ekranı açılsın" };
+                 plan: planTab === "log" && !onToday() && !(program && program.training.none) ? `${prettyDate(t)} antrenmanı` : "" };
 
-  titles.settings = "Ben"; subs.settings = "Vücudun, grafikler ve ayarlar";
-  subs.calendar = "Güne dokun, o günün özeti açılsın";
+  titles.settings = "Ben";
 
   /* Geçmiş gün şeridi: hangi sekmede olursan ol hangi güne yazdığın görünsün. */
   const pastBar = (!onToday() && tab !== "settings" && tab !== "calendar" && tab !== "today") ? `<div class="notice past">
-    <div class="pd-t">${prettyDate(t)} · ${weekdayName(t)} — girdiğin her şey bu güne kaydedilir.</div>
+    <div class="pd-t">${prettyDate(t)} · ${weekdayName(t)} gününe yazıyorsun.</div>
     <div class="pd-row">
       <button class="ghost" id="pd-prev">‹ Önceki gün</button>
       <button class="ghost" id="pd-next">Sonraki gün ›</button>
