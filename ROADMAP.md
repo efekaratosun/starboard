@@ -16,8 +16,8 @@ Amaç: projenin kalıcı bir evi ve canlı bir adresi olsun.
 
 - [x] Projeyi kalıcı bir klasöre taşı
 - [x] Git kur, yerel depoyu başlat
-- [ ] GitHub'da depo aç (sürüm geçmişi ve ileride iOS derlemesi için şart)
-- [ ] Siteyi yayınla; her değişiklik depodan otomatik yayına çıksın
+- [x] GitHub'da depo aç (sürüm geçmişi ve ileride iOS derlemesi için şart): github.com/efekaratosun/starboard
+- [x] Siteyi yayınla; her değişiklik depodan otomatik yayına çıksın: efekaratosun.github.io/starboard
 - [ ] Artifact'teki verileri dışa aktarıp yeni sitede içe aktar
 
 Bitti sayılır: Starboard herkese açık bir adreste çalışıyor ve bir değişiklik tek adımda yayına çıkıyor.
