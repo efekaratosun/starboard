@@ -367,7 +367,7 @@ function prBoard(){
   const all = records();
   const list = all.slice(0, 8);
   return `<section>
-    <h2>Kişisel rekorlar ${all.length ? `<span class="count">${tx("{0} hareket", [(all.length)])}</span>` : ""}</h2>
+    <h2>${tx("Kişisel rekorlar")} ${all.length ? `<span class="count">${tx("{0} hareket", [(all.length)])}</span>` : ""}</h2>
     ${list.length ? `<div class="prs">${list.map(r => `<div class="pr${r.k === today() ? " new" : ""}">
       <svg class="pr-cup" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cup"/></svg>
       <div class="pr-m"><span class="pr-n">${esc(parseEx(r.name, venueOf(currentProgram())).name)}</span>
@@ -525,7 +525,7 @@ function bodyCard(){
   const stats = `<div class="stats">
     <div class="stat"><b>${p.height}<small> ${tx("cm")}</small></b><span>${tx("Boy")}</span></div>
     <div class="stat"><b>${w !== null ? kg1(w) : "—"}<small> ${tx("kg")}</small></b><span>${tx("Kilo")}</span></div>
-    <div class="stat"><b>${bf !== null ? kg1(bf) : "—"}<small> %</small></b><span>Yağ oranı${bfTxt ? ` <em class="tag ${bfCls}">${bfTxt}</em>` : ""}</span></div>
+    <div class="stat"><b>${bf !== null ? kg1(bf) : "—"}<small> %</small></b><span>${tx("Yağ oranı")}${bfTxt ? ` <em class="tag ${bfCls}">${bfTxt}</em>` : ""}</span></div>
     <div class="stat"><b>${bmi !== null ? kg1(bmi) : "—"}</b><span>BMI${bmiTxt ? ` <em class="tag ${bmiCls}">${bmiTxt}</em>` : ""}</span></div>
   </div>`;
 

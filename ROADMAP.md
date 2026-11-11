@@ -31,7 +31,9 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [ ] Hesaplamaları ekran kodundan ayır (şu an bazı hesaplar HTML üretimiyle iç içe); derleme adımı Faz 3'te Node ile birlikte gelir
 - [x] Çok dilli altyapı: `tx()` çeviri işlevi, dil seçimi (Ayarlar), dile göre tarih ve gün adları
 - [x] Arayüz metinlerinin İngilizcesi: yaklaşık 1.100 metin çeviriye bağlandı, sözlükte 730 karşılık (`starboard-site/js/lang/en.js`)
-- [ ] İçerik çevirisi: besin adları (320), tarifler, antrenman programları ve hareket anlatımları (yaklaşık 1.500 metin); Faz 2'deki uluslararası içerik uyarlamasıyla birlikte ele alınır
+- [x] Beslenme içeriğinin İngilizcesi: 320 besin adı, porsiyon ölçüleri, mikro besinler, hazır menüler ve tarifler (`starboard-site/js/lang/en-food.js`, 630 karşılık)
+- [ ] Antrenman içeriğinin İngilizcesi: program adları, gün başlıkları, hareketler ve hareket anlatımları (yaklaşık 600 metin). Hareket adları kayıtlarda ve anlatım eşleşmesinde anahtar olarak kullanıldığı için önce adın gösterimden ayrılması gerekiyor
+- [ ] İçeriğin uluslararası uyarlaması (Faz 2): çeviri tamam, ama besin ve tarif seçkisi hâlâ Türk mutfağı ağırlıklı
 - [ ] Kalan arayüz parçaları: küçük harfle başlayan kısa metinler ve kayıtlı görev başlıkları
 - [ ] Birimler dile göre (kg/lb, ml/oz)
 - [ ] İngilizce "beta" etiketini kaldır ve tarayıcı diline göre otomatik seçim aç (içerik çevirisi bitince)

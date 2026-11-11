@@ -154,7 +154,7 @@ function microSection(micros){
       ? `<span class="pill on"><svg class="ico"><use href="#i-check"/></svg>${NUTRIENTS[k].n}</span>`
       : `<span class="pill">${NUTRIENTS[k].n}</span>`).join("")}</div>
     ${missing.length ? `<div class="metric-note" style="margin-top:14px">
-      ${missing.slice(0,4).map(k => `<b>${NUTRIENTS[k].n}</b> için: ${NUTRIENTS[k].src}`).join("<br>")}
+      ${missing.slice(0,4).map(k => tx("{0} için: {1}", [`<b>${NUTRIENTS[k].n}</b>`, NUTRIENTS[k].src])).join("<br>")}
     </div>` : ""}`);
 }
 
@@ -484,7 +484,8 @@ function porSteps(g){
   if (g >= 10)  return [1, 2, 3];       /* dilim, adet, bardak, kaşık */
   return [2, 5, 10];                    /* zeytin, sarımsak dişi gibi küçükler */
 }
-const nfmt = n => Number.isInteger(n) ? String(n) : String(n).replace(".", ",");
+/* Ondalık ayırıcı dile göre: Türkçede virgül, İngilizcede nokta. */
+const nfmt = n => Number.isInteger(n) || LANG !== "tr" ? String(n) : String(n).replace(".", ",");
 
 function pickCard(){
   const f = foodOf(logPick);

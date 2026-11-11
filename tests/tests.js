@@ -220,7 +220,19 @@ test("çeviri: sözlükteki her karşılık anahtarıyla aynı yer tutucuları t
     if (b.some(h => !a.includes(h)) || typeof v !== "string" || !v) bad.push(k);
   }
   eq(bad, [], "hatalı sözlük kayıtları");
-  ok(Object.keys(I18N.en).length > 600, "sözlük beklenenden küçük");
+  ok(Object.keys(I18N.en).length > 1300, "sözlük beklenenden küçük");
+});
+test("çeviri: besin adları, porsiyonlar ve tarifler İngilizcede çevrilir", async () => {
+  await withLang("en", () => {
+    eq(tx("Yumurta"), "Egg");
+    eq(tx("Tam buğday ekmeği"), "Whole wheat bread");
+    eq(tx("yemek kaşığı"), "tbsp");
+    eq(tx("Fırını 200°C'ye ısıt."), "Heat the oven to 200°C.");
+    /* Mikro besin kodu kodda anahtar olarak kullanılır; çevrilirse eşleşme bozulur. */
+    eq(tx("çinko"), "çinko");
+  });
+  const untranslated = Object.values(FOODS).map(f => f.n).filter(n => !Object.prototype.hasOwnProperty.call(I18N.en, n));
+  eq(untranslated, [], "İngilizce karşılığı olmayan besin adları");
 });
 test("çeviri: İngilizce modda bütün sekmeler ve giriş ekranları çizilir", async () => {
   const fixture = await loadFixture();

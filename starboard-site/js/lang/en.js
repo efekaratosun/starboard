@@ -473,6 +473,7 @@ window.STARBOARD_EN = {
   "Antrenman kaydı girdikçe her hareketin en iyisi burada birikir.": "Your best for each exercise collects here as you log workouts.",
   "🏆 Yeni rekor: {0} · {1}": "🏆 New record: {0} · {1}",
   "Antrenman kaydı": "Workout log",
+  "Kişisel rekorlar": "Personal records",
 
   /* ---- kendi programı ---- */
   "{0} antrenmanının adı": "Name of the {0} workout",
