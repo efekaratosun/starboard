@@ -120,6 +120,27 @@ test("öğünler: istenmeyen besin önerilerde çıkmaz", async () => {
     ok(!keysOf(buildMeals(p, v)).includes(first[0]), `${first[0]} ${v}. seçenekte yine çıktı`);
 });
 
+test("öğünler: her öğün gerçek bir tabak gibi (tek et ya da balık, en fazla dört besin)", async () => {
+  const fixture = await loadFixture();
+  const meaty = k => FOODS[k] && ["meat", "poultry", "fish"].includes(FOODS[k].i);
+  const profiles = [[{}, 82], [{ goal:"lose" }, 82], [{ goal:"gain" }, 82],
+    [{ sex:"female", height:163, age:27 }, 60], [{ sex:"female", height:163, age:27, goal:"lose" }, 60],
+    [{ activity:"veryActive", goal:"gain" }, 95], [{ activity:"sedentary" }, 82]];
+  for (const [o, w] of profiles) for (let v = 0; v < 6; v++) {
+    state = JSON.parse(JSON.stringify(fixture));
+    const p = buildProgram(profileOf(o), w, 0);
+    const m = buildMeals(p, v);
+    const where = `${JSON.stringify(o)}, seçenek ${v}`;
+    for (const meal of m.meals) {
+      const keys = meal.items.map(i => i.key).filter(Boolean);
+      ok(keys.filter(meaty).length <= 1, `${meal.name}: birden çok et ya da balık (${keys.join(", ")}) · ${where}`);
+      ok(keys.length <= 4, `${meal.name}: ${keys.length} besin (${keys.join(", ")}) · ${where}`);
+      eq(new Set(keys).size, keys.length, `${meal.name}: aynı besin iki kez · ${where}`);
+    }
+    ok(Math.abs(m.total.kcal - p.kcal) / p.kcal <= 0.1, `menü ${m.total.kcal} kcal, hedef ${p.kcal} kcal · ${where}`);
+  }
+});
+
 /* ---- ölçüm değerlendirme ---- */
 test("değerlendirme: az, yeterli ve fazla doğru etiketlenir", async () => {
   state = await loadFixture();

@@ -824,6 +824,21 @@ function solveTrio(P, C, F, tp, tc, tf, tk){
   return { gp, gc, gf, sum };
 }
 
+/* Bir öğünde tek karbonhidrat kaynağından en fazla kaç gram önerilir.
+   Kuru tahıl ve makarna 120 g, ekmek türleri 130 g (yaklaşık 4 dilim),
+   patates ve meyve gibi sulu kaynaklar 350 g. Çok yüksek kalorili öğünlerde
+   tavan öğünün büyüklüğüyle orantılı esner. */
+function carbCap(food, scale){
+  const base = food.c >= 60 ? 120 : food.c >= 35 ? 130 : 350;
+  return base * (scale || 1);
+}
+/* Ana karbonhidrat tavanı aşınca öğüne eklenen yan karbonhidrat, sırayla denenir:
+   kahvaltı ve ara öğünde meyve, ana öğünlerde ekmek. */
+const SIDE_CARBS = {
+  kahvalti:["muz","elma","ekmek"], ara:["muz","elma","ekmek"],
+  ogle:["ekmek","patates","muz"], aksam:["ekmek","patates","muz"]
+};
+
 /* Öğüne yakışmayan eşleşmeler çıkmasın diye her öğünün kabul ettiği kategoriler. */
 const SIDES = ["Yanına mevsim salata", "Yanına domates, salatalık, yeşillik",
   "Yanına turşu ve maydanoz", "Yanına buharda brokoli veya kabak"];
@@ -967,10 +982,12 @@ function buildMeals(program, variantIndex){
 
     const t0 = { p: rem.p*share, c: rem.c*share, f: rem.f*share, kcal: rem.kcal*share };
 
-    /* Payı büyük bir öğün tek tabağa sığmaz (porsiyon tavanları var);
-       750 kcal üstünde ikinci bir tabak açılır — ana yemek + yan yemek. */
-    const plates = t0.kcal > 750 ? 2 : 1;
-    const t = { p:t0.p/plates, c:t0.c/plates, f:t0.f/plates, kcal:t0.kcal/plates };
+    /* Her öğünde tek protein ve tek yağ kaynağı olur. Ana karbonhidrat makul
+       bir porsiyonda tutulur; artan karbonhidrat ikinci bir kaynağa (ekmek,
+       meyve, patates gibi) verilir. Eskiden büyük öğünde ikinci bir tam tabak
+       açılıyordu ve aynı öğünde tavukla ton balığı gibi iki ana yemek çıkıyordu. */
+    const t = t0;
+    const capScale = clamp(t0.kcal / 800, 1, 1.75);
 
     const used = [];
     /* Anlamsız kalan miktarlar listeye girmesin. */
@@ -983,28 +1000,49 @@ function buildMeals(program, variantIndex){
     };
 
     let placed = 0;
-    for (let plate = 0; plate < plates; plate++){
+    {
       /* 3) Sabitleme veya diyet varsa kalan hedefe göre yeni üçlü üretilir;
             yoksa hazır kombinasyonun besinleri kullanılır. */
       let pk, ck, fk, solved;
       if (generate){
-        const best = pickTrio(mm.cat || "ogle", t, opts, dayUsed, variantIndex + plate);
+        const best = pickTrio(mm.cat || "ogle", t, opts, dayUsed, variantIndex);
         if (best){ pk = best.pk; ck = best.ck; fk = best.fk; solved = best.r; }
       }
       if (!solved){
-        const src = tplFor(mm, plate);
+        const src = tplFor(mm, 0);
         pk = resolveSlot(src.p, "p", opts, dayUsed);
         ck = resolveSlot(src.c, "c", opts, dayUsed);
         fk = resolveSlot(src.f, "f", opts, dayUsed);
-        if (!pk || !ck || !fk) continue;
-        solved = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
+        if (pk && ck && fk)
+          solved = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
       }
-      dayUsed.add(pk); dayUsed.add(ck);
-      /* Zeytinyağı gibi sade yağlar her tabakta olabilir; tekrar yasağı
-         yedek seçimi sucuk gibi anlamsız yağ kaynaklarına itiyordu. */
-      if (FOODS[fk].i !== "oil") dayUsed.add(fk);
-      put(FOODS[pk], solved.gp, pk); put(FOODS[ck], solved.gc, ck); put(FOODS[fk], solved.gf, fk);
-      placed++;
+      if (solved){
+        dayUsed.add(pk); dayUsed.add(ck);
+        /* Zeytinyağı gibi sade yağlar her öğünde olabilir; tekrar yasağı
+           yedek seçimi sucuk gibi anlamsız yağ kaynaklarına itiyordu. */
+        if (FOODS[fk].i !== "oil") dayUsed.add(fk);
+
+        const P = FOODS[pk], C = FOODS[ck], F = FOODS[fk];
+        const gc = Math.min(solved.gc, carbCap(C, capScale));
+        /* Tavan yüzünden eksik kalan karbonhidrat ve kalori yan kaynağa gider. */
+        const kcalOf = (fo, g) => (fo.p*4 + fo.c*4 + fo.f*9) * g / 100;
+        const spill = t.c - (P.c*solved.gp + C.c*gc + F.c*solved.gf) / 100;
+        const room = t.kcal - kcalOf(P, solved.gp) - kcalOf(C, gc) - kcalOf(F, solved.gf);
+        put(P, solved.gp, pk);
+        put(C, gc, ck);
+        if (spill >= 15 && room > 0){
+          /* Yan karbonhidrat başka bir öğünün ana besinini elinden almasın diye
+             günlük tekrar listesine girmez; gün içinde tekrarlanabilir. */
+          const ck2 = (SIDE_CARBS[mm.cat] || SIDE_CARBS.ogle)
+            .find(k => FOODS[k] && k !== ck && k !== pk && !opts.exclude.has(k));
+          if (ck2){
+            const C2 = FOODS[ck2];
+            put(C2, Math.min(spill / (C2.c / 100), room / kcalOf(C2, 1), carbCap(C2, capScale)), ck2);
+          }
+        }
+        put(F, solved.gf, fk);
+        placed++;
+      }
     }
 
     if (!placed)
