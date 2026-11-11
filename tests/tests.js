@@ -177,6 +177,41 @@ test("değerlendirme: az, yeterli ve fazla doğru etiketlenir", async () => {
   eq(label(Math.round(p.kcal * 1.5)), "Fazla");
 });
 
+test("değerlendirme: hesap ekrandan bağımsız, yalnızca sayı ve durum döndürür", async () => {
+  state = await loadFixture();
+  const p = buildProgram(state.profile, 82, 0);
+  const a = assess({ weight:82, sleep:5, kcal:p.kcal, water:p.water * 2 }, state.profile, p, 82, [7, 9]);
+  eq(a.map(x => [x.id, x.status]), [["weight", "high"], ["sleep", "low"], ["kcal", "ok"], ["water", "high"]]);
+  eq(Math.round(a[0].bmi * 10) / 10, 25.9, "BMI");
+  eq([a[2].low, a[2].high], [p.kcal * 0.9, p.kcal * 1.1], "kalori bandı");
+  ok(!JSON.stringify(a).includes("<"), "hesap çıktısında HTML olmamalı");
+  /* Kilo bilinmiyorsa kalori ve su hesaplanamaz. */
+  const b = assess({}, state.profile, p, null, [7, 9]);
+  eq(b.map(x => [x.id, x.value, !!x.unknown]), [["weight", null, false], ["sleep", null, false], ["kcal", null, true], ["water", null, true]]);
+});
+test("dil: kayıtlı seçim yoksa eski kullanıcı Türkçe kalır, yeni kullanıcı tarayıcı dilini alır", () => {
+  const names = [LANG_KEY, KEY, ...OLD_KEYS];
+  const saved = names.map(k => localStorage.getItem(k));
+  const force = window.STARBOARD_LANG;
+  const nav = Object.getOwnPropertyDescriptor(Navigator.prototype, "languages");
+  const setNav = list => Object.defineProperty(navigator, "languages", { get: () => list, configurable: true });
+  try {
+    delete window.STARBOARD_LANG;
+    names.forEach(k => localStorage.removeItem(k));
+    setNav(["en-US"]); eq(detectLang(), "en", "yeni kullanıcı, İngilizce tarayıcı");
+    setNav(["tr-TR"]); eq(detectLang(), "tr", "yeni kullanıcı, Türkçe tarayıcı");
+    setNav(["de-DE"]); eq(detectLang(), "en", "desteklenmeyen dil İngilizceye düşer");
+    localStorage.setItem(KEY, "{}");
+    setNav(["en-US"]); eq(detectLang(), "tr", "kaydı olan eski kullanıcı Türkçe kalır");
+    localStorage.setItem(LANG_KEY, "en"); eq(detectLang(), "en", "Ayarlar'daki seçim hepsinin önüne geçer");
+  } finally {
+    delete navigator.languages;
+    if (nav) Object.defineProperty(Navigator.prototype, "languages", nav);
+    window.STARBOARD_LANG = force;
+    names.forEach((k, i) => { if (saved[i] === null) localStorage.removeItem(k); else localStorage.setItem(k, saved[i]); });
+  }
+});
+
 /* ---- eski kayıt uyumluluğu ---- */
 test("yedek: sürüm 1 kaydı açılır ve bütün sekmeler çizilir", async () => {
   state = await loadFixture();
@@ -193,6 +228,105 @@ test("ilk giriş: kayıt yokken karşılama ekranı çizilir", () => {
   state = null; tab = "today";
   render();
   ok(app.innerHTML.includes("Starboard"), "karşılama ekranı gelmedi");
+});
+
+/* ---- gün puanı ve yıldızlar ---- */
+/* Antrenmansız bir profil ve dün için eksiksiz veri: kilo, uyku, kalori, su. */
+const scoreSetup = async () => {
+  state = await loadFixture();
+  state.profile.noPlan = true;
+  state.days = {};
+  const k = shiftDays(today(), -1);
+  state.days[k] = { weight: 82, tasks: [] };
+  calcReset();
+  const p = currentProgram();
+  Object.assign(state.days[k], { sleep: 8, kcal: p.kcal, water: p.water });
+  calcReset();
+  return { k, p };
+};
+test("gün puanı: bütün veriler hedefteyse gün tamam sayılır", async () => {
+  const { k } = await scoreSetup();
+  const s = dayScore(k);
+  ok(s.total >= 4, `en az dört ölçüt bekleniyordu, ${s.total} çıktı`);
+  eq(s.done, s.total, "tamamlanan ölçüt sayısı");
+  eq(dayRatio(k), 1);
+});
+test("gün puanı: eksik veri puanı düşürür, elle eklenen görev sayılır", async () => {
+  const { k } = await scoreSetup();
+  const full = dayScore(k).total;
+  delete state.days[k].water; calcReset();
+  eq(dayScore(k), { done: full - 1, total: full }, "su girilmeyince");
+  state.days[k].tasks.push({ id: 1, title: "Kitap oku", done: false }); calcReset();
+  eq(dayScore(k), { done: full - 1, total: full + 1 }, "elle görev eklenince");
+  state.days[k].tasks[0].done = true; calcReset();
+  eq(dayScore(k), { done: full, total: full + 1 }, "elle görev bitince");
+});
+test("gün puanı: günlüğü olmayan geçmiş günde protein puana girmez", async () => {
+  const { k } = await scoreSetup();
+  const without = dayScore(k).total;
+  state.days[k].log = [{ k: "yumurta", g: 100, p: 12.6, c: 0.8, f: 10, n: "Yumurta" }]; calcReset();
+  eq(dayScore(k).total, without + 1, "günlük girilince protein ölçütü eklenmeli");
+});
+test("yıldız: tamamlanan gün damgalanır ve hedef sonradan değişse de kalır", async () => {
+  const { k } = await scoreSetup();
+  eq(stampStar(k), true, "ilk damga");
+  eq(state.days[k].star, true);
+  eq(stampStar(k), false, "ikinci kez damgalamak değişiklik yapmamalı");
+  /* Geçmiş bir günün verisi eksilse de kazanılmış yıldız silinmez. */
+  delete state.days[k].water; calcReset();
+  stampStar(k);
+  eq(state.days[k].star, true, "geçmiş günün yıldızı korunmalı");
+});
+test("yıldız: günün bütün verisi silinirse damga kalkar", async () => {
+  const { k } = await scoreSetup();
+  stampStar(k);
+  state.days[k] = { tasks: [], star: true }; calcReset();
+  eq(stampStar(k), true);
+  ok(!state.days[k].star, "boşaltılan günün yıldızı kalkmalı");
+});
+
+/* ---- haftalık yenileme ---- */
+/* Bu hafta ve geçen hafta için üçer tartı; cur ve prev haftalık ortalamalardır. */
+const refreshSetup = async (goal, prev, cur, adjustment) => {
+  const s = await loadFixture();
+  s.profile.goal = goal; s.adjustment = adjustment || 0; s.lastRefreshAt = null; s.days = {};
+  const t = today();
+  for (const n of [1, 2, 3]) s.days[shiftDays(t, -n)] = { weight: cur, tasks: [] };
+  for (const n of [8, 9, 10]) s.days[shiftDays(t, -n)] = { weight: prev, tasks: [] };
+  return s;
+};
+test("haftalık yenileme: yedi gün dolmadan çalışmaz", async () => {
+  const s = await refreshSetup("lose", 82, 82);
+  s.lastRefreshAt = shiftDays(today(), -3);
+  eq(weeklyRefresh(s), null);
+});
+test("haftalık yenileme: yeterli tartı yoksa hedefe dokunmaz", async () => {
+  const s = await refreshSetup("lose", 82, 82);
+  delete s.days[shiftDays(today(), -1)];
+  const r = weeklyRefresh(s);
+  eq([r.save, s.adjustment, s.lastRefreshAt], [false, 0, null]);
+});
+test("haftalık yenileme: kilo verilmiyorsa kalori düşer, çok hızlı veriliyorsa artar", async () => {
+  let s = await refreshSetup("lose", 82, 82);
+  let r = weeklyRefresh(s);
+  eq([r.save, s.adjustment, s.lastRefreshAt], [true, -STEP, today()], "kilo sabit");
+  s = await refreshSetup("lose", 82, 79);
+  weeklyRefresh(s);
+  eq(s.adjustment, STEP, "çok hızlı kayıp");
+});
+test("haftalık yenileme: hedeflenen hızdaysa kalori değişmez", async () => {
+  const [lo, hi] = GOAL.lose.range;
+  const s = await refreshSetup("lose", 82, +(82 * (1 + (lo + hi) / 200)).toFixed(3));
+  const r = weeklyRefresh(s);
+  eq([r.save, s.adjustment, s.lastRefreshAt], [true, 0, today()]);
+});
+test("haftalık yenileme: kilo almada yön tersine işler ve düzeltme sınırı aşılmaz", async () => {
+  let s = await refreshSetup("gain", 70, 70);
+  weeklyRefresh(s);
+  eq(s.adjustment, STEP, "kilo alınmıyorsa kalori artmalı");
+  s = await refreshSetup("lose", 82, 82, -MAX_ADJ);
+  const r = weeklyRefresh(s);
+  eq([r.save, s.adjustment], [true, -MAX_ADJ], "sınırda kalmalı");
 });
 
 /* ---- veri sürümü ve depolama ---- */

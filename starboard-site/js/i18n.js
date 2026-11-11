@@ -6,15 +6,31 @@
    Başka bir dil seçiliyse tx() aynı metni o dilin sözlüğünde (js/lang/*.js) arar;
    bulamazsa Türkçesini gösterir ve eksik listesine yazar. Dil değişince sayfa
    yeniden yüklenir, çünkü bazı metinler yükleme anında hazırlanır. */
-/* İngilizce "beta": arayüz çevrildi, içerik (besinler, tarifler, hareketler) henüz Türkçe. */
-const LANGS = [["tr", "Türkçe"], ["en", "English (beta)"]];
+const LANGS = [["tr", "Türkçe"], ["en", "English"]];
 const LOCALES = { tr:"tr-TR", en:"en-US" };
 const LANG_KEY = "starboard-lang";
 const I18N = { en: window.STARBOARD_EN || {} };
 const I18N_MISSING = new Set();
 
-let LANG = "tr";
-try { const saved = localStorage.getItem(LANG_KEY); if (saved && LOCALES[saved]) LANG = saved; } catch(e){}
+/* Dil sırasıyla şuradan belirlenir:
+   1) window.STARBOARD_LANG: sayfayı saran kabuk ya da testler dili dışarıdan verebilir.
+   2) Kullanıcının Ayarlar'da yaptığı seçim.
+   3) Dil seçimi eklenmeden önce başlamış kullanıcılar: uygulamayı Türkçe kullanıyorlardı,
+      tarayıcıları başka dilde olsa da dil kendiliğinden değişmez.
+   4) Yeni kullanıcı: tarayıcı dili Türkçeyse Türkçe, değilse İngilizce. */
+function detectLang(){
+  if (LOCALES[window.STARBOARD_LANG]) return window.STARBOARD_LANG;
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved && LOCALES[saved]) return saved;
+    /* Kayıt adları storage.js'teki KEY ve OLD_KEYS ile aynıdır; o dosya bundan sonra yüklenir. */
+    if (localStorage.getItem("starboard-state") || localStorage.getItem("saglik-takip-v1")) return "tr";
+  } catch(e){}
+  const nav = String((navigator.languages && navigator.languages[0]) || navigator.language || "tr").toLowerCase();
+  return nav.startsWith("tr") ? "tr" : "en";
+}
+
+let LANG = detectLang();
 document.documentElement.lang = LANG;
 
 function tx(s, vars){

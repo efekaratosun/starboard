@@ -375,6 +375,8 @@ function obWelcome(){
       <li>${iconBox("star4")}<span><b>${tx("Her tamamlanan gün bir yıldız")}</b></span></li>
     </ul>
     <div class="on-foot">${tx("Veriler yalnızca bu cihazda saklanır.")}</div>
+    <div class="on-foot">${LANGS.filter(([k]) => k !== LANG).map(([k, l]) =>
+      `<button type="button" class="link" onclick="setLang('${k}')">${l}</button>`).join("")}</div>
   </div>`;
 }
 
