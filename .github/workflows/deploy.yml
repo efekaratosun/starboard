@@ -1,0 +1,33 @@
+# main dalına gelen her değişiklikte starboard-site klasörünü GitHub Pages'e yayınlar.
+name: Siteyi yayinla
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Onbellek surumunu damgala
+        run: sed -i "s/starboard-[0-9]\{12\}/starboard-$(date +%Y%m%d%H%M)/" starboard-site/sw.js
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: starboard-site
+      - id: deployment
+        uses: actions/deploy-pages@v4
