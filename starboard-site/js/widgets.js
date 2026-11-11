@@ -55,7 +55,7 @@ function weeklySummary(){
 
 /* ---- dışa / içe aktarma ---- */
 async function exportData(statusEl){
-  const payload = JSON.stringify({ app:"starboard", v:1, exportedAt:new Date().toISOString(), state }, null, 2);
+  const payload = JSON.stringify({ app:"starboard", v:SCHEMA, appVersion:APP_VERSION, exportedAt:new Date().toISOString(), state }, null, 2);
   const filename = `starboard-${today()}.json`;
   const say = m => { if (statusEl) statusEl.textContent = m; };
 
@@ -95,10 +95,16 @@ function importData(file, statusEl){
     if (!incoming || !incoming.profile || !incoming.days){
       statusEl.textContent = tx("Bu dosya bu uygulamanın yedeği gibi görünmüyor."); return;
     }
+    /* Yedeğin kendi sürümü yoksa dosyadaki sürüm, o da yoksa 1 sayılır. */
+    if (!Number.isInteger(incoming.v) && Number.isInteger(data.v)) incoming.v = data.v;
+    if (Number.isInteger(incoming.v) && incoming.v > SCHEMA){
+      statusEl.textContent = tx("Bu yedek uygulamanın daha yeni bir sürümüyle alınmış. Önce sayfayı yenileyip güncel sürümü aç."); return;
+    }
     const n = Object.keys(incoming.days).length;
     if (!confirm(tx("{0} günlük kayıt yüklenecek ve mevcut verilerin silinecek. Devam edilsin mi?", [(n)]))) return;
+    migrateState(incoming);
     state = incoming;
-    state.v = 1;
+    migrateMeals();
     await saveState(state);
     tab = "today"; render(); window.scrollTo(0,0);
   };

@@ -195,6 +195,61 @@ test("ilk giriş: kayıt yokken karşılama ekranı çizilir", () => {
   ok(app.innerHTML.includes("Starboard"), "karşılama ekranı gelmedi");
 });
 
+/* ---- veri sürümü ve depolama ---- */
+test("veri sürümü: sürümsüz eski kayıt güncel biçime taşınır", async () => {
+  const s = await loadFixture();
+  delete s.v; delete s.starred; delete s.profile.venue;
+  const m = migrateState(s);
+  eq([m.changed, m.newer], [true, false]);
+  eq(s.v, SCHEMA, "sürüm");
+  eq(s.profile.venue, "gym", "eksik ortam alanı doldurulmalı");
+  eq(s.starred, 1, "yıldız damgası işareti");
+  eq(s.days["2026-11-10"].weight, 82.2, "gün verisi korunmalı");
+  /* İkinci kez çalıştırmak hiçbir şeyi değiştirmemeli. */
+  const before = JSON.stringify(s);
+  eq(migrateState(s).changed, false);
+  eq(JSON.stringify(s), before);
+});
+test("veri sürümü: her eski sürüm için bir göç adımı var", () => {
+  for (let v = 1; v < SCHEMA; v++) ok(typeof MIGRATIONS[v] === "function", `${v} sürümünden ${v + 1} sürümüne adım eksik`);
+});
+test("veri sürümü: daha yeni biçimdeki kayda dokunulmaz", async () => {
+  const s = await loadFixture();
+  s.v = SCHEMA + 1;
+  const before = JSON.stringify(s);
+  eq(migrateState(s), { changed:false, newer:true });
+  eq(JSON.stringify(s), before);
+});
+test("depolama: eski adla duran kayıt okunur, yeni adla yazılır, silince ikisi de gider", async () => {
+  /* Bu test tarayıcı deposuna dokunur; mevcut değerleri saklayıp geri koyar. */
+  const names = [KEY, ...OLD_KEYS];
+  const saved = names.map(k => localStorage.getItem(k));
+  const realSave = saveState;
+  try {
+    names.forEach(k => localStorage.removeItem(k));
+    eq(await loadState(), null, "boş depoda kayıt olmamalı");
+
+    const fixture = await loadFixture();
+    localStorage.setItem(OLD_KEYS[0], JSON.stringify(fixture));
+    const s = await loadState();
+    ok(s && s.profile.name === "Test", "eski adla duran kayıt okunmadı");
+    eq(loadedFromOldKey, true);
+
+    saveState = async x => { localStorage.setItem(KEY, JSON.stringify(x)); };
+    migrateState(s);
+    await saveState(s);
+    const again = await loadState();
+    eq([again.v, loadedFromOldKey], [SCHEMA, false], "ikinci açılış yeni addan okumalı");
+    ok(localStorage.getItem(OLD_KEYS[0]) !== null, "eski kayıt yedek olarak yerinde kalmalı");
+
+    await clearState();
+    eq(await loadState(), null, "silme sonrası eski kayıt geri gelmemeli");
+  } finally {
+    saveState = realSave;
+    names.forEach((k, i) => { if (saved[i] === null) localStorage.removeItem(k); else localStorage.setItem(k, saved[i]); });
+  }
+});
+
 /* ---- çeviri ---- */
 const withLang = async (lang, fn) => { const old = LANG; LANG = lang; try { return await fn(); } finally { LANG = old; } };
 

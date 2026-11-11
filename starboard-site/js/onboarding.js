@@ -142,7 +142,6 @@ function dayNote(venue, activity, days){
 }
 
 /* Marka işareti: ikonun aynısı, ilk adımda gösterilir. */
-const APP_VERSION = "1.1";
 const BRAND_SVG = `<svg viewBox="0 0 180 180" aria-hidden="true"><defs><linearGradient id="sbi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF7A2F"/><stop offset="1" stop-color="#FF3D6E"/></linearGradient></defs><rect width="180" height="180" rx="40" fill="url(#sbi)"/><g fill="#FFFCFA"><rect x="39.0" y="125.2" width="17.6" height="16.9" rx="6.0"/><rect x="63.6" y="107.6" width="17.6" height="34.5" rx="6.0"/><rect x="88.2" y="90.7" width="17.6" height="51.3" rx="6.0"/><rect x="112.9" y="73.1" width="17.6" height="68.9" rx="6.0"/><path d="M121.6 26.7 L125.5 41.1 L139.9 45.0 L125.5 48.9 L121.6 63.3 L117.8 48.9 L103.4 45.0 L117.8 41.1Z"/></g></svg>`;
 
 /* ---- ilk giriş: konuya göre beş ekran ----
@@ -618,7 +617,7 @@ function wireOb(st, list, animate){
 
 async function obFinish(){
   const profile = obProfile();
-  state = { profile, adjustment:0, lastRefreshAt:null, days:{} };
+  state = { v:SCHEMA, starred:1, profile, adjustment:0, lastRefreshAt:null, days:{} };
   state.mealPrefs = { exclude:[], useMine:false, fixed:{}, diet: ob.diet, meals: mealsFromPreset(ob.mealSet) };
   const ex = new Set();
   for (const i of ob.dislike) for (const k of (DISLIKE[i] || [])[1] || []) if (FOODS[k]) ex.add(k);

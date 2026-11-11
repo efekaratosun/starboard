@@ -38,10 +38,10 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [ ] Birimler dile göre (kg/lb, ml/oz)
 - [ ] İngilizce "beta" etiketini kaldır ve tarayıcı diline göre otomatik seçim aç (içerik çevirisi bitince)
-- [ ] Sürüm numarası ve değişiklik günlüğü
-- [ ] Veri şeması sürümleme: eski kayıtlar her güncellemede güvenle yeni biçime taşınsın
+- [x] Sürüm numarası (`APP_VERSION`, şu an 1.2.0) ve değişiklik günlüğü (`CHANGELOG.md`)
+- [x] Veri şeması sürümleme: `SCHEMA` ve `MIGRATIONS` (`storage.js`); açılışta ve yedek yüklerken kayıt güncel biçime taşınır
 - [ ] Test kapsamını genişlet: gün puanı, yıldızlar, haftalık yenileme
-- [ ] Depolama anahtarını (`saglik-takip-v1`) göçle birlikte yeniden adlandır
+- [x] Depolama anahtarı `starboard-state` oldu; eski adla duran kayıt ilk açılışta taşınır ve yedek olarak yerinde kalır
 
 Bitti sayılır: testler geçiyor, eski bir yedek dosyası yeni sürümde sorunsuz açılıyor.
 

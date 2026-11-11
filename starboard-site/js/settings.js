@@ -209,8 +209,7 @@ function wireSettings(){
   document.getElementById("reset").onclick = async () => {
     if (!confirm(tx("Tüm veriler silinecek. Emin misin?"))) return;
     state = null; notice = null; tab = "today";
-    if (window.storage) { try { await window.storage.delete(KEY); } catch(e){} }
-    try { localStorage.removeItem(KEY); } catch(e){}
+    await clearState();      /* eski adla duran kayıt da silinir, yoksa bir sonraki açılışta geri gelirdi */
     render();
   };
 }

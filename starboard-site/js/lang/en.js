@@ -651,6 +651,8 @@ window.STARBOARD_EN = {
   "Bu dosya bu uygulamanın yedeği gibi görünmüyor.": "This file does not look like a backup of this app.",
   "{0} günlük kayıt yüklenecek ve mevcut verilerin silinecek. Devam edilsin mi?": "{0} days of records will be loaded and your current data deleted. Continue?",
   "Dosya okunamadı.": "Could not read the file.",
+  "Bu yedek uygulamanın daha yeni bir sürümüyle alınmış. Önce sayfayı yenileyip güncel sürümü aç.": "This backup was made with a newer version of the app. Refresh the page to load the latest version first.",
+  "Bu kayıt uygulamanın daha yeni bir sürümüyle yazılmış. Sayfayı yenileyip güncel sürümü aç.": "This data was saved by a newer version of the app. Refresh the page to load the latest version.",
 
   /* ---- takvim ---- */
   "daha çok tam gün": "more full days",
