@@ -12,7 +12,7 @@ function evaluate(entry, profile, program, weight){
   } else out.push(blank(tx("Kilo"), tx("Bugün girilmedi")));
 
   if (typeof entry.sleep === "number")
-    out.push(bar(tx("Uyku"), entry.sleep.toFixed(1)+" saat", entry.sleep, sleepBand()[0], sleepBand()[1], tx("Senin hedefin {0}–{1} saat", [(sleepBand()[0]), (sleepBand()[1])])));
+    out.push(bar(tx("Uyku"), tx("{0} saat", [(entry.sleep.toFixed(1))]), entry.sleep, sleepBand()[0], sleepBand()[1], tx("Senin hedefin {0}–{1} saat", [(sleepBand()[0]), (sleepBand()[1])])));
   else out.push(blank(tx("Uyku"), tx("Bugün girilmedi")));
 
   if (weight === null) { out.push(blank(tx("Kalori"),tx("Kilo girilmeden hesaplanamaz"))); out.push(blank(tx("Su"),tx("Kilo girilmeden hesaplanamaz"))); return out; }

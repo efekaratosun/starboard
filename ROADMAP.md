@@ -35,7 +35,7 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Antrenman içeriğinin İngilizcesi: 16 program, gün başlıkları, 90 hareketin rehberi (`starboard-site/js/lang/en-workout.js`). Antrenman satırları kodda ve kayıtlarda Türkçe kalır, yalnızca ekranda `exText()` ile çevrilir; böylece dil değişince kayıtlar ve rekorlar kopmaz
 - [ ] Kullanıcının kendi yazdığı program ve kayıtlı görev başlıkları yazıldığı dilde kalır
 - [ ] İçeriğin uluslararası uyarlaması (Faz 2): çeviri tamam, ama besin ve tarif seçkisi hâlâ Türk mutfağı ağırlıklı
-- [ ] Kalan arayüz parçaları: küçük harfle başlayan kısa metinler ve kayıtlı görev başlıkları
+- [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [ ] Birimler dile göre (kg/lb, ml/oz)
 - [ ] İngilizce "beta" etiketini kaldır ve tarayıcı diline göre otomatik seçim aç (içerik çevirisi bitince)
 - [ ] Sürüm numarası ve değişiklik günlüğü

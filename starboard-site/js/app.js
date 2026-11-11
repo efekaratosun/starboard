@@ -216,7 +216,7 @@ function openThemeSheet(cur, onPick){
       b.setAttribute("aria-current", on); b.setAttribute("aria-selected", on);
     });
     el.querySelector("#tp-note").textContent = sel === "auto"
-      ? `Telefonun ayarı geçerli olur; şu an ${sysDark() ? "koyu" : tx("açık")} görünüyor ve akşam değişebilir.`
+      ? tx("Telefonun ayarı geçerli olur; şu an {0} görünüyor ve akşam değişebilir.", [(sysDark() ? tx("koyu") : tx("açık"))])
       : sel === "dark" ? tx("Her zaman koyu kalır, telefonun ayarı ne olursa olsun.")
       : tx("Her zaman açık kalır, telefonun ayarı ne olursa olsun.");
   };

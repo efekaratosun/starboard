@@ -71,7 +71,7 @@ function recipeCard(r, idx){
   return `<section>
     <div class="item rec" data-recipe="${idx}">${iconBox(r.i)}
       <div class="item-main"><h3>${r.n}</h3>
-        <p>${tx("{0} · {1} porsiyon · P{2} K{3} Y{4} · lif {5} g", [(r.t), (r.srv), (m.serving.p), (m.serving.c), (m.serving.f), (m.serving.lif)])}</p></div>
+        <p>${tx("{0} · {1} porsiyon · P{2} K{3} Y{4} · lif {5} g", [(exText(r.t)), (r.srv), (m.serving.p), (m.serving.c), (m.serving.f), (m.serving.lif)])}</p></div>
       <span class="k num">${tx("{0} kcal", [(m.serving.kcal)])}</span>
     </div>
     ${open ? `<div class="rec-body">
@@ -291,7 +291,7 @@ function logBySlot(log){
 function logLine(it){
   const open = editLog === String(it.id);
   return `<div class="log-line${open ? " editing" : ""}">${iconBox(it.i || "grain")}
-    <button class="m log-tap" data-log-edit="${it.id}" aria-expanded="${open}" aria-label="${esc(it.n)}, porsiyonu düzenle">
+    <button class="m log-tap" data-log-edit="${it.id}" aria-expanded="${open}" aria-label="${esc(it.n)}, ${tx("porsiyonu düzenle")}">
       <span class="lt-h">${esc(it.n)}</span><span class="lt-p">${amountText(it)} · P${Math.round(it.p*it.g/100)} K${Math.round(it.c*it.g/100)} Y${Math.round(it.f*it.g/100)}</span></button>
     <span class="k num">${tx("{0} kcal", [(Math.round((it.p*4+it.c*4+it.f*9)*it.g/100))])}</span>
     <button class="del" data-log-del="${it.id}" aria-label="${tx("Sil")}">×</button></div>

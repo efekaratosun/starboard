@@ -121,7 +121,7 @@ function greetSub(program){
   if (all && !left) return tx("Bugünkü her şeyi bitirdin, gökyüzünde bir yıldız daha yandı.");
   const parts = [];
   if (all) parts.push(tx("{0} görevin kaldı", [(left)]));
-  if (kcalLeft !== null && kcalLeft > 0) parts.push(`hedefe ${kcalLeft} kcal var`);
+  if (kcalLeft !== null && kcalLeft > 0) parts.push(tx("hedefe {0} kcal var", [(kcalLeft)]));
   return parts.length ? tx("Bugün ") + parts.join(", ") + "." : tx("Güne küçük bir adımla başla.");
 }
 
@@ -216,8 +216,8 @@ const CUP = 250;
 function cupsHTML(water, target){
   const n = Math.max(6, Math.min(14, Math.ceil((target || 2000) / CUP)));
   const full = Math.floor((water || 0) / CUP);
-  return `<div class="cups" role="group" aria-label="Su bardakları, her biri ${CUP} ml">${Array.from({ length:n }, (_, i) =>
-    `<button class="cup${i < full ? " on" : ""}" data-cup="${i}" aria-label="${i+1}. bardak${i < full ? tx(", içildi") : ""}">
+  return `<div class="cups" role="group" aria-label="${tx("Su bardakları, her biri {0} ml", [(CUP)])}">${Array.from({ length:n }, (_, i) =>
+    `<button class="cup${i < full ? " on" : ""}" data-cup="${i}" aria-label="${tx("{0}. bardak", [(i+1)])}${i < full ? tx(", içildi") : ""}">
       <svg viewBox="0 0 24 28" aria-hidden="true"><path class="cup-f" d="M5.4 11.5h13.2l-1.2 12.3a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4z"/>
       <path class="cup-o" d="M4 3.5h16l-1.9 20.6a2.2 2.2 0 0 1-2.2 2H8.1a2.2 2.2 0 0 1-2.2-2z"/></svg></button>`).join("")}</div>`;
 }
@@ -351,11 +351,11 @@ function records(){
           put(name, e1rm(b.kg, b.r), `${fmtN(b.kg)} kg × ${b.r}`, k, { u:"w" });
           break;
         }
-        case "wc": if (rec.kg) put(name, rec.kg * 100 + (rec.n || 0), `${fmtN(rec.kg)} kg · ${rec.n || 0} set`, k, { u:"w" }); break;
-        case "r": { const m = Math.max(0, ...numsOf(rec.sets)); if (m) put(name, m, `${m} tekrar`, k, { u:"r" }); break; }
-        case "t": { const m = Math.max(0, ...numsOf(rec.sets)); if (m) put(name, m, `${m} sn`, k, { u:"t" }); break; }
-        case "n": if (rec.n) put(name, rec.n, `${rec.n} tur`, k, { u:"n" }); break;
-        case "sw": if (rec.n) put(name, rec.n, `${rec.n} tekrar`, k, { u:"n" }); break;
+        case "wc": if (rec.kg) put(name, rec.kg * 100 + (rec.n || 0), exText(`${fmtN(rec.kg)} kg · ${rec.n || 0} set`), k, { u:"w" }); break;
+        case "r": { const m = Math.max(0, ...numsOf(rec.sets)); if (m) put(name, m, exText(`${m} tekrar`), k, { u:"r" }); break; }
+        case "t": { const m = Math.max(0, ...numsOf(rec.sets)); if (m) put(name, m, exText(`${m} sn`), k, { u:"t" }); break; }
+        case "n": if (rec.n) put(name, rec.n, exText(`${rec.n} tur`), k, { u:"n" }); break;
+        case "sw": if (rec.n) put(name, rec.n, exText(`${rec.n} tekrar`), k, { u:"n" }); break;
         case "sd": if (rec.m) put(name, rec.m, `${rec.m} m`, k, { u:"d" }); break;
         case "c": if (rec.km) put(name, rec.km, `${fmtN(rec.km)} km${rec.min ? ` · ${pace(rec.min, rec.km)}` : ""}`, k, { u:"d" }); break;
       }
@@ -421,7 +421,7 @@ function avatarMood(e, program){
   const tr = program ? autoInfo({ kind:"train", suggested:true }, e, program) : null;
   const kc = program ? autoInfo({ kind:"kcal", suggested:true }, e, program) : null;
   const trained = !!(tr && tr.ok), happy = !!(kc && kc.ok);
-  const line = happy ? "😊 kalori hedefte" : trained ? "⚡ antrenman tamam" : sleepy ? "😴 az uyudun" : "";
+  const line = happy ? tx("😊 kalori hedefte") : trained ? tx("⚡ antrenman tamam") : sleepy ? tx("😴 az uyudun") : "";
   return { sleepy, trained, happy, star: fullDay(today()), line };
 }
 function avatarSVG(key, sx, wp, mood, uid){
@@ -440,7 +440,7 @@ function avatarSVG(key, sx, wp, mood, uid){
     face = `<g class="face" style="stroke-width:${Math.max(.6, 1.1*fs)}px">${eyes}${mouth}</g>`;
   }
   const spark = (x, y, r) => `<path class="spark" transform="translate(${x} ${y}) scale(${r})" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2Z"/>`;
-  return `<svg viewBox="0 0 48 64" role="img" aria-label="Avatar, bugünkü su hedefinin yüzde ${Math.round(wp*100)}'i dolu"${m.trained ? ` class="glow"` : ""}>
+  return `<svg viewBox="0 0 48 64" role="img" aria-label="${tx("Avatar, bugünkü su hedefinin yüzde {0}'i dolu", [(Math.round(wp*100))])}"${m.trained ? ` class="glow"` : ""}>
       <defs><clipPath id="${uid}-clip"><rect x="0" y="${yTop}" width="48" height="64"/></clipPath></defs>
       <g transform="translate(24 0) scale(${sx.toFixed(3)} 1) translate(-24 0)">
         <use href="${sym}" class="bc-base"/>
@@ -544,13 +544,13 @@ function bodyCard(){
     const right = rate !== null && (down ? rate < -0.05 : rate > 0.05);
     const reached = down ? w <= target : w >= target;
     const eta = reached ? tx("Hedefe ulaştın 🎉")
-      : right ? `bu tempoyla ~${Math.max(1, Math.ceil(left / Math.abs(rate)))} hafta`
-      : rate === null ? tx("tempo için iki haftalık tartı gerekli") : "son hafta hedefin tersine gitti";
+      : right ? tx("bu tempoyla ~{0} hafta", [(Math.max(1, Math.ceil(left / Math.abs(rate))))])
+      : rate === null ? tx("tempo için iki haftalık tartı gerekli") : tx("son hafta hedefin tersine gitti");
     journey = `<div class="bc-sec">
       <div class="bc-h"><span>${tx("Hedefe yolculuk")}</span><b class="num">%${Math.round(pct * 100)}</b></div>
       <div class="jr"><div class="jr-fill" style="width:${(pct*100).toFixed(1)}%"></div><span class="jr-now" style="left:${(pct*100).toFixed(1)}%"></span></div>
       <div class="jr-lbl num"><span><b>${kg1(start)}</b>${tx("başlangıç")}</span><span class="mid"><b>${kg1(w)}</b>${tx("şimdi")}</span><span class="end"><b>${kg1(target)}</b>${tx("hedef")}</span></div>
-      <div class="bc-note">${Math.abs(gone) >= 0.05 ? `${kg1(Math.abs(gone))} kg ${gone > 0 ? "verdin" : tx("aldın")} · ` : ""}${reached ? "" : tx("{0} kg kaldı · ", [(kg1(left))])}${eta}</div>
+      <div class="bc-note">${Math.abs(gone) >= 0.05 ? tx(gone > 0 ? "{0} kg verdin · " : "{0} kg aldın · ", [(kg1(Math.abs(gone)))]) : ""}${reached ? "" : tx("{0} kg kaldı · ", [(kg1(left))])}${eta}</div>
     </div>`;
   } else {
     journey = `<div class="bc-sec">
@@ -568,7 +568,7 @@ function bodyCard(){
     const fatKg = w * bf / 100, lean = w - fatKg;
     comp = `<div class="bc-sec">
       <div class="bc-h"><span>${tx("Vücut kompozisyonu")}</span></div>
-      <div class="comp" role="img" aria-label="Yağsız kütle ${kg1(lean)} kg, yağ ${kg1(fatKg)} kg">
+      <div class="comp" role="img" aria-label="${tx("Yağsız kütle {0} kg, yağ {1} kg", [(kg1(lean)), (kg1(fatKg))])}">
         <i class="lean" style="width:${(100 - bf).toFixed(1)}%"></i><i class="fat" style="width:${bf.toFixed(1)}%"></i></div>
       <div class="comp-lbl num"><span><i class="dot lean"></i>${tx("Yağsız")} <b>${tx("{0} kg", [(kg1(lean))])}</b></span><span><i class="dot fat"></i>${tx("Yağ")} <b>${tx("{0} kg", [(kg1(fatKg))])}</b></span></div>
       <div class="bc-note">${neutral ? tx("Fit aralık erkekte %14–17, kadında %21–24; ortalama erkekte %18–24, kadında %25–31 (ACE). Etiket iki sınırın ortalamasına göre verilir.")

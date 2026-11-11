@@ -198,7 +198,7 @@ function obRuler(field, min, max, step, tw, majorEvery, midEvery, unit, dec){
   const val = ob[field];
   const txt = dec ? val.toFixed(1).replace(".", ",") : String(val);
   return `<div class="rl" data-rl="${field}" data-min="${min}" data-max="${max}" data-step="${step}" data-tw="${tw}" data-dec="${dec ? 1 : 0}" style="--tw:${tw}px">
-    <button type="button" class="rl-v" aria-label="${unit} değerini elle yaz">
+    <button type="button" class="rl-v" aria-label="${tx("{0} değerini elle yaz", [(unit)])}">
       <b class="num rl-n" data-v="${txt}" aria-hidden="true">${rollHTML(txt)}</b><span>${unit}</span></button>
     <div class="rl-w">
       <div class="rl-s" tabindex="0" role="slider" aria-label="${unit}" aria-valuemin="${min}" aria-valuemax="${max}" aria-valuenow="${val}"><div class="rl-t">${ticks}</div></div>
@@ -336,7 +336,7 @@ const OB_STEPS = [
     body: () => og(tx("Ne istiyorsun?"), obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label])))
       + og(tx("Hedef kilon (kg)"), `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight ?? ""}" placeholder="${Math.round((ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
       + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
-      + og(tx("Uyku hedefin"), obChips("obsleep", [6,7,8,9].map(n => [n, `${n}-${n+2} saat`, ob.sleepMin === n]))),
+      + og(tx("Uyku hedefin"), obChips("obsleep", [6,7,8,9].map(n => [n, tx("{0}-{1} saat", [(n), (n+2)]), ob.sleepMin === n]))),
     read: () => { ob.targetWeight = num(obVal("ob-tw")); },
     valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : [tx("Hedef kiloyu 30 ile 300 kg arasında gir ya da boş bırak."), "ob-tw"] },
   { id:"train", t:tx("Antrenman"),

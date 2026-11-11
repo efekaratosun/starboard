@@ -53,7 +53,7 @@ function woField(f, v, label, k){
     <button class="wo-pm" data-wpm="${f}" data-wk="${k}" data-wd="-1" aria-label="${label} azalt" tabindex="-1">−</button>
     <label class="wo-v"><input type="text" inputmode="decimal" enterkeyhint="done" data-wi="${f}" data-wk="${k}"
       value="${v === null || v === undefined ? "" : fmtN(v)}" aria-label="${label}"><span>${label}</span></label>
-    <button class="wo-pm" data-wpm="${f}" data-wk="${k}" data-wd="1" aria-label="${label} artır" tabindex="-1">+</button>
+    <button class="wo-pm" data-wpm="${f}" data-wk="${k}" data-wd="1" aria-label="${tx("{0} artır", [(label)])}" tabindex="-1">+</button>
   </div>`;
 }
 const woTick = `<svg aria-hidden="true"><use href="#i-check"/></svg>`;
@@ -148,7 +148,7 @@ function woScreen(){
     <div class="wo-main">
       <div class="wo-h">${esc(exText(ex.name))}</div>
       <div class="wo-s">${esc(exText(ex.sub || ""))}${ex.sub && LIFT_KIND[ex.t] ? " · " : ""}${LIFT_KIND[ex.t] || ""}</div>
-      <div class="wo-last">${ps ? `Geçen sefer: <b>${esc(ps)}</b> · ${prettyDate(prev.k)}` : tx("Bu hareketi ilk kez kaydediyorsun.")}
+      <div class="wo-last">${ps ? tx("Geçen sefer: <b>{0}</b> · {1}", [(esc(ps)), (prettyDate(prev.k))]) : tx("Bu hareketi ilk kez kaydediyorsun.")}
         ${ids.length ? `<button class="how-link" data-wohow="${ids[0]}">${tx("Nasıl yapılır")}</button>` : ""}</div>
       ${woBody(ex, name, rec, prev)}
     </div>

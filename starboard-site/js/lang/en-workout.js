@@ -627,6 +627,7 @@ window.STARBOARD_EN_EX = {
 
   /* birimler ve bağlaçlar */
   "dk": "min",
+  "sa": "h",
   "sn": "s",
   "tur": "rounds",
   "blok": "blocks",

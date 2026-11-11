@@ -41,7 +41,7 @@ function openQuickSheet(){
 
       <div class="qs-row">
         <div class="qs-h">${iconBox("legs")}<div><b>${tx("Kilo")}</b>
-          <i>${typeof e.weight === "number" ? `${past ? tx("o gün") : tx("bugün")} ${kg1(e.weight)} kg girildi`
+          <i>${typeof e.weight === "number" ? tx("{0} {1} kg girildi", [(past ? tx("o gün") : tx("bugün")), (kg1(e.weight))])
               : lw !== null ? tx("son ölçüm {0} kg", [(kg1(lw))]) : tx("henüz ölçüm yok")}</i></div></div>
         <div class="row">
           <input id="qs-w" type="text" inputmode="decimal" placeholder="${lw !== null ? kg1(lw) : "kg"}"

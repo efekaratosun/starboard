@@ -43,7 +43,7 @@ function avatarPicker(cur, idp){
   const curCat = (AVATARS.find(a => a[0] === cur) || AVATARS[0])[3];
   return `<div class="av-cats" role="tablist" aria-label="${tx("Avatar sınıfları")}">${AV_CATS.map(([c,l]) =>
       `<button type="button" class="chip${c === curCat ? " sel" : ""}" role="tab" aria-selected="${c === curCat}" data-avcat="${c}" data-avp="${idp}">${l}</button>`).join("")}</div>
-    ${AV_CATS.map(([c,l]) => `<div class="av-pick" role="radiogroup" aria-label="${l} avatarları" data-avgrid="${c}" data-avp="${idp}"${c === curCat ? "" : " hidden"}>
+    ${AV_CATS.map(([c,l]) => `<div class="av-pick" role="radiogroup" aria-label="${tx("{0} avatarları", [(l)])}" data-avgrid="${c}" data-avp="${idp}"${c === curCat ? "" : " hidden"}>
       ${AVATARS.filter(a => a[3] === c).map(([k,n]) =>
         `<button type="button" class="av${cur === k ? " on" : ""}" data-av="${k}" data-avp="${idp}" role="radio" aria-checked="${cur === k}" aria-label="${n}" title="${n}">
           <svg viewBox="0 0 48 64" aria-hidden="true"><use href="#${avSym(k)}"/></svg></button>`).join("")}</div>`).join("")}`;

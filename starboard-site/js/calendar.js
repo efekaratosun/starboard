@@ -345,7 +345,7 @@ function dayDetail(){
     ${row(tx("Su"), typeof d.water === "number" ? `${d.water} ml` : "—",
         program && typeof d.water === "number" ? `hedef ${program.water} ml` : "")}
     ${session && session.b ? row(tx("Antrenman"), `${liftN}/${exN.length}`, esc(session.t)) : ""}
-    ${hasFree(d) ? row(tx("Antrenman"), d.free.min ? `${d.free.min} dk` : tx("yapıldı"), esc(freeLabel(d.free))) : ""}
+    ${hasFree(d) ? row(tx("Antrenman"), d.free.min ? tx("{0} dk", [(d.free.min)]) : tx("yapıldı"), esc(freeLabel(d.free))) : ""}
     ${tasks.length ? row(tx("Görevler"), `${doneT}/${tasks.length}`) : ""}`}
   </section>`;
 }

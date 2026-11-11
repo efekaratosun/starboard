@@ -188,16 +188,16 @@ function liftSummary(l, ex){
       if (!done.length) return "";
       const kgs = [...new Set(done.map(x => x.kg || 0))];
       return kgs.length === 1
-        ? `${kgs[0] ? fmtN(kgs[0]) + " kg · " : ""}${done.map(x => x.r).join("-")} tekrar`
+        ? exText(`${kgs[0] ? fmtN(kgs[0]) + " kg · " : ""}${done.map(x => x.r).join("-")} tekrar`)
         : done.map(x => `${fmtN(x.kg || 0)}×${x.r}`).join(", ");
     }
-    case "r": { const r = numsOf(sets); return r.length ? `${r.join("-")} tekrar${l.kg2 ? ` · +${fmtN(l.kg2)} kg` : ""}` : ""; }
-    case "t": { const r = numsOf(sets); return r.length ? `${r.join("-")} sn` : ""; }
+    case "r": { const r = numsOf(sets); return r.length ? exText(`${r.join("-")} tekrar${l.kg2 ? ` · +${fmtN(l.kg2)} kg` : ""}`) : ""; }
+    case "t": { const r = numsOf(sets); return r.length ? exText(`${r.join("-")} sn`) : ""; }
     case "wc": return `${l.kg ? fmtN(l.kg) + " kg · " : ""}${l.n || 0}/${ex.n} ${exText(ex.unit)}`;
     case "n":  return `${l.n || 0}/${ex.n} ${exText(ex.unit)}`;
-    case "sw": return `${l.n || 0}/${ex.n} × ${ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`;
-    case "sd": return `${l.m || ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`;
-    case "c":  return [l.min ? fmtN(l.min) + " dk" : "", l.km ? fmtN(l.km) + " km" : "", pace(l.min, l.km)].filter(Boolean).join(" · ");
+    case "sw": return exText(`${l.n || 0}/${ex.n} × ${ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`);
+    case "sd": return exText(`${l.m || ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`);
+    case "c":  return [l.min ? tx("{0} dk", [(fmtN(l.min))]) : "", l.km ? fmtN(l.km) + " km" : "", pace(l.min, l.km)].filter(Boolean).join(" · ");
     default:   return l.ok ? tx("yapıldı") : "";
   }
 }
@@ -437,7 +437,7 @@ async function guardKcal(entry){
   if (!manual || (entry.log && entry.log.length)) return true;
   const yes = await askSheet({
     title: tx("Kalori nereden hesaplansın?"),
-    body: `Bu güne elle <b>${tx("{0} kcal", [(entry.kcal)])}</b> girilmişti. Beslenme günlüğüne kalem eklersen kalori bundan sonra günlükten hesaplanır ve elle girdiğin değer kaybolur.`,
+    body: tx("Bu güne elle <b>{0} kcal</b> girilmişti. Beslenme günlüğüne kalem eklersen kalori bundan sonra günlükten hesaplanır ve elle girdiğin değer kaybolur.", [(entry.kcal)]),
     ok: tx("Günlükten hesapla"), cancel: tx("Vazgeç") });
   if (yes) delete entry.kcalManual;
   return yes;
