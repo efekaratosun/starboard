@@ -1,0 +1,10 @@
+{
+  "appId": "app.starboard.health",
+  "appName": "Starboard",
+  "webDir": "starboard-site",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#FFF6F2",
+    "limitsNavigationsToAppBoundDomains": false
+  }
+}

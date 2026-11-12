@@ -1,0 +1,86 @@
+# iOS uygulamasını bulutta (GitHub'ın macOS makinesinde) derler.
+# İmza gerektirmez: simülatör için derler, simülatörde açar ve ekran görüntüsü alır.
+# Görüntüler çalışmanın "Artifacts" bölümünden indirilebilir.
+name: iOS derleme
+
+on:
+  push:
+    paths:
+      - "starboard-site/**"
+      - "ios/**"
+      - "package.json"
+      - "package-lock.json"
+      - "capacitor.config.json"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  simulator:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Paketleri kur
+        run: npm ci
+
+      - name: Web dosyalarini iOS projesine kopyala
+        run: npx cap sync ios
+
+      - name: Xcode surumu
+        run: xcodebuild -version
+
+      - name: Simulator icin derle (imzasiz)
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tail -n 40
+          test -d build/Build/Products/Debug-iphonesimulator/App.app
+
+      - name: Simulatorde ac ve ekran goruntusu al
+        run: |
+          DEVICE=$(xcrun simctl list devices available -j | python3 -c "
+          import json,sys
+          d=json.load(sys.stdin)['devices']
+          for rt in sorted(d, reverse=True):
+              if 'iOS' in rt:
+                  for dev in d[rt]:
+                      if dev['name'].startswith('iPhone'):
+                          print(dev['udid']); sys.exit()
+          ")
+          echo "Simulator: $DEVICE"
+          xcrun simctl boot "$DEVICE"
+          xcrun simctl bootstatus "$DEVICE" -b
+          xcrun simctl install "$DEVICE" build/Build/Products/Debug-iphonesimulator/App.app
+          xcrun simctl launch "$DEVICE" app.starboard.health
+          sleep 20
+          mkdir -p shots
+          xcrun simctl io "$DEVICE" screenshot shots/acilis.png
+          # Uygulamayi kapatip yeniden ac: kalici depo ve ikinci acilis
+          xcrun simctl terminate "$DEVICE" app.starboard.health
+          xcrun simctl launch "$DEVICE" app.starboard.health
+          sleep 12
+          xcrun simctl io "$DEVICE" screenshot shots/ikinci-acilis.png
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-simulator-ekran-goruntuleri
+          path: shots/
