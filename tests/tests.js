@@ -164,6 +164,54 @@ test("öğünler: diyet seçiliyken de öğüne yakışan besinler çıkar", asy
   }
 });
 
+/* ---- kayıtlı öğünler ve beslenme özeti ---- */
+test("kayıtlı öğün: bir öğün kaydedilir ve başka öğüne tek dokunuşla eklenir", async () => {
+  const oldConfirm = window.confirm; window.confirm = () => true;
+  try {
+    state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+    const e = state.days[today()];
+    const [s1, s2] = slotList().map(([k]) => k);
+    e.log = [
+      { id:1, k:"yulaf", n:FOODS.yulaf.n, g:60, p:FOODS.yulaf.p, c:FOODS.yulaf.c, f:FOODS.yulaf.f, lif:FOODS.yulaf.lif, v:[], i:"grain", slot:s1 },
+      { id:2, k:"muz", n:FOODS.muz.n, g:120, p:FOODS.muz.p, c:FOODS.muz.c, f:FOODS.muz.f, lif:FOODS.muz.lif, v:[], i:"fruit", slot:s1 }];
+    syncKcal(e);
+    tab = "meals"; mealTab = "log"; render();
+    app.querySelector(`[data-savemeal="${s1}"]`).click();
+    app.querySelector("#sm-name").value = "Sabah kasesi";
+    await app.querySelector("#sm-save").onclick();
+    eq(state.savedMeals.length, 1);
+    eq(state.savedMeals[0].name, "Sabah kasesi");
+    ok(state.savedMeals[0].items.every(it => it.id === undefined && it.slot === undefined), "kimlik ve öğün kayda girmemeli");
+    const before = e.kcal;
+    app.querySelector(`[data-addfood="${s2}"]`).click();
+    await app.querySelector("[data-saved-add]").onclick();
+    const added = e.log.filter(it => it.slot === s2);
+    eq(added.map(it => it.k), ["yulaf", "muz"]);
+    eq(new Set(e.log.map(it => it.id)).size, 4, "her kalem yeni kimlik almalı");
+    eq(e.kcal, before * 2, "günün kalorisi güncellenmeli");
+    app.querySelector("[data-saved-del]").click();
+    await new Promise(r => setTimeout(r, 0));
+    ok(!state.savedMeals, "silinince liste kalkmalı");
+  } finally { window.confirm = oldConfirm; state = null; tab = "today"; mealTab = "log"; }
+});
+test("beslenme özeti: yalnızca günlüğü olan günler, ortalama ve en sık eklenenler", () => {
+  const it = (k, g) => ({ k, n:FOODS[k].n, g, p:FOODS[k].p, c:FOODS[k].c, f:FOODS[k].f, lif:FOODS[k].lif || 0, v:[] });
+  const days = {
+    "2026-11-10": { log:[it("tavuk", 200), it("pirinc", 100), it("muz", 120)] },
+    "2026-11-09": { log:[it("tavuk", 100), it("yulaf", 50)] },
+    "2026-11-08": { kcal:2000 },
+    "2026-11-01": { log:[it("somon", 150)] }
+  };
+  const program = { kcal:2500, protein:120, carb:300, fat:70 };
+  const N = nutritionWeek(days, program, "2026-11-11");
+  eq(N.days, 2, "günlüksüz ve 7 günden eski günler sayılmaz");
+  const t1 = logTotals(days["2026-11-10"]), t2 = logTotals(days["2026-11-09"]);
+  eq([N.kcal, N.p], [Math.round((t1.kcal + t2.kcal) / 2), Math.round((t1.p + t2.p) / 2)]);
+  eq(N.top[0], { k:"tavuk", n:FOODS.tavuk.n, times:2 });
+  eq(N.proteinDays, [t1, t2].filter(x => x.p >= 108).length);
+  eq(nutritionWeek({}, program, "2026-11-11"), null);
+});
+
 /* ---- mutfak, helal ve koşer ---- */
 const planKeys = m => m.meals.flatMap(x => x.items.map(i => i.key).filter(Boolean));
 const PROFILES_M = [[{}, 82], [{ goal:"lose" }, 82], [{ goal:"gain" }, 82], [{ sex:"female", height:163, age:27 }, 60]];

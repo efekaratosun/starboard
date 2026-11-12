@@ -181,6 +181,7 @@ function logView(program, entry){
 
   ${mealCards(entry)}
   ${mealManager()}
+  ${savedManager()}
   <div class="foot">${tx("Değerler ortalamadır.")}</div>`;
 }
 
@@ -191,7 +192,48 @@ function logView(program, entry){
    yanlış güne yazılıyormuş gibi görünüyordu; gün değiştiren yollar sıfırlar. */
 function resetMealUI(){
   addOpen = null; logPick = null; logQuery = ""; logCat = null; editLog = null;
-  mealAddOpen = false;
+  mealAddOpen = false; saveMealOpen = null;
+}
+
+/* ---- kayıtlı öğünler ----
+   Sık yenen bir öğün (birden çok kalem) adıyla saklanır ve tek dokunuşla
+   herhangi bir öğüne eklenir. Kalemlerin kaydedildiği andaki değerleri saklanır:
+   kendi yiyeceğin sonradan silinse de kayıtlı öğün bozulmaz. */
+let saveMealOpen = null;
+const savedMeals = () => state.savedMeals || [];
+const itemsKcal = items => Math.round(items.reduce((a,it) => a + (it.p*4+it.c*4+it.f*9)*it.g/100, 0));
+/* Bir öğünün günlükteki kalemleri; öğünü belirtilmemiş eski kayıtlar son öğüne düşer. */
+function itemsOfSlot(log, slot){
+  const list = slotList(), known = new Set(list.map(([k]) => k));
+  const fallback = list.length ? list[list.length-1][0] : "aksam";
+  return (log || []).filter(x => { const s = x.slot || fallback; return (known.has(s) ? s : "__other") === slot; });
+}
+function saveMealForm(items){
+  const name = items.slice(0, 2).map(it => it.n.replace(/\s*\(.*?\)/g, "")).join(", ") + (items.length > 2 ? "…" : "");
+  return `<div class="pick" style="margin-top:12px">
+    <div class="field"><label for="sm-name">${tx("Kayıtlı öğünün adı")}</label>
+      <input id="sm-name" type="text" maxlength="40" value="${esc(name)}" autocomplete="off"></div>
+    <div class="row"><button id="sm-save">${tx("Kaydet")}</button>
+      <button class="ghost" id="sm-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button></div>
+  </div>`;
+}
+function savedChips(){
+  const list = savedMeals();
+  if (!list.length) return "";
+  return `<div class="metric-note" style="margin:0 0 8px">${tx("Kayıtlı öğünlerin")}</div>
+    <div class="chips" style="margin:0 0 12px">${list.map(s =>
+      `<button class="chip" data-saved-add="${s.id}">${esc(s.name)} · ${tx("{0} kcal", [(itemsKcal(s.items))])}</button>`).join("")}</div>`;
+}
+function savedManager(){
+  const list = savedMeals();
+  if (!list.length) return "";
+  return `<section>
+    <h2>${tx("Kayıtlı öğünler")} <span class="count">${list.length}</span></h2>
+    ${list.map(s => `<div class="rt">${iconBox(s.items[0] && s.items[0].i || "grain")}
+      <div class="m"><h3>${esc(s.name)}</h3><p>${tx("{0} kalem · {1} kcal", [(s.items.length), (itemsKcal(s.items))])}</p></div>
+      <button class="del" data-saved-del="${s.id}" aria-label="${tx("Kayıtlı öğünü sil")}">×</button>
+    </div>`).join("")}
+  </section>`;
 }
 
 function ydayLog(){
@@ -219,6 +261,8 @@ function mealCards(entry){
       <h2>${esc(l)}${items.length ? `<span class="count">${tx("{0} kcal", [(kcalOf(items))])}</span>` : ""}</h2>
       ${items.length ? items.map(logLine).join("")
         : `<div class="empty">${tx("Bu öğüne henüz bir şey eklemedin.")}</div>`}
+      ${saveMealOpen === k && items.length ? saveMealForm(items)
+        : items.length >= 2 && addOpen !== k ? `<button class="link" data-savemeal="${k}" style="margin-top:10px">${tx("Bu öğünü kaydet")}</button>` : ""}
       ${addOpen === k ? addPanel()
         : `<button class="ghost" data-addfood="${k}" style="margin-top:12px">${tx("Besin ekle")}</button>
            ${yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
@@ -238,6 +282,7 @@ function mealCards(entry){
    olduğu için ayrıca "hangi öğün" sormaya gerek kalmıyor. */
 function addPanel(){
   return `<div class="pick" style="margin-top:12px">
+    ${savedChips()}
     <input id="food-q" type="text" placeholder="${tx("Ara: karnıyarık, hellim, kivi…")}" value="${esc(logQuery)}" autocomplete="off">
     ${logQuery.trim().length >= 2 ? "" : catChips()}
     <div class="res" id="food-results">${resultsHTML()}</div>
@@ -743,6 +788,44 @@ function wireMealsRest(entry){
   app.querySelectorAll("[data-fav]").forEach(b => b.onclick = async () => {
     if (!(await guardKcal(entry))) return;
     addFoodDirect(entry, b.dataset.fav, Number(b.dataset.favG), b.dataset.favSlot || null);
+    await saveState(state); render();
+  });
+
+  /* kayıtlı öğünler */
+  app.querySelectorAll("[data-savemeal]").forEach(b => b.onclick = () => {
+    saveMealOpen = b.dataset.savemeal; render();
+    const el = document.getElementById("sm-name");
+    if (el){ el.focus(); el.select(); }
+  });
+  const smc = document.getElementById("sm-cancel");
+  if (smc) smc.onclick = () => { saveMealOpen = null; render(); };
+  const sms = document.getElementById("sm-save");
+  if (sms) sms.onclick = async () => {
+    const items = itemsOfSlot(entry.log, saveMealOpen);
+    if (!items.length){ saveMealOpen = null; render(); return; }
+    const name = document.getElementById("sm-name").value.trim().slice(0, 40) || slotLabel(saveMealOpen);
+    /* Kimlik ve öğün kayda girmez: eklenirken yenileri verilir. */
+    const clean = items.map(({ id, slot, ...rest }) => rest);
+    state.savedMeals = savedMeals().concat([{ id: "s" + Date.now().toString(36), name, items: clean }]);
+    saveMealOpen = null;
+    await saveState(state); render();
+    toast(tx("{0} kaydedildi.", [(`“${name}”`)]));
+  };
+  app.querySelectorAll("[data-saved-add]").forEach(b => b.onclick = async () => {
+    const s = savedMeals().find(x => x.id === b.dataset.savedAdd);
+    if (!s) return;
+    if (!(await guardKcal(entry))) return;
+    const slot = addOpen || defaultSlot();
+    entry.log = entry.log || [];
+    for (const it of s.items) entry.log.push({ ...it, id: Date.now() + Math.random(), slot });
+    syncKcal(entry);
+    addOpen = null; logQuery = ""; logPick = null;
+    await saveState(state); render();
+    toast(tx("{0} eklendi ({1} kalem).", [(`“${s.name}”`), (s.items.length)]));
+  });
+  app.querySelectorAll("[data-saved-del]").forEach(b => b.onclick = async () => {
+    state.savedMeals = savedMeals().filter(x => x.id !== b.dataset.savedDel);
+    if (!state.savedMeals.length) delete state.savedMeals;
     await saveState(state); render();
   });
 

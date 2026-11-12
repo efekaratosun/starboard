@@ -236,6 +236,28 @@ function chartData(days, profile, program, sleepRange, t){
   };
 }
 
+/* Beslenme günlüğünün son 7 günü; hesap nutritionWeek() (widgets.js). */
+function nutritionCard(program){
+  const N = nutritionWeek(state.days, program, today());
+  if (!N) return "";
+  /* Besin adı o anki dilde: kayıttaki ad, eklendiği dilde yazılmış olabilir. */
+  const nm = x => x.k && FOODS[x.k] ? FOODS[x.k].n : x.n;
+  const row = (l, v) => `<div class="macro"><span class="lbl">${l}</span><span class="v num">${v}</span></div>`;
+  return `<section>
+    <h2>${tx("Beslenme")} <span class="count">${tx("son 7 günde {0} gün kayıt", [(N.days)])}</span></h2>
+    ${macroRow(tx("Kalori"), N.kcal, program.kcal, "", "grain", "band")}
+    ${macroRow(tx("Protein"), N.p, program.protein, " g", "poultry", "mp")}
+    ${macroRow(tx("Karbonhidrat"), N.c, program.carb, " g", "bread", "mc")}
+    ${macroRow(tx("Yağ"), N.f, program.fat, " g", "oil", "mf")}
+    ${macroRow(tx("Lif"), N.lif, N.fiberTarget, " g", "veg", "ml")}
+    <div class="metric-note" style="margin:10px 0 6px">${tx("Kayıt girilen günlerin ortalaması.")}</div>
+    ${row(tx("Protein hedefi tutan gün"), `${N.proteinDays}/${N.days}`)}
+    ${row(tx("Lif hedefi tutan gün"), `${N.fiberDays}/${N.days}`)}
+    <div class="metric-note" style="margin:14px 0 6px">${tx("En sık eklediklerin")}</div>
+    ${N.top.map(x => row(esc(nm(x)), tx("{0} kez", [(x.times)]))).join("")}
+  </section>`;
+}
+
 function chartsView(){
   chartSeq = 0;
   for (const k of Object.keys(CHARTS)) delete CHARTS[k];
@@ -250,6 +272,7 @@ function chartsView(){
 
   return `
   ${weeklySummary()}
+  ${nutritionCard(currentProgram())}
   ${card(tx("Kilo"), D.weight.delta !== null ? `${D.weight.delta>0?"+":""}${fmtN(+wOut(D.weight.delta).toFixed(1))} ${wUnit()}` : "",
     trendChart(w.map(x => ({ ...x, v:wOut(x.v) })), { color:"weight", dec:1, unit:wUnit(), average:true, band:wBand && wBand.map(wOut), label:tx("kilo trendi") }),
     w.length >= 2 ? bandNote(tx("Bant sağlıklı kilo aralığın{0}. Kesikli çizgi 7 günlük ortalama: günlük dalgalanma su ve glikojenden gelir, asıl yön ortalamada görünür.", [(wBand ? ` (${Math.round(wOut(wBand[0]))}–${fmtW0(wBand[1])})` : "")])) : "")}

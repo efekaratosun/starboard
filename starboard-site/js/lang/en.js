@@ -864,5 +864,19 @@ window.STARBOARD_EN = {
   "{0} set kaydedildi.": "{0} sets saved.",
   "dk": "min",
   "Tarif ara": "Search recipes",
-  "Hareket ara": "Search exercises"
+  "Hareket ara": "Search exercises",
+  /* kayıtlı öğünler ve beslenme özeti (1.7.0) */
+  "Kayıtlı öğünün adı": "Name of the saved meal",
+  "Kayıtlı öğünlerin": "Your saved meals",
+  "Kayıtlı öğünler": "Saved meals",
+  "{0} kalem · {1} kcal": "{0} items · {1} kcal",
+  "Kayıtlı öğünü sil": "Delete saved meal",
+  "Bu öğünü kaydet": "Save this meal",
+  "{0} eklendi ({1} kalem).": "{0} added ({1} items).",
+  "son 7 günde {0} gün kayıt": "{0} days logged in the last 7",
+  "Kayıt girilen günlerin ortalaması.": "Average of the days you logged.",
+  "Protein hedefi tutan gün": "Days protein target met",
+  "Lif hedefi tutan gün": "Days fiber target met",
+  "En sık eklediklerin": "Your most logged foods",
+  "{0} kez": "{0}×"
 };

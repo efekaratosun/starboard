@@ -41,6 +41,30 @@ function weekStats(days, program, t){
   };
 }
 
+/* Son 7 günün beslenme günlüğü: yalnızca sayılar. Günlüğü boş günler ortalamaya
+   girmez. Günlük hiç yoksa ya da program yoksa null.
+   top: en sık eklenen besinler [{ k, n, times }]; times, eklenme sayısıdır. */
+function nutritionWeek(days, program, t){
+  const keys = Object.keys(days).filter(k => k > shiftDays(t,-7) && k <= t && days[k].log && days[k].log.length).sort();
+  if (!keys.length || !program) return null;
+  const tots = keys.map(k => logTotals(days[k]));
+  const mean = f => Math.round(tots.reduce((a, x) => a + x[f], 0) / tots.length);
+  const fib = fiberTarget(program);
+  const count = new Map();
+  for (const k of keys) for (const it of days[k].log){
+    const id = it.k || it.n, c = count.get(id) || { k: it.k || null, n: it.n, times: 0 };
+    c.times++; count.set(id, c);
+  }
+  return {
+    days: keys.length,
+    kcal: mean("kcal"), p: mean("p"), c: mean("c"), f: mean("f"), lif: mean("lif"),
+    proteinDays: tots.filter(x => x.p >= program.protein * 0.9).length,
+    fiberDays: tots.filter(x => x.lif >= fib * 0.9).length,
+    fiberTarget: fib,
+    top: [...count.values()].sort((a, b) => b.times - a.times || a.n.localeCompare(b.n)).slice(0, 5)
+  };
+}
+
 function weeklySummary(){
   const program = currentProgram();
   const S = weekStats(state.days, program, today());
