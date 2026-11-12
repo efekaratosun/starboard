@@ -160,6 +160,7 @@ function bcShow(html){
   if (!b) return null;
   const cf = document.getElementById("custom-form");
   if (cf) cf.innerHTML = "";            /* iki formda aynı kimlikler olmasın */
+  closeMyFoodEdit();
   b.innerHTML = html;
   return b;
 }

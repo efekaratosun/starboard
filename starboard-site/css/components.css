@@ -1149,3 +1149,6 @@ details.about[open] summary::after{content:"−"}
 /* ---- hatırlatma saatleri ---- */
 .rm-water{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
 .rm-water input{min-width:0}
+/* ---- kendi yiyeceklerim ---- */
+.bc-mark{display:inline-flex;margin-left:6px;color:var(--muted);vertical-align:-2px}
+.bc-mark .ico{width:14px;height:14px;flex:0 0 14px}

@@ -194,7 +194,7 @@ function logView(program, entry){
    yanlış güne yazılıyormuş gibi görünüyordu; gün değiştiren yollar sıfırlar. */
 function resetMealUI(){
   addOpen = null; logPick = null; logQuery = ""; logCat = null; editLog = null;
-  mealAddOpen = false; saveMealOpen = null;
+  mealAddOpen = false; saveMealOpen = null; myFoodsOpen = false; myFoodEdit = null;
 }
 
 /* ---- kayıtlı öğünler ----
@@ -280,6 +280,64 @@ function mealCards(entry){
   return cards.join("");
 }
 
+/* ---- kendi yiyeceklerim ----
+   Günlük kalemleri eklendikleri andaki değerleri (ad, makrolar, lif, mikro besinler)
+   kendi içinde taşır; k yalnızca "sık yediklerin" ve porsiyon ölçüsü içindir. Bu yüzden
+   bir yiyeceği düzenlemek ya da silmek geçmiş günleri değiştirmez ve şema sürümü artmaz.
+   Silinen yiyeceğin geçmiş kalemlerinde ad ve değerler durur, yalnızca porsiyon
+   ölçüsü ("2 dilim") yerine gram yazılır. */
+let myFoodsOpen = false, myFoodEdit = null;
+const myFoodList = () => Object.entries(state.customFoods || {}).filter(([, f]) => f && typeof f.n === "string")
+  .sort((a, b) => a[1].n.localeCompare(b[1].n, locale()));
+
+function myFoodPre(key){
+  const f = (state.customFoods || {})[key];
+  return { edit: key, bc: f.bc, n: f.n, p: f.p, c: f.c, f: f.f, lif: f.lif, cancel: true,
+    title: f.bc ? tx("Barkod {0}", [esc(f.bc)]) : null };
+}
+
+function myFoodsHTML(){
+  return myFoodList().map(([k, f]) => {
+    const open = myFoodEdit === k;
+    return `<div class="item mf-row">${iconBox(f.i || "grain")}
+      <button class="item-main tap" data-mf-edit="${esc(k)}" aria-expanded="${open}" aria-label="${esc(f.n)}, ${tx("Düzenle")}">
+        <h3>${esc(f.n)}${f.bc ? `<span class="bc-mark" role="img" aria-label="${tx("Barkodlu ürün")}">${icon("barcode")}</span>` : ""}</h3>
+        <p>${f.br ? esc(f.br) + " · " : ""}${tx("100 g: {0} kcal", [(Math.round(f.p*4+f.c*4+f.f*9))])}</p></button>
+      <button class="del" data-mf-del="${esc(k)}" aria-label="${esc(f.n)}, ${tx("Sil")}">×</button>
+    </div>${open ? `<div id="mf-edit">${customFoodForm(myFoodPre(k))}</div>` : ""}`;
+  }).join("");
+}
+
+function myFoodsBlock(){
+  if (!myFoodList().length) return "";
+  return `<button class="ghost" id="mf-toggle" aria-expanded="${myFoodsOpen}" style="margin-top:10px">${tx("Kendi yiyeceklerim")}</button>
+    ${myFoodsOpen ? `<div id="mf-box">${myFoodsHTML()}</div>` : ""}`;
+}
+
+/* Başka bir form (elle tanımlama, barkod önizleme) açılırken kimlikler çakışmasın. */
+function closeMyFoodEdit(){
+  const box = document.getElementById("mf-edit");
+  if (box) box.remove();
+  myFoodEdit = null;
+  document.querySelectorAll("[data-mf-edit]").forEach(b => b.setAttribute("aria-expanded", "false"));
+}
+
+function deleteCustomFood(key){
+  const cf = state.customFoods;
+  if (!cf || !cf[key]) return false;
+  delete cf[key];
+  if (!Object.keys(cf).length){ delete state.customFoods; myFoodsOpen = false; }
+  const mp = state.mealPrefs;
+  if (mp){
+    if (Array.isArray(mp.exclude)) mp.exclude = mp.exclude.filter(k => k !== key);
+    for (const s of Object.keys(mp.fixed || {})) mp.fixed[s] = (mp.fixed[s] || []).filter(x => x.k !== key);
+  }
+  if (state.shopping && state.shopping.checked) delete state.shopping.checked[key];
+  if (logPick === key) logPick = null;
+  if (myFoodEdit === key) myFoodEdit = null;
+  return true;
+}
+
 /* Arama paneli açık olduğu öğünün kartının içinde durur; öğün zaten belli
    olduğu için ayrıca "hangi öğün" sormaya gerek kalmıyor. */
 function addPanel(){
@@ -296,6 +354,7 @@ function addPanel(){
       <button class="ghost" id="custom-toggle">${tx("Kendim tanımlayayım")}</button>
       ${bc ? "" : `<button class="ghost" id="add-close" style="flex:0 0 92px">${tx("Kapat")}</button>`}
     </div>
+    ${myFoodsBlock()}
     ${bc ? `<button class="ghost" id="add-close" style="margin-top:10px">${tx("Kapat")}</button>` : ""}
     ${bc ? `<div id="bc-box" aria-live="polite"></div>` : ""}
     <div id="custom-form"></div>
@@ -312,7 +371,7 @@ function customFoodForm(pre){
   return `<div class="pick" id="cf-card">
     <h3>${pre.title || tx("Kendi besinin")}</h3>
     ${(pre.notes || []).map(([html, warn]) => `<div class="metric-note${warn ? " cf-warn" : ""}" style="margin-bottom:8px">${html}</div>`).join("")}
-    <div class="field"><label for="cf-n">${tx("Ad")}</label><input id="cf-n" type="text" placeholder="${tx("Annemin mercimek köftesi")}" value="${val(pre.n)}"${pre.bc ? ' maxlength="80"' : ""}></div>
+    <div class="field"><label for="cf-n">${tx("Ad")}</label><input id="cf-n" type="text" placeholder="${tx("Annemin mercimek köftesi")}" value="${val(pre.n)}"${pre.bc || pre.edit ? ' maxlength="80"' : ""}></div>
     <div class="row">
       <div class="field"><label for="cf-p">${tx("Protein")}</label><input id="cf-p" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.p)}"></div>
       <div class="field"><label for="cf-c">${tx("Karb.")}</label><input id="cf-c" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.c)}"></div>
@@ -323,7 +382,9 @@ function customFoodForm(pre){
       <div class="metric-note" id="cf-kcal" style="align-self:center"></div>
     </div>
     <div class="metric-note cf-warn" id="cf-err" role="alert"></div>
-    <button id="cf-save">${pre.saveLabel || tx("Kaydet")}</button>
+    ${pre.cancel ? `<div class="row"><button id="cf-save">${pre.saveLabel || tx("Kaydet")}</button>
+      <button class="ghost" id="cf-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button></div>`
+      : `<button id="cf-save">${pre.saveLabel || tx("Kaydet")}</button>`}
     <div class="metric-note" style="margin-top:10px">${tx("Değerler 100 g başına.")}</div>
   </div>`;
 }
@@ -339,10 +400,28 @@ function wireCustomForm(box, pre){
   ["cf-p", "cf-c", "cf-f"].forEach(id => { $(id).oninput = showKcal; });
   showKcal();
   const fail = (msg, el) => { $("cf-err").textContent = msg; if (el) el.focus(); };
+  const cancel = $("cf-cancel");
+  if (cancel) cancel.onclick = () => { myFoodEdit = null; render(); };
   $("cf-save").onclick = async () => {
     const n = $("cf-n").value.trim();
     const [p, c, f] = macros().map(v => v || 0);
     const lif = num($("cf-l").value) || 0;
+    /* Düzenleme: yalnızca ad ve değerler değişir; barkod, marka, porsiyon, kaynak ve anahtar kalır. */
+    if (pre.edit){
+      const rec = (state.customFoods || {})[pre.edit];
+      if (!rec){ myFoodEdit = null; render(); return; }
+      if (!n) return fail(tx("Bir ad yaz."), $("cf-n"));
+      const raw = macros();
+      const blank = rec.bc && ["cf-p", "cf-c", "cf-f"].find((id, i) => raw[i] === null);
+      if (blank) return fail(tx("Değerler eksik; tamamlayıp kaydet."), $(blank));
+      if (raw.some(v => v !== null && (v < 0 || v > 100)) || p + c + f > 105 || lif < 0 || lif > 100)
+        return fail(tx("Değerler geçersiz: 100 g'da toplam 100 g'ı aşamaz."), $("cf-p"));
+      Object.assign(rec, { n: n.slice(0, 80), p, c, f, lif });
+      myFoodEdit = null;
+      await saveState(state); render();
+      toast(tx("{0} kaydedildi.", [`“${rec.n}”`]));
+      return;
+    }
     state.customFoods = state.customFoods || {};
     let key;
     if (pre.bc){
@@ -920,13 +999,33 @@ function wireMealsRest(entry){
 
   app.querySelectorAll("[data-addfood]").forEach(b => b.onclick = () => {
     addOpen = b.dataset.addfood;
-    logQuery = ""; logCat = null; logPick = null;
+    logQuery = ""; logCat = null; logPick = null; myFoodsOpen = false; myFoodEdit = null;
     render();
     const el = document.getElementById("food-q");
     if (el) el.scrollIntoView({ behavior:"smooth", block:"center" });
   });
   const addClose = document.getElementById("add-close");
-  if (addClose) addClose.onclick = () => { addOpen = null; logPick = null; logQuery = ""; logCat = null; render(); };
+  if (addClose) addClose.onclick = () => { addOpen = null; logPick = null; logQuery = ""; logCat = null; myFoodsOpen = false; myFoodEdit = null; render(); };
+
+  const mfToggle = document.getElementById("mf-toggle");
+  if (mfToggle) mfToggle.onclick = () => { myFoodsOpen = !myFoodsOpen; myFoodEdit = null; render(); };
+  app.querySelectorAll("[data-mf-edit]").forEach(b => b.onclick = () => {
+    myFoodEdit = myFoodEdit === b.dataset.mfEdit ? null : b.dataset.mfEdit;
+    logPick = null;
+    render();
+    const box = document.getElementById("mf-edit");
+    if (box){ box.scrollIntoView({ behavior:"smooth", block:"center" }); }
+  });
+  const mfEdit = document.getElementById("mf-edit");
+  if (mfEdit && myFoodEdit && foodOf(myFoodEdit)) wireCustomForm(mfEdit, myFoodPre(myFoodEdit));
+  app.querySelectorAll("[data-mf-del]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.mfDel, f = foodOf(key);
+    if (!f) return;
+    const yes = await askSheet({ title: tx("“{0}” silinsin mi?", [esc(f.n)]), body: "", ok: tx("Sil"), cancel: tx("Vazgeç") });
+    if (!yes) return;
+    deleteCustomFood(key);
+    await saveState(state); render();
+  });
 
   const mlAdd = document.getElementById("ml-add");
   if (mlAdd) mlAdd.onclick = () => { mealAddOpen = true; render(); };
@@ -1065,6 +1164,7 @@ function wireMealsRest(entry){
     if (box.innerHTML) { box.innerHTML = ""; return; }
     const bb = document.getElementById("bc-box");
     if (bb) bb.innerHTML = "";          /* iki formda aynı kimlikler olmasın */
+    closeMyFoodEdit();
     box.innerHTML = customFoodForm();
     wireCustomForm(box);
   };

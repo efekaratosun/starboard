@@ -1000,5 +1000,9 @@ window.STARBOARD_EN = {
   "Open Food Facts (açık veri, ODbL lisansı); değerler gönüllülerce girilir ve hatalı olabilir.": "Open Food Facts (open data, ODbL licence); values are entered by volunteers and may be wrong.",
   "Tek istisna: barkod okuttuğunda yalnızca barkod numarası Open Food Facts'e gönderilir (teknik olarak IP adresin de görünür). Profilin, günlüğün ve kamera görüntüsü gönderilmez.": "One exception: when you scan a barcode, only the barcode number is sent to Open Food Facts (technically your IP address is visible too). Your profile, your log and the camera image are never sent.",
   "Sürüm {0} · veriler yalnızca bu cihazda saklanır; barkod okuttuğunda yalnızca barkod numarası gönderilir.": "Version {0} · data stays on this device; when you scan a barcode, only the barcode number is sent.",
-  "Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut.": "Scan a packaged food's barcode and get its nutrition facts from Open Food Facts: Meals › My diary › Add food › Scan barcode."
+  "Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut.": "Scan a packaged food's barcode and get its nutrition facts from Open Food Facts: Meals › My diary › Add food › Scan barcode.",
+  "Kendi yiyeceklerim": "My foods",
+  "Barkodlu ürün": "Barcode product",
+  "“{0}” silinsin mi?": "Delete “{0}”?",
+  "Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.": "Edit or delete your own foods: Meals › My diary › Add food › My foods."
 };
