@@ -37,9 +37,9 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [x] Birimler: metrik (kg, cm, ml) ya da imperial (lb, ft·in, fl oz). Ayarlar'da ve ilk girişte seçilir; varsayılan tarayıcının bölgesinden (ABD imperial). Kayıt hep metrik kalır, çeviri yalnızca ekranda (`starboard-site/js/units.js`). İngilizcede ondalık ayırıcı nokta
 - [x] İngilizcenin "beta" etiketi kalktı. Yeni kullanıcıda dil tarayıcıdan gelir (Türkçe değilse İngilizce); kaydı olan eski kullanıcı Türkçe kalır; karşılama ekranında dil bağlantısı var
-- [x] Sürüm numarası (`APP_VERSION`, şu an 1.7.0) ve değişiklik günlüğü (`CHANGELOG.md`)
+- [x] Sürüm numarası (`APP_VERSION`, şu an 1.8.0) ve değişiklik günlüğü (`CHANGELOG.md`)
 - [x] Veri şeması sürümleme: `SCHEMA` ve `MIGRATIONS` (`storage.js`); açılışta ve yedek yüklerken kayıt güncel biçime taşınır
-- [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 72 test)
+- [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 76 test)
 - [x] Depolama anahtarı `starboard-state` oldu; eski adla duran kayıt ilk açılışta taşınır ve yedek olarak yerinde kalır
 
 Bitti sayılır: testler geçiyor, eski bir yedek dosyası yeni sürümde sorunsuz açılıyor.
@@ -55,6 +55,7 @@ Amaç: App Store'a çıkmaya değer bir ürün.
 - [ ] Birkaç gerçek kullanıcıyla web sürümünü dene, geri bildirim topla
 - [x] İçeriğin uluslararası uyarlaması (1.6.0): mutfak seçimi (Türk / uluslararası), 42 besin, 17 tarif, 3 hazır menü (`foods-intl.js`); domuz eti yalnızca uluslararası mutfakta; helal ve koşer beslenme
 - [x] Kayıtlı öğünler ve haftalık beslenme özeti (1.7.0)
+- [x] Alışveriş listesi, dinlenme sayacı, "Neler yeni" penceresi (1.8.0)
 - [ ] İçerik genişletme (isteğe bağlı): ülkeye özgü ürünler, daha çok uluslararası tarif, alkollü içecekler (alkolün kalorisi ayrı hesap gerektirir)
 - [x] Erişilebilirlik ve küçük ekran denetimi (1.5.2): 320–414 px'de taşma yok; kontrast AA; dokunma alanları en az 44 px yükseklik; etiketler ve ekran okuyucu bildirimleri. Denetim aracı `tools/a11y-audit.html`. Gerçek iPhone'da VoiceOver ve büyük yazı denemesi Faz 3'te
 - [ ] Faz 3'te gerçek cihazda: VoiceOver ile bütün akış, iOS büyük yazı boyutu (Dynamic Type), çentik ve ana ekran çubuğu çevresi
@@ -80,8 +81,9 @@ Bitti sayılır: uygulama TestFlight üzerinden kendi telefonunda çalışıyor.
 ## Faz 4: App Store hazırlığı
 
 - [ ] "Starboard" adının App Store'da uygunluğunu kontrol et
-- [ ] Gizlilik politikası ve destek sayfası (web sitesinde yayınlanır)
-- [ ] Sağlık içeriği: hesaplamaların kaynakları ve "tıbbi tavsiye değildir" uyarısı (kural 1.4.1)
+- [x] Gizlilik politikası (1.8.0): `starboard-site/privacy.html`, Türkçe ve İngilizce; uygulamada Ayarlar › Hakkında › Gizlilik
+- [ ] Destek sayfası: şimdilik iletişim GitHub Issues üzerinden; App Store için ayrı bir destek adresi (e-posta ya da sayfa) gerekebilir
+- [x] Sağlık içeriği (1.8.0): hesaplamaların kaynakları ve "tıbbi tavsiye değildir" uyarısı (kural 1.4.1); Ayarlar › Hakkında ve ilk girişin özeti
 - [ ] App Store gizlilik beyanı ve HealthKit kullanım açıklamaları
 - [ ] Simge, ekran görüntüleri, açıklama metni, anahtar kelimeler
 - [ ] TestFlight ile dış test

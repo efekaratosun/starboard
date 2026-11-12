@@ -431,6 +431,7 @@ function obSummary(){
       <i>${tr.none ? tx("İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin.")
         : tx("Haftada {0} gün · {1}", [(tr.freq), (tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", "))])}</i></span></div>
     <div class="metric-note" style="text-align:center;margin-top:14px">${tx("Hepsini sonradan değiştirebilirsin.")}</div>
+    <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Starboard tıbbi tavsiye vermez; sağlık sorunun varsa hekimine danış.")}</div>
   </div>`;
 }
 
@@ -648,7 +649,7 @@ function wireOb(st, list, animate){
 
 async function obFinish(){
   const profile = obProfile();
-  state = { v:SCHEMA, starred:1, profile, adjustment:0, lastRefreshAt:null, days:{} };
+  state = { v:SCHEMA, starred:1, profile, adjustment:0, lastRefreshAt:null, days:{}, seenVersion:APP_VERSION };
   state.mealPrefs = { exclude:[], useMine:false, fixed:{}, diet: ob.diet, cuisine: ob.cuisine, meals: mealsFromPreset(ob.mealSet) };
   const ex = new Set();
   for (const i of ob.dislike) for (const k of (DISLIKE[i] || [])[1] || []) if (FOODS[k]) ex.add(k);

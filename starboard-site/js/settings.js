@@ -95,6 +95,8 @@ function settingsView(){
     <div class="metric-note" id="imp-status">${tx("Ayda bir yedek al.")}</div>
   </section>
 
+  ${aboutSection()}
+
   <div class="brand-foot">
     <span class="brand-i">${BRAND_SVG}</span>
     <div><b>${tx("Starboard")}</b><i>${tx("Sürüm {0} · veriler yalnızca bu cihazda saklanır, hiçbir yere gönderilmez.", [(APP_VERSION)])}</i></div>

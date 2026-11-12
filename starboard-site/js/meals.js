@@ -37,9 +37,10 @@ function mealsView(program){
   const entry = ensureDay(vKey());
   const body = mealTab === "plan" ? planView(program)
              : mealTab === "log" ? logView(program, entry)
+             : mealTab === "list" ? shoppingView(program)
              : recipesView();
   return `<div class="seg">
-    ${[["log",tx("Günlüğüm")],["plan",tx("Öneriler")],["recipes",tx("Tarifler")]].map(([k,l]) =>
+    ${[["log",tx("Günlüğüm")],["plan",tx("Öneriler")],["recipes",tx("Tarifler")],["list",tx("Liste")]].map(([k,l]) =>
       `<button data-meal-tab="${k}" aria-current="${mealTab===k}">${l}</button>`).join("")}
   </div>` + body;
 }
@@ -81,6 +82,7 @@ function recipeCard(r, idx){
       <h4>${tx("Hazırlanışı")}</h4>
       <ol>${r.steps.map(s => `<li>${s}</li>`).join("")}</ol>
       <button class="ghost" data-recipe-add="${idx}" style="margin-top:6px">${tx("Günlüğüme 1 porsiyon ekle")}</button>
+      ${recipeListBtn(idx)}
     </div>` : ""}
   </section>`;
 }
@@ -662,6 +664,7 @@ function planView(program){
 }
 
 function wireMeals(entry){
+  wireShopping(currentProgram());
   app.querySelectorAll("[data-meal-tab]").forEach(b => b.onclick = () => {
     if (b.dataset.mealTab === mealTab) return;
     navTo(() => { mealTab = b.dataset.mealTab; render(); window.scrollTo(0,0); }, segDir(b), "k-seg");

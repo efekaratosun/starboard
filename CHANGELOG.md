@@ -3,6 +3,17 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.8.0 (12 Kasım 2026)
+
+### Eklendi
+- Alışveriş listesi (Beslenme › Liste): öneri planından 1, 3 ya da 7 günlük (her gün farklı bir plan) ve tarif kartlarında "Alışveriş listesine ekle" dediğin tariflerden. Aynı besin tek satırda toplanır, reyonlara göre gruplanır, işaretlenir, paylaşılır.
+- Dinlenme sayacı: antrenman modunda set onaylanınca geri sayım (varsayılan 90 sn); ± 15 sn ile ayarlanır ve hatırlanır, bitince ses ve titreşim.
+- Ayarlar › Hakkında: sağlık uyarısı, hesapların kaynakları ve gizlilik. Tam gizlilik politikası: `privacy.html` (Türkçe ve İngilizce). İlk girişin özetinde kısa sağlık uyarısı.
+- "Neler yeni" penceresi: güncellemeden sonraki ilk açılışta, görülmemiş sürümlerin kısa maddeleri bir kez.
+
+### Düzeltildi
+- Antrenman özetindeki "… hareket kaydettin" cümlesi İngilizcede Türkçe kalıyordu.
+
 ## 1.7.0 (12 Kasım 2026)
 
 ### Eklendi

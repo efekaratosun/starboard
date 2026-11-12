@@ -212,6 +212,88 @@ test("beslenme özeti: yalnızca günlüğü olan günler, ortalama ve en sık e
   eq(nutritionWeek({}, program, "2026-11-11"), null);
 });
 
+/* ---- alışveriş listesi ---- */
+test("alışveriş listesi: plan ve tarifler toplanır, aynı besin tek satır, işaretleme çalışır", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  const program = buildProgram(state.profile, 82, 0);
+  const sumOf = (list, k) => (list.find(x => x.k === k) || { g:0 }).g;
+  const plan = buildMeals(program, 0);
+  const exp = {};
+  for (const m of plan.meals) for (const it of m.items) if (it.key) exp[it.key] = (exp[it.key] || 0) + it.g;
+  const one = shoppingList(program, { days:1, recipes:[], checked:{} }, 0);
+  for (const [k, g] of Object.entries(exp)) eq(sumOf(one, k), Math.round(g), k);
+  eq(new Set(one.map(x => x.k)).size, one.length, "aynı besin iki satırda");
+  const three = shoppingList(program, { days:3, recipes:[], checked:{} }, 0);
+  ok(three.reduce((a, x) => a + x.g, 0) > one.reduce((a, x) => a + x.g, 0) * 2, "3 günlük liste 1 günlükten büyük olmalı");
+  const r = RECIPES[0];
+  const withR = shoppingList(program, { days:0, recipes:[0], checked:{} }, 0);
+  for (const [k, g] of r.ing) ok(sumOf(withR, k) >= g, "tarif malzemesi eksik: " + k);
+  state.shopping = { days:1, recipes:[0], checked:{} };
+  tab = "meals"; mealTab = "list"; render();
+  const first = app.querySelector("[data-shop-k]");
+  ok(first, "liste çizilmedi");
+  await first.onclick();
+  ok(state.shopping.checked[first.dataset.shopK], "işaretlenmedi");
+  tab = "today"; mealTab = "log"; state = null;
+});
+
+/* ---- dinlenme sayacı, yenilikler, hakkında ---- */
+test("dinlenme sayacı: set onaylanınca başlar, ± süreyi değiştirip hatırlar, atla kapatır", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null;
+  const program = currentProgram();
+  /* Antrenmanı ağırlık × tekrar olan bir gün seç. */
+  let key = null;
+  for (let i = 0; i < 7 && !key; i++){
+    const k = shiftDays(today(), -i), d = program.training.days.find(x => x.wd === isoWeekday(k));
+    if (d && d.b && exercisesOf(d).some(n => ["w", "r", "t"].includes(parseEx(n, venueOf(program)).t))) key = k;
+  }
+  ok(key, "uygun antrenman günü yok");
+  viewDate = key === today() ? null : key;
+  try {
+    openWorkout();
+    const { list, venue } = woList();
+    woIdx = list.findIndex(n => ["w", "r", "t"].includes(parseEx(n, venue).t)); drawWO();
+    const r = woEl.querySelector('[data-wi="r"][data-wk="0"]') || woEl.querySelector('[data-wi="s"][data-wk="0"]');
+    if (!r.value) r.value = "8";
+    await woEl.querySelector('[data-wok="0"]').onclick();
+    ok(woEl.querySelector("#wo-rest"), "sayaç başlamadı");
+    eq(woRest.total, 90);
+    await woEl.querySelector('[data-rest="15"]').onclick();
+    eq([woRest.total, state.profile.restSec], [105, 105], "süre uzayıp hatırlanmalı");
+    woEl.querySelector("#wo-rest-skip").onclick();
+    ok(!woEl.querySelector("#wo-rest") && !woRest, "atla kapatmalı");
+  } finally { closeWorkout(); viewDate = null; state = null; }
+});
+test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir daha çıkmaz", async () => {
+  for (let i = 1; i < WHATS_NEW.length; i++) ok(verCmp(WHATS_NEW[i - 1].v, WHATS_NEW[i].v) > 0, "sürümler yeniden eskiye sıralı olmalı");
+  ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
+  eq(verCmp("1.10.0", "1.9.2") > 0, true);
+  eq(unseenNews(undefined).length, Math.min(3, WHATS_NEW.length));
+  eq(unseenNews(APP_VERSION), []);
+  state = await loadFixture();
+  state.seenVersion = WHATS_NEW[1].v;
+  maybeShowWhatsNew();
+  const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.textContent.includes(WHATS_NEW[0].items[0]), "pencere açılmadı");
+  sheet.querySelector("#wn-ok").click();
+  await new Promise(r => setTimeout(r, 0));
+  eq(state.seenVersion, APP_VERSION);
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  maybeShowWhatsNew();
+  ok(!document.querySelector(".sheet-bg"), "ikinci kez açılmamalı");
+  state = null;
+});
+test("hakkında: sağlık uyarısı, kaynaklar ve gizlilik sayfası yerinde", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  tab = "settings"; meTab = "set"; render();
+  eq(app.querySelectorAll("details.about").length, 3);
+  ok(app.innerHTML.includes(DISCLAIMER), "sağlık uyarısı yok");
+  ok(app.innerHTML.includes("Mifflin-St Jeor"), "kaynaklar yok");
+  const res = await fetch("../starboard-site/privacy.html");
+  ok(res.ok && (await res.text()).includes("Gizlilik politikası"), "privacy.html yok");
+  tab = "today"; meTab = "body"; state = null;
+});
+
 /* ---- mutfak, helal ve koşer ---- */
 const planKeys = m => m.meals.flatMap(x => x.items.map(i => i.key).filter(Boolean));
 const PROFILES_M = [[{}, 82], [{ goal:"lose" }, 82], [{ goal:"gain" }, 82], [{ sex:"female", height:163, age:27 }, 60]];
@@ -639,7 +721,7 @@ test("erişilebilirlik: her alanın etiketi, her düğmenin adı var", async () 
     state = JSON.parse(JSON.stringify(fixture)); migrateMeals(); notice = null; viewDate = null; ensureToday();
     for (const t of ["today", "plan", "meals", "calendar"]) { tab = t; render(); check(t); }
     for (const p of ["log", "program", "howto"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
-    for (const m of ["log", "plan", "recipes"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
+    for (const m of ["log", "plan", "recipes", "list"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
     for (const m of ["body", "chart", "set"]) { tab = "settings"; meTab = m; render(); check("me:" + m); }
     for (const g of ["kcal", "protein", "water", "sleep", "weigh", "train"]) { tab = "today"; goalOpen = g; render(); check("goal:" + g); }
     goalOpen = null; planTab = "log"; mealTab = "log"; meTab = "body";

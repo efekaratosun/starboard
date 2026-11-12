@@ -5,6 +5,74 @@
    ✓ onaylar, ± düzeltir. Klavye sadece istersen açılır. */
 let woIdx = 0, woEl = null, woDone = false;
 
+/* ---- dinlenme sayacı ----
+   Bir set onaylanınca setler arası geri sayım başlar. Süre ekranda ± ile
+   değiştirilebilir; son seçilen süre profile.restSec'e yazılır ve sonraki
+   setlerde varsayılan olur. Sayaç ekran yeniden çizilse de sürer: bitiş anı
+   woRest.end'de durur, her çeyrek saniyede yalnızca yazısı güncellenir. */
+let woRest = null, woRestTimer = null;
+const restSec = () => clamp((state && state.profile && state.profile.restSec) || 90, 15, 600);
+const mmss = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+function restBar(){
+  if (!woRest) return "";
+  const left = Math.max(0, Math.ceil((woRest.end - Date.now()) / 1000));
+  return `<div class="wo-rest" id="wo-rest">
+    <div class="wo-rest-p"><i id="wo-rest-bar" style="width:${(left / woRest.total * 100).toFixed(1)}%"></i></div>
+    <span class="wo-rest-l">${tx("Dinlenme")}</span><b class="num" id="wo-rest-t" role="timer">${mmss(left)}</b>
+    <button class="wo-rest-b" data-rest="-15" aria-label="${tx("15 saniye azalt")}">−15</button>
+    <button class="wo-rest-b" data-rest="15" aria-label="${tx("15 saniye artır")}">+15</button>
+    <button class="wo-rest-b skip" id="wo-rest-skip">${tx("Atla")}</button>
+  </div>`;
+}
+function restDone(){
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch(e){}
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.25].forEach(t => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.frequency.value = 880; g.gain.value = 0.15;
+      o.connect(g); g.connect(ac.destination);
+      o.start(ac.currentTime + t); o.stop(ac.currentTime + t + 0.15);
+    });
+    setTimeout(() => ac.close(), 800);
+  } catch(e){}
+  toast(tx("Dinlenme bitti."));
+}
+function stopRest(){
+  woRest = null;
+  clearInterval(woRestTimer); woRestTimer = null;
+  const b = woEl && woEl.querySelector("#wo-rest");
+  if (b) b.remove();
+}
+function tickRest(){
+  if (!woRest || !woEl){ stopRest(); return; }
+  const left = Math.max(0, Math.ceil((woRest.end - Date.now()) / 1000));
+  const t = woEl.querySelector("#wo-rest-t"), bar = woEl.querySelector("#wo-rest-bar");
+  if (t) t.textContent = mmss(left);
+  if (bar) bar.style.width = (left / woRest.total * 100).toFixed(1) + "%";
+  if (left <= 0){ stopRest(); restDone(); }
+}
+function startRest(){
+  const s = restSec();
+  woRest = { end: Date.now() + s * 1000, total: s };
+  clearInterval(woRestTimer);
+  woRestTimer = setInterval(tickRest, 250);
+}
+function wireRest(){
+  if (!woEl) return;
+  woEl.querySelectorAll("[data-rest]").forEach(b => b.onclick = async () => {
+    if (!woRest) return;
+    const d = Number(b.dataset.rest);
+    woRest.end = Math.max(Date.now() + 5000, woRest.end + d * 1000);
+    woRest.total = clamp(woRest.total + d, 15, 600);
+    state.profile.restSec = woRest.total;
+    tickRest();
+    await saveState(state);
+  });
+  const sk = woEl.querySelector("#wo-rest-skip");
+  if (sk) sk.onclick = stopRest;
+}
+
 const tgNum = tg => { const m = String(tg ?? "").match(/\d+/); return m ? +m[0] : null; };
 const woStep = (f, v) => f === "kg" ? liftStep() : f === "km" ? 0.5 : f === "min" ? 5 : f === "m" ? 25 : 1;
 const woRound = (f, v) => f === "kg" || f === "km" || f === "min" ? Math.round(v * 100) / 100 : Math.round(v);
@@ -116,7 +184,7 @@ function woScreen(){
       <span class="wo-count">${tx("ÖZET")}</span><span style="flex:0 0 38px"></span></div>
     <div class="wo-main">
       <div class="wo-done"><b>${nDone === list.length ? tx("Antrenman tamam 💪") : tx("Kaydedildi")}</b>
-        <span>${nDone}/${list.length} hareket kaydettin.${nDone < list.length ? tx(" Eksikleri sonra da girebilirsin.") : ""}</span></div>
+        <span>${tx("{0}/{1} hareket kaydettin.", [(nDone), (list.length)])}${nDone < list.length ? tx(" Eksikleri sonra da girebilirsin.") : ""}</span></div>
       <section style="margin-top:16px">${list.map(name => {
         const ex = parseEx(name, venue), rec = lifts[name];
         const has = liftHas(rec), sum = has ? liftSummary(rec, ex) : "";
@@ -152,6 +220,7 @@ function woScreen(){
         ${ids.length ? `<button class="how-link" data-wohow="${ids[0]}">${tx("Nasıl yapılır")}</button>` : ""}</div>
       ${woBody(ex, name, rec, prev)}
     </div>
+    ${restBar()}
     <div class="wo-nav"><div>
       <button class="ghost wo-prev" id="wo-back"${woIdx ? "" : " disabled"}>${tx("Geri")}</button>
       <button id="wo-next">${woIdx === list.length - 1 ? tx("Bitir") : tx("Sonraki hareket")}</button>
@@ -162,6 +231,7 @@ function drawWO(){
   if (!woEl) return;
   woEl.innerHTML = woScreen();
   wireWO();
+  wireRest();
   woEl.querySelector(".wo-main").scrollTop = 0;
 }
 
@@ -183,6 +253,7 @@ function openWorkout(){
 }
 function closeWorkout(){
   if (!woEl) return;
+  stopRest();
   woEl.remove(); woEl = null;
   document.body.style.overflow = "";
   render();
@@ -258,7 +329,9 @@ function wireWO(){
       rec.sets[k] = v;
     }
     for (let j = 0; j < rec.sets.length; j++) if (rec.sets[j] === undefined) rec.sets[j] = null;
-    await save(); drawWO();
+    await save();
+    startRest();
+    drawWO();
     checkPR(name, before);
   });
 

@@ -1097,7 +1097,7 @@ function buildMeals(program, variantIndex){
     const put = (food, g, key) => {
       if (!keep(g, food)) return;
       const part = portion(food, g);
-      items.push({ text:part.text, icon:food.i, key });
+      items.push({ text:part.text, icon:food.i, key, g:part.g });
       used.push([food, part.g]);
     };
 
