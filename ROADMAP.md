@@ -66,13 +66,13 @@ Bu faz diğerleriyle paralel yürür ve yayından sonra da sürer.
 
 Amaç: web sitesini saran bir kabuk değil, gerçek bir iPhone uygulaması. Apple, yalnızca bir web sitesini gösteren uygulamaları reddediyor (kural 4.2), bu yüzden bu fazdaki yerel özellikler isteğe bağlı değil.
 
-- [ ] Capacitor ile iOS projesi (mevcut web kodu yeniden kullanılır)
-- [ ] Kalıcı yerel depolama (iOS, web görünümündeki `localStorage` verisini silebilir)
-- [ ] Bildirimler: su, uyku ve antrenman hatırlatmaları
+- [x] Capacitor ile iOS projesi (mevcut web kodu yeniden kullanılır): Faz 3 başlangıcında kuruldu
+- [x] Kalıcı yerel depolama (iOS, web görünümündeki `localStorage` verisini silebilir): iOS'ta kalıcı depo eklendi
+- [x] Bildirimler: su, uyku ve antrenman hatırlatmaları: saatleri ayarlanabilir (sabah tartısı ve günü kapat dahil)
 - [ ] Apple Sağlık (HealthKit) bağlantısı: adım, uyku, kilo
 - [ ] Barkod okuma: paketli ürünün barkodu kamerayla okunur, besin değerleri Open Food Facts'ten (ücretsiz, açık veri) gelir ve kendi yiyeceklerine kaydedilir. Dışarıya yalnızca barkod numarası gider; "veriler hiçbir yere gönderilmez" metni ve App Store gizlilik beyanı buna göre güncellenir. Uygulamayı web sitesinden ayıran yerel özelliklerden biri olur (kural 4.2)
-- [ ] Dokunsal geri bildirim, güvenli alan ve karanlık mod ayarları
-- [ ] Mac olmadan derleme: bulutta macOS derleme hattı (GitHub Actions veya Codemagic)
+- [x] Dokunsal geri bildirim, güvenli alan ve karanlık mod ayarları: dokunsal geri bildirim, çentik payı, durum çubuğu temaya göre
+- [x] Mac olmadan derleme: bulutta macOS derleme hattı (GitHub Actions veya Codemagic): simülatör derlemesi Intel macOS makinesine taşındı
 
 Gerekenler: Apple Developer hesabı (yıllık 99 USD) ve test için bir iPhone.
 
