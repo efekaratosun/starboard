@@ -50,7 +50,7 @@ Bitti sayılır: testler geçiyor, eski bir yedek dosyası yeni sürümde soruns
 Amaç: App Store'a çıkmaya değer bir ürün.
 
 - [ ] Kullanırken görülen eksikleri `EKSIKLER.md` listesine yaz, önceliklendir (her düzeltme küçük sürümler halinde web'de yayınlanır)
-- [x] Hareket animasyonları: "Nasıl yapılır" kartlarında Motion ile oynayan temsili çizgi figür (87 hareket, 73 animasyon)
+- [x] Hareket animasyonları: "Nasıl yapılır" kartlarında Motion ile oynayan temsili çizgi figür (83 hareket, 78 animasyon)
 - [ ] Birkaç gerçek kullanıcıyla web sürümünü dene, geri bildirim topla
 - [ ] İçeriğin uluslararası uyarlaması: yemek ve tarif veritabanı Türkiye dışı kullanıcılar için de anlamlı olmalı
 - [ ] Erişilebilirlik ve küçük ekran denetimi
