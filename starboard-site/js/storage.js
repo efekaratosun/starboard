@@ -70,6 +70,8 @@ async function saveState(s){
   calcReset();                 /* veri değişti: gün puanları yeniden hesaplansın */
   const v = JSON.stringify(s);
   if (window.storage) { try { await window.storage.set(KEY, v); } catch(e){} }
+  /* iPhone'da hatırlatmalar güncel veriye göre yeniden kurulsun (reminders.js). */
+  if (typeof rescheduleSoon === "function") rescheduleSoon();
   try { localStorage.setItem(KEY, v); } catch(e){}
 }
 

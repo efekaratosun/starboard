@@ -66,6 +66,8 @@ function settingsView(){
       `<button class="chip${sleepMin() === n ? " sel" : ""}" data-ssleep="${n}">${tx("{0}-{1} saat", [(n), (n+2)])}</button>`).join("")}</div>
   </section>
 
+  ${remindersSection()}
+
   <section>
     <h2>${tx("Tekrar eden görevler")} <span class="count">${routines.length}</span></h2>
     ${routines.length ? routines.map(r => `<div class="rt">${iconBox("repeat")}
@@ -105,6 +107,7 @@ function settingsView(){
 }
 
 function wireSettings(){
+  wireReminders();
   let stAvatar = state.profile.avatar, stColor = state.profile.avColor;
   wireAvatar("st", k => { stAvatar = k; });
   document.getElementById("s-sex").onchange = ev => {

@@ -294,6 +294,33 @@ test("hakkında: sağlık uyarısı, kaynaklar ve gizlilik sayfası yerinde", as
   tab = "today"; meTab = "body"; state = null;
 });
 
+/* ---- hatırlatmalar ---- */
+test("hatırlatmalar: 7 günlük plan, geçmiş saat yok, tamamlanan hedef atlanır, iOS sınırı aşılmaz", async () => {
+  const st = await loadFixture();
+  const program = buildProgram(st.profile, 82, 0);
+  const now = new Date("2026-11-11T09:00:00");
+  eq(reminderPlan(st, program, now), [], "hatırlatma seçilmemişse plan boş");
+  st.profile.reminders = { water:true, train:true, sleep:true, weigh:true, eve:true, trainAt:"18:30" };
+  const t = "2026-11-11";
+  st.days[t] = { ...(st.days[t] || {}), weight:82, water:program.water, tasks:[] };
+  st.days["2026-11-10"].bed = 23 * 60 + 30;
+  const plan = reminderPlan(st, program, now);
+  ok(plan.length > 0 && plan.length <= 64, "plan boyutu: " + plan.length);
+  eq(new Set(plan.map(n => n.id)).size, plan.length, "kimlikler benzersiz olmalı");
+  ok(plan.every(n => n.at > now), "geçmiş saate bildirim kurulmamalı");
+  ok(!plan.some(n => dayKey(n.at) === t && (n.kind === "water" || n.kind === "weigh")), "bugün su ve tartı tamam, hatırlatma olmamalı");
+  ok(plan.some(n => n.kind === "water" && dayKey(n.at) === shiftDays(t, 1)), "yarın su hatırlatması olmalı");
+  for (const n of plan.filter(x => x.kind === "train")) {
+    const d = program.training.days.find(x => x.wd === isoWeekday(dayKey(n.at)));
+    ok(d && d.b, "antrenman olmayan güne antrenman hatırlatması");
+    eq([n.at.getHours(), n.at.getMinutes()], [18, 30]);
+  }
+  const sl = plan.find(n => n.kind === "sleep");
+  eq([sl.at.getHours(), sl.at.getMinutes()], [23, 0], "yatma saatinden 30 dk önce");
+  eq(hmToMin("07:05"), 425);
+  eq(typicalBedtime({}, 7), 1410, "kayıt yoksa 07:00 kalkışa göre 7,5 saat önce");
+});
+
 /* ---- mutfak, helal ve koşer ---- */
 const planKeys = m => m.meals.flatMap(x => x.items.map(i => i.key).filter(Boolean));
 const PROFILES_M = [[{}, 82], [{ goal:"lose" }, 82], [{ goal:"gain" }, 82], [{ sex:"female", height:163, age:27 }, 60]];

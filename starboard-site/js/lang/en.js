@@ -941,5 +941,25 @@ window.STARBOARD_EN = {
   "Birim seçimi: kg ya da lb, cm ya da ft·in, ml ya da fl oz.": "Units: kg or lb, cm or ft·in, ml or fl oz.",
   "Neler yeni": "What's new",
   "Sürüm {0}": "Version {0}",
-  "Tamam": "OK"
+  "Tamam": "OK",
+  /* hatırlatmalar (iOS) */
+  "Sabah tartısı": "Morning weigh-in",
+  "Kahvaltıdan önce tartılıp kilonu gir.": "Weigh yourself before breakfast and log it.",
+  "Su içme vakti": "Time for water",
+  "Bugünkü hedefin {0}.": "Today's target is {0}.",
+  "Antrenman günü": "Workout day",
+  "Günü kapat": "Wrap up the day",
+  "Bugünün eksiklerine bir bak.": "Take a look at what's left today.",
+  "Yatma vakti yaklaşıyor": "Bedtime is coming up",
+  "Hedefin {0}-{1} saat uyku.": "Your target is {0}-{1} hours of sleep.",
+  "Su (10:00, 13:00, 16:00, 19:00)": "Water (10:00, 13:00, 16:00, 19:00)",
+  "Antrenman günleri": "Workout days",
+  "Yatma vaktinden 30 dk önce": "30 min before bedtime",
+  "Sabah tartısı (08:00)": "Morning weigh-in (08:00)",
+  "Günü kapat (21:00)": "Wrap up the day (21:00)",
+  "Hatırlatmalar": "Reminders",
+  "Antrenman hatırlatma saati": "Workout reminder time",
+  "Bildirim izni verilmedi. iPhone Ayarlar › Starboard › Bildirimler'den açabilirsin.": "Notification permission wasn't granted. You can turn it on in iPhone Settings › Starboard › Notifications.",
+  "Su, antrenman ve uyku için bildirim. Sonradan Ayarlar'dan değiştirebilirsin.": "Notifications for water, workouts and sleep. You can change this later in Settings.",
+  "Hatırlatmaları aç": "Turn on reminders"
 };

@@ -383,9 +383,12 @@ const OB_STEPS = [
       + og(tx("Günde kaç öğün?"), obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, "", l, set.map(m => m[0]).join(" · ")]), "", true))
       + og(tx("Yemediklerin"), obChips("obdis", DISLIKE.map(([l, , intl], i) => [i, l, ob.dislike.includes(i), intl])
           .filter(([, , , intl]) => !intl || ob.cuisine === "intl")), true) },
+  /* Yalnızca iPhone uygulamasında: hatırlatmalar kapalı gelir, burada açılabilir. */
+  { id:"remind", t:tx("Hatırlatmalar"), s:tx("Su, antrenman ve uyku için bildirim. Sonradan Ayarlar'dan değiştirebilirsin."),
+    body: () => `<div class="ocs" data-field="remind">${obCard(ob.remind === "on", "on", "day", tx("Hatırlatmaları aç"))}${obCard(ob.remind !== "on", "off", "rest", tx("Şimdilik istemiyorum"))}</div>` },
   { id:"summary" }
 ];
-const obList = () => OB_STEPS;
+const obList = () => IS_NATIVE ? OB_STEPS : OB_STEPS.filter(s => s.id !== "remind");
 
 /* Girişte logo canlıdır: çubuklar yükselir, yıldız parlar. */
 const OB_LOGO = BRAND_SVG.replace(/<rect x=/g, '<rect class="lg-b" x=').replace('<path d=', '<path class="lg-s" d=');
@@ -654,6 +657,7 @@ function wireOb(st, list, animate){
 
 async function obFinish(){
   const profile = obProfile();
+  if (ob.remind === "on" && await askNotifyPermission()) profile.reminders = { water:true, train:true, sleep:true };
   state = { v:SCHEMA, starred:1, profile, adjustment:0, lastRefreshAt:null, days:{}, seenVersion:APP_VERSION };
   state.mealPrefs = { exclude:[], useMine:false, fixed:{}, diet: ob.diet, cuisine: ob.cuisine, meals: mealsFromPreset(ob.mealSet) };
   const ex = new Set();
