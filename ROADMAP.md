@@ -98,6 +98,7 @@ Bitti sayılır: uygulama TestFlight üzerinden kendi telefonunda çalışıyor.
 - [ ] App Store gizlilik beyanı ve HealthKit kullanım açıklamaları (App Store Connect'te barkod için "Arama Geçmişi – sizinle ilişkilendirilmez – izleme yok – uygulama işlevi" işaretlenir; `PrivacyInfo.xcprivacy` ile aynı. İnceleme notu: "Paketli herhangi bir ürünün barkodunu okutun, örnek: 3017620422003". Not: Open Food Facts'in gizlilik politikası ziyaret kayıtlarını (IP dahil) tuttuğunu yazıyor; 12 Kasım notundaki "ne kadar sakladığını belirtmiyor" kısmı bununla örtüşmüyor, beyan yine temkinli kalır)
 - [ ] Kendi yiyeceklerini düzenleme ve silme ekranı (barkodla kaydedilen ürünler birikir; şimdilik silinemez)
 - [ ] Simge, ekran görüntüleri, açıklama metni, anahtar kelimeler
+- [ ] TestFlight hattı hazır (anahtarlar girilince çalışır): docs/TESTFLIGHT.md
 - [ ] TestFlight ile dış test
 
 ## Faz 5: Yayın ve sonrası

@@ -1,0 +1,236 @@
+# iOS uygulamasını imzalı derler ve TestFlight'a yükler.
+# Yalnızca elle çalışır: Actions > TestFlight > Run workflow.
+# Gerekli gizli anahtarlar (ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8, APPLE_TEAM_ID) yoksa
+# derleme atlanır ve çalışma başarısız sayılmaz. Kurulum: docs/TESTFLIGHT.md
+#
+# İmza Xcode'un otomatik imzalamasıyla yapılır (-allowProvisioningUpdates); sertifika ve
+# profil elle yönetilmez. Xcode, App Store Connect API anahtarıyla Apple'dan ne gerekiyorsa ister.
+name: TestFlight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+
+defaults:
+  run:
+    # Açıkça "bash" yazılınca pipefail de açık olur: "xcodebuild | tail" hatayı yutmaz.
+    shell: bash
+
+jobs:
+  anahtarlar:
+    runs-on: ubuntu-latest
+    outputs:
+      hazir: ${{ steps.denetim.outputs.hazir }}
+    steps:
+      - name: Gizli anahtarlar girilmis mi
+        id: denetim
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          EKSIK=""
+          for K in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8 APPLE_TEAM_ID; do
+            [ -n "${!K}" ] || EKSIK="$EKSIK $K"
+          done
+          if [ -n "$EKSIK" ]; then
+            MESAJ="TestFlight atlandi: su gizli anahtarlar eksik:$EKSIK. Kurulum: docs/TESTFLIGHT.md"
+            echo "::notice title=TestFlight atlandi::$MESAJ"
+            echo "### $MESAJ" >> "$GITHUB_STEP_SUMMARY"
+            echo "hazir=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Dort gizli anahtar da girilmis."
+            echo "hazir=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  testflight:
+    needs: anahtarlar
+    if: needs.anahtarlar.outputs.hazir == 'true'
+    # ios.yml ile aynı makine ve Xcode (varsayılan).
+    runs-on: macos-26-intel
+    timeout-minutes: 60
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      BUILD_NUMBER: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # İmzalı derlemede bunlar uygulamaya girer; eksikse App Store reddeder ya da uygulama çöker.
+      - name: Izin metinleri, yetkiler ve sifreleme beyanini denetle
+        run: |
+          PLIST=ios/App/App/Info.plist
+          ENT=ios/App/App/App.entitlements
+          plutil -lint "$PLIST" "$ENT" ios/App/App/PrivacyInfo.xcprivacy
+          for K in NSCameraUsageDescription NSHealthShareUsageDescription NSHealthUpdateUsageDescription; do
+            test -n "$(plutil -extract "$K" raw "$PLIST")" || { echo "::error::$K bos"; exit 1; }
+            plutil -extract "$K" raw ios/App/App/tr.lproj/InfoPlist.strings >/dev/null
+            plutil -extract "$K" raw ios/App/App/en.lproj/InfoPlist.strings >/dev/null
+          done
+          test "$(/usr/libexec/PlistBuddy -c 'Print :com.apple.developer.healthkit' "$ENT")" = "true"
+          /usr/libexec/PlistBuddy -c 'Print :com.apple.developer.healthkit.access' "$ENT" >/dev/null
+          grep -q "CODE_SIGN_ENTITLEMENTS = App/App.entitlements;" ios/App/App.xcodeproj/project.pbxproj
+          grep -q "com.apple.HealthKit" ios/App/App.xcodeproj/project.pbxproj
+          test "$(plutil -extract ITSAppUsesNonExemptEncryption raw "$PLIST")" = "false"
+
+      - name: Anahtar bicimlerini denetle
+        run: |
+          # Kopyalarken gelen boşluk ve satır sonları atılır.
+          for K in APPLE_TEAM_ID ASC_KEY_ID ASC_ISSUER_ID; do
+            V=$(printf '%s' "${!K}" | tr -d ' \t\r\n')
+            printf -v "$K" '%s' "$V"
+            echo "$K=$V" >> "$GITHUB_ENV"
+          done
+          [[ "$APPLE_TEAM_ID" =~ ^[A-Z0-9]{10}$ ]] || { echo "::error::APPLE_TEAM_ID 10 karakterlik buyuk harf/rakam olmali"; exit 1; }
+          [[ "$ASC_KEY_ID" =~ ^[A-Z0-9]{10}$ ]] || { echo "::error::ASC_KEY_ID 10 karakterlik buyuk harf/rakam olmali"; exit 1; }
+          [[ "$ASC_ISSUER_ID" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ ]] || { echo "::error::ASC_ISSUER_ID tireli bir UUID olmali"; exit 1; }
+
+      - name: Surum ve paket kimligi
+        id: surum
+        run: |
+          VERSION=$(grep -o 'const APP_VERSION = "[0-9][0-9.]*"' starboard-site/js/storage.js | grep -o '[0-9][0-9.]*')
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]] || { echo "::error::APP_VERSION okunamadi"; exit 1; }
+          APP_ID=$(python3 -c "import json; print(json.load(open('capacitor.config.json'))['appId'])")
+          [ -n "$APP_ID" ] || { echo "::error::capacitor.config.json'da appId yok"; exit 1; }
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "app_id=$APP_ID" >> "$GITHUB_OUTPUT"
+          echo "Surum $VERSION ($BUILD_NUMBER), paket kimligi $APP_ID" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Paketleri kur
+        run: npm ci
+
+      - name: Web dosyalarini iOS projesine kopyala
+        run: npx cap sync ios
+
+      - name: Xcode surumu
+        run: xcodebuild -version
+
+      # Paket kimliği komut satırında verilmez: komut satırındaki ayar Swift paketlerinin
+      # kaynak paketlerine de geçer ve App Store "aynı kimlik iki kez" diye reddeder.
+      # Bu yüzden yalnızca uygulama hedefinde, makinedeki kopyada yazılır (depoya girmez).
+      - name: Paket kimligini uygulama hedefine yaz
+        env:
+          APP_ID: ${{ steps.surum.outputs.app_id }}
+        run: |
+          PBX=ios/App/App.xcodeproj/project.pbxproj
+          sed -i '' "s/PRODUCT_BUNDLE_IDENTIFIER = [^;]*;/PRODUCT_BUNDLE_IDENTIFIER = $APP_ID;/" "$PBX"
+          test "$(grep -c "PRODUCT_BUNDLE_IDENTIFIER = $APP_ID;" "$PBX")" -ge 2
+
+      # Anahtar düz metin (-----BEGIN PRIVATE KEY-----) ya da base64 olabilir.
+      # Geçici dizine yazılır, ekrana basılmaz, iş sonunda silinir.
+      - name: API anahtarini gecici dosyaya yaz
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          KEY_DIR="$RUNNER_TEMP/asc"
+          KEY_PATH="$KEY_DIR/AuthKey_$ASC_KEY_ID.p8"
+          mkdir -p "$KEY_DIR"
+          chmod 700 "$KEY_DIR"
+          umask 077
+          if printf '%s' "$ASC_KEY_P8" | grep -q -- "-----BEGIN PRIVATE KEY-----"; then
+            printf '%s\n' "$ASC_KEY_P8" | tr -d '\r' > "$KEY_PATH"
+          else
+            printf '%s' "$ASC_KEY_P8" | tr -d ' \r\n' | base64 --decode > "$KEY_PATH" 2>/dev/null \
+              || { echo "::error::ASC_KEY_P8 ne duz metin ne de gecerli base64"; exit 1; }
+          fi
+          grep -q -- "-----BEGIN PRIVATE KEY-----" "$KEY_PATH" \
+            || { echo "::error::ASC_KEY_P8 bir .p8 anahtari gibi gorunmuyor"; exit 1; }
+          echo "ASC_KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
+
+      - name: Arsivle (imzali)
+        env:
+          VERSION: ${{ steps.surum.outputs.version }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/build" logs
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/build/App.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            CODE_SIGN_STYLE=Automatic \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            MARKETING_VERSION="$VERSION" \
+            archive > logs/archive.log 2>&1 \
+            || { grep -E "error:|warning: .*(sign|profile|provision)" logs/archive.log | tail -n 40 || true; tail -n 40 logs/archive.log; exit 1; }
+          tail -n 20 logs/archive.log
+          test -d "$RUNNER_TEMP/build/App.xcarchive"
+
+      - name: Arsivdeki uygulamayi denetle
+        env:
+          APP_ID: ${{ steps.surum.outputs.app_id }}
+          VERSION: ${{ steps.surum.outputs.version }}
+        run: |
+          APP="$RUNNER_TEMP/build/App.xcarchive/Products/Applications/App.app"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Info.plist")" = "$APP_ID"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Info.plist")" = "$VERSION"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP/Info.plist")" = "$BUILD_NUMBER"
+          codesign -d --entitlements - --xml "$APP" 2>/dev/null > /tmp/ent.plist
+          test "$(/usr/libexec/PlistBuddy -c 'Print :com.apple.developer.healthkit' /tmp/ent.plist)" = "true"
+
+      - name: TestFlight'a yukle
+        run: |
+          cat > "$RUNNER_TEMP/build/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>destination</key>
+            <string>upload</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>teamID</key>
+            <string>$APPLE_TEAM_ID</string>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>manageAppVersionAndBuildNumber</key>
+            <false/>
+          </dict>
+          </plist>
+          EOF
+          plutil -lint "$RUNNER_TEMP/build/ExportOptions.plist"
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/build/App.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/build/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/build/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            > logs/export.log 2>&1 \
+            || { tail -n 60 logs/export.log; exit 1; }
+          tail -n 20 logs/export.log
+          echo "Yuklendi: surum ${{ steps.surum.outputs.version }} ($BUILD_NUMBER). App Store Connect'te islenmesi 5-30 dakika surebilir." | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: API anahtarini sil
+        if: always()
+        run: |
+          rm -rf "$RUNNER_TEMP/asc"
+          test ! -e "$RUNNER_TEMP/asc"
+
+      - name: Derleme gunlukleri
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testflight-gunlukleri
+          path: logs/
