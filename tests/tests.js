@@ -317,6 +317,15 @@ test("hatırlatmalar: 7 günlük plan, geçmiş saat yok, tamamlanan hedef atlan
   }
   const sl = plan.find(n => n.kind === "sleep");
   eq([sl.at.getHours(), sl.at.getMinutes()], [23, 0], "yatma saatinden 30 dk önce");
+  /* Kullanıcının seçtiği saatler: boş bırakılan su saati kullanılmaz; uyku saati
+     elle seçildiyse o, silindiyse yeniden otomatik. */
+  Object.assign(st.profile.reminders, { waterAt:["09:30", "", "15:00", "20:00"], weighAt:"07:15", eveAt:"22:00", sleepAt:"22:45" });
+  const tm = shiftDays(t, 1);
+  const hm = kind => reminderPlan(st, program, now).filter(n => n.kind === kind && dayKey(n.at) === tm).map(n => minToHm(n.at.getHours() * 60 + n.at.getMinutes()));
+  eq(hm("water"), ["09:30", "15:00", "20:00"]);
+  eq([hm("weigh"), hm("eve"), hm("sleep")], [["07:15"], ["22:00"], ["22:45"]]);
+  delete st.profile.reminders.sleepAt;
+  eq(hm("sleep"), ["23:00"], "saat silinince otomatiğe dönmeli");
   eq(hmToMin("07:05"), 425);
   eq(typicalBedtime({}, 7), 1410, "kayıt yoksa 07:00 kalkışa göre 7,5 saat önce");
 });

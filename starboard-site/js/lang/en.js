@@ -952,14 +952,20 @@ window.STARBOARD_EN = {
   "Bugünün eksiklerine bir bak.": "Take a look at what's left today.",
   "Yatma vakti yaklaşıyor": "Bedtime is coming up",
   "Hedefin {0}-{1} saat uyku.": "Your target is {0}-{1} hours of sleep.",
-  "Su (10:00, 13:00, 16:00, 19:00)": "Water (10:00, 13:00, 16:00, 19:00)",
   "Antrenman günleri": "Workout days",
-  "Yatma vaktinden 30 dk önce": "30 min before bedtime",
-  "Sabah tartısı (08:00)": "Morning weigh-in (08:00)",
-  "Günü kapat (21:00)": "Wrap up the day (21:00)",
   "Hatırlatmalar": "Reminders",
   "Antrenman hatırlatma saati": "Workout reminder time",
   "Bildirim izni verilmedi. iPhone Ayarlar › Starboard › Bildirimler'den açabilirsin.": "Notification permission wasn't granted. You can turn it on in iPhone Settings › Starboard › Notifications.",
   "Su, antrenman ve uyku için bildirim. Sonradan Ayarlar'dan değiştirebilirsin.": "Notifications for water, workouts and sleep. You can change this later in Settings.",
-  "Hatırlatmaları aç": "Turn on reminders"
+  "Hatırlatmaları aç": "Turn on reminders",
+  /* hatırlatma saatleri (iOS) */
+  "Yatma vakti": "Bedtime",
+  "Su hatırlatma saatleri": "Water reminder times",
+  "Su hatırlatması {0}": "Water reminder {0}",
+  "İstemediğin saati sil; o gün su hedefine ulaşınca susar.": "Clear a time you don't want; reminders stop once you reach your water goal that day.",
+  "Yatma vakti hatırlatma saati": "Bedtime reminder time",
+  "Otomatik: yatma saatinden 30 dk önce.": "Automatic: 30 min before your usual bedtime.",
+  "Otomatiğe dön": "Back to automatic",
+  "Tartı hatırlatma saati": "Weigh-in reminder time",
+  "Günü kapatma saati": "Wrap-up reminder time"
 };

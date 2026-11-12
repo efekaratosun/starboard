@@ -1143,3 +1143,6 @@ details.about[open] summary::after{content:"−"}
 .wn-v{font-size:13px;font-weight:800;color:var(--muted);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.4px}
 .wn-l{margin:0 0 6px;padding-left:20px;line-height:1.5}
 .wn-l li{margin-bottom:6px}
+/* ---- hatırlatma saatleri ---- */
+.rm-water{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.rm-water input{min-width:0}
