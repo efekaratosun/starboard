@@ -300,7 +300,7 @@ function marksLabel(k, program){
   const d = state.days[k];
   if (!d) return "";
   const out = [];
-  if (typeof d.weight === "number") out.push(`${kg1(d.weight)} kg`);
+  if (typeof d.weight === "number") out.push(fmtW(d.weight));
   const kc = kcalMark(k, program);
   if (kc) out.push(tx("{0} kcal, hedef bandının {1}", [(d.kcal), (kc === "ok" ? tx("içinde") : tx("dışında"))]));
   if (liftMark(k)) out.push(hasFree(state.days[k])
@@ -336,14 +336,14 @@ function dayDetail(){
       <button class="ghost" id="dd-edit">${empty ? tx("Veri gir") : tx("Düzenle")}</button>
     </div>
     ${empty ? `<div class="empty" style="margin-top:14px">${tx("Bu güne hiç veri girilmemiş.{0}", [(k === t ? tx(" Gün bitmediği için takvimde kırmızı görünmüyor.") : tx(" Takvimde kırmızı görünmesinin sebebi bu."))])}</div>` : `
-    ${row(tx("Kilo"), typeof d.weight === "number" ? `${kg1(d.weight)} kg` : "—")}
+    ${row(tx("Kilo"), typeof d.weight === "number" ? fmtW(d.weight) : "—")}
     ${row(tx("Kalori"), typeof d.kcal === "number" ? `${d.kcal} kcal` : "—",
         typeof d.kcal === "number" && program
-          ? (kcalMark(k, program) === "ok" ? tx("hedef bandında") : `hedef ${program.kcal} kcal`)
+          ? (kcalMark(k, program) === "ok" ? tx("hedef bandında") : tx("hedef {0}", [(program.kcal + " kcal")]))
           : logN ? tx("{0} kalem girilmiş", [(logN)]) : "")}
     ${row(tx("Uyku"), typeof d.sleep === "number" ? durTxt(Math.round(d.sleep * 60)) : "—")}
-    ${row(tx("Su"), typeof d.water === "number" ? `${d.water} ml` : "—",
-        program && typeof d.water === "number" ? `hedef ${program.water} ml` : "")}
+    ${row(tx("Su"), typeof d.water === "number" ? fmtV(d.water) : "—",
+        program && typeof d.water === "number" ? tx("hedef {0}", [(fmtV(program.water))]) : "")}
     ${session && session.b ? row(tx("Antrenman"), `${liftN}/${exN.length}`, esc(session.t)) : ""}
     ${hasFree(d) ? row(tx("Antrenman"), d.free.min ? tx("{0} dk", [(d.free.min)]) : tx("yapıldı"), esc(freeLabel(d.free))) : ""}
     ${tasks.length ? row(tx("Görevler"), `${doneT}/${tasks.length}`) : ""}`}

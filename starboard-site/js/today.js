@@ -26,12 +26,12 @@ function weekStrip(key){
 const EVE_WORD = [tx("Hiçbir"),tx("Bir"),tx("İki"),tx("Üç"),tx("Dört"),tx("Beş"),tx("Altı"),tx("Yedi"),tx("Sekiz"),tx("Dokuz"),tx("On")];
 function eveMiss(kind, entry, program, a){
   switch (kind){
-    case "water": { const need = Math.round(program.water * 0.9); return `su ${Math.max(need - (entry.water || 0), 0)} ml eksik`; }
+    case "water": { const need = Math.round(program.water * 0.9); return tx("su {0} eksik", [(fmtV(Math.max(need - (entry.water || 0), 0)))]); }
     case "protein": { const need = Math.round(program.protein * 0.9);
-      const v = entry.log && entry.log.length ? logTotals(entry).p : 0; return `protein ${Math.max(need - v, 0)} g eksik`; }
+      const v = entry.log && entry.log.length ? logTotals(entry).p : 0; return tx("protein {0} g eksik", [(Math.max(need - v, 0))]); }
     case "kcal": { const B = kcalBand(program);
-      if (typeof entry.kcal !== "number") return "kalori girilmedi";
-      return entry.kcal > B.hi ? `kalori ${entry.kcal - B.hi} kcal fazla` : `kalori ${B.lo - entry.kcal} kcal eksik`; }
+      if (typeof entry.kcal !== "number") return tx("kalori girilmedi");
+      return entry.kcal > B.hi ? tx("kalori {0} kcal fazla", [(entry.kcal - B.hi)]) : tx("kalori {0} kcal eksik", [(B.lo - entry.kcal)]); }
     case "sleep": return typeof entry.sleep === "number" ? tx("uyku hedefin altında") : tx("uyku girilmedi");
     case "weigh": return tx("kilo girilmedi");
     case "steps": return tx("{0} adım eksik", [(Math.max(stepGoal() - (entry.steps || 0), 0))]);
@@ -103,14 +103,14 @@ function goalEditor(kind, entry, program, key){
   const now = key === today();
   const logged = !!(entry.log && entry.log.length);
   switch (kind){
-    case "weigh": return `<div class="g-f"><label for="i-weight">${tx("Kilo (kg)")}</label>
-      <input id="i-weight" type="number" inputmode="decimal" value="${val(entry.weight)}" placeholder="—"></div>`;
+    case "weigh": return `<div class="g-f"><label for="i-weight">${tx("Kilo ({0})", [(wUnit())])}</label>
+      <input id="i-weight" type="number" inputmode="decimal" value="${typeof entry.weight === "number" ? +wOut(entry.weight).toFixed(1) : ""}" placeholder="—"></div>`;
     case "sleep": return sleepHTML(entry);
     case "water": return `
-      <div class="lbl-row"><span class="lbl">${tx("Bardak bardak işaretle")}</span><span class="lbl-v num">${val(entry.water) || 0}${program ? ` / ${program.water}` : ""} ml</span></div>
+      <div class="lbl-row"><span class="lbl">${tx("Bardak bardak işaretle")}</span><span class="lbl-v num">${vOut(entry.water || 0)}${program ? ` / ${vOut(program.water)}` : ""} ${vUnit()}</span></div>
       ${cupsHTML(entry.water, program && program.water)}
-      <div class="water-exact"><label for="i-water">${tx("Tam miktar (ml)")}</label>
-        <input id="i-water" type="number" inputmode="numeric" value="${val(entry.water)}" placeholder="—"></div>`;
+      <div class="water-exact"><label for="i-water">${tx("Tam miktar ({0})", [(vUnit())])}</label>
+        <input id="i-water" type="number" inputmode="numeric" value="${typeof entry.water === "number" ? vOut(entry.water) : ""}" placeholder="—"></div>`;
     case "kcal": return `<div class="g-f"><label for="i-kcal">${tx("Kalori (kcal)")}</label>
         <input id="i-kcal" type="number" inputmode="numeric" value="${val(entry.kcal)}" placeholder="—"${logged ? " disabled" : ""}></div>
       ${logged
@@ -136,7 +136,7 @@ function goalRow(t, entry, program, key){
     return `<div class="g" data-done="${t.done ? 1 : 0}"${t.suggested ? "" : " data-own"}>
       <div class="g-h">
         <button class="check" data-done="${t.done ? 1 : 0}" data-id="${t.id}" aria-label="${esc(t.title)}: ${tx("tamamlandı olarak işaretle")}"></button>
-        <span class="g-m"><b>${esc(t.title)}</b>${t.rt ? `<i>${tx("her gün tekrar eder")}</i>` : ""}</span>
+        <span class="g-m"><b>${esc(t.suggested ? tx(t.title) : t.title)}</b>${t.rt ? `<i>${tx("her gün tekrar eder")}</i>` : ""}</span>
         ${t.suggested ? "" : `<button class="del" data-del="${t.id}" aria-label="${esc(t.title)}: ${tx("sil")}">×</button>`}
       </div></div>`;
   }
@@ -194,7 +194,7 @@ function todayView(entry, program, key){
 function reviewCount(){
   const w = lastWeight();
   const n = Object.keys(state.days || {}).filter(k => typeof state.days[k].weight === "number").length;
-  return w !== null ? tx("{0} kg · {1} ölçüm", [(kg1(w)), (n)]) : tx("henüz ölçüm yok");
+  return w !== null ? tx("{0} · {1} ölçüm", [(fmtW(w)), (n)]) : tx("henüz ölçüm yok");
 }
 
 /* ---- otomatik güncellenen program önerileri ----
@@ -234,9 +234,15 @@ function kcalBand(program){
 function taskKind(t){
   if (t.kind) return t.kind;
   const x = t.title || "";
-  /* Başlıklar görevin oluşturulduğu dilde kaydedilir; iki dil de tanınır. */
+  /* Yeni görevler Türkçe başlıkla kaydedilir. 1.5.0'dan önce İngilizce modda
+     oluşturulanlar İngilizce başlık taşır; onlar da tanınır. */
   if (/^Workout:/.test(x)) return "train";
-  if (/^Walk [\d.,]+ steps$/.test(x)) return "steps";
+  if (/^(Walk )?[\d.,]+ steps$/.test(x)) return "steps";
+  if (/^Keep calories between|kcal target$/.test(x)) return "kcal";
+  if (/g of protein$/.test(x)) return "protein";
+  if (/ml of water$|^Drink .* of water$/.test(x)) return "water";
+  if (/^Sleep [\d-]+ hours$/.test(x)) return "sleep";
+  if (/^Morning weigh-in$/.test(x)) return "weigh";
   return /^Antrenman:/.test(x) ? "train" : /kcal hedefini tut/.test(x) ? "kcal"
        : /g protein al/.test(x) ? "protein" : /ml su iç/.test(x) ? "water"
        : /saat uyu/.test(x) ? "sleep" : /kilo ölçümü/.test(x) ? "weigh"
@@ -277,8 +283,8 @@ function autoInfo(t, entry, program, key){
     }
     case "water": {
       const v = entry.water || 0, g = program.water, need = Math.round(g*0.9);
-      return { title:tx("{0} ml su iç", [(g)]), ok: v >= need, pct: v/need, txt:`${v} / ${g} ml`,
-        why:tx("{0} ml'ye ulaşınca işaretlenir. {1} ml kaldı.", [(need), (Math.max(need - v, 0))]) };
+      return { title:tx("{0} su iç", [(fmtV(g))]), ok: v >= need, pct: v/need, txt:`${vOut(v)} / ${fmtV(g)}`,
+        why:tx("{0} olunca işaretlenir. {1} kaldı.", [(fmtV(need)), (fmtV(Math.max(need - v, 0)))]) };
     }
     case "sleep": {
       const v = typeof entry.sleep === "number" ? entry.sleep : null;
@@ -292,7 +298,7 @@ function autoInfo(t, entry, program, key){
       const v = typeof entry.weight === "number" ? entry.weight : null;
       const gun = key === today() ? tx("Bugün") : tx("O gün");
     return { title:tx("Sabah kilo ölçümü"), ok: v !== null, pct: v === null ? 0 : 1,
-        txt: v === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} kg girildi", [v.toFixed(1)]),
+        txt: v === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} girildi", [(fmtW(v))]),
         why:tx("{0}ün kilosu girilince işaretlenir.", [(gun)]) };
     }
     case "steps": {
@@ -318,6 +324,9 @@ function autoInfo(t, entry, program, key){
   return null;
 }
 
+/* Dinlenme günü esnemesi: otomatik ölçütü yok, elle işaretlenir. */
+const isRestTask = t => /^(Dinlenme günü|Rest day)/.test(t.title || "");
+
 /* Bugünün önerilerini verilerle eşitler; bir şey değiştiyse true döner. */
 function syncSuggested(entry, program, key){
   let changed = false;
@@ -327,7 +336,8 @@ function syncSuggested(entry, program, key){
     if (!a) continue;
     const kind = taskKind(t);
     if (t.kind !== kind){ t.kind = kind; changed = true; }
-    if (t.title !== a.title){ t.title = a.title; changed = true; }
+    /* Kayıttaki başlık Türkçe kalır; başka dilde yalnızca ekranda çevrilir. */
+    if (LANG === "tr" && t.title !== a.title){ t.title = a.title; changed = true; }
     if (t.man !== undefined){ delete t.man; changed = true; }
     if (t.done !== a.ok){ t.done = a.ok; changed = true; }
   }
@@ -363,7 +373,7 @@ function goToTask(kind, key){
 function taskRow(t, info){
   return `<div class="task" data-done="${t.done?1:0}">
     <button class="check" data-done="${t.done?1:0}" data-id="${t.id}" aria-label="${tx("Tamamlandı olarak işaretle")}"></button>
-    ${info ? `<button class="task-title task-go" data-goto="${taskKind(t)}" aria-label="${esc(t.title)}: ${GOTO_LABEL[taskKind(t)]}">` : `<span class="task-title">`}<span class="tt">${esc((info && info.label) || t.title)}</span>${info ? `<span class="task-sub${info.warn ? " warn" : ""}">${info.warn ? "⚠️ " : ""}${esc(info.txt)}</span>
+    ${info ? `<button class="task-title task-go" data-goto="${taskKind(t)}" aria-label="${esc(t.title)}: ${GOTO_LABEL[taskKind(t)]}">` : `<span class="task-title">`}<span class="tt">${esc((info && info.label) || (t.suggested ? tx(t.title) : t.title))}</span>${info ? `<span class="task-sub${info.warn ? " warn" : ""}">${info.warn ? "⚠️ " : ""}${esc(info.txt)}</span>
       ${info.ok ? "" : `<span class="task-bar"><i style="width:${clamp(info.pct*100,0,100).toFixed(0)}%"></i></span>`}` : ""}${info ? `</button><svg class="ico task-chev" aria-hidden="true"><use href="#i-next"/></svg>` : `</span>`}
     ${t.suggested ? "" : `<button class="del" data-del="${t.id}" aria-label="${tx("Sil")}">×</button>`}
   </div>`;
@@ -389,25 +399,26 @@ function wirePastBar(key){
 function wireToday(entry, program, key){
   key = key || today();
   /* mark: elle girildiğini kaydeden bayrak; günlük devralmadan önce sorulur. */
-  const bind = (id, field, int, mark) => {
+  /* conv: ekrandaki birimden kayıttaki metrik değere çevirir (units.js). */
+  const bind = (id, field, int, mark, conv) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.onchange = async () => {
       const n = num(el.value);
       if (n === null){ delete entry[field]; if (mark) delete entry[mark]; }
-      else { entry[field] = int ? Math.round(n) : n; if (mark) entry[mark] = true; }
+      else { entry[field] = conv ? conv(n) : int ? Math.round(n) : n; if (mark) entry[mark] = true; }
       await saveState(state); render();
     };
   };
-  bind("i-weight","weight");
+  bind("i-weight","weight",false,null,wSave);
   wireSleep(entry);
   app.querySelectorAll("[data-cup]").forEach(b => b.onclick = async () => {
-    const i = +b.dataset.cup, cur = Math.floor((entry.water || 0) / CUP);
+    const i = +b.dataset.cup, cur = cupsOf(entry.water);
     const n = (i + 1 === cur) ? i : i + 1;          /* son dolu bardağa dokunmak onu boşaltır */
-    if (n) entry.water = n * CUP; else delete entry.water;
+    if (n) entry.water = Math.round(n * cupMl()); else delete entry.water;
     await saveState(state); render();
   });
-  bind("i-kcal","kcal",true,"kcalManual"); bind("i-water","water",true);
+  bind("i-kcal","kcal",true,"kcalManual"); bind("i-water","water",true,null,vIn);
   const st = document.getElementById("i-steps");
   if (st) st.onchange = async () => {
     const n = num(st.value);
@@ -508,7 +519,7 @@ function wireBody(entry){
     el.onchange = async () => {
       entry.body = entry.body || {};
       const n = num(el.value);
-      if (n === null) delete entry.body[k]; else entry.body[k] = n;
+      if (n === null) delete entry.body[k]; else entry.body[k] = lIn(n);
       if (!Object.keys(entry.body).length) delete entry.body;
       await saveState(state); render();
     };

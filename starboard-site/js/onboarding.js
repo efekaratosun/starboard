@@ -127,7 +127,7 @@ function obDefaults(){
     goal:"maintain", targetWeight:null, activity:"moderate", sleepMin:7,
     venue:"gym", days:null, avoid:[],
     diet:"hepsi", mealSet:1, dislike:[],
-    theme:"auto", routines:[] };
+    theme:"auto", routines:[], units:detectUnits() };
 }
 const OB_DEFAULT_DAYS = a => PATTERN[(a === "sedentary" || a === "light") ? 3 : a === "moderate" ? 4 : 5].slice();
 
@@ -186,42 +186,50 @@ function rollSet(el, str){
 }
 
 /* ---- sürüklemeli cetvel ----
-   Yatay kaydırılan çizgili şerit; ortadaki iğnenin altındaki değer seçilir. */
-function obRuler(field, min, max, step, tw, majorEvery, midEvery, unit, dec){
+   Yatay kaydırılan çizgili şerit; ortadaki iğnenin altındaki değer seçilir.
+   Cetvel ekrandaki birimle çalışır (cm ya da inç, kg ya da lb); ob[field] her zaman
+   metrik kalır. cv: { to: metrikten ekrana, from: ekrandan metriğe, fmt: değer metni, lbl: çizgi etiketi } */
+const RULER_CV = {};
+const rulerVal = (f, min, max, step) => clamp(+(Math.round(RULER_CV[f].to(ob[f]) / step) * step).toFixed(2), min, max);
+function obRuler(field, min, max, step, tw, majorEvery, midEvery, unit, dec, cv){
+  cv = RULER_CV[field] = { to: v => v, from: v => v, fmt: v => dec ? fmtFix(v, 1) : String(v), lbl: v => +v.toFixed(1), ...cv };
   const n = Math.round((max - min) / step);
   let ticks = "";
   for (let i = 0; i <= n; i++){
     const v = min + i * step;
-    ticks += i % majorEvery === 0 ? `<i class="M" data-l="${+v.toFixed(1)}"></i>` : i % midEvery === 0 ? `<i class="m"></i>` : `<i></i>`;
+    ticks += i % majorEvery === 0 ? `<i class="M" data-l="${cv.lbl(v)}"></i>` : i % midEvery === 0 ? `<i class="m"></i>` : `<i></i>`;
   }
-  const val = ob[field];
-  const txt = dec ? val.toFixed(1).replace(".", ",") : String(val);
-  return `<div class="rl" data-rl="${field}" data-min="${min}" data-max="${max}" data-step="${step}" data-tw="${tw}" data-dec="${dec ? 1 : 0}" style="--tw:${tw}px">
-    <button type="button" class="rl-v" aria-label="${tx("{0} değerini elle yaz", [(unit)])}">
-      <b class="num rl-n" data-v="${txt}" aria-hidden="true">${rollHTML(txt)}</b><span>${unit}</span></button>
+  const val = rulerVal(field, min, max, step);
+  const txt = cv.fmt(val);
+  const name = unit || tx("Boy");
+  return `<div class="rl" data-rl="${field}" data-min="${min}" data-max="${max}" data-step="${step}" data-tw="${tw}" style="--tw:${tw}px">
+    <button type="button" class="rl-v" aria-label="${tx("{0} değerini elle yaz", [(name)])}">
+      <b class="num rl-n" data-v="${txt}" aria-hidden="true">${rollHTML(txt)}</b>${unit ? `<span>${unit}</span>` : ""}</button>
     <div class="rl-w">
-      <div class="rl-s" tabindex="0" role="slider" aria-label="${unit}" aria-valuemin="${min}" aria-valuemax="${max}" aria-valuenow="${val}"><div class="rl-t">${ticks}</div></div>
+      <div class="rl-s" tabindex="0" role="slider" aria-label="${name}" aria-valuemin="${min}" aria-valuemax="${max}" aria-valuenow="${val}" aria-valuetext="${txt} ${unit}"><div class="rl-t">${ticks}</div></div>
     </div>
   </div>`;
 }
 function wireRulers(animate){
   app.querySelectorAll(".rl").forEach(rl => {
-    const f = rl.dataset.rl, min = +rl.dataset.min, max = +rl.dataset.max, step = +rl.dataset.step, tw = +rl.dataset.tw, dec = rl.dataset.dec === "1";
+    const f = rl.dataset.rl, min = +rl.dataset.min, max = +rl.dataset.max, step = +rl.dataset.step, tw = +rl.dataset.tw;
     const sc = rl.querySelector(".rl-s"), out = rl.querySelector(".rl-n");
-    const fmt = v => dec ? v.toFixed(1).replace(".", ",") : String(v);
+    const cv = RULER_CV[f], fmt = cv.fmt;
+    const disp = () => rulerVal(f, min, max, step);
     const toX = v => (v - min) / step * tw;
     const set = v => {
       v = clamp(+(Math.round(v / step) * step).toFixed(2), min, max);
-      if (ob[f] === v) return;
-      ob[f] = v;
+      if (disp() === v) return;
+      ob[f] = cv.from(v);
       rollSet(out, fmt(v));
       sc.setAttribute("aria-valuenow", v);
+      sc.setAttribute("aria-valuetext", fmt(v) + " " + (rl.querySelector(".rl-v span")?.textContent || ""));
       rl.classList.add("live"); clearTimeout(rl._t); rl._t = setTimeout(() => rl.classList.remove("live"), 260);
     };
     /* Açılışta cetvel değerine doğru kayarak gelir; bu sırada değer değişmez. */
-    const target = ob[f];
+    const target = disp();
     let intro = false;
-    const endIntro = () => { if (!intro) return; intro = false; rollSet(out, fmt(ob[f])); };
+    const endIntro = () => { if (!intro) return; intro = false; rollSet(out, fmt(disp())); };
     if (animate && !reduceMotion()){
       intro = true;
       sc.scrollLeft = Math.max(toX(target) - 14 * tw, 0);
@@ -247,14 +255,14 @@ function wireRulers(animate){
     const end = () => {
       if (!drag) return;
       drag = null; sc.classList.remove("drag");
-      sc.scrollTo({ left: toX(ob[f]), behavior: reduceMotion() ? "auto" : "smooth" });
+      sc.scrollTo({ left: toX(disp()), behavior: reduceMotion() ? "auto" : "smooth" });
     };
     sc.onpointerup = end; sc.onpointercancel = end;
     sc.onkeydown = ev => {
       const d = { ArrowRight:1, ArrowUp:1, ArrowLeft:-1, ArrowDown:-1, PageUp:10, PageDown:-10 }[ev.key];
       if (!d) return;
       ev.preventDefault();
-      const v = clamp(ob[f] + d * step, min, max);
+      const v = clamp(disp() + d * step, min, max);
       sc.scrollTo({ left: toX(v), behavior:"auto" });
     };
 
@@ -263,7 +271,7 @@ function wireRulers(animate){
     vb.onclick = () => {
       if (vb.querySelector("input")) return;
       const inp = document.createElement("input");
-      inp.type = "number"; inp.inputMode = "decimal"; inp.className = "rl-in"; inp.value = ob[f];
+      inp.type = "number"; inp.inputMode = "decimal"; inp.className = "rl-in"; inp.value = disp();
       inp.setAttribute("aria-label", vb.getAttribute("aria-label"));
       out.hidden = true; vb.insertBefore(inp, out); inp.focus(); inp.select();
       const done = () => {
@@ -286,7 +294,7 @@ function obProfile(){
     sex: ob.sex, avatar: ob.avatar, avColor: ob.avColor,
     activity: ob.activity, goal: ob.goal, noPlan: !!ob.noPlan,
     venue: ob.venue, days: ob.days || OB_DEFAULT_DAYS(ob.activity),
-    avoid: ob.avoid.slice(), sleepMin: ob.sleepMin, theme: ob.theme
+    avoid: ob.avoid.slice(), sleepMin: ob.sleepMin, theme: ob.theme, units: ob.units
   };
   if (ob.targetWeight) profile.targetWeight = Math.round(ob.targetWeight * 10) / 10;
   profile.programId = defaultProgramId(profile.venue, profile.activity, profile.days);
@@ -321,8 +329,17 @@ const OB_STEPS = [
     body: () => {
       if (ob.height == null) ob.height = ob.sex === "female" ? 163 : ob.sex === "male" ? 176 : 170;
       if (ob.weight == null) ob.weight = ob.sex === "female" ? 60 : ob.sex === "male" ? 78 : 70;
-      return og(tx("Boy"), obRuler("height", 120, 220, 1, 12, 10, 5, "cm", false))
-        + og(tx("Kilo"), obRuler("weight", 30, 200, 0.5, 10, 10, 2, "kg", true))
+      /* İmperialde boy inç cinsinden kayar, 5′10″ diye yazılır; kilo lb. */
+      const rulers = isImp()
+        ? og(tx("Boy"), obRuler("height", 48, 87, 1, 12, 12, 6, "", false,
+              { to: v => v / CM_PER_IN, from: v => Math.round(v * CM_PER_IN * 10) / 10,
+                fmt: v => `${Math.floor(v / 12)}′${v % 12}″`, lbl: v => `${v / 12}′` }))
+          + og(tx("Kilo"), obRuler("weight", 60, 440, 1, 10, 10, 5, "lb", false,
+              { to: v => v / KG_PER_LB, from: v => Math.round(v * KG_PER_LB * 1000) / 1000 }))
+        : og(tx("Boy"), obRuler("height", 120, 220, 1, 12, 10, 5, "cm", false))
+          + og(tx("Kilo"), obRuler("weight", 30, 200, 0.5, 10, 10, 2, "kg", true));
+      return og(tx("Birimler"), obChips("obunit", UNIT_SYSTEMS.map(([k, l]) => [k, l, ob.units === k])))
+        + rulers
         + `<div class="og-row">`
         + og(tx("Yaş"), `<input id="ob-age" type="number" inputmode="numeric" value="${ob.age ?? ""}" placeholder="30">`)
         + og(tx("Yağ oranı (%)"), `<input id="ob-bf" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}">`, true)
@@ -333,11 +350,11 @@ const OB_STEPS = [
       : ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "" },
   { id:"goal", t:tx("Hedefin"),
     body: () => og(tx("Ne istiyorsun?"), obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label])))
-      + og(tx("Hedef kilon (kg)"), `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight ?? ""}" placeholder="${Math.round((ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
+      + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${Math.round(wOut(ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
       + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
       + og(tx("Uyku hedefin"), obChips("obsleep", [6,7,8,9].map(n => [n, tx("{0}-{1} saat", [(n), (n+2)]), ob.sleepMin === n]))),
-    read: () => { ob.targetWeight = num(obVal("ob-tw")); },
-    valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : [tx("Hedef kiloyu 30 ile 300 kg arasında gir ya da boş bırak."), "ob-tw"] },
+    read: () => { const n = num(obVal("ob-tw")); ob.targetWeight = n === null ? null : wSave(n); },
+    valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : [tx("Hedef kiloyu {0} ile {1} arasında gir ya da boş bırak.", [(fmtW0(30)), (fmtW0(300))]), "ob-tw"] },
   { id:"train", t:tx("Antrenman"),
     body: () => {
       if (!ob.days) ob.days = OB_DEFAULT_DAYS(ob.activity);
@@ -401,9 +418,9 @@ function obSummary(){
     <p class="on-tag">${tx("{0} hedefine göre günlük hedeflerin:", [(GOAL[ob.goal].label)])}</p>
     <div class="os-k"><b class="num" id="os-kn" data-to="${p.kcal}">${p.kcal}</b><span>${tx("kcal / gün")}</span></div>
     <div class="os-g">
-      ${tile("poultry", p.protein, " g", "protein")}
-      ${tile("dairy", (p.water / 1000).toFixed(1).replace(".", ","), " L", "su")}
-      ${tile("rest", `${ob.sleepMin}-${ob.sleepMin + 2}`, " sa", "uyku")}
+      ${tile("poultry", p.protein, " g", tx("protein"))}
+      ${isImp() ? tile("dairy", vOut(p.water), " fl oz", tx("su")) : tile("dairy", fmtFix(p.water / 1000, 1), " L", tx("su"))}
+      ${tile("rest", `${ob.sleepMin}-${ob.sleepMin + 2}`, " " + tx("sa"), tx("uyku"))}
     </div>
     <div class="os-p">${iconBox(tr.none ? "rest" : "plan")}<span><b>${tr.none ? tx("Spor programı yok") : esc(tr.title)}</b>
       <i>${tr.none ? tx("İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin.")
@@ -580,6 +597,12 @@ function wireOb(st, list, animate){
     });
     if (f === "venue"){ const note = document.getElementById("day-note"); if (note) note.textContent = dayNote(ob.venue, ob.activity, ob.days); }
     obErr("");
+  });
+
+  /* birimler: cetveller yeni birimle yeniden çizilir */
+  app.querySelectorAll("[data-obunit]").forEach(b => b.onclick = () => {
+    if (ob.units === b.dataset.obunit) return;
+    ob.units = b.dataset.obunit; obRefresh();
   });
 
   /* uyku: tek seçimli rozet */

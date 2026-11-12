@@ -38,18 +38,18 @@ function evaluate(entry, profile, program, weight){
     switch (a.id){
       case "weight":
         return a.value === null ? blank(name, tx("Bugün girilmedi"))
-          : bar(name, a.value.toFixed(1)+" kg", a,
-              tx("BMI {0} · normal aralık {1}–{2} kg", [(a.bmi.toFixed(1)), (a.low.toFixed(0)), (a.high.toFixed(0))]));
+          : bar(name, fmtW(a.value), a,
+              tx("BMI {0} · normal aralık {1}–{2}", [(kg1(a.bmi)), (Math.round(wOut(a.low))), (fmtW0(a.high))]));
       case "sleep":
         return a.value === null ? blank(name, tx("Bugün girilmedi"))
-          : bar(name, tx("{0} saat", [(a.value.toFixed(1))]), a, tx("Senin hedefin {0}–{1} saat", [(a.low), (a.high)]));
+          : bar(name, tx("{0} saat", [(kg1(a.value))]), a, tx("Senin hedefin {0}–{1} saat", [(a.low), (a.high)]));
       case "kcal":
         return a.value === null ? blank(name, tx("Hedef {0} kcal", [(a.target)]))
           : bar(name, a.value+" kcal", a,
               tx("Hedef {0} kcal · bant {1}–{2}", [(a.target), (Math.round(a.low)), (Math.round(a.high))]));
       default:
-        return a.value === null ? blank(name, tx("Hedef {0} ml", [(a.target)]))
-          : bar(name, a.value+" ml", a, tx("Hedef {0} ml", [(a.target)]));
+        return a.value === null ? blank(name, tx("Hedef {0}", [(fmtV(a.target))]))
+          : bar(name, fmtV(a.value), a, tx("Hedef {0}", [(fmtV(a.target))]));
     }
   });
 }

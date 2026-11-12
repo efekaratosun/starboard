@@ -11,11 +11,14 @@ function settingsView(){
     <h2>${tx("Profil")}</h2>
     <div class="field"><label for="s-nm">${tx("Adın")}</label><input id="s-nm" type="text" value="${esc(p.name || "")}" placeholder="${tx("Seni nasıl selamlayalım?")}" autocomplete="given-name"></div>
     <div class="row">
-      <div class="field"><label for="s-h">${tx("Boy (cm)")}</label><input id="s-h" type="number" inputmode="decimal" value="${p.height}"></div>
+      ${isImp()
+        ? `<div class="field"><label for="s-hft">${tx("Boy ({0})", ["ft"])}</label><input id="s-hft" type="number" inputmode="numeric" value="${heightFtIn(p.height)[0]}"></div>
+      <div class="field"><label for="s-hin">in</label><input id="s-hin" type="number" inputmode="numeric" value="${heightFtIn(p.height)[1]}"></div>`
+        : `<div class="field"><label for="s-h">${tx("Boy ({0})", ["cm"])}</label><input id="s-h" type="number" inputmode="decimal" value="${p.height}"></div>`}
       <div class="field"><label for="s-age">${tx("Yaş")}</label><input id="s-age" type="number" inputmode="numeric" value="${p.age}"></div>
     </div>
-    <div class="field"><label for="s-tw">${tx("Hedef kilo (kg)")}</label>
-      <input id="s-tw" type="number" inputmode="decimal" value="${p.targetWeight ?? ""}" placeholder="${tx("isteğe bağlı")}"></div>
+    <div class="field"><label for="s-tw">${tx("Hedef kilo ({0})", [(wUnit())])}</label>
+      <input id="s-tw" type="number" inputmode="decimal" value="${typeof p.targetWeight === "number" ? +wOut(p.targetWeight).toFixed(1) : ""}" placeholder="${tx("isteğe bağlı")}"></div>
     <div class="field"><label for="s-bf">${tx("Yağ oranı (%)")}</label>
       <input id="s-bf" type="number" inputmode="decimal" value="${p.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}"></div>
     <div class="field"><label for="s-sex">${tx("Cinsiyet")}</label>
@@ -34,6 +37,10 @@ function settingsView(){
     <label>${tx("Dil")}</label>
     <div class="chips">${LANGS.map(([k,l]) =>
       `<button class="chip${LANG === k ? " sel" : ""}" data-slang="${k}">${l}</button>`).join("")}</div>
+    <div style="height:16px"></div>
+    <label>${tx("Birimler")}</label>
+    <div class="chips">${UNIT_SYSTEMS.map(([k,l]) =>
+      `<button class="chip${unitSys() === k ? " sel" : ""}" data-sunit="${k}">${l}</button>`).join("")}</div>
     <div style="height:16px"></div>
     <label>${tx("Tema")}</label>
     <div class="chips">${THEMES.map(([k,l]) =>
@@ -105,14 +112,16 @@ function wireSettings(){
   wireColor("st", c => { stColor = c; document.getElementById("s-av-field").style.setProperty("--av", c); });
   document.getElementById("s-save").onclick = async () => {
     const p = state.profile;
-    const h = num(document.getElementById("s-h").value);
+    const h = isImp()
+      ? heightFromFtIn(num(document.getElementById("s-hft").value), num(document.getElementById("s-hin").value))
+      : num(document.getElementById("s-h").value);
     const a = num(document.getElementById("s-age").value);
     if (h && h > 100 && h < 250) p.height = h;
     if (a && a > 10 && a < 100) p.age = a;
     p.bodyFat = num(document.getElementById("s-bf").value);
     p.name = document.getElementById("s-nm").value.trim().slice(0, 30) || undefined;
     const tw = num(document.getElementById("s-tw").value);
-    if (tw && tw >= 30 && tw <= 300) p.targetWeight = Math.round(tw * 10) / 10; else delete p.targetWeight;
+    if (tw && wIn(tw) >= 30 && wIn(tw) <= 300) p.targetWeight = wSave(tw); else delete p.targetWeight;
     p.sex = document.getElementById("s-sex").value;
     if (stAvatar) p.avatar = stAvatar;
     if (stColor) p.avColor = stColor;
@@ -124,6 +133,9 @@ function wireSettings(){
 
   const save = async () => { await saveState(state); render(); };
   app.querySelectorAll("[data-slang]").forEach(b => b.onclick = () => setLang(b.dataset.slang));
+  app.querySelectorAll("[data-sunit]").forEach(b => b.onclick = async () => {
+    state.profile.units = b.dataset.sunit; await save();
+  });
   app.querySelectorAll("[data-sth]").forEach(b => b.onclick = () => {
     openThemeSheet(b.dataset.sth, async t => {
       state.profile.theme = t; applyTheme(t); await save();

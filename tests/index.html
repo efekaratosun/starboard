@@ -16,6 +16,8 @@ body{font:14px/1.5 ui-monospace,Consolas,monospace;margin:20px;background:#fff;c
 <script>
 /* Testler Türkçe metinlere göre yazıldı; tarayıcının dili ne olursa olsun Türkçe çalışır. */
 window.STARBOARD_LANG = "tr";
+/* Tarayıcının bölgesi ne olursa olsun birimler metrik başlar; imperial testleri kendisi seçer. */
+window.STARBOARD_UNITS = "metric";
 /* Uygulamanın kodunu index.html'deki sırayla yükler (başlatma dosyaları hariç),
    sonra tests.js içindeki testleri çalıştırır. Sonuç <html data-result> içine yazılır. */
 (async () => {

@@ -6,7 +6,7 @@
 let woIdx = 0, woEl = null, woDone = false;
 
 const tgNum = tg => { const m = String(tg ?? "").match(/\d+/); return m ? +m[0] : null; };
-const woStep = (f, v) => f === "kg" ? 2.5 : f === "km" ? 0.5 : f === "min" ? 5 : f === "m" ? 25 : 1;
+const woStep = (f, v) => f === "kg" ? liftStep() : f === "km" ? 0.5 : f === "min" ? 5 : f === "m" ? 25 : 1;
 const woRound = (f, v) => f === "kg" || f === "km" || f === "min" ? Math.round(v * 100) / 100 : Math.round(v);
 
 function woList(){
@@ -50,7 +50,7 @@ const woSetDone = (ex, rec, k) => ex.t === "w"
 /* ---- parçalar ---- */
 function woField(f, v, label, k){
   return `<div class="wo-f">
-    <button class="wo-pm" data-wpm="${f}" data-wk="${k}" data-wd="-1" aria-label="${label} azalt" tabindex="-1">−</button>
+    <button class="wo-pm" data-wpm="${f}" data-wk="${k}" data-wd="-1" aria-label="${tx("{0} azalt", [(label)])}" tabindex="-1">−</button>
     <label class="wo-v"><input type="text" inputmode="decimal" enterkeyhint="done" data-wi="${f}" data-wk="${k}"
       value="${v === null || v === undefined ? "" : fmtN(v)}" aria-label="${label}"><span>${label}</span></label>
     <button class="wo-pm" data-wpm="${f}" data-wk="${k}" data-wd="1" aria-label="${tx("{0} artır", [(label)])}" tabindex="-1">+</button>
@@ -60,16 +60,16 @@ const woTick = `<svg aria-hidden="true"><use href="#i-check"/></svg>`;
 function woSetRow(ex, rec, prev, k){
   const on = woSetDone(ex, rec, k), s = woSug(ex, rec, prev, k);
   const fields = ex.t === "w"
-    ? woField("kg", s.kg, "kg", k) + woField("r", s.r, "tekrar", k)
-    : woField("s", s.v, ex.t === "t" ? "saniye" : "tekrar", k);
+    ? woField("kg", s.kg == null ? s.kg : liftOut(s.kg), wUnit(), k) + woField("r", s.r, tx("tekrar"), k)
+    : woField("s", s.v, ex.t === "t" ? tx("saniye") : tx("tekrar"), k);
   return `<div class="wo-set${on ? " on" : ""}">
     <span class="wo-no">${k+1}</span>
     <div class="wo-fields">${fields}</div>
-    <button class="wo-ok" data-wok="${k}" aria-pressed="${on}" aria-label="${k+1}. seti ${on ? "geri al" : tx("tamamlandı olarak işaretle")}">${woTick}</button>
+    <button class="wo-ok" data-wok="${k}" aria-pressed="${on}" aria-label="${on ? tx("{0}. seti geri al", [(k+1)]) : tx("{0}. seti tamamlandı olarak işaretle", [(k+1)])}">${woTick}</button>
   </div>`;
 }
 function woChips(cur, max, unit){
-  return `<div class="wo-chips" role="group" aria-label="Tamamlanan ${unit}">${Array.from({ length:max }, (_, i) =>
+  return `<div class="wo-chips" role="group" aria-label="${tx("Tamamlanan {0}", [(unit)])}">${Array.from({ length:max }, (_, i) =>
     `<button class="wo-chip${i < cur ? " on" : ""}" data-wc="${i+1}" aria-pressed="${i < cur}"
       aria-label="${i+1}. ${unit}">${i+1}</button>`).join("")}</div>
     <div class="wo-note">${tx("{0}/{1} {2} tamam. Kaçıncı {3} bittiyse ona dokun; aynısına tekrar dokunursan geri alır.", [(cur), (max), (unit), (unit)])}</div>`;
@@ -83,20 +83,20 @@ function woBody(ex, name, rec, prev){
       const canCopy = !all && (prev || (ex.t !== "w" && tgNum(ex.tg) !== null));
       return `${canCopy ? `<button class="ghost wo-copy" id="wo-copy">${prev ? tx("Hepsi geçen seferki gibi") : tx("Hepsini hedefe göre doldur")}</button>` : ""}
         <div class="wo-sets">${Array.from({ length:n }, (_, k) => woSetRow(ex, rec, prev, k)).join("")}</div>
-        <div class="wo-note">${tx("Değerler {0} geliyor. Aynıysa ✓'e bas, farklıysa − / + ile düzelt ya da sayıya dokunup yaz.", [(prev ? tx("geçen antrenmandan") : "programdaki hedeften")])}</div>`;
+        <div class="wo-note">${tx("Değerler {0} geliyor. Aynıysa ✓'e bas, farklıysa − / + ile düzelt ya da sayıya dokunup yaz.", [(prev ? tx("geçen antrenmandan") : tx("programdaki hedeften"))])}</div>`;
     }
     case "wc": {
       const s = { kg: rec.kg ?? (prev && prev.kg) ?? null };
-      return `<div class="wo-fields" style="margin-bottom:14px">${woField("kg", s.kg, "kg", "")}</div>
+      return `<div class="wo-fields" style="margin-bottom:14px">${woField("kg", s.kg == null ? s.kg : liftOut(s.kg), wUnit(), "")}</div>
         ${woChips(rec.n || 0, ex.n, exText(ex.unit || "set"))}`;
     }
     case "n": return woChips(rec.n || 0, ex.n, exText(ex.unit || "tur"));
-    case "sw": return `${woChips(rec.n || 0, ex.n, "tekrar")}
-      <div class="wo-fields" style="margin-top:14px">${woField("min", rec.min ?? (prev && prev.min) ?? null, "dakika", "")}</div>`;
-    case "sd": return `<div class="wo-fields">${woField("m", rec.m ?? ex.d ?? null, "metre", "")}${woField("min", rec.min ?? (prev && prev.min) ?? null, "dakika", "")}</div>`;
+    case "sw": return `${woChips(rec.n || 0, ex.n, tx("tekrar"))}
+      <div class="wo-fields" style="margin-top:14px">${woField("min", rec.min ?? (prev && prev.min) ?? null, tx("dakika"), "")}</div>`;
+    case "sd": return `<div class="wo-fields">${woField("m", rec.m ?? ex.d ?? null, tx("metre"), "")}${woField("min", rec.min ?? (prev && prev.min) ?? null, tx("dakika"), "")}</div>`;
     case "c": {
       const min = rec.min ?? tgNum(ex.tg), km = rec.km ?? (prev && prev.km) ?? null;
-      return `<div class="wo-fields">${woField("min", min, "dakika", "")}${ex.km ? woField("km", km, "km", "") : ""}</div>
+      return `<div class="wo-fields">${woField("min", min, tx("dakika"), "")}${ex.km ? woField("km", km, "km", "") : ""}</div>
         ${rec.min && rec.km ? `<div class="wo-note">${tx("Tempo:")} <b>${pace(rec.min, rec.km)}</b></div>`
           : ""}`;
     }
@@ -250,7 +250,7 @@ function wireWO(){
     if (ex.t === "w"){
       const r = val("r", k);
       if (r === null || r === 0){ toast(tx("Kaç tekrar yaptığını gir.")); return; }
-      const kg = val("kg", k);
+      const kgIn = val("kg", k), kg = kgIn === null ? null : liftIn(kgIn);
       rec.sets[k] = kg === null ? { r } : { kg, r };
     } else {
       const v = val("s", k);
@@ -286,7 +286,7 @@ function wireWO(){
     for (let j = 0; j < rec.sets.length; j++) if (rec.sets[j] === undefined) rec.sets[j] = null;
     await save(); drawWO();
     checkPR(name, before);
-    toast(`${n} set kaydedildi.`);
+    toast(tx("{0} set kaydedildi.", [(n)]));
   };
 
   /* tur / set rozetleri */
@@ -307,7 +307,7 @@ function wireWO(){
       const rec = woRec(name, ex.t);
       const before = records().find(r => r.name === name);
       const n = num(i.value);
-      const v = n !== null && n >= 0 ? (f === "m" ? Math.round(n) : n) : null;
+      const v = n !== null && n >= 0 ? (f === "m" ? Math.round(n) : f === "kg" ? liftIn(n) : n) : null;
       if (v === null) delete rec[f]; else rec[f] = v;
       woTidy(name); await save();
       const ae = document.activeElement === i;

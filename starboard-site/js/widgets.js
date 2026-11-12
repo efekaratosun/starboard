@@ -6,7 +6,7 @@ const BODY = [["bel",tx("Bel")],["gogus",tx("Göğüs")],["kalca",tx("Kalça")],
 function bodySection(entry){
   const b = entry.body || {};
   const filled = BODY.filter(([k]) => typeof b[k] === "number").length;
-  return `<section><h2>${tx("Vücut ölçüleri")} <span class="count">${filled ? `${filled}/${BODY.length} · cm` : "cm"}</span></h2>
+  return `<section><h2>${tx("Vücut ölçüleri")} <span class="count">${filled ? `${filled}/${BODY.length} · ${lUnit()}` : lUnit()}</span></h2>
     <div class="entry">
       <div class="entry-main" style="display:flex;align-items:center;gap:12px">
         <label for="bd-yag" style="flex:1;margin:0">${tx("Yağ oranı (%)")}</label>
@@ -15,7 +15,7 @@ function bodySection(entry){
     ${BODY.map(([k,l]) => `<div class="entry">
       <div class="entry-main" style="display:flex;align-items:center;gap:12px">
         <label for="bd-${k}" style="flex:1;margin:0">${l}</label>
-        <input id="bd-${k}" type="number" inputmode="decimal" value="${typeof b[k]==="number"?b[k]:""}" placeholder="—" style="flex:0 0 100px">
+        <input id="bd-${k}" type="number" inputmode="decimal" value="${typeof b[k]==="number"?lOut(b[k]):""}" placeholder="—" style="flex:0 0 100px">
       </div></div>`).join("")}
     <div class="metric-note" style="margin-top:10px">${tx("Haftada bir, sabah aç karnına ölç.")}</div></section>`;
 }
@@ -45,9 +45,9 @@ function weeklySummary(){
 
   return `<section>
     <h2>${tx("Son 7 gün")}</h2>
-    ${row(tx("Ortalama kalori"), avg !== null ? `${avg} kcal` : "—", avg !== null ? `hedef ${program.kcal} kcal` : tx("kalori girilmemiş"))}
+    ${row(tx("Ortalama kalori"), avg !== null ? `${avg} kcal` : "—", avg !== null ? tx("hedef {0}", [(program.kcal + " kcal")]) : tx("kalori girilmemiş"))}
     ${row(tx("Hedef bandında gün"), kcals.length ? `${inBand}/${kcals.length}` : "—", tx("±%10 aralığı"))}
-    ${row(tx("Kilo değişimi"), wch !== null ? `${wch>0?"+":""}${wch.toFixed(2)} kg` : "—", wch !== null ? tx("iki haftalık ortalama farkı") : tx("trend için daha fazla ölçüm gerekli"))}
+    ${row(tx("Kilo değişimi"), wch !== null ? `${wch>0?"+":""}${fmtFix(wOut(wch), 2)} ${wUnit()}` : "—", wch !== null ? tx("iki haftalık ortalama farkı") : tx("trend için daha fazla ölçüm gerekli"))}
     ${row(tx("Tamamlanan görev"), tAll ? `%${Math.round(tDone/tAll*100)}` : "—", tAll ? `${tDone}/${tAll}` : "")}
     ${row(tx("Antrenman kaydı"), tx("{0} gün", [(lifts)]), "")}
   </section>`;
@@ -218,11 +218,10 @@ function skyGallery(){
 }
 
 /* ---- su bardakları ---- */
-const CUP = 250;
 function cupsHTML(water, target){
-  const n = Math.max(6, Math.min(14, Math.ceil((target || 2000) / CUP)));
-  const full = Math.floor((water || 0) / CUP);
-  return `<div class="cups" role="group" aria-label="${tx("Su bardakları, her biri {0} ml", [(CUP)])}">${Array.from({ length:n }, (_, i) =>
+  const n = Math.max(6, Math.min(14, Math.ceil((target || 2000) / cupMl())));
+  const full = cupsOf(water);
+  return `<div class="cups" role="group" aria-label="${tx("Su bardakları, her biri {0}", [(fmtV(cupMl()))])}">${Array.from({ length:n }, (_, i) =>
     `<button class="cup${i < full ? " on" : ""}" data-cup="${i}" aria-label="${tx("{0}. bardak", [(i+1)])}${i < full ? tx(", içildi") : ""}">
       <svg viewBox="0 0 24 28" aria-hidden="true"><path class="cup-f" d="M5.4 11.5h13.2l-1.2 12.3a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4z"/>
       <path class="cup-o" d="M4 3.5h16l-1.9 20.6a2.2 2.2 0 0 1-2.2 2H8.1a2.2 2.2 0 0 1-2.2-2z"/></svg></button>`).join("")}</div>`;
@@ -230,7 +229,7 @@ function cupsHTML(water, target){
 
 /* ---- uyku kaydırıcısı ---- */
 const hm = m => { m = ((m % 1440) + 1440) % 1440; return `${String(Math.floor(m/60)).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`; };
-const durTxt = m => `${Math.floor(m/60)} sa${m % 60 ? ` ${m % 60} dk` : ""}`;
+const durTxt = m => `${Math.floor(m/60)} ${tx("sa")}${m % 60 ? ` ${m % 60} ${tx("dk")}` : ""}`;
 function sleepTimes(entry){
   const wake = typeof entry.wake === "number" ? ((entry.wake % 1440) + 1440) % 1440 : 420;
   let bed = typeof entry.bed === "number" ? entry.bed
@@ -346,7 +345,7 @@ function records(){
     for (const [name, rec] of Object.entries(d.lifts || {})){
       if (!liftHas(rec)) continue;
       if (!rec.t){                                   /* eski biçim */
-        if (rec.kg) put(name, e1rm(rec.kg, rec.reps || 1), `${fmtN(rec.kg)} kg × ${rec.reps || 1}`, k, { u:"w" });
+        if (rec.kg) put(name, e1rm(rec.kg, rec.reps || 1), `${fmtLift(rec.kg)} ${wUnit()} × ${rec.reps || 1}`, k, { u:"w" });
         continue;
       }
       switch (rec.t){
@@ -354,10 +353,10 @@ function records(){
           const sets = (rec.sets || []).filter(x => x && x.kg && x.r);
           if (!sets.length) break;
           const b = sets.reduce((a, x) => e1rm(x.kg, x.r) > e1rm(a.kg, a.r) ? x : a);
-          put(name, e1rm(b.kg, b.r), `${fmtN(b.kg)} kg × ${b.r}`, k, { u:"w" });
+          put(name, e1rm(b.kg, b.r), `${fmtLift(b.kg)} ${wUnit()} × ${b.r}`, k, { u:"w" });
           break;
         }
-        case "wc": if (rec.kg) put(name, rec.kg * 100 + (rec.n || 0), exText(`${fmtN(rec.kg)} kg · ${rec.n || 0} set`), k, { u:"w" }); break;
+        case "wc": if (rec.kg) put(name, rec.kg * 100 + (rec.n || 0), exText(`${fmtLift(rec.kg)} ${wUnit()} · ${rec.n || 0} set`), k, { u:"w" }); break;
         case "r": { const m = Math.max(0, ...numsOf(rec.sets)); if (m) put(name, m, exText(`${m} tekrar`), k, { u:"r" }); break; }
         case "t": { const m = Math.max(0, ...numsOf(rec.sets)); if (m) put(name, m, exText(`${m} sn`), k, { u:"t" }); break; }
         case "n": if (rec.n) put(name, rec.n, exText(`${rec.n} tur`), k, { u:"n" }); break;
@@ -503,7 +502,6 @@ function fatClass(bf, sex){
 function bmiClass(b){
   return b < 18.5 ? [tx("zayıf"),"warn"] : b < 25 ? [tx("normal"),"ok"] : b < 30 ? [tx("kilolu"),"warn"] : [tx("obez"),"bad"];
 }
-const kg1 = v => v.toFixed(1).replace(".", ",");
 
 function bodyCard(){
   const p = state.profile, female = p.sex === "female", neutral = p.sex !== "female" && p.sex !== "male";
@@ -529,8 +527,8 @@ function bodyCard(){
   const [bmiTxt, bmiCls] = bmi !== null ? bmiClass(bmi) : ["", ""];
   const [bfTxt, bfCls] = bf !== null ? fatClass(bf, p.sex) : ["", ""];
   const stats = `<div class="stats">
-    <div class="stat"><b>${p.height}<small> ${tx("cm")}</small></b><span>${tx("Boy")}</span></div>
-    <div class="stat"><b>${w !== null ? kg1(w) : "—"}<small> ${tx("kg")}</small></b><span>${tx("Kilo")}</span></div>
+    <div class="stat"><b>${isImp() ? fmtHeight(p.height) : `${p.height}<small> cm</small>`}</b><span>${tx("Boy")}</span></div>
+    <div class="stat"><b>${w !== null ? wNum(w) : "—"}<small> ${wUnit()}</small></b><span>${tx("Kilo")}</span></div>
     <div class="stat"><b>${bf !== null ? kg1(bf) : "—"}<small> %</small></b><span>${tx("Yağ oranı")}${bfTxt ? ` <em class="tag ${bfCls}">${bfTxt}</em>` : ""}</span></div>
     <div class="stat"><b>${bmi !== null ? kg1(bmi) : "—"}</b><span>BMI${bmiTxt ? ` <em class="tag ${bmiCls}">${bmiTxt}</em>` : ""}</span></div>
   </div>`;
@@ -555,14 +553,14 @@ function bodyCard(){
     journey = `<div class="bc-sec">
       <div class="bc-h"><span>${tx("Hedefe yolculuk")}</span><b class="num">%${Math.round(pct * 100)}</b></div>
       <div class="jr"><div class="jr-fill" style="width:${(pct*100).toFixed(1)}%"></div><span class="jr-now" style="left:${(pct*100).toFixed(1)}%"></span></div>
-      <div class="jr-lbl num"><span><b>${kg1(start)}</b>${tx("başlangıç")}</span><span class="mid"><b>${kg1(w)}</b>${tx("şimdi")}</span><span class="end"><b>${kg1(target)}</b>${tx("hedef")}</span></div>
-      <div class="bc-note">${Math.abs(gone) >= 0.05 ? tx(gone > 0 ? "{0} kg verdin · " : "{0} kg aldın · ", [(kg1(Math.abs(gone)))]) : ""}${reached ? "" : tx("{0} kg kaldı · ", [(kg1(left))])}${eta}</div>
+      <div class="jr-lbl num"><span><b>${wNum(start)}</b>${tx("başlangıç")}</span><span class="mid"><b>${wNum(w)}</b>${tx("şimdi")}</span><span class="end"><b>${wNum(target)}</b>${tx("hedef")}</span></div>
+      <div class="bc-note">${Math.abs(gone) >= 0.05 ? tx(gone > 0 ? "{0} verdin · " : "{0} aldın · ", [(fmtW(Math.abs(gone)))]) : ""}${reached ? "" : tx("{0} kaldı · ", [(fmtW(left))])}${eta}</div>
     </div>`;
   } else {
     journey = `<div class="bc-sec">
       <div class="bc-h"><span>${tx("Hedefe yolculuk")}</span></div>
       <div class="tw-row"><label for="tw" class="tw-l">${tx("Hedef kilon kaç?")}</label>
-        <input id="tw" type="number" inputmode="decimal" placeholder="${tx("kg")}">
+        <input id="tw" type="number" inputmode="decimal" placeholder="${wUnit()}">
         <button id="tw-save">${tx("Kaydet")}</button></div>
       <div class="bc-note">${tx("Hedef kilonu girince ilerlemen burada görünür.")}</div>
     </div>`;
@@ -574,9 +572,9 @@ function bodyCard(){
     const fatKg = w * bf / 100, lean = w - fatKg;
     comp = `<div class="bc-sec">
       <div class="bc-h"><span>${tx("Vücut kompozisyonu")}</span></div>
-      <div class="comp" role="img" aria-label="${tx("Yağsız kütle {0} kg, yağ {1} kg", [(kg1(lean)), (kg1(fatKg))])}">
+      <div class="comp" role="img" aria-label="${tx("Yağsız kütle {0}, yağ {1}", [(fmtW(lean)), (fmtW(fatKg))])}">
         <i class="lean" style="width:${(100 - bf).toFixed(1)}%"></i><i class="fat" style="width:${bf.toFixed(1)}%"></i></div>
-      <div class="comp-lbl num"><span><i class="dot lean"></i>${tx("Yağsız")} <b>${tx("{0} kg", [(kg1(lean))])}</b></span><span><i class="dot fat"></i>${tx("Yağ")} <b>${tx("{0} kg", [(kg1(fatKg))])}</b></span></div>
+      <div class="comp-lbl num"><span><i class="dot lean"></i>${tx("Yağsız")} <b>${fmtW(lean)}</b></span><span><i class="dot fat"></i>${tx("Yağ")} <b>${fmtW(fatKg)}</b></span></div>
       <div class="bc-note">${neutral ? tx("Fit aralık erkekte %14–17, kadında %21–24; ortalama erkekte %18–24, kadında %25–31 (ACE). Etiket iki sınırın ortalamasına göre verilir.")
         : tx("{0} fit aralık %{1}, ortalama %{2} (ACE).", [(female ? tx("Kadında") : tx("Erkekte")), (female ? "21–24" : "14–17"), (female ? "25–31" : "18–24")])}</div>
     </div>`;
@@ -600,8 +598,8 @@ function wireHome(){
   const i = document.getElementById("tw");
   const save = async () => {
     const n = num(i.value);
-    if (!n || n < 30 || n > 300){ toast(tx("30 ile 300 kg arasında bir hedef gir.")); return; }
-    state.profile.targetWeight = Math.round(n * 10) / 10;
+    if (!n || wIn(n) < 30 || wIn(n) > 300){ toast(tx("{0} ile {1} arasında bir hedef gir.", [(fmtW0(30)), (fmtW0(300))])); return; }
+    state.profile.targetWeight = wSave(n);
     await saveState(state); render();
   };
   b.onclick = save;

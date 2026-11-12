@@ -256,7 +256,7 @@ function mealManager(){
   return `<section>
     <h2>${tx("Öğünlerim")} <span class="count">${list.length}</span></h2>
     ${list.map((m,i) => `<div class="rt">${iconBox(m.cat === "kahvalti" ? "egg" : m.cat === "ara" ? "fruit" : "grain")}
-      <div class="m"><h3>${esc(m.name)}</h3><p>${tx("günlük hedefin %{0} kadarı · {1}:00 civarı", [(Math.round(shares[i]*100)), (m.h)])}</p></div>
+      <div class="m"><h3>${esc(mealName(m))}</h3><p>${tx("günlük hedefin %{0} kadarı · {1}:00 civarı", [(Math.round(shares[i]*100)), (m.h)])}</p></div>
       ${list.length > 1 ? `<button class="del" data-meal-del="${m.id}" aria-label="${tx("Öğünü kaldır")}">×</button>` : ""}
     </div>`).join("")}
     ${mealAddOpen ? `<div class="pick">

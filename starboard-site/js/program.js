@@ -331,15 +331,24 @@ function trainingPlan(profile){
            desc:prog.desc, note:prog.note, cardio, days };
 }
 
+/* Öneri başlıkları kayıtta her dilde Türkçe durur: görevin türü (taskKind) bu
+   başlıktan anlaşılır. Ekranda autoInfo ya da tx() ile çevrilir. */
 function suggestedTitles(program, key){
   const day = program.training.none ? null : program.training.days.find(d => d.wd === isoWeekday(key));
   const out = [];
-  if (day) out.push(day.b ? tx("Antrenman: ") + day.t : tx("Dinlenme günü — 20 dk esneme"));
+  if (day) out.push(day.b ? "Antrenman: " + day.t : "Dinlenme günü — 20 dk esneme");
   out.push(program.kcal + " kcal hedefini tut");
   out.push(program.protein + " g protein al");
-  out.push(program.water + tx(" ml su iç"));
+  out.push(program.water + " ml su iç");
   out.push(`${sleepBand()[0]}-${sleepBand()[1]} saat uyu`);
-  out.push(tx("Sabah kilo ölçümü"));
-  if (stepGoal()) out.push(stepGoal() + tx(" adım at"));
+  out.push("Sabah kilo ölçümü");
+  if (stepGoal()) out.push(stepGoal() + " adım at");
   return out;
 }
+/* Kaydedilecek öneri görevi: türü baştan damgalanır. */
+const suggestedTask = title => {
+  const t = { id: Date.now()+Math.random(), title, done:false, suggested:true };
+  const kind = taskKind(t);
+  if (kind) t.kind = kind;
+  return t;
+};

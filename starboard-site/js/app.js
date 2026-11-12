@@ -17,7 +17,7 @@ function ensureDay(k){
     if (p){
       for (const title of suggestedTitles(p, k))
         if (!e.tasks.some(x => x.suggested && x.title === title))
-          e.tasks.push({ id: Date.now()+Math.random(), title, done:false, suggested:true });
+          e.tasks.push(suggestedTask(title));
       e.seeded = true;
     }
   }
@@ -130,16 +130,22 @@ function syncOptional(entry, k){
   const p = cachedProgram();
   if (p){
     const day = p.training.none ? null : p.training.days.find(d => d.wd === isoWeekday(k));
-    const isT = x => x.suggested && /^Antrenman:/.test(x.title), isR = x => x.suggested && /^Dinlenme günü/.test(x.title);
+    const isT = x => x.suggested && taskKind(x) === "train", isR = x => x.suggested && isRestTask(x);
     const wantT = !!(day && day.b), wantR = !!(day && !day.b);
-    if (entry.tasks.some(x => (isT(x) && !wantT) || (isR(x) && !wantR)))
-      entry.tasks = entry.tasks.filter(x => !(isT(x) && !wantT) && !(isR(x) && !wantR));
-    if (wantT && !entry.tasks.some(isT)) entry.tasks.unshift({ id: Date.now()+Math.random(), title:tx("Antrenman: ") + day.t, done:false, suggested:true });
-    if (wantR && !entry.tasks.some(isR)) entry.tasks.unshift({ id: Date.now()+Math.random(), title:tx("Dinlenme günü — 20 dk esneme"), done:false, suggested:true });
+    /* İstenmeyen satırlar ve (eski bir hatanın bıraktığı) kopyalar silinir; ilki kalır. */
+    let seenT = false, seenR = false;
+    const keep = x => {
+      if (isT(x)){ if (!wantT || seenT) return false; seenT = true; }
+      if (isR(x)){ if (!wantR || seenR) return false; seenR = true; }
+      return true;
+    };
+    if (!entry.tasks.every(keep)){ seenT = seenR = false; entry.tasks = entry.tasks.filter(keep); }
+    if (wantT && !entry.tasks.some(isT)) entry.tasks.unshift(suggestedTask("Antrenman: " + day.t));
+    if (wantR && !entry.tasks.some(isR)) entry.tasks.unshift(suggestedTask("Dinlenme günü — 20 dk esneme"));
   }
   const want = stepGoal();
   const i = entry.tasks.findIndex(x => x.suggested && taskKind(x) === "steps");
-  if (want && i < 0) entry.tasks.push({ id: Date.now()+Math.random(), title: want + tx(" adım at"), done:false, suggested:true, kind:"steps" });
+  if (want && i < 0) entry.tasks.push(suggestedTask(want + " adım at"));
   if (!want && i >= 0) entry.tasks.splice(i, 1);
 }
 const app = document.getElementById("app");
@@ -168,7 +174,7 @@ function ensureToday(){
     const p = currentProgram();
     if (p) {
       for (const title of suggestedTitles(p, t))
-        entry.tasks.push({ id: Date.now()+Math.random(), title, done:false, suggested:true });
+        entry.tasks.push(suggestedTask(title));
       entry.seeded = true;
     }
   }

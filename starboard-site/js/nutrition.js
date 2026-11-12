@@ -708,10 +708,13 @@ function userMeals(){
   if (!Array.isArray(p.meals) || !p.meals.length) p.meals = DEFAULT_MEALS.map(m => ({...m}));
   return p.meals.slice().sort((a,b) => (a.h ?? 12) - (b.h ?? 12));
 }
-function slotList(){ return userMeals().map(m => [m.id, m.name]); }
+/* Öğün adı kayıtta oluşturulduğu dilde durur. Hazır adlar (Kahvaltı, Öğle...) ekranda
+   çevrilir; kullanıcının kendi yazdığı ad olduğu gibi kalır. */
+const mealName = m => tx(m.name);
+function slotList(){ return userMeals().map(m => [m.id, mealName(m)]); }
 function slotLabel(id){
   const m = userMeals().find(x => x.id === id);
-  return m ? m.name : (LEGACY_MEALS[id] ? LEGACY_MEALS[id].name : tx("Diğer"));
+  return m ? mealName(m) : (LEGACY_MEALS[id] ? LEGACY_MEALS[id].name : tx("Diğer"));
 }
 function mealShares(list){
   const t = list.reduce((a,m) => a + (m.w || 1), 0) || 1;
@@ -1013,7 +1016,7 @@ function buildMeals(program, variantIndex){
     fx.items.forEach(it => dayUsed.add(it.key));
 
     if (share <= 0.0001)
-      return { name:mm.name, slot:fx.slot, items, kcal:Math.round(fx.kcal), full: fx.items.length > 0 };
+      return { name:mealName(mm), slot:fx.slot, items, kcal:Math.round(fx.kcal), full: fx.items.length > 0 };
 
     const t0 = { p: rem.p*share, c: rem.c*share, f: rem.f*share, kcal: rem.kcal*share };
 
@@ -1081,7 +1084,7 @@ function buildMeals(program, variantIndex){
     }
 
     if (!placed)
-      return { name:mm.name, slot:fx.slot, items, kcal:Math.round(fx.kcal), full: items.length > 0 };
+      return { name:mealName(mm), slot:fx.slot, items, kcal:Math.round(fx.kcal), full: items.length > 0 };
 
     if (m.extra && !generate) items.push({ text:m.extra, icon:"veg" });
     else if (generate) items.push({ text: SIDES[(idx + variantIndex) % SIDES.length], icon:"veg" });
@@ -1094,7 +1097,7 @@ function buildMeals(program, variantIndex){
     const kcal = sum.p*4 + sum.c*4 + sum.f*9;
     total.p += sum.p; total.c += sum.c; total.f += sum.f; total.lif += sum.lif; total.kcal += kcal;
 
-    return { name:mm.name, slot:fx.slot, items, kcal:Math.round(fx.kcal + kcal) };
+    return { name:mealName(mm), slot:fx.slot, items, kcal:Math.round(fx.kcal + kcal) };
   });
 
   const label = diet === "hepsi" ? tx("Sana özel kombinasyon") : DIETS[diet] + tx(" · sana özel");
@@ -1128,7 +1131,7 @@ function weeklyRefresh(state){
 
   state.lastRefreshAt = t;
   if (pct >= lo && pct <= hi)
-    return { msg:tx("Hedeflenen hızda ilerliyorsun (%{0}/hafta). Kalori hedefi değişmiyor.", [(pct.toFixed(2))]), save:true };
+    return { msg:tx("Hedeflenen hızda ilerliyorsun (%{0}/hafta). Kalori hedefi değişmiyor.", [(fmtFix(pct, 2))]), save:true };
 
   const tooSlow = state.profile.goal === "gain" ? pct < lo : pct > hi;
   const delta = state.profile.goal === "gain" ? (tooSlow ? STEP : -STEP) : (tooSlow ? -STEP : STEP);
@@ -1138,5 +1141,5 @@ function weeklyRefresh(state){
 
   const applied = next - (state.adjustment||0);
   state.adjustment = next;
-  return { msg:tx("Son hafta ortalaman {0} kg (önceki hafta {1} kg, %{2}). Günlük hedef {3} kcal {4}.", [(a.toFixed(1)), (b.toFixed(1)), (pct.toFixed(2)), (Math.abs(applied)), (applied<0?tx("düşürüldü"):tx("artırıldı"))]), save:true };
+  return { msg:tx("Son hafta ortalaman {0} (önceki hafta {1}, %{2}). Günlük hedef {3} kcal {4}.", [(fmtW(a)), (fmtW(b)), (fmtFix(pct, 2)), (Math.abs(applied)), (applied<0?tx("düşürüldü"):tx("artırıldı"))]), save:true };
 }

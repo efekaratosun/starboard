@@ -83,9 +83,9 @@ function bentoRow(entry, program, key){
       <span class="bt-bar"><s style="width:${clamp(kFill * 100, 0, 100).toFixed(0)}%"></s></span>
     </button>
 
-    ${tile("water", "--water", "dairy", tx("Su"), wv, 0, " ml", wg ? tx("hedef {0} ml", [(fmtN(wg))]) : tx("hedef yok"), wg ? wv / wg : 0)}
-    ${tile("sleep", "--sleep", "rest", tx("Uyku"), sv === null ? null : +sv.toFixed(1), 1, " sa",
-        `hedef ${slo}-${shi} sa`, sv === null ? 0 : sv / slo)}
+    ${tile("water", "--water", "dairy", tx("Su"), vOut(wv), 0, " " + vUnit(), wg ? tx("hedef {0}", [(fmtV(wg))]) : tx("hedef yok"), wg ? wv / wg : 0)}
+    ${tile("sleep", "--sleep", "rest", tx("Uyku"), sv === null ? null : +sv.toFixed(1), 1, " " + tx("sa"),
+        tx("hedef {0}", [(`${slo}-${shi} ${tx("sa")}`)]), sv === null ? 0 : sv / slo)}
     ${tile("streak", "--star-tile", "star4", tx("Seri"), streak, 0, tx(" gün"),
         tx("{0}/{1} görev bitti", [(done), (all)]), streak / 7)}
   </div>`;

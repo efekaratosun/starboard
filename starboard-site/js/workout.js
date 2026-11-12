@@ -171,7 +171,6 @@ function lastLift(name, before){
   return null;
 }
 
-const fmtN = v => String(v).replace(".", ",");
 function pace(min, km){
   if (!min || !km) return "";
   const p = min / km, mm = Math.floor(p), ss = Math.round((p - mm) * 60);
@@ -180,7 +179,7 @@ function pace(min, km){
 
 function liftSummary(l, ex){
   if (!l.t)          // eski kayıt biçimi
-    return `${l.kg ? fmtN(l.kg) + " kg" : ""}${l.kg && l.reps ? " × " : ""}${l.reps ? l.reps + " tekrar" : ""}`;
+    return `${l.kg ? fmtLift(l.kg) + " " + wUnit() : ""}${l.kg && l.reps ? " × " : ""}${l.reps ? l.reps + " tekrar" : ""}`;
   const sets = l.sets || [];
   switch (ex.t){
     case "w": {
@@ -188,12 +187,12 @@ function liftSummary(l, ex){
       if (!done.length) return "";
       const kgs = [...new Set(done.map(x => x.kg || 0))];
       return kgs.length === 1
-        ? exText(`${kgs[0] ? fmtN(kgs[0]) + " kg · " : ""}${done.map(x => x.r).join("-")} tekrar`)
-        : done.map(x => `${fmtN(x.kg || 0)}×${x.r}`).join(", ");
+        ? exText(`${kgs[0] ? fmtLift(kgs[0]) + " " + wUnit() + " · " : ""}${done.map(x => x.r).join("-")} tekrar`)
+        : done.map(x => `${fmtLift(x.kg || 0)}×${x.r}`).join(", ");
     }
-    case "r": { const r = numsOf(sets); return r.length ? exText(`${r.join("-")} tekrar${l.kg2 ? ` · +${fmtN(l.kg2)} kg` : ""}`) : ""; }
+    case "r": { const r = numsOf(sets); return r.length ? exText(`${r.join("-")} tekrar${l.kg2 ? ` · +${fmtLift(l.kg2)} ${wUnit()}` : ""}`) : ""; }
     case "t": { const r = numsOf(sets); return r.length ? exText(`${r.join("-")} sn`) : ""; }
-    case "wc": return `${l.kg ? fmtN(l.kg) + " kg · " : ""}${l.n || 0}/${ex.n} ${exText(ex.unit)}`;
+    case "wc": return `${l.kg ? fmtLift(l.kg) + " " + wUnit() + " · " : ""}${l.n || 0}/${ex.n} ${exText(ex.unit)}`;
     case "n":  return `${l.n || 0}/${ex.n} ${exText(ex.unit)}`;
     case "sw": return exText(`${l.n || 0}/${ex.n} × ${ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`);
     case "sd": return exText(`${l.m || ex.d} m${l.min ? ` · ${fmtN(l.min)} dk` : ""}`);
@@ -225,15 +224,16 @@ function liftBody(i, ex, cur, prev){
     case "w": return `<div class="lf-sets">${idx.map(k => {
         const s = sets[k] || {}, p = pSets[k] || {};
         const prevKg = (k > 0 && sets[k-1] && sets[k-1].kg) || undefined;
-        const kgPh = ex.pc && ex.pc[k] ? ex.pc[k] : (p.kg ?? prevKg ?? (prev && prev.kg) ?? "kg");
+        const kgPrev = p.kg ?? prevKg ?? (prev && prev.kg);
+        const kgPh = ex.pc && ex.pc[k] ? ex.pc[k] : (kgPrev != null ? liftOut(kgPrev) : wUnit());
         return `<div class="lf-set"><span class="lf-no">${k+1}</span>
-          ${liftInput(i,"kg",k,s.kg,kgPh === "kg" ? "kg" : kgPh,true,"kg")}
-          ${liftInput(i,"r",k,s.r,p.r ?? ex.tg ?? "",false,"tekrar")}</div>`;
+          ${liftInput(i,"kg",k,s.kg == null ? s.kg : liftOut(s.kg),kgPh,true,wUnit())}
+          ${liftInput(i,"r",k,s.r,p.r ?? ex.tg ?? "",false,tx("tekrar"))}</div>`;
       }).join("")}</div>`;
     case "r": case "t": return `<div class="lf-grid">${idx.map(k =>
         liftInput(i,"s",k,sets[k],(typeof pSets[k] === "number" ? pSets[k] : ex.tg),false,`${k+1}. set${ex.t==="t"?" · sn":""}`)).join("")}
-        ${ex.xkg ? liftInput(i,"kg2",undefined,cur.kg2,prev && prev.kg2 || "",true,tx("Ek kg")) : ""}</div>`;
-    case "wc": return `<div class="lf-row">${liftInput(i,"kg",undefined,cur.kg,prev && prev.kg || "",true,tx("Ağırlık (kg)"))}</div>${stepper(i, cur.n || 0, ex.n, exText(ex.unit))}`;
+        ${ex.xkg ? liftInput(i,"kg2",undefined,cur.kg2 == null ? cur.kg2 : liftOut(cur.kg2),prev && prev.kg2 ? liftOut(prev.kg2) : "",true,tx("Ek {0}", [(wUnit())])) : ""}</div>`;
+    case "wc": return `<div class="lf-row">${liftInput(i,"kg",undefined,cur.kg == null ? cur.kg : liftOut(cur.kg),prev && prev.kg ? liftOut(prev.kg) : "",true,tx("Ağırlık ({0})", [(wUnit())]))}</div>${stepper(i, cur.n || 0, ex.n, exText(ex.unit))}`;
     case "n":  return stepper(i, cur.n || 0, ex.n, exText(ex.unit));
     case "sw": return `${stepper(i, cur.n || 0, ex.n, "× " + ex.d + " m")}<div class="lf-row">${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
     case "sd": return `<div class="lf-row">${liftInput(i,"m",undefined,cur.m,ex.d,false,tx("Mesafe (m)"))}${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
@@ -362,6 +362,7 @@ function wireLifts(entry, key){
     if (n !== null && n < 0) n = null;
     const intF = f === "r" || f === "s" || f === "m";
     if (n !== null && intF) n = Math.round(n);
+    if (n !== null && (f === "kg" || f === "kg2")) n = liftIn(n);
     if (k === undefined){
       if (n === null) delete rec[f]; else rec[f] = n;
     } else {

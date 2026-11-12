@@ -14,9 +14,9 @@ function openQuickSheet(){
   const k = vKey();
   const el = document.createElement("div");
   el.className = "sheet-bg";
-  /* Fonksiyon bildirimi: close, esc'ten önce çağrılabilir. */
-  function esc(ev){ if (ev.key === "Escape") close(); }
-  const close = () => { sheetOut(el); document.removeEventListener("keydown", esc); };
+  /* Fonksiyon bildirimi: close, onKey'tan önce çağrılabilir. */
+  function onKey(ev){ if (ev.key === "Escape") close(); }
+  const close = () => { sheetOut(el); document.removeEventListener("keydown", onKey); };
   const past = k !== today();
 
   const draw = () => {
@@ -29,23 +29,21 @@ function openQuickSheet(){
     el.querySelector("#qs-b").innerHTML = `
       <div class="qs-row">
         <div class="qs-h">${iconBox("dairy")}<div><b>${tx("Su")}</b>
-          <i>${e.water || 0}${program ? ` / ${program.water}` : ""} ml</i></div></div>
+          <i>${vOut(e.water || 0)}${program ? ` / ${vOut(program.water)}` : ""} ${vUnit()}</i></div></div>
         <div class="chips">
-          <button class="chip" data-qw="250">+250</button>
-          <button class="chip" data-qw="500">+500</button>
-          <button class="chip" data-qw="1000">+1000</button>
-          ${rw ? `<button class="chip rep" data-qwset="${rw}">${tx("↺ önceki gün {0} ml", [(rw)])}</button>` : ""}
+          ${[1, 2, 4].map(c => `<button class="chip" data-qw="${c}">+${vOut(c * cupMl())}</button>`).join("")}
+          ${rw ? `<button class="chip rep" data-qwset="${rw}">${tx("↺ önceki gün {0}", [(fmtV(rw))])}</button>` : ""}
           ${e.water ? `<button class="chip" data-qwset="0">${tx("Sıfırla")}</button>` : ""}
         </div>
       </div>
 
       <div class="qs-row">
         <div class="qs-h">${iconBox("legs")}<div><b>${tx("Kilo")}</b>
-          <i>${typeof e.weight === "number" ? tx("{0} {1} kg girildi", [(past ? tx("o gün") : tx("bugün")), (kg1(e.weight))])
-              : lw !== null ? tx("son ölçüm {0} kg", [(kg1(lw))]) : tx("henüz ölçüm yok")}</i></div></div>
+          <i>${typeof e.weight === "number" ? tx("{0} {1} girildi", [(past ? tx("o gün") : tx("bugün")), (fmtW(e.weight))])
+              : lw !== null ? tx("son ölçüm {0}", [(fmtW(lw))]) : tx("henüz ölçüm yok")}</i></div></div>
         <div class="row">
-          <input id="qs-w" type="text" inputmode="decimal" placeholder="${lw !== null ? kg1(lw) : "kg"}"
-            value="${typeof e.weight === "number" ? fmtN(e.weight) : ""}" style="flex:2">
+          <input id="qs-w" type="text" inputmode="decimal" placeholder="${lw !== null ? wNum(lw) : wUnit()}"
+            value="${typeof e.weight === "number" ? wNum(e.weight) : ""}" style="flex:2">
           <button id="qs-w-ok" style="flex:0 0 92px">${tx("Kaydet")}</button>
         </div>
       </div>
@@ -94,7 +92,7 @@ function openQuickSheet(){
 
       <div class="qs-row">
         <div class="qs-h">${iconBox("day")}<div><b>${tx("Görev")}</b>
-          <i>${e.tasks.filter(t => !t.suggested).length} kendi görevin var</i></div></div>
+          <i>${tx("{0} kendi görevin var", [(e.tasks.filter(t => !t.suggested).length)])}</i></div></div>
         <div class="row">
           <input id="qs-t" type="text" placeholder="${tx("Yeni görev")}" style="flex:2">
           <button id="qs-t-ok" style="flex:0 0 92px">${tx("Ekle")}</button>
@@ -109,7 +107,7 @@ function openQuickSheet(){
   const wire = () => {
     const e = ensureDay(k);
     el.querySelectorAll("[data-qw]").forEach(b => b.onclick = async () => {
-      e.water = (e.water || 0) + +b.dataset.qw; await commit();
+      e.water = Math.round((e.water || 0) + +b.dataset.qw * cupMl()); await commit();
     });
     el.querySelectorAll("[data-qwset]").forEach(b => b.onclick = async () => {
       const v = +b.dataset.qwset;
@@ -127,9 +125,9 @@ function openQuickSheet(){
     const saveW = async () => {
       const n = num(wi.value);
       if (n === null){ delete e.weight; await commit(); return; }
-      if (n < 25 || n > 400){ toast(tx("25 ile 400 kg arasında bir değer gir.")); return; }
-      e.weight = Math.round(n * 10) / 10;
-      await commit(); toast(`${kg1(e.weight)} kg kaydedildi.`);
+      if (wIn(n) < 25 || wIn(n) > 400){ toast(tx("{0} ile {1} arasında bir değer gir.", [(fmtW0(25)), (fmtW0(400))])); return; }
+      e.weight = wSave(n);
+      await commit(); toast(tx("{0} kaydedildi.", [(fmtW(e.weight))]));
     };
     el.querySelector("#qs-w-ok").onclick = saveW;
     wi.onkeydown = ev => { if (ev.key === "Enter") saveW(); };
@@ -178,7 +176,7 @@ function openQuickSheet(){
   draw();
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
-  document.addEventListener("keydown", esc);
+  document.addEventListener("keydown", onKey);
 }
 
 /* ---- hedef ekle ----

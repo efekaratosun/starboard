@@ -239,14 +239,14 @@ function chartsView(){
 
   return `
   ${weeklySummary()}
-  ${card(tx("Kilo"), delta !== null ? `${delta>0?"+":""}${fmtN(+delta.toFixed(1))} kg` : "",
-    trendChart(w, { color:"weight", dec:1, unit:"kg", average:true, band:wBand, label:tx("kilo trendi") }),
-    w.length >= 2 ? bandNote(tx("Bant sağlıklı kilo aralığın{0}. Kesikli çizgi 7 günlük ortalama: günlük dalgalanma su ve glikojenden gelir, asıl yön ortalamada görünür.", [(wBand ? ` (${Math.round(wBand[0])}–${Math.round(wBand[1])} kg)` : "")])) : "")}
+  ${card(tx("Kilo"), delta !== null ? `${delta>0?"+":""}${fmtN(+wOut(delta).toFixed(1))} ${wUnit()}` : "",
+    trendChart(w.map(x => ({ ...x, v:wOut(x.v) })), { color:"weight", dec:1, unit:wUnit(), average:true, band:wBand && wBand.map(wOut), label:tx("kilo trendi") }),
+    w.length >= 2 ? bandNote(tx("Bant sağlıklı kilo aralığın{0}. Kesikli çizgi 7 günlük ortalama: günlük dalgalanma su ve glikojenden gelir, asıl yön ortalamada görünür.", [(wBand ? ` (${Math.round(wOut(wBand[0]))}–${fmtW0(wBand[1])})` : "")])) : "")}
   ${card(tx("Kalori"), tx("son {0} gün", [(kcal.length)]),
     trendChart(kcal, { color:"kcal", kind:"bar", unit:"kcal", band:kBand, label:tx("günlük kalori") }),
     kcal.length >= 2 && kBand ? bandNote(tx("Bant hedefin ±%10'u: {0}–{1} kcal.", [(Math.round(kBand[0])), (Math.round(kBand[1]))])) : "")}
   ${card(tx("Uyku"), tx("son {0} gün", [(sleep.length)]),
-    trendChart(sleep, { color:"sleep", kind:"bar", dec:1, unit:"sa", band:sleepBand(), label:tx("günlük uyku") }),
+    trendChart(sleep, { color:"sleep", kind:"bar", dec:1, unit:tx("sa"), band:sleepBand(), label:tx("günlük uyku") }),
     sleep.length >= 2 ? bandNote(tx("Bant senin uyku hedefin: {0}–{1} saat.", [(sleepBand()[0]), (sleepBand()[1])])) : "")}
   ${card(tx("Yağ oranı"), yag.length >= 2 ? `${(yag[yag.length-1].v - yag[0].v) > 0 ? "+" : ""}${fmtN(+(yag[yag.length-1].v - yag[0].v).toFixed(1))} ${tx("puan")}` : "",
     yag.length >= 2 ? trendChart(yag, { color:"fat", dec:1, unit:"%", band:[fT[1], fT[3]], label:tx("yağ oranı") })
@@ -255,6 +255,6 @@ function chartsView(){
       const v = yag[yag.length-1].v, inside = v >= fT[1] && v <= fT[3];
       return bandNote(tx("Fit–ortalama aralığı %{0}–{1} (ACE); {2}. Ev tartılarının ölçümü günden güne birkaç puan oynar; haftada bir, aynı saatte ölç.", [(fmtN(fT[1])), (fmtN(fT[3])), (inside ? tx("şu an bu aralıktasın") : v < fT[1] ? tx("şu an bu aralığın altındasın") : tx("şu an bu aralığın üstündesin"))]));
     })() : "")}
-  ${bel.length >= 2 ? card(tx("Bel çevresi"), `${fmtN(+(bel[bel.length-1].v - bel[0].v).toFixed(1))} cm`,
-    trendChart(bel, { color:"waist", dec:1, unit:"cm", label:tx("bel çevresi") })) : ""}`;
+  ${bel.length >= 2 ? card(tx("Bel çevresi"), `${fmtN(+(lOut(bel[bel.length-1].v) - lOut(bel[0].v)).toFixed(1))} ${lUnit()}`,
+    trendChart(bel.map(x => ({ ...x, v:lOut(x.v) })), { color:"waist", dec:1, unit:lUnit(), label:tx("bel çevresi") })) : ""}`;
 }

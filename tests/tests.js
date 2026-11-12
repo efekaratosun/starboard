@@ -509,4 +509,134 @@ test("çeviri: hareket rehberinin adları ve adımları İngilizcede çevrilir",
   eq(missing, [], "İngilizce karşılığı olmayan rehber metinleri");
 });
 
+/* ---- görevler başka dilde ---- */
+test("görevler: İngilizcede öneriler Türkçe başlık ve türle kaydedilir, tekrar çizimde çoğalmaz", async () => {
+  const fixture = await loadFixture();
+  await withLang("en", () => {
+    state = fixture; migrateMeals(); notice = null; viewDate = null;
+    delete state.days[today()];
+    for (let i = 0; i < 5; i++) { ensureToday(); tab = "today"; render(); }
+    const tasks = state.days[today()].tasks.filter(t => t.suggested);
+    const kinds = tasks.map(t => taskKind(t));
+    eq(kinds.filter(k => k === "train").length <= 1, true, "antrenman görevi çoğaldı");
+    for (const k of ["kcal", "protein", "water", "sleep", "weigh"]) ok(kinds.includes(k), `${k} görevi tanınmadı`);
+    ok(tasks.every(t => !/^(Workout|Rest day|Morning)/.test(t.title)), "başlık İngilizce kaydedildi");
+  });
+  state = null;
+});
+test("görevler: eski İngilizce başlıklar tanınır, birikmiş kopyalar temizlenir", async () => {
+  eq(taskKind({ title:"2870 ml of water" }), "water");
+  eq(taskKind({ title:"Drink 97 fl oz of water" }), "water");
+  eq(taskKind({ title:"Morning weigh-in" }), "weigh");
+  eq(taskKind({ title:"Workout: Upper B" }), "train");
+  eq(taskKind({ title:"8000 steps" }), "steps");
+  const fixture = await loadFixture();
+  state = fixture;
+  const p = currentProgram(), k = today();
+  const day = p.training.days.find(d => d.wd === isoWeekday(k));
+  const t = day && day.b ? "Workout: " + day.t : "Rest day — 20 min stretching";
+  state.days[k] = { seeded:true, tasks: [1, 2, 3].map(i => ({ id:i, title:t, done:false, suggested:true })) };
+  syncOptional(state.days[k], k);
+  const left = state.days[k].tasks.filter(x => x.suggested && (taskKind(x) === "train" || isRestTask(x)));
+  eq(left.length, 1, "kopyalar kalmamalı");
+  state = null;
+});
+
+test("hızlı giriş: penceredeki metinler boş ya da undefined çıkmaz", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  openQuickSheet();
+  const sheets = [...document.querySelectorAll(".sheet-bg")];
+  const html = sheets.map(e => e.innerHTML).join("");
+  sheets.forEach(e => e.remove());
+  ok(!/>undefined</.test(html), "pencerede undefined yazıyor");
+  const ses = currentProgram().training.days.find(d => d.wd === isoWeekday(today()));
+  if (ses && ses.b) ok(html.includes(esc(ses.t)), "antrenman adı görünmüyor");
+  state = null;
+});
+
+/* ---- birimler ---- */
+/* Birim seçimi state.profile.units'ten okunur; testler geçici bir kayıtla seçer. */
+const withUnits = async (units, fn, base) => {
+  const old = state;
+  state = base || { profile: { units } };
+  if (base) state.profile.units = units;
+  try { return await fn(); } finally { state = old; }
+};
+
+test("birimler: bölgeye göre varsayılan sistem", () => {
+  eq(unitsForLocale("en-US"), "imperial");
+  eq(unitsForLocale("en_us"), "imperial");
+  eq(unitsForLocale("en-GB"), "metric");
+  eq(unitsForLocale("tr-TR"), "metric");
+  eq(unitsForLocale("en"), "metric", "bölgesiz dil metrik sayılır");
+  eq(unitsForLocale(""), "metric");
+});
+test("birimler: metrikte değerler olduğu gibi, Türkçede ondalık virgül", async () => {
+  await withUnits("metric", () => {
+    eq(fmtW(75.34), "75,3 kg");
+    eq(fmtV(2870), "2870 ml");
+    eq(fmtLift(22.5), "22,5");
+    eq(fmtHeight(178), "178 cm");
+    eq(wSave(75.36), 75.4);
+    eq(cupMl(), 250);
+  });
+});
+test("birimler: İngilizcede ondalık nokta", async () => {
+  await withLang("en", () => withUnits("metric", () => {
+    eq(fmtW(75.34), "75.3 kg");
+    eq(fmtN(22.5), "22.5");
+  }));
+});
+test("birimler: imperialde lb, ft·in ve fl oz; kayıt metrik kalır", async () => {
+  await withUnits("imperial", () => {
+    /* 180 lb yazan kişi geri 180,0 lb görür */
+    const kg = wSave(180);
+    ok(Math.abs(kg - 81.647) < 0.001, "kg karşılığı yanlış: " + kg);
+    eq(wNum(kg), "180,0");
+    eq(fmtW(kg), "180,0 lb");
+    /* kaldırılan ağırlık: 45 lb kaydedilip yine 45 lb görünür */
+    eq(fmtLift(liftIn(45)), "45");
+    eq(liftStep(), 5);
+    /* boy */
+    eq(fmtHeight(177.8), "5′10″");
+    eq(heightFtIn(177.8), [5, 10]);
+    eq(heightFromFtIn(5, 10), 177.8);
+    /* su: 8 fl oz'luk bardaklar, dolu bardak sayısı yuvarlamadan şaşmaz */
+    eq(fmtV(2870), "97 fl oz");
+    for (let n = 1; n <= 14; n++) eq(cupsOf(Math.round(n * cupMl())), n, `${n} bardak`);
+    eq(vIn(8), 237);
+    /* vücut ölçüsü */
+    eq(lOut(lIn(32)), 32);
+    /* antrenman özeti: kg olarak kayıtlı set lb ile görünür */
+    const ex = parseEx("Squat 3×5", "gym");
+    eq(liftSummary({ t:"w", sets:[{ kg:liftIn(135), r:5 }, { kg:liftIn(135), r:5 }] }, ex), "135 lb · 5-5 tekrar");
+  });
+});
+test("birimler: imperial seçiliyken bütün sekmeler lb ile çizilir, metrik kayıt değişmez", async () => {
+  const fixture = await loadFixture();
+  await withLang("en", () => withUnits("imperial", () => {
+    migrateMeals(); notice = null; viewDate = null; ensureToday();
+    /* Görev listesi çizimde güncellenebilir; burada yalnızca ölçümlere bakılır. */
+    const measures = () => JSON.stringify(Object.entries(state.days).map(([k, d]) => [k, d.weight, d.water, d.body, d.lifts]));
+    const snap = measures();
+    for (const t of ["today", "plan", "meals", "calendar", "settings"]) {
+      tab = t; render();
+      ok(app.innerHTML.length > 500, `${t} sekmesi boş çizildi`);
+    }
+    tab = "settings";
+    const oldMe = meTab;
+    for (const m of ["body", "chart"]) {
+      meTab = m; render();
+      ok(/\d lb\b|<small> lb<\/small>/.test(app.innerHTML), `Ben › ${m}: lb yok`);
+      ok(!/\d kg\b|<small> kg<\/small>/.test(app.innerHTML), `Ben › ${m}: kg kaldı`);
+    }
+    meTab = "set"; render();
+    ok(app.innerHTML.includes('data-sunit="imperial"'), "birim seçimi yok");
+    ok(app.innerHTML.includes('id="s-hft"'), "boy ft·in olarak sorulmuyor");
+    meTab = oldMe;
+    eq(measures(), snap, "çizim ölçümleri değiştirmemeli");
+  }, fixture));
+  tab = "today"; state = null;
+});
+
 window.STARBOARD_TESTS = TESTS;
