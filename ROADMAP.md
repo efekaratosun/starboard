@@ -10,6 +10,13 @@ Başlangıç durumu (11 Kasım 2026): tek dosyalık (yaklaşık 9.000 satır) bi
 - **Pazar ve dil:** uluslararası. Çok dilli altyapı Faz 1'de kurulur, ilk ek dil İngilizce.
 - **Gelir modeli:** eğilim tek seferlik ücretli; kesin karar en sona (Faz 4) bırakıldı.
 
+## Verilen kararlar (12 Kasım 2026)
+
+- **Hesap yok (ilk sürüm):** Starboard hesapsız çıkar, veriler cihazda kalır. Gerekçe: "veriler cihazında kalır" vaadi ve App Store'daki temiz gizlilik etiketi korunur; sunucu, maliyet ve bakım yükü olmaz; sağlık verisi özel nitelikli veri sayıldığı için KVKK/GDPR yükü doğmaz; Apple'ın hesap silme ve Apple ile Giriş kuralları gerekmez; kayıt ekranı kullanıcı kaybettirmez. Gelir modeli için hesap gerekmez (Apple'ın ödeme sistemi hesapsız çalışır). Telefon değişimi iCloud cihaz yedeği ve Ayarlar'daki dosyaya yedekle/geri yükle ile karşılanır. iCloud ile eşitleme seçenek değil: kural 5.1.3(ii) sağlık verisinin iCloud'da saklanmasını yasaklıyor. Yayından sonra kullanıcılar eşitleme isterse (şifreli eşitleme ya da isteğe bağlı hesap) yeniden değerlendirilir.
+- **Yazı tipi uygulamaya gömülür:** Nunito Google Fonts'tan değil uygulamanın içinden yüklenir; dışarıya istek gitmez, internetsiz de aynı görünür.
+- **App Store gizlilik etiketi:** bugünkü haliyle "Veri Toplanmıyor". Barkod gelince Open Food Facts'e giden barkod numarası temkinli olarak "Arama Geçmişi – sizinle ilişkilendirilmez – izleme yok – amaç: uygulama işlevi" diye beyan edilir (Open Food Facts kayıtları ne kadar sakladığını belirtmiyor). HealthKit verisi cihazdan çıkmadığı için etikete girmez.
+- **iCloud cihaz yedeği:** kayıt dosyası yedekte kalır; hesap olmadığı için telefon değişiminde verinin taşınmasının ana yolu bu. Kural 5.1.3(ii) uygulamanın kendisinin iCloud'a yazmasını hedefliyor gibi görünüyor ama metin ayrım yapmıyor; inceleme itiraz ederse dosya yedek dışına alınır.
+
 ## Faz 0: Temel (şimdi)
 
 Amaç: projenin kalıcı bir evi ve canlı bir adresi olsun.
