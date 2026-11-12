@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starboard logo alternatifleri</title>
+<style>
+  body { margin: 0; padding: 24px; font: 14px/1.4 system-ui, sans-serif; background: #f2f0ee; color: #222; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  p.not { margin: 0 0 20px; color: #666; }
+  .logo { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 12px; align-items: stretch; margin-bottom: 16px; }
+  .ad { display: flex; flex-direction: column; justify-content: center; }
+  .ad b { font-size: 16px; }
+  .ad span { color: #777; font-size: 12px; }
+  .zemin { display: flex; gap: 20px; align-items: flex-end; padding: 16px; border-radius: 14px; }
+  .acik { background: #fff; }
+  .koyu { background: #111; }
+  .zemin img { display: block; }
+  .mevcut .ad b { color: #c45; }
+  @media (max-width: 900px) { .logo { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>Starboard logo alternatifleri</h1>
+<p class="not">Her satır: 180, 60 ve 29 px; solda açık, sağda koyu zemin. Ayrıntılar README.md dosyasında.</p>
+<div id="liste"></div>
+<script>
+  const logolar = [
+    ["../../starboard-site/icon.svg", "Mevcut: Yükselen çubuklar", "starboard-site/icon.svg", true],
+    ["01-yildiz-izi.svg", "01 · Yıldız İzi", "Büyüyerek yükselen üç yıldız"],
+    ["02-takimyildiz-grafigi.svg", "02 · Takımyıldız Grafiği", "Haftanın beş yıldızı yükselen grafik olur"],
+    ["03-seviye-atla.svg", "03 · Seviye Atla", "Yukarı oklar ve tepede yıldız"],
+    ["04-yildiz-merdiveni.svg", "04 · Yıldız Merdiveni", "Basamakların zirvesinde yıldız"],
+    ["05-monogram-s.svg", "05 · Monogram S", "Yukarı kıvrılan S, ucunda yıldız"],
+    ["06-yildiz-nabzi.svg", "06 · Yıldız Nabzı", "Kalp ritmi yıldıza fırlar"],
+    ["07-gece-zirvesi.svg", "07 · Gece Zirvesi", "Cesur palet: gece, zirve, yıldız"],
+    ["08-ivme-yildizi.svg", "08 · İvme Yıldızı", "Cesur palet: hız çizgileriyle fırlayan yıldız"]
+  ];
+  const kutu = (src, cls) => {
+    const z = document.createElement("div");
+    z.className = "zemin " + cls;
+    for (const s of [180, 60, 29]) {
+      const i = new Image(s, s);
+      i.src = src;
+      i.alt = s + " px";
+      z.append(i);
+    }
+    return z;
+  };
+  const liste = document.getElementById("liste");
+  for (const [src, ad, aciklama, mevcut] of logolar) {
+    const satir = document.createElement("div");
+    satir.className = "logo" + (mevcut ? " mevcut" : "");
+    const a = document.createElement("div");
+    a.className = "ad";
+    a.innerHTML = "<b></b><span></span>";
+    a.querySelector("b").textContent = ad;
+    a.querySelector("span").textContent = aciklama;
+    satir.append(a, kutu(src, "acik"), kutu(src, "koyu"));
+    liste.append(satir);
+  }
+</script>
+</body>
+</html>
