@@ -13,12 +13,17 @@ Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artı
 - Ayarlar › Hakkında: kaynaklara Open Food Facts; iPhone'da gizlilik metinlerine barkod istisnası. `privacy.html` (Türkçe ve İngilizce): "Barkod okuma" bölümü ve üçüncü taraf listesi.
 - iOS: `@capacitor/barcode-scanner` 3.1.3 (Swift Package Manager; Apple Vision), gizlilik bildirimine "Arama Geçmişi" (kimlikle ilişkilendirilmez, izleme yok, uygulama işlevi). Derleme hattı eklentiyi ve beyanları denetler.
 - "Neler yeni" maddesi yalnızca iPhone uygulamasında gösterilir (`native: true`).
+- Apple Sağlık bağlantısı (yalnızca iPhone uygulaması): Ben › Ayarlar › Apple Sağlık. Adım (günlük toplam), uyku (toplam uyku süresi, yatış ve kalkış; kalkılan güne yazılır, 3 saatten kısa oturumlar sayılmaz, birden çok kaynakta Apple Watch önce) ve kilo (günün ilk ölçümü) yalnızca okunur; Sağlık'a hiçbir şey yazılmaz. Türler tek tek seçilir.
+- Eşitleme açılışta, uygulama öne gelince (en fazla dakikada bir) ve "Şimdi eşitle" ile; ilk bağlantıda 14 gün geriye, sonra son eşitlemeden bu yana. Elle girilen ya da silinen değer her zaman korunur (`state.days[k].hk` Sağlık'tan yazılan son değeri tutar). Veri gelmezse izin için yol gösteren yardım metni.
+- Bugün satırlarında Sağlık'tan gelen değerin yanında "· Sağlık'tan"; uyku kadranının ortası kayıttaki toplam uyku süresini gösterir (Sağlık'tan gelen süre yatış-kalkış aralığından kısa olabilir).
+- Gizlilik: `privacy.html` (Türkçe ve İngilizce) "Apple Sağlık" bölümü; iPhone'da Hakkında › Gizlilik'e bir cümle. Sağlık verisi cihazdan çıkmadığı için `PrivacyInfo.xcprivacy` değişmedi.
+- iOS: `@capgo/capacitor-health` 8.12.3 (tam sürüm, Swift Package Manager), `App.entitlements`'a HealthKit (klinik kayıt yok), projede HealthKit yeteneği. Derleme hattı yetkiyi, yeteneği ve eklentiyi denetler.
 
 ### Düzeltildi
 - Besin ekleme panelindeki arama kutusunun ekran okuyucu etiketi yoktu.
 - İngilizcede üç kardiyo önerisi Türkçe görünüyordu (sözlük yanlış bloktaydı).
 
-Veri şeması aynı kalır (`SCHEMA` 2): yeni alanlar (`bc`, `br`, `src`, `por`, `state.bcOk`) isteğe bağlıdır.
+Veri şeması aynı kalır (`SCHEMA` 2): yeni alanlar (`bc`, `br`, `src`, `por`, `state.bcOk`, `profile.health`, `days[k].hk`) isteğe bağlıdır.
 
 ## 1.8.1 (12 Kasım 2026)
 

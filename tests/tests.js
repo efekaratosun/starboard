@@ -1378,4 +1378,224 @@ test("barkod: gizlilik metinleri, kaynaklar, bağımlılık ve iOS beyanları ye
   ok(scripts.indexOf("js/barcode.js") > scripts.indexOf("js/meals.js"), "barcode.js, meals.js'ten sonra yüklenmeli");
 });
 
+/* ---- Apple Sağlık ---- */
+/* Örnekler yerel saatle kurulur; testler hangi saat diliminde çalışırsa çalışsın aynı sonucu verir. */
+const hkT = (d, h, m, s) => new Date(2026, 10, d, h, m || 0, s || 0).toISOString();
+const hkSleep = (src, name, state, d1, h1, m1, d2, h2, m2) =>
+  ({ sourceId: src, sourceName: name, sleepState: state, startDate: hkT(d1, h1, m1), endDate: hkT(d2, h2, m2) });
+
+test("sağlık: adım günlük kovası yerel güne düşer, gece yarısı sınırı doğru, sıfır yazılmaz", () => {
+  const out = hkStepsByDay([
+    { startDate: hkT(10, 0), endDate: hkT(11, 0), value: 8240.4 },
+    { startDate: hkT(11, 0), endDate: hkT(12, 0), value: 0 },
+    { startDate: hkT(12, 23, 30), endDate: hkT(12, 23, 59), value: 120 },
+    { startDate: hkT(13, 0, 10), endDate: hkT(13, 0, 20), value: 30 },
+    { startDate: "bozuk", value: 50 }
+  ]);
+  eq(out, { "2026-11-10": 8240, "2026-11-12": 120, "2026-11-13": 30 });
+  eq(hkStepsByDay(undefined), {});
+});
+
+test("sağlık: uyku tek kaynak, awake ve inBed dışarıda, kalkılan güne yazılır, şekerleme yok sayılır", () => {
+  const W = "com.apple.health.W", P = "com.apple.health.P";
+  const samples = [
+    /* Watch: aşamalı, 03:00-03:20 arası uyanık */
+    hkSleep(W, "Efe's Apple Watch", "inBed", 9, 22, 50, 10, 7, 0),
+    hkSleep(W, "Efe's Apple Watch", "light", 9, 23, 10, 10, 1, 0),
+    hkSleep(W, "Efe's Apple Watch", "deep", 10, 1, 0, 10, 3, 0),
+    hkSleep(W, "Efe's Apple Watch", "awake", 10, 3, 0, 10, 3, 20),
+    hkSleep(W, "Efe's Apple Watch", "rem", 10, 3, 20, 10, 6, 50),
+    /* aynı gece iPhone'dan çakışan, daha uzun kayıt: Watch seçilmeli */
+    hkSleep(P, "iPhone", "asleep", 9, 23, 0, 10, 7, 30),
+    /* şekerleme: 1 saat */
+    hkSleep(W, "Efe's Apple Watch", "light", 10, 14, 0, 10, 15, 0),
+    /* yalnızca yatakta ve uyanık: uyku sayılmaz */
+    hkSleep(P, "iPhone", "inBed", 11, 23, 0, 12, 7, 0),
+    hkSleep(P, "iPhone", "awake", 12, 2, 0, 12, 3, 0),
+    /* kendi kaynağımız okunmaz */
+    hkSleep("app.starboard.health", "Starboard", "asleep", 12, 23, 0, 13, 7, 0),
+    /* yalnızca iPhone olan gece, saniyeli saatler: 5 dakikaya yuvarlanır */
+    { sourceId: P, sourceName: "iPhone", sleepState: "asleep", startDate: hkT(13, 23, 12, 40), endDate: hkT(14, 6, 58, 10) }
+  ];
+  const out = hkSleepByDay(samples);
+  eq(Object.keys(out).sort(), ["2026-11-10", "2026-11-14"], "uyku günleri");
+  eq(out["2026-11-10"], { sleep: 7.33, bed: 23 * 60 + 10, wake: 6 * 60 + 50 }, "Watch, uyanık süre düşülmüş, toplam uyku");
+  eq(out["2026-11-14"], { sleep: 7.76, bed: 23 * 60 + 15, wake: 7 * 60 }, "yuvarlama");
+  for (const v of Object.values(out)){
+    for (const m of [v.bed, v.wake]) ok(m >= 0 && m <= 1439 && m % 5 === 0, "bed/wake 0–1439 ve 5'in katı: " + m);
+    eq(v.sleep, Math.round(v.sleep * 100) / 100, "2 ondalık");
+  }
+  /* gece yarısını geçen uyku, yatılan değil kalkılan güne */
+  eq(Object.keys(hkSleepByDay([hkSleep(P, "iPhone", "asleep", 20, 23, 30, 21, 7, 0)])), ["2026-11-21"]);
+  /* uzun bir gece uyanması oturumu böler; kısa kalan parça şekerleme sayılır */
+  eq(hkSleepByDay([hkSleep(P, "iPhone", "asleep", 20, 0, 0, 20, 1, 0), hkSleep(P, "iPhone", "asleep", 20, 3, 0, 20, 8, 0)])["2026-11-20"].sleep, 5);
+});
+
+test("sağlık: kilo günün ilk ölçümü, sınır dışı ve kendi kaynağımız atılır", () => {
+  const w = (d, h, v, src) => ({ startDate: hkT(d, h), endDate: hkT(d, h), value: v, sourceId: src || "com.withings.wiscale2" });
+  eq(hkWeightByDay([
+    w(10, 8, 81.44), w(10, 7, 81.9), w(10, 20, 82.5),
+    w(11, 8, 500), w(11, 9, 10),
+    w(12, 6, 80, "app.starboard.health"), w(12, 7, 80.26)
+  ]), { "2026-11-10": 81.9, "2026-11-12": 80.3 });
+});
+
+test("sağlık: kayda yazma; doldurur, kendi yazdığını günceller, elle gireni ezmez, silineni geri getirmez", () => {
+  const st = { profile: { health: { on: true } }, days: {
+    "2026-11-02": { tasks: [], steps: 5000 },                                   /* elle girilmiş */
+    "2026-11-03": { tasks: [], steps: 3000, hk: { steps: 3000 } },              /* bizim yazdığımız */
+    "2026-11-04": { tasks: [], hk: { steps: 4000 } },                           /* kullanıcı silmiş */
+    "2026-11-05": { tasks: [], steps: 6000, hk: { steps: 4000 } },              /* kullanıcı değiştirmiş */
+    "2026-11-06": { tasks: [], sleep: 7, bed: 1380, wake: 400, hk: { sleep: 7, bed: 1380, wake: 360 } }   /* kalkışı elle kaydırmış */
+  } };
+  const data = {
+    steps: { "2026-10-20": 999, "2026-11-01": 8240, "2026-11-02": 9000, "2026-11-03": 7000, "2026-11-04": 9000, "2026-11-05": 9000 },
+    sleep: { "2026-11-01": { sleep: 7.5, bed: 1390, wake: 420 }, "2026-11-06": { sleep: 8, bed: 1380, wake: 420 } },
+    weight: { "2026-11-01": 81.4 }
+  };
+  const before = cloneJson(st.days);
+  ok(applyHealth(st, data, "2026-11-01", "2026-11-14"), "değişiklik var, true dönmeli");
+  const d = st.days;
+  eq(d["2026-11-01"], { tasks: [], hk: { steps: 8240, sleep: 7.5, bed: 1390, wake: 420, weight: 81.4 }, steps: 8240, sleep: 7.5, bed: 1390, wake: 420, weight: 81.4 }, "boş gün dolar, görev tohumlanmaz");
+  ok(!("seeded" in d["2026-11-01"]), "yeni açılan geçmiş güne görev tohumlaması yapılmaz");
+  eq(d["2026-11-02"], before["2026-11-02"], "elle girilen ezilmez");
+  eq([d["2026-11-03"].steps, d["2026-11-03"].hk.steps], [7000, 7000], "kendi yazdığımız güncellenir");
+  eq(d["2026-11-04"], before["2026-11-04"], "silinen geri gelmez");
+  eq(d["2026-11-05"], before["2026-11-05"], "değiştirilen ezilmez");
+  eq(d["2026-11-06"], before["2026-11-06"], "uyku grubunda bir alan değiştiyse hiçbiri yazılmaz");
+  ok(!d["2026-10-20"], "pencere dışındaki güne dokunulmaz");
+  eq(applyHealth(st, data, "2026-11-01", "2026-11-14"), false, "aynı veri ikinci kez: değişiklik yok");
+
+  /* kapalı türe dokunulmaz */
+  const st2 = { profile: { health: { on: true, weight: false, sleep: false } }, days: {} };
+  ok(applyHealth(st2, data, "2026-11-01", "2026-11-14"));
+  eq(Object.keys(st2.days["2026-11-01"]).sort(), ["hk", "steps", "tasks"]);
+  eq(applyHealth({ profile: { health: { on: true, steps: false, sleep: false, weight: false } }, days: {} }, data, "2026-11-01", "2026-11-14"), false);
+  /* bozuk veri yazılmaz */
+  eq(applyHealth({ profile: {}, days: {} }, { steps: { "2026-11-01": NaN }, sleep: { "2026-11-01": { sleep: 7 } } }, "2026-11-01", "2026-11-01"), false);
+});
+
+test("sağlık: Sağlık'tan gelen adım hedefi işaretler, kilo tartı hatırlatmasını susturur", async () => {
+  const st = await loadFixture();
+  const k = "2026-11-11", program = buildProgram(st.profile, 82, 0);
+  delete st.days[k];
+  st.profile.health = { on: true };
+  st.profile.reminders = { weigh: true };
+  const now = new Date("2026-11-11T06:00:00");
+  ok(reminderPlan(st, program, now).some(n => n.kind === "weigh" && dayKey(n.at) === k), "önce tartı hatırlatması var");
+  ok(applyHealth(st, { steps: { [k]: 9100 }, weight: { [k]: 81.6 } }, shiftDays(k, -13), k));
+  const ctx = { today: k, hour: 12, profile: st.profile, sleep: [7, 9], steps: 8000 };
+  const s = taskStatus("steps", st.days[k], program, k, ctx);
+  eq([s.ok, s.value], [true, 9100]);
+  eq(taskStatus("weigh", st.days[k], program, k, ctx).ok, true);
+  ok(!reminderPlan(st, program, now).some(n => n.kind === "weigh" && dayKey(n.at) === k), "tartıldıysa hatırlatma atlanır");
+  ok(!st.profile.goals || !st.profile.goals.steps, "kapalı adım hedefi kendiliğinden açılmaz");
+});
+
+test("sağlık: okuma çağrıları (yalnızca okuma, günlük kova, uyku sınırı) ve hata veren tür ötekileri bozmaz", async () => {
+  const calls = [];
+  const P = {
+    queryAggregated: async o => { calls.push(["agg", o]); return { samples: [{ startDate: hkT(10, 0), endDate: hkT(11, 0), value: 5000 }] }; },
+    readSamples: async o => { calls.push(["read", o]); if (o.dataType === "sleep") throw new Error("izin yok"); return { samples: [{ startDate: hkT(10, 8), value: 80, sourceId: "x" }] }; }
+  };
+  const start = new Date(2026, 10, 10), end = new Date(2026, 10, 11, 9);
+  const data = await hkRead(P, { on: true }, start, end);
+  eq(data, { steps: { "2026-11-10": 5000 }, sleep: {}, weight: { "2026-11-10": 80 } });
+  const agg = calls.find(c => c[0] === "agg")[1], sl = calls.find(c => c[1].dataType === "sleep")[1];
+  eq([agg.dataType, agg.bucket, agg.aggregation, agg.startDate], ["steps", "day", "sum", start.toISOString()]);
+  ok(sl.limit >= 1000, "uyku için örnek sınırı yükseltilmeli");
+  ok(Date.parse(sl.startDate) < start.getTime(), "uyku pencerenin ilk gününe biten geceyi de almalı");
+  calls.length = 0;
+  await hkRead(P, { on: true, sleep: false, weight: false }, start, end);
+  eq(calls.map(c => c[1].dataType), ["steps"], "kapalı türler istenmez");
+  eq(hkReadTypes({ sleep: false }), ["steps", "weight"]);
+  /* pencere: ilk eşitlemede 14 gün, sonra son eşitlemeden bu yana (2–14) */
+  eq(hkWindow(undefined, "2026-11-13"), 14);
+  eq(hkWindow(new Date(2026, 10, 13, 8).toISOString(), "2026-11-13"), 2);
+  eq(hkWindow(new Date(2026, 10, 8, 8).toISOString(), "2026-11-13"), 6);
+  eq(hkWindow(new Date(2026, 9, 1).toISOString(), "2026-11-13"), 14);
+});
+
+test("sağlık: web'de bölüm yok; uygulamada bölüm erişilebilir ve İngilizcesi tam; kadran toplam uykuyu gösterir", async () => {
+  eq([healthAvailable(), healthSection()], [false, ""], "web'de Sağlık bölümü olmamalı");
+  eq(await syncHealth(), null, "web'de eşitleme çalışmaz");
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  tab = "settings"; meTab = "set";
+  const keep = healthAvailable;
+  try {
+    render();
+    ok(!app.querySelector("[data-hk-type]") && !app.innerHTML.includes("Apple Sağlık"), "web'de Sağlık arayüzü ve metni yok");
+    healthAvailable = () => true;
+    for (const lang of ["tr", "en"]) await withLang(lang, async () => {
+      I18N_MISSING.clear();
+      delete state.profile.health; render();
+      ok(app.querySelector("#hk-connect") && app.querySelectorAll("[data-hk-type]").length === 3, "bağlan düğmesi ve tür seçimi");
+      ok([...app.querySelectorAll("[data-hk-type]")].every(b => b.getAttribute("aria-pressed") === "true"), "türler varsayılan açık");
+      eq(a11yBad("sağlık bağlı değil"), []);
+      state.profile.health = { on: true, sleep: false, lastSync: new Date().toISOString() };
+      hkNote = tx("Sağlık'tan veri gelmedi. İzin vermediysen: Sağlık uygulaması › profil › Gizlilik › Uygulamalar › Starboard.");
+      render();
+      ok(app.querySelector("#hk-sync") && app.querySelector("#hk-off") && !app.querySelector("#hk-connect"), "bağlıyken eşitle ve kes");
+      eq(app.querySelector('[data-hk-type="sleep"]').getAttribute("aria-pressed"), "false");
+      ok(app.querySelector('[role="status"]').textContent.includes(lang === "en" ? "No data came" : "veri gelmedi"), "yardım metni");
+      eq(a11yBad("sağlık bağlı"), []);
+      hkNote = "";
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+    /* bağlantıyı kes: eşitleme kapanır, alınan değerler kalır */
+    state.days[today()].steps = 1234; state.days[today()].hk = { steps: 1234 };
+    await app.querySelector("#hk-off").onclick();
+    eq([state.profile.health.on, state.days[today()].steps], [false, 1234]);
+  } finally { healthAvailable = keep; hkNote = ""; tab = "today"; meTab = "body"; }
+  /* Bugün satırı kaynağı söyler; kadranın ortasında kayıttaki toplam uyku */
+  const e = { tasks: [], sleep: 7.33, bed: 1390, wake: 410, hk: { sleep: 7.33, bed: 1390, wake: 410 } };
+  const box = document.createElement("div"); box.innerHTML = sleepHTML(e);
+  eq(box.querySelector("#sl-c1").textContent, durTxt(440), "kadran ortası toplam uyku (aralık 8 sa 20 dk)");
+  eq(hkTag(e, "sleep"), " · Sağlık'tan");
+  eq(hkTag({ ...e, sleep: 8 }, "sleep"), "", "elle değişince kaynak yazılmaz");
+  state = null;
+});
+
+test("sağlık: kayıt şeması değişmedi; eski kayıt profile.health olmadan açılır", async () => {
+  eq(SCHEMA, 2);
+  const st = await loadFixture();
+  ok(!st.profile.health, "örnek kayıtta Sağlık ayarı yok");
+  const m = migrateState(st);
+  eq(m.newer, false);
+  eq(healthOf(st.profile), {});
+  eq(applyHealth(st, {}, "2026-11-01", "2026-11-14"), false);
+  state = st; migrateMeals(); notice = null; viewDate = null; ensureToday();
+  tab = "settings"; meTab = "set"; render();
+  ok(app.querySelector("#s-save"), "ayarlar açılmalı");
+  tab = "today"; render(); ok(app.querySelector("#goal-list"), "bugün açılmalı");
+  state = null;
+});
+
+test("sağlık: eklenti, yetki, gizlilik metinleri ve iOS beyanları yerinde", async () => {
+  const get = async p => { const r = await fetch("../" + p); ok(r.ok, p + " açılmadı"); return r.text(); };
+  eq(/^\d+\.\d+\.\d+$/.test(JSON.parse(await get("package.json")).dependencies["@capgo/capacitor-health"]), true, "eklenti tam sürümle sabitlenmeli");
+  ok((await get("ios/App/CapApp-SPM/Package.swift")).includes("CapgoCapacitorHealth"), "Package.swift eklentiyi içermiyor (npx cap sync ios)");
+  const ent = await get("ios/App/App/App.entitlements");
+  ok(/<key>com\.apple\.developer\.healthkit<\/key>\s*<true\/>/.test(ent), "HealthKit yetkisi yok");
+  ok(/<key>com\.apple\.developer\.healthkit\.access<\/key>\s*<array\/>/.test(ent), "klinik kayıt istenmemeli (boş dizi)");
+  ok(!/health-records|background-delivery/.test(ent), "gereksiz HealthKit yetkisi");
+  ok(/com\.apple\.HealthKit = \{\s*enabled = 1;/.test(await get("ios/App/App.xcodeproj/project.pbxproj")), "projede HealthKit yeteneği yok");
+  const plist = await get("ios/App/App/Info.plist");
+  ok(plist.includes("NSHealthShareUsageDescription") && plist.includes("NSHealthUpdateUsageDescription"), "Sağlık izin metinleri Info.plist'te yok");
+  ok(!/<string>healthkit<\/string>/.test(plist), "healthkit cihaz şartı olmamalı (eski iPad'ler dışarıda kalır)");
+  const priv = await get("ios/App/App/PrivacyInfo.xcprivacy");
+  ok(!/NSPrivacyCollectedDataType(Health|Fitness)/.test(priv), "Sağlık verisi cihazdan çıkmadığı için beyan edilmez");
+  const [tr, en] = (await get("starboard-site/privacy.html")).split('<article id="en"');
+  ok(tr.includes("Apple Sağlık (yalnızca iPhone uygulaması)") && tr.includes("Yalnızca okuma") && tr.includes("13 Kasım 2026"), "Türkçe gizlilik metni");
+  ok(en.includes("Apple Health (iPhone app only)") && en.includes("Read only") && en.includes("November 13, 2026"), "İngilizce gizlilik metni");
+  ok(WHATS_NEW[0].native && WHATS_NEW[0].items.some(s => s.includes("Apple Sağlık")), "Neler yeni maddesi yalnızca iPhone'da");
+  const scripts = [...(await get("starboard-site/index.html")).matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
+  ok(scripts.indexOf("js/health.js") > scripts.indexOf("js/reminders.js") && scripts.indexOf("js/health.js") < scripts.indexOf("js/main.js"), "health.js sırası");
+  ok((await get("starboard-site/sw.js")).includes('"js/health.js"'), "health.js sw.js SHELL listesinde değil");
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  tab = "settings"; meTab = "set"; render();
+  ok(!app.innerHTML.includes("Apple Sağlık'a bağlanırsan"), "web'de Sağlık gizlilik cümlesi yazılmamalı");
+  state = null; tab = "today"; meTab = "body";
+});
+
 window.STARBOARD_TESTS = TESTS;

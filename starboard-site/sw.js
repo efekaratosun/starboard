@@ -6,7 +6,7 @@ const SHELL = [
   "css/tokens.css", "css/components.css", "css/app.css", "fonts/nunito-latin.woff2", "fonts/nunito-latin-ext.woff2",
   "js/lang/en.js", "js/lang/en-food.js", "js/lang/en-workout.js", "js/i18n.js", "js/units.js", "js/native.js", "js/storage.js", "js/program.js", "js/nutrition.js", "js/foods-intl.js", "js/evaluate.js", "js/goals.js", "js/app.js", "js/onboarding.js",
   "js/router.js", "js/today.js", "js/meals.js", "js/barcode.js", "js/shopping.js", "js/workout.js", "js/quick.js", "js/ui.js", "js/vendor/motion.js", "js/exercise-anim.js", "js/workout-mode.js",
-  "js/widgets.js", "js/charts.js", "js/about.js", "js/settings.js", "js/calendar.js", "js/reminders.js", "js/whatsnew.js", "js/main.js", "js/register-sw.js"
+  "js/widgets.js", "js/charts.js", "js/about.js", "js/settings.js", "js/calendar.js", "js/reminders.js", "js/health.js", "js/whatsnew.js", "js/main.js", "js/register-sw.js"
 ];
 
 self.addEventListener("install", e => {

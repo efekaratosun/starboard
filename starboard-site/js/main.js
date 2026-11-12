@@ -23,4 +23,5 @@
   /* Güncellemeden sonra bir kez: neler yeni. Uyarı (notice) varsa önce o okunsun. */
   if (!notice) maybeShowWhatsNew();
   rescheduleSoon();
+  healthSoon();
 })();

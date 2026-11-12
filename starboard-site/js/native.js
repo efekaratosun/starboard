@@ -28,7 +28,8 @@ if (IS_NATIVE && !window.storage){
 
 /* ---- yerel eklentiler ----
    Web'de çağrılar sessizce hiçbir şey yapmaz; böylece kodun geri kalanı
-   "iPhone'da mıyız" diye sormadan çağırabilir. */
+   "iPhone'da mıyız" diye sormadan çağırabilir. Apple Sağlık da (eklentinin JS adı
+   "Health") böyle çağrılır; sarmalayıcıları health.js içindedir. */
 /* Eklenti çağrıları söz (promise) döndürür; reddedilirse sessizce yutulur. */
 const quiet = p => { if (p && p.catch) p.catch(() => {}); };
 const nativePlugin = name => {

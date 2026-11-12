@@ -9,7 +9,8 @@
 const WHATS_NEW = [
   /* native: yalnızca iPhone uygulamasında gösterilir (web'de bu özellik yok). */
   { v:"1.9.0", native:true, items:[
-    tx("Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut.")] },
+    tx("Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut."),
+    tx("Apple Sağlık bağlantısı: adımın, uykun ve kilon Sağlık'tan gelsin, hedeflerin kendiliğinden işaretlensin: Ben › Ayarlar › Apple Sağlık.")] },
   { v:"1.8.0", items:[
     tx("Alışveriş listesi: Beslenme › Liste. Öneri planından ve seçtiğin tariflerden oluşur."),
     tx("Antrenman modunda setler arası dinlenme sayacı."),

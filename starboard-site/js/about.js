@@ -31,7 +31,8 @@ function aboutSection(){
     ${block(tx("Sağlık uyarısı"), `<p>${DISCLAIMER}</p>`)}
     ${block(tx("Hesapların kaynakları"), SOURCES.map(([t, s]) => `<p><b>${t}</b><br>${s}</p>`).join(""))}
     ${block(tx("Gizlilik"), `<p>${tx("Starboard hesap istemez. Girdiğin bütün veriler yalnızca bu cihazda tutulur; sunucuya gönderilmez, kimseyle paylaşılmaz. Reklam, analiz ya da izleme aracı yoktur.")}</p>
-      ${IS_NATIVE ? `<p>${tx("Tek istisna: barkod okuttuğunda yalnızca barkod numarası Open Food Facts'e gönderilir (teknik olarak IP adresin de görünür). Profilin, günlüğün ve kamera görüntüsü gönderilmez.")}</p>` : ""}
+      ${IS_NATIVE ? `<p>${tx("Tek istisna: barkod okuttuğunda yalnızca barkod numarası Open Food Facts'e gönderilir (teknik olarak IP adresin de görünür). Profilin, günlüğün ve kamera görüntüsü gönderilmez.")}</p>
+        <p>${tx("Apple Sağlık'a bağlanırsan adım, uyku ve kilo yalnızca okunur ve bu cihazda kalır; hiçbir yere gönderilmez, reklam ya da pazarlama için kullanılmaz. İzni Sağlık uygulamasından geri alabilirsin.")}</p>` : ""}
       <p>${tx("Site GitHub Pages'te barındırılır; GitHub sayfayı açtığında IP adresini görebilir. Yazı tipi uygulamanın içinden yüklenir, başka bir yere istek gitmez. Verilerini Ayarlar'daki \"Tüm verileri sil\" ile tamamen silebilirsin.")}</p>
       <p><a href="privacy.html" target="_blank" rel="noopener">${tx("Gizlilik politikasının tamamı")}</a></p>`)}
   </section>`;

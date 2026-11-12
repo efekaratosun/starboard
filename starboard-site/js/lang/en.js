@@ -1000,5 +1000,21 @@ window.STARBOARD_EN = {
   "Open Food Facts (açık veri, ODbL lisansı); değerler gönüllülerce girilir ve hatalı olabilir.": "Open Food Facts (open data, ODbL licence); values are entered by volunteers and may be wrong.",
   "Tek istisna: barkod okuttuğunda yalnızca barkod numarası Open Food Facts'e gönderilir (teknik olarak IP adresin de görünür). Profilin, günlüğün ve kamera görüntüsü gönderilmez.": "One exception: when you scan a barcode, only the barcode number is sent to Open Food Facts (technically your IP address is visible too). Your profile, your log and the camera image are never sent.",
   "Sürüm {0} · veriler yalnızca bu cihazda saklanır; barkod okuttuğunda yalnızca barkod numarası gönderilir.": "Version {0} · data stays on this device; when you scan a barcode, only the barcode number is sent.",
-  "Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut.": "Scan a packaged food's barcode and get its nutrition facts from Open Food Facts: Meals › My diary › Add food › Scan barcode."
+  "Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut.": "Scan a packaged food's barcode and get its nutrition facts from Open Food Facts: Meals › My diary › Add food › Scan barcode.",
+  /* ---- Apple Sağlık ---- */
+  "Apple Sağlık": "Apple Health",
+  "Adımını, uykunu ve kilonu Apple Sağlık'tan al; hedeflerin kendiliğinden işaretlensin. Veriler bu iPhone'dan çıkmaz.": "Bring in your steps, sleep and weight from Apple Health so your goals check off by themselves. The data never leaves this iPhone.",
+  "Sağlık'tan alınacaklar": "Data to bring in from Health",
+  "Sağlık'a bağlan": "Connect to Health",
+  "Şimdi eşitle": "Sync now",
+  "Bağlantıyı kes": "Disconnect",
+  "Son eşitleme: {0}": "Last synced: {0}",
+  "İzni yalnızca Sağlık uygulamasından geri alabilirsin.": "You can only revoke access in the Health app.",
+  "Sağlık'tan {0} günlük veri alındı.": "Imported {0} days of data from Health.",
+  "Sağlık'tan veri gelmedi. İzin vermediysen: Sağlık uygulaması › profil › Gizlilik › Uygulamalar › Starboard.": "No data came from Health. If you didn't allow access: Health app › profile › Privacy › Apps › Starboard.",
+  "Sağlık'a bağlanılamadı.": "Couldn't connect to Health.",
+  "En az bir veri türü seç.": "Choose at least one type of data.",
+  " · Sağlık'tan": " · from Health",
+  "Apple Sağlık'a bağlanırsan adım, uyku ve kilo yalnızca okunur ve bu cihazda kalır; hiçbir yere gönderilmez, reklam ya da pazarlama için kullanılmaz. İzni Sağlık uygulamasından geri alabilirsin.": "If you connect Apple Health, your steps, sleep and weight are only read and stay on this device; they are never sent anywhere or used for advertising or marketing. You can revoke access in the Health app.",
+  "Apple Sağlık bağlantısı: adımın, uykun ve kilon Sağlık'tan gelsin, hedeflerin kendiliğinden işaretlensin: Ben › Ayarlar › Apple Sağlık.": "Apple Health: bring in your steps, sleep and weight so your goals check off by themselves: Me › Settings › Apple Health."
 };

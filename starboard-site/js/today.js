@@ -270,17 +270,17 @@ function autoInfo(t, entry, program, key){
     case "sleep": {
       const v = s.value;
       return { title:tx("{0}-{1} saat uyu", [s.lo, s.hi]), ok, pct, warn,
-        txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + (s.state === "long" ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(s.hi)]) : s.state === "short" ? tx(" · {0} saatin altında", [(s.lo)]) : ""),
+        txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + hkTag(entry, "sleep") + (s.state === "long" ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(s.hi)]) : s.state === "short" ? tx(" · {0} saatin altında", [(s.lo)]) : ""),
         why: v === null ? tx("Uyku kadranıyla girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(s.lo)]) };
     }
     case "weigh": {
       const gun = s.today ? tx("Bugün") : tx("O gün");
       return { title:tx("Sabah kilo ölçümü"), ok, pct,
-        txt: s.value === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} girildi", [(fmtW(s.value))]),
+        txt: s.value === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} girildi", [(fmtW(s.value))]) + hkTag(entry, "weight"),
         why:tx("{0}ün kilosu girilince işaretlenir.", [(gun)]) };
     }
     case "steps":
-      return { title:tx("{0} adım at", [(s.target)]), ok, pct, txt:tx("{0} / {1} adım", [(s.value || 0), (s.target)]),
+      return { title:tx("{0} adım at", [(s.target)]), ok, pct, txt:tx("{0} / {1} adım", [(s.value || 0), (s.target)]) + hkTag(entry, "steps"),
         why:tx("{0} adıma ulaşınca işaretlenir. {1} adım kaldı.", [(s.target), (s.left)]) };
     case "train": {
       const t2 = s.session.t;

@@ -63,6 +63,17 @@ jobs:
           plutil -extract NSCameraUsageDescription raw ios/App/App/Info.plist >/dev/null
           test "$(plutil -extract NSPrivacyCollectedDataTypes.0.NSPrivacyCollectedDataType raw ios/App/App/PrivacyInfo.xcprivacy)" = "NSPrivacyCollectedDataTypeSearchHistory"
 
+      # Apple Sağlık: yetki dosyasında HealthKit, projede yetenek, pakette eklenti olmalı.
+      # Anahtarlarda nokta olduğu için plutil değil PlistBuddy (yol ayırıcısı ":").
+      # İmzalı derleme (hesap) olmadan yetki uygulamaya gömülmez; gerçek deneme TestFlight'ta.
+      - name: HealthKit yetkisi ve eklentisi denetle
+        run: |
+          test "$(/usr/libexec/PlistBuddy -c 'Print :com.apple.developer.healthkit' ios/App/App/App.entitlements)" = "true"
+          /usr/libexec/PlistBuddy -c 'Print :com.apple.developer.healthkit.access' ios/App/App/App.entitlements
+          grep -q "com.apple.HealthKit" ios/App/App.xcodeproj/project.pbxproj
+          grep -q CapgoCapacitorHealth ios/App/CapApp-SPM/Package.swift
+          grep -q HealthPlugin ios/App/App/capacitor.config.json
+
       - name: Simulator icin derle (imzasiz)
         run: |
           xcodebuild \

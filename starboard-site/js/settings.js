@@ -68,6 +68,8 @@ function settingsView(){
 
   ${remindersSection()}
 
+  ${healthSection()}
+
   <section>
     <h2>${tx("Tekrar eden görevler")} <span class="count">${routines.length}</span></h2>
     ${routines.length ? routines.map(r => `<div class="rt">${iconBox("repeat")}
@@ -110,6 +112,7 @@ function settingsView(){
 
 function wireSettings(){
   wireReminders();
+  wireHealth();
   let stAvatar = state.profile.avatar, stColor = state.profile.avColor;
   wireAvatar("st", k => { stAvatar = k; });
   document.getElementById("s-sex").onchange = ev => {

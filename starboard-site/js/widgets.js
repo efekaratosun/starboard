@@ -289,6 +289,7 @@ function sleepHTML(entry){
   const handle = (id, m, icon, label) => { const [x, y] = dialPt(m); return `<g id="${id}" class="dial-h" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"
       tabindex="0" role="slider" aria-label="${label}" aria-valuetext="${hm(m)}">
       <circle r="17"/><text y="5.5" text-anchor="middle">${icon}</text></g>`; };
+  /* Ortada kayıttaki uyku süresi: Sağlık'tan gelen toplam uyku, yatış-kalkış aralığından kısa olabilir. */
   const d = sleepDur(bed, wake);
   return `<div class="entry sl-entry">${iconBox("rest")}
     <div class="entry-main">
@@ -303,7 +304,7 @@ function sleepHTML(entry){
           <circle cx="120" cy="120" r="${DIAL.r}" class="dial-track"/>
           <path id="sl-arc" class="dial-arc" d="${dialArc(bed, wake)}"/>
           ${ticks}${labels}
-          <text x="120" y="114" class="dial-dur num" id="sl-c1">${durTxt(d)}</text>
+          <text x="120" y="114" class="dial-dur num" id="sl-c1">${has ? durTxt(Math.round(entry.sleep * 60)) : durTxt(d)}</text>
           <text x="120" y="134" class="dial-sub num" id="sl-c2">${hm(bed)} → ${hm(wake)}</text>
           ${handle("sl-h-bed", bed, "🌙", tx("Yatış saati"))}
           ${handle("sl-h-wake", wake, "☀️", tx("Kalkış saati"))}

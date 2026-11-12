@@ -27,6 +27,8 @@ const SCREENS = [
   ["ben: vücudum", "tab='settings'; meTab='body'"],
   ["ben: grafikler", "tab='settings'; meTab='chart'"],
   ["ben: ayarlar", "tab='settings'; meTab='set'"],
+  ["ben: ayarlar (Apple Sağlık)", "healthAvailable=()=>true; delete state.profile.health; tab='settings'; meTab='set'"],
+  ["ben: ayarlar (Apple Sağlık bağlı)", "healthAvailable=()=>true; state.profile.health={on:true,sleep:false,lastSync:new Date().toISOString()}; hkNote=tx(\"Sağlık'tan veri gelmedi. İzin vermediysen: Sağlık uygulaması › profil › Gizlilik › Uygulamalar › Starboard.\"); tab='settings'; meTab='set'"],
 ];
 const SHEETS = [
   ["hızlı giriş", "tab='today'; render(); openQuickSheet()", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove())"],

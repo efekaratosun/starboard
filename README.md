@@ -76,8 +76,8 @@ Site yerelde açıkken (aşağıdaki test sunucusu) `http://localhost:8766/tools
 Yerel özellikler için ortak dosyalar (`ios/App/App/` altında):
 
 - İzin metinleri (kamera, Apple Sağlık): İngilizcesi `Info.plist` ve `en.lproj/InfoPlist.strings`, Türkçesi `tr.lproj/InfoPlist.strings`. Yeni bir izin eklenince üçüne de yazılır; derleme hattı üçünde de olup olmadığını denetler.
-- Yetkiler (`App.entitlements`): şimdilik boş. HealthKit eklenince `com.apple.developer.healthkit` buraya yazılır; proje dosyası zaten bu dosyayı gösteriyor.
-- Gizlilik bildirimi (`PrivacyInfo.xcprivacy`): App Store'un istediği veri beyanı. Barkod okuma Open Food Facts'e giden barkod numarasını "Arama Geçmişi" (ilişkilendirilmez, izleme yok, uygulama işlevi) olarak beyan eder; derleme hattı bunu ve eklentiyi denetler (bkz. ROADMAP, 12 Kasım kararları).
+- Yetkiler (`App.entitlements`): `com.apple.developer.healthkit` (ve boş `…healthkit.access`: klinik kayıt yok); proje dosyasında HealthKit yeteneği (`SystemCapabilities`). Derleme hattı imzasızdır, bu yüzden yetki simülatör derlemesine gömülmez; gerçek deneme imzalı derleme (TestFlight) ister.
+- Gizlilik bildirimi (`PrivacyInfo.xcprivacy`): App Store'un istediği veri beyanı. Barkod okuma Open Food Facts'e giden barkod numarasını "Arama Geçmişi" (ilişkilendirilmez, izleme yok, uygulama işlevi) olarak beyan eder; derleme hattı bunu ve eklentiyi denetler (bkz. ROADMAP, 12 Kasım kararları). Apple Sağlık verisi cihazdan çıkmadığı için beyana girmez.
 
 ## Barkod okuma
 
@@ -90,6 +90,15 @@ Yalnızca iPhone uygulamasında (`barcodeAvailable()` web'de `false`; düğme ve
 - **Kayıt:** `state.customFoods["bc_" + barkod] = { n, p, c, f, lif, i, bc, a, br?, src?, por? }`. `a` barkod ve marka (numarayla arama çalışsın), `src:"off"` verinin Open Food Facts'ten geldiği, `por` tek bir "porsiyon" ölçüsü. Open Food Facts'ten gelen hiçbir metin `unit`/`unitName` alanına yazılmaz (bazı ekranlar `unitName`'i kaçışsız basar); ad ve marka `< >` ve denetim karakterlerinden arındırılır, ekran yine `esc()` ile basar. `state.bcOk` ilk kullanımdaki bilgi penceresinin onayıdır. Şema sürümü artmadı (alanlar isteğe bağlı).
 - **Testler:** `tests/fixtures/off-*.json` örnek yanıtlar (Nutella gerçek yanıttan kırpıldı); `tests.js` içindeki "barkod" testleri saf işlevleri, istek biçimini, kaydı, kaçışı, akışın bütün durumlarını (iki dilde) ve iOS beyanlarını denetler. Kamera ve ağ `nativeScan` / `nativeGet` sahte işlevleriyle değiştirilir. Gerçek tarama yalnızca gerçek iPhone'da (TestFlight) denenebilir. Erişilebilirlik aracında (`tools/a11y-audit.html`) iki barkod ekranı vardır.
 - **Lisans:** Open Food Facts verisi ODbL; kaynak Hakkında › kaynaklarda ve önizlemede gösterilir.
+
+## Apple Sağlık
+
+Yalnızca iPhone uygulamasında (`healthAvailable()` web'de ve Sağlık'ı olmayan cihazda `false`, Ayarlar bölümü çizilmez). Kod `starboard-site/js/health.js`; eklenti `@capgo/capacitor-health` (tam sürüm sabit, SPM), `nativePlugin("Health")` ile doğrudan çağrılır. Yalnızca okuma: adım, uyku, kilo; Sağlık'a yazılmaz.
+
+- **Hesap ve ekran ayrımı:** `hkStepsByDay`, `hkSleepByDay`, `hkWeightByDay` eklentinin örneklerini güne göre sayıya çevirir; `applyHealth` bunları kayda yazar. Hepsi saf ve web'de test edilir. Okuma (`hkRead`), eşitleme (`syncHealth`, `healthSoon`) ve Ayarlar bölümü (`healthSection` / `wireHealth`) yereldir.
+- **Kayıt:** veriler mevcut alanlara yazılır (`steps`, `sleep`/`bed`/`wake`, `weight`); `days[k].hk` Sağlık'tan o alana yazılan son değeri tutar. Elle girilen değer kazanır: alan `hk`'den farklıysa ya da `hk` varken boşsa dokunulmaz. Ayar `profile.health = { on, steps, sleep, weight, lastSync }`. Şema sürümü artmadı.
+- **Kurallar:** adım günlük toplam (`queryAggregated`, iPhone ile Watch çift sayılmaz); uyku toplam uyku süresi, kalkılan güne yazılır, 3 saatten kısa oturum atılır, birden çok kaynakta Watch önce; kilo günün ilk ölçümü, 25–400 kg. İlk bağlantıda 14 gün geriye. Okuma reddi iOS'ta bildirilmez; veri gelmezse yardım metni gösterilir.
+- **Testler:** `tests.js` içindeki "sağlık" testleri; eklenti `hkRead`'e sahte nesneyle verilir. Erişilebilirlik aracında iki Sağlık ekranı vardır. Gerçek izin ve veri yalnızca gerçek iPhone'da (TestFlight) denenebilir.
 
 ## Yerelde çalıştırma
 

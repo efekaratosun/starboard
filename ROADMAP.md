@@ -78,7 +78,8 @@ Amaç: web sitesini saran bir kabuk değil, gerçek bir iPhone uygulaması. Appl
 - [x] Kalıcı yerel depolama (iOS, web görünümündeki `localStorage` verisini silebilir): iOS'ta kalıcı depo eklendi
 - [x] Bildirimler: su, uyku ve antrenman hatırlatmaları: saatleri ayarlanabilir (sabah tartısı ve günü kapat dahil)
 - [x] Ortak iOS altyapısı: Türkçe/İngilizce izin metinleri (kamera, Apple Sağlık), yetki dosyası (App.entitlements, HealthKit dalı dolduracak), gizlilik bildirimi (PrivacyInfo.xcprivacy), derleme hattında denetimler
-- [ ] Apple Sağlık (HealthKit) bağlantısı: adım, uyku, kilo
+- [ ] Apple Sağlık (HealthKit) bağlantısı: adım, uyku, kilo (kod hazır, TestFlight bekliyor)
+- [ ] Apple Sağlık'ı gerçek iPhone'da dene (TestFlight): ilk bağlantı, hepsini reddetme, kısmi izin, izni Sağlık'tan geri alma, Watch olan ve olmayan telefon, saat dilimi değişimi, uçak modu, elle girilen değerin korunması, iPad, VoiceOver ile yeni bölüm. App ID'de HealthKit yeteneği açılmalı; simülatörde izin penceresi otomatik onaylanamıyor
 - [x] Barkod okuma (1.9.0, kod ve testler hazır; gerçek cihaz denemesi bekliyor): paketli ürünün barkodu kamerayla okunur, besin değerleri Open Food Facts'ten (ücretsiz, açık veri) gelir ve kendi yiyeceklerine kaydedilir. Dışarıya yalnızca barkod numarası gider; web'de özellik gizli olduğu için oradaki "hiçbir yere gönderilmez" sözü aynen durur, iPhone'daki metinler ve `PrivacyInfo.xcprivacy` (Arama Geçmişi) güncellendi. Uygulamayı web sitesinden ayıran yerel özelliklerden biri olur (kural 4.2). Eklenti: `@capacitor/barcode-scanner` (Apple Vision, SPM uyumlu)
 - [ ] Barkod okumayı gerçek iPhone'da dene (TestFlight): kamera izni, tarama, vazgeçme, izni reddetme, uçak modu, bulunamayan ürün, aynı barkodun ikinci kez okutulması, VoiceOver. Simülatörde kamera yok
 - [x] Dokunsal geri bildirim, güvenli alan ve karanlık mod ayarları: dokunsal geri bildirim, çentik payı; açık/koyu tema zaten vardı, iOS'ta durum çubuğu temaya uyar
