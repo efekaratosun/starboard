@@ -1,0 +1,17 @@
+{
+  "code": "3017620422003",
+  "product": {
+    "brands": "<b>Kötü</b>, Marka",
+    "code": "3017620422003",
+    "nutriments": {
+      "carbohydrates_100g": 10,
+      "fat_100g": 5,
+      "proteins_100g": 4
+    },
+    "product_name": "<img src=x onerror=\"window.__xss=1\">Kötü ürün",
+    "product_name_tr": "<script>window.__xss=1</script>\"'Tuzak",
+    "product_name_en": "<img src=x onerror=\"window.__xss=1\">Bad product"
+  },
+  "status": 1,
+  "status_verbose": "product found"
+}

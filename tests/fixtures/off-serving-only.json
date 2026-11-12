@@ -1,0 +1,20 @@
+{
+  "code": "4006381333931",
+  "product": {
+    "brands": "Stabilo",
+    "code": "4006381333931",
+    "nutriments": {
+      "carbohydrates_serving": 18,
+      "energy-kcal_serving": 126,
+      "fat_serving": 6,
+      "fiber_serving": 1.5,
+      "proteins_serving": 3
+    },
+    "nutrition_data_per": "serving",
+    "product_name": "Test bar",
+    "serving_quantity": 30,
+    "serving_quantity_unit": "g"
+  },
+  "status": 1,
+  "status_verbose": "product found"
+}

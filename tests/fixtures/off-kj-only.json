@@ -1,0 +1,18 @@
+{
+  "code": "96385074",
+  "product": {
+    "brands": "Test",
+    "code": "96385074",
+    "nutriments": {
+      "carbohydrates_100g": 70,
+      "energy-kj_100g": 1500,
+      "energy_100g": 1500,
+      "fat_100g": 3,
+      "proteins_100g": 8
+    },
+    "product_name": "Kransekake",
+    "product_quantity_unit": "g"
+  },
+  "status": 1,
+  "status_verbose": "product found"
+}

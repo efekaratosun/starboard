@@ -3,6 +3,23 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.9.0 (13 Kasım 2026)
+
+### Eklendi
+- Barkod okuma (yalnızca iPhone uygulaması): Beslenme › Günlüğüm › Besin ekle › Barkod okut. Kamera paketli ürünün barkodunu okur, besin değerleri Open Food Facts'ten gelir (ODbL), önizlemede düzenlenir ve "kendi besinlerin" arasına `bc_<barkod>` anahtarıyla kaydedilir; ardından miktar kartı açılır. Aynı barkod bir daha okutulunca ürün cihazdan bulunur. Barkod numarasıyla ve marka adıyla arama da çalışır.
+- Dışarıya yalnızca barkod numarası gider; ilk kullanımda bir kez bilgi penceresi çıkar. Bulunamayan, değerleri eksik ya da bağlantısı olmayan ürünlerde elle giriş, kamera izni yoksa elle barkod numarası girişi vardır.
+- Değer denetimi: kJ → kcal, porsiyon başına → 100 g, 100 ml ≈ 100 g, saçma değerler (negatif, 100 g'dan büyük, toplam 105'i aşan) reddedilir, etiket kalorisiyle hesap %20'den fazla ayrışırsa uyarı.
+- "Kendi besinin" formuna lif alanı ve canlı kalori gösterimi.
+- Ayarlar › Hakkında: kaynaklara Open Food Facts; iPhone'da gizlilik metinlerine barkod istisnası. `privacy.html` (Türkçe ve İngilizce): "Barkod okuma" bölümü ve üçüncü taraf listesi.
+- iOS: `@capacitor/barcode-scanner` 3.1.3 (Swift Package Manager; Apple Vision), gizlilik bildirimine "Arama Geçmişi" (kimlikle ilişkilendirilmez, izleme yok, uygulama işlevi). Derleme hattı eklentiyi ve beyanları denetler.
+- "Neler yeni" maddesi yalnızca iPhone uygulamasında gösterilir (`native: true`).
+
+### Düzeltildi
+- Besin ekleme panelindeki arama kutusunun ekran okuyucu etiketi yoktu.
+- İngilizcede üç kardiyo önerisi Türkçe görünüyordu (sözlük yanlış bloktaydı).
+
+Veri şeması aynı kalır (`SCHEMA` 2): yeni alanlar (`bc`, `br`, `src`, `por`, `state.bcOk`) isteğe bağlıdır.
+
 ## 1.8.1 (12 Kasım 2026)
 
 ### Değişti

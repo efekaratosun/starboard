@@ -542,7 +542,12 @@ Object.assign(window.STARBOARD_EN, {
   "Vücut suyun yüzeyinde düz, bakış aşağı.": "Body flat on the surface, looking down.",
   "Kollar sırayla uzanıp suyu kalçana doğru it.": "Reach with alternating arms and push the water toward your hip.",
   "Her 2-3 kulaçta bir yana dönerek nefes al.": "Breathe to the side every 2-3 strokes.",
-  "Kalçanın batması; karnını sık, başı aşağıda tut.": "Hips sinking; brace your core and keep your head down."
+  "Kalçanın batması; karnını sık, başı aşağıda tut.": "Hips sinking; brace your core and keep your head down.",
+
+  /* program.js bu cümleleri tx() ile okur; sözlük STARBOARD_EN olmalı (aşağıdaki EX bloğu exText içindir). */
+  "Haftada 3 × 30 dk tempolu kardiyo, antrenman sonrası.": "3 × 30 min of brisk cardio a week, after training.",
+  "Haftada 2 × 25 dk hafif kardiyo yeterli.": "2 × 25 min of easy cardio a week is enough.",
+  "Kardiyoyu haftada 2 × 20 dk ile sınırla.": "Limit cardio to 2 × 20 min a week."
 });
 
 /* Hareket adları ve antrenman satırlarındaki kelimeler. Anahtarlar büyük/küçük harfe

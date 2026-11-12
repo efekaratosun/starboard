@@ -1,0 +1,14 @@
+{
+  "code": "8690504011007",
+  "product": {
+    "brands": "Örnek Marka",
+    "code": "8690504011007",
+    "nutriments": {
+      "proteins_100g": 12.5
+    },
+    "product_name": "Örnek yoğurt",
+    "product_name_en": "Sample yoghurt"
+  },
+  "status": 1,
+  "status_verbose": "product found"
+}

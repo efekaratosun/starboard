@@ -283,18 +283,88 @@ function mealCards(entry){
 /* Arama paneli açık olduğu öğünün kartının içinde durur; öğün zaten belli
    olduğu için ayrıca "hangi öğün" sormaya gerek kalmıyor. */
 function addPanel(){
+  /* Barkod düğmesi yalnızca iPhone uygulamasında; web'de panel eskisiyle aynı kalır. */
+  const bc = barcodeAvailable();
   return `<div class="pick" style="margin-top:12px">
     ${savedChips()}
-    <input id="food-q" type="text" placeholder="${tx("Ara: karnıyarık, hellim, kivi…")}" value="${esc(logQuery)}" autocomplete="off">
+    <input id="food-q" type="text" aria-label="${tx("Ara: karnıyarık, hellim, kivi…")}" placeholder="${tx("Ara: karnıyarık, hellim, kivi…")}" value="${esc(logQuery)}" autocomplete="off">
     ${logQuery.trim().length >= 2 ? "" : catChips()}
     <div class="res" id="food-results">${resultsHTML()}</div>
     ${logPick ? pickCard() : ""}
     <div class="row" style="margin-top:12px">
+      ${bc ? `<button class="ghost" id="bc-scan">${tx("Barkod okut")}</button>` : ""}
       <button class="ghost" id="custom-toggle">${tx("Kendim tanımlayayım")}</button>
-      <button class="ghost" id="add-close" style="flex:0 0 92px">${tx("Kapat")}</button>
+      ${bc ? "" : `<button class="ghost" id="add-close" style="flex:0 0 92px">${tx("Kapat")}</button>`}
     </div>
+    ${bc ? `<button class="ghost" id="add-close" style="margin-top:10px">${tx("Kapat")}</button>` : ""}
+    ${bc ? `<div id="bc-box" aria-live="polite"></div>` : ""}
     <div id="custom-form"></div>
   </div>`;
+}
+
+/* "Kendi besinin" formu; barkod akışı da kullanır (barcode.js). pre (hepsi isteğe bağlı):
+   n, p, c, f, lif ile alanlar önceden dolar; notes [[html, uyarı mı]]; title ve saveLabel
+   html'dir; bc barkod numarası, br marka, serving porsiyon gramı, src:"off";
+   requireAll: üç makro da dolu olmalı (boş "bilinmiyor" demek, 0 yazılırsa 0'dır). */
+function customFoodForm(pre){
+  pre = pre || {};
+  const val = v => v == null ? "" : esc(String(v));
+  return `<div class="pick" id="cf-card">
+    <h3>${pre.title || tx("Kendi besinin")}</h3>
+    ${(pre.notes || []).map(([html, warn]) => `<div class="metric-note${warn ? " cf-warn" : ""}" style="margin-bottom:8px">${html}</div>`).join("")}
+    <div class="field"><label for="cf-n">${tx("Ad")}</label><input id="cf-n" type="text" placeholder="${tx("Annemin mercimek köftesi")}" value="${val(pre.n)}"${pre.bc ? ' maxlength="80"' : ""}></div>
+    <div class="row">
+      <div class="field"><label for="cf-p">${tx("Protein")}</label><input id="cf-p" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.p)}"></div>
+      <div class="field"><label for="cf-c">${tx("Karb.")}</label><input id="cf-c" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.c)}"></div>
+      <div class="field"><label for="cf-f">${tx("Yağ")}</label><input id="cf-f" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.f)}"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="cf-l">${tx("Lif")}</label><input id="cf-l" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.lif)}"></div>
+      <div class="metric-note" id="cf-kcal" style="align-self:center"></div>
+    </div>
+    <div class="metric-note cf-warn" id="cf-err" role="alert"></div>
+    <button id="cf-save">${pre.saveLabel || tx("Kaydet")}</button>
+    <div class="metric-note" style="margin-top:10px">${tx("Değerler 100 g başına.")}</div>
+  </div>`;
+}
+
+function wireCustomForm(box, pre){
+  pre = pre || {};
+  const $ = id => box.querySelector("#" + id);
+  const macros = () => ["cf-p", "cf-c", "cf-f"].map(id => num($(id).value));
+  const showKcal = () => {
+    const [p, c, f] = macros().map(v => v || 0);
+    $("cf-kcal").textContent = tx("≈ {0} kcal / 100 g", [Math.round(p * 4 + c * 4 + f * 9)]);
+  };
+  ["cf-p", "cf-c", "cf-f"].forEach(id => { $(id).oninput = showKcal; });
+  showKcal();
+  const fail = (msg, el) => { $("cf-err").textContent = msg; if (el) el.focus(); };
+  $("cf-save").onclick = async () => {
+    const n = $("cf-n").value.trim();
+    const [p, c, f] = macros().map(v => v || 0);
+    const lif = num($("cf-l").value) || 0;
+    state.customFoods = state.customFoods || {};
+    let key;
+    if (pre.bc){
+      if (!n) return fail(tx("Bir ad yaz."), $("cf-n"));
+      const raw = macros();
+      const blank = ["cf-p", "cf-c", "cf-f"].find((id, i) => raw[i] === null);
+      if (blank) return fail(tx("Değerler eksik; tamamlayıp kaydet."), $(blank));
+      if (raw.some(v => v < 0 || v > 100) || p + c + f > 105 || lif < 0 || lif > 100)
+        return fail(tx("Değerler geçersiz: 100 g'da toplam 100 g'ı aşamaz."), $("cf-p"));
+      key = saveBarcodeFood(pre.bc, { n, p, c, f, lif, br: pre.br, serving: pre.serving, src: pre.src });
+    } else {
+      if (!n || (p + c + f) === 0) return;
+      key = "cf_" + Date.now();
+      state.customFoods[key] = { n, p, c, f, lif, i: "grain" };
+    }
+    logPick = key; logQuery = n;
+    await saveState(state); render();
+    if (pre.bc){
+      const el = document.getElementById("pick-amt");
+      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
 }
 
 function mealManager(){
@@ -993,30 +1063,14 @@ function wireMealsRest(entry){
   if (ct) ct.onclick = () => {
     const box = document.getElementById("custom-form");
     if (box.innerHTML) { box.innerHTML = ""; return; }
-    box.innerHTML = `<div class="pick">
-      <h3>${tx("Kendi besinin")}</h3>
-      <div class="field"><label for="cf-n">${tx("Ad")}</label><input id="cf-n" type="text" placeholder="${tx("Annemin mercimek köftesi")}"></div>
-      <div class="row">
-        <div class="field"><label for="cf-p">${tx("Protein")}</label><input id="cf-p" type="number" inputmode="decimal" placeholder="g/100g"></div>
-        <div class="field"><label for="cf-c">${tx("Karb.")}</label><input id="cf-c" type="number" inputmode="decimal" placeholder="g/100g"></div>
-        <div class="field"><label for="cf-f">${tx("Yağ")}</label><input id="cf-f" type="number" inputmode="decimal" placeholder="g/100g"></div>
-      </div>
-      <button id="cf-save">${tx("Kaydet")}</button>
-      <div class="metric-note" style="margin-top:10px">${tx("Değerler 100 g başına.")}</div>
-    </div>`;
-    document.getElementById("cf-save").onclick = async () => {
-      const n = document.getElementById("cf-n").value.trim();
-      const p = num(document.getElementById("cf-p").value) || 0;
-      const c = num(document.getElementById("cf-c").value) || 0;
-      const f = num(document.getElementById("cf-f").value) || 0;
-      if (!n || (p+c+f) === 0) return;
-      state.customFoods = state.customFoods || {};
-      const key = "cf_" + Date.now();
-      state.customFoods[key] = { n, p, c, f, lif:0, i:"grain" };
-      logPick = key; logQuery = n;
-      await saveState(state); render();
-    };
+    const bb = document.getElementById("bc-box");
+    if (bb) bb.innerHTML = "";          /* iki formda aynı kimlikler olmasın */
+    box.innerHTML = customFoodForm();
+    wireCustomForm(box);
   };
+
+  const bs = document.getElementById("bc-scan");
+  if (bs) bs.onclick = () => startBarcodeFlow();
 }
 
 function bindFix(){

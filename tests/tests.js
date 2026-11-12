@@ -268,13 +268,17 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   for (let i = 1; i < WHATS_NEW.length; i++) ok(verCmp(WHATS_NEW[i - 1].v, WHATS_NEW[i].v) > 0, "sürümler yeniden eskiye sıralı olmalı");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
-  eq(unseenNews(undefined).length, Math.min(3, WHATS_NEW.length));
+  /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
+  const web = WHATS_NEW.filter(n => !n.native);
+  ok(web.length < WHATS_NEW.length, "iPhone'a özel madde yok");
+  eq(unseenNews(undefined).length, Math.min(3, web.length));
   eq(unseenNews(APP_VERSION), []);
+  eq(unseenNews(web[0].v), [], "web'de iPhone'a özel madde gösterilmemeli");
   state = await loadFixture();
-  state.seenVersion = WHATS_NEW[1].v;
+  state.seenVersion = web[1].v;
   maybeShowWhatsNew();
   const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
-  ok(sheet && sheet.textContent.includes(WHATS_NEW[0].items[0]), "pencere açılmadı");
+  ok(sheet && sheet.textContent.includes(web[0].items[0]), "pencere açılmadı");
   sheet.querySelector("#wn-ok").click();
   await new Promise(r => setTimeout(r, 0));
   eq(state.seenVersion, APP_VERSION);
@@ -974,6 +978,404 @@ test("birimler: imperial seçiliyken bütün sekmeler lb ile çizilir, metrik ka
     eq(measures(), snap, "çizim ölçümleri değiştirmemeli");
   }, fixture));
   tab = "today"; state = null;
+});
+
+/* ---- barkod okuma ---- */
+const offFx = name => fetch("fixtures/" + name + ".json").then(r => r.json());
+const cloneJson = o => JSON.parse(JSON.stringify(o));
+const a11yBad = where => {
+  const bad = [];
+  for (const el of app.querySelectorAll("input, select, textarea")) {
+    const lab = el.id && app.querySelector(`label[for="${el.id}"]`);
+    if (!lab && !el.closest("label") && !el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby"))
+      bad.push(`${where}: etiketsiz ${el.id || el.outerHTML.slice(0, 60)}`);
+  }
+  for (const el of app.querySelectorAll("button, [role=button]"))
+    if (!(el.getAttribute("aria-label") || el.textContent || el.getAttribute("title") || "").trim())
+      bad.push(`${where}: adsız düğme ${el.outerHTML.slice(0, 60)}`);
+  const ids = [...app.querySelectorAll("[id]")].map(e => e.id);
+  ids.filter((x, i) => ids.indexOf(x) !== i).forEach(x => bad.push(`${where}: yinelenen kimlik ${x}`));
+  return bad;
+};
+/* Kamera ve ağ yok: tarama ve istek işlevleri geçici olarak sahtesiyle değiştirilir. */
+const withBarcode = async fn => {
+  const keep = { barcodeAvailable, nativeScan, nativeGet };
+  barcodeAvailable = () => true;
+  try { return await fn(); }
+  finally { barcodeAvailable = keep.barcodeAvailable; nativeScan = keep.nativeScan; nativeGet = keep.nativeGet; bcBusy = false; }
+};
+const openAddPanel = async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  tab = "meals"; mealTab = "log"; addOpen = slotList()[0][0]; logQuery = ""; logPick = null; logCat = null; render();
+};
+const closeAddPanel = () => {
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  addOpen = null; logPick = null; logQuery = ""; logCat = null; state = null; tab = "today";
+};
+const confirmBarcodeInfo = async flow => {
+  const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.querySelector("#bc-go"), "bilgi penceresi yok");
+  sheet.querySelector("#bc-go").click();
+  await flow;
+};
+
+test("barkod: validGtin sağlama basamağını, uzunluğu ve rakam şartını denetler; normGtin tek biçime getirir", () => {
+  for (const c of ["4006381333931", "96385074", "036000291452", "3017620422003", "614141999996", "00614141999996"])
+    ok(validGtin(c), c + " geçerli sayılmalı");
+  for (const c of ["3017620422004", "30176204220A3", "3017620422", "", "301762042200312", " 3017620422003", "12345678"])
+    ok(!validGtin(c), JSON.stringify(c) + " reddedilmeli");
+  ok(!validGtin(3017620422003) && !validGtin(null) && !validGtin(undefined), "yalnızca metin kabul edilir");
+  eq(normGtin("036000291452"), "0036000291452", "UPC-A 13 haneye tamamlanır");
+  eq(normGtin("00614141999996"), "0614141999996", "başı 0 olan GTIN-14 kısalır");
+  eq(normGtin("3017620422003"), "3017620422003");
+  eq(normGtin("96385074"), "96385074");
+  ok(validGtin(normGtin("036000291452")) && validGtin(normGtin("00614141999996")), "normalleşmiş kod da geçerli kalır");
+});
+
+test("barkod: offToFood örnek yanıtları doğru duruma ve 100 g değerlerine çevirir", async () => {
+  const found = offToFood(await offFx("off-found"), "tr");
+  eq(found.status, "ok");
+  eq(found.food, { n: "Nutella", br: "Ferrero", p: 6.3, c: 57.5, f: 30.9, lif: 0, serving: null });
+  eq([found.flags.ml, found.flags.fromServing, found.flags.kcalMismatch, found.flags.labelKcal], [false, false, false, 539]);
+
+  const part = offToFood(await offFx("off-partial"), "tr");
+  eq([part.status, part.food.p, part.food.c, part.food.f], ["partial", 12.5, null, null]);
+  eq(part.food.n, "Örnek yoğurt");
+  eq(offToFood(await offFx("off-partial"), "en").food.n, "Sample yoghurt", "dile göre ad");
+
+  const none = offToFood(await offFx("off-notfound"), "tr");
+  eq([none.status, none.food], ["notfound", null]);
+  eq(offToFood(null, "tr").status, "notfound");
+  eq(offToFood({ status: 1, product: "x" }, "tr").status, "notfound");
+
+  const serv = offToFood(await offFx("off-serving-only"), "tr");
+  eq(serv.status, "ok");
+  eq([serv.food.p, serv.food.c, serv.food.f, serv.food.lif, serv.food.serving], [10, 60, 20, 5, 30], "porsiyondan 100 g'a");
+  eq([serv.flags.fromServing, serv.flags.labelKcal], [true, 420]);
+
+  const kj = offToFood(await offFx("off-kj-only"), "tr");
+  eq([kj.status, kj.flags.labelKcal, kj.flags.kcalMismatch], ["ok", 359, false], "kJ / 4,184");
+});
+
+test("barkod: offToFood saçma değerleri reddeder, birimi ve kalori farkını işaretler", async () => {
+  const base = await offFx("off-found");
+  const mod = fn => { const j = cloneJson(base); fn(j.product); return offToFood(j, "tr"); };
+  const mismatch = mod(p => { p.nutriments.carbohydrates_100g = 5; p.nutriments.fat_100g = 0; p.nutriments.proteins_100g = 0; });
+  eq([mismatch.status, mismatch.flags.kcalMismatch, mismatch.flags.labelKcal], ["ok", true, 539]);
+  eq(mod(p => { p.product_quantity_unit = "ml"; }).flags.ml, true);
+  eq(mod(p => { p.serving_quantity_unit = "ml"; delete p.product_quantity_unit; }).flags.ml, true);
+  const big = mod(p => { p.nutriments.carbohydrates_100g = 250; });
+  eq([big.status, big.food.c, big.flags.absurd], ["partial", null, true]);
+  const sum = mod(p => { p.nutriments.proteins_100g = 60; p.nutriments.carbohydrates_100g = 60; p.nutriments.fat_100g = 20; });
+  eq([sum.status, sum.food.p, sum.food.c, sum.food.f, sum.flags.absurd], ["partial", null, null, null, true], "toplam 105'i aşarsa hiçbiri güvenilmez");
+  eq(mod(p => { p.nutriments.proteins_100g = -1; }).status, "partial");
+  eq(mod(p => { p.nutriments.proteins_100g = "abc"; }).status, "partial");
+  const str = mod(p => { p.nutriments.proteins_100g = "6.3"; });
+  eq([str.status, str.food.p], ["ok", 6.3], "sayı gibi metin kabul edilir");
+  eq(mod(p => { p.nutriments.fiber_100g = 500; }).food.lif, 0, "saçma lif sıfırlanır, durumu bozmaz");
+  eq(mod(p => { p.nutriments = { "energy-kcal_100g": 539 }; }).status, "partial", "yalnızca kalori yetmez");
+  eq(mod(p => { delete p.product_name; delete p.product_name_en; }).food.n, "3017620422003", "ad yoksa barkod");
+  eq(mod(p => { p.serving_quantity = 40; }).food.serving, 40);
+  eq(mod(p => { p.serving_quantity = -3; }).food.serving, null);
+  eq(mod(p => { delete p.nutriments; }).status, "partial");
+  /* Tahmini değerler (nutriments_estimated) ayrı bir alandır; kullanılmaz. */
+  const est = cloneJson(base);
+  est.product.nutriments = {};
+  est.product.nutriments_estimated = { proteins_100g: 5, carbohydrates_100g: 5, fat_100g: 5 };
+  eq(offToFood(est, "tr").status, "partial");
+});
+
+test("barkod: lookupBarcode yalnızca barkodu içeren adrese gider; hata türlerini ayırır", async () => {
+  state = await loadFixture();
+  try {
+    const found = await offFx("off-found");
+    const calls = [];
+    const get = res => async (...args) => { calls.push(args); if (res instanceof Error) throw res; return res; };
+    const r = await lookupBarcode("3017620422003", get({ status: 200, data: found }));
+    eq(r.status, "ok");
+    eq(calls.length, 1);
+    const [url, headers, timeout, ...rest] = calls[0];
+    ok(/^https:\/\/world\.openfoodfacts\.org\/api\/v2\/product\/\d{8,14}\.json\?fields=[a-z_,]+$/.test(url), "adres biçimi: " + url);
+    eq(rest, [], "istek yalnızca adres, başlık ve süre alır; gövde yok");
+    eq(Object.keys(headers).sort(), ["Accept", "User-Agent"]);
+    ok(headers["User-Agent"].startsWith(`Starboard/${APP_VERSION} (github.com/efekaratosun/starboard)`));
+    eq(timeout, 8000);
+    const leak = [state.profile.name, JSON.stringify(state.profile.height), "starboard-state"];
+    for (const s of leak) ok(!url.includes(String(s)), "profil verisi adrese sızdı: " + s);
+    ok(!/[?&](?!fields=)[a-z]+=/i.test(url), "fields dışında sorgu parametresi olmamalı");
+
+    calls.length = 0;
+    await lookupBarcode("036000291452", get({ status: 200, data: found }));
+    ok(calls[0][0].includes("/product/0036000291452.json"), "UPC-A 13 haneye tamamlanarak sorulur");
+
+    const timeoutErr = new Error("t"); timeoutErr.name = "TimeoutError";
+    eq((await lookupBarcode("3017620422003", get(new TypeError("Failed to fetch")))).status, "offline");
+    eq((await lookupBarcode("3017620422003", get(timeoutErr))).status, "error");
+    eq((await lookupBarcode("3017620422003", get({ status: 404, data: await offFx("off-notfound") }))).status, "notfound");
+    eq((await lookupBarcode("3017620422003", get({ status: 200, data: await offFx("off-notfound") }))).status, "notfound");
+    eq((await lookupBarcode("3017620422003", get({ status: 500, data: null }))).status, "error");
+    eq((await lookupBarcode("3017620422003", get({ status: 200, data: null }))).status, "error");
+    eq((await lookupBarcode("3017620422003", get({ status: 200, data: await offFx("off-partial") }))).status, "partial");
+  } finally { state = null; }
+});
+
+test("barkod: nativeScan web'de null döner; nativeGet fetch yedeğinde yalnızca Accept gönderir ve süreyi izler", async () => {
+  eq(await nativeScan({}), null);
+  eq(SCAN_ERRORS, { "OS-PLUG-BARC-0006": "cancel", "OS-PLUG-BARC-0007": "denied" });
+  const realFetch = window.fetch;
+  let seen;
+  try {
+    window.fetch = async (url, init) => { seen = { url, init }; return { status: 200, json: async () => ({ a: 1 }) }; };
+    eq(await nativeGet("https://example.test/x", { "User-Agent": "X", Accept: "a" }, 1000), { status: 200, data: { a: 1 } });
+    eq([Object.keys(seen.init.headers), seen.init.credentials, seen.init.referrerPolicy, seen.init.body], [["Accept"], "omit", "no-referrer", undefined]);
+    const fail = async () => { try { await nativeGet("https://example.test/x", {}, 20); } catch(e){ return e; } };
+    window.fetch = (url, init) => new Promise((res, rej) => init.signal.addEventListener("abort", () => rej(new DOMException("x", "AbortError"))));
+    eq((await fail()).name, "TimeoutError");
+    window.fetch = async () => { throw new TypeError("net"); };
+    eq((await fail()).name, "TypeError", "bağlantı hatası olduğu gibi atılır");
+  } finally { window.fetch = realFetch; }
+});
+
+test("barkod: kayıt kopya oluşturmaz, barkodla ve adla bulunur; dışarıdan metin unitName'e girmez", async () => {
+  state = await loadFixture(); migrateMeals();
+  try {
+    const key = saveBarcodeFood("3017620422003", { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, br: "Ferrero", serving: 15, src: "off" });
+    eq(key, "bc_3017620422003");
+    const rec = state.customFoods[key];
+    eq(rec, { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, i: "grain", bc: "3017620422003", a: "3017620422003 Ferrero",
+      br: "Ferrero", src: "off", por: [{ n: "porsiyon", g: 15 }] });
+    ok(!("unit" in rec) && !("unitName" in rec), "unit/unitName yazılmamalı");
+    saveBarcodeFood("3017620422003", { n: "Nutella (düzenlendi)", p: 7, c: 57, f: 30, lif: 1, br: "Ferrero", src: "off" });
+    eq(Object.keys(state.customFoods).filter(k => k.startsWith("bc_")), ["bc_3017620422003"], "aynı barkod kopya oluşturmamalı");
+    eq(state.customFoods[key].n, "Nutella (düzenlendi)");
+    ok(!("por" in state.customFoods[key]), "porsiyon yoksa yazılmaz");
+
+    eq(foodByBarcode("3017620422003")[0], key);
+    eq(foodByBarcode("96385074"), null);
+    saveBarcodeFood("036000291452", { n: "Mısır gevreği", p: 7, c: 84, f: 1 });
+    eq(foodByBarcode("0036000291452")[0], "bc_0036000291452", "UPC-A iki biçimde de bulunur");
+    eq(foodByBarcode("036000291452")[0], "bc_0036000291452");
+    state.customFoods.bc_x = { n: "Eski kayıt", p: 1, c: 1, f: 1, lif: 0, i: "grain", bc: "96385074" };
+    eq(foodByBarcode("96385074")[0], "bc_x", "anahtarı farklı ama bc alanı eşleşen kayıt");
+
+    for (const q of ["düzenlendi", "3017620422003", "ferrero", "mısır gevreği"])
+      ok(searchFoods(q, 8).some(([k]) => k === key || k === "bc_0036000291452"), q + " ile bulunamadı");
+    eq(searchFoods("3017620422003", 8)[0][0], key, "numarayla arama");
+
+    logPick = key; logQuery = "Nutella";
+    tab = "meals"; mealTab = "log"; addOpen = slotList()[0][0]; render();
+    ok(app.querySelector("#pick-amt"), "miktar kartı açılmalı");
+  } finally { closeAddPanel(); }
+});
+
+test("barkod: kötü niyetli ürün adı temizlenir, kaçışsız basılacak yer kalmaz", async () => {
+  const res = offToFood(await offFx("off-xss"), "en");
+  eq(res.status, "ok");
+  ok(!/[<>]/.test(res.food.n) && !/[<>]/.test(res.food.br), "ad ve marka < > içermemeli: " + res.food.n);
+  ok(!/[<>]/.test(offToFood(await offFx("off-xss"), "tr").food.n));
+  const long = cloneJson(await offFx("off-found"));
+  long.product.product_name = "x".repeat(500);
+  eq(offToFood(long, "tr").food.n.length, 80);
+
+  /* Temizleme atlansa bile ekran kaçışlıdır: arama, günlük, miktar kartı ve önizleme. */
+  window.__xss = undefined;
+  await openAddPanel();
+  const evil = '<img src=x onerror="window.__xss=1">Kötü';
+  state.customFoods = { bc_evil: { n: evil, p: 5, c: 5, f: 5, lif: 0, i: "grain", a: "onerror", br: evil } };
+  state.days[today()].log = [{ id: 1, k: "bc_evil", n: evil, g: 100, p: 5, c: 5, f: 5, lif: 0, v: [], i: "grain", slot: slotList()[0][0] }];
+  try {
+    await withBarcode(async () => {
+      logQuery = "onerror"; logPick = "bc_evil"; render();
+      ok(app.innerHTML.includes("&lt;img"), "ad kaçışlı basılmalı");
+      eq(app.querySelectorAll('img[src="x"]').length, 0, "ad HTML olarak yorumlanmamalı");
+      bcShow(customFoodForm({ n: evil, br: evil, bc: "3017620422003",
+        notes: [[tx("Marka: {0}", [esc(evil)]), false]] }));
+      eq(app.querySelectorAll('img[src="x"]').length, 0, "önizleme HTML yorumlamamalı");
+      eq(app.querySelector("#cf-n").value, evil, "alanın değeri metin olarak durmalı");
+      eq(window.__xss, undefined);
+    });
+  } finally { closeAddPanel(); }
+});
+
+test("barkod: web'de düğme çizilmez, panel eskisi gibi kalır; uygulamada düğme ve erişilebilir alanlar var", async () => {
+  await openAddPanel();
+  try {
+    eq(barcodeAvailable(), false, "testler web'de çalışır");
+    ok(!app.querySelector("#bc-scan") && !app.querySelector("#bc-box"), "web'de barkod arayüzü olmamalı");
+    ok(app.querySelector("#custom-toggle") && app.querySelector("#add-close"));
+    eq(app.querySelector("#add-close").getAttribute("style"), "flex:0 0 92px", "web'de Kapat düğmesi eski yerinde");
+    /* Elle tanımlama: lif alanı ve canlı kalori eklendi, eski davranış korunur. */
+    app.querySelector("#custom-toggle").onclick();
+    eq(a11yBad("kendi besinin"), []);
+    app.querySelector("#cf-save").onclick();
+    eq(Object.keys(state.customFoods || {}), [], "adsız kayıt yazılmaz");
+    app.querySelector("#cf-n").value = "Deneme";
+    app.querySelector("#cf-p").value = "10"; app.querySelector("#cf-p").oninput();
+    ok(app.querySelector("#cf-kcal").textContent.includes("40"), "canlı kalori");
+    app.querySelector("#cf-l").value = "3";
+    await app.querySelector("#cf-save").onclick();
+    const [k, f] = Object.entries(state.customFoods)[0];
+    eq([k.startsWith("cf_"), f.n, f.p, f.c, f.f, f.lif, f.i, "bc" in f], [true, "Deneme", 10, 0, 0, 3, "grain", false]);
+    eq(logPick, k);
+  } finally { closeAddPanel(); }
+  await openAddPanel();
+  try {
+    await withBarcode(async () => {
+      render();
+      const b = app.querySelector("#bc-scan");
+      ok(b && b.textContent.trim(), "uygulamada barkod düğmesi çizilmeli");
+      ok(app.querySelector("#custom-toggle") && app.querySelector("#add-close") && app.querySelector("#bc-box"));
+      eq(a11yBad("barkod düğmesi"), []);
+    });
+  } finally { closeAddPanel(); }
+});
+
+/* Akışın bütün durumları iki dilde sürülür; İngilizcede sözlükte olmayan metin kalmamalı. */
+const driveBarcodeFlow = async lang => {
+  const found = await offFx("off-found"), partial = await offFx("off-partial"), none = await offFx("off-notfound");
+  await openAddPanel();
+  const box = () => app.querySelector("#bc-box");
+  let scans = 0, gets = [];
+  nativeScan = async () => { scans++; return { status: "ok", code: "3017620422003" }; };
+  nativeGet = async (url) => { gets.push(url); return { status: 200, data: found }; };
+
+  /* ilk kullanım: bilgi penceresi, onaydan sonra tarama, önizleme */
+  eq(state.bcOk, undefined);
+  const flow = startBarcodeFlow();
+  eq(scans, 0, "onaydan önce kamera açılmamalı");
+  const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.textContent.includes("Open Food Facts"), "bilgi penceresi Open Food Facts'i anmalı");
+  ok(sheet.querySelector('[role="dialog"][aria-labelledby]') && sheet.querySelector(".sheet-x").getAttribute("aria-label"), "pencere erişilebilir olmalı");
+  await confirmBarcodeInfo(flow);
+  eq([state.bcOk, scans, gets.length], [1, 1, 1]);
+  ok(box().querySelector("#cf-card"), "önizleme kartı");
+  eq(app.querySelector("#cf-n").value, "Nutella");
+  eq(["cf-p", "cf-c", "cf-f", "cf-l"].map(id => +app.querySelector("#" + id).value), [6.3, 57.5, 30.9, 0]);
+  ok(app.querySelector("#cf-kcal").textContent.includes("533"), "hesaplanan kalori: " + app.querySelector("#cf-kcal").textContent);
+  ok(box().textContent.includes("Open Food Facts") && box().textContent.includes("Ferrero"), "kaynak ve marka");
+  ok(!app.querySelector("#custom-form #cf-card"), "tek form açık olmalı");
+  eq(a11yBad("önizleme"), []);
+  app.querySelector("#cf-p").value = "7"; app.querySelector("#cf-p").oninput();
+  await app.querySelector("#cf-save").onclick();
+  const rec = state.customFoods.bc_3017620422003;
+  eq([rec.p, rec.bc, rec.src, rec.i, logPick, logQuery], [7, "3017620422003", "off", "grain", "bc_3017620422003", "Nutella"]);
+  ok(app.querySelector("#pick-amt"), "miktar kartı açılmalı");
+
+  /* aynı barkod ikinci kez: ağa çıkılmaz, bilgi penceresi bir daha çıkmaz */
+  logPick = null; render();
+  await startBarcodeFlow();
+  eq([scans, gets.length, logPick], [2, 1, "bc_3017620422003"]);
+  ok(!document.querySelector(".sheet-bg:not(.out)"), "bilgi penceresi bir kez çıkar");
+
+  /* kamera izni yok: elle numara girişi */
+  nativeGet = async () => { throw new Error("ağ çağrılmamalı"); };
+  nativeScan = async () => ({ status: "denied" });
+  logPick = null; render(); await startBarcodeFlow();
+  ok(box().querySelector(".cf-warn") && app.querySelector("#bc-num"), "izin yoksa uyarı ve numara alanı");
+  eq(a11yBad("izin yok"), []);
+  app.querySelector("#bc-num").value = "123"; app.querySelector("#bc-find").onclick();
+  ok(app.querySelector("#bc-err").textContent.length > 0, "geçersiz numara uyarısı");
+  nativeGet = async () => ({ status: 200, data: partial });
+  app.querySelector("#bc-num").value = "96385074"; await app.querySelector("#bc-find").onclick();
+  ok(app.querySelector("#cf-card"), "elle girilen numara aranır");
+
+  /* vazgeçme sessizdir; geçersiz kod ve tarayıcı hatası tekrar dene / elle gir sunar */
+  nativeScan = async () => ({ status: "cancel" });
+  render(); await startBarcodeFlow();
+  eq(box().innerHTML, "");
+  nativeScan = async () => ({ status: "ok", code: "1234567890123" });
+  await startBarcodeFlow();
+  ok(app.querySelector("#bc-retry") && app.querySelector("#bc-enter"), "geçersiz kod");
+  eq(a11yBad("geçersiz kod"), []);
+  nativeScan = async () => ({ status: "error" });
+  await startBarcodeFlow();
+  ok(app.querySelector("#bc-retry") && app.querySelector("#bc-enter"), "tarayıcı hatası");
+  app.querySelector("#bc-enter").onclick();
+  ok(app.querySelector("#bc-num"), "elle gir numara alanını açar");
+
+  /* bağlantı yok: tekrar dene ve elle gir */
+  nativeScan = async () => ({ status: "ok", code: "4006381333931" });
+  nativeGet = async () => { throw new TypeError("Failed to fetch"); };
+  render(); await startBarcodeFlow();
+  ok(app.querySelector("#bc-retry") && app.querySelector("#bc-enter"), "bağlantı yok");
+  eq(a11yBad("bağlantı yok"), []);
+  nativeGet = async () => ({ status: 200, data: partial });
+  await app.querySelector("#bc-retry").onclick();
+  eq(app.querySelector("#cf-n").value, lang === "en" ? "Sample yoghurt" : "Örnek yoğurt", "ürün adı dile göre");
+
+  /* eksik değerli ürün: dolu olanlar gelir, kalanı kullanıcı tamamlar */
+  eq([app.querySelector("#cf-p").value, app.querySelector("#cf-c").value, app.querySelector("#cf-f").value], ["12.5", "", ""]);
+  ok(box().querySelector(".cf-warn"), "eksik değer uyarısı");
+  await app.querySelector("#cf-save").onclick();
+  ok(app.querySelector("#cf-err").textContent.length > 0 && !state.customFoods.bc_4006381333931, "eksik değerle kayıt olmaz");
+  app.querySelector("#cf-c").value = "5"; app.querySelector("#cf-f").value = "101";
+  await app.querySelector("#cf-save").onclick();
+  ok(app.querySelector("#cf-err").textContent.length > 0 && !state.customFoods.bc_4006381333931, "100'ü aşan değerle kayıt olmaz");
+  app.querySelector("#cf-f").value = "3";
+  await app.querySelector("#cf-save").onclick();
+  eq([state.customFoods.bc_4006381333931.f, state.customFoods.bc_4006381333931.src], [3, "off"]);
+
+  /* bulunamadı: boş form, barkodla kaydedilir, bir dahaki okutmada cihazdan gelir */
+  nativeScan = async () => ({ status: "ok", code: "96385074" });
+  delete state.customFoods.bc_x;
+  for (const k of Object.keys(state.customFoods)) if (state.customFoods[k].bc === "96385074") delete state.customFoods[k];
+  nativeGet = async () => ({ status: 404, data: none });
+  logPick = null; render(); await startBarcodeFlow();
+  eq([app.querySelector("#cf-n").value, app.querySelector("#cf-p").value], ["", ""]);
+  eq(a11yBad("bulunamadı"), []);
+  await app.querySelector("#cf-save").onclick();
+  eq(Object.keys(state.customFoods).filter(k => state.customFoods[k].bc === "96385074"), [], "adsız kayıt yazılmaz");
+  app.querySelector("#cf-n").value = "Su";
+  for (const id of ["cf-p", "cf-c", "cf-f"]) app.querySelector("#" + id).value = "0";
+  await app.querySelector("#cf-save").onclick();
+  const manual = state.customFoods.bc_96385074;
+  eq([manual.n, manual.p, manual.bc, "src" in manual], ["Su", 0, "96385074", false], "elle girilen ürün Open Food Facts kaynaklı sayılmaz");
+  nativeGet = async () => { throw new Error("ağ çağrılmamalı"); };
+  logPick = null; render(); await startBarcodeFlow();
+  eq(logPick, "bc_96385074");
+};
+
+test("barkod akışı: bilgi penceresi, tarama, önizleme, kayıt, ikinci okutma ve bütün hata durumları", async () => {
+  try { await withBarcode(() => driveBarcodeFlow("tr")); }
+  finally { closeAddPanel(); }
+});
+test("barkod akışı: İngilizcede de çalışır ve sözlükte olmayan metin kalmaz", async () => {
+  try {
+    await withBarcode(() => withLang("en", async () => {
+      I18N_MISSING.clear();
+      await driveBarcodeFlow("en");
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    }));
+  } finally { closeAddPanel(); }
+});
+
+test("barkod: gizlilik metinleri, kaynaklar, bağımlılık ve iOS beyanları yerinde", async () => {
+  const get = async p => { const r = await fetch("../" + p); ok(r.ok, p + " açılmadı"); return r.text(); };
+  const [tr, en] = (await get("starboard-site/privacy.html")).split('<article id="en"');
+  ok(tr.includes("Open Food Facts") && tr.includes("Barkod okuma") && tr.includes("world.openfoodfacts.org/privacy"), "Türkçe gizlilik metni");
+  ok(en && en.includes("Open Food Facts") && en.includes("Barcode scanning") && en.includes("world.openfoodfacts.org/privacy"), "İngilizce gizlilik metni");
+  ok(SOURCES.some(([, s]) => s.includes("Open Food Facts") && s.includes("ODbL")), "kaynaklarda Open Food Facts yok");
+  for (const s of SOURCES.flat().concat(WHATS_NEW.flatMap(n => n.items)))
+    ok(Object.prototype.hasOwnProperty.call(I18N.en, s), "İngilizce karşılığı yok: " + s.slice(0, 50));
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  tab = "settings"; meTab = "set"; render();
+  ok(!app.innerHTML.includes("Tek istisna"), "web'de barkod istisnası yazılmamalı");
+  ok(app.innerHTML.includes("hiçbir yere gönderilmez"), "web'deki söz aynen durmalı");
+  state = null; tab = "today"; meTab = "body";
+
+  eq(/^\d+\.\d+\.\d+$/.test(JSON.parse(await get("package.json")).dependencies["@capacitor/barcode-scanner"]), true, "eklenti tam sürümle sabitlenmeli");
+  ok((await get("ios/App/CapApp-SPM/Package.swift")).includes("CapacitorBarcodeScanner"), "Package.swift eklentiyi içermiyor (npx cap sync ios)");
+  const plist = await get("ios/App/App/Info.plist");
+  ok(plist.includes("NSCameraUsageDescription"), "kamera izni Info.plist'te yok");
+  for (const l of ["en", "tr"]) ok((await get(`ios/App/App/${l}.lproj/InfoPlist.strings`)).includes("NSCameraUsageDescription"), l + " kamera izni metni yok");
+  const priv = await get("ios/App/App/PrivacyInfo.xcprivacy");
+  ok(priv.includes("NSPrivacyCollectedDataTypeSearchHistory") && priv.includes("NSPrivacyCollectedDataTypePurposeAppFunctionality"), "gizlilik bildirimi Arama Geçmişi'ni beyan etmeli");
+  ok(/NSPrivacyCollectedDataTypeLinked<\/key>\s*<false\/>/.test(priv) && /NSPrivacyCollectedDataTypeTracking<\/key>\s*<false\/>/.test(priv), "ilişkilendirilmez ve izleme yok");
+
+  const idx = await get("starboard-site/index.html"), sw = await get("starboard-site/sw.js");
+  const scripts = [...idx.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
+  eq(scripts.filter(s => !sw.includes(`"${s}"`)), [], "sw.js SHELL listesinde olmayan kod dosyaları");
+  ok(scripts.indexOf("js/barcode.js") > scripts.indexOf("js/meals.js"), "barcode.js, meals.js'ten sonra yüklenmeli");
 });
 
 window.STARBOARD_TESTS = TESTS;

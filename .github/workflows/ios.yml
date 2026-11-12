@@ -56,6 +56,13 @@ jobs:
             ios/App/App/tr.lproj/InfoPlist.strings
           xcodebuild -list -project ios/App/App.xcodeproj
 
+      # Barkod okuma: eklenti pakete girmiş, kamera izni ve gizlilik beyanı yerinde olmalı.
+      - name: Barkod eklentisi ve beyanlari denetle
+        run: |
+          grep -q CapacitorBarcodeScanner ios/App/CapApp-SPM/Package.swift
+          plutil -extract NSCameraUsageDescription raw ios/App/App/Info.plist >/dev/null
+          test "$(plutil -extract NSPrivacyCollectedDataTypes.0.NSPrivacyCollectedDataType raw ios/App/App/PrivacyInfo.xcprivacy)" = "NSPrivacyCollectedDataTypeSearchHistory"
+
       - name: Simulator icin derle (imzasiz)
         run: |
           xcodebuild \

@@ -7,6 +7,9 @@
    Yeni bir sürümde kullanıcının fark edeceği bir şey varsa buraya en üste eklenir;
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
+  /* native: yalnızca iPhone uygulamasında gösterilir (web'de bu özellik yok). */
+  { v:"1.9.0", native:true, items:[
+    tx("Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut.")] },
   { v:"1.8.0", items:[
     tx("Alışveriş listesi: Beslenme › Liste. Öneri planından ve seçtiğin tariflerden oluşur."),
     tx("Antrenman modunda setler arası dinlenme sayacı."),
@@ -30,7 +33,7 @@ const verCmp = (a, b) => {
 /* Gösterilecek sürümler. Kayıtta seenVersion yoksa (bu özellikten önce başlamış
    kullanıcı) son üç sürüm gösterilir. */
 function unseenNews(seen){
-  const list = WHATS_NEW.filter(n => verCmp(n.v, APP_VERSION) <= 0);
+  const list = WHATS_NEW.filter(n => verCmp(n.v, APP_VERSION) <= 0 && (IS_NATIVE || !n.native));
   return (seen ? list.filter(n => verCmp(n.v, seen) > 0) : list.slice(0, 3));
 }
 

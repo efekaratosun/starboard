@@ -20,7 +20,8 @@ const SOURCES = [
   [tx("Yağ oranı"), tx("Amerikan Egzersiz Konseyi (ACE) yağ oranı kategorileri.")],
   [tx("Haftalık kilo değişimi"), tx("Kilo verirken hedef hız haftada vücut ağırlığının %0,35–1'i; Helms ve ark. (2014) %0,5–1 önerir.")],
   [tx("Kişisel rekorlar"), tx("Tahmini tek tekrar maksimumu: Epley formülü.")],
-  [tx("Besin değerleri"), tx("USDA FoodData Central ve yaygın besin tablolarından alınmış ortalama değerler; markaya ve tarife göre değişir.")]
+  [tx("Besin değerleri"), tx("USDA FoodData Central ve yaygın besin tablolarından alınmış ortalama değerler; markaya ve tarife göre değişir.")],
+  [tx("Paketli ürünler"), tx("Open Food Facts (açık veri, ODbL lisansı); değerler gönüllülerce girilir ve hatalı olabilir.")]
 ];
 
 function aboutSection(){
@@ -30,6 +31,7 @@ function aboutSection(){
     ${block(tx("Sağlık uyarısı"), `<p>${DISCLAIMER}</p>`)}
     ${block(tx("Hesapların kaynakları"), SOURCES.map(([t, s]) => `<p><b>${t}</b><br>${s}</p>`).join(""))}
     ${block(tx("Gizlilik"), `<p>${tx("Starboard hesap istemez. Girdiğin bütün veriler yalnızca bu cihazda tutulur; sunucuya gönderilmez, kimseyle paylaşılmaz. Reklam, analiz ya da izleme aracı yoktur.")}</p>
+      ${IS_NATIVE ? `<p>${tx("Tek istisna: barkod okuttuğunda yalnızca barkod numarası Open Food Facts'e gönderilir (teknik olarak IP adresin de görünür). Profilin, günlüğün ve kamera görüntüsü gönderilmez.")}</p>` : ""}
       <p>${tx("Site GitHub Pages'te barındırılır; GitHub sayfayı açtığında IP adresini görebilir. Yazı tipi uygulamanın içinden yüklenir, başka bir yere istek gitmez. Verilerini Ayarlar'daki \"Tüm verileri sil\" ile tamamen silebilirsin.")}</p>
       <p><a href="privacy.html" target="_blank" rel="noopener">${tx("Gizlilik politikasının tamamı")}</a></p>`)}
   </section>`;

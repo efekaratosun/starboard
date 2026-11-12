@@ -101,7 +101,9 @@ function settingsView(){
 
   <div class="brand-foot">
     <span class="brand-i">${BRAND_SVG}</span>
-    <div><b>${tx("Starboard")}</b><i>${tx("Sürüm {0} · veriler yalnızca bu cihazda saklanır, hiçbir yere gönderilmez.", [(APP_VERSION)])}</i></div>
+    <div><b>${tx("Starboard")}</b><i>${IS_NATIVE
+      ? tx("Sürüm {0} · veriler yalnızca bu cihazda saklanır; barkod okuttuğunda yalnızca barkod numarası gönderilir.", [(APP_VERSION)])
+      : tx("Sürüm {0} · veriler yalnızca bu cihazda saklanır, hiçbir yere gönderilmez.", [(APP_VERSION)])}</i></div>
   </div>
   <div class="foot"><button class="link" id="reset">${tx("Tüm verileri sil")}</button></div>`;
 }

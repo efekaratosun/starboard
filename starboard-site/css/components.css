@@ -558,6 +558,9 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .res .add{flex:0 0 auto;color:var(--band);font-size:20px;line-height:1;padding:0 6px;font-weight:400}
 .pick{background:var(--bg);border-radius:18px;padding:15px;margin-top:12px;border:1px solid var(--line)}
 .pick h3{margin:0 0 11px;font-size:15px;font-weight:800}
+.metric-note.cf-warn{color:var(--off);font-weight:700}
+.metric-note.cf-warn:empty{display:none}
+#bc-box:empty{display:none}
 
 .log-line{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
 .log-line:last-child{border-bottom:0}

@@ -28,17 +28,29 @@ nav{margin-bottom:18px;font-size:14px}
 <p class="muted">Son güncelleme: 12 Kasım 2026</p>
 
 <h2>Kısaca</h2>
-<p>Starboard hesap istemez ve verilerini toplamaz. Girdiğin her şey yalnızca senin cihazında tutulur.</p>
+<p>Starboard hesap istemez ve verilerini toplamaz. Girdiğin her şey yalnızca senin cihazında tutulur. Tek istisna iPhone uygulamasındaki barkod okumadır: barkod okuttuğunda yalnızca barkod numarası Open Food Facts'e gönderilir (<a href="#tr-barkod">ayrıntılar</a>).</p>
 
 <h2>Hangi veriler, nerede?</h2>
-<p>Profil bilgilerin (ad, yaş, boy, kilo, cinsiyet, hedefler), günlük kayıtların (kilo, kalori, beslenme günlüğü, su, uyku, adım, antrenman, vücut ölçüleri) ve ayarların yalnızca kullandığın cihazın tarayıcı deposunda saklanır. Bu veriler hiçbir sunucuya gönderilmez, satılmaz, kimseyle paylaşılmaz ve reklam için kullanılmaz. Uygulamada reklam, analiz ya da izleme aracı yoktur.</p>
+<p>Profil bilgilerin (ad, yaş, boy, kilo, cinsiyet, hedefler), günlük kayıtların (kilo, kalori, beslenme günlüğü, su, uyku, adım, antrenman, vücut ölçüleri) ve ayarların yalnızca kullandığın cihazın tarayıcı deposunda saklanır. Bu veriler (aşağıdaki barkod istisnası dışında) hiçbir sunucuya gönderilmez, satılmaz, kimseyle paylaşılmaz ve reklam için kullanılmaz. Uygulamada reklam, analiz ya da izleme aracı yoktur.</p>
 
 <h2>Yedekler</h2>
 <p>"JSON olarak indir" ile aldığın yedek dosyası senin cihazına kaydedilir. Onu nereye koyacağına sen karar verirsin.</p>
 
+<h2 id="tr-barkod">Barkod okuma (yalnızca iPhone uygulaması)</h2>
+<p>Besin ekleme ekranındaki "Barkod okut" düğmesi paketli bir ürünün barkodunu kamerayla okur ve besin değerlerini <b>Open Food Facts</b>'ten (açık, topluluk tarafından doldurulan bir besin veritabanı) getirir.</p>
+<ul>
+<li><b>Kamera:</b> yalnızca barkodu okumak için kullanılır. Görüntü kaydedilmez, saklanmaz ve gönderilmez. Kamera izni ilk okutmada sorulur; vermezsen uygulamanın geri kalanı etkilenmez.</li>
+<li><b>Ne gider:</b> okunan barkod numarası ve bir internet isteği için kaçınılmaz olan teknik bilgiler (IP adresin). İstekte adın, profilin, günlüğün, konumun ya da başka bir kimliğin yoktur; Starboard bu isteği seninle ilişkilendirmez.</li>
+<li><b>Ne gitmez:</b> profil bilgilerin, günlüğün ve ölçümlerin, yedek dosyan, kamera görüntüsü.</li>
+<li><b>Open Food Facts'te:</b> sunucuları ziyaret kayıtlarını (IP adresi dahil) güvenlik ve teknik analiz için tuttuklarını bildiriyor; ayrıntı için kendi gizlilik politikalarına bak (aşağıda).</li>
+<li><b>Cihazda:</b> okuttuğun ürün, "kendi besinlerin" arasına cihazında kaydedilir (yedek dosyana da girer). Aynı barkodu tekrar okutursan ürün cihazdan bulunur, internete çıkılmaz.</li>
+<li>Ürün bilgileri Open Food Facts katkıcılarınca girilir ve hatalı olabilir; değerleri kaydetmeden önce kontrol edebilir ve düzeltebilirsin. Veriler ODbL lisansıyla yayımlanır.</li>
+</ul>
+
 <h2>Üçüncü taraf hizmetler</h2>
 <ul>
 <li>Site <b>GitHub Pages</b>'te barındırılır. Sayfayı açtığında GitHub, hizmeti sunmak için IP adresi gibi teknik kayıtları tutabilir (<a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub gizlilik bildirimi</a>).</li>
+<li><b>Open Food Facts</b> (yalnızca iPhone uygulamasında, barkod okutunca): <a href="https://world.openfoodfacts.org/privacy">Open Food Facts gizlilik politikası</a>.</li>
 </ul>
 <p>Yazı tipi (Nunito) uygulamanın içindedir; başka bir sunucudan yüklenmez. Bu hizmete senin sağlık verilerinden hiçbiri gitmez.</p>
 
@@ -57,17 +69,29 @@ nav{margin-bottom:18px;font-size:14px}
 <p class="muted">Last updated: November 12, 2026</p>
 
 <h2>In short</h2>
-<p>Starboard needs no account and does not collect your data. Everything you enter stays on your device.</p>
+<p>Starboard needs no account and does not collect your data. Everything you enter stays on your device. The one exception is barcode scanning in the iPhone app: when you scan a barcode, only the barcode number is sent to Open Food Facts (<a href="#en-barcode">details</a>).</p>
 
 <h2>What data, and where?</h2>
-<p>Your profile (name, age, height, weight, sex, goals), your daily entries (weight, calories, food diary, water, sleep, steps, workouts, body measurements) and your settings are stored only in your browser's storage on the device you use. This data is never sent to a server, sold, shared or used for advertising. The app contains no ads, analytics or tracking.</p>
+<p>Your profile (name, age, height, weight, sex, goals), your daily entries (weight, calories, food diary, water, sleep, steps, workouts, body measurements) and your settings are stored only in your browser's storage on the device you use. This data (apart from the barcode exception below) is never sent to a server, sold, shared or used for advertising. The app contains no ads, analytics or tracking.</p>
 
 <h2>Backups</h2>
 <p>The backup file you get with "Download as JSON" is saved to your device. You decide where it goes.</p>
 
+<h2 id="en-barcode">Barcode scanning (iPhone app only)</h2>
+<p>The "Scan barcode" button on the add-food screen reads the barcode of a packaged product with the camera and fetches its nutrition facts from <b>Open Food Facts</b> (an open, community-edited food database).</p>
+<ul>
+<li><b>Camera:</b> used only to read the barcode. The image is not recorded, stored or sent. The camera permission is requested the first time you scan; if you decline, the rest of the app is unaffected.</li>
+<li><b>What is sent:</b> the scanned barcode number and the technical information any internet request involves (your IP address). The request contains no name, profile, log, location or other identifier, and Starboard does not link it to you.</li>
+<li><b>What is not sent:</b> your profile, your log and measurements, your backup file, the camera image.</li>
+<li><b>At Open Food Facts:</b> they state that their servers keep visit logs (including IP addresses) for security and technical analysis; see their own privacy policy (below) for details.</li>
+<li><b>On your device:</b> the product you scan is saved on your device among "your own foods" (and is included in your backup file). If you scan the same barcode again, the product is found on the device and no request is made.</li>
+<li>Product data is entered by Open Food Facts contributors and may be wrong; you can check and correct the values before saving. The data is published under the ODbL licence.</li>
+</ul>
+
 <h2>Third-party services</h2>
 <ul>
 <li>The site is hosted on <b>GitHub Pages</b>. When you open it, GitHub may keep technical logs such as your IP address to provide the service (<a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>).</li>
+<li><b>Open Food Facts</b> (iPhone app only, when you scan a barcode): <a href="https://world.openfoodfacts.org/privacy">Open Food Facts privacy policy</a>.</li>
 </ul>
 <p>The font (Nunito) is bundled with the app and is not loaded from any other server. None of your health data goes to this service.</p>
 

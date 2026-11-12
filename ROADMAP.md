@@ -44,7 +44,7 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [x] Birimler: metrik (kg, cm, ml) ya da imperial (lb, ft·in, fl oz). Ayarlar'da ve ilk girişte seçilir; varsayılan tarayıcının bölgesinden (ABD imperial). Kayıt hep metrik kalır, çeviri yalnızca ekranda (`starboard-site/js/units.js`). İngilizcede ondalık ayırıcı nokta
 - [x] İngilizcenin "beta" etiketi kalktı. Yeni kullanıcıda dil tarayıcıdan gelir (Türkçe değilse İngilizce); kaydı olan eski kullanıcı Türkçe kalır; karşılama ekranında dil bağlantısı var
-- [x] Sürüm numarası (`APP_VERSION`, şu an 1.8.1) ve değişiklik günlüğü (`CHANGELOG.md`)
+- [x] Sürüm numarası (`APP_VERSION`, şu an 1.9.0) ve değişiklik günlüğü (`CHANGELOG.md`)
 - [x] Veri şeması sürümleme: `SCHEMA` ve `MIGRATIONS` (`storage.js`); açılışta ve yedek yüklerken kayıt güncel biçime taşınır
 - [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 76 test)
 - [x] Depolama anahtarı `starboard-state` oldu; eski adla duran kayıt ilk açılışta taşınır ve yedek olarak yerinde kalır
@@ -79,7 +79,8 @@ Amaç: web sitesini saran bir kabuk değil, gerçek bir iPhone uygulaması. Appl
 - [x] Bildirimler: su, uyku ve antrenman hatırlatmaları: saatleri ayarlanabilir (sabah tartısı ve günü kapat dahil)
 - [x] Ortak iOS altyapısı: Türkçe/İngilizce izin metinleri (kamera, Apple Sağlık), yetki dosyası (App.entitlements, HealthKit dalı dolduracak), gizlilik bildirimi (PrivacyInfo.xcprivacy), derleme hattında denetimler
 - [ ] Apple Sağlık (HealthKit) bağlantısı: adım, uyku, kilo
-- [ ] Barkod okuma: paketli ürünün barkodu kamerayla okunur, besin değerleri Open Food Facts'ten (ücretsiz, açık veri) gelir ve kendi yiyeceklerine kaydedilir. Dışarıya yalnızca barkod numarası gider; "veriler hiçbir yere gönderilmez" metni ve App Store gizlilik beyanı buna göre güncellenir. Uygulamayı web sitesinden ayıran yerel özelliklerden biri olur (kural 4.2)
+- [x] Barkod okuma (1.9.0, kod ve testler hazır; gerçek cihaz denemesi bekliyor): paketli ürünün barkodu kamerayla okunur, besin değerleri Open Food Facts'ten (ücretsiz, açık veri) gelir ve kendi yiyeceklerine kaydedilir. Dışarıya yalnızca barkod numarası gider; web'de özellik gizli olduğu için oradaki "hiçbir yere gönderilmez" sözü aynen durur, iPhone'daki metinler ve `PrivacyInfo.xcprivacy` (Arama Geçmişi) güncellendi. Uygulamayı web sitesinden ayıran yerel özelliklerden biri olur (kural 4.2). Eklenti: `@capacitor/barcode-scanner` (Apple Vision, SPM uyumlu)
+- [ ] Barkod okumayı gerçek iPhone'da dene (TestFlight): kamera izni, tarama, vazgeçme, izni reddetme, uçak modu, bulunamayan ürün, aynı barkodun ikinci kez okutulması, VoiceOver. Simülatörde kamera yok
 - [x] Dokunsal geri bildirim, güvenli alan ve karanlık mod ayarları: dokunsal geri bildirim, çentik payı; açık/koyu tema zaten vardı, iOS'ta durum çubuğu temaya uyar
 - [x] Mac olmadan derleme: bulutta macOS derleme hattı (GitHub Actions veya Codemagic): simülatör derlemesi Intel macOS makinesine taşındı
 
@@ -93,7 +94,8 @@ Bitti sayılır: uygulama TestFlight üzerinden kendi telefonunda çalışıyor.
 - [x] Gizlilik politikası (1.8.0): `starboard-site/privacy.html`, Türkçe ve İngilizce; uygulamada Ayarlar › Hakkında › Gizlilik
 - [ ] Destek sayfası: şimdilik iletişim GitHub Issues üzerinden; App Store için ayrı bir destek adresi (e-posta ya da sayfa) gerekebilir
 - [x] Sağlık içeriği (1.8.0): hesaplamaların kaynakları ve "tıbbi tavsiye değildir" uyarısı (kural 1.4.1); Ayarlar › Hakkında ve ilk girişin özeti
-- [ ] App Store gizlilik beyanı ve HealthKit kullanım açıklamaları
+- [ ] App Store gizlilik beyanı ve HealthKit kullanım açıklamaları (App Store Connect'te barkod için "Arama Geçmişi – sizinle ilişkilendirilmez – izleme yok – uygulama işlevi" işaretlenir; `PrivacyInfo.xcprivacy` ile aynı. İnceleme notu: "Paketli herhangi bir ürünün barkodunu okutun, örnek: 3017620422003". Not: Open Food Facts'in gizlilik politikası ziyaret kayıtlarını (IP dahil) tuttuğunu yazıyor; 12 Kasım notundaki "ne kadar sakladığını belirtmiyor" kısmı bununla örtüşmüyor, beyan yine temkinli kalır)
+- [ ] Kendi yiyeceklerini düzenleme ve silme ekranı (barkodla kaydedilen ürünler birikir; şimdilik silinemez)
 - [ ] Simge, ekran görüntüleri, açıklama metni, anahtar kelimeler
 - [ ] TestFlight ile dış test
 
