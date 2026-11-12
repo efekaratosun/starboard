@@ -37,9 +37,9 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [x] Birimler: metrik (kg, cm, ml) ya da imperial (lb, ft·in, fl oz). Ayarlar'da ve ilk girişte seçilir; varsayılan tarayıcının bölgesinden (ABD imperial). Kayıt hep metrik kalır, çeviri yalnızca ekranda (`starboard-site/js/units.js`). İngilizcede ondalık ayırıcı nokta
 - [x] İngilizcenin "beta" etiketi kalktı. Yeni kullanıcıda dil tarayıcıdan gelir (Türkçe değilse İngilizce); kaydı olan eski kullanıcı Türkçe kalır; karşılama ekranında dil bağlantısı var
-- [x] Sürüm numarası (`APP_VERSION`, şu an 1.5.1) ve değişiklik günlüğü (`CHANGELOG.md`)
+- [x] Sürüm numarası (`APP_VERSION`, şu an 1.5.2) ve değişiklik günlüğü (`CHANGELOG.md`)
 - [x] Veri şeması sürümleme: `SCHEMA` ve `MIGRATIONS` (`storage.js`); açılışta ve yedek yüklerken kayıt güncel biçime taşınır
-- [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 65 test)
+- [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 66 test)
 - [x] Depolama anahtarı `starboard-state` oldu; eski adla duran kayıt ilk açılışta taşınır ve yedek olarak yerinde kalır
 
 Bitti sayılır: testler geçiyor, eski bir yedek dosyası yeni sürümde sorunsuz açılıyor.
@@ -54,7 +54,8 @@ Amaç: App Store'a çıkmaya değer bir ürün.
 - [x] Hareket animasyonları: "Nasıl yapılır" kartlarında Motion ile oynayan temsili çizgi figür (83 hareket, 78 animasyon)
 - [ ] Birkaç gerçek kullanıcıyla web sürümünü dene, geri bildirim topla
 - [ ] İçeriğin uluslararası uyarlaması: yemek ve tarif veritabanı Türkiye dışı kullanıcılar için de anlamlı olmalı
-- [ ] Erişilebilirlik ve küçük ekran denetimi
+- [x] Erişilebilirlik ve küçük ekran denetimi (1.5.2): 320–414 px'de taşma yok; kontrast AA; dokunma alanları en az 44 px yükseklik; etiketler ve ekran okuyucu bildirimleri. Denetim aracı `tools/a11y-audit.html`. Gerçek iPhone'da VoiceOver ve büyük yazı denemesi Faz 3'te
+- [ ] Faz 3'te gerçek cihazda: VoiceOver ile bütün akış, iOS büyük yazı boyutu (Dynamic Type), çentik ve ana ekran çubuğu çevresi
 
 Bu faz diğerleriyle paralel yürür ve yayından sonra da sürer.
 

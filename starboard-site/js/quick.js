@@ -42,7 +42,7 @@ function openQuickSheet(){
           <i>${typeof e.weight === "number" ? tx("{0} {1} girildi", [(past ? tx("o gün") : tx("bugün")), (fmtW(e.weight))])
               : lw !== null ? tx("son ölçüm {0}", [(fmtW(lw))]) : tx("henüz ölçüm yok")}</i></div></div>
         <div class="row">
-          <input id="qs-w" type="text" inputmode="decimal" placeholder="${lw !== null ? wNum(lw) : wUnit()}"
+          <input id="qs-w" aria-label="${tx("Kilo ({0})", [(wUnit())])}" type="text" inputmode="decimal" placeholder="${lw !== null ? wNum(lw) : wUnit()}"
             value="${typeof e.weight === "number" ? wNum(e.weight) : ""}" style="flex:2">
           <button id="qs-w-ok" style="flex:0 0 92px">${tx("Kaydet")}</button>
         </div>
@@ -94,7 +94,7 @@ function openQuickSheet(){
         <div class="qs-h">${iconBox("day")}<div><b>${tx("Görev")}</b>
           <i>${tx("{0} kendi görevin var", [(e.tasks.filter(t => !t.suggested).length)])}</i></div></div>
         <div class="row">
-          <input id="qs-t" type="text" placeholder="${tx("Yeni görev")}" style="flex:2">
+          <input id="qs-t" aria-label="${tx("Yeni görev")}" type="text" placeholder="${tx("Yeni görev")}" style="flex:2">
           <button id="qs-t-ok" style="flex:0 0 92px">${tx("Ekle")}</button>
         </div>
       </div>`;

@@ -136,7 +136,7 @@ function recipesView(){
   return `
   <section>
     <h2>${tx("Tarifler")} <span class="count">${tx("{0} tarif", [(RECIPES.length)])}</span></h2>
-    <input id="rec-q" type="text" placeholder="${tx("Ara: karnıyarık, mercimek, tavuk…")}" value="${esc(recipeQuery)}" autocomplete="off">  </section>
+    <input id="rec-q" type="text" aria-label="${tx("Tarif ara")}" placeholder="${tx("Ara: karnıyarık, mercimek, tavuk…")}" value="${esc(recipeQuery)}" autocomplete="off">  </section>
   <div id="rec-results">${recipeList()}</div>`;
 }
 

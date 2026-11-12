@@ -509,6 +509,37 @@ test("çeviri: hareket rehberinin adları ve adımları İngilizcede çevrilir",
   eq(missing, [], "İngilizce karşılığı olmayan rehber metinleri");
 });
 
+/* ---- erişilebilirlik ---- */
+test("erişilebilirlik: her alanın etiketi, her düğmenin adı var", async () => {
+  const fixture = await loadFixture();
+  const bad = [];
+  const check = where => {
+    for (const el of app.querySelectorAll("input, select, textarea")) {
+      if (el.type === "hidden") continue;
+      const lab = el.id && app.querySelector(`label[for="${el.id}"]`);
+      if (!lab && !el.closest("label") && !el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby"))
+        bad.push(`${where}: etiketsiz ${el.id || el.outerHTML.slice(0, 60)}`);
+    }
+    for (const el of app.querySelectorAll("button, [role=button]"))
+      if (!(el.getAttribute("aria-label") || el.textContent || el.getAttribute("title") || "").trim())
+        bad.push(`${where}: adsız düğme ${el.outerHTML.slice(0, 60)}`);
+  };
+  for (const lang of ["tr", "en"]) await withLang(lang, () => {
+    state = JSON.parse(JSON.stringify(fixture)); migrateMeals(); notice = null; viewDate = null; ensureToday();
+    for (const t of ["today", "plan", "meals", "calendar"]) { tab = t; render(); check(t); }
+    for (const p of ["log", "program", "howto"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
+    for (const m of ["log", "plan", "recipes"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
+    for (const m of ["body", "chart", "set"]) { tab = "settings"; meTab = m; render(); check("me:" + m); }
+    for (const g of ["kcal", "protein", "water", "sleep", "weigh", "train"]) { tab = "today"; goalOpen = g; render(); check("goal:" + g); }
+    goalOpen = null; planTab = "log"; mealTab = "log"; meTab = "body";
+    state = null; ob = obDefaults(); ob.sex = "male";
+    for (let i = 0; i < OB_STEPS.length - 1; i++) { obStep = i; render(); check("ilk giriş " + OB_STEPS[i].id); }
+    ob = null; obStep = 0;
+  });
+  eq([...new Set(bad)], [], "erişilebilirlik sorunları");
+  tab = "today"; state = null;
+});
+
 /* ---- hesap ve ekran ayrımı ---- */
 /* Sonuçta metin olmamalı: yalnızca sayı, mantık, null ve bilinen durum adları. */
 const plainResult = (o, allowed) => JSON.stringify(o, (k, v) =>

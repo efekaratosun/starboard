@@ -6,12 +6,13 @@
 
   /* marka: parlak mercan. --band yazı ve ince çizgiler (beyazda AA),
      --band-vivid grafik ve dolgu, --grad hero öğeleri ve butonlar. */
-  --band:#C9340C; --band-vivid:#FF5A3C; --on-brand:#FFFFFF;
+  --band:#BF310B; --band-vivid:#FF5A3C; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A2F 0%,#FF3D6E 100%);
   --grad-btn:linear-gradient(135deg,#D93A12 0%,#D6285C 100%);
   --g1:#FF7A2F; --g2:#FF3D6E;
-  /* anlam renkleri: yazı / grafik */
-  --good:#0B8A4B; --good-vivid:#16C172; --off:#B45800; --bad:#D92D3A;
+  /* anlam renkleri: yazı / grafik. Yazı renkleri beyazda ve kendi %14 zeminli
+     rozetlerinde en az 4,5:1 kontrast verir (WCAG AA). */
+  --good:#097740; --good-vivid:#16C172; --off:#A24F00; --bad:#C12834;
 
   /* makrolar ve alanlar */
   --mp:#FF3B5C; --mc:#FF9500; --mf:#F5B800; --ml:#34C759;
@@ -63,7 +64,7 @@
   --male:#5AA7FF; --male-t:#1C2A3D; --female:#FF7EB9; --female-t:#3A1F31;
   --neutral:#A98BFF; --neutral-t:#2A2140;
 
-  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#8A6E14; --d4:#5FAE3C; --d5:#2FD483;
+  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#836812; --d4:#5FAE3C; --d5:#2FD483;
   --dnone:#B03225; --dnone-ink:#FFE7E3;
   --dtoday:#3BD9F5; --dtoday-ink:#062733;
   --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);
@@ -96,7 +97,7 @@
   --male:#5AA7FF; --male-t:#1C2A3D; --female:#FF7EB9; --female-t:#3A1F31;
   --neutral:#A98BFF; --neutral-t:#2A2140;
 
-  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#8A6E14; --d4:#5FAE3C; --d5:#2FD483;
+  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#836812; --d4:#5FAE3C; --d5:#2FD483;
   --dnone:#B03225; --dnone-ink:#FFE7E3;
   --dtoday:#3BD9F5; --dtoday-ink:#062733;
   --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);

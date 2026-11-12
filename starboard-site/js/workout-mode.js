@@ -361,7 +361,7 @@ function howList(program){
 
 function howtoView(program){
   return `<section>
-    <input id="how-q" type="text" placeholder="${tx("Hareket ara: squat, barfiks, plank…")}" value="${esc(howQuery)}" autocomplete="off">
+    <input id="how-q" type="text" aria-label="${tx("Hareket ara")}" placeholder="${tx("Hareket ara: squat, barfiks, plank…")}" value="${esc(howQuery)}" autocomplete="off">
     <div class="metric-note" style="margin-top:10px">${tx("Ağrı hissedersen dur.")}</div>
   </section>
   <div id="how-res">${howList(program)}</div>`;

@@ -1,0 +1,141 @@
+<!DOCTYPE html><meta charset="utf-8"><body style="margin:0"><pre id="out">...</pre><script>
+/* Erişilebilirlik ve küçük ekran denetimi: uygulamayı dar çerçevelerde (varsayılan
+   320, 375, 414 px) açar; her ekranda taşan öğeleri, etiketsiz alanları, adsız
+   düğmeleri, 44 px altındaki dokunma alanlarını, 11 px altındaki yazıları ve
+   4,5:1 altındaki kontrastı listeler. Kullanım: site tools/serve.ps1 -Root . -Port 8766
+   ile açıkken http://localhost:8766/tools/a11y-audit.html?w=320,375&t=dark&l=en
+   Parametreler: w genişlikler, t tema (light|dark), l dil, u birim. Kayıt olarak
+   tests/fixtures/state-v1.json kullanılır; yalnızca localhost kaydını değiştirir. */
+const q = new URLSearchParams(location.search);
+const WIDTHS = (q.get("w") || "320,375,414").split(",").map(Number);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+const SCREENS = [
+  ["bugün", "tab='today'; goalOpen=null"],
+  ["bugün: su açık", "tab='today'; goalOpen='water'"],
+  ["bugün: uyku açık", "tab='today'; goalOpen='sleep'"],
+  ["antrenman: kaydım", "goalOpen=null; tab='plan'; planTab='log'"],
+  ["antrenman: program", "tab='plan'; planTab='program'"],
+  ["antrenman: nasıl yapılır", "tab='plan'; planTab='howto'"],
+  ["beslenme: günlük", "tab='meals'; mealTab='log'"],
+  ["beslenme: plan", "tab='meals'; mealTab='plan'"],
+  ["beslenme: tarifler", "tab='meals'; mealTab='recipes'"],
+  ["takvim", "tab='calendar'; calSel=null"],
+  ["takvim: gün", "tab='calendar'; calSel=shiftDays(today(),-1)"],
+  ["ben: vücudum", "tab='settings'; meTab='body'"],
+  ["ben: grafikler", "tab='settings'; meTab='chart'"],
+  ["ben: ayarlar", "tab='settings'; meTab='set'"],
+];
+const SHEETS = [
+  ["hızlı giriş", "tab='today'; render(); openQuickSheet()", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove())"],
+  ["antrenman modu", "tab='plan'; planTab='log'; render(); openWorkout()", "closeWorkout()"],
+];
+
+/* Çerçevenin içinde çalışır: taşan öğeler ve erişilebilirlik bulguları. */
+function probe(){
+  if (!document.getElementById("no-anim")){ const st = document.createElement("style"); st.id = "no-anim"; st.textContent = "*,*::before,*::after{animation:none!important;transition:none!important}"; document.head.appendChild(st); }
+  const W = innerWidth, out = [];
+  const name = el => {
+    const c = typeof el.className === "string" && el.className.trim() ? "." + el.className.trim().split(/\s+/).slice(0, 2).join(".") : "";
+    return el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + c;
+  };
+  const txt = el => (el.getAttribute("aria-label") || el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 40);
+  const clipped = el => { for (let p = el.parentElement; p && p !== document.body; p = p.parentElement){ const o = getComputedStyle(p).overflowX; if (o !== "visible") return true; } return false; };
+  const visible = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el); return r.width > 0 && r.height > 0 && s.visibility !== "hidden" && s.display !== "none"; };
+  const sw = document.documentElement.scrollWidth;
+  if (sw > W + 1) out.push(["sayfa yatay kayıyor", `${sw}px > ${W}px`]);
+  for (const el of document.querySelectorAll("body *")){
+    if (!visible(el) || el.closest("svg")) continue;
+    const r = el.getBoundingClientRect();
+    if (r.right > W + 1 || r.left < -1){
+      const p = el.parentElement, pr = p.getBoundingClientRect();
+      if ((pr.right <= W + 1 && pr.left >= -1) && !clipped(el) && getComputedStyle(el).position !== "fixed")
+        out.push(["taşıyor", `${name(el)} [${Math.round(r.left)}..${Math.round(r.right)}] "${txt(el)}"`]);
+    }
+  }
+  for (const el of document.querySelectorAll("button, a[href], [role=button], [role=slider], input, select, textarea")){
+    if (!visible(el)) continue;
+    const r = el.getBoundingClientRect();
+    const isField = /INPUT|SELECT|TEXTAREA/.test(el.tagName);
+    if (isField && el.type !== "hidden"){
+      const lab = el.id && document.querySelector(`label[for="${el.id}"]`);
+      if (!lab && !el.closest("label") && !el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby"))
+        out.push(["etiketsiz alan", `${name(el)} placeholder="${el.placeholder || ""}"`]);
+    } else if (!txt(el) && !el.getAttribute("title"))
+      out.push(["adsız düğme", name(el)]);
+    const ps = getComputedStyle(el, "::after"), hit = ps.content !== "none" && ps.position === "absolute" ? [Math.max(r.width, parseFloat(ps.width) || 0), Math.max(r.height, parseFloat(ps.height) || 0)] : [r.width, r.height];
+    if ((hit[0] < 44 || hit[1] < 44) && el.type !== "file" && !/^(checkbox|radio)$/.test(el.type))
+      out.push(["küçük dokunma alanı", `${name(el)} ${Math.round(hit[0])}×${Math.round(hit[1])}`]);
+  }
+  for (const el of document.querySelectorAll("img")) if (!el.alt && el.getAttribute("aria-hidden") !== "true") out.push(["alt metinsiz görsel", name(el)]);
+  const small = new Set();
+  for (const el of document.querySelectorAll("body *")){
+    if (!visible(el) || el.closest("svg")) continue;
+    const own = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+    if (own && parseFloat(getComputedStyle(el).fontSize) < 11) small.add(`${name(el)} ${getComputedStyle(el).fontSize} "${txt(el).slice(0, 20)}"`);
+  }
+  for (const s of small) out.push(["çok küçük yazı", s]);
+  /* kontrast: yazı rengi ile ilk opak arka plan */
+  const rgb = c => {
+    if (/^rgba?\(/.test(c)){ const m = c.match(/[\d.]+/g); return m.map(Number); }
+    const s = /^color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)(?: \/ ([\d.]+))?\)/.exec(c);
+    return s ? [s[1] * 255, s[2] * 255, s[3] * 255, s[4] === undefined ? 1 : +s[4]] : null;
+  };
+  const lum = ([r, g, b]) => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126*f(r) + 0.7152*f(g) + 0.0722*f(b); };
+  const bgOf = el => { const layers = []; for (let p = el; p; p = p.parentElement){ const cs = getComputedStyle(p); if (cs.backgroundImage !== "none") return null; const c = rgb(cs.backgroundColor); if (c && (c[3] === undefined ? 1 : c[3]) > 0){ layers.push(c); if ((c[3] === undefined ? 1 : c[3]) > 0.95) break; } } let base = [255,255,255]; for (const c of layers.reverse()){ const a = c[3] === undefined ? 1 : c[3]; base = base.map((v, i) => c[i] * a + v * (1 - a)); } return base; };
+  const low = new Set();
+  for (const el of document.querySelectorAll("body *")){
+    if (!visible(el) || el.closest("svg")) continue;
+    if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) continue;
+    const cs = getComputedStyle(el), fg = rgb(cs.color), bg = bgOf(el);
+    if (!fg || !bg || (fg[3] !== undefined && fg[3] < 0.95) || parseFloat(cs.opacity) < 1) continue;
+    const a = lum(fg), b = lum(bg), ratio = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    const big = parseFloat(cs.fontSize) >= 24 || (parseFloat(cs.fontSize) >= 18.66 && +cs.fontWeight >= 700);
+    if (ratio < (big ? 3 : 4.5)) low.add(name(el) + " " + ratio.toFixed(2) + " fg=" + fg.slice(0,3).map(Math.round) + " bg=" + bg.map(Math.round) + " \"" + txt(el).slice(0, 24) + "\"");
+  }
+  for (const s of low) out.push(["düşük kontrast", s]);
+  return out;
+}
+
+(async () => {
+  const d = await fetch("../tests/fixtures/state-v1.json").then(r => r.json());
+  const s = d.state; s.profile.units = q.get("u") || "metric"; s.profile.targetWeight = 75; s.profile.theme = q.get("t") || "light";
+  localStorage.clear();
+  localStorage.setItem("starboard-state", JSON.stringify(s));
+  localStorage.setItem("starboard-lang", q.get("l") || "tr");
+  const found = new Map();      /* bulgu -> { ekranlar, genişlikler } */
+  const add = (w, screen, [kind, what]) => {
+    const k = kind + " | " + what.replace(/\d+×\d+$/, m => m).replace(/\[-?\d+\.\.\d+\]/, "");
+    const f = found.get(k) || { screens: new Set(), widths: new Set(), sample: what };
+    f.screens.add(screen); f.widths.add(w); found.set(k, f);
+  };
+  for (const w of WIDTHS){
+    const fr = document.createElement("iframe");
+    fr.style.cssText = `width:${w}px;height:780px;border:0;display:block`;
+    fr.src = "a11y-frame.html";
+    document.body.appendChild(fr);
+    await new Promise(r => fr.onload = r);
+    await sleep(2500);
+    const win = fr.contentWindow;
+    win.eval("window.__probe = " + probe.toString());
+    for (const [n, js] of SCREENS){
+      win.eval(js + "; render(); window.scrollTo(0,0)");
+      await sleep(700);
+      for (const f of win.eval("__probe()")) add(w, n, f);
+    }
+    for (const [n, open, close] of SHEETS){
+      try { win.eval(open); await sleep(800); for (const f of win.eval("__probe()")) add(w, n, f); win.eval(close); await sleep(300); }
+      catch (e) { add(w, n, ["hata", e.message]); }
+    }
+    /* ilk giriş */
+    win.eval("state = null; ob = obDefaults(); ob.sex = 'male';");
+    for (let i = 0; i < win.eval("OB_STEPS.length"); i++){
+      win.eval(`obStep = ${i}; render()`); await sleep(900);
+      for (const f of win.eval("__probe()")) add(w, "ilk giriş " + i, f);
+    }
+    fr.remove();
+  }
+  const lines = [...found].sort().map(([k, f]) => `${k.split(" | ")[0]} | ${f.sample.replace(/\[-?\d+\.\.\d+\]/, "")} | ${[...f.widths].join(",")} | ${[...f.screens].slice(0, 4).join(", ")}${f.screens.size > 4 ? ` +${f.screens.size - 4}` : ""}`);
+  document.getElementById("out").textContent = lines.join("\n") || "bulgu yok";
+})().catch(e => { document.getElementById("out").textContent = "HATA " + e.stack; });
+</script>

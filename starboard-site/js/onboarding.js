@@ -341,8 +341,8 @@ const OB_STEPS = [
       return og(tx("Birimler"), obChips("obunit", UNIT_SYSTEMS.map(([k, l]) => [k, l, ob.units === k])))
         + rulers
         + `<div class="og-row">`
-        + og(tx("Yaş"), `<input id="ob-age" type="number" inputmode="numeric" value="${ob.age ?? ""}" placeholder="30">`)
-        + og(tx("Yağ oranı (%)"), `<input id="ob-bf" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}">`, true)
+        + og(tx("Yaş"), `<input id="ob-age" aria-label="${tx("Yaş")}" type="number" inputmode="numeric" value="${ob.age ?? ""}" placeholder="30">`)
+        + og(tx("Yağ oranı (%)"), `<input id="ob-bf" aria-label="${tx("Yağ oranı (%)")}" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}">`, true)
         + `</div>`;
     },
     read: () => { ob.age = num(obVal("ob-age")); ob.bodyFat = num(obVal("ob-bf")); },
@@ -350,7 +350,7 @@ const OB_STEPS = [
       : ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "" },
   { id:"goal", t:tx("Hedefin"),
     body: () => og(tx("Ne istiyorsun?"), obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label])))
-      + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${Math.round(wOut(ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
+      + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" aria-label="${tx("Hedef kilon ({0})", [(wUnit())])}" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${Math.round(wOut(ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
       + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
       + og(tx("Uyku hedefin"), obChips("obsleep", [6,7,8,9].map(n => [n, tx("{0}-{1} saat", [(n), (n+2)]), ob.sleepMin === n]))),
     read: () => { const n = num(obVal("ob-tw")); ob.targetWeight = n === null ? null : wSave(n); },

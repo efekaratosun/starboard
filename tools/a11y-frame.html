@@ -1,0 +1,10 @@
+<!DOCTYPE html><meta charset="utf-8"><script>
+/* a11y-audit.html için: uygulamayı service worker kaydı olmadan açar. */
+(async () => {
+  const END = "</" + "script>";
+  let html = await fetch("../starboard-site/index.html").then(r => r.text());
+  html = html.replace("<head>", '<head><base href="../starboard-site/">')
+    .replace('<script src="js/register-sw.js">' + END, "");
+  document.open(); document.write(html); document.close();
+})();
+</script>

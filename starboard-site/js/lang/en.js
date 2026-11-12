@@ -862,5 +862,7 @@ window.STARBOARD_EN = {
   "Tamamlanan {0}": "Completed {0}",
   "programdaki hedeften": "from the plan target",
   "{0} set kaydedildi.": "{0} sets saved.",
-  "dk": "min"
+  "dk": "min",
+  "Tarif ara": "Search recipes",
+  "Hareket ara": "Search exercises"
 };

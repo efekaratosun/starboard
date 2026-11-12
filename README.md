@@ -51,6 +51,10 @@ Yeni bir hareket eklerken: `EX_ANIMS` içine pozlarını yaz (ya da var olan bir
 
 Bütün animasyonları yan yana görmek için site `tools/devserve.ps1` ile açıkken `http://localhost:8766/tools/anim-gallery.html` adresine git. `?v=both` eklenirse her hareketin ilk ve son pozu üst üste görünür.
 
+## Erişilebilirlik denetimi
+
+Site yerelde açıkken (aşağıdaki test sunucusu) `http://localhost:8766/tools/a11y-audit.html` adresi uygulamayı 320, 375 ve 414 px genişliğinde açar ve her ekran için yatay taşmayı, etiketsiz alanları, adsız düğmeleri, 44 px altındaki dokunma alanlarını, 11 px altındaki yazıları ve 4,5:1 altındaki kontrastı listeler. `?t=dark` koyu tema, `?l=en` İngilizce, `?w=320` tek genişlik. Takvim günleri, renk seçici ve su bardakları gibi satıra sığmak zorunda olan öğeler genişlikte 44 px'in altında kalır; bu bilinen ve kabul edilen bir durumdur.
+
 ## Yerelde çalıştırma
 
 Site (http://localhost:8765):

@@ -398,10 +398,21 @@ function checkPR(name, before){
 }
 
 /* ---- kısa bilgi ---- */
+/* Kısa bildirim. Görünen kutu her seferinde yeniden kurulur; ekran okuyucu için
+   sayfada sabit duran bir canlı bölge kullanılır, çünkü sonradan eklenen bir
+   role="status" öğesini VoiceOver her zaman okumuyor. */
 function toast(msg){
+  let live = document.getElementById("sr-live");
+  if (!live){
+    live = document.createElement("div");
+    live.id = "sr-live"; live.className = "sr-only"; live.setAttribute("aria-live", "polite");
+    document.body.appendChild(live);
+  }
+  live.textContent = "";
+  setTimeout(() => { live.textContent = msg; }, 60);
   document.querySelectorAll(".toast").forEach(x => x.remove());
   const el = document.createElement("div");
-  el.className = "toast"; el.setAttribute("role", "status"); el.textContent = msg;
+  el.className = "toast"; el.setAttribute("aria-hidden", "true"); el.textContent = msg;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3600);
 }
