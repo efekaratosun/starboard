@@ -23,7 +23,8 @@ concurrency:
 
 jobs:
   simulator:
-    runs-on: macos-latest
+    # Apple Silicon (macos-latest) makinelerinde kapasite sıkıntısı var; Intel daha hızlı atanıyor.
+    runs-on: macos-26-intel
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
