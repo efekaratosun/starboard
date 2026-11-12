@@ -25,3 +25,33 @@ if (IS_NATIVE && !window.storage){
     async delete(k){ try { await FS.deleteFile(file(k)); } catch(e){} }
   };
 }
+
+/* ---- yerel eklentiler ----
+   Web'de çağrılar sessizce hiçbir şey yapmaz; böylece kodun geri kalanı
+   "iPhone'da mıyız" diye sormadan çağırabilir. */
+/* Eklenti çağrıları söz (promise) döndürür; reddedilirse sessizce yutulur. */
+const quiet = p => { if (p && p.catch) p.catch(() => {}); };
+const nativePlugin = name => {
+  if (!IS_NATIVE) return null;
+  const C = window.Capacitor;
+  return (C.Plugins && C.Plugins[name]) || C.registerPlugin(name);
+};
+
+/* Dokunsal geri bildirim. kind: "light" (dokunuş), "success" (başarı), "warning" (uyarı). */
+function haptic(kind){
+  const H = nativePlugin("Haptics");
+  if (!H) return;
+  try {
+    if (kind === "success") quiet(H.notification({ type: "SUCCESS" }));
+    else if (kind === "warning") quiet(H.notification({ type: "WARNING" }));
+    else quiet(H.impact({ style: "LIGHT" }));
+  } catch(e){}
+}
+
+/* Durum çubuğu (saat, pil) temaya uyar: koyu zeminde açık yazı, açık zeminde koyu yazı.
+   Capacitor'da "DARK" stili koyu zemin içindir, yani yazıyı açık yapar. */
+function nativeStatusBar(dark){
+  const S = nativePlugin("StatusBar");
+  if (!S) return;
+  try { quiet(S.setStyle({ style: dark ? "DARK" : "LIGHT" })); } catch(e){}
+}

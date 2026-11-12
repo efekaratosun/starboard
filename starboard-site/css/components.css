@@ -479,7 +479,7 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .avc.on{box-shadow:0 0 0 2.5px var(--c)}
 .avc:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .sheet-bg{position:fixed;inset:0;z-index:45;background:rgba(20,12,24,.42);display:flex;align-items:flex-end;justify-content:center;animation:p-fade .2s ease-out}
-.sheet{width:100%;max-width:520px;max-height:88vh;overflow:auto;background:var(--surface);color:var(--ink);border-radius:26px 26px 0 0;
+.sheet{width:100%;max-width:520px;max-height:min(88vh, calc(100dvh - env(safe-area-inset-top) - 12px));overflow:auto;background:var(--surface);color:var(--ink);border-radius:26px 26px 0 0;
   padding:16px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:var(--sh2);animation:sh-up .28s cubic-bezier(.2,.9,.3,1)}
 .sheet-h{display:flex;align-items:center;margin-bottom:6px}
 .sheet-h b{flex:1;font-size:19px;font-weight:900}

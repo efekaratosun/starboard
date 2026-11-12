@@ -88,7 +88,12 @@ const sleepBand = () => [sleepMin(), sleepMin() + 2];
 function applyTheme(t){
   const r = document.documentElement;
   if (t === "light" || t === "dark") r.dataset.theme = t; else delete r.dataset.theme;
+  themeNow = t || "auto";
+  nativeStatusBar(themeNow === "dark" || (themeNow === "auto" && sysDark()));
 }
+/* "Telefonu izle" seçiliyken telefon koyu moda geçince durum çubuğu da uysun. */
+let themeNow = "auto";
+if (window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (themeNow === "auto") applyTheme("auto"); });
 
 /* Öğün düzeni kalıpları: [ad, saat, kategori, ağırlık] */
 const MEAL_PRESETS = [

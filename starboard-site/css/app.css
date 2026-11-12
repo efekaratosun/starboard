@@ -1,6 +1,6 @@
 /* ===== 1.1: ferah ve düz düzen =====
    Kartlar çerçevesiz ve gölgesiz; ayrımı zemin rengi ve boşluk yapıyor. */
-header{padding:20px 18px 14px}
+header{padding:calc(20px + env(safe-area-inset-top)) 18px 14px}
 .htext::after{display:none}
 main{padding:0 16px 28px}
 section{border:0;box-shadow:none;background-image:none;border-radius:24px;padding:20px 18px;margin-bottom:12px}

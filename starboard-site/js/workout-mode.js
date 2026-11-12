@@ -25,7 +25,8 @@ function restBar(){
   </div>`;
 }
 function restDone(){
-  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch(e){}
+  if (IS_NATIVE) haptic("warning");
+  else try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch(e){}
   try {
     const ac = new (window.AudioContext || window.webkitAudioContext)();
     [0, 0.25].forEach(t => {
@@ -330,6 +331,7 @@ function wireWO(){
     }
     for (let j = 0; j < rec.sets.length; j++) if (rec.sets[j] === undefined) rec.sets[j] = null;
     await save();
+    haptic("light");
     startRest();
     drawWO();
     checkPR(name, before);

@@ -418,6 +418,7 @@ function checkPR(name, before){
   const now = records().find(r => r.name === name);
   if (!now || now.k !== vKey()) return;
   if (before && now.val <= before.val + 0.001) return;
+  haptic("success");
   toast(tx("🏆 Yeni rekor: {0} · {1}", [(parseEx(name, venueOf(currentProgram())).name), (now.text)]));
 }
 
@@ -443,6 +444,7 @@ function toast(msg){
 
 /* ---- kutlama ---- */
 function celebrate(){
+  haptic("success");
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   const cols = ["--band-vivid","--star","--good-vivid","--sleep","--water","--g-fruit"];
   const el = document.createElement("div");

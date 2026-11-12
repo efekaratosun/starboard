@@ -385,6 +385,7 @@ function wireToday(entry, program, key){
   bind("i-weight","weight",false,null,wSave);
   wireSleep(entry);
   app.querySelectorAll("[data-cup]").forEach(b => b.onclick = async () => {
+    haptic("light");
     const i = +b.dataset.cup, cur = cupsOf(entry.water);
     const n = (i + 1 === cur) ? i : i + 1;          /* son dolu bardağa dokunmak onu boşaltır */
     if (n) entry.water = Math.round(n * cupMl()); else delete entry.water;
@@ -442,6 +443,7 @@ function wireToday(entry, program, key){
   quick("add-water","water"); quick("add-kcal","kcal");
 
   app.querySelectorAll(".check[data-id]").forEach(b => b.onclick = async () => {
+    haptic("light");
     const t = entry.tasks.find(x => String(x.id) === b.dataset.id);
     if (!t) return;
     const info = t.suggested ? autoInfo(t, entry, currentProgram(), key) : null;
