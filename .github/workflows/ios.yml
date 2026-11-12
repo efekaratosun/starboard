@@ -44,6 +44,18 @@ jobs:
       - name: Xcode surumu
         run: xcodebuild -version
 
+      # Bu dosyalar Mac olmadan elle düzenleniyor; bozuksa derlemeden önce açıkça hata versin.
+      - name: Proje ve plist dosyalarini denetle
+        run: |
+          plutil -lint \
+            ios/App/App.xcodeproj/project.pbxproj \
+            ios/App/App/Info.plist \
+            ios/App/App/App.entitlements \
+            ios/App/App/PrivacyInfo.xcprivacy \
+            ios/App/App/en.lproj/InfoPlist.strings \
+            ios/App/App/tr.lproj/InfoPlist.strings
+          xcodebuild -list -project ios/App/App.xcodeproj
+
       - name: Simulator icin derle (imzasiz)
         run: |
           xcodebuild \
@@ -56,6 +68,19 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build | tail -n 40
           test -d build/Build/Products/Debug-iphonesimulator/App.app
+
+      - name: Izin metinleri ve gizlilik bildirimi uygulamada mi
+        run: |
+          APP=build/Build/Products/Debug-iphonesimulator/App.app
+          test -f "$APP/PrivacyInfo.xcprivacy"
+          for L in en tr; do
+            test -f "$APP/$L.lproj/InfoPlist.strings"
+            plutil -p "$APP/$L.lproj/InfoPlist.strings"
+          done
+          for K in NSCameraUsageDescription NSHealthShareUsageDescription NSHealthUpdateUsageDescription; do
+            /usr/libexec/PlistBuddy -c "Print :$K" "$APP/Info.plist"
+            plutil -extract "$K" raw "$APP/tr.lproj/InfoPlist.strings" >/dev/null
+          done
 
       - name: Simulatorde ac ve ekran goruntusu al
         run: |

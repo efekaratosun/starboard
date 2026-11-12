@@ -1,0 +1,7 @@
+/* Permission prompts. Keep the keys in sync with Info.plist and tr.lproj/InfoPlist.strings. */
+
+"NSCameraUsageDescription" = "Starboard uses the camera to scan the barcodes of packaged foods. Only the barcode number is sent to Open Food Facts to find the nutrition facts; no image is saved or sent.";
+
+"NSHealthShareUsageDescription" = "Starboard reads your steps, sleep and weight from Apple Health to show them with your daily goals. Starboard does not send this data anywhere.";
+
+"NSHealthUpdateUsageDescription" = "Starboard only saves data to Apple Health if you turn this on in Settings. Starboard does not send this data anywhere.";

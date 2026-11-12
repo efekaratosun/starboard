@@ -69,6 +69,16 @@ Bütün animasyonları yan yana görmek için site `tools/devserve.ps1` ile aç�
 
 Site yerelde açıkken (aşağıdaki test sunucusu) `http://localhost:8766/tools/a11y-audit.html` adresi uygulamayı 320, 375 ve 414 px genişliğinde açar ve her ekran için yatay taşmayı, etiketsiz alanları, adsız düğmeleri, 44 px altındaki dokunma alanlarını, 11 px altındaki yazıları ve 4,5:1 altındaki kontrastı listeler. `?t=dark` koyu tema, `?l=en` İngilizce, `?w=320` tek genişlik. Takvim günleri, renk seçici ve su bardakları gibi satıra sığmak zorunda olan öğeler genişlikte 44 px'in altında kalır; bu bilinen ve kabul edilen bir durumdur.
 
+## iOS
+
+`ios/` Capacitor ile üretilen Xcode projesidir; eklentiler Swift Package Manager ile gelir (`ios/App/CapApp-SPM/Package.swift`, `npx cap sync ios` yazar, elle düzenlenmez). CocoaPods yoktur, bu yüzden yalnızca CocoaPods destekleyen eklentiler (örneğin ML Kit tabanlı barkod eklentisi) kullanılamaz. Mac olmadığı için proje `.github/workflows/ios.yml` ile bulutta derlenir; `project.pbxproj` elle düzenlenirse her yeni nesneye projede olmayan 24 haneli bir hex kimlik verilmelidir.
+
+Yerel özellikler için ortak dosyalar (`ios/App/App/` altında):
+
+- İzin metinleri (kamera, Apple Sağlık): İngilizcesi `Info.plist` ve `en.lproj/InfoPlist.strings`, Türkçesi `tr.lproj/InfoPlist.strings`. Yeni bir izin eklenince üçüne de yazılır; derleme hattı üçünde de olup olmadığını denetler.
+- Yetkiler (`App.entitlements`): şimdilik boş. HealthKit eklenince `com.apple.developer.healthkit` buraya yazılır; proje dosyası zaten bu dosyayı gösteriyor.
+- Gizlilik bildirimi (`PrivacyInfo.xcprivacy`): App Store'un istediği veri beyanı. Şu an veri toplanmıyor; barkod gelince Open Food Facts'e giden barkod numarası "Arama Geçmişi" olarak buraya da yazılır (bkz. ROADMAP, 12 Kasım kararları).
+
 ## Yerelde çalıştırma
 
 Site (http://localhost:8765):

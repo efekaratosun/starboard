@@ -1,0 +1,7 @@
+/* İzin pencereleri. Anahtarlar Info.plist ve en.lproj/InfoPlist.strings ile aynı kalmalı. */
+
+"NSCameraUsageDescription" = "Starboard, paketli ürünlerin barkodunu okumak için kamerayı kullanır. Besin değerlerini bulmak için Open Food Facts'e yalnızca barkod numarası gönderilir; görüntü kaydedilmez ve gönderilmez.";
+
+"NSHealthShareUsageDescription" = "Starboard, günlük hedeflerinin yanında göstermek için Apple Sağlık'tan adım, uyku ve kilo verilerini okur. Starboard bu verileri hiçbir yere göndermez.";
+
+"NSHealthUpdateUsageDescription" = "Starboard, Apple Sağlık'a yalnızca Ayarlar'da bunu açarsan veri kaydeder. Starboard bu verileri hiçbir yere göndermez.";
