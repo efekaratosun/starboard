@@ -30,7 +30,7 @@ function aboutSection(){
     ${block(tx("Sağlık uyarısı"), `<p>${DISCLAIMER}</p>`)}
     ${block(tx("Hesapların kaynakları"), SOURCES.map(([t, s]) => `<p><b>${t}</b><br>${s}</p>`).join(""))}
     ${block(tx("Gizlilik"), `<p>${tx("Starboard hesap istemez. Girdiğin bütün veriler yalnızca bu cihazda tutulur; sunucuya gönderilmez, kimseyle paylaşılmaz. Reklam, analiz ya da izleme aracı yoktur.")}</p>
-      <p>${tx("Site GitHub Pages'te barındırılır ve yazı tipi Google Fonts'tan yüklenir; bu iki hizmet sayfayı açtığında IP adresini görebilir. Verilerini Ayarlar'daki \"Tüm verileri sil\" ile tamamen silebilirsin.")}</p>
+      <p>${tx("Site GitHub Pages'te barındırılır; GitHub sayfayı açtığında IP adresini görebilir. Yazı tipi uygulamanın içinden yüklenir, başka bir yere istek gitmez. Verilerini Ayarlar'daki \"Tüm verileri sil\" ile tamamen silebilirsin.")}</p>
       <p><a href="privacy.html" target="_blank" rel="noopener">${tx("Gizlilik politikasının tamamı")}</a></p>`)}
   </section>`;
 }

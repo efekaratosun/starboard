@@ -3,6 +3,12 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.8.1 (12 Kasım 2026)
+
+### Değişti
+- Nunito yazı tipi Google Fonts'tan değil uygulamanın içinden yüklenir (`fonts/`, SIL OFL): dışarıya istek gitmez, internetsiz de aynı görünür. Gizlilik metinleri (Hakkında ve `privacy.html`) buna göre güncellendi.
+- Çevrimdışı önbellek yazı tipi dosyalarını da içerir; Google Fonts'a özel önbellek kuralı kaldırıldı.
+
 ## 1.8.0 (12 Kasım 2026)
 
 ### Eklendi

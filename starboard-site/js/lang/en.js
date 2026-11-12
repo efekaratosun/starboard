@@ -922,7 +922,7 @@ window.STARBOARD_EN = {
   "Hesapların kaynakları": "Sources for the calculations",
   "Gizlilik": "Privacy",
   "Starboard hesap istemez. Girdiğin bütün veriler yalnızca bu cihazda tutulur; sunucuya gönderilmez, kimseyle paylaşılmaz. Reklam, analiz ya da izleme aracı yoktur.": "Starboard needs no account. Everything you enter stays on this device only; it is never sent to a server or shared with anyone. There are no ads, analytics or trackers.",
-  "Site GitHub Pages'te barındırılır ve yazı tipi Google Fonts'tan yüklenir; bu iki hizmet sayfayı açtığında IP adresini görebilir. Verilerini Ayarlar'daki \"Tüm verileri sil\" ile tamamen silebilirsin.": "The site is hosted on GitHub Pages and the font loads from Google Fonts; these two services may see your IP address when you open the page. You can erase all your data with \"Delete all data\" in Settings.",
+  "Site GitHub Pages'te barındırılır; GitHub sayfayı açtığında IP adresini görebilir. Yazı tipi uygulamanın içinden yüklenir, başka bir yere istek gitmez. Verilerini Ayarlar'daki \"Tüm verileri sil\" ile tamamen silebilirsin.": "The site is hosted on GitHub Pages; GitHub may see your IP address when you open the page. The font is bundled with the app, so no other requests are made. You can erase all your data with \"Delete all data\" in Settings.",
   "Gizlilik politikasının tamamı": "Full privacy policy",
   "Starboard tıbbi tavsiye vermez; sağlık sorunun varsa hekimine danış.": "Starboard doesn't give medical advice; if you have a health condition, talk to your doctor.",
   /* dinlenme sayacı (1.8.0) */

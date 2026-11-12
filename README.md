@@ -18,6 +18,10 @@ Yol haritası: [ROADMAP.md](ROADMAP.md)
 `js/` altındaki dosyalar `index.html` içindeki sırayla yüklenir ve aynı genel kapsamı paylaşır; sıra önemlidir.
 Yeni bir dosya eklenince hem `index.html` hem `sw.js` içindeki listeye yazılmalıdır.
 
+## Yazı tipi
+
+Nunito `starboard-site/fonts/` altındaki `woff2` dosyalarından yüklenir (`css/tokens.css` içindeki `@font-face`; Türkçe için `latin-ext` gerekli). Dışarıdan yazı tipi ya da stil yüklenmez. Yeni bir yazı tipi dosyası eklenince `sw.js` içindeki `SHELL` listesine de yazılmalıdır; test bunu denetler.
+
 ## Çeviri
 
 Kaynak dil Türkçedir. Ekranda görünen her metin `tx("...")` içine yazılır; değişken içeren metinlerde yer tutucu kullanılır: `tx("{0} tarif bulundu", [n])`.

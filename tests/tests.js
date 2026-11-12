@@ -293,6 +293,19 @@ test("hakkında: sağlık uyarısı, kaynaklar ve gizlilik sayfası yerinde", as
   ok(res.ok && (await res.text()).includes("Gizlilik politikası"), "privacy.html yok");
   tab = "today"; meTab = "body"; state = null;
 });
+test("yazı tipi: Nunito uygulamanın içinden gelir, dışarıya istek yok, çevrimdışı önbellekte", async () => {
+  const get = async p => { const r = await fetch("../starboard-site/" + p); ok(r.ok, p + " açılmadı"); return r.text(); };
+  const [html, tokens, sw] = await Promise.all([get("index.html"), get("css/tokens.css"), get("sw.js")]);
+  for (const [name, src] of [["index.html", html], ["tokens.css", tokens], ["sw.js", sw]])
+    ok(!/fonts\.(googleapis|gstatic)\.com/.test(src), name + " Google Fonts'a bağlanıyor");
+  const files = [...tokens.matchAll(/url\("\.\.\/(fonts\/[^"]+)"\)/g)].map(m => m[1]);
+  ok(files.length >= 2, "@font-face dosyaları bulunamadı");
+  for (const f of files) {
+    const r = await fetch("../starboard-site/" + f);
+    ok(r.ok && (await r.arrayBuffer()).byteLength > 1000, f + " yok ya da boş");
+    ok(sw.includes(`"${f}"`), f + " sw.js SHELL listesinde değil");
+  }
+});
 
 /* ---- hatırlatmalar ---- */
 test("hatırlatmalar: 7 günlük plan, geçmiş saat yok, tamamlanan hedef atlanır, iOS sınırı aşılmaz", async () => {
