@@ -4,7 +4,7 @@ const CACHE = "starboard-202611111733";
 const SHELL = [
   "./", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png",
   "css/tokens.css", "css/components.css", "css/app.css",
-  "js/lang/en.js", "js/lang/en-food.js", "js/lang/en-workout.js", "js/i18n.js", "js/units.js", "js/storage.js", "js/program.js", "js/nutrition.js", "js/evaluate.js", "js/goals.js", "js/app.js", "js/onboarding.js",
+  "js/lang/en.js", "js/lang/en-food.js", "js/lang/en-workout.js", "js/i18n.js", "js/units.js", "js/storage.js", "js/program.js", "js/nutrition.js", "js/foods-intl.js", "js/evaluate.js", "js/goals.js", "js/app.js", "js/onboarding.js",
   "js/router.js", "js/today.js", "js/meals.js", "js/workout.js", "js/quick.js", "js/ui.js", "js/vendor/motion.js", "js/exercise-anim.js", "js/workout-mode.js",
   "js/widgets.js", "js/charts.js", "js/settings.js", "js/calendar.js", "js/main.js", "js/register-sw.js"
 ];

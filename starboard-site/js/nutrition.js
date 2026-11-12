@@ -373,7 +373,7 @@ const NUTRIENTS = {
 
 /* Tarifler malzemelerini besin veritabanından alıyor; makrolar oradan hesaplanıyor. */
 const RECIPES = [
-  { n:tx("Mercimek çorbası"), srv:4, t:"35 dk", i:"legume",
+  { n:tx("Mercimek çorbası"), cu:"tr", srv:4, t:"35 dk", i:"legume",
     ing:[["mercimek",200],["sogan",80],["havuc",80],["patates",100],["zeytinyagi",20]],
     steps:[tx("Soğanı zeytinyağında pembeleşene kadar kavur."),tx("Doğranmış havuç ve patatesi ekle, 3-4 dakika çevir."),tx("Yıkanmış mercimeği ve 1.5 litre suyu ilave et."),tx("Mercimekler dağılana kadar 25 dakika kaynat."),tx("Blenderdan geçir, tuz ve kimyonla tatlandır.")] },
 
@@ -381,19 +381,19 @@ const RECIPES = [
     ing:[["somon",300],["zeytinyagi",15],["patates",300],["kirmizibiber",100]],
     steps:[tx("Fırını 200°C'ye ısıt."),tx("Patates ve biberi dilimleyip zeytinyağıyla harmanla, tepsiye yay."),tx("15 dakika pişir, sonra somonu üzerine yerleştir."),tx("10-12 dakika daha pişir; somon çatalla ayrıldığında hazır."),tx("Limon ve karabiberle servis et.")] },
 
-  { n:tx("Tavuk sote"), srv:3, t:"25 dk", i:"poultry",
+  { n:tx("Tavuk sote"), cu:"tr", srv:3, t:"25 dk", i:"poultry",
     ing:[["tavuk",450],["kirmizibiber",150],["sogan",100],["domates",150],["zeytinyagi",20]],
     steps:[tx("Tavuğu kuşbaşı doğra, yüksek ateşte mühürle."),tx("Soğan ve biberi ekleyip 5 dakika kavur."),tx("Rendelenmiş domatesi ilave et."),tx("Suyunu çekene kadar 10 dakika pişir."),tx("Bulgur pilavıyla servis et.")] },
 
-  { n:tx("Etli kuru fasulye"), srv:4, t:"1 sa 15 dk", i:"legume",
+  { n:tx("Etli kuru fasulye"), cu:"tr", srv:4, t:"1 sa 15 dk", i:"legume",
     ing:[["kurufasulye",300],["kofte",200],["sogan",100],["zeytinyagi",25],["domates",100]],
     steps:[tx("Fasulyeyi bir gece önceden ıslat."),tx("Eti soğanla birlikte kavur."),tx("Domates salçası ve fasulyeyi ekle, üzerini geçecek kadar su koy."),tx("Kısık ateşte 1 saat pişir."),tx("Pilav ve turşuyla servis et.")] },
 
-  { n:tx("Karnıyarık"), srv:4, t:"50 dk", i:"veg",
+  { n:tx("Karnıyarık"), cu:"tr", srv:4, t:"50 dk", i:"veg",
     ing:[["patlican",600],["kofte",250],["sogan",120],["domates",150],["kirmizibiber",80],["zeytinyagi",30]],
     steps:[tx("Patlıcanları alacalı soyup tuzlu suda beklet."),tx("Zeytinyağında kızart veya fırında 180°C'de 20 dakika pişir."),tx("Kıymayı soğan ve biberle kavur, domatesi ekle."),tx("Patlıcanları yarıp içlerini harçla doldur."),tx("Üzerine biber ve domates koyup 25 dakika fırınla.")] },
 
-  { n:tx("Mücver"), srv:3, t:"30 dk", i:"veg",
+  { n:tx("Mücver"), cu:"tr", srv:3, t:"30 dk", i:"veg",
     ing:[["kabak",500],["yumurta",100],["ekmek",40],["beyazpeynir",60],["zeytinyagi",30]],
     steps:[tx("Kabakları rendeleyip suyunu iyice sık."),tx("Yumurta, ufalanmış peynir ve galeta ununu ekle."),tx("Dereotu ve karabiberle karıştır."),tx("Tavada zeytinyağıyla iki tarafını pişir."),tx("Cacıkla servis et.")] },
 
@@ -401,55 +401,55 @@ const RECIPES = [
     ing:[["yulaf",60],["suzme",150],["muz",100],["ceviz",15],["bal",10]],
     steps:[tx("Yulafı sıcak sütle veya suyla ıslatıp 5 dakika beklet."),tx("Süzme yoğurdu üzerine ekle."),tx("Muzu dilimle, cevizi kır."),tx("Bal gezdirip tarçın serp.")] },
 
-  { n:tx("Kısır"), srv:4, t:"30 dk", i:"grain",
+  { n:tx("Kısır"), cu:"tr", srv:4, t:"30 dk", i:"grain",
     ing:[["bulgur",250],["domates",150],["sogan",80],["zeytinyagi",40],["marul",100]],
     steps:[tx("İnce bulguru sıcak suyla ıslatıp 15 dakika demlendir."),tx("Salça, zeytinyağı ve nar ekşisini ekleyip yoğur."),tx("Doğranmış soğan, domates ve maydanozu karıştır."),tx("Marul yaprağıyla servis et.")] },
 
-  { n:tx("Izgara köfte"), srv:4, t:"30 dk", i:"meat",
+  { n:tx("Izgara köfte"), cu:"tr", srv:4, t:"30 dk", i:"meat",
     ing:[["kofte",500],["sogan",80],["ekmek",50],["yumurta",50]],
     steps:[tx("Kıymayı rendelenmiş soğan, galeta unu ve yumurtayla yoğur."),tx("Kimyon, karabiber ve tuz ekle, 30 dakika buzdolabında dinlendir."),tx("Köfte şekli ver."),tx("Izgarada her yüzü 4-5 dakika pişir."),tx("Közlenmiş biber ve ezmeyle servis et.")] },
 
-  { n:tx("Menemen"), srv:2, t:"15 dk", i:"egg",
+  { n:tx("Menemen"), cu:"tr", srv:2, t:"15 dk", i:"egg",
     ing:[["yumurta",150],["domates",200],["kirmizibiber",120],["zeytinyagi",20]],
     steps:[tx("Biberleri zeytinyağında yumuşayana kadar kavur."),tx("Kabuğu soyulmuş domatesi ekle, suyunu çekene kadar pişir."),tx("Yumurtaları kırıp hafifçe karıştır."),tx("Kıvamı alınca ocaktan al, taze ekmekle servis et.")] },
 
-  { n:tx("Zeytinyağlı taze fasulye"), srv:4, t:"45 dk", i:"veg",
+  { n:tx("Zeytinyağlı taze fasulye"), cu:"tr", srv:4, t:"45 dk", i:"veg",
     ing:[["tazefasulye",600],["sogan",100],["domates",120],["zeytinyagi",50]],
     steps:[tx("Fasulyelerin kılçığını al, ikiye böl."),tx("Soğanı zeytinyağında kavur, domatesi ekle."),tx("Fasulyeleri ve az miktarda suyu ilave et."),tx("Kısık ateşte 35 dakika pişir, soğuk servis et.")] },
 
-  { n:tx("Tavuklu bulgur pilavı"), srv:4, t:"35 dk", i:"grain",
+  { n:tx("Tavuklu bulgur pilavı"), cu:"tr", srv:4, t:"35 dk", i:"grain",
     ing:[["bulgur",300],["tavuk",400],["sogan",100],["domates",100],["zeytinyagi",25]],
     steps:[tx("Tavuğu kuşbaşı doğrayıp kavur, kenara al."),tx("Soğanı zeytinyağında kavur, salça ve domatesi ekle."),tx("Bulguru ilave edip 2 dakika çevir."),tx("1.5 ölçü sıcak su ekle, tavuğu geri koy."),tx("Suyunu çekene kadar 15 dakika kısık ateşte pişir, 10 dakika demlendir.")] },
 
-  { n:tx("İmambayıldı"), srv:4, t:"55 dk", i:"veg",
+  { n:tx("İmambayıldı"), cu:"tr", srv:4, t:"55 dk", i:"veg",
     ing:[["patlican",700],["sogan",150],["domates",150],["kirmizibiber",60],["zeytinyagi",60]],
     steps:[tx("Patlıcanları alacalı soy, tuzlu suda 15 dakika beklet."),tx("Zeytinyağında her tarafını hafifçe kızart, tepsiye al."),tx("Soğanı ince doğrayıp bol zeytinyağında pembeleştir, sarımsak ekle."),tx("Domates ve biberi ilave edip 10 dakika pişir."),tx("Patlıcanları yarıp içlerini doldur, üzerine sıcak su gezdir."),tx("180°C fırında 25 dakika pişir, ılıyınca servis et.")] },
 
-  { n:tx("Etli nohut"), srv:4, t:"1 sa 10 dk", i:"legume",
+  { n:tx("Etli nohut"), cu:"tr", srv:4, t:"1 sa 10 dk", i:"legume",
     ing:[["nohut",250],["kofte",200],["sogan",100],["domates",120],["zeytinyagi",25]],
     steps:[tx("Nohutu bir gece önceden ıslat."),tx("Kuşbaşı eti kavur, soğanı ekleyip pembeleştir."),tx("Salça ve domatesi ilave et, 2 dakika çevir."),tx("Nohut ve sıcak suyu ekle, kısık ateşte 50 dakika pişir."),tx("Pilavla servis et.")] },
 
-  { n:tx("Ezogelin çorbası"), srv:4, t:"35 dk", i:"legume",
+  { n:tx("Ezogelin çorbası"), cu:"tr", srv:4, t:"35 dk", i:"legume",
     ing:[["mercimek",150],["pirinc",50],["bulgur",50],["sogan",80],["tereyagi",25]],
     steps:[tx("Soğanı tereyağında kavur, salçayı ekle."),tx("Mercimek, pirinç ve bulguru ilave et."),"1.5 litre su ekleyip 25 dakika kaynat.",tx("Nane, pul biber ve tuzla tatlandır."),tx("İstersen blenderdan kısa geçir.")] },
 
-  { n:tx("Yayla çorbası"), srv:4, t:"30 dk", i:"dairy",
+  { n:tx("Yayla çorbası"), cu:"tr", srv:4, t:"30 dk", i:"dairy",
     ing:[["yogurt",400],["pirinc",80],["yumurta",50],["tereyagi",25]],
     steps:[tx("Pirinci 1 litre suda yumuşayana kadar haşla."),tx("Yoğurt, yumurta ve bir kaşık unu çırp."),tx("Terbiyeyi sıcak sudan azar azar ekleyerek ılıştır."),tx("Çorbaya yavaşça karıştırarak ekle, kaynamaya bırakma."),tx("Tereyağında naneyi yakıp üzerine gezdir.")] },
 
-  { n:tx("Tavuk şiş"), srv:4, t:"30 dk + marine", i:"poultry",
+  { n:tx("Tavuk şiş"), cu:"tr", srv:4, t:"30 dk + marine", i:"poultry",
     ing:[["tavuk",600],["yogurt",100],["kirmizibiber",150],["zeytinyagi",25]],
     steps:[tx("Tavuğu kuşbaşı doğra."),tx("Yoğurt, zeytinyağı, salça ve baharatlarla harmanla."),tx("En az 2 saat, tercihen bir gece buzdolabında beklet."),tx("Şişlere biberle dönüşümlü diz."),tx("Izgarada her yüzü 4-5 dakika pişir.")] },
 
-  { n:tx("Zeytinyağlı yaprak sarma"), srv:6, t:"1 sa 15 dk", i:"grain",
+  { n:tx("Zeytinyağlı yaprak sarma"), cu:"tr", srv:6, t:"1 sa 15 dk", i:"grain",
     ing:[["pirinc",250],["sogan",150],["domates",80],["zeytinyagi",70]],
     steps:[tx("Soğanı zeytinyağında kavur, pirinci ekleyip çevir."),tx("Domates, kuş üzümü, dolmalık fıstık ve baharatları karıştır."),tx("İç harcı ılıt."),tx("Salamura asma yapraklarını tek tek sar."),tx("Tencereye diz, üzerini geçecek kadar su ve limon ekle."),tx("Kısık ateşte 45 dakika pişir, soğuk servis et.")] },
 
-  { n:tx("Etli biber dolma"), srv:4, t:"1 sa", i:"grain",
+  { n:tx("Etli biber dolma"), cu:"tr", srv:4, t:"1 sa", i:"grain",
     ing:[["kirmizibiber",600],["pirinc",150],["kofte",150],["sogan",80],["zeytinyagi",30]],
     steps:[tx("Biberlerin çekirdeğini temizle."),tx("Kıyma, pirinç, soğan, salça ve baharatları yoğur."),tx("Harcı biberlere üçte iki oranında doldur."),tx("Tencereye diz, yarısına kadar su ekle."),tx("Kısık ateşte 45 dakika pişir.")] },
 
-  { n:tx("Mercimek köftesi"), srv:6, t:"40 dk", i:"legume",
+  { n:tx("Mercimek köftesi"), cu:"tr", srv:6, t:"40 dk", i:"legume",
     ing:[["mercimek",200],["bulgur",150],["sogan",100],["zeytinyagi",40]],
     steps:[tx("Mercimeği iki katı suda yumuşayana kadar haşla."),tx("Sıcakken ince bulguru ekle, kapağı kapatıp 15 dakika demlendir."),tx("Soğanı zeytinyağında kavur, salçayla birlikte harca ekle."),tx("Maydanoz, yeşil soğan ve baharatları karıştır."),tx("Avuçta şekillendirip marul yaprağıyla servis et.")] },
 
@@ -457,11 +457,11 @@ const RECIPES = [
     ing:[["tavukbut",700],["patates",400],["havuc",200],["zeytinyagi",30]],
     steps:[tx("Butları zeytinyağı, salça, sarımsak ve baharatla ovala."),tx("Patates ve havucu iri doğra, tepsiye yay."),tx("Butları üzerine yerleştir, yarım bardak su ekle."),tx("Folyoyla kapatıp 190°C'de 40 dakika pişir."),tx("Folyoyu açıp 15 dakika daha kızart.")] },
 
-  { n:tx("Sebze türlüsü"), srv:4, t:"50 dk", i:"veg",
+  { n:tx("Sebze türlüsü"), cu:"tr", srv:4, t:"50 dk", i:"veg",
     ing:[["patlican",250],["kabak",250],["kirmizibiber",150],["patates",200],["domates",150],["zeytinyagi",40]],
     steps:[tx("Bütün sebzeleri iri kuşbaşı doğra."),tx("Soğanı zeytinyağında kavur, salçayı ekle."),tx("Sert sebzelerden başlayarak sırayla ilave et."),tx("Domatesi ve bir bardak sıcak suyu ekle."),tx("Kapağı kapalı, kısık ateşte 35 dakika pişir.")] },
 
-  { n:tx("Zeytinyağlı pırasa"), srv:4, t:"40 dk", i:"veg",
+  { n:tx("Zeytinyağlı pırasa"), cu:"tr", srv:4, t:"40 dk", i:"veg",
     ing:[["pirasacig",700],["havuc",150],["pirinc",50],["zeytinyagi",50]],
     steps:[tx("Pırasaları halka, havucu yarım ay doğra."),tx("Zeytinyağında 5 dakika soteleyip pirinci ekle."),tx("Bir çay bardağı su, tuz ve şeker ilave et."),tx("Kısık ateşte 25 dakika pişir."),tx("Limon sıkarak ılık veya soğuk servis et.")] },
 
@@ -469,35 +469,35 @@ const RECIPES = [
     ing:[["ispanak",500],["yumurta",150],["sogan",80],["zeytinyagi",25]],
     steps:[tx("Ispanağı yıka, iri doğra."),tx("Soğanı zeytinyağında kavur."),tx("Ispanağı ekleyip suyunu salıp çekene kadar pişir."),tx("Ortalarını açıp yumurtaları kır."),tx("Kapağı kapatıp yumurtalar tutana kadar pişir, süzme yoğurtla servis et.")] },
 
-  { n:tx("Barbunya pilaki"), srv:4, t:"1 sa 20 dk", i:"legume",
+  { n:tx("Barbunya pilaki"), cu:"tr", srv:4, t:"1 sa 20 dk", i:"legume",
     ing:[["barbunya",250],["sogan",100],["havuc",150],["patates",150],["zeytinyagi",50]],
     steps:[tx("Barbunyayı bir gece ıslatıp haşla."),tx("Soğan, havuç ve patatesi zeytinyağında kavur."),tx("Domates salçası ve şeker ekle."),tx("Barbunyayı ve haşlama suyunu ilave et."),tx("Kısık ateşte 40 dakika pişir, soğuk servis et.")] },
 
-  { n:tx("Hamsi tava"), srv:4, t:"25 dk", i:"fish",
+  { n:tx("Hamsi tava"), cu:"tr", srv:4, t:"25 dk", i:"fish",
     ing:[["hamsi",700],["un",80],["zeytinyagi",40]],
     steps:[tx("Hamsileri temizle, tuzlu suda 10 dakika beklet."),tx("Süzüp mısır unu veya buğday ununa bula."),tx("Kızgın yağda her yüzü 2-3 dakika kızart."),tx("Kağıt havluda fazla yağını al."),tx("Roka, limon ve soğan salatasıyla servis et.")] },
 
-  { n:tx("Balık buğulama"), srv:4, t:"40 dk", i:"fish",
+  { n:tx("Balık buğulama"), cu:"tr", srv:4, t:"40 dk", i:"fish",
     ing:[["levrek",700],["domates",200],["kirmizibiber",100],["sogan",100],["zeytinyagi",30]],
     steps:[tx("Balıkları temizleyip tuz ve limonla ovala."),tx("Sebzeleri halka doğra, tepsiye yay."),tx("Balıkları üzerine yerleştir."),tx("Zeytinyağı, defne yaprağı ve yarım bardak su ekle."),tx("190°C fırında 25-30 dakika pişir.")] },
 
-  { n:tx("Etli patates yemeği"), srv:4, t:"50 dk", i:"meat",
+  { n:tx("Etli patates yemeği"), cu:"tr", srv:4, t:"50 dk", i:"meat",
     ing:[["patates",600],["kofte",250],["sogan",100],["domates",100],["zeytinyagi",25]],
     steps:[tx("Kuşbaşı eti mühürle, soğanı ekleyip kavur."),tx("Salça ve domatesi ilave et."),tx("İri doğranmış patatesleri ekle, üzerini geçecek kadar sıcak su koy."),tx("Kısık ateşte 35 dakika pişir.")] },
 
-  { n:tx("Nohut salatası"), srv:4, t:"15 dk", i:"legume",
+  { n:tx("Nohut salatası"), cu:"tr", srv:4, t:"15 dk", i:"legume",
     ing:[["nohut",200],["domates",150],["sogan",80],["marul",100],["zeytinyagi",40]],
     steps:[tx("Haşlanmış nohutu süz."),tx("Domates, soğan ve maydanozu ince doğra."),tx("Zeytinyağı, limon ve nar ekşisiyle sos hazırla."),tx("Karıştırıp 15 dakika buzdolabında beklet.")] },
 
-  { n:tx("Piyaz"), srv:4, t:"20 dk", i:"legume",
+  { n:tx("Piyaz"), cu:"tr", srv:4, t:"20 dk", i:"legume",
     ing:[["kurufasulye",250],["yumurta",100],["domates",120],["sogan",100],["zeytinyagi",40]],
     steps:[tx("Fasulyeyi haşlayıp süz, ılıt."),tx("Yumurtaları haşlayıp dilimle."),tx("Soğanı ince doğrayıp sumakla ovala."),tx("Tahin, limon ve zeytinyağını çırparak sos yap."),tx("Hepsini tabakta birleştir.")] },
 
-  { n:tx("Cacık"), srv:4, t:"10 dk", i:"dairy",
+  { n:tx("Cacık"), cu:"tr", srv:4, t:"10 dk", i:"dairy",
     ing:[["yogurt",500],["salatalik",300],["zeytinyagi",15]],
     steps:[tx("Salatalığı rendele veya küp doğra."),tx("Yoğurdu bir miktar soğuk suyla açarak çırp."),tx("Sarımsak, tuz ve kuru nane ekle."),tx("Üzerine zeytinyağı gezdirip soğuk servis et.")] },
 
-  { n:tx("Sütlaç"), srv:6, t:"45 dk", i:"dairy",
+  { n:tx("Sütlaç"), cu:"tr", srv:6, t:"45 dk", i:"dairy",
     ing:[["sut",1000],["pirinc",100],["seker",150]],
     steps:[tx("Pirinci az suda yumuşayana kadar haşla."),tx("Sütü ekleyip karıştırarak kaynat."),tx("Şekeri ilave et, kıvam alana kadar 15 dakika pişir."),tx("Kaselere paylaştır, fırında üstünü kızartabilirsin."),tx("Soğuduktan sonra tarçınla servis et.")] }
 ];
@@ -509,7 +509,7 @@ const MEAL_SETS = [
     { name:tx("Ara öğün"), share:.15, p:"suzme",   c:"muz",    f:"badem" },
     { name:tx("Akşam"),    share:.30, p:"ton",     c:"patates", f:"avokado", extra:tx("Buharda brokoli") }
   ]},
-  { name:tx("Ev yemeği"), meals:[
+  { name:tx("Ev yemeği"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"lor",    c:"yulaf",   f:"findik", extra:tx("Tarçın, bir avuç yaban mersini") },
     { name:tx("Öğle"),     share:.30, p:"kofte",  c:"bulgur",  f:"zeytinyagi", extra:tx("Cacık") },
     { name:tx("Ara öğün"), share:.15, p:"suzme",  c:"ekmek",   f:"tahin" },
@@ -521,37 +521,37 @@ const MEAL_SETS = [
     { name:tx("Ara öğün"), share:.15, p:"suzme",   c:"muz",     f:"tahin" },
     { name:tx("Akşam"),    share:.30, p:"hindi",   c:"makarna", f:"zeytinyagi", extra:tx("Közlenmiş sebze") }
   ]},
-  { name:tx("Bitkisel ağırlıklı"), meals:[
+  { name:tx("Bitkisel ağırlıklı"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"suzme", c:"yulaf",   f:"findik", extra:tx("Tarçın, elma") },
     { name:tx("Öğle"),     share:.30, p:"tofu",  c:"bulgur",  f:"zeytinyagi", extra:tx("Roka, limon") },
     { name:tx("Ara öğün"), share:.15, p:"lor",   c:"ekmek",   f:"badem" },
     { name:tx("Akşam"),    share:.30, p:"soya",  c:"patates", f:"tahin", extra:tx("Haşlanmış sebze, mercimek çorbası") }
   ]},
-  { name:tx("Yüksek proteinli"), meals:[
+  { name:tx("Yüksek proteinli"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"yumurta", c:"yulaf",   f:"badem", extra:tx("Ispanak, domates") },
     { name:tx("Öğle"),     share:.30, p:"tavuk",   c:"bulgur",  f:"zeytinyagi", extra:tx("Çoban salata") },
     { name:tx("Ara öğün"), share:.15, p:"whey",    c:"muz",     f:"fistikezmesi" },
     { name:tx("Akşam"),    share:.30, p:"kofte",   c:"patates", f:"avokado", extra:tx("Izgara sebze") }
   ]},
-  { name:tx("Türk kahvaltısı ağırlıklı"), meals:[
+  { name:tx("Türk kahvaltısı ağırlıklı"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"beyazpeynir", c:"ekmek",   f:"zeytin", extra:tx("Domates, salatalık, yeşil biber") },
     { name:tx("Öğle"),     share:.30, p:"hindi",       c:"bulgur",  f:"zeytinyagi", extra:tx("Cacık") },
     { name:tx("Ara öğün"), share:.15, p:"suzme",       c:"incir",   f:"ceviz" },
     { name:tx("Akşam"),    share:.30, p:"tavukbut",    c:"pirinc",  f:"zeytinyagi", extra:tx("Mevsim salata") }
   ]},
-  { name:tx("Bütçe dostu"), meals:[
+  { name:tx("Bütçe dostu"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"yumurta",  c:"ekmek",   f:"zeytin", extra:tx("Domates, çay") },
     { name:tx("Öğle"),     share:.30, p:"mercimek", c:"patates", f:"zeytinyagi", extra:tx("Turşu, yeşillik") },
     { name:tx("Ara öğün"), share:.15, p:"yogurt",   c:"muz",     f:"tahin" },
     { name:tx("Akşam"),    share:.30, p:"tavukbut", c:"bulgur",  f:"zeytinyagi", extra:tx("Soğan salatası") }
   ]},
-  { name:tx("Deniz ürünleri"), meals:[
+  { name:tx("Deniz ürünleri"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"yumurta", c:"yulaf",   f:"ceviz", extra:tx("Yeşillik") },
     { name:tx("Öğle"),     share:.30, p:"hamsi",   c:"patates", f:"zeytinyagi", extra:tx("Roka, limon, soğan") },
     { name:tx("Ara öğün"), share:.15, p:"suzme",   c:"elma",    f:"badem" },
     { name:tx("Akşam"),    share:.30, p:"karides", c:"pirinc",  f:"zeytinyagi", extra:tx("Buharda brokoli") }
   ]},
-  { name:tx("Vejetaryen"), meals:[
+  { name:tx("Vejetaryen"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"lor",   c:"yulaf",   f:"badem", extra:tx("Yaban mersini") },
     { name:tx("Öğle"),     share:.30, p:"soya",  c:"kinoa",   f:"zeytinyagi", extra:tx("Ispanak salatası") },
     { name:tx("Ara öğün"), share:.15, p:"suzme", c:"elma",    f:"ceviz" },
@@ -563,7 +563,7 @@ const MEAL_SETS = [
     { name:tx("Ara öğün"), share:.15, p:"whey",  c:"muz",     f:"fistikezmesi" },
     { name:tx("Akşam"),    share:.30, p:"tavuk", c:"haslanmispatates", f:"avokado", extra:tx("Hazır salata") }
   ]},
-  { name:tx("Şarküteri kahvaltısı"), meals:[
+  { name:tx("Şarküteri kahvaltısı"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"beyazpeynir", c:"ekmek",  f:"yesilzeytin", extra:tx("Domates, salatalık, yeşil biber") },
     { name:tx("Öğle"),     share:.30, p:"fumehindi",   c:"bulgur", f:"zeytinyagi", extra:tx("Roka salatası") },
     { name:tx("Ara öğün"), share:.15, p:"suzme",       c:"kuruincir", f:"badem" },
@@ -575,37 +575,37 @@ const MEAL_SETS = [
     { name:tx("Ara öğün"), share:.15, p:"suzme", c:"elma",  f:"ceviz" },
     { name:tx("Akşam"),    share:.30, p:"ton",   c:"haslanmispatates", f:"zeytinyagi", extra:tx("Karnabahar, roka") }
   ]},
-  { name:tx("Yüksek lifli"), meals:[
+  { name:tx("Yüksek lifli"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"lor",   c:"yulaf",       f:"badem", extra:tx("Ahududu, tarçın") },
     { name:tx("Öğle"),     share:.30, p:"mercimek", c:"bulgur",   f:"zeytinyagi", extra:tx("Yeşil salata") },
     { name:tx("Ara öğün"), share:.15, p:"suzme", c:"armut",       f:"fistikezmesi" },
     { name:tx("Akşam"),    share:.30, p:"tavuk", c:"kurufasulye", f:"zeytinyagi", extra:tx("Turşu, maydanoz") }
   ]},
-  { name:tx("Ofiste kolay"), meals:[
+  { name:tx("Ofiste kolay"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"suzme",      c:"musli",   f:"findik", extra:tx("Kuru üzüm") },
     { name:tx("Öğle"),     share:.30, p:"ton",        c:"makarna", f:"zeytinyagi", extra:tx("Marul, mısır") },
     { name:tx("Ara öğün"), share:.15, p:"proteinbar", c:"muz",     f:"badem" },
     { name:tx("Akşam"),    share:.30, p:"firintavuk", c:"haslanmispatates", f:"avokado", extra:tx("Çoban salata") }
   ]},
-  { name:tx("Kırmızı et ağırlıklı"), meals:[
+  { name:tx("Kırmızı et ağırlıklı"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"yumurta", c:"ekmek",   f:"tereyagi", extra:tx("Domates, zeytin") },
     { name:tx("Öğle"),     share:.30, p:"biftek",  c:"pirinc",  f:"zeytinyagi", extra:tx("Közlenmiş biber") },
     { name:tx("Ara öğün"), share:.15, p:"suzme",   c:"hurma",   f:"ceviz" },
     { name:tx("Akşam"),    share:.30, p:"kofte",   c:"patates", f:"zeytinyagi", extra:tx("Ezme, yeşillik") }
   ]},
-  { name:tx("Akdeniz"), meals:[
+  { name:tx("Akdeniz"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"beyazpeynir", c:"cavdarekmek", f:"zeytin", extra:tx("Domates, maydanoz") },
     { name:tx("Öğle"),     share:.30, p:"somon",       c:"kinoa",  f:"zeytinyagi", extra:tx("Kuşkonmaz, limon") },
     { name:tx("Ara öğün"), share:.15, p:"yogurt",      c:"nar",    f:"badem" },
     { name:tx("Akşam"),    share:.30, p:"karides",     c:"bulgur", f:"zeytinyagi", extra:tx("Roka, kiraz domates") }
   ]},
-  { name:tx("Vegan ağırlıklı"), meals:[
+  { name:tx("Vegan ağırlıklı"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"tofu",     c:"yulaf",   f:"findik", extra:tx("Muz, tarçın") },
     { name:tx("Öğle"),     share:.30, p:"soya",     c:"kinoa",   f:"tahin", extra:tx("Roka, limon") },
     { name:tx("Ara öğün"), share:.15, p:"leblebi",  c:"muz",     f:"yerfistigi" },
     { name:tx("Akşam"),    share:.30, p:"mercimek", c:"patates", f:"zeytinyagi", extra:tx("Haşlanmış sebze") }
   ]},
-  { name:tx("Hacim dönemi"), meals:[
+  { name:tx("Hacim dönemi"), cu:"tr", meals:[
     { name:tx("Kahvaltı"), share:.25, p:"yumurta", c:"musli",   f:"fistikezmesi", extra:tx("Süt, muz") },
     { name:tx("Öğle"),     share:.30, p:"kofte",   c:"makarna", f:"zeytinyagi", extra:tx("Ayran") },
     { name:tx("Ara öğün"), share:.15, p:"whey",    c:"hurma",   f:"findik" },
@@ -678,9 +678,11 @@ function resolveSlot(orig, role, opts, used){
 }
 
 /* Kullanıcının yediklerine en yakın kombinasyonlar başa gelsin. */
-function setOrder(usage){
+/* Hazır menüler: yalnızca seçili mutfağınkiler, en çok yenen besinleri içeren önce. */
+function setOrder(usage, cuisine){
   return MEAL_SETS.map((s,i) => [i, s.meals.reduce((a,m) =>
       a + (usage[m.p]||0) + (usage[m.c]||0) + (usage[m.f]||0), 0)])
+    .filter(([i]) => cuisineOk(MEAL_SETS[i], cuisine))
     .sort((a,b) => b[1] - a[1])
     .map(x => x[0]);
 }
@@ -758,7 +760,41 @@ function foodOf(k){ return FOODS[k] || (state.customFoods||{})[k]; }
 /* Beslenme türleri. Bir besinin uygunluğu çoğunlukla simgesinden çıkar;
    simgesi ele vermeyen yemekler (içinde kıyma olan karnıyarık gibi) elle listelenir. */
 const DIETS = { hepsi:tx("Hepsi"), vejetaryen:tx("Vejetaryen"), vegan:tx("Vegan"),
-  pesketaryen:tx("Pesketaryen"), glutensiz:tx("Glutensiz"), laktozsuz:tx("Laktozsuz") };
+  pesketaryen:tx("Pesketaryen"), glutensiz:tx("Glutensiz"), laktozsuz:tx("Laktozsuz"),
+  helal:tx("Helal"), koser:tx("Koşer") };
+/* Helal ve koşer seçenekleri İngilizce kullananlara gösterilir; seçilmişse her dilde görünür. */
+const INTL_DIETS = ["helal", "koser"];
+const dietOptions = cur => Object.entries(DIETS).filter(([k]) =>
+  !INTL_DIETS.includes(k) || LANG !== "tr" || cur === k);
+
+/* ---- mutfak ----
+   Öneriler, hazır menüler ve tarif listesi seçilen mutfaktan gelir; arama her zaman
+   bütün besin ve tarifleri kapsar. Seçim yoksa dilden: Türkçe → Türk, diğerleri → uluslararası.
+   Besin ve tariflerde cu:"tr" Türk mutfağına, cu:"intl" uluslararası mutfağa özgü demektir;
+   etiketsizler iki mutfakta da önerilir. */
+const CUISINES = { tr:tx("Türk mutfağı"), intl:tx("Uluslararası") };
+const currentCuisine = () => {
+  const c = state && state.mealPrefs && state.mealPrefs.cuisine;
+  return CUISINES[c] ? c : (LANG === "tr" ? "tr" : "intl");
+};
+const cuisineOk = (item, cu) => !item.cu || item.cu === (cu || currentCuisine());
+
+/* Türk mutfağına özgü besinler: uluslararası mutfakta önerilmez, aramada bulunur. */
+const TR_FOODS = ["doner","sucuk","pastirma","kokorec","ayran","beyazpeynir","kasar","lor","cacik","haydari",
+  "piyaz","bulgurpilav","simit","tost","pogaca","acma","kumpir","ispanakyemek","pirasa","turlu",
+  "zeytinyaglifasulye","cobansalata","ezme","mucver","salgam","boza","salep","turkkahvesi","menemen","sucuklu",
+  "karniyarik","imambayildi","hunkarbegendi","kurufasulyeyemek","etlinohut","manti","iclikofte","cigkofte","kisir",
+  "yapraksarma","lahanasarma","biberdolma","suborek","sigaraboregi","kiymaliborek","gozleme","kiymalipide",
+  "kasarlipide","lahmacun","iskender","adanakebap","tavuksis","izgarakofte","tavuksote","tavukdurum","balikekmek",
+  "midyedolma","mercimekcorba","ezogelin","yaylacorba","tarhana","sutlac","kazandibi","baklava","kunefe","kadayif",
+  "revani","asure","tahinhelva","lokum","kavurma","tulum","orgupeyniri","dilpeyniri","mihalic","ezine","cokelek",
+  "lightbeyaz","lightkasar","pekmez","kaymak","karnabaharyemek","bamya","enginar","kabakdolma","etlilahana","guvec",
+  "tantuni","cigborek","iskembe","leblebi","hindisucuk","musakka","yufka","sehriye"];
+for (const k of TR_FOODS) if (FOODS[k]) FOODS[k].cu = "tr";
+
+/* Koşer: kabuklu deniz ürünleri ve aynı tabakta et ile süt ürünü olan yemekler. */
+const SHELLFISH = new Set(["karides","midyedolma"]);
+const MEAT_DAIRY = new Set(["iskender","hunkarbegendi","manti","kumpir"]);
 
 /* Simgesi et değil ama içinde et var. */
 const HAS_MEAT = new Set(["karniyarik","kurufasulyeyemek","etlinohut","etlilahana","manti",
@@ -795,11 +831,24 @@ function foodAllowed(k, diet){
     case "pesketaryen": return !meat;
     case "glutensiz":   return !HAS_GLUTEN.has(k);
     case "laktozsuz":   return !(f.i === "dairy" || HAS_LACTOSE.has(k));
+    /* Etin kesim şekli bilinemez; helal ve koşerde süzülen yalnızca içeriktir. */
+    case "helal":       return !f.pork;
+    case "koser":       return !f.pork && !SHELLFISH.has(k) && !MEAT_DAIRY.has(k);
     default: return true;
   }
 }
 
 function currentDiet(){ return mealPrefs().diet || "hepsi"; }
+
+/* Koşer kuralı için: et içeren ve süt ürünü içeren besinler (yumurta ve balık nötrdür). */
+const hasMeatK = k => { const f = FOODS[k]; return !!f && (f.i === "meat" || f.i === "poultry" || HAS_MEAT.has(k)); };
+const hasDairyK = k => { const f = FOODS[k]; return !!f && (f.i === "dairy" || HAS_LACTOSE.has(k)); };
+/* Bir tarif diyete uyuyor mu: her malzeme uygun olmalı; koşerde et ve süt bir arada olmaz. */
+function recipeAllowed(r, diet){
+  if (!r.ing.every(([k]) => foodAllowed(k, diet))) return false;
+  if (diet === "koser" && r.ing.some(([k]) => hasMeatK(k)) && r.ing.some(([k]) => hasDairyK(k))) return false;
+  return true;
+}
 
 
 function solveTrio(P, C, F, tp, tc, tf, tk){
@@ -845,6 +894,8 @@ const SIDE_CARBS = {
 /* Öğüne yakışmayan eşleşmeler çıkmasın diye her öğünün kabul ettiği kategoriler. */
 const SIDES = [tx("Yanına mevsim salata"), tx("Yanına domates, salatalık, yeşillik"),
   tx("Yanına turşu ve maydanoz"), tx("Yanına buharda brokoli veya kabak")];
+const SIDES_INTL = [tx("Yanına mevsim salata"), tx("Yanına buharda brokoli veya kabak"),
+  tx("Yanına fırında sebze"), tx("Yanına karışık yeşillik ve limon")];
 
 const SLOT_CATS = {
   kahvalti:{ p:["kahvaltilik","sut","sarkuteri","baklagil"], c:["tahil","meyve","kahvaltilik"], f:["kuruyemis","yag","meyve"] },
@@ -884,12 +935,21 @@ const STAPLES = {
   ara:{ p:["suzme"], c:[], f:[] },
   ogle:MAIN_STAPLES, aksam:MAIN_STAPLES
 };
+/* Uluslararası mutfakta az bilinen besinler: makro uyumu çok daha iyi değilse seçilmez. */
+const INTL_RARE = new Set(["barbunya","borulce","bakla","masfasulye","soyafasulye","soya","amarant","karabugday","kestane","bulgur","yesilmercimek"]);
+/* Uluslararası mutfakta alışıldık besinler. */
+const MAIN_STAPLES_INTL = { p:[], c:["pirinc","esmerpirinc","makarnabeyaz","patates","tatlipatates","kinoa"], f:["zeytinyagi","avokado"] };
+const STAPLES_INTL = {
+  kahvalti:{ p:["yumurta","yunanyogurt"], c:["ekmek","eksimaya","ingmuffin","bagel","yulaf","tahilhalka"], f:[] },
+  ara:{ p:["yunanyogurt","cottage"], c:[], f:[] },
+  ogle:MAIN_STAPLES_INTL, aksam:MAIN_STAPLES_INTL
+};
 
 /* Kalan makro hedefine en iyi oturan üçlüyü arar. */
 function pickTrio(slot, t, opts, used, variant){
   const cats = SLOT_CATS[slot] || SLOT_CATS.ogle;
   const light = LIGHT_SLOTS.has(slot);
-  const staples = STAPLES[slot] || MAIN_STAPLES;
+  const staples = (opts.cuisine === "intl" ? STAPLES_INTL[slot] || MAIN_STAPLES_INTL : STAPLES[slot] || MAIN_STAPLES);
   const pool = role => {
     const ok = new Set(cats[role]);
     /* Yumurta ve yoğurt gibi besinler başa gelir: hafif öğünlerin doğal protein kaynakları. */
@@ -927,6 +987,8 @@ function pickTrio(slot, t, opts, used, variant){
     if (pk === ck || ck === fk || pk === fk) continue;
     /* Protein de karbonhidrat da baklagil olmasın (mercimeğin yanına nohut gibi). */
     if (foodCat(FOODS[pk]) === "baklagil" && foodCat(FOODS[ck]) === "baklagil") continue;
+    /* Koşer: aynı öğünde et ve süt ürünü bir arada olmaz. */
+    if (opts.diet === "koser" && [pk, ck, fk].some(hasMeatK) && [pk, ck, fk].some(hasDairyK)) continue;
     const r = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
     let err = Math.abs(r.sum.kcal - t.kcal)
             + 4 * Math.abs(r.sum.p - t.p)
@@ -940,6 +1002,7 @@ function pickTrio(slot, t, opts, used, variant){
     if (staples.p.includes(pk)) err -= 40;
     if (staples.c.includes(ck)) err -= 40;
     if (staples.f.includes(fk)) err -= 40;
+    if (opts.cuisine === "intl") err += [pk, ck, fk].filter(k => INTL_RARE.has(k)).length * 60;
     /* Tofu ve tempeh hafif öğünde ancak başka protein kalmadıysa (vegan) seçilsin. */
     if (light && READY_LEGUMES.has(pk)) err += 60;
     if (!best || err < best.err) best = { err, pk, ck, fk, r };
@@ -952,10 +1015,11 @@ function buildMeals(program, variantIndex){
   const usage = foodUsage();
   const diet = currentDiet();
   const exclude = new Set(prefs.exclude);
-  if (diet !== "hepsi")
-    for (const k of Object.keys(FOODS)) if (!foodAllowed(k, diet)) exclude.add(k);
-  const opts = { exclude, useMine:!!prefs.useMine, usage, diet };
-  const order = setOrder(usage);
+  const cuisine = currentCuisine();
+  for (const k of Object.keys(FOODS))
+    if ((diet !== "hepsi" && !foodAllowed(k, diet)) || !cuisineOk(FOODS[k], cuisine)) exclude.add(k);
+  const opts = { exclude, useMine:!!prefs.useMine, usage, diet, cuisine };
+  const order = setOrder(usage, cuisine);
   const set = MEAL_SETS[order[((variantIndex % order.length) + order.length) % order.length]];
 
   /* Öğün listesi kullanıcıdan gelir; hazır kombinasyonun besin üçlüleri
@@ -1087,7 +1151,10 @@ function buildMeals(program, variantIndex){
       return { name:mealName(mm), slot:fx.slot, items, kcal:Math.round(fx.kcal), full: items.length > 0 };
 
     if (m.extra && !generate) items.push({ text:m.extra, icon:"veg" });
-    else if (generate) items.push({ text: SIDES[(idx + variantIndex) % SIDES.length], icon:"veg" });
+    else if (generate){
+      const sides = cuisine === "intl" ? SIDES_INTL : SIDES;
+      items.push({ text: sides[(idx + variantIndex) % sides.length], icon:"veg" });
+    }
 
     const sum = { p:0, c:0, f:0, lif:0 };
     for (const [food, g] of used){

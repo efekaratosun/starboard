@@ -106,13 +106,15 @@ function mealsFromPreset(i){
 /* Sık elenen besinler: rozet başına bir veya daha çok kalem */
 const DISLIKE = [
   [tx("Karaciğer / sakatat"), ["karaciger","kokorec","iskembe"]],
-  [tx("Balık ve deniz ürünleri"), ["somon","ton","hamsi","uskumru","alabalik","levrek","cipura","karides","izgarabalik","balikekmek","fumesomon","tonyagli","uskumrukonserve","sardalya","midyedolma"]],
-  [tx("Kırmızı et"), ["kofte","biftek","kuzu","doner","sucuk","pastirma","kavurma","salam","macarsalam","danafume","danarosto","danajambon","iskender","adanakebap","izgarakofte","guvec"]],
+  [tx("Balık ve deniz ürünleri"), ["morina","tilapia","kaliforniyaroll","somon","ton","hamsi","uskumru","alabalik","levrek","cipura","karides","izgarabalik","balikekmek","fumesomon","tonyagli","uskumrukonserve","sardalya","midyedolma"]],
+  [tx("Kırmızı et"), ["danakiyma15","jerky","sosisdana","cheeseburger","bolonez","chili","bacon","domuzjambon","domuzpirzola","domuzbonfile","kofte","biftek","kuzu","doner","sucuk","pastirma","kavurma","salam","macarsalam","danafume","danarosto","danajambon","iskender","adanakebap","izgarakofte","guvec"]],
   [tx("Mantar"), ["mantar"]],
   [tx("Zeytin"), ["zeytin","yesilzeytin","zeytinezmesi"]],
   [tx("Patlıcan"), ["patlican","karniyarik","imambayildi","musakka","hunkarbegendi"]],
   [tx("Baklagil"), ["mercimek","yesilmercimek","nohut","kurufasulye","barbunya","bakla","borulce","masfasulye","siyahfasulye","soyafasulye","piyaz"]],
-  [tx("Süt"), ["sut","kefir","salep"]]
+  [tx("Süt"), ["sut","tamsut","yagsizsut","kefir","salep"]],
+  /* Üçüncü alan: yalnızca uluslararası mutfakta gösterilir. */
+  [tx("Domuz eti"), ["bacon","domuzjambon","domuzpirzola","domuzbonfile"], true]
 ];
 
 /* Hazır günlük hatırlatmalar */
@@ -126,7 +128,7 @@ function obDefaults(){
   return { name:"", sex:"", avatar:undefined, avColor:undefined,
     goal:"maintain", targetWeight:null, activity:"moderate", sleepMin:7,
     venue:"gym", days:null, avoid:[],
-    diet:"hepsi", mealSet:1, dislike:[],
+    diet:"hepsi", mealSet:1, dislike:[], cuisine: LANG === "tr" ? "tr" : "intl",
     theme:"auto", routines:[], units:detectUnits() };
 }
 const OB_DEFAULT_DAYS = a => PATTERN[(a === "sedentary" || a === "light") ? 3 : a === "moderate" ? 4 : 5].slice();
@@ -151,7 +153,8 @@ const OB_ICON = {
   goal:{ lose:"run", maintain:"yoga", gain:"push" },
   activity:{ sedentary:"rest", light:"walk", moderate:"run", active:"fullbody", veryActive:"skill" },
   venue:{ gym:"push", home:"core", outdoor:"run", calisthenics:"pull", kettlebell:"fullbody", mobility:"yoga", swim:"swim" },
-  diet:{ hepsi:"meat", vejetaryen:"egg", vegan:"veg", pesketaryen:"fish", glutensiz:"potato", laktozsuz:"nuts" }
+  diet:{ hepsi:"meat", vejetaryen:"egg", vegan:"veg", pesketaryen:"fish", glutensiz:"potato", laktozsuz:"nuts", helal:"poultry", koser:"meat" },
+  cuisine:{ tr:"bread", intl:"avocado" }
 };
 
 function obCard(on, val, ic, label, desc){
@@ -370,9 +373,11 @@ const OB_STEPS = [
           ${obCard(!!ob.noPlan, "off", "rest", tx("Şimdilik istemiyorum"))}</div>`) + more;
     } },
   { id:"food", t:tx("Beslenme"),
-    body: () => og(tx("Nasıl besleniyorsun?"), obCards("diet", Object.entries(DIETS).map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
+    body: () => og(tx("Hangi mutfak?"), obCards("cuisine", Object.entries(CUISINES).map(([k, l]) => [k, OB_ICON.cuisine[k], l]), "duo"))
+      + og(tx("Nasıl besleniyorsun?"), obCards("diet", dietOptions(ob.diet).map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
       + og(tx("Günde kaç öğün?"), obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, "", l, set.map(m => m[0]).join(" · ")]), "", true))
-      + og(tx("Yemediklerin"), obChips("obdis", DISLIKE.map(([l], i) => [i, l, ob.dislike.includes(i)])), true) },
+      + og(tx("Yemediklerin"), obChips("obdis", DISLIKE.map(([l, , intl], i) => [i, l, ob.dislike.includes(i), intl])
+          .filter(([, , , intl]) => !intl || ob.cuisine === "intl")), true) },
   { id:"summary" }
 ];
 const obList = () => OB_STEPS;
@@ -586,6 +591,7 @@ function wireOb(st, list, animate){
   app.querySelectorAll(".ocs [data-oc]").forEach(b => b.onclick = () => {
     const box = b.closest(".ocs"), f = box.dataset.field, v = b.dataset.oc;
     if (f === "plan"){ const was = !!ob.noPlan; ob.noPlan = v === "off"; ob.planTouched = true; if (was !== ob.noPlan){ obRefresh("#og-plan"); return; } }
+    else if (f === "cuisine"){ ob.cuisine = v; obRefresh(); return; }
     else if (f === "sex"){
       const was = ob.sex; ob.sex = v;
       if (was !== v){ ob.avatar = undefined; ob.avColor = undefined; obRefresh(was ? null : "#og-av"); return; }
@@ -643,7 +649,7 @@ function wireOb(st, list, animate){
 async function obFinish(){
   const profile = obProfile();
   state = { v:SCHEMA, starred:1, profile, adjustment:0, lastRefreshAt:null, days:{} };
-  state.mealPrefs = { exclude:[], useMine:false, fixed:{}, diet: ob.diet, meals: mealsFromPreset(ob.mealSet) };
+  state.mealPrefs = { exclude:[], useMine:false, fixed:{}, diet: ob.diet, cuisine: ob.cuisine, meals: mealsFromPreset(ob.mealSet) };
   const ex = new Set();
   for (const i of ob.dislike) for (const k of (DISLIKE[i] || [])[1] || []) if (FOODS[k]) ex.add(k);
   state.mealPrefs.exclude = [...ex];

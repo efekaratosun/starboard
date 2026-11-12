@@ -407,7 +407,7 @@ main.page-in.k-day .wk-d{animation:none}
 .ocs.tri .oc-c{display:none}
 .ocs.duo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .ocs.duo .oc{min-height:60px;padding:10px 12px;gap:10px;min-width:0}
-.ocs.duo .oc-m b{font-size:14.5px;overflow-wrap:anywhere}
+.ocs.duo .oc-m b{font-size:14.5px;overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
 .ocs.duo .oc-c{display:none}
 .ocs.duo .ico-wrap{flex:0 0 auto}
 .og input.shake{animation:obShake .34s ease}

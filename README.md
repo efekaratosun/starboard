@@ -28,6 +28,10 @@ Yeni metin eklerken `tx()` içine almak ve sözlüğe karşılığını yazmak g
 
 Toplu dönüştürme için `tools/i18n-codemod.js` kullanılır; açıklaması dosyanın başındadır. Dosyaları yerinde yazabilmesi için site `tools/devserve.ps1` ile açılmalıdır (yalnızca yerelde, `starboard-site/js` altına yazar).
 
+## Mutfak ve beslenme içeriği
+
+Besinler, tarifler ve hazır menüler `nutrition.js` (temel ve Türk mutfağı) ile `foods-intl.js` (uluslararası) dosyalarındadır. `cu:"tr"` Türk mutfağına, `cu:"intl"` uluslararası mutfağa özgü demektir; etiketsizler iki mutfakta da önerilir. Öneriler, hazır menüler ve tarif listesi kullanıcının mutfağına göre süzülür (`currentCuisine()`), arama her zaman hepsini kapsar. `pork:true` domuz eti içerenleri işaretler (helal ve koşerde önerilmez). Yeni besin eklerken: 100 g başına değerler, İngilizce adı `lang/en-food.js`'e, gerekiyorsa içerik kümelerine (`HAS_MEAT`, `HAS_GLUTEN`, `NO_SUGGEST`…) yazılır; testler her tarif malzemesinin ve menü besininin veritabanında olduğunu ve her mutfağın menüsünde başka mutfağa ait besin bulunmadığını denetler.
+
 ## Hesap ve ekran
 
 Hesaplar metin üretmez: yalnızca sayı ve durum döndürür, ekran kodu bunları `tx()` ve birim yardımcılarıyla metne çevirir. Böylece dil ya da birim değişince hesap değişmez ve testler metne bağlı kalmaz.

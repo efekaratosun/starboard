@@ -91,7 +91,7 @@ const CAT_WORDS = { fish:tx("balık deniz ürünü"), poultry:tx("tavuk kümes b
   legume:"baklagil bakliyat", veg:tx("sebze zeytinyağlı"), grain:tx("tahıl hamur pilav"),
   dairy:tx("süt ürünü yoğurt"), egg:tx("yumurta kahvaltı"), nuts:tx("kuruyemiş"), potato:"patates", bread:"hamur", fruit:tx("meyve tatlı") };
 
-const recipeFits = r => r.ing.every(([k]) => foodAllowed(k, currentDiet()));
+const recipeFits = r => recipeAllowed(r, currentDiet());
 
 /* Parantezli ekleri at: "Pilav (pişmiş)" → "pilav" */
 const plainName = n => norm(n.replace(/\s*\(.*?\)/g, "").trim());
@@ -122,7 +122,8 @@ function recipeList(){
     return `<div class="metric-note" style="margin:0 4px 12px">${tx("{0} tarif bulundu", [(hits.length)])}</div>`
       + hits.map(([r,i]) => recipeCard(r,i)).join("");
   }
-  const pool = RECIPES.map((r,i) => [r,i]).filter(([r]) => recipeFits(r));
+  /* Arama bütün tarifleri kapsar; liste yalnızca seçili mutfağınkileri gösterir. */
+  const pool = RECIPES.map((r,i) => [r,i]).filter(([r]) => recipeFits(r) && cuisineOk(r));
   if (!pool.length) return `<section><div class="empty">${tx("Beslenme türüne uyan hazır tarif yok.")}</div></section>`;
   const start = recipeOffset % pool.length;
   const idxs = [0,1,2].map(k => pool[(start + k) % pool.length]);
@@ -553,16 +554,19 @@ function prefsSection(){
 
   return `<section>
     <h2>${tx("Önerileri kendine göre ayarla")}</h2>
+    <label for="cuisine-sel">${tx("Mutfak")}</label>
+    <select id="cuisine-sel" style="margin-bottom:14px">${Object.entries(CUISINES)
+      .map(([k,l]) => `<option value="${k}"${currentCuisine()===k?" selected":""}>${l}</option>`).join("")}</select>
     <label for="diet-sel">${tx("Beslenme türü")}</label>
-    <select id="diet-sel" style="margin-bottom:14px">${Object.entries(DIETS)
+    <select id="diet-sel" style="margin-bottom:14px">${dietOptions(currentDiet())
       .map(([k,l]) => `<option value="${k}"${currentDiet()===k?" selected":""}>${l}</option>`).join("")}</select>
     <div class="chips">
       <button class="chip${prefs.useMine?" sel":""}" id="use-mine">
         <svg class="ico" style="width:14px;height:14px;flex:0 0 14px;vertical-align:-2px" aria-hidden="true"><use href="#i-repeat"/></svg>
         ${tx("Sık yediğim besinlerle kur")}</button>
     </div>    ${currentDiet() !== "hepsi" ? `<div class="metric-note" style="margin-top:10px">
-      ${DIETS[currentDiet()]} seçili: ${Object.keys(FOODS).filter(k => foodAllowed(k, currentDiet())).length}
-      besin uygun, kalanı önerilerden çıkarıldı. Günlüğe istediğini yazmaya devam edebilirsin.</div>` : ""}
+      ${tx("{0} seçili: {1} besin uygun, kalanı önerilerden çıkarıldı. Günlüğe istediğini yazmaya devam edebilirsin.", [(DIETS[currentDiet()]), (Object.keys(FOODS).filter(k => foodAllowed(k, currentDiet())).length)])}
+      ${INTL_DIETS.includes(currentDiet()) ? tx("Etin kesim şekli bilinemez; paketin etiketine bak.") : ""}</div>` : ""}
     ${prefs.exclude.length ? `<div style="margin-top:14px">
       <div class="metric-note" style="margin-bottom:8px">${tx("Önerilerden çıkardıkların:")}</div>
       <div class="chips">${prefs.exclude.map(k => `<button class="chip" data-munex="${k}">
@@ -659,6 +663,11 @@ function wireMealsRest(entry){
   const btn = document.getElementById("reroll");
   if (btn) btn.onclick = () => { mealVariant++; render(); };
 
+  const cs = document.getElementById("cuisine-sel");
+  if (cs) cs.onchange = async () => {
+    mealPrefs().cuisine = cs.value; recipeOffset = 0;
+    await saveState(state); render();
+  };
   const ds = document.getElementById("diet-sel");
   if (ds) ds.onchange = async () => {
     mealPrefs().diet = ds.value;

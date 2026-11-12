@@ -164,6 +164,69 @@ test("öğünler: diyet seçiliyken de öğüne yakışan besinler çıkar", asy
   }
 });
 
+/* ---- mutfak, helal ve koşer ---- */
+const planKeys = m => m.meals.flatMap(x => x.items.map(i => i.key).filter(Boolean));
+const PROFILES_M = [[{}, 82], [{ goal:"lose" }, 82], [{ goal:"gain" }, 82], [{ sex:"female", height:163, age:27 }, 60]];
+
+test("mutfak: tarif malzemeleri ve hazır menülerin besinleri veritabanında var", () => {
+  const bad = [];
+  RECIPES.forEach(r => r.ing.forEach(([k]) => { if (!FOODS[k]) bad.push(`${r.n}: ${k}`); }));
+  MEAL_SETS.forEach(s => s.meals.forEach(m => ["p", "c", "f"].forEach(x => { if (!FOODS[m[x]]) bad.push(`${s.name}: ${m[x]}`); })));
+  eq(bad, [], "eksik besinler");
+  ok(MEAL_SETS.filter(s => cuisineOk(s, "intl")).length >= 6, "uluslararası mutfakta yeterli hazır menü yok");
+  /* Bir mutfağın hazır menüsü o mutfakta önerilmeyen besin içermesin; yoksa yerine
+     rastgele bir besin geçer ("Vejetaryen" menüde tavuk gibi). */
+  for (const cu of ["tr", "intl"]) MEAL_SETS.filter(s => cuisineOk(s, cu)).forEach(s => s.meals.forEach(m =>
+    ["p", "c", "f"].forEach(x => { if (!cuisineOk(FOODS[m[x]], cu)) bad.push(`${cu}/${s.name}: ${m[x]}`); })));
+  eq(bad, [], "menüde mutfağa uymayan besin");
+  ok(RECIPES.filter(r => cuisineOk(r, "intl")).length >= 15, "uluslararası mutfakta yeterli tarif yok");
+});
+test("mutfak: öneriler seçili mutfaktan gelir; Türk mutfağında domuz eti önerilmez", async () => {
+  const fixture = await loadFixture();
+  for (const cuisine of ["tr", "intl"]) for (const diet of ["hepsi", "vejetaryen"]) for (const [o, w] of PROFILES_M) for (let v = 0; v < 5; v++) {
+    state = JSON.parse(JSON.stringify(fixture));
+    state.mealPrefs.cuisine = cuisine; state.mealPrefs.diet = diet;
+    const p = buildProgram(profileOf(o), w, 0);
+    const m = buildMeals(p, v);
+    const where = `${cuisine}/${diet} ${JSON.stringify(o)} seçenek ${v}`;
+    for (const k of planKeys(m)) {
+      ok(cuisineOk(FOODS[k], cuisine), `${k} bu mutfağa ait değil · ${where}`);
+      if (cuisine === "tr") ok(!FOODS[k].pork, `${k} domuz eti · ${where}`);
+    }
+    ok(Math.abs(m.total.kcal - p.kcal) / p.kcal <= 0.1, `menü ${m.total.kcal} kcal, hedef ${p.kcal} kcal · ${where}`);
+  }
+  state = null;
+});
+test("helal ve koşer: domuz eti ve kabuklu deniz ürünü yok, koşerde et ile süt aynı öğünde değil", async () => {
+  const fixture = await loadFixture();
+  for (const diet of ["helal", "koser"]) for (const [o, w] of PROFILES_M) for (let v = 0; v < 6; v++) {
+    state = JSON.parse(JSON.stringify(fixture));
+    state.mealPrefs.cuisine = "intl"; state.mealPrefs.diet = diet;
+    const p = buildProgram(profileOf(o), w, 0);
+    const m = buildMeals(p, v);
+    const where = `${diet} ${JSON.stringify(o)} seçenek ${v}`;
+    for (const meal of m.meals) {
+      const keys = meal.items.map(i => i.key).filter(Boolean);
+      for (const k of keys) ok(foodAllowed(k, diet) && !FOODS[k].pork, `${meal.name}: ${k} · ${where}`);
+      if (diet === "koser") ok(!(keys.some(hasMeatK) && keys.some(hasDairyK)), `${meal.name}: et ve süt bir arada (${keys.join(", ")}) · ${where}`);
+    }
+    ok(Math.abs(m.total.kcal - p.kcal) / p.kcal <= 0.1, `menü ${m.total.kcal} kcal, hedef ${p.kcal} kcal · ${where}`);
+  }
+  ok(!foodAllowed("bacon", "helal") && !foodAllowed("karides", "koser") && foodAllowed("karides", "helal"));
+  ok(!foodAllowed("cheeseburger", "koser") && foodAllowed("cheeseburger", "helal"));
+  const bolo = RECIPES.find(r => r.ing.some(([k]) => k === "parmesan") && r.ing.some(([k]) => k === "kofte"));
+  ok(bolo && !recipeAllowed(bolo, "koser") && recipeAllowed(bolo, "helal"), "koşerde et ve peynirli tarif çıkmalı");
+  state = null;
+});
+test("helal ve koşer: Türkçede yalnızca seçiliyse listede", () => {
+  const keys = cur => dietOptions(cur).map(([k]) => k);
+  ok(!keys("hepsi").includes("helal") && !keys("hepsi").includes("koser"), "Türkçede gizli olmalı");
+  ok(keys("koser").includes("koser"), "seçiliyse görünmeli");
+  const old = LANG; LANG = "en";
+  try { ok(keys("hepsi").includes("helal") && keys("hepsi").includes("koser"), "İngilizcede görünmeli"); }
+  finally { LANG = old; }
+});
+
 /* ---- ölçüm değerlendirme ---- */
 test("değerlendirme: az, yeterli ve fazla doğru etiketlenir", async () => {
   state = await loadFixture();
