@@ -15,7 +15,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  # Ekran görüntülerini ci-ekran-goruntuleri dalına yazabilmek için.
+  contents: write
 
 concurrency:
   group: ios-${{ github.ref }}
@@ -85,3 +86,27 @@ jobs:
         with:
           name: ios-simulator-ekran-goruntuleri
           path: shots/
+
+      # Görüntüler ayrı bir dala da yazılır: GitHub, Artifacts'i yalnızca oturum açanlara
+      # indirtiyor; daldaki dosyalar ise herkese açık adresten görülebilir:
+      # https://raw.githubusercontent.com/efekaratosun/starboard/ci-ekran-goruntuleri/latest/acilis.png
+      - name: Ekran goruntulerini dala yaz
+        if: github.ref == 'refs/heads/main'
+        run: |
+          SHA="${GITHUB_SHA::7}"
+          mkdir -p /tmp/shots && cp shots/*.png /tmp/shots/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin ci-ekran-goruntuleri || true
+          if git rev-parse --verify origin/ci-ekran-goruntuleri >/dev/null 2>&1; then
+            git checkout -B ci-ekran-goruntuleri origin/ci-ekran-goruntuleri
+          else
+            git checkout --orphan ci-ekran-goruntuleri
+            git rm -rf . >/dev/null
+          fi
+          mkdir -p "$SHA" latest
+          cp /tmp/shots/*.png "$SHA"/
+          cp /tmp/shots/*.png latest/
+          git add "$SHA" latest
+          git commit -m "iOS ekran goruntuleri $SHA"
+          git push origin ci-ekran-goruntuleri
