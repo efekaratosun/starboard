@@ -28,6 +28,14 @@ Yeni metin eklerken `tx()` içine almak ve sözlüğe karşılığını yazmak g
 
 Toplu dönüştürme için `tools/i18n-codemod.js` kullanılır; açıklaması dosyanın başındadır. Dosyaları yerinde yazabilmesi için site `tools/devserve.ps1` ile açılmalıdır (yalnızca yerelde, `starboard-site/js` altına yazar).
 
+## Hareket animasyonları
+
+"Nasıl yapılır" kartlarındaki çizgi figür `starboard-site/js/exercise-anim.js` içinde tanımlıdır. Görsel ya da video dosyası yoktur: her animasyon, eklem açılarıyla yazılmış iki ya da daha çok pozdan oluşur ve Motion kütüphanesiyle (`js/vendor/motion.js`, MIT lisansı yanında) pozlar arasında oynatılır. Poz biçimi dosyanın başında anlatılır.
+
+Yeni bir hareket eklerken: `EX_ANIMS` içine pozlarını yaz (ya da var olan bir animasyonu kullan) ve `EX_ANIM_OF` içinde rehber kaydına bağla. Testler her rehber kaydının bir animasyonu olduğunu ve hiçbir eklemin çizim alanı dışına ya da yerin altına taşmadığını denetler.
+
+Bütün animasyonları yan yana görmek için site `tools/devserve.ps1` ile açıkken `http://localhost:8766/tools/anim-gallery.html` adresine git. `?v=both` eklenirse her hareketin ilk ve son pozu üst üste görünür.
+
 ## Yerelde çalıştırma
 
 Site (http://localhost:8765):

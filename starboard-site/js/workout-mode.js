@@ -334,7 +334,7 @@ function howCard(id){
     <button class="how-h" data-how="${id}" aria-expanded="${open}">
       <span>${esc(g.n)}</span><svg class="ico fold-c" aria-hidden="true"><use href="#i-next"/></svg>
     </button>
-    ${open ? `<div class="how-b"><ol>${g.s.map(x => `<li>${x}</li>`).join("")}</ol>
+    ${open ? `<div class="how-b">${exAnimFor(id) ? `<div class="how-anim" data-anim="${id}" role="img" aria-label="${esc(g.n)}"></div>` : ""}<ol>${g.s.map(x => `<li>${x}</li>`).join("")}</ol>
       <div class="how-x"><b>${tx("Dikkat:")}</b> ${g.x}</div></div>` : ""}
   </div>`;
 }
@@ -368,6 +368,7 @@ function howtoView(program){
 }
 
 function wireHowto(){
+  mountExAnim(app);
   app.querySelectorAll("[data-how]").forEach(b => b.onclick = () => {
     howOpen = howOpen === b.dataset.how ? null : b.dataset.how;
     const res = document.getElementById("how-res");

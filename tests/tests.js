@@ -329,6 +329,43 @@ test("haftalık yenileme: kilo almada yön tersine işler ve düzeltme sınırı
   eq([r.save, s.adjustment], [true, -MAX_ADJ], "sınırda kalmalı");
 });
 
+/* ---- hareket animasyonları ---- */
+test("animasyon: rehberdeki her hareketin bir animasyonu var", () => {
+  const missing = GUIDE.filter(g => !exAnimFor(g.id)).map(g => g.id);
+  eq(missing, [], "animasyonu olmayan hareketler");
+  const unknown = Object.entries(EX_ANIM_OF).filter(([id, key]) => !GUIDE_BY_ID[id] || !EX_ANIMS[key]).map(([id]) => id);
+  eq(unknown, [], "rehberde ya da animasyon listesinde karşılığı olmayan eşleşmeler");
+});
+test("animasyon: bütün pozlar çizim alanının içinde kalır", () => {
+  const bad = [];
+  for (const [key, a] of Object.entries(EX_ANIMS)) {
+    ok(a.f.length >= 2 && a.d > 0, `${key}: en az iki poz ve bir süre gerekli`);
+    const frames = a.f.map(exPose);
+    ok(frames.every(p => p.on === frames[0].on), `${key}: pozlar aynı ekleme sabitlenmeli`);
+    for (const v of [0, 0.25, 0.5, 0.75, 1]) {
+      const j = exJoints(exAt(frames, v));
+      for (const [name, [x, y]] of Object.entries(j)) {
+        const inside = Number.isFinite(x) && Number.isFinite(y)
+          && x >= 0 && x <= EXA.W && y >= EXA.TOP && y <= EXA.FLOOR + 6;
+        if (!inside) bad.push(`${key} ${name} @${v}: ${x.toFixed(0)},${y.toFixed(0)}`);
+      }
+    }
+  }
+  eq(bad, [], "alan dışına taşan eklemler");
+});
+test("animasyon: açık rehber kartında sahne kurulur ve Motion ile oynar", async () => {
+  ok(window.Motion && typeof Motion.animate === "function", "Motion kütüphanesi yüklenmedi");
+  state = await loadFixture();
+  migrateMeals(); notice = null; viewDate = null;
+  tab = "plan"; planTab = "howto"; howQuery = "squat"; howOpen = "squat";
+  render();
+  const svg = app.querySelector('.how-anim[data-anim="squat"] svg');
+  ok(svg, "sahne kurulmadı");
+  ok(svg.querySelector('[data-j="leg"]').getAttribute("points").split(" ").length === 3, "bacak çizilmedi");
+  howOpen = null; howQuery = ""; planTab = "log"; tab = "today"; render();
+  exAnimStop();
+});
+
 /* ---- veri sürümü ve depolama ---- */
 test("veri sürümü: sürümsüz eski kayıt güncel biçime taşınır", async () => {
   const s = await loadFixture();

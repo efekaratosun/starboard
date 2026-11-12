@@ -3,6 +3,13 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.4.0 (12 Kasım 2026)
+
+### Eklendi
+- Hareket animasyonları: "Nasıl yapılır" bölümünde bir harekete dokununca anlatımın üstünde hareketi gösteren temsili çizgi figür oynar. Rehberdeki 87 hareketin hepsinin animasyonu var (73 farklı animasyon; benzer hareketler aynısını paylaşır).
+- Animasyonlar Motion kütüphanesiyle (motion.dev, MIT lisanslı) oynatılır. Kütüphane siteyle birlikte gelir, çevrimdışı da çalışır.
+- Telefonda "hareketi azalt" ayarı açıksa figür hareket etmez, hareketin son hali durağan gösterilir.
+
 ## 1.3.0 (12 Kasım 2026)
 
 ### Eklendi
