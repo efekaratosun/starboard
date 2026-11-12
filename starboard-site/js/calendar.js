@@ -59,7 +59,7 @@ function skipTask(kind, k, d){
 /* Puana giren öneriler: görünen listeyle sayacın aynı şeyi söylemesi için. */
 function scoredTasks(list, k, d, program){
   return list.filter(t => !skipTask(taskKind(t), k, d)
-    && !!autoInfo(t, d || { tasks: [] }, program, k));
+    && !!taskStatus(taskKind(t), d || { tasks: [] }, program, k));
 }
 
 /* ---- yıldız damgası ----
@@ -103,7 +103,7 @@ function dayScore(k){
   if (program){
     for (const title of suggestedTitles(program, k)){
       if (skipTask(taskKind({ title }), k, d)) continue;
-      const a = autoInfo({ title, suggested:true }, e, program, k);
+      const a = taskStatus(taskKind({ title }), e, program, k);
       /* Otomatik ölçütü olmayan öneri (dinlenme günü esnemesi) puana girmez:
          hiç açılmamış bir günde işaretlenemeyeceği için günü kilitliyordu.
          Listede öneri olarak durmaya devam eder. */

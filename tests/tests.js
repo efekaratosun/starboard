@@ -509,6 +509,70 @@ test("çeviri: hareket rehberinin adları ve adımları İngilizcede çevrilir",
   eq(missing, [], "İngilizce karşılığı olmayan rehber metinleri");
 });
 
+/* ---- hesap ve ekran ayrımı ---- */
+/* Sonuçta metin olmamalı: yalnızca sayı, mantık, null ve bilinen durum adları. */
+const plainResult = (o, allowed) => JSON.stringify(o, (k, v) =>
+  typeof v === "string" && !allowed.includes(v) ? (() => { throw new Error(`metin döndü: ${k}=${v}`); })() : v);
+
+test("görev durumu: hesap sayı ve durum döndürür, dil ve birimden etkilenmez", async () => {
+  const fixture = await loadFixture();
+  state = fixture;
+  const program = buildProgram(profileOf({ goal:"lose" }), 82, 0);
+  const ctx = { today:"2026-11-11", hour:12, profile:profileOf({ goal:"lose" }), sleep:[7, 9], steps:8000 };
+  const entry = { kcal:1500, water:2700, sleep:9.8, weight:82, steps:3000, log:[] };
+  const kinds = ["kcal", "protein", "water", "sleep", "weigh", "steps", "train"];
+  const STATES = [...kinds, "empty", "over", "under", "short", "ok", "long", "lose", "gain", "maintain"];
+  const run = () => kinds.map(k => taskStatus(k, entry, program, "2026-11-11", ctx));
+  const tr = run();
+  for (const s of tr) if (s && s.session) delete s.session;
+  plainResult(tr, STATES);
+  const en = await withLang("en", () => withUnits("imperial", run));
+  for (const s of en) if (s && s.session) delete s.session;
+  eq(en, tr, "dil ya da birim hesabı değiştirdi");
+  const [kcal, , water, sleep, , steps] = tr;
+  eq([kcal.state, kcal.warn, kcal.lo > 1500], ["short", false, true], "gün içinde az yemek uyarı değil");
+  eq(taskStatus("kcal", entry, program, "2026-11-11", { ...ctx, hour:21 }).state, "under", "akşam olunca uyarı");
+  eq([water.need, water.ok], [Math.round(program.water * 0.9), water.value >= Math.round(program.water * 0.9)]);
+  eq([sleep.state, sleep.warn], ["long", true]);
+  eq([steps.target, steps.left, steps.ok], [8000, 5000, false]);
+  eq(taskStatus("steps", entry, program, "2026-11-11", { ...ctx, steps:0 }), null, "adım hedefi yoksa görev yok");
+  state = null;
+});
+test("görev durumu: ekrandaki metin hesapla aynı sonucu söyler", async () => {
+  state = await loadFixture(); ensureToday();
+  const program = currentProgram(), e = state.days[today()];
+  for (const k of ["kcal", "protein", "water", "sleep", "weigh", "steps", "train"]) {
+    const s = taskStatus(k, e, program), a = autoInfo({ kind:k }, e, program);
+    eq(!!a, !!s, k + " görünürlüğü");
+    if (s) eq([a.ok, a.pct], [s.ok, s.pct], k);
+  }
+  state = null;
+});
+test("grafik verisi: seriler, aralıklar ve farklar metinsiz hesaplanır", () => {
+  const days = { "2026-11-01":{ weight:83, kcal:2000, body:{ bel:90, yag:22 } }, "2026-11-08":{ weight:82, sleep:7.5, body:{ bel:88, yag:21 } },
+    "2026-11-10":{ weight:81.5 }, "2025-01-01":{ weight:99 } };
+  const D = chartData(days, profileOf({ height:180, sex:"male" }), { kcal:2500 }, [7, 9], "2026-11-11");
+  plainResult(D, ["2026-11-01", "2026-11-08", "2026-11-10", "inside", "below", "above"]);
+  eq(D.weight.series.map(x => x.v), [83, 82, 81.5], "eski kayıt pencere dışında kalmalı");
+  eq(D.weight.delta, -1.5);
+  eq(D.weight.band.map(v => Math.round(v * 10) / 10), [59.9, 80.7]);
+  eq(D.kcal.band, [2250, 2750]);
+  eq(D.sleep.band, [7, 9]);
+  eq([D.fat.delta, D.fat.band, D.fat.pos], [-1, [14, 25], "inside"]);
+  eq(D.waist.delta, -2);
+});
+test("haftalık özet: sayılar kayıttan hesaplanır", () => {
+  const days = {
+    "2026-11-10":{ kcal:2600, weight:80, tasks:[{ done:true }, { done:false }] },
+    "2026-11-09":{ kcal:3500, weight:80.4, lifts:{ "Squat":{ t:"w", sets:[{ kg:60, r:5 }] } } },
+    "2026-11-01":{ weight:81 }
+  };
+  const S = weekStats(days, { kcal:2500 }, "2026-11-11");
+  eq([S.avg, S.kcalDays, S.inBand, S.tDone, S.tAll, S.lifts], [3050, 2, 1, 1, 2, 1]);
+  eq(Math.round(S.wch * 100) / 100, -0.8);
+  eq(weekStats({}, { kcal:2500 }, "2026-11-11"), null);
+});
+
 /* ---- görevler başka dilde ---- */
 test("görevler: İngilizcede öneriler Türkçe başlık ve türle kaydedilir, tekrar çizimde çoğalmaz", async () => {
   const fixture = await loadFixture();

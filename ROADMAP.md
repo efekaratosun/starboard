@@ -22,28 +22,29 @@ Amaç: projenin kalıcı bir evi ve canlı bir adresi olsun.
 
 Bitti sayılır: Starboard herkese açık bir adreste çalışıyor ve bir değişiklik tek adımda yayına çıkıyor.
 
-## Faz 1: Güncellenebilir kod tabanı
+## Faz 1: Güncellenebilir kod tabanı ✓
 
 Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 
 - [x] Tek dosyayı ayrı dosyalara böl: 3 stil, 19 kod dosyası (`starboard-site/css`, `starboard-site/js`); ekran çıktısı eskisiyle birebir aynı
 - [x] Otomatik testler (`tests/`): her gönderimde çalışır, testler kalırsa site yayınlanmaz
-- [ ] Hesaplamaları ekran kodundan ayır: ölçüm değerlendirmesi ayrıldı (`assess()` yalnızca sayı ve durum döndürür). Görev durumu (`autoInfo`) ve grafik hazırlığı hâlâ metin üretimiyle iç içe; derleme adımı Faz 3'te Node ile birlikte gelir
+- [x] Hesaplamaları ekran kodundan ayır: ölçüm değerlendirmesi (`assess()`), görev durumu (`taskStatus()`, `goals.js`), grafik verisi (`chartData()`) ve haftalık özet (`weekStats()`) yalnızca sayı ve durum döndürür; ekran kodu bunları metne çevirir. Gün puanı, yıldızlar ve avatar doğrudan hesabı kullanır. Ekran çıktısı Türkçede eskisiyle birebir aynı
 - [x] Çok dilli altyapı: `tx()` çeviri işlevi, dil seçimi (Ayarlar), dile göre tarih ve gün adları
 - [x] Arayüz metinlerinin İngilizcesi: yaklaşık 1.100 metin çeviriye bağlandı, sözlükte 730 karşılık (`starboard-site/js/lang/en.js`)
 - [x] Beslenme içeriğinin İngilizcesi: 320 besin adı, porsiyon ölçüleri, mikro besinler, hazır menüler ve tarifler (`starboard-site/js/lang/en-food.js`, 630 karşılık)
 - [x] Antrenman içeriğinin İngilizcesi: 16 program, gün başlıkları, 90 hareketin rehberi (`starboard-site/js/lang/en-workout.js`). Antrenman satırları kodda ve kayıtlarda Türkçe kalır, yalnızca ekranda `exText()` ile çevrilir; böylece dil değişince kayıtlar ve rekorlar kopmaz
-- [ ] Kullanıcının kendi yazdığı program ve kayıtlı görev başlıkları yazıldığı dilde kalır
-- [ ] İçeriğin uluslararası uyarlaması (Faz 2): çeviri tamam, ama besin ve tarif seçkisi hâlâ Türk mutfağı ağırlıklı
+- [x] Kullanıcının kendi yazdığı görevler, tekrar eden görevler, öğün ve program adları yazıldığı dilde kalır; hazır öneriler kayıtta Türkçe durur ve ekranda çevrilir
 - [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [x] Birimler: metrik (kg, cm, ml) ya da imperial (lb, ft·in, fl oz). Ayarlar'da ve ilk girişte seçilir; varsayılan tarayıcının bölgesinden (ABD imperial). Kayıt hep metrik kalır, çeviri yalnızca ekranda (`starboard-site/js/units.js`). İngilizcede ondalık ayırıcı nokta
 - [x] İngilizcenin "beta" etiketi kalktı. Yeni kullanıcıda dil tarayıcıdan gelir (Türkçe değilse İngilizce); kaydı olan eski kullanıcı Türkçe kalır; karşılama ekranında dil bağlantısı var
-- [x] Sürüm numarası (`APP_VERSION`, şu an 1.5.0) ve değişiklik günlüğü (`CHANGELOG.md`)
+- [x] Sürüm numarası (`APP_VERSION`, şu an 1.5.1) ve değişiklik günlüğü (`CHANGELOG.md`)
 - [x] Veri şeması sürümleme: `SCHEMA` ve `MIGRATIONS` (`storage.js`); açılışta ve yedek yüklerken kayıt güncel biçime taşınır
-- [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 61 test)
+- [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 65 test)
 - [x] Depolama anahtarı `starboard-state` oldu; eski adla duran kayıt ilk açılışta taşınır ve yedek olarak yerinde kalır
 
 Bitti sayılır: testler geçiyor, eski bir yedek dosyası yeni sürümde sorunsuz açılıyor.
+
+**Faz 1 tamamlandı (12 Kasım 2026).**
 
 ## Faz 2: Ürün geliştirme (sürekli)
 

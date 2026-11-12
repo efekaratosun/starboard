@@ -28,6 +28,17 @@ Yeni metin eklerken `tx()` içine almak ve sözlüğe karşılığını yazmak g
 
 Toplu dönüştürme için `tools/i18n-codemod.js` kullanılır; açıklaması dosyanın başındadır. Dosyaları yerinde yazabilmesi için site `tools/devserve.ps1` ile açılmalıdır (yalnızca yerelde, `starboard-site/js` altına yazar).
 
+## Hesap ve ekran
+
+Hesaplar metin üretmez: yalnızca sayı ve durum döndürür, ekran kodu bunları `tx()` ve birim yardımcılarıyla metne çevirir. Böylece dil ya da birim değişince hesap değişmez ve testler metne bağlı kalmaz.
+
+- `evaluate.js`: `assess()` günün ölçümlerini aralıklarla karşılaştırır; `evaluate()` ekrana çevirir.
+- `goals.js`: `taskStatus()` bir hedefin o günkü durumu (kalori, protein, su, uyku, tartı, adım, antrenman); `kcalRange()` kalori bandı; `taskTitle()` kayda yazılan, dilden bağımsız görev başlığı. Ekrandaki karşılığı `autoInfo()` (`today.js`). Gün puanı ve yıldızlar doğrudan `taskStatus()` kullanır.
+- `charts.js`: `chartData()` grafik serileri, sağlıklı aralıklar ve farklar; `chartsView()` çizer.
+- `widgets.js`: `weekStats()` son 7 günün sayıları; `weeklySummary()` gösterir.
+
+Yeni bir hesap eklerken aynı ayrımı koru: hesap işlevine metin, HTML ya da birim koyma.
+
 ## Birimler
 
 Kayıtta her değer metriktir: kilo ve kaldırılan ağırlık kg, boy ve vücut ölçüleri cm, su ml. Kullanıcı imperial seçtiyse değerler yalnızca ekrana yazılırken ve giriş alanından okunurken çevrilir. Yardımcılar `starboard-site/js/units.js` içindedir: ekrana yazarken `fmtW`, `fmtV`, `fmtLift`, `fmtHeight`, girilen değeri kaydederken `wSave`, `vIn`, `liftIn`, `lIn`. Yeni bir kilo, su ya da ölçü alanı eklerken bunlar kullanılmalı; ekrana doğrudan "kg" ya da "ml" yazılmamalı. Sayılar `fmtN` ile yazılır (Türkçede virgül, İngilizcede nokta).

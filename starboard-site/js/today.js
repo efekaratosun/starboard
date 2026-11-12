@@ -201,31 +201,18 @@ function reviewCount(){
    Her öneri girilen verilerden hesaplanır: başlık güncel hedefi taşır,
    koşul sağlanınca kendiliğinden işaretlenir. Elle işaretleme de çalışır;
    veri koşulu sağladığında elle verilen karar yerini otomatiğe bırakır. */
-/* Kalori aralığı hedefe göre değişir.
-   Yağ kaybı: hedefin altı serbest ama güvenli sınıra kadar. Alt sınır üç
-   ölçünün en yükseği: hedefin 500 kcal altı, bakım kalorisinin 1000 kcal
-   altı (NICE'ın denetimsiz önerdiği en büyük açık) ve bazal metabolizmaya
-   dayalı taban (erkekte 1500, kadında 1200 kcal'den az değil).
-   Koruma: hedefin ±%10'u. Kas kazanımı: bakımın %5-20 üstü (Iraki ve ark. 2019). */
+/* Kalori bandı (hesabı goals.js'te kcalRange) ve bandın ekran cümleleri. */
 function kcalBand(program){
-  const T = program.tdee, G = program.kcal, goal = state.profile.goal;
-  const floor = Math.round(Math.max(program.bmr * 0.95, sexK(state.profile.sex, 1500, 1200)));
-  if (goal === "lose"){
-    const lo = Math.round(Math.max(floor, G - 500, T - 1000)), hi = Math.round(G * 1.05);
-    return { G, T, lo, hi,
-      okMsg: v => v < G ? tx("açığın {0} kcal, güvenli aralıkta", [(T - v)]) : tx("hedefte"),
-      overMsg: v => v > T ? tx("bakım kalorinin üstündesin, bugün açık oluşmadı") : tx("hedefin {0} kcal üstündesin, açık küçüldü", [(v - G)]),
-      underMsg: v => tx("açık {0} kcal; bu kadar düşük kalori kas kaybı ve yorgunluk riskini artırır, {1} kcal altına inme", [(T - v), (lo)]) };
-  }
-  if (goal === "gain"){
-    const lo = Math.round(T * 1.05), hi = Math.round(T * 1.20);
-    return { G, T, lo, hi,
-      okMsg: v => tx("fazlalığın {0} kcal", [(v - T)]),
-      overMsg: v => tx("fazlalık {0} kcal; bu kadarı kas yerine çoğunlukla yağ olarak depolanır", [(v - T)]),
-      underMsg: v => v < T ? tx("bakım kalorinin altındasın, kas kazanımı için fazlalık gerekli") : tx("fazlalık kas kazanımı için yetersiz kaldı") };
-  }
-  const lo = Math.round(G * 0.9), hi = Math.round(G * 1.1);
-  return { G, T, lo, hi,
+  const R = kcalRange(program, state.profile), { G, T, lo } = R;
+  if (R.goal === "lose") return { ...R,
+    okMsg: v => v < G ? tx("açığın {0} kcal, güvenli aralıkta", [(T - v)]) : tx("hedefte"),
+    overMsg: v => v > T ? tx("bakım kalorinin üstündesin, bugün açık oluşmadı") : tx("hedefin {0} kcal üstündesin, açık küçüldü", [(v - G)]),
+    underMsg: v => tx("açık {0} kcal; bu kadar düşük kalori kas kaybı ve yorgunluk riskini artırır, {1} kcal altına inme", [(T - v), (lo)]) };
+  if (R.goal === "gain") return { ...R,
+    okMsg: v => tx("fazlalığın {0} kcal", [(v - T)]),
+    overMsg: v => tx("fazlalık {0} kcal; bu kadarı kas yerine çoğunlukla yağ olarak depolanır", [(v - T)]),
+    underMsg: v => v < T ? tx("bakım kalorinin altındasın, kas kazanımı için fazlalık gerekli") : tx("fazlalık kas kazanımı için yetersiz kaldı") };
+  return { ...R,
     okMsg: v => Math.abs(v - G) < 20 ? tx("tam hedefte") : v > G ? tx("hedefin {0} kcal üstü, tolerans içinde", [(v - G)]) : tx("hedefin {0} kcal altı, tolerans içinde", [(G - v)]),
     overMsg: v => tx("hedefin {0} kcal üstündesin, uzun sürerse kilo artışı olur", [(v - G)]),
     underMsg: v => tx("hedefin {0} kcal altındasın, uzun sürerse kilo kaybı olur", [(G - v)]) };
@@ -249,75 +236,59 @@ function taskKind(t){
        : /^\d+ adım at$/.test(x) ? "steps" : null;
 }
 
+/* Görevin ekrandaki hali: taskStatus()'un (goals.js) sayılarını metne çevirir.
+   Dönen: { title, label?, ok, pct, warn?, txt, why? } ya da hedef o gün yoksa null. */
 function autoInfo(t, entry, program, key){
   key = key || today();
-  const kind = taskKind(t);
-  if (!kind || !program) return null;
-  switch (kind){
+  const s = taskStatus(taskKind(t), entry, program, key);
+  if (!s) return null;
+  const { ok, pct, warn } = s;
+  switch (s.kind){
     case "kcal": {
-      const B = kcalBand(program);
-      const has = typeof entry.kcal === "number";
-      const v = has ? entry.kcal : 0;
-      const title = tx("Kaloriyi {0}–{1} kcal arasında tut", [(B.lo), (B.hi)]);
-      /* gün bitmeden az yemek henüz sorun değil; geçmiş günde gün zaten bitti */
-      const late = key < today() || new Date().getHours() >= 20;
-      if (!has) return { title, ok:false, pct:0, txt:tx("Hedef {0} kcal · kalori girilmedi", [(B.G)]),
-        why:tx("Kalori ya da beslenme günlüğü girilince kendiliğinden işaretlenir.") };
-      if (v > B.hi) return { title, ok:false, pct:1, warn:true, txt:`${v} kcal · ${B.overMsg(v)}`,
-        why:tx("Üst sınır {0} kcal. {1}.", [(B.hi), (B.overMsg(v))]) };
-      if (v < B.lo){
-        const gap = B.lo - v;
-        return late
-          ? { title, ok:false, pct:v/B.lo, warn:true, txt:`${v} kcal · ${B.underMsg(v)}`, why:B.underMsg(v) + "." }
-          : { title, ok:false, pct:v/B.lo, txt:tx("{0} kcal · aralığa {1} kcal kaldı", [(v), (gap)]),
-              why:tx("Alt sınır {0} kcal; {1} kcal daha alınca işaretlenir.", [(B.lo), (gap)]) };
+      const B = kcalBand(program), v = s.value;
+      const title = tx("Kaloriyi {0}–{1} kcal arasında tut", [(s.lo), (s.hi)]);
+      switch (s.state){
+        case "empty": return { title, ok, pct, txt:tx("Hedef {0} kcal · kalori girilmedi", [(s.G)]),
+          why:tx("Kalori ya da beslenme günlüğü girilince kendiliğinden işaretlenir.") };
+        case "over": return { title, ok, pct, warn, txt:`${v} kcal · ${B.overMsg(v)}`,
+          why:tx("Üst sınır {0} kcal. {1}.", [(s.hi), (B.overMsg(v))]) };
+        case "under": return { title, ok, pct, warn, txt:`${v} kcal · ${B.underMsg(v)}`, why:B.underMsg(v) + "." };
+        case "short": return { title, ok, pct, txt:tx("{0} kcal · aralığa {1} kcal kaldı", [(v), (s.left)]),
+          why:tx("Alt sınır {0} kcal; {1} kcal daha alınca işaretlenir.", [(s.lo), (s.left)]) };
       }
-      return { title, ok:true, pct:1, txt:`${v} kcal · ${B.okMsg(v)}` };
+      return { title, ok, pct, txt:`${v} kcal · ${B.okMsg(v)}` };
     }
     case "protein": {
-      const has = entry.log && entry.log.length;
-      const v = has ? logTotals(entry).p : 0, g = program.protein, need = Math.round(g*0.9);
-      return { title:tx("{0} g protein al", [g]), ok: v >= need, pct: v/need,
-        txt: has ? `${v} / ${g} g` : tx("Beslenme günlüğüne ekledikçe dolar"),
-        why:tx("Hedefin %90'ı olan {0} g'a ulaşınca işaretlenir. Şu an {1} g.", [(need), (v)]) };
+      const v = s.value || 0;
+      return { title:tx("{0} g protein al", [s.target]), ok, pct,
+        txt: s.value !== null ? `${v} / ${s.target} g` : tx("Beslenme günlüğüne ekledikçe dolar"),
+        why:tx("Hedefin %90'ı olan {0} g'a ulaşınca işaretlenir. Şu an {1} g.", [(s.need), (v)]) };
     }
-    case "water": {
-      const v = entry.water || 0, g = program.water, need = Math.round(g*0.9);
-      return { title:tx("{0} su iç", [(fmtV(g))]), ok: v >= need, pct: v/need, txt:`${vOut(v)} / ${fmtV(g)}`,
-        why:tx("{0} olunca işaretlenir. {1} kaldı.", [(fmtV(need)), (fmtV(Math.max(need - v, 0)))]) };
-    }
+    case "water":
+      return { title:tx("{0} su iç", [(fmtV(s.target))]), ok, pct, txt:`${vOut(s.value || 0)} / ${fmtV(s.target)}`,
+        why:tx("{0} olunca işaretlenir. {1} kaldı.", [(fmtV(s.need)), (fmtV(s.left))]) };
     case "sleep": {
-      const v = typeof entry.sleep === "number" ? entry.sleep : null;
-      const [lo, hi] = sleepBand();
-      const long = v !== null && v > hi + 0.5;
-      return { title:tx("{0}-{1} saat uyu", [lo, hi]), ok: v !== null && v >= lo, pct: v === null ? 0 : v/lo, warn: long || (v !== null && v < lo - 1),
-        txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + (long ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(hi)]) : v < lo ? tx(" · {0} saatin altında", [(lo)]) : ""),
-        why: v === null ? tx("Uyku kadranıyla girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(lo)]) };
+      const v = s.value;
+      return { title:tx("{0}-{1} saat uyu", [s.lo, s.hi]), ok, pct, warn,
+        txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + (s.state === "long" ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(s.hi)]) : s.state === "short" ? tx(" · {0} saatin altında", [(s.lo)]) : ""),
+        why: v === null ? tx("Uyku kadranıyla girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(s.lo)]) };
     }
     case "weigh": {
-      const v = typeof entry.weight === "number" ? entry.weight : null;
-      const gun = key === today() ? tx("Bugün") : tx("O gün");
-    return { title:tx("Sabah kilo ölçümü"), ok: v !== null, pct: v === null ? 0 : 1,
-        txt: v === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} girildi", [(fmtW(v))]),
+      const gun = s.today ? tx("Bugün") : tx("O gün");
+      return { title:tx("Sabah kilo ölçümü"), ok, pct,
+        txt: s.value === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} girildi", [(fmtW(s.value))]),
         why:tx("{0}ün kilosu girilince işaretlenir.", [(gun)]) };
     }
-    case "steps": {
-      const g = stepGoal();
-      if (!g) return null;
-      const v = typeof entry.steps === "number" ? entry.steps : 0;
-      return { title:tx("{0} adım at", [(g)]), ok: v >= g, pct: v/g, txt:tx("{0} / {1} adım", [(v), (g)]),
-        why:tx("{0} adıma ulaşınca işaretlenir. {1} adım kaldı.", [(g), (Math.max(g - v, 0))]) };
-    }
+    case "steps":
+      return { title:tx("{0} adım at", [(s.target)]), ok, pct, txt:tx("{0} / {1} adım", [(s.value || 0), (s.target)]),
+        why:tx("{0} adıma ulaşınca işaretlenir. {1} adım kaldı.", [(s.target), (s.left)]) };
     case "train": {
-      const ses = program.training.days.find(d => d.wd === isoWeekday(key));
-      if (!ses || !ses.b) return null;
-      const list = exercisesOf(ses);
-      const n = list.filter(x => liftHas((entry.lifts || {})[x])).length;
-      /* title kayıtta görevi tanıtır; ekranda gün adı zaten "Antrenman A" gibiyse önek tekrarlanmaz. */
+      const t2 = s.session.t;
+      /* Gün adı zaten "Antrenman A" gibiyse önek tekrarlanmaz. */
       const word = tx("Antrenman").toLocaleLowerCase();
-      const label = ses.t.toLocaleLowerCase().includes(word) ? ses.t : tx("Antrenman: {0}", [(ses.t)]);
-      return { title:tx("Antrenman: {0}", [(ses.t)]), label, ok: n === list.length, pct: n/list.length,
-        txt:tx("{0}/{1} hareket kaydedildi", [(n), (list.length)]),
+      const label = t2.toLocaleLowerCase().includes(word) ? t2 : tx("Antrenman: {0}", [(t2)]);
+      return { title:tx("Antrenman: {0}", [(t2)]), label, ok, pct,
+        txt:tx("{0}/{1} hareket kaydedildi", [(s.done), (s.total)]),
         why:tx("Antrenman kaydındaki bütün hareketler girilince işaretlenir.") };
     }
   }
@@ -332,14 +303,15 @@ function syncSuggested(entry, program, key){
   let changed = false;
   for (const t of entry.tasks){
     if (!t.suggested) continue;
-    const a = autoInfo(t, entry, program, key);
-    if (!a) continue;
     const kind = taskKind(t);
+    const s = taskStatus(kind, entry, program, key);
+    if (!s) continue;
     if (t.kind !== kind){ t.kind = kind; changed = true; }
-    /* Kayıttaki başlık Türkçe kalır; başka dilde yalnızca ekranda çevrilir. */
-    if (LANG === "tr" && t.title !== a.title){ t.title = a.title; changed = true; }
+    /* Kayıttaki başlık dilden ve birimden bağımsızdır; ekranda autoInfo() çevirir. */
+    const title = taskTitle(s);
+    if (t.title !== title){ t.title = title; changed = true; }
     if (t.man !== undefined){ delete t.man; changed = true; }
-    if (t.done !== a.ok){ t.done = a.ok; changed = true; }
+    if (t.done !== s.ok){ t.done = s.ok; changed = true; }
   }
   return changed;
 }

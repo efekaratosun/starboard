@@ -3,6 +3,17 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.5.1 (12 Kasım 2026)
+
+Kullanıcının göreceği bir değişiklik yok; Faz 1 tamamlandı.
+
+### Değişti
+- Görev durumu, grafik verisi ve haftalık özetin hesabı ekran kodundan ayrıldı (`goals.js`: `taskStatus()`; `chartData()`, `weekStats()`). Hesap yalnızca sayı ve durum döndürür, metne ekran kodu çevirir.
+- Öneri görevlerinin kayıttaki başlığı dilden ve birimden bağımsız yazılıyor.
+
+### Düzeltildi
+- Bel çevresi değişimi inç gösteriminde 0,1 sapabiliyordu; fark artık yuvarlamadan önce hesaplanıyor.
+
 ## 1.5.0 (12 Kasım 2026)
 
 ### Eklendi

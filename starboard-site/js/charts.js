@@ -198,39 +198,50 @@ function wireCharts(){
   });
 }
 
-function seriesOf(field, days){
-  const t = today();
+/* Bir alanın son 'days' günlük serisi: [{ k: tarih, v: değer }]. src ve t verilmezse geçerli kayıt ve bugün. */
+function seriesOf(field, days, src, t){
+  src = src || state.days; t = t || today();
   const from = shiftDays(t, -days);
-  return Object.keys(state.days).sort()
-    .filter(k => k > from && k <= t && typeof state.days[k][field] === "number")
-    .map(k => ({ k, v: state.days[k][field] }));
+  return Object.keys(src).sort()
+    .filter(k => k > from && k <= t && typeof src[k][field] === "number")
+    .map(k => ({ k, v: src[k][field] }));
 }
 
-function bodySeries(field, days){
-  const t = today(), from = shiftDays(t, -days);
-  return Object.keys(state.days).sort()
-    .filter(k => k > from && k <= t && state.days[k].body && typeof state.days[k].body[field] === "number")
-    .map(k => ({ k, v: state.days[k].body[field] }));
+function bodySeries(field, days, src, t){
+  src = src || state.days; t = t || today();
+  const from = shiftDays(t, -days);
+  return Object.keys(src).sort()
+    .filter(k => k > from && k <= t && src[k].body && typeof src[k].body[field] === "number")
+    .map(k => ({ k, v: src[k].body[field] }));
+}
+
+/* ---- grafik verisi ----
+   Hesap ve ekran ayrıdır: chartData() seriler, sağlıklı aralıklar ve farkları döndürür;
+   değerler metriktir, metin, birim ya da HTML içermez. chartsView() bunları çizer.
+   Sağlıklı aralıklar: kilo BMI 18,5–24,9; kalori hedefin ±%10'u; uyku kişinin hedefi;
+   yağ oranı ACE'nin fit–ortalama bandı (fat.ace: [atletik, fit, ortalama, üst]). */
+function chartData(days, profile, program, sleepRange, t){
+  const h = profile.height / 100;
+  const diff = s => s.length >= 2 ? s[s.length-1].v - s[0].v : null;
+  const w = seriesOf("weight", 60, days, t), yag = bodySeries("yag", 365, days, t), bel = bodySeries("bel", 120, days, t);
+  const ace = profile.sex === "female" ? [14,21,25,32] : profile.sex === "male" ? [6,14,18,25] : [10,17.5,21.5,28.5];
+  const last = yag.length ? yag[yag.length-1].v : null;
+  return {
+    weight: { series: w, delta: diff(w), band: h > 0 ? [18.5*h*h, 24.9*h*h] : null },
+    kcal:   { series: seriesOf("kcal", 21, days, t), band: program ? [program.kcal*0.9, program.kcal*1.1] : null },
+    sleep:  { series: seriesOf("sleep", 21, days, t), band: sleepRange },
+    fat:    { series: yag, delta: diff(yag), ace, band: [ace[1], ace[3]],
+              pos: last === null ? null : last < ace[1] ? "below" : last > ace[3] ? "above" : "inside" },
+    waist:  { series: bel, delta: diff(bel) }
+  };
 }
 
 function chartsView(){
-  const program = currentProgram();
-  const p = state.profile, h = p.height / 100;
   chartSeq = 0;
   for (const k of Object.keys(CHARTS)) delete CHARTS[k];
-
-  const w = seriesOf("weight", 60);
-  const kcal = seriesOf("kcal", 21);
-  const sleep = seriesOf("sleep", 21);
-  const bel = bodySeries("bel", 120);
-  const yag = bodySeries("yag", 365);
-  const delta = w.length >= 2 ? w[w.length-1].v - w[0].v : null;
-
-  /* sağlıklı aralıklar: kilo BMI 18,5–24,9; kalori hedefin ±%10'u;
-     uyku 7–9 saat; yağ oranı ACE'nin fit–ortalama bandı */
-  const wBand = h > 0 ? [18.5*h*h, 24.9*h*h] : null;
-  const kBand = program ? [program.kcal*0.9, program.kcal*1.1] : null;
-  const fT = p.sex === "female" ? [14,21,25,32] : p.sex === "male" ? [6,14,18,25] : [10,17.5,21.5,28.5];
+  const D = chartData(state.days, state.profile, currentProgram(), sleepBand(), today());
+  const w = D.weight.series, kcal = D.kcal.series, sleep = D.sleep.series, yag = D.fat.series, bel = D.waist.series;
+  const wBand = D.weight.band, kBand = D.kcal.band, fT = D.fat.ace;
 
   const card = (title, count, chart, note) => `<section>
     <h2>${title}${count ? ` <span class="count">${count}</span>` : ""}</h2>
@@ -239,22 +250,19 @@ function chartsView(){
 
   return `
   ${weeklySummary()}
-  ${card(tx("Kilo"), delta !== null ? `${delta>0?"+":""}${fmtN(+wOut(delta).toFixed(1))} ${wUnit()}` : "",
+  ${card(tx("Kilo"), D.weight.delta !== null ? `${D.weight.delta>0?"+":""}${fmtN(+wOut(D.weight.delta).toFixed(1))} ${wUnit()}` : "",
     trendChart(w.map(x => ({ ...x, v:wOut(x.v) })), { color:"weight", dec:1, unit:wUnit(), average:true, band:wBand && wBand.map(wOut), label:tx("kilo trendi") }),
     w.length >= 2 ? bandNote(tx("Bant sağlıklı kilo aralığın{0}. Kesikli çizgi 7 günlük ortalama: günlük dalgalanma su ve glikojenden gelir, asıl yön ortalamada görünür.", [(wBand ? ` (${Math.round(wOut(wBand[0]))}–${fmtW0(wBand[1])})` : "")])) : "")}
   ${card(tx("Kalori"), tx("son {0} gün", [(kcal.length)]),
     trendChart(kcal, { color:"kcal", kind:"bar", unit:"kcal", band:kBand, label:tx("günlük kalori") }),
     kcal.length >= 2 && kBand ? bandNote(tx("Bant hedefin ±%10'u: {0}–{1} kcal.", [(Math.round(kBand[0])), (Math.round(kBand[1]))])) : "")}
   ${card(tx("Uyku"), tx("son {0} gün", [(sleep.length)]),
-    trendChart(sleep, { color:"sleep", kind:"bar", dec:1, unit:tx("sa"), band:sleepBand(), label:tx("günlük uyku") }),
-    sleep.length >= 2 ? bandNote(tx("Bant senin uyku hedefin: {0}–{1} saat.", [(sleepBand()[0]), (sleepBand()[1])])) : "")}
-  ${card(tx("Yağ oranı"), yag.length >= 2 ? `${(yag[yag.length-1].v - yag[0].v) > 0 ? "+" : ""}${fmtN(+(yag[yag.length-1].v - yag[0].v).toFixed(1))} ${tx("puan")}` : "",
-    yag.length >= 2 ? trendChart(yag, { color:"fat", dec:1, unit:"%", band:[fT[1], fT[3]], label:tx("yağ oranı") })
+    trendChart(sleep, { color:"sleep", kind:"bar", dec:1, unit:tx("sa"), band:D.sleep.band, label:tx("günlük uyku") }),
+    sleep.length >= 2 ? bandNote(tx("Bant senin uyku hedefin: {0}–{1} saat.", [(D.sleep.band[0]), (D.sleep.band[1])])) : "")}
+  ${card(tx("Yağ oranı"), D.fat.delta !== null ? `${D.fat.delta > 0 ? "+" : ""}${fmtN(+D.fat.delta.toFixed(1))} ${tx("puan")}` : "",
+    yag.length >= 2 ? trendChart(yag, { color:"fat", dec:1, unit:"%", band:D.fat.band, label:tx("yağ oranı") })
       : `<div class="empty">${tx("Yağ oranını girdikçe grafik oluşur.{0}", [(yag.length ? tx(" Şu an 1 ölçüm var.") : "")])}</div>`,
-    yag.length >= 2 ? (() => {
-      const v = yag[yag.length-1].v, inside = v >= fT[1] && v <= fT[3];
-      return bandNote(tx("Fit–ortalama aralığı %{0}–{1} (ACE); {2}. Ev tartılarının ölçümü günden güne birkaç puan oynar; haftada bir, aynı saatte ölç.", [(fmtN(fT[1])), (fmtN(fT[3])), (inside ? tx("şu an bu aralıktasın") : v < fT[1] ? tx("şu an bu aralığın altındasın") : tx("şu an bu aralığın üstündesin"))]));
-    })() : "")}
-  ${bel.length >= 2 ? card(tx("Bel çevresi"), `${fmtN(+(lOut(bel[bel.length-1].v) - lOut(bel[0].v)).toFixed(1))} ${lUnit()}`,
+    yag.length >= 2 ? bandNote(tx("Fit–ortalama aralığı %{0}–{1} (ACE); {2}. Ev tartılarının ölçümü günden güne birkaç puan oynar; haftada bir, aynı saatte ölç.", [(fmtN(fT[1])), (fmtN(fT[3])), ({ inside:tx("şu an bu aralıktasın"), below:tx("şu an bu aralığın altındasın"), above:tx("şu an bu aralığın üstündesin") }[D.fat.pos])])) : "")}
+  ${bel.length >= 2 ? card(tx("Bel çevresi"), `${fmtN(+(+lOut(D.waist.delta)).toFixed(1))} ${lUnit()}`,
     trendChart(bel.map(x => ({ ...x, v:lOut(x.v) })), { color:"waist", dec:1, unit:lUnit(), label:tx("bel çevresi") })) : ""}`;
 }

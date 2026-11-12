@@ -21,32 +21,38 @@ function bodySection(entry){
 }
 
 /* ---- haftalık özet ---- */
+/* Son 7 günün özeti: yalnızca sayılar. state.days ve program dışarıdan verilir;
+   gün yoksa ya da program yoksa null. wch: iki haftalık ortalama kilo farkı (kg). */
+function weekStats(days, program, t){
+  const keys = Object.keys(days).filter(k => k > shiftDays(t,-7) && k <= t).sort();
+  if (!keys.length || !program) return null;
+  const kcals = keys.map(k => days[k].kcal).filter(v => typeof v === "number");
+  const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+  let tDone = 0, tAll = 0;
+  for (const k of keys){ const ts = days[k].tasks || []; tAll += ts.length; tDone += ts.filter(x => x.done).length; }
+  const cur = avgWeights({ days }, shiftDays(t,-7), t), prev = avgWeights({ days }, shiftDays(t,-14), shiftDays(t,-7));
+  return {
+    avg: kcals.length ? Math.round(mean(kcals)) : null,
+    kcalDays: kcals.length,
+    inBand: kcals.filter(v => v >= program.kcal*0.9 && v <= program.kcal*1.1).length,
+    tDone, tAll,
+    wch: cur.length && prev.length ? mean(cur) - mean(prev) : null,
+    lifts: keys.filter(k => days[k].lifts && Object.values(days[k].lifts).some(liftHas)).length
+  };
+}
+
 function weeklySummary(){
   const program = currentProgram();
-  const t = today();
-  const keys = Object.keys(state.days).filter(k => k > shiftDays(t,-7) && k <= t).sort();
-  if (!keys.length || !program) return "";
-
-  const kcals = keys.map(k => state.days[k].kcal).filter(v => typeof v === "number");
-  const avg = kcals.length ? Math.round(kcals.reduce((a,b)=>a+b,0)/kcals.length) : null;
-  const inBand = kcals.filter(v => v >= program.kcal*0.9 && v <= program.kcal*1.1).length;
-
-  let tDone = 0, tAll = 0;
-  for (const k of keys){ const ts = state.days[k].tasks || []; tAll += ts.length; tDone += ts.filter(x=>x.done).length; }
-
-  const cur = avgWeights(state, shiftDays(t,-7), t);
-  const prev = avgWeights(state, shiftDays(t,-14), shiftDays(t,-7));
-  const wch = (cur.length && prev.length)
-    ? (cur.reduce((a,b)=>a+b,0)/cur.length) - (prev.reduce((a,b)=>a+b,0)/prev.length) : null;
-
-  const lifts = keys.filter(k => state.days[k].lifts && Object.values(state.days[k].lifts).some(liftHas)).length;
+  const S = weekStats(state.days, program, today());
+  if (!S) return "";
+  const { avg, kcalDays, inBand, tDone, tAll, wch, lifts } = S;
 
   const row = (l, v, note) => `<div class="macro"><span class="lbl">${l}${note?`<div class="metric-note">${note}</div>`:""}</span><span class="v num">${v}</span></div>`;
 
   return `<section>
     <h2>${tx("Son 7 gün")}</h2>
     ${row(tx("Ortalama kalori"), avg !== null ? `${avg} kcal` : "—", avg !== null ? tx("hedef {0}", [(program.kcal + " kcal")]) : tx("kalori girilmemiş"))}
-    ${row(tx("Hedef bandında gün"), kcals.length ? `${inBand}/${kcals.length}` : "—", tx("±%10 aralığı"))}
+    ${row(tx("Hedef bandında gün"), kcalDays ? `${inBand}/${kcalDays}` : "—", tx("±%10 aralığı"))}
     ${row(tx("Kilo değişimi"), wch !== null ? `${wch>0?"+":""}${fmtFix(wOut(wch), 2)} ${wUnit()}` : "—", wch !== null ? tx("iki haftalık ortalama farkı") : tx("trend için daha fazla ölçüm gerekli"))}
     ${row(tx("Tamamlanan görev"), tAll ? `%${Math.round(tDone/tAll*100)}` : "—", tAll ? `${tDone}/${tAll}` : "")}
     ${row(tx("Antrenman kaydı"), tx("{0} gün", [(lifts)]), "")}
@@ -423,8 +429,8 @@ function celebrate(){
 /* Günün verisine göre avatarın hali */
 function avatarMood(e, program){
   const sleepy = typeof e.sleep === "number" && e.sleep < sleepBand()[0] - 0.5;
-  const tr = program ? autoInfo({ kind:"train", suggested:true }, e, program) : null;
-  const kc = program ? autoInfo({ kind:"kcal", suggested:true }, e, program) : null;
+  const tr = program ? taskStatus("train", e, program) : null;
+  const kc = program ? taskStatus("kcal", e, program) : null;
   const trained = !!(tr && tr.ok), happy = !!(kc && kc.ok);
   const line = happy ? tx("😊 kalori hedefte") : trained ? tx("⚡ antrenman tamam") : sleepy ? tx("😴 az uyudun") : "";
   return { sleepy, trained, happy, star: fullDay(today()), line };
