@@ -170,11 +170,11 @@
   /* Bütün sekmeleri, alt sekmeleri ve giriş adımlarını çizip HTML'lerini toplar. Uygulamanın içinde çalışır. */
   const SNAP = "(() => { const out = {}; notice = null; viewDate = null; const saved = state;"
     + " for (const t of ['today','calendar','settings']) { tab = t; render(); out[t] = app.innerHTML; }"
-    + " for (const pt of ['log','plan','howto']) { tab = 'plan'; planTab = pt; render(); out['plan-'+pt] = app.innerHTML; }"
+    + " for (const pt of ['today','program']) { tab = 'plan'; planTab = pt; render(); out['plan-'+pt] = app.innerHTML; }"
     + " for (const mt of ['log','plan','recipes']) { tab = 'meals'; mealTab = mt; render(); out['meals-'+mt] = app.innerHTML; }"
     + " state = null; ob = obDefaults(); ob.sex = 'male'; ob.avatar = 'm'; ob.avColor = '#2F7BEA';"
     + " for (let i = 0; i < OB_STEPS.length; i++) { obStep = i; render(); out['ob'+i] = app.innerHTML; }"
-    + " state = saved; ob = null; obStep = 0; tab = 'today'; planTab = 'log'; mealTab = 'log'; render(); return out; })()";
+    + " state = saved; ob = null; obStep = 0; tab = 'today'; planTab = 'today'; mealTab = 'log'; render(); return out; })()";
 
   async function snapshot(lang){
     const fr = document.createElement("iframe");

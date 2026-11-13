@@ -14,9 +14,17 @@ const SCREENS = [
   ["bugün", "tab='today'; goalOpen=null"],
   ["bugün: su açık", "tab='today'; goalOpen='water'"],
   ["bugün: uyku açık", "tab='today'; goalOpen='sleep'"],
-  ["antrenman: kaydım", "goalOpen=null; tab='plan'; planTab='log'"],
+  ["bugün: kısa yol (öğün)", "tab='today'; goalOpen=null; shortcutPick=()=>({kind:'meal',slot:userMeals()[0].id})"],
+  ["bugün: kısa yol (antrenman)", "tab='today'; goalOpen=null; shortcutPick=()=>({kind:'train'})"],
+  ["antrenman: bugün (antrenman günü)", "goalOpen=null; setTrain(true); tab='plan'; planTab='today'"],
+  ["antrenman: bugün (dinlenme günü)", "setTrain(false); tab='plan'; planTab='today'"],
+  ["antrenman: bugün (dinlenme, serbest antrenman kartı)", "setTrain(false); freeOpenKey=today(); tab='plan'; planTab='today'"],
+  ["antrenman: bugün (program kapalı)", "state.profile.noPlan=true; tab='plan'; planTab='today'"],
+  ["antrenman: geçmiş gün", "setTrain(true); viewDate=shiftDays(today(),-1); tab='plan'; planTab='today'"],
   ["antrenman: program", "tab='plan'; planTab='program'"],
-  ["antrenman: nasıl yapılır", "tab='plan'; planTab='howto'"],
+  ["antrenman: program (rehber açık)", "openFold('how'); howQuery=''; howOpen='squat'; tab='plan'; planTab='program'"],
+  ["antrenman: program (rehber araması)", "openFold('how'); howQuery='squat'; howOpen=null; tab='plan'; planTab='program'"],
+  ["antrenman: program (kapalı)", "state.profile.noPlan=true; openFold('how'); tab='plan'; planTab='program'"],
   ["beslenme: günlük", "tab='meals'; mealTab='log'"],
   ["beslenme: plan", "tab='meals'; mealTab='plan'"],
   ["beslenme: tarifler", "tab='meals'; mealTab='recipes'"],
@@ -32,10 +40,35 @@ const SCREENS = [
   ["ben: ayarlar (Apple Sağlık)", "healthAvailable=()=>true; delete state.profile.health; tab='settings'; meTab='set'"],
   ["ben: ayarlar (Apple Sağlık bağlı)", "healthAvailable=()=>true; state.profile.health={on:true,sleep:false,lastSync:new Date().toISOString()}; hkNote=tx(\"Sağlık'tan veri gelmedi. İzin vermediysen: Sağlık uygulaması › profil › Gizlilik › Uygulamalar › Starboard.\"); tab='settings'; meTab='set'"],
 ];
+/* Antrenman modu: bugüne ek ağırlıklı, süreli ve kardiyo hareketleri olan kendi programı yazılır; her hareket sırayla denenir. */
+const WO_SETUP = "setTrain(true); state.profile.programId='custom'; state.profile.custom={days:{[isoWeekday(today())]:{t:'Deneme',ex:[{n:'Barfiks',s:4,r:8},{n:'Plank',s:3,r:'45 sn'},{n:'20 dk koşu',s:1,r:1},{n:'Squat',s:3,r:10}]}}}; tab='plan'; planTab='today'; render(); openWorkout()";
 const SHEETS = [
   ["hızlı giriş", "tab='today'; render(); openQuickSheet()", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove())"],
-  ["antrenman modu", "tab='plan'; planTab='log'; render(); openWorkout()", "closeWorkout()"],
+  ["antrenman modu", "setTrain(true); tab='plan'; planTab='today'; render(); openWorkout()", "closeWorkout()"],
+  ["antrenman modu: ek ağırlıklı tekrar", WO_SETUP + "; woIdx=0; drawWO()", "closeWorkout()"],
+  ["antrenman modu: süre", WO_SETUP + "; woIdx=1; drawWO()", "closeWorkout()"],
+  ["antrenman modu: kardiyo", WO_SETUP + "; woIdx=2; drawWO()", "closeWorkout()"],
+  ["antrenman modu: ağırlık × tekrar", WO_SETUP + "; woIdx=3; drawWO()", "closeWorkout()"],
+  ["antrenman modu: özet", WO_SETUP + "; woDone=true; drawWO()", "closeWorkout()"],
 ];
+
+/* Çerçevenin içinde: ekranların ortak durumunu başa alır; antrenman günü ya da dinlenme günü kurar. */
+const PRELUDE = `
+  window.__d0 = state.profile.days ? state.profile.days.slice() : null;
+  window.__p0 = [state.profile.programId, state.profile.custom];
+  window.__sp0 = shortcutPick;
+  window.__reset = () => {
+    delete state.profile.noPlan;
+    if (window.__d0) state.profile.days = window.__d0.slice(); else delete state.profile.days;
+    state.profile.programId = window.__p0[0]; if (window.__p0[1]) state.profile.custom = window.__p0[1]; else delete state.profile.custom;
+    shortcutPick = window.__sp0; viewDate = null; freeOpenKey = null; howQuery = ''; howOpen = null;
+    if (state.ui && state.ui.fold) delete state.ui.fold.how;
+  };
+  window.setTrain = on => {
+    const wd = isoWeekday(today()), f = currentProgram().training.freq;
+    const others = [1,2,3,4,5,6,7].filter(d => d !== wd);
+    state.profile.days = (on ? [wd].concat(others.slice(0, f - 1)) : others.slice(0, f)).sort((a, b) => a - b);
+  };`;
 
 /* Çerçevenin içinde çalışır: taşan öğeler ve erişilebilirlik bulguları. */
 function probe(){
@@ -124,13 +157,14 @@ function probe(){
     await sleep(2500);
     const win = fr.contentWindow;
     win.eval("window.__probe = " + probe.toString());
+    win.eval(PRELUDE);
     for (const [n, js] of SCREENS){
-      win.eval(js + "; render(); window.scrollTo(0,0)");
+      win.eval("__reset(); " + js + "; render(); window.scrollTo(0,0)");
       await sleep(700);
       for (const f of win.eval("__probe()")) add(w, n, f);
     }
     for (const [n, open, close] of SHEETS){
-      try { win.eval(open); await sleep(800); for (const f of win.eval("__probe()")) add(w, n, f); win.eval(close); await sleep(300); }
+      try { win.eval("__reset(); " + open); await sleep(800); for (const f of win.eval("__probe()")) add(w, n, f); win.eval(close); win.eval("__reset()"); await sleep(300); }
       catch (e) { add(w, n, ["hata", e.message]); }
     }
     /* ilk giriş */

@@ -3,6 +3,29 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.10.0 (yayınlanmadı)
+
+### Değişti
+- Program sekmesinin alt sekmeleri "Bugün · Program" oldu ("Kaydım · Program · Nasıl yapılır" yerine). Hareket rehberi (`howtoView`) Program sekmesinin altında açılır bir bölümdür ("Nasıl yapılır": arama ve liste); hareketin yanındaki "nasıl" bağlantısı ve antrenman modundaki bağlantı oraya yönlenir (`goHow()`, eski `planTab = "howto"` kalktı).
+- Program › Bugün (eski Kaydım) tek bölüme indi: antrenman adı, ilerleme sayısı, salt okunur hareket listesi (set × tekrar, "nasıl" bağlantısı) ve büyük "Antrenmanı başlat" / "Antrenman moduna dön" düğmesi. "Hareketleri tek tek gir" bölümü kalktı; set girişi yalnızca antrenman modunda.
+- Dinlenme günü tek kart: "Bugün dinlenme · Sıradaki: <gün>, <antrenman>" ve küçük "Serbest antrenman ekle" bağlantısı; serbest antrenman kartı bu bağlantıyla açılır (kayıtlı serbest antrenman kendiliğinden görünür). Program kapalıyken de tek kart.
+- Kişisel rekor panosu Ben › Grafikler'e taşındı; yeni rekor kutlaması aynı kaldı.
+
+### Eklendi
+- Bugün ekranında saate ve güne göre tek kısa yol düğmesi (`shortcutPick()`, saf ve testli): öğün ekle (Beslenme › Günlüğüm'de o öğünün besin panelini açar; öğün adları ve sırası kullanıcının öğün listesinden gelir, 05:00-22:00 öğün sayısına göre eşit dilimlenir) ya da antrenmanı başlat (antrenman modunu açar). Yapılan iş atlanır, iş kalmadıysa düğme çıkmaz; geçmiş günde çıkmaz.
+- Antrenman modunda ek ağırlıklı tekrar hareketleri (barfiks, dips) için "Ek ağırlık" alanı; ek ağırlık setlerden önce de saklanır.
+- Antrenman modunda onaylanmış bir setin kilosu, tekrarı ya da süresi değişince hemen kaydedilir (✓'e iki kez basmak gerekmez).
+- "Neler yeni" maddesi (web).
+
+### Düzeltildi
+- Antrenman modundaki sayı kutuları ve geçmiş gün şeridindeki düğmeler 44 px dokunma alanına ulaştı; erişilebilirlik aracı (`tools/a11y-audit.html`) yeni ekranlara göre güncellendi (Bugün/Program/dinlenme/program kapalı/geçmiş gün, kısa yol, antrenman modu hareket türleri).
+- İngilizcede "Ek {0}" metni "Extra {0}" oldu.
+
+### Temizlendi
+- Kullanılmayan çeviri anahtarları (Kaydım, Hareketleri tek tek gir, Sıradaki antrenman vb.) ve eski giriş bölümünün kodu (`liftsSection`, `liftBody`, `wireLifts`, `nextSessionCard`) kaldırıldı.
+
+Veri şeması aynı kalır (`SCHEMA` 2).
+
 ## 1.9.0 (13 Kasım 2026)
 
 ### Eklendi

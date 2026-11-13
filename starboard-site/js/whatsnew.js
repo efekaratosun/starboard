@@ -8,6 +8,9 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.10.0", items:[
+    tx("Antrenman ekranı sadeleşti: Program › Bugün ve Program. Hareket rehberi Program'da, rekorlar Ben › Grafikler'de."),
+    tx("Bugün ekranında saate göre tek kısa yol: öğün ekle ya da antrenmanı başlat.")] },
   { v:"1.9.0", items:[
     tx("Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.")] },
   /* native: yalnızca iPhone uygulamasında gösterilir (web'de bu özellik yok). */

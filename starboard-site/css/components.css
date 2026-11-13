@@ -342,11 +342,13 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .wo-pm:active{background:var(--tint)}
 .wo-pm:focus-visible{outline:2px solid var(--band);outline-offset:1px}
 .wo-v{flex:1;min-width:0;display:block;margin:0;text-align:center;line-height:1.05;padding:1px 0}
-.wo-v input{all:unset;display:block;width:100%;text-align:center;font-size:19px;font-weight:900;color:var(--ink);
+/* Alan 44 px yüksekliğinde; alttaki yazı alanın boş alt kısmına oturur, görünen yükseklik değişmez. */
+.wo-v input{all:unset;display:block;box-sizing:border-box;width:100%;height:44px;padding-bottom:18px;margin-bottom:-18px;
+  text-align:center;font-size:19px;font-weight:900;color:var(--ink);
   font-variant-numeric:tabular-nums;-moz-appearance:textfield}
 .wo-v input::-webkit-outer-spin-button,.wo-v input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .wo-v input:focus{color:var(--band)}
-.wo-v span{display:block;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.wo-v span{display:block;position:relative;pointer-events:none;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
 .wo-ok{all:unset;cursor:pointer;flex:0 0 46px;height:46px;border-radius:16px;background:var(--shell);color:var(--muted);
   display:flex;align-items:center;justify-content:center}
 .wo-ok svg,.wo-big svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
@@ -1108,7 +1110,7 @@ main.page-in > *:nth-child(n+5){animation-delay:130ms}
 :is(.del,.sheet-x,.wo-x,.wo-pm,.cal-nav,.avc,.cup,.how-link,.link,.chip:not(.has),.fold-h,.sl-toggle,.gh-s,.pill,.gear)::after{
   content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
 /* Biraz kısa kalan düğme ve alanlar: yükseklik en az 44 px. */
-#dd-edit, #own-edit, .qs-go, .item-main.tap, #i-water{min-height:44px}
+#dd-edit, #own-edit, .qs-go, .item-main.tap, #i-water, .pd-row button{min-height:44px}
 /* Klavye odağı: özel stili olmayan her öğede aynı belirgin çerçeve. */
 :where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid var(--band);outline-offset:2px}
 /* Yalnızca ekran okuyucunun duyduğu metin */

@@ -65,7 +65,7 @@ function render(){
   </section>`;
   const titles = { today: onToday() ? greetTitle() : prettyDate(t), plan:tx("Programın"), meals:tx("Beslenme"), calendar:tx("Takvim") };
   const subs = { today: onToday() ? `${prettyDate(t)} · ${weekdayName(t)}` : tx("{0} · geçmiş gün", [(weekdayName(t))]),
-                 plan: planTab === "log" && !onToday() && !(program && program.training.none) ? tx("{0} antrenmanı", [(prettyDate(t))]) : "" };
+                 plan: planTab === "today" && !onToday() && !(program && program.training.none) ? tx("{0} antrenmanı", [(prettyDate(t))]) : "" };
 
   titles.settings = tx("Ben");
 
@@ -90,11 +90,10 @@ function render(){
               : `<div class="empty">${tx("Kilonu gir, hedefler hesaplansın.")}</div>`}</section>`);
   }
   else if (tab === "today") body = todayView(entry, program, t);
-  else if (tab === "plan") body = program ? `<div class="seg">${[["log",tx("Kaydım")],["program",tx("Program")],["howto",tx("Nasıl yapılır")]].map(([k,l]) =>
+  else if (tab === "plan") body = program ? `<div class="seg">${[["today",tx("Bugün")],["program",tx("Program")]].map(([k,l]) =>
       `<button data-plan-tab="${k}" aria-current="${planTab===k}">${l}</button>`).join("")}</div>`
-      + (planTab === "howto" ? howtoView(program)
-       : planTab === "log" ? trainLogView(entry, program, t)
-       : trainingSection(program, true)) : noProgram;
+      + (planTab === "today" ? trainTodayView(entry, program, t)
+       : trainingSection(program, true) + howtoView(program)) : noProgram;
   else if (tab === "meals") body = program ? mealsView(program) : noProgram;
   else { calTab = "cal"; body = calendarView(); }
 
@@ -174,8 +173,8 @@ function render(){
       if (b.dataset.planTab === planTab) return;
       navTo(() => { planTab = b.dataset.planTab; render(); window.scrollTo(0,0); }, segDir(b), "k-seg");
     });
-    if (planTab === "howto") wireHowto();
-    if (planTab === "log"){ wireLifts(entry, t); wireFree(t); wireFolds(); }
+    if (planTab === "program"){ wireHowto(); wireFolds(); }
+    if (planTab === "today") wireTrain(t);
     const po = document.getElementById("plan-on");
     if (po) po.onclick = async () => {
       delete state.profile.noPlan;

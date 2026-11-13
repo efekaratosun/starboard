@@ -273,6 +273,7 @@ function chartsView(){
   return `
   ${weeklySummary()}
   ${nutritionCard(currentProgram())}
+  ${prBoard()}
   ${card(tx("Kilo"), D.weight.delta !== null ? `${D.weight.delta>0?"+":""}${fmtN(+wOut(D.weight.delta).toFixed(1))} ${wUnit()}` : "",
     trendChart(w.map(x => ({ ...x, v:wOut(x.v) })), { color:"weight", dec:1, unit:wUnit(), average:true, band:wBand && wBand.map(wOut), label:tx("kilo trendi") }),
     w.length >= 2 ? bandNote(tx("Bant sağlıklı kilo aralığın{0}. Kesikli çizgi 7 günlük ortalama: günlük dalgalanma su ve glikojenden gelir, asıl yön ortalamada görünür.", [(wBand ? ` (${Math.round(wOut(wBand[0]))}–${fmtW0(wBand[1])})` : "")])) : "")}
