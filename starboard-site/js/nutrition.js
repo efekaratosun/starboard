@@ -6,9 +6,9 @@ const FOODS = {
   /* p/c/f/lif: 100 g başına gram. v: o besinin kayda değer kaynağı olduğu mikro besinler. */
   yumurta:{n:tx("Yumurta"), p:12.6, c:0.8, f:10, lif:0, unit:50, unitName:tx("adet"), i:"egg", v:["A","D","B12"]},
   yumurtabeyaz:{n:tx("Yumurta beyazı"), a:tx("yumurta akı"), p:11, c:0.7, f:0.2, lif:0, unit:33, unitName:tx("adet"), i:"egg"},
-  tavuk:{n:tx("Tavuk göğsü"), por:[{n:tx("porsiyon"),g:150},{n:tx("bütün göğüs"),g:220}], p:31, c:0, f:3.6, lif:0, i:"poultry", v:["B6","B12",tx("çinko")]},
-  tavukbut:{n:tx("Tavuk but (derisiz)"), por:[{n:tx("adet"),g:110},{n:tx("porsiyon"),g:150}], p:24, c:0, f:8, lif:0, i:"poultry", v:["B12",tx("çinko")]},
-  hindi:{n:tx("Hindi göğsü"), por:[{n:tx("porsiyon"),g:150}], p:29, c:0, f:2, lif:0, i:"poultry", v:["B6","B12"]},
+  tavuk:{n:tx("Tavuk göğsü"), por:[{n:tx("porsiyon"),g:150},{n:tx("bütün göğüs"),g:220}], p:22.5, c:0, f:2.6, lif:0, i:"poultry", v:["B6","B12",tx("çinko")]},
+  tavukbut:{n:tx("Tavuk but (derisiz)"), por:[{n:tx("adet"),g:110},{n:tx("porsiyon"),g:150}], p:20, c:0, f:4, lif:0, i:"poultry", v:["B12",tx("çinko")]},
+  hindi:{n:tx("Hindi göğsü"), por:[{n:tx("porsiyon"),g:150}], p:24, c:0, f:1.5, lif:0, i:"poultry", v:["B6","B12"]},
   ton:{n:tx("Ton balığı (suda)"), a:"konserve ton", por:[{n:tx("kutu"),g:110},{n:tx("porsiyon"),g:100}], p:26, c:0, f:1, lif:0, i:"fish", v:["D","B12"]},
   somon:{n:tx("Somon"), por:[{n:tx("porsiyon"),g:150},{n:tx("fileto"),g:180}], p:20, c:0, f:13, lif:0, i:"fish", v:["D","B12","omega3"]},
   hamsi:{n:tx("Hamsi"), por:[{n:tx("porsiyon"),g:200},{n:tx("adet"),g:12,s:[5,10,15]}], p:20, c:0, f:8, lif:0, i:"fish", v:["D","B12","omega3","kalsiyum"]},
@@ -17,9 +17,9 @@ const FOODS = {
   levrek:{n:tx("Levrek"), por:[{n:tx("adet"),g:200}], p:18, c:0, f:4, lif:0, i:"fish", v:["B12"]},
   cipura:{n:tx("Çipura"), por:[{n:tx("adet"),g:200}], p:20, c:0, f:5, lif:0, i:"fish", v:["B12"]},
   karides:{n:tx("Karides"), por:[{n:tx("porsiyon"),g:150},{n:tx("adet"),g:12,s:[5,10,15]}], p:20, c:0, f:1, lif:0, i:"fish", v:["B12",tx("çinko")]},
-  kofte:{n:tx("Yağsız dana kıyma"), a:tx("kıyma"), por:[{n:tx("porsiyon"),g:125}], p:26, c:0, f:9, lif:0, i:"meat", v:["demir","B12",tx("çinko")]},
-  biftek:{n:tx("Dana biftek"), por:[{n:tx("porsiyon"),g:180}], p:27, c:0, f:8, lif:0, i:"meat", v:["demir","B12",tx("çinko")]},
-  kuzu:{n:tx("Kuzu eti"), por:[{n:tx("porsiyon"),g:150}], p:25, c:0, f:16, lif:0, i:"meat", v:["demir","B12",tx("çinko")]},
+  kofte:{n:tx("Yağsız dana kıyma"), a:tx("kıyma"), por:[{n:tx("porsiyon"),g:125}], p:20, c:0, f:10, lif:0, i:"meat", v:["demir","B12",tx("çinko")]},
+  biftek:{n:tx("Dana biftek"), por:[{n:tx("porsiyon"),g:180}], p:21, c:0, f:8, lif:0, i:"meat", v:["demir","B12",tx("çinko")]},
+  kuzu:{n:tx("Kuzu eti"), por:[{n:tx("porsiyon"),g:150}], p:18, c:0, f:14, lif:0, i:"meat", v:["demir","B12",tx("çinko")]},
   karaciger:{n:tx("Dana karaciğer"), por:[{n:tx("porsiyon"),g:150}], p:20, c:4, f:5, lif:0, i:"meat", v:["A","demir","B12","folat"]},
   doner:{n:tx("Et döner"), a:tx("döner"), por:[{n:tx("porsiyon"),g:150}], p:20, c:2, f:18, lif:0.3, i:"meat", v:["demir","B12"]},
   sucuk:{n:tx("Sucuk"), por:[{n:tx("dilim"),g:8,s:[3,5,10]}], p:22, c:2, f:40, lif:0, i:"meat"},
@@ -643,50 +643,6 @@ function foodUsage(){
   return u;
 }
 
-/* Bir besinin hangi rolü üstlenebileceği: kalorisinin çoğu hangi makrodan geliyor? */
-let ROLE_CACHE = null;
-function roleCandidates(role){
-  if (!ROLE_CACHE){
-    ROLE_CACHE = { p:[], c:[], f:[] };
-    for (const [k,f] of Object.entries(FOODS)){
-      const kcal = f.p*4 + f.c*4 + f.f*9;
-      if (kcal < 40) continue;
-      /* Eşik 0.25: baklagiller kendi karbonhidratını taşısa da protein kaynağıdır. */
-      if (f.p >= 15 && f.p*4/kcal >= 0.25) ROLE_CACHE.p.push(k);
-      if (f.c >= 15 && f.c*4/kcal >= 0.55) ROLE_CACHE.c.push(k);
-      if (f.f >= 35 && f.f*9/kcal >= 0.60) ROLE_CACHE.f.push(k);
-    }
-  }
-  return ROLE_CACHE[role];
-}
-
-/* Bir öğün gözü için besin seç: dışlanmışsa değiştir, "benim besinlerim" açıksa
-   aynı rolü oynayan ve en çok yediğin besinle değiştir. */
-function resolveSlot(orig, role, opts, used){
-  const free = k => !opts.exclude.has(k) && !used.has(k) && FOODS[k];
-  const byUse = list => list.slice().sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
-
-  if (opts.useMine){
-    const mine = byUse(roleCandidates(role).filter(k => free(k) && (opts.usage[k]||0) >= 2));
-    if (mine.length) return mine[0];
-  }
-  if (free(orig)) return orig;
-  let alt = byUse(roleCandidates(role).filter(k => free(k) && !NO_SUGGEST.has(k)));
-  if (!alt.length) alt = byUse(roleCandidates(role).filter(k => !opts.exclude.has(k) && FOODS[k]));
-  /* Uygun hiçbir şey yoksa yasak besini geçirmektense boş dön. */
-  return alt.length ? alt[0] : null;
-}
-
-/* Kullanıcının yediklerine en yakın kombinasyonlar başa gelsin. */
-/* Hazır menüler: yalnızca seçili mutfağınkiler, en çok yenen besinleri içeren önce. */
-function setOrder(usage, cuisine){
-  return MEAL_SETS.map((s,i) => [i, s.meals.reduce((a,m) =>
-      a + (usage[m.p]||0) + (usage[m.c]||0) + (usage[m.f]||0), 0)])
-    .filter(([i]) => cuisineOk(MEAL_SETS[i], cuisine))
-    .sort((a,b) => b[1] - a[1])
-    .map(x => x[0]);
-}
-
 /* Öğünler tek kaynaktan gelir: kullanıcı ekleyip silebilir, hem günlük
    hem öneri motoru aynı listeyi kullanır. h = tipik saat (sıralama ve
    "hangi öğün" varsayılanı için), cat = öneri motorunun besin kategorileri. */
@@ -851,65 +807,26 @@ function recipeAllowed(r, diet){
 }
 
 
-function solveTrio(P, C, F, tp, tc, tf, tk){
-  let gp = 0, gc = 0, gf = 0;
-  const capP = P.unit ? 250 : 400;
-  const capC = C.c < 25 ? 500 : 350;
-  /* Üç kaynak da üç makroya birden katkı verdiği için tek geçişte çözülmüyor. */
-  for (let i = 0; i < 8; i++){
-    gp = clamp((tp - gc*C.p/100 - gf*F.p/100) / (P.p/100), 0, capP);
-    gc = clamp((tc - gp*P.c/100 - gf*F.c/100) / (C.c/100), 0, capC);
-    gf = clamp((tf - gp*P.f/100 - gc*C.f/100) / (F.f/100), 0, 90);
-  }
-  const kcalOf = (fo,g) => (fo.p*4 + fo.c*4 + fo.f*9) * g/100;
-  let excess = kcalOf(P,gp) + kcalOf(C,gc) + kcalOf(F,gf) - tk;
-  /* Fazlayı önce karbonhidrattan, sonra yağdan, en son proteinden (en fazla %20) kıs. */
-  if (excess > 0 && gc > 0){ const per=(C.p*4+C.c*4+C.f*9)/100; const cut=Math.min(gc, excess/per); gc-=cut; excess-=cut*per; }
-  if (excess > 0 && gf > 0){ const per=(F.p*4+F.c*4+F.f*9)/100; const cut=Math.min(gf, excess/per); gf-=cut; excess-=cut*per; }
-  if (excess > 0 && gp > 0){ const per=(P.p*4+P.c*4+P.f*9)/100; gp-=Math.min(gp*0.2, excess/per); }
+/* ---------------- öğün önerileri ----------------
+   Her öğün gerçek bir tabak gibi kurulur: öğünün türüne göre bir kalıp (PLATES)
+   seçilir, kalıbın her gözü kendi listesinden bir besin alır (kahvaltı: peynir +
+   ekmek + zeytin; ana öğün: et + pilav + zeytinyağı + yoğurt gibi). Miktarlar her
+   besinin makul porsiyon aralığında (PORTION) kalır ve günün kalori ve protein
+   hedefine göre bütün öğünlerde birlikte ayarlanır.
+   Günün sırası (planDay() + "Başka kombinasyon" sayısı) kalıbı ve besinleri döndürür:
+   ardışık günlerde aynı ana yemek, aynı gün içinde aynı besin gelmez. */
 
-  const sum = { p:0, c:0, f:0, lif:0 };
-  for (const [fo,g] of [[P,gp],[C,gc],[F,gf]]){
-    sum.p += fo.p*g/100; sum.c += fo.c*g/100; sum.f += fo.f*g/100; sum.lif += (fo.lif||0)*g/100;
-  }
-  sum.kcal = sum.p*4 + sum.c*4 + sum.f*9;
-  return { gp, gc, gf, sum };
-}
-
-/* Bir öğünde tek karbonhidrat kaynağından en fazla kaç gram önerilir.
-   Kuru tahıl ve makarna 120 g, ekmek türleri 130 g (yaklaşık 4 dilim),
-   patates ve meyve gibi sulu kaynaklar 350 g. Çok yüksek kalorili öğünlerde
-   tavan öğünün büyüklüğüyle orantılı esner. */
-function carbCap(food, scale){
-  const base = food.c >= 60 ? 120 : food.c >= 35 ? 130 : 350;
-  return base * (scale || 1);
-}
-/* Ana karbonhidrat tavanı aşınca öğüne eklenen yan karbonhidrat, sırayla denenir:
-   kahvaltı ve ara öğünde meyve, ana öğünlerde ekmek. */
-const SIDE_CARBS = {
-  kahvalti:["muz","elma","ekmek"], ara:["muz","elma","ekmek"],
-  ogle:["ekmek","patates","muz"], aksam:["ekmek","patates","muz"]
-};
-
-/* Öğüne yakışmayan eşleşmeler çıkmasın diye her öğünün kabul ettiği kategoriler. */
 const SIDES = [tx("Yanına mevsim salata"), tx("Yanına domates, salatalık, yeşillik"),
   tx("Yanına turşu ve maydanoz"), tx("Yanına buharda brokoli veya kabak")];
 const SIDES_INTL = [tx("Yanına mevsim salata"), tx("Yanına buharda brokoli veya kabak"),
   tx("Yanına fırında sebze"), tx("Yanına karışık yeşillik ve limon")];
-
-const SLOT_CATS = {
-  kahvalti:{ p:["kahvaltilik","sut","sarkuteri","baklagil"], c:["tahil","meyve","kahvaltilik"], f:["kuruyemis","yag","meyve"] },
-  ogle:    { p:["et","balik","baklagil","sut","yemek"], c:["tahil","sebze","baklagil"], f:["yag","kuruyemis","meyve"] },
-  ara:     { p:["sut","ara","kuruyemis","kahvaltilik","baklagil"], c:["meyve","tahil","ara"], f:["kuruyemis","meyve"] },
-  aksam:   { p:["et","balik","baklagil","yemek","sut"], c:["tahil","sebze","baklagil"], f:["yag","kuruyemis","meyve"] }
-};
 
 /* Tatlı, cips, gazlı içecek gibi kalemler otomatik öneriye girmez. */
 const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahinhelva","asure",
   "sutlucikolata","bitter","dondurma","kazandibi","sutlac","cips","kola","meyvesuyu","kraker",
   "biskuvi","seker","un","kakaolukrem","recel","bal","pekmez","salep","boza","salgam","cay",
   "turkkahvesi","sosis","sucuk","patateskizartma","aycicekyagi","kaymak","krempeynir","gevrek",
-  "galeta","proteinbar","yulafbar","whey",
+  "proteinbar","yulafbar","whey",
   "wheyizolat","kazein","gainer","bitkiselprotein","kolajen","kreatin","maltodekstrin",
   "proteinpancake","proteinpuding","proteinsut","proteinshake","proteingofret","proteinkurabiye",
   "proteincips","enerjijeli","izotonik","enerjibar","macarsalam","kuflupeynir","zeytinezmesi","kurudomates",
@@ -920,255 +837,371 @@ const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahin
 
 /* Kahvaltı ve ara öğün hafif öğünlerdir: pişirilip yemek olarak yenen tahıllar
    ve kuru baklagiller bu öğünlere önerilmez. */
-const LIGHT_SLOTS = new Set(["kahvalti","ara"]);
 const MEAL_GRAINS = new Set(["pirinc","pilav","bulgur","bulgurpilav","makarna","makarnapis",
   "glutensizmakarna","kinoa","kuskus","karabugday","amarant","misir","cigkofte","kisir"]);
-const READY_LEGUMES = new Set(["tofu","tempeh"]);
-/* Protein yoğunluğu eşiğin altında kalsa da bir öğünün proteinini taşıyabilen besinler. */
-const PROTEIN_EXTRA = ["yumurta","suzme"];
+/* Hazır yenen baklagiller: hafif öğünde olabilir. */
+const READY_LEGUMES = new Set(["tofu","tempeh","humus","edamame"]);
 /* Kahvaltıya yakışan tahıllar ana öğüne önerilmez. */
-const BREAKFAST_GRAINS = new Set(["yulaf","musli","simit","acma"]);
-/* Makro uyumu yakınsa o öğünün alışıldık besinleri öne geçer. */
-const MAIN_STAPLES = { p:[], c:["pirinc","bulgur","makarna","patates","kinoa"], f:["zeytinyagi","avokado"] };
-const STAPLES = {
-  kahvalti:{ p:["yumurta","suzme"], c:["ekmek","cavdarekmek","kepekliekmek","beyazekmek","yulaf","musli","simit"], f:[] },
-  ara:{ p:["suzme"], c:[], f:[] },
-  ogle:MAIN_STAPLES, aksam:MAIN_STAPLES
+const BREAKFAST_GRAINS = new Set(["yulaf","musli","simit","acma","granola"]);
+
+/* Bir öğünde önerilebilecek en az ve en çok miktar (gram, çiğ). Tabloda olmayan
+   besin otomatik öneriye girmez; yalnızca kullanıcı kendisi ekleyebilir. */
+const PORTION = {};
+const portionRule = (keys, lo, hi) => keys.forEach(k => { PORTION[k] = [lo, hi]; });
+/* kahvaltılık */
+portionRule(["yumurta"], 50, 150);
+portionRule(["omlet"], 130, 260);
+portionRule(["menemen"], 200, 350);
+portionRule(["beyazpeynir","ezine","kasar","orgupeyniri","kecipeyniri","mozzarella","cheddar"], 30, 80);
+portionRule(["lightbeyaz","lightkasar"], 30, 80);
+portionRule(["lor","cokelek","cottage"], 50, 150);
+portionRule(["ekmek","cavdarekmek","kepekliekmek"], 30, 120);
+portionRule(["beyazekmek"], 25, 100);
+portionRule(["eksimaya"], 50, 150);
+portionRule(["ingmuffin"], 66, 132);
+portionRule(["bagel"], 55, 105);
+portionRule(["simit"], 100, 100);
+portionRule(["galeta"], 18, 45);
+portionRule(["misirtortilla"], 52, 104);
+portionRule(["zeytin","yesilzeytin"], 20, 40);
+portionRule(["avokado"], 40, 150);
+portionRule(["tofu"], 100, 250);
+portionRule(["humus"], 40, 150);
+portionRule(["yulaf","musli","granola"], 30, 80);
+portionRule(["tahilhalka"], 30, 60);
+portionRule(["sut","kefir","soyasutu","tamsut","yagsizsut"], 150, 300);
+portionRule(["ayran"], 200, 300);
+portionRule(["suzme","yunanyogurt","skyr","bitkiselyogurt"], 100, 300);
+portionRule(["yogurt"], 100, 250);
+portionRule(["cacik"], 150, 250);
+/* meyve: en fazla bir buçuk porsiyon */
+portionRule(["muz"], 60, 180);
+portionRule(["elma"], 90, 250);
+portionRule(["armut"], 85, 250);
+portionRule(["portakal"], 140, 210);
+portionRule(["mandalina"], 90, 180);
+portionRule(["kivi"], 75, 150);
+portionRule(["seftali"], 150, 225);
+portionRule(["cilek"], 75, 200);
+portionRule(["yabanmersini","ahududu","bogurtlen"], 40, 80);
+portionRule(["incir"], 50, 100);
+portionRule(["kuruuzum"], 15, 40);
+portionRule(["kurukayisi","hurma"], 16, 40);
+portionRule(["kuruincir"], 20, 40);
+/* kuruyemiş ve ezmeler */
+portionRule(["badem","ceviz","findik","antepfistigi","kaju","yerfistigi"], 10, 30);
+portionRule(["fistikezmesi","findikezmesi","bademezmesi","tahin"], 8, 32);
+portionRule(["leblebi"], 30, 60);
+/* ana öğün */
+portionRule(["tavuk","hindi","tavukbut","kofte","biftek","hindikiyma","somon","levrek","cipura",
+  "alabalik","uskumru","morina","tilapia","karides"], 100, 250);
+portionRule(["hamsi"], 150, 250);
+portionRule(["ton"], 80, 165);
+portionRule(["pirinc","bulgur","makarna","makarnabeyaz","kinoa","kuskus","esmerpirinc"], 40, 150);
+portionRule(["patates"], 150, 450);
+portionRule(["tatlipatates"], 130, 400);
+portionRule(["mercimek","yesilmercimek","nohut","kurufasulye","barbunya","siyahfasulye"], 50, 130);
+portionRule(["tempeh","seitan","vegankiyma"], 100, 250);
+portionRule(["soya"], 30, 80);
+portionRule(["zeytinyagi"], 5, 20);
+
+const BREADS = ["ekmek","cavdarekmek","kepekliekmek","eksimaya","ingmuffin","bagel","beyazekmek","galeta","misirtortilla"];
+const CHEESES = ["beyazpeynir","lor","ezine","kasar","lightbeyaz","cottage","orgupeyniri","lightkasar","cokelek","mozzarella","kecipeyniri","cheddar"];
+const FRUITS = ["muz","elma","mandalina","armut","cilek","portakal","kivi","yabanmersini","seftali","ahududu","incir","bogurtlen"];
+const NUTS = ["badem","ceviz","findik","fistikezmesi","antepfistigi","kaju","findikezmesi","bademezmesi","yerfistigi"];
+const SPOON = ["suzme","yogurt","yunanyogurt","skyr","kefir","sut","soyasutu","bitkiselyogurt"];
+/* Protein hedefi yüksekken kullanılan listeler. */
+const RICH_SPOON = ["skyr","suzme","yunanyogurt","bitkiselyogurt","soyasutu"];
+const RICH_CHEESES = ["lor","lightbeyaz","cottage","lightkasar","cokelek","beyazpeynir","mozzarella"];
+const STARCH = ["pirinc","bulgur","makarna","patates","kinoa","tatlipatates","esmerpirinc","makarnabeyaz","kuskus"];
+const DAIRY_SIDE = ["yogurt","cacik","ayran"];
+/* Büyük öğünde patates yerine yoğun tahıl: patatesle tabak doymadan hedefe ulaşmıyor. */
+const DENSE_STARCH = ["pirinc","bulgur","makarna","kinoa","esmerpirinc","makarnabeyaz","kuskus"];
+const SIDE_BREADS = ["ekmek","kepekliekmek","cavdarekmek","eksimaya"];
+const BFAST_SIDES = [tx("Domates, salatalık, yeşillik"), tx("Domates, salatalık, yeşil biber")];
+const EGG_SIDES = [tx("Ispanak, domates"), tx("Domates, maydanoz")];
+
+/* Öğün kalıpları. g: gözler (sırayla doldurulur, ilk göz tabağın asıl besinidir),
+   opt: gerekmezse düşebilir, rich: protein gerektiğinde bu gözün listesi, big: öğün büyükse (BIG_MEAL kcal) bu gözün listesi,
+   w: dönüşteki ağırlık, only: yalnızca bu beslenme türlerinde,
+   lowP: proteini az; protein hedefi yüksekken kullanılmaz (2: yalnızca yağ kaybında, bitkisel beslenmede hep var). */
+const PLATES = {
+  kahvalti: [
+    { g:[{ k:CHEESES, rich:RICH_CHEESES }, { k:["yumurta"], opt:1 }, { k:BREADS }, { k:["zeytin","yesilzeytin"], opt:1 }], side:BFAST_SIDES },
+    { g:[{ k:["yumurta","menemen","omlet"] }, { k:["beyazpeynir","kasar","ezine","mozzarella","cheddar","kecipeyniri"], opt:1 }, { k:BREADS },
+      { k:["avokado"], opt:1 }], side:EGG_SIDES },
+    { g:[{ k:["yulaf","granola","musli","tahilhalka"] }, { k:SPOON, rich:RICH_SPOON }, { k:["muz","yabanmersini","cilek","elma","ahududu","armut"] }, { k:NUTS, opt:1 }] },
+    { only:["vegan"], g:[{ k:["tofu"] }, { k:BREADS }, { k:["avokado","zeytin"], opt:1 }], side:EGG_SIDES },
+    { only:["vegan"], g:[{ k:["humus"] }, { k:BREADS }, { k:["zeytin","yesilzeytin"], opt:1 }], side:BFAST_SIDES }
+  ],
+  ara: [
+    { w:2, g:[{ k:["suzme","yogurt","yunanyogurt","skyr","kefir","cottage","bitkiselyogurt"], rich:["skyr","suzme","yunanyogurt","cottage","bitkiselyogurt"] },
+      { k:FRUITS }, { k:NUTS, opt:1 }] },
+    { g:[{ k:CHEESES, rich:RICH_CHEESES }, { k:BREADS }], side:[tx("Domates, salatalık, yeşillik")] },
+    { lowP:1, g:[{ k:FRUITS }, { k:NUTS }] },
+    { lowP:1, g:[{ k:["humus"] }, { k:BREADS }], side:[tx("Domates, salatalık, yeşillik")] },
+    { lowP:1, g:[{ k:["ayran","kefir"] }, { k:["simit","ekmek","eksimaya"] }, { k:CHEESES, opt:1 }] },
+    { lowP:1, g:[{ k:["leblebi"] }, { k:["kurukayisi","kuruincir","hurma","kuruuzum"] }] }
+  ],
+  ana: [
+    { w:3, g:[{ k:["tavuk","kofte","hindi","biftek","tavukbut","hindikiyma"] }, { k:STARCH, big:DENSE_STARCH }, { k:["zeytinyagi"] },
+      { k:DAIRY_SIDE, opt:1, big:SIDE_BREADS }] },
+    { w:2, g:[{ k:["somon","levrek","ton","cipura","hamsi","alabalik","uskumru","karides","morina","tilapia"] },
+      { k:["patates","pirinc","bulgur","makarna","kinoa","tatlipatates","esmerpirinc","makarnabeyaz"], big:DENSE_STARCH }, { k:["zeytinyagi"] },
+      { k:[], opt:1, big:SIDE_BREADS }] },
+    { w:2, lowP:2, g:[{ k:["kurufasulye","nohut","yesilmercimek","mercimek","barbunya","siyahfasulye"] }, { k:["pirinc","bulgur","esmerpirinc"] },
+      { k:["zeytinyagi"] }, { k:DAIRY_SIDE, opt:1, big:SIDE_BREADS }] },
+    { w:2, only:["vejetaryen","vegan","pesketaryen"], g:[{ k:["tofu","seitan","vegankiyma","tempeh","soya"] }, { k:STARCH, big:DENSE_STARCH },
+      { k:["zeytinyagi"] }, { k:["yogurt","cacik"], opt:1, big:SIDE_BREADS }] }
+  ]
 };
-/* Uluslararası mutfakta az bilinen besinler: makro uyumu çok daha iyi değilse seçilmez. */
-const INTL_RARE = new Set(["barbunya","borulce","bakla","masfasulye","soyafasulye","soya","amarant","karabugday","kestane","bulgur","yesilmercimek"]);
-/* Uluslararası mutfakta alışıldık besinler. */
-const MAIN_STAPLES_INTL = { p:[], c:["pirinc","esmerpirinc","makarnabeyaz","patates","tatlipatates","kinoa"], f:["zeytinyagi","avokado"] };
-const STAPLES_INTL = {
-  kahvalti:{ p:["yumurta","yunanyogurt"], c:["ekmek","eksimaya","ingmuffin","bagel","yulaf","tahilhalka"], f:[] },
-  ara:{ p:["yunanyogurt","cottage"], c:[], f:[] },
-  ogle:MAIN_STAPLES_INTL, aksam:MAIN_STAPLES_INTL
-};
+/* Bu kaloriden büyük ana öğüne yanına ekmek gelir; ana besinlerin üst sınırı öğünün
+   büyüklüğüyle en çok %20 esner (SCALE_REF: o öğün türünde sınırların ayarlandığı kalori). */
+const BIG_MEAL = 1000;
+const SCALE_REF = { kahvalti:700, ara:450, ana:950 };
+const SCALES = k => ["meat","poultry","fish","bread"].includes(FOODS[k].i) || MEAL_GRAINS.has(k)
+  || CHEESES.includes(k) || k === "zeytinyagi" || ["badem","ceviz","findik","antepfistigi","kaju","yerfistigi"].includes(k);
+/* Ana öğünün yanındaki ekmek en çok iki dilim, çok büyük öğünde üç dilim. */
+const sideBreadMax = t => t >= 1300 ? 90 : 60;
+/* Bitkisel süt ve yoğurt yalnızca vegan ve laktozsuz beslenmede önerilir. */
+const PLANT_DAIRY = new Set(["soyasutu","bitkiselyogurt"]);
+/* Bir porsiyon meyve: orta boy bir meyve ya da küçük bir kase (en az 120 g), kuru meyvede 30 g.
+   Bir öğünde en fazla iki porsiyon. */
+function fruitServing(k){
+  const f = FOODS[k], p0 = (porsOf(f)[0] || {}).g || 120;
+  return f.c >= 50 ? 30 : Math.max(p0, 120);
+}
+const plateGroup = cat => cat === "kahvalti" ? "kahvalti" : cat === "ara" ? "ara" : "ana";
 
-/* Kalan makro hedefine en iyi oturan üçlüyü arar. */
-function pickTrio(slot, t, opts, used, variant){
-  const cats = SLOT_CATS[slot] || SLOT_CATS.ogle;
-  const light = LIGHT_SLOTS.has(slot);
-  const staples = (opts.cuisine === "intl" ? STAPLES_INTL[slot] || MAIN_STAPLES_INTL : STAPLES[slot] || MAIN_STAPLES);
-  const pool = role => {
-    const ok = new Set(cats[role]);
-    /* Yumurta ve yoğurt gibi besinler başa gelir: hafif öğünlerin doğal protein kaynakları. */
-    const all = role === "p"
-      ? PROTEIN_EXTRA.filter(k => FOODS[k]).concat(roleCandidates("p").filter(k => !PROTEIN_EXTRA.includes(k)))
-      : roleCandidates(role);
-    const fits = k => FOODS[k] && !opts.exclude.has(k) && !NO_SUGGEST.has(k) && ok.has(foodCat(FOODS[k]))
-      /* kahvaltıya balık konservesi yakışmıyor */
-      && !(slot === "kahvalti" && FOODS[k].i === "fish")
-      && !(light && role === "p" && foodCat(FOODS[k]) === "baklagil" && !READY_LEGUMES.has(k))
-      && !(light && role === "c" && MEAL_GRAINS.has(k))
-      && !(!light && role === "c" && BREAKFAST_GRAINS.has(k))
-      && !(k === "glutensizmakarna" && opts.diet !== "glutensiz");
-    const list = all.filter(k => fits(k) && !used.has(k));
-    list.sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
-    if (!list.length){
-      /* Diyet havuzu daraldıysa aynı besinin gün içinde tekrarına izin ver. */
-      const relaxed = all.filter(fits);
-      if (!relaxed.length) return [];
-      relaxed.sort((a,b) => (opts.usage[b]||0) - (opts.usage[a]||0));
-      return relaxed.slice(0, 6);
-    }
-    /* Varyanta göre listeyi kaydır: "başka kombinasyon" gerçekten başkasını versin. */
-    const step = role === "p" ? 3 : role === "c" ? 5 : 2;
-    const off = (variant * step) % list.length;
-    const rot = list.slice(off).concat(list.slice(0, off));
-    return rot.slice(0, role === "c" ? 10 : role === "p" ? 8 : 6);
-  };
-
-  const ps = pool("p"), cs = pool("c"), fs = pool("f");
-  if (!ps.length || !cs.length || !fs.length) return null;
-
-  let best = null;
-  for (const pk of ps) for (const ck of cs) for (const fk of fs){
-    if (pk === ck || ck === fk || pk === fk) continue;
-    /* Protein de karbonhidrat da baklagil olmasın (mercimeğin yanına nohut gibi). */
-    if (foodCat(FOODS[pk]) === "baklagil" && foodCat(FOODS[ck]) === "baklagil") continue;
-    /* Koşer: aynı öğünde et ve süt ürünü bir arada olmaz. */
-    if (opts.diet === "koser" && [pk, ck, fk].some(hasMeatK) && [pk, ck, fk].some(hasDairyK)) continue;
-    const r = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
-    let err = Math.abs(r.sum.kcal - t.kcal)
-            + 4 * Math.abs(r.sum.p - t.p)
-            + Math.abs(r.sum.c - t.c)
-            + 2 * Math.abs(r.sum.f - t.f);
-    /* Bileşeni düşen ya da tabağa sığmayacak kadar büyük porsiyonlar tercih edilmesin. */
-    if (r.gc < 20) err += 80;
-    if (r.gf < 5) err += 50;
-    if (r.gp > 280) err += (r.gp - 280) * 0.8;
-    if (r.gc > 300) err += (r.gc - 300) * 0.4;
-    if (staples.p.includes(pk)) err -= 40;
-    if (staples.c.includes(ck)) err -= 40;
-    if (staples.f.includes(fk)) err -= 40;
-    if (opts.cuisine === "intl") err += [pk, ck, fk].filter(k => INTL_RARE.has(k)).length * 60;
-    /* Tofu ve tempeh hafif öğünde ancak başka protein kalmadıysa (vegan) seçilsin. */
-    if (light && READY_LEGUMES.has(pk)) err += 60;
-    if (!best || err < best.err) best = { err, pk, ck, fk, r };
+/* Ağırlıklı sıra: w:3 olan kalıp her yedi tabağın üçünde, dağınık olarak gelir. */
+function plateSeq(plates){
+  const tot = plates.reduce((a, p) => a + (p.w || 1), 0), cur = plates.map(() => 0), seq = [];
+  for (let n = 0; n < tot; n++){
+    let best = 0;
+    plates.forEach((p, i) => { cur[i] += p.w || 1; if (cur[i] > cur[best]) best = i; });
+    cur[best] -= tot; seq.push(best);
   }
-  return best;
+  return seq;
+}
+const modn = (a, n) => ((a % n) + n) % n;
+
+/* Takvimden günün sırası: öneri her gün kendiliğinden değişir. */
+const planDay = () => Math.round(Date.parse(today() + "T12:00:00Z") / 864e5);
+
+/* Öğün kalıplarından günün tabaklarını seçer. Dönen: öğün başına { picks:[{k, opt}], side } ya da null. */
+function choosePlates(day, mealList, ctx, fixedByMeal, big){
+  const used = new Set(fixedByMeal.flat());
+  const groups = {};
+  for (const g of Object.keys(PLATES)){
+    const plates = PLATES[g].filter(p => (!p.only || p.only.includes(ctx.diet)) && p.g.every(z => z.opt || z.k.some(ctx.allowed)));
+    const veg = ctx.diet === "vejetaryen" || ctx.diet === "vegan";
+    const rich = plates.filter(p => p.lowP === 1 ? !ctx.noLowP : p.lowP === 2 ? !ctx.lean || veg : true);
+    const okPlates = rich.length ? rich : plates;
+    groups[g] = { plates: okPlates, seq: plateSeq(okPlates), all: plates, n: mealList.filter(m => plateGroup(m.cat) === g).length, j: 0 };
+  }
+  const meatDairy = (a, b) => (hasMeatK(a) && hasDairyK(b)) || (hasDairyK(a) && hasMeatK(b));
+  return mealList.map((mm, idx) => {
+    const G = groups[plateGroup(mm.cat)];
+    const fixed = fixedByMeal[idx];
+    if (!G.plates.length) { G.j++; return null; }
+    const gi = day * Math.max(1, G.n) + G.j++;
+    const L = G.seq.length;
+    /* Kullanıcı bu öğüne bir şey sabitlediyse o besini içeren kalıp öne geçer. */
+    let order = Array.from({ length:L }, (_, t) => modn(gi + t, L));
+    if (fixed.length){
+      const has = pos => G.plates[G.seq[pos]].g.some(z => z.k.concat(z.big || []).some(k => fixed.includes(k)));
+      order = order.filter(has).concat(order.filter(pos => !has(pos)));
+    }
+    const spare = G.all.filter(p => !G.plates.includes(p));
+    for (const pos of order.concat(spare.map((_, i) => L + i))){
+      const pi = pos < L ? G.seq[pos] : -1, plate = pos < L ? G.plates[pi] : spare[pos - L];
+      /* Bu kalıbın kaçıncı kez geldiği: besinler her gelişte bir sonrakine geçer. */
+      const a = gi + modn(pos - gi, L);
+      let occ = pos < L ? Math.floor(a / L) * (plate.w || 1) : gi;
+      if (pos < L) for (let t = 0; t < a % L; t++) if (G.seq[t] === pi) occ++;
+      /* Yedek kalıp ertesi günün tabağını birebir almasın. */
+      if (pos !== modn(gi, L)) occ++;
+      const picks = [];
+      let failed = false;
+      for (let z = 0; z < plate.g.length; z++){
+        const goz = plate.g[z], list = big[idx] && goz.big && goz.big.some(ctx.allowed) ? goz.big
+          : (ctx.rich && goz.rich) || goz.k;
+        if (list.some(k => fixed.includes(k))) continue;
+        let cands = list.filter(k => ctx.allowed(k) && !(ctx.diet === "koser" && picks.some(p => meatDairy(p.k, k))));
+        if (ctx.useMine){
+          const mine = cands.filter(k => (ctx.usage[k] || 0) >= 2);
+          if (mine.length) cands = mine;
+        }
+        let pick = null;
+        const steps = cands.map((_, s) => s === 0 ? 0 : s === cands.length - 1 ? 1 : s + 1);
+        for (const s of steps){
+          if (pick) break;
+          const k = cands[modn(occ + z * 2 + s, cands.length)];
+          if (!used.has(k) || FOODS[k].i === "oil") pick = k;
+        }
+        if (!pick){ if (goz.opt) continue; failed = true; break; }
+        picks.push({ k:pick, opt:!!goz.opt, side:list === goz.big && list === SIDE_BREADS });
+      }
+      if (failed || !picks.length) continue;
+      picks.forEach(p => used.add(p.k));
+      const sides = plate.side || (plateGroup(mm.cat) === "ana" ? (ctx.cuisine === "intl" ? SIDES_INTL : SIDES) : null);
+      return { picks, side: sides ? sides[modn(occ + idx, sides.length)] : null };
+    }
+    return null;
+  });
+}
+
+/* Miktarlar: bütün öğünlerin gramajları birlikte, günün kalori, protein, karbonhidrat
+   ve yağ hedefine ve öğünlerin kendi paylarına en yakın olacak biçimde, her besinin
+   aralığı içinde seçilir (koordinat iniş; her adımda tek besinin en iyi gramajı). */
+const NUT_KEYS = ["k", "p", "c", "f"];
+function solvePortions(comps, meals, T){
+  /* Protein hedefin %20 üstüne, yağ %15 üstüne kadar ceza almaz; altı daha pahalı. */
+  const W = { k:20, p:5, pOver:2, c:0.5, f:0.5, fOver:1.5, m:1.5, r:0.6 };
+  const P_HI = 1.2, F_HI = 1.15, F_LO = 0.75;
+  const day = { k:0, p:0, c:0, f:0 }, mk = meals.map(m => m.base.k);
+  meals.forEach(m => NUT_KEYS.forEach(x => { day[x] += m.base[x]; }));
+  const add = (c, s) => { NUT_KEYS.forEach(x => { day[x] += s * c.n[x] * c.g; }); mk[c.m] += s * c.n.k * c.g; };
+  comps.forEach(c => add(c, 1));
+  for (let it = 0; it < 60; it++){
+    for (const c of comps){
+      if (c.lock) continue;
+      const Tm = meals[c.m].T;
+      const now = { p:day.p, f:day.f };
+      add(c, -1);
+      let num = 0, den = 0;
+      const term = (w, A, B) => { num += w * A * B; den += w * B * B; };
+      /* Bant: değer [lo, hi] dışındaysa en yakın sınıra çeker. */
+      const band = (x, t, lo, hi, wLo, wHi) => {
+        if (!(t > 0)) return;
+        if (now[x] < t * lo) term(wLo, (day[x] - t * lo) / t, c.n[x] / t);
+        else if (now[x] > t * hi) term(wHi, (day[x] - t * hi) / t, c.n[x] / t);
+      };
+      term(W.k, (day.k - T.k) / T.k, c.n.k / T.k);
+      band("p", T.p, 1, P_HI, W.p, W.pOver);
+      if (T.c > 0) term(W.c, (day.c - T.c) / T.c, c.n.c / T.c);
+      band("f", T.f, F_LO, F_HI, W.f, W.fOver);
+      term(W.m, (mk[c.m] - Tm) / Tm, c.n.k / Tm);
+      term(W.r, -c.g0 * c.n.k / Tm, c.n.k / Tm);
+      c.g = den > 0 ? clamp(-num / den, c.lo, c.hi) : c.lo;
+      add(c, 1);
+    }
+  }
+}
+
+/* Yuvarlama adımı: adetle sayılanlar adet adet, ekmek dilim dilim, meyve yarım
+   ya da tam adet, zeytin beşer; kalanlar 5 g. */
+function portionStep(k){
+  const f = FOODS[k];
+  if (f.unit) return f.unit;
+  const p0 = (porsOf(f)[0] || {}).g;
+  if (k === "zeytin" || k === "yesilzeytin") return 20;
+  if (f.i === "bread" && p0) return p0 <= 60 ? p0 : p0 / 2;
+  if (f.i === "fruit" && p0 && porsOf(f)[0].n === tx("adet")) return p0 >= 100 ? p0 / 2 : p0;
+  return 5;
+}
+function roundTo(g, step, lo, hi){
+  let r = Math.round(g / step) * step;
+  if (r < lo - 0.01) r = Math.ceil((lo - 0.01) / step) * step;
+  if (r > hi + 0.01) r = Math.floor((hi + 0.01) / step) * step;
+  return Math.max(r, 0);
 }
 
 function buildMeals(program, variantIndex){
   const prefs = mealPrefs();
   const usage = foodUsage();
   const diet = currentDiet();
-  const exclude = new Set(prefs.exclude);
   const cuisine = currentCuisine();
-  for (const k of Object.keys(FOODS))
-    if ((diet !== "hepsi" && !foodAllowed(k, diet)) || !cuisineOk(FOODS[k], cuisine)) exclude.add(k);
-  const opts = { exclude, useMine:!!prefs.useMine, usage, diet, cuisine };
-  const order = setOrder(usage, cuisine);
-  const set = MEAL_SETS[order[((variantIndex % order.length) + order.length) % order.length]];
+  const exclude = new Set(prefs.exclude);
+  /* Pirinç patlağı yalnızca glutensiz beslenmede ekmeğin yerine geçer (PLANT_DAIRY de böyle). */
+  const allowed = k => !!FOODS[k] && !!PORTION[k] && !exclude.has(k) && !NO_SUGGEST.has(k)
+    && foodAllowed(k, diet) && cuisineOk(FOODS[k], cuisine) && (k !== "galeta" || diet === "glutensiz")
+    && (!PLANT_DAIRY.has(k) || diet === "vegan" || diet === "laktozsuz");
+  /* Protein kalorinin %18'ini geçiyorsa proteini az ara öğünler çıkar ve gözlerde proteinli listeler
+     kullanılır; %22'yi geçiyorsa (yağ kaybı) baklagil yemeği de çıkar (bitkisel beslenme dışında). */
+  const ctx = { diet, cuisine, usage, useMine:!!prefs.useMine, allowed, noLowP: program.protein * 4 / program.kcal >= 0.18,
+    rich: program.protein * 4 / program.kcal >= 0.18, lean: program.protein * 4 / program.kcal >= 0.22 };
 
-  /* Öğün listesi kullanıcıdan gelir; hazır kombinasyonun besin üçlüleri
-     bu listeye sırayla dağıtılır (öğün sayısı şablondan fazlaysa başa döner). */
   const mealList = userMeals();
   const shares = mealShares(mealList);
-  /* Şablonlar her zaman [Kahvaltı, Öğle, Ara öğün, Akşam] sırasında.
-     Öğüne sırasıyla değil türüyle eşlenir: üç öğünlü düzende "Ara öğün"
-     öğle şablonunu, "Akşam" ara öğün şablonunu almasın. Büyük öğünün
-     ikinci tabağı farklı bir ana öğün şablonundan gelir. */
-  const TPL_OF   = { kahvalti:0, ogle:1, ara:2, aksam:3 };
-  const TPL_ALT  = { kahvalti:2, ogle:3, ara:0, aksam:1 };
-  const tplFor = (mm, plate) => set.meals[
-    (plate ? TPL_ALT : TPL_OF)[mm.cat] ?? (plate ? 3 : 1)];
+  const nutOf = f => ({ k:(f.p*4 + f.c*4 + f.f*9) / 100, p:f.p / 100, c:f.c / 100, f:f.f / 100 });
 
   /* 1) Kullanıcının sabitlediği yiyecekler öğün öğün toplanır. */
-  const fixed = mealList.map((mm, idx) => {
-    const slot = mm.id;
-    const acc = { slot, items:[], p:0, c:0, f:0, lif:0, kcal:0, micros:new Set() };
-    for (const x of fixedOf(slot)){
+  const fixed = mealList.map(mm => {
+    const acc = { items:[], keys:[], p:0, c:0, f:0, lif:0, kcal:0, micros:new Set() };
+    for (const x of fixedOf(mm.id)){
       const fo = foodOf(x.k);
       acc.items.push({ text: portion(fo, x.g).text, icon: fo.i, key:x.k, fixed:true, g:x.g });
+      acc.keys.push(x.k);
       acc.p += fo.p*x.g/100; acc.c += fo.c*x.g/100; acc.f += fo.f*x.g/100; acc.lif += (fo.lif||0)*x.g/100;
       (fo.v || []).forEach(v => acc.micros.add(v));
     }
     acc.kcal = acc.p*4 + acc.c*4 + acc.f*9;
     return acc;
   });
+  const dayFix = fixed.reduce((a, x) => a + x.kcal, 0);
 
-  const anyFixed = fixed.some(f => f.items.length);
-  /* Diyet seçiliyse hazır setleri zorlamak yerine üreticiyi kullan:
-     kategori farkındalığı olduğu için daha tutarlı öğün çıkarıyor. */
-  const generate = anyFixed || diet !== "hepsi";
-  const dayFix = fixed.reduce((a,x) => ({ p:a.p+x.p, c:a.c+x.c, f:a.f+x.f, lif:a.lif+x.lif, kcal:a.kcal+x.kcal }),
-                              { p:0, c:0, f:0, lif:0, kcal:0 });
-
-  /* 2) Günün kalan hedefi, hâlâ yeri olan öğünlere payları oranında bölünür. */
-  const rem = { p: Math.max(0, program.protein - dayFix.p),
-                c: Math.max(0, program.carb - dayFix.c),
-                f: Math.max(0, program.fat - dayFix.f),
-                kcal: Math.max(0, program.kcal - dayFix.kcal) };
-  const raw = mealList.map((mm,i) => Math.max(0, shares[i] - fixed[i].kcal / program.kcal));
-  const sumW = raw.reduce((a,b) => a+b, 0);
+  /* 2) Günün kalan kalorisi, hâlâ yeri olan öğünlere payları oranında bölünür. */
+  const remK = Math.max(0, program.kcal - dayFix);
+  const raw = mealList.map((mm, i) => Math.max(0, shares[i] - fixed[i].kcal / program.kcal));
+  const sumW = raw.reduce((a, b) => a + b, 0);
   const w = raw.map(x => sumW > 0 ? x / sumW : 0);
+  const open = mealList.map((mm, i) => w[i] > 0.0001 && remK * w[i] >= 60);
+
+  /* 3) Tabaklar seçilir, miktarlar birlikte çözülür. */
+  const day = modn(Math.round(variantIndex) || 0, 1e9);
+  const mealT = mealList.map((mm, i) => remK * w[i]);
+  const big = mealT.map((t, i) => plateGroup(mealList[i].cat) === "ana" && t >= BIG_MEAL);
+  const meals = mealList.map((mm, i) => ({ T: Math.max(remK * w[i] + fixed[i].kcal, 1),
+    base:{ k:fixed[i].kcal, p:fixed[i].p, c:fixed[i].c, f:fixed[i].f } }));
+  const T = { k:program.kcal, p:program.protein, c:program.carb, f:program.fat };
+  const choice = choosePlates(day, mealList, ctx, fixed.map(x => x.keys), big).map((c, i) => open[i] ? c : null);
+  let comps = [];
+  choice.forEach((c, m) => c && c.picks.forEach(pk => {
+    const f = FOODS[pk.k], [lo, hi0] = PORTION[pk.k];
+    const hi = pk.side ? Math.min(hi0, sideBreadMax(mealT[m]))
+      : SCALES(pk.k) ? hi0 * clamp(mealT[m] / SCALE_REF[plateGroup(mealList[m].cat)], 1, 1.2) : hi0;
+    const p0 = f.unit || (porsOf(f)[0] || {}).g || lo;
+    comps.push({ m, k:pk.k, n:nutOf(f), opt:pk.opt, lo: pk.opt ? 0 : lo, hi, min:lo,
+      g0: clamp(p0, lo, hi), g: pk.opt ? lo : clamp(p0, lo, hi), step: portionStep(pk.k) });
+  }));
+  if (comps.length){
+    solvePortions(comps, meals, T);
+    /* Gerekmeyen isteğe bağlı besin düşer; kalan herkes kendi en az porsiyonundan başlar. */
+    comps = comps.filter(c => !c.opt || c.g >= c.min * 0.6);
+    comps.forEach(c => { c.lo = c.min; c.g = Math.max(c.g, c.lo); });
+    solvePortions(comps, meals, T);
+    /* Önce adetle sayılanlar yuvarlanıp sabitlenir, kalanlar yeniden çözülür. */
+    comps.forEach(c => { if (c.step > 5){ c.g = roundTo(c.g, c.step, c.lo, c.hi); c.lock = true; } });
+    solvePortions(comps, meals, T);
+    comps.forEach(c => { if (!c.lock) c.g = roundTo(c.g, 5, c.lo, c.hi); });
+  }
 
   const total = { p:0, c:0, f:0, lif:0, kcal:0 };
   const micros = new Set();
-  const dayUsed = new Set();
-
-  const meals = mealList.map((mm, idx) => {
-    const m = tplFor(mm, 0);
+  const out = mealList.map((mm, idx) => {
     const fx = fixed[idx];
     fx.micros.forEach(v => micros.add(v));
-    total.p += fx.p; total.c += fx.c; total.f += fx.f; total.lif += fx.lif; total.kcal += fx.kcal;
-
     const items = fx.items.slice();
-    const share = w[idx];
-    fx.items.forEach(it => dayUsed.add(it.key));
-
-    if (share <= 0.0001)
-      return { name:mealName(mm), slot:fx.slot, items, kcal:Math.round(fx.kcal), full: fx.items.length > 0 };
-
-    const t0 = { p: rem.p*share, c: rem.c*share, f: rem.f*share, kcal: rem.kcal*share };
-
-    /* Her öğünde tek protein ve tek yağ kaynağı olur. Ana karbonhidrat makul
-       bir porsiyonda tutulur; artan karbonhidrat ikinci bir kaynağa (ekmek,
-       meyve, patates gibi) verilir. Eskiden büyük öğünde ikinci bir tam tabak
-       açılıyordu ve aynı öğünde tavukla ton balığı gibi iki ana yemek çıkıyordu. */
-    const t = t0;
-    const capScale = clamp(t0.kcal / 800, 1, 1.75);
-
-    const used = [];
-    /* Anlamsız kalan miktarlar listeye girmesin. */
-    const keep = (raw2, food) => food.unit ? raw2 >= food.unit*0.5 : (food.f >= 35 ? raw2 >= 5 : raw2 >= 20);
-    const put = (food, g, key) => {
-      if (!keep(g, food)) return;
-      const part = portion(food, g);
-      items.push({ text:part.text, icon:food.i, key, g:part.g });
-      used.push([food, part.g]);
-    };
-
-    let placed = 0;
-    {
-      /* 3) Sabitleme veya diyet varsa kalan hedefe göre yeni üçlü üretilir;
-            yoksa hazır kombinasyonun besinleri kullanılır. */
-      let pk, ck, fk, solved;
-      if (generate){
-        const best = pickTrio(mm.cat || "ogle", t, opts, dayUsed, variantIndex);
-        if (best){ pk = best.pk; ck = best.ck; fk = best.fk; solved = best.r; }
-      }
-      if (!solved){
-        const src = tplFor(mm, 0);
-        pk = resolveSlot(src.p, "p", opts, dayUsed);
-        ck = resolveSlot(src.c, "c", opts, dayUsed);
-        fk = resolveSlot(src.f, "f", opts, dayUsed);
-        if (pk && ck && fk)
-          solved = solveTrio(FOODS[pk], FOODS[ck], FOODS[fk], t.p, t.c, t.f, t.kcal);
-      }
-      if (solved){
-        dayUsed.add(pk); dayUsed.add(ck);
-        /* Zeytinyağı gibi sade yağlar her öğünde olabilir; tekrar yasağı
-           yedek seçimi sucuk gibi anlamsız yağ kaynaklarına itiyordu. */
-        if (FOODS[fk].i !== "oil") dayUsed.add(fk);
-
-        const P = FOODS[pk], C = FOODS[ck], F = FOODS[fk];
-        const gc = Math.min(solved.gc, carbCap(C, capScale));
-        /* Tavan yüzünden eksik kalan karbonhidrat ve kalori yan kaynağa gider. */
-        const kcalOf = (fo, g) => (fo.p*4 + fo.c*4 + fo.f*9) * g / 100;
-        const spill = t.c - (P.c*solved.gp + C.c*gc + F.c*solved.gf) / 100;
-        const room = t.kcal - kcalOf(P, solved.gp) - kcalOf(C, gc) - kcalOf(F, solved.gf);
-        put(P, solved.gp, pk);
-        put(C, gc, ck);
-        if (spill >= 15 && room > 0){
-          /* Yan karbonhidrat başka bir öğünün ana besinini elinden almasın diye
-             günlük tekrar listesine girmez; gün içinde tekrarlanabilir. */
-          const ck2 = (SIDE_CARBS[mm.cat] || SIDE_CARBS.ogle)
-            .find(k => FOODS[k] && k !== ck && k !== pk && !opts.exclude.has(k));
-          if (ck2){
-            const C2 = FOODS[ck2];
-            put(C2, Math.min(spill / (C2.c / 100), room / kcalOf(C2, 1), carbCap(C2, capScale)), ck2);
-          }
-        }
-        put(F, solved.gf, fk);
-        placed++;
-      }
-    }
-
-    if (!placed)
-      return { name:mealName(mm), slot:fx.slot, items, kcal:Math.round(fx.kcal), full: items.length > 0 };
-
-    if (m.extra && !generate) items.push({ text:m.extra, icon:"veg" });
-    else if (generate){
-      const sides = cuisine === "intl" ? SIDES_INTL : SIDES;
-      items.push({ text: sides[(idx + variantIndex) % sides.length], icon:"veg" });
-    }
-
-    const sum = { p:0, c:0, f:0, lif:0 };
-    for (const [food, g] of used){
-      sum.p += food.p*g/100; sum.c += food.c*g/100; sum.f += food.f*g/100; sum.lif += (food.lif||0)*g/100;
+    const sum = { p:fx.p, c:fx.c, f:fx.f, lif:fx.lif };
+    for (const c of comps.filter(x => x.m === idx)){
+      const food = FOODS[c.k];
+      const part = portion(food, c.g);
+      items.push({ text:part.text, icon:food.i, key:c.k, g:part.g });
+      sum.p += food.p*part.g/100; sum.c += food.c*part.g/100; sum.f += food.f*part.g/100; sum.lif += (food.lif||0)*part.g/100;
       (food.v || []).forEach(v => micros.add(v));
     }
+    const placed = items.length > fx.items.length;
+    if (placed && choice[idx] && choice[idx].side) items.push({ text:choice[idx].side, icon:"veg" });
     const kcal = sum.p*4 + sum.c*4 + sum.f*9;
     total.p += sum.p; total.c += sum.c; total.f += sum.f; total.lif += sum.lif; total.kcal += kcal;
-
-    return { name:mealName(mm), slot:fx.slot, items, kcal:Math.round(fx.kcal + kcal) };
+    const meal = { name:mealName(mm), slot:mm.id, items, kcal:Math.round(kcal) };
+    if (!placed) meal.full = fx.items.length > 0;
+    return meal;
   });
 
   const label = diet === "hepsi" ? tx("Sana özel kombinasyon") : DIETS[diet] + tx(" · sana özel");
-  return { setName: generate ? label : set.name, meals, micros, generated:generate,
+  return { setName: label, meals: out, micros, generated:true,
     total:{ p:Math.round(total.p), c:Math.round(total.c), f:Math.round(total.f),
             lif:Math.round(total.lif), kcal:Math.round(total.kcal) } };
 }

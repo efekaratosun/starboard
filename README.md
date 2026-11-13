@@ -36,6 +36,10 @@ Toplu dönüştürme için `tools/i18n-codemod.js` kullanılır; açıklaması d
 
 Besinler, tarifler ve hazır menüler `nutrition.js` (temel ve Türk mutfağı) ile `foods-intl.js` (uluslararası) dosyalarındadır. `cu:"tr"` Türk mutfağına, `cu:"intl"` uluslararası mutfağa özgü demektir; etiketsizler iki mutfakta da önerilir. Öneriler, hazır menüler ve tarif listesi kullanıcının mutfağına göre süzülür (`currentCuisine()`), arama her zaman hepsini kapsar. `pork:true` domuz eti içerenleri işaretler (helal ve koşerde önerilmez). Yeni besin eklerken: 100 g başına değerler, İngilizce adı `lang/en-food.js`'e, gerekiyorsa içerik kümelerine (`HAS_MEAT`, `HAS_GLUTEN`, `NO_SUGGEST`…) yazılır; testler her tarif malzemesinin ve menü besininin veritabanında olduğunu ve her mutfağın menüsünde başka mutfağa ait besin bulunmadığını denetler.
 
+### Öğün önerileri
+
+`buildMeals(program, gün)` (`nutrition.js`) her öğünü bir tabak kalıbından kurar: `PLATES` öğün türüne göre (kahvaltı, ara, ana) kalıpları ve her kalıbın gözlerini (asıl besin, tahıl, meyve, yağ…) tutar. Yalnızca `PORTION` tablosunda en az ve en çok miktarı yazılı besinler önerilir; yeni bir besini önerilere sokmak için hem bir kalıbın listesine hem `PORTION`'a yazılır (test bunu denetler). Kalıp ve besin, gün sırasına göre döner: ekran `planDay() + mealVariant`, alışveriş listesi aynı sırayı kullanır; ardışık günlerde ana yemek ve aynı öğün tekrar etmez. Miktarlar `solvePortions()` ile bütün gün için birlikte çözülür. Kurallar ve denetim sonuçları: [docs/OGUN-DENETIMI.md](docs/OGUN-DENETIMI.md); testleri "öğün kuralları" adıyla `tests.js` içindedir.
+
 ## Sürüm çıkarırken
 
 1. `starboard-site/js/storage.js` içindeki `APP_VERSION`'ı artır, `CHANGELOG.md`'ye yaz.

@@ -1020,5 +1020,6 @@ window.STARBOARD_EN = {
   "Kendi yiyeceklerim": "My foods",
   "Barkodlu ürün": "Barcode product",
   "“{0}” silinsin mi?": "Delete “{0}”?",
-  "Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.": "Edit or delete your own foods: Meals › My diary › Add food › My foods."
+  "Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.": "Edit or delete your own foods: Meals › My diary › Add food › My foods.",
+  "Öğün önerileri daha gerçekçi: her öğün anlamlı bir tabak, makul porsiyonlar ve her gün farklı bir menü.": "More realistic meal suggestions: every meal is a proper plate, with sensible portions and a different menu each day."
 };

@@ -3,6 +3,21 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.9.1 (yayınlanmadı)
+
+### Değişti
+- Öğün önerileri yeniden yazıldı (`nutrition.js`): her öğün bir tabak kalıbından kurulur (`PLATES`; kahvaltı: peynir/yumurta + ekmek + zeytin ya da yulaf + yoğurt + meyve + kuruyemiş; ara öğün: yoğurt + meyve, peynir + ekmek…; ana öğün: et/balık/baklagil + pilav/patates + zeytinyağı + yoğurt). Besin yığını, kahvaltıda 3 muz, öğünde 500 g patates ya da 7 dilim ekmek gibi miktarlar kalktı.
+- Her önerilebilir besinin bir öğündeki en az ve en çok miktarı var (`PORTION`): yumurta en çok 3 adet, peynir 80 g, meyve en çok bir buçuk porsiyon (öğünde en çok iki porsiyon), kuruyemiş 30 g, zeytinyağı 20 g. Büyük öğünde ana besinlerin sınırı en çok %20 esner, ana öğünün yanına en çok iki-üç dilim ekmek gelir.
+- Miktarlar bütün gün için birlikte çözülür: kalori ve protein hedefine, öğün paylarına ve her besinin olağan porsiyonuna en yakın gramajlar; adetle sayılanlar (yumurta, ekmek dilimi, meyve) tam ya da yarım adete yuvarlanır.
+- Öneri her gün kendiliğinden değişir (takvim günü + "Başka kombinasyon"); ardışık günlerde ana yemek ve aynı öğün tekrar etmez, aynı besin gün içinde iki öğünde çıkmaz. Alışveriş listesi aynı gün sırasını kullanır.
+- Protein hedefi yüksekken (yağ kaybı) yağsız peynir ve süzme yoğurt öne geçer, proteini az ara öğünler ve baklagil yemeği çıkar (bitkisel beslenmede baklagil kalır). Bitkisel süt ve yoğurt yalnızca vegan ve laktozsuz beslenmede, pirinç patlağı yalnızca glutensizde önerilir.
+
+### Düzeltildi
+- Çiğ et değerleri pişmiş ete göre yazılmıştı (veritabanı ve plan çiğ ağırlık kullanıyor): tavuk göğsü 31 → 22,5 g protein, hindi göğsü 29 → 24, tavuk but 24 → 20, yağsız dana kıyma 26 → 20, dana biftek 27 → 21, kuzu 25 → 18 (100 g çiğde). Geçmiş günlük kalemleri kendi değerlerini taşıdığı için değişmez.
+
+### Bilinen
+- Tek öğün 1400 kcal'yi aşınca (örneğin 3100 kcal ve 3 öğün) makul porsiyonlarla hedefe ulaşılamıyor, plan %15-25 düşük kalabiliyor; ekrandaki mevcut uyarı çıkar. Vegan ve vejetaryen yağ kaybı hedeflerinde protein %50-75'te kalabiliyor. Ayrıntı: `docs/OGUN-DENETIMI.md`.
+
 ## 1.9.0 (13 Kasım 2026)
 
 ### Eklendi
