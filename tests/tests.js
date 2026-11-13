@@ -1592,7 +1592,8 @@ test("sağlık: eklenti, yetki, gizlilik metinleri ve iOS beyanları yerinde", a
   const [tr, en] = (await get("starboard-site/privacy.html")).split('<article id="en"');
   ok(tr.includes("Apple Sağlık (yalnızca iPhone uygulaması)") && tr.includes("Yalnızca okuma") && tr.includes("13 Kasım 2026"), "Türkçe gizlilik metni");
   ok(en.includes("Apple Health (iPhone app only)") && en.includes("Read only") && en.includes("November 13, 2026"), "İngilizce gizlilik metni");
-  ok(WHATS_NEW[0].native && WHATS_NEW[0].items.some(s => s.includes("Apple Sağlık")), "Neler yeni maddesi yalnızca iPhone'da");
+  ok(WHATS_NEW.some(n => n.native && n.items.some(s => s.includes("Apple Sağlık"))), "Neler yeni maddesi yalnızca iPhone'da");
+  ok(!WHATS_NEW.some(n => !n.native && n.items.some(s => s.includes("Apple Sağlık"))), "Sağlık maddesi web'de görünmemeli");
   const scripts = [...(await get("starboard-site/index.html")).matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
   ok(scripts.indexOf("js/health.js") > scripts.indexOf("js/reminders.js") && scripts.indexOf("js/health.js") < scripts.indexOf("js/main.js"), "health.js sırası");
   ok((await get("starboard-site/sw.js")).includes('"js/health.js"'), "health.js sw.js SHELL listesinde değil");
