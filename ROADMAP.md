@@ -66,7 +66,7 @@ Amaç: App Store'a çıkmaya değer bir ürün.
 - [x] Yazı tipi uygulamaya gömüldü (1.8.1): Nunito `starboard-site/fonts/` altından yüklenir, Google Fonts isteği kalmadı
 - [ ] İçerik genişletme (isteğe bağlı): ülkeye özgü ürünler, daha çok uluslararası tarif, alkollü içecekler (alkolün kalorisi ayrı hesap gerektirir)
 - [x] Erişilebilirlik ve küçük ekran denetimi (1.5.2): 320–414 px'de taşma yok; kontrast AA; dokunma alanları en az 44 px yükseklik; etiketler ve ekran okuyucu bildirimleri. Denetim aracı `tools/a11y-audit.html`. Gerçek iPhone'da VoiceOver ve büyük yazı denemesi Faz 3'te
-- [ ] Faz 3'te gerçek cihazda: VoiceOver ile bütün akış, iOS büyük yazı boyutu (Dynamic Type), çentik ve ana ekran çubuğu çevresi
+- [ ] Faz 3'te gerçek cihazda: VoiceOver ile bütün akış, iOS büyük yazı boyutu (Dynamic Type), çentik ve ana ekran çubuğu çevresi. Adım adım liste: [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#8-erişilebilirlik) (görünüm: [bölüm 7](docs/GERCEK-CIHAZ-TESTI.md#7-görünüm))
 
 Bu faz diğerleriyle paralel yürür ve yayından sonra da sürer.
 
@@ -78,10 +78,10 @@ Amaç: web sitesini saran bir kabuk değil, gerçek bir iPhone uygulaması. Appl
 - [x] Kalıcı yerel depolama (iOS, web görünümündeki `localStorage` verisini silebilir): iOS'ta kalıcı depo eklendi
 - [x] Bildirimler: su, uyku ve antrenman hatırlatmaları: saatleri ayarlanabilir (sabah tartısı ve günü kapat dahil)
 - [x] Ortak iOS altyapısı: Türkçe/İngilizce izin metinleri (kamera, Apple Sağlık), yetki dosyası (App.entitlements, HealthKit dalı dolduracak), gizlilik bildirimi (PrivacyInfo.xcprivacy), derleme hattında denetimler
-- [ ] Apple Sağlık (HealthKit) bağlantısı: adım, uyku, kilo (kod hazır, TestFlight bekliyor)
-- [ ] Apple Sağlık'ı gerçek iPhone'da dene (TestFlight): ilk bağlantı, hepsini reddetme, kısmi izin, izni Sağlık'tan geri alma, Watch olan ve olmayan telefon, saat dilimi değişimi, uçak modu, elle girilen değerin korunması, iPad, VoiceOver ile yeni bölüm. App ID'de HealthKit yeteneği açılmalı; simülatörde izin penceresi otomatik onaylanamıyor
-- [x] Barkod okuma (1.9.0, kod ve testler hazır; gerçek cihaz denemesi bekliyor): paketli ürünün barkodu kamerayla okunur, besin değerleri Open Food Facts'ten (ücretsiz, açık veri) gelir ve kendi yiyeceklerine kaydedilir. Dışarıya yalnızca barkod numarası gider; web'de özellik gizli olduğu için oradaki "hiçbir yere gönderilmez" sözü aynen durur, iPhone'daki metinler ve `PrivacyInfo.xcprivacy` (Arama Geçmişi) güncellendi. Uygulamayı web sitesinden ayıran yerel özelliklerden biri olur (kural 4.2). Eklenti: `@capacitor/barcode-scanner` (Apple Vision, SPM uyumlu)
-- [ ] Barkod okumayı gerçek iPhone'da dene (TestFlight): kamera izni, tarama, vazgeçme, izni reddetme, uçak modu, bulunamayan ürün, aynı barkodun ikinci kez okutulması, VoiceOver. Simülatörde kamera yok
+- [ ] Apple Sağlık (HealthKit) bağlantısı: adım, uyku, kilo (kod hazır, TestFlight bekliyor; deneme listesi: [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#4-apple-sağlık))
+- [ ] Apple Sağlık'ı gerçek iPhone'da dene (TestFlight): ilk bağlantı, hepsini reddetme, kısmi izin, izni Sağlık'tan geri alma, Watch olan ve olmayan telefon, saat dilimi değişimi, uçak modu, elle girilen değerin korunması, iPad, VoiceOver ile yeni bölüm. App ID'de HealthKit yeteneği açılmalı; simülatörde izin penceresi otomatik onaylanamıyor. Adım adım liste: [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#4-apple-sağlık)
+- [x] Barkod okuma (1.9.0, kod ve testler hazır; gerçek cihaz denemesi bekliyor, bkz. [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#3-barkod)): paketli ürünün barkodu kamerayla okunur, besin değerleri Open Food Facts'ten (ücretsiz, açık veri) gelir ve kendi yiyeceklerine kaydedilir. Dışarıya yalnızca barkod numarası gider; web'de özellik gizli olduğu için oradaki "hiçbir yere gönderilmez" sözü aynen durur, iPhone'daki metinler ve `PrivacyInfo.xcprivacy` (Arama Geçmişi) güncellendi. Uygulamayı web sitesinden ayıran yerel özelliklerden biri olur (kural 4.2). Eklenti: `@capacitor/barcode-scanner` (Apple Vision, SPM uyumlu)
+- [ ] Barkod okumayı gerçek iPhone'da dene (TestFlight): kamera izni, tarama, vazgeçme, izni reddetme, uçak modu, bulunamayan ürün, aynı barkodun ikinci kez okutulması, VoiceOver. Simülatörde kamera yok. Adım adım liste: [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#3-barkod)
 - [x] Dokunsal geri bildirim, güvenli alan ve karanlık mod ayarları: dokunsal geri bildirim, çentik payı; açık/koyu tema zaten vardı, iOS'ta durum çubuğu temaya uyar
 - [x] Mac olmadan derleme: bulutta macOS derleme hattı (GitHub Actions veya Codemagic): simülatör derlemesi Intel macOS makinesine taşındı
 
