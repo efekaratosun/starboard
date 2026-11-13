@@ -1023,5 +1023,6 @@ window.STARBOARD_EN = {
   "{0} eklendi · {1} kcal": "{0} added · {1} kcal",
   "Geri al": "Undo",
   "Geri alındı.": "Undone.",
-  "Besin ekleme kolaylaştı: sık yediklerin panelin başında, aramadaki + ile tek dokunuşla ekle, yanlışsa Geri al.": "Adding food is easier: your frequent foods sit at the top of the panel, add in one tap with +, and tap Undo if it was a mistake."
+  "Besin ekleme kolaylaştı: sık yediklerin panelin başında, aramadaki + ile tek dokunuşla ekle, yanlışsa Geri al.": "Adding food is easier: your frequent foods sit at the top of the panel, add in one tap with +, and tap Undo if it was a mistake.",
+  "Öğün önerileri daha gerçekçi: her öğün anlamlı bir tabak, makul porsiyonlar ve her gün farklı bir menü.": "More realistic meal suggestions: every meal is a proper plate, with sensible portions and a different menu each day."
 };

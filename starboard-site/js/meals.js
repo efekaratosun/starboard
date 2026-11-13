@@ -820,7 +820,7 @@ function prefsSection(){
 }
 
 function planView(program){
-  const plan = buildMeals(program, mealVariant);
+  const plan = buildMeals(program, planDay() + mealVariant);
   const off = Math.abs(plan.total.kcal - program.kcal);
 
   return `

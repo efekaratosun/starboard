@@ -164,6 +164,130 @@ test("öğünler: diyet seçiliyken de öğüne yakışan besinler çıkar", asy
   }
 });
 
+/* ---- öğün önerilerinin kuralları: birçok profil, beslenme türü ve 7 gün ---- */
+const MEAL_RULES = (() => {
+  const F = k => FOODS[k];
+  const p0 = k => F(k).unit || (porsOf(F(k))[0] || {}).g || 100;
+  const liquid = new Set(["yogurt","suzme","skyr","yunanyogurt","kefir","sut","ayran","cacik","soyasutu","bitkiselyogurt"]);
+  /* Bir öğünde akla yatkın en çok miktar (gram); kalıp tablosundan (PORTION) bağımsız. */
+  const cap = k => {
+    const f = F(k);
+    if (k === "yumurta") return 150;
+    if (f.unit) return f.unit * 2;
+    if (f.i === "egg") return 350;
+    if (f.i === "fruit") return fruitServing(k) * 2;
+    if (liquid.has(k)) return 300;
+    if (["lor","cottage","cokelek"].includes(k)) return 200;
+    if (f.i === "dairy") return 100;
+    if (["meat","poultry","fish"].includes(f.i)) return 300;
+    if (f.i === "bread") return 150;
+    if (f.i === "grain") return BREAKFAST_GRAINS.has(k) || k === "tahilhalka" ? 120 : 180;
+    if (f.i === "legume") return f.c >= 45 ? 130 : 250;
+    if (["tahin","fistikezmesi","findikezmesi","bademezmesi"].includes(k)) return 32;
+    if (f.i === "nuts") return 40;
+    if (k === "zeytin" || k === "yesilzeytin") return 40;
+    if (f.i === "oil") return 25;
+    if (f.i === "avocado") return 150;
+    if (f.i === "potato") return 450;
+    return 300;
+  };
+  const meaty = k => ["meat","poultry","fish"].includes(F(k).i) && F(k).cat !== "sarkuteri";
+  const dryLegume = k => foodCat(F(k)) === "baklagil" && !READY_LEGUMES.has(k) && F(k).c >= 25;
+  /* Bir planın bütün günlük kurallarını denetler; bozulanları metin olarak döndürür. */
+  const dayErrors = (m, cats, diet) => {
+    const bad = [], seen = {};
+    m.meals.forEach((meal, i) => {
+      const light = cats[i] === "kahvalti" || cats[i] === "ara";
+      const its = meal.items.filter(x => x.key && !x.fixed);
+      let fruit = 0;
+      for (const it of its) {
+        const k = it.key;
+        if (it.g > cap(k)) bad.push(`${meal.name}: ${it.text} çok`);
+        if (F(k).i === "fruit") fruit += it.g / fruitServing(k);
+        if (!foodAllowed(k, diet)) bad.push(`${meal.name}: ${k} diyete uymuyor`);
+        if (light && (meaty(k) || dryLegume(k) || MEAL_GRAINS.has(k) || F(k).i === "potato"))
+          bad.push(`${meal.name}: ${k} hafif öğüne uymuyor`);
+        if (!light && BREAKFAST_GRAINS.has(k)) bad.push(`${meal.name}: ${k} ana öğüne uymuyor`);
+        if (F(k).i !== "oil") (seen[k] = seen[k] || []).push(meal.name);
+      }
+      if (fruit > 2.01) bad.push(`${meal.name}: ${fruit.toFixed(1)} porsiyon meyve`);
+      const keys = its.map(x => x.key);
+      if (diet === "koser" && keys.some(hasMeatK) && keys.some(hasDairyK)) bad.push(`${meal.name}: koşerde et ve süt`);
+      if (keys.filter(k => F(k).i === "legume" && F(k).c >= 25).length > 1) bad.push(`${meal.name}: iki baklagil`);
+    });
+    for (const [k, ms] of Object.entries(seen)) if (ms.length > 1) bad.push(`${k} gün içinde iki kez (${ms.join(", ")})`);
+    return bad;
+  };
+  const mainOf = (m, cats) => m.meals.map((meal, i) => cats[i] !== "kahvalti" && cats[i] !== "ara"
+    ? (meal.items.find(x => x.key && !x.fixed) || {}).key : null);
+  const sig = meal => meal.items.map(x => x.key).filter(Boolean).sort().join(",");
+  return { dayErrors, mainOf, sig };
+})();
+
+test("öğün kuralları: 7 günlük planlarda porsiyon, öğüne uygunluk, diyet, tekrar ve hedef", async () => {
+  const fixture = await loadFixture();
+  const profiles = [[{}, 82], [{ goal:"lose" }, 82], [{ goal:"gain" }, 82],
+    [{ sex:"female", height:163, age:27, goal:"lose" }, 60], [{ sex:"female", height:150, age:60, goal:"lose" }, 45],
+    [{ activity:"veryActive", goal:"gain" }, 95]];
+  const layouts = [DEFAULT_MEALS, fixture.mealPrefs.meals];
+  const bad = [];
+  let plans = 0;
+  for (const cuisine of ["tr", "intl"]) for (const diet of Object.keys(DIETS)) for (const [o, w] of profiles) for (const meals of layouts) {
+    state = JSON.parse(JSON.stringify(fixture));
+    Object.assign(state.mealPrefs, { cuisine, diet, meals: meals.map(m => ({ ...m })) });
+    const p = buildProgram(profileOf(o), w, 0);
+    const list = userMeals(), cats = list.map(m => m.cat);
+    const shares = mealShares(list);
+    /* Tek öğün 1400 kcal'yi geçiyorsa makul porsiyonlarla tutturulamaz; hedef denetlenmez. */
+    const feasible = Math.max(...shares) * p.kcal <= 1400;
+    const plant = diet === "vegan" || diet === "vejetaryen";
+    let prev = null, sumK = 0;
+    for (let d = 0; d < 7; d++) {
+      const m = buildMeals(p, 1000 + d); plans++;
+      const where = `${cuisine}/${diet} ${JSON.stringify(o)} ${list.length} öğün, gün ${d + 1}`;
+      MEAL_RULES.dayErrors(m, cats, diet).forEach(e => bad.push(`${e} · ${where}`));
+      const mains = MEAL_RULES.mainOf(m, cats);
+      if (prev) {
+        mains.forEach(k => { if (k && prev.mains.includes(k)) bad.push(`${k} ardışık günde ana yemek · ${where}`); });
+        m.meals.forEach((meal, i) => { if (MEAL_RULES.sig(meal) === prev.sigs[i]) bad.push(`${meal.name} dünküyle aynı · ${where}`); });
+      }
+      prev = { mains, sigs: m.meals.map(MEAL_RULES.sig) };
+      sumK += m.total.kcal;
+      const pr = m.total.p / p.protein;
+      if (pr > 1.4) bad.push(`protein %${Math.round(pr * 100)} · ${where}`);
+      if (feasible) {
+        if (Math.abs(m.total.kcal - p.kcal) / p.kcal > 0.2) bad.push(`${m.total.kcal}/${p.kcal} kcal · ${where}`);
+        if (pr < (diet === "vegan" ? 0.45 : plant ? 0.55 : 0.7)) bad.push(`protein ${m.total.p}/${p.protein} · ${where}`);
+      }
+    }
+    /* Glutensizde büyük öğünün yanına ekmek gelemediği için çok yüksek hedefte ortalama %10'u biraz aşabiliyor. */
+    if (feasible && Math.abs(sumK / 7 - p.kcal) / p.kcal > 0.12)
+      bad.push(`7 gün ortalaması ${Math.round(sumK / 7)}/${p.kcal} kcal · ${cuisine}/${diet} ${JSON.stringify(o)} ${list.length} öğün`);
+  }
+  state = null;
+  ok(plans > 1000, "yeterli plan üretilmedi");
+  eq(bad.slice(0, 25), [], `${bad.length} kural bozuldu`);
+});
+test("öğün kuralları: öneri her gün kendiliğinden değişir, kahvaltıda en çok iki porsiyon meyve, üç yumurta", async () => {
+  state = await loadFixture();
+  const p = buildProgram(state.profile, 82, 0);
+  const a = buildMeals(p, planDay()), b = buildMeals(p, planDay() + 1);
+  ok(a.meals.some((m, i) => MEAL_RULES.sig(m) !== MEAL_RULES.sig(b.meals[i])), "yarının planı bugünküyle aynı");
+  for (let d = 0; d < 30; d++) for (const meal of buildMeals(p, d).meals) for (const it of meal.items.filter(x => x.key)) {
+    if (it.key === "yumurta") ok(it.g <= 150, `${it.text}`);
+    if (it.key === "muz") ok(it.g <= 180, `${it.text}`);
+  }
+  /* Her kalıp besininin bir porsiyon kuralı var ve kurallar besin veritabanında. */
+  for (const g of Object.values(PLATES)) for (const plate of g) for (const z of plate.g)
+    for (const k of z.k.concat(z.big || [], z.rich || [])) ok(FOODS[k] && PORTION[k], `${k} için porsiyon kuralı yok`);
+  for (const [k, [lo, hi]] of Object.entries(PORTION)) ok(FOODS[k] && lo > 0 && lo <= hi, `${k}: ${lo}-${hi}`);
+  state = null;
+});
+test("besinler: çiğ et değerleri çiğ ağırlığa göre (pişmiş değil)", () => {
+  for (const k of ["tavuk", "hindi", "tavukbut", "kofte", "biftek", "kuzu"])
+    ok(FOODS[k].p <= 24, `${k}: 100 g çiğde ${FOODS[k].p} g protein pişmiş değer gibi`);
+});
+
 /* ---- kayıtlı öğünler ve beslenme özeti ---- */
 test("kayıtlı öğün: bir öğün kaydedilir ve başka öğüne tek dokunuşla eklenir", async () => {
   const oldConfirm = window.confirm; window.confirm = () => true;
@@ -280,7 +404,7 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   eq(unseenNews(APP_VERSION), []);
   eq(unseenNews(web[0].v), [], "web'de iPhone'a özel madde gösterilmemeli");
   state = await loadFixture();
-  state.seenVersion = web[1].v;
+  state.seenVersion = web.find(n => verCmp(n.v, web[0].v) < 0).v;   /* aynı sürümün birden çok kaydı olabilir */
   maybeShowWhatsNew();
   const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
   ok(sheet && sheet.textContent.includes(web[0].items[0]), "pencere açılmadı");

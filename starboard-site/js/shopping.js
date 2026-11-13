@@ -42,7 +42,7 @@ function shopGroups(list){
 const shopText = x => portion(foodOf(x.k), x.g).text;
 
 function shoppingView(program){
-  const P = shopPrefs(), list = shoppingList(program, P, mealVariant);
+  const P = shopPrefs(), list = shoppingList(program, P, planDay() + mealVariant);
   const left = list.filter(x => !P.checked[x.k]).length;
   const row = x => { const on = !!P.checked[x.k]; return `<button class="shop-row${on ? " on" : ""}" data-shop-k="${esc(x.k)}" aria-pressed="${on}">
       <span class="shop-ck" aria-hidden="true">${on ? icon("check") : ""}</span><span class="shop-t">${esc(shopText(x))}</span></button>`; };
@@ -96,7 +96,7 @@ function wireShopping(program){
   const share = document.getElementById("shop-share");
   if (share) share.onclick = async () => {
     const P = shopPrefs();
-    const text = shopGroups(shoppingList(program, P, mealVariant)).map(([c, xs]) =>
+    const text = shopGroups(shoppingList(program, P, planDay() + mealVariant)).map(([c, xs]) =>
       (CAT_LABELS[c] || c) + "\n" + xs.filter(x => !P.checked[x.k]).map(x => "• " + shopText(x)).join("\n"))
       .filter(s => s.includes("•")).join("\n\n");
     try {

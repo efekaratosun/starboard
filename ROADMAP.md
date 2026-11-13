@@ -64,6 +64,7 @@ Amaç: App Store'a çıkmaya değer bir ürün.
 - [x] İçeriğin uluslararası uyarlaması (1.6.0): mutfak seçimi (Türk / uluslararası), 42 besin, 17 tarif, 3 hazır menü (`foods-intl.js`); domuz eti yalnızca uluslararası mutfakta; helal ve koşer beslenme
 - [x] Kayıtlı öğünler ve haftalık beslenme özeti (1.7.0)
 - [x] Alışveriş listesi, dinlenme sayacı, "Neler yeni" penceresi (1.8.0)
+- [x] Öğün önerileri denetlendi ve yeniden yazıldı (1.9.1): tabak kalıpları, porsiyon sınırları, her gün farklı menü; denetim [docs/OGUN-DENETIMI.md](docs/OGUN-DENETIMI.md)
 - [x] Yazı tipi uygulamaya gömüldü (1.8.1): Nunito `starboard-site/fonts/` altından yüklenir, Google Fonts isteği kalmadı
 - [ ] İçerik genişletme (isteğe bağlı): ülkeye özgü ürünler, daha çok uluslararası tarif, alkollü içecekler (alkolün kalorisi ayrı hesap gerektirir)
 - [x] Erişilebilirlik ve küçük ekran denetimi (1.5.2): 320–414 px'de taşma yok; kontrast AA; dokunma alanları en az 44 px yükseklik; etiketler ve ekran okuyucu bildirimleri. Denetim aracı `tools/a11y-audit.html`. Gerçek iPhone'da VoiceOver ve büyük yazı denemesi Faz 3'te
