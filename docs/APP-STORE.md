@@ -15,7 +15,7 @@ Hazırlandığı tarih: 13 Kasım 2026. Dayanaklar: `ROADMAP.md` (11 ve 12 Kası
 | Bundle kimliği | `app.starboard.health` |
 | Sürüm | 1.9.0 (`APP_VERSION`); Xcode'da `MARKETING_VERSION` şimdilik 1.0 |
 | En düşük iOS | 15.0 |
-| Cihazlar | iPhone ve iPad (`TARGETED_DEVICE_FAMILY = "1,2"`) |
+| Cihazlar | Yalnızca iPhone (`TARGETED_DEVICE_FAMILY = 1`, 13 Kasım 2026 kararı) |
 | Ana dil | İngilizce (ABD); Türkçe ikinci yerelleştirme |
 | Gizlilik politikası adresi | `https://efekaratosun.github.io/starboard/privacy.html` |
 | Pazarlama adresi | `https://efekaratosun.github.io/starboard/` |
@@ -330,7 +330,6 @@ Yedekler: **Ben › Grafikler** (kilo trendi, haftalık özet). Apple Sağlık b
 - Gerçekçi ama uydurma veri; gerçek kişi adı ya da gerçek ölçü yok.
 - Değerlendirme/BMI/yağ oranı sınıflandırması görünen ekranlardan ve "önce/sonra" tarzı kilo rakamlarından kaçın; sağlık iddiası gibi okunabilir.
 - Başlık metinleri görüntünün üstüne yerleştirilir; uzun başlık iki satıra bölünebilir. Başlıklar kısa tutuldu, en uzunu 35 karakter.
-- **iPad:** proje iPad'i de hedefliyor (`TARGETED_DEVICE_FAMILY = "1,2"`). iPad kalacaksa 13 inç iPad görüntüleri de gerekir (2064 × 2752). Yalnızca iPhone istenirse bu proje ayarının değişmesi gerekir; karar uygulama tarafında verilmeli.
 
 ## 11. Taslakta düzeltilenler
 
@@ -340,7 +339,7 @@ Yedekler: **Ben › Grafikler** (kilo trendi, haftalık özet). Apple Sağlık b
 |---|---|
 | Yazı tipi Google'dan geliyor, "Veri Toplanmıyor" için gömülmeli | Gömüldü (1.8.1); dışarıya yazı tipi isteği gitmiyor |
 | Bildirimler Faz 3'te işaretsiz, ilk sürümde yoksa HATIRLATMALAR çıkarılsın | Bildirimler var (ROADMAP Faz 3, tamam); bölüm kaldı |
-| "iOS projesi kurulunca karar ver" | Capacitor iOS projesi kurulu (`app.starboard.health`, iPhone ve iPad) |
+| "iOS projesi kurulunca karar ver" | Capacitor iOS projesi kurulu (`app.starboard.health`, yalnızca iPhone) |
 | Barkod ve Apple Sağlık "Faz 3 sonrası" ek paragraflardı | Barkod bu dalda; Apple Sağlık aynı 1.9.0'a giriyor. İkisi ana metne alındı, "şimdi / sonra" ayrımı kalktı |
 | Rehber "90 hareket, çoğunda animasyon" | **83 hareket, hepsinde animasyon** (kod: `GUIDE` 83 kayıt, `EX_ANIM_OF` 83, 78 farklı animasyon). ROADMAP Faz 1'deki "90 hareketin rehberi" ifadesi eski |
 | "300'den fazla besin" | **360'tan fazla** (`FOODS`: 362 kayıt) |
@@ -357,11 +356,9 @@ Yedekler: **Ben › Grafikler** (kilo trendi, haftalık özet). Apple Sağlık b
 Bu belge uygulama koduna dokunmaz; aşağıdakiler ilgili dallarda yapılmalı.
 
 1. **`privacy.html` eksik.** Hâlâ "tarayıcı deposu" diyor, Apple Sağlık paragrafı yok, tarihi 12 Kasım. Kural 5.1.1 gizlilik politikasının Sağlık verisini anlatmasını ister; Apple Sağlık paragrafı (hangi türler, yalnızca okuma, cihazdan çıkmaz, reklam ve üçüncü taraf yok, izin Sağlık uygulamasından geri alınır) eklenmeden ve App Store Connect'e adres girilmeden gönderilmemeli. `about.js` ve `settings.js` metinleri de aynı dilde olmalı.
-2. **`NSHealthUpdateUsageDescription` metni.** `Info.plist` ve `InfoPlist.strings` içinde "Starboard yalnızca Ayarlar'da bunu açarsan Apple Sağlık'a veri kaydeder" yazıyor; karar ise yalnızca okuma. Eklenti yazma kodunu getirdiği için anahtar gerekli olabilir, ama metin ile inceleme notu ve açıklama birbirini tutmalı. Gerekirse metin "Starboard Apple Sağlık'a veri yazmaz" yönünde netleştirilir.
 3. **Düğme adları.** İnceleme notundaki "Ayarlar › Apple Sağlık › Sağlık'a bağlan" yolu plandan alındı. Sağlık arayüzü birleşince gerçek başlıkları (TR ve EN) doğrula; İngilizce notu ona göre düzelt.
 4. **Ad kontrolü.** "Starboard" App Store'da boş mu? (ROADMAP Faz 4.)
 5. **Destek adresi.** GitHub Issues App Store için yeterli mi, ayrı sayfa ya da e-posta gerekir mi?
-6. **iPad kararı.** Hedefleniyor, ama ekran görüntüsü planı yalnızca 6,9 inç iPhone.
 7. **Apple Developer hesabı.** Henüz açık karar. İmzalı derleme, App ID'de HealthKit yetkisi ve TestFlight hattı ona bağlı.
 8. **Gerçek cihaz denemeleri.** Barkod (kamera izni, izin reddi, uçak modu, bulunamayan ürün, VoiceOver) ve Apple Sağlık (izin, ret, veri yok, saat dilimi) TestFlight'ta denenmeli; ROADMAP Faz 3'te işaretsiz.
 9. **Kendi yiyeceklerini düzenleme ve silme ekranı.** Barkodla kaydedilen ürünler birikiyor ve şimdilik silinemiyor (ROADMAP Faz 4, açık); incelemede soru çıkarsa not düşülebilir.

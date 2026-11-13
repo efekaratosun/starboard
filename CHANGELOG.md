@@ -18,6 +18,10 @@ Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artı
 - Bugün satırlarında Sağlık'tan gelen değerin yanında "· Sağlık'tan"; uyku kadranının ortası kayıttaki toplam uyku süresini gösterir (Sağlık'tan gelen süre yatış-kalkış aralığından kısa olabilir).
 - Gizlilik: `privacy.html` (Türkçe ve İngilizce) "Apple Sağlık" bölümü; iPhone'da Hakkında › Gizlilik'e bir cümle. Sağlık verisi cihazdan çıkmadığı için `PrivacyInfo.xcprivacy` değişmedi.
 - iOS: `@capgo/capacitor-health` 8.12.3 (tam sürüm, Swift Package Manager), `App.entitlements`'a HealthKit (klinik kayıt yok), projede HealthKit yeteneği. Derleme hattı yetkiyi, yeteneği ve eklentiyi denetler.
+- Kendi yiyeceklerini düzenleme ve silme (web ve iPhone): Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim. Liste ad, varsa marka ve 100 g'daki kaloriyi gösterir; barkodlu ürünlerde küçük bir barkod işareti vardır. Düzenleme mevcut "Kendi besinin" formunu alanlar dolu açar (barkod, marka, porsiyon ve kaynak değişmez); silme onay ister. Düzenleme ve silme geçmiş günleri değiştirmez: günlük kalemleri eklendikleri andaki değerleri kendi içinde taşır. Silinen yiyecek sık yediklerden, sabit öğünlerden, öneri dışlamalarından ve alışveriş işaretlerinden de kalkar.
+- "Neler yeni" penceresinde aynı sürümün web ve iPhone maddeleri tek başlık altında birleşir.
+
+- iOS: yalnızca iPhone (iPad hedefi kaldırıldı). Apple Sağlık'a yazma izin metni "Starboard Apple Sağlık'a veri yazmaz" oldu.
 
 ### Düzeltildi
 - Besin ekleme panelindeki arama kutusunun ekran okuyucu etiketi yoktu.
@@ -38,6 +42,8 @@ Veri şeması aynı kalır (`SCHEMA` 2): yeni alanlar (`bc`, `br`, `src`, `por`,
 - Dinlenme sayacı: antrenman modunda set onaylanınca geri sayım (varsayılan 90 sn); ± 15 sn ile ayarlanır ve hatırlanır, bitince ses ve titreşim.
 - Ayarlar › Hakkında: sağlık uyarısı, hesapların kaynakları ve gizlilik. Tam gizlilik politikası: `privacy.html` (Türkçe ve İngilizce). İlk girişin özetinde kısa sağlık uyarısı.
 - "Neler yeni" penceresi: güncellemeden sonraki ilk açılışta, görülmemiş sürümlerin kısa maddeleri bir kez.
+
+- iOS: yalnızca iPhone (iPad hedefi kaldırıldı). Apple Sağlık'a yazma izin metni "Starboard Apple Sağlık'a veri yazmaz" oldu.
 
 ### Düzeltildi
 - Antrenman özetindeki "… hareket kaydettin" cümlesi İngilizcede Türkçe kalıyordu.
@@ -84,6 +90,8 @@ Kullanıcının göreceği bir değişiklik yok; Faz 1 tamamlandı.
 - Görev durumu, grafik verisi ve haftalık özetin hesabı ekran kodundan ayrıldı (`goals.js`: `taskStatus()`; `chartData()`, `weekStats()`). Hesap yalnızca sayı ve durum döndürür, metne ekran kodu çevirir.
 - Öneri görevlerinin kayıttaki başlığı dilden ve birimden bağımsız yazılıyor.
 
+- iOS: yalnızca iPhone (iPad hedefi kaldırıldı). Apple Sağlık'a yazma izin metni "Starboard Apple Sağlık'a veri yazmaz" oldu.
+
 ### Düzeltildi
 - Bel çevresi değişimi inç gösteriminde 0,1 sapabiliyordu; fark artık yuvarlamadan önce hesaplanıyor.
 
@@ -98,6 +106,8 @@ Kullanıcının göreceği bir değişiklik yok; Faz 1 tamamlandı.
 - Kayıtlar her zaman metrik tutulur; birim değiştirmek eski kayıtlara, yedeklere, kalori hesabına ve rekorlara dokunmaz.
 - İngilizcede ondalık ayırıcı nokta oldu (75,3 yerine 75.3).
 - Öneri görevleri her dilde Türkçe başlık ve türüyle kaydediliyor, ekranda çevriliyor.
+
+- iOS: yalnızca iPhone (iPad hedefi kaldırıldı). Apple Sağlık'a yazma izin metni "Starboard Apple Sağlık'a veri yazmaz" oldu.
 
 ### Düzeltildi
 - İngilizcede antrenman görevi her açılışta listeye bir kez daha ekleniyordu; birikmiş kopyalar da temizleniyor.
@@ -139,6 +149,8 @@ Web sitesi olarak ilk sürüm.
 - Diyet seçiliyken öneriler: kahvaltı ve ara öğüne kuru baklagil ve yemeklik tahıl konmuyor.
 - Kayıt tarayıcıda `starboard-state` adıyla tutuluyor. Eski adla (`saglik-takip-v1`) duran kayıt ilk açılışta okunup yeni ada yazılıyor; eski kayıt yedek olarak yerinde kalıyor.
 - Kod tek dosyadan 3 stil ve 20'den fazla kod dosyasına bölündü.
+
+- iOS: yalnızca iPhone (iPad hedefi kaldırıldı). Apple Sağlık'a yazma izin metni "Starboard Apple Sağlık'a veri yazmaz" oldu.
 
 ### Düzeltildi
 - Bugün ekranında antrenman hedefinde tekrar eden "Antrenman" öneki.

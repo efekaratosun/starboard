@@ -15,6 +15,7 @@ Başlangıç durumu (11 Kasım 2026): tek dosyalık (yaklaşık 9.000 satır) bi
 - **Hesap yok (ilk sürüm):** Starboard hesapsız çıkar, veriler cihazda kalır. Gerekçe: "veriler cihazında kalır" vaadi ve App Store'daki temiz gizlilik etiketi korunur; sunucu, maliyet ve bakım yükü olmaz; sağlık verisi özel nitelikli veri sayıldığı için KVKK/GDPR yükü doğmaz; Apple'ın hesap silme ve Apple ile Giriş kuralları gerekmez; kayıt ekranı kullanıcı kaybettirmez. Gelir modeli için hesap gerekmez (Apple'ın ödeme sistemi hesapsız çalışır). Telefon değişimi iCloud cihaz yedeği ve Ayarlar'daki dosyaya yedekle/geri yükle ile karşılanır. iCloud ile eşitleme seçenek değil: kural 5.1.3(ii) sağlık verisinin iCloud'da saklanmasını yasaklıyor. Yayından sonra kullanıcılar eşitleme isterse (şifreli eşitleme ya da isteğe bağlı hesap) yeniden değerlendirilir.
 - **Yazı tipi uygulamaya gömülür:** Nunito Google Fonts'tan değil uygulamanın içinden yüklenir; dışarıya istek gitmez, internetsiz de aynı görünür.
 - **App Store gizlilik etiketi:** bugünkü haliyle "Veri Toplanmıyor". Barkod gelince Open Food Facts'e giden barkod numarası temkinli olarak "Arama Geçmişi – sizinle ilişkilendirilmez – izleme yok – amaç: uygulama işlevi" diye beyan edilir (Open Food Facts kayıtları ne kadar sakladığını belirtmiyor). HealthKit verisi cihazdan çıkmadığı için etikete girmez.
+- **Yalnızca iPhone (13 Kasım 2026):** ilk sürüm iPad'i hedeflemez (TARGETED_DEVICE_FAMILY = 1); iPad ekran görüntüsü gerekmez. Apple Sağlık'a yazma izin metni "Starboard Apple Sağlık'a veri yazmaz" oldu (yalnızca okuma kararıyla uyumlu).
 - **iCloud cihaz yedeği:** kayıt dosyası yedekte kalır; hesap olmadığı için telefon değişiminde verinin taşınmasının ana yolu bu. Kural 5.1.3(ii) uygulamanın kendisinin iCloud'a yazmasını hedefliyor gibi görünüyor ama metin ayrım yapmıyor; inceleme itiraz ederse dosya yedek dışına alınır.
 
 ## Faz 0: Temel (şimdi)
@@ -96,7 +97,7 @@ Bitti sayılır: uygulama TestFlight üzerinden kendi telefonunda çalışıyor.
 - [ ] Destek sayfası: şimdilik iletişim GitHub Issues üzerinden; App Store için ayrı bir destek adresi (e-posta ya da sayfa) gerekebilir
 - [x] Sağlık içeriği (1.8.0): hesaplamaların kaynakları ve "tıbbi tavsiye değildir" uyarısı (kural 1.4.1); Ayarlar › Hakkında ve ilk girişin özeti
 - [ ] App Store gizlilik beyanı ve HealthKit kullanım açıklamaları (App Store Connect'te barkod için "Arama Geçmişi – sizinle ilişkilendirilmez – izleme yok – uygulama işlevi" işaretlenir; `PrivacyInfo.xcprivacy` ile aynı. İnceleme notu: "Paketli herhangi bir ürünün barkodunu okutun, örnek: 3017620422003". Not: Open Food Facts'in gizlilik politikası ziyaret kayıtlarını (IP dahil) tuttuğunu yazıyor; 12 Kasım notundaki "ne kadar sakladığını belirtmiyor" kısmı bununla örtüşmüyor, beyan yine temkinli kalır)
-- [ ] Kendi yiyeceklerini düzenleme ve silme ekranı (barkodla kaydedilen ürünler birikir; şimdilik silinemez)
+- [x] Kendi yiyeceklerini düzenleme ve silme ekranı (1.9.0): Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim; web ve iPhone'da, barkodsuz yiyecekler de listede. Geçmiş günler bozulmaz (günlük kalemleri değerlerini kendi taşır)
 - [ ] Simge, ekran görüntüleri, açıklama metni, anahtar kelimeler
 - [ ] TestFlight hattı hazır (anahtarlar girilince çalışır): docs/TESTFLIGHT.md
 - [ ] TestFlight ile dış test

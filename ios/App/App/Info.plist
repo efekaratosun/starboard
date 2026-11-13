@@ -31,7 +31,7 @@
 	<key>NSHealthShareUsageDescription</key>
 	<string>Starboard reads your steps, sleep and weight from Apple Health to show them with your daily goals. Starboard does not send this data anywhere.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Starboard only saves data to Apple Health if you turn this on in Settings. Starboard does not send this data anywhere.</string>
+	<string>Starboard does not write any data to Apple Health. It only reads your steps, sleep and weight.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

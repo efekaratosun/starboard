@@ -1016,5 +1016,9 @@ window.STARBOARD_EN = {
   "En az bir veri türü seç.": "Choose at least one type of data.",
   " · Sağlık'tan": " · from Health",
   "Apple Sağlık'a bağlanırsan adım, uyku ve kilo yalnızca okunur ve bu cihazda kalır; hiçbir yere gönderilmez, reklam ya da pazarlama için kullanılmaz. İzni Sağlık uygulamasından geri alabilirsin.": "If you connect Apple Health, your steps, sleep and weight are only read and stay on this device; they are never sent anywhere or used for advertising or marketing. You can revoke access in the Health app.",
-  "Apple Sağlık bağlantısı: adımın, uykun ve kilon Sağlık'tan gelsin, hedeflerin kendiliğinden işaretlensin: Ben › Ayarlar › Apple Sağlık.": "Apple Health: bring in your steps, sleep and weight so your goals check off by themselves: Me › Settings › Apple Health."
+  "Apple Sağlık bağlantısı: adımın, uykun ve kilon Sağlık'tan gelsin, hedeflerin kendiliğinden işaretlensin: Ben › Ayarlar › Apple Sağlık.": "Apple Health: bring in your steps, sleep and weight so your goals check off by themselves: Me › Settings › Apple Health.",
+  "Kendi yiyeceklerim": "My foods",
+  "Barkodlu ürün": "Barcode product",
+  "“{0}” silinsin mi?": "Delete “{0}”?",
+  "Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.": "Edit or delete your own foods: Meals › My diary › Add food › My foods."
 };

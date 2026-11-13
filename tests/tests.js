@@ -265,7 +265,11 @@ test("dinlenme sayacı: set onaylanınca başlar, ± süreyi değiştirip hatır
   } finally { closeWorkout(); viewDate = null; state = null; }
 });
 test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir daha çıkmaz", async () => {
-  for (let i = 1; i < WHATS_NEW.length; i++) ok(verCmp(WHATS_NEW[i - 1].v, WHATS_NEW[i].v) > 0, "sürümler yeniden eskiye sıralı olmalı");
+  for (let i = 1; i < WHATS_NEW.length; i++) ok(verCmp(WHATS_NEW[i - 1].v, WHATS_NEW[i].v) >= 0, "sürümler yeniden eskiye sıralı olmalı");
+  const v190 = WHATS_NEW.filter(n => n.v === "1.9.0");
+  ok(v190.some(n => !n.native) && v190.some(n => n.native), "1.9.0 için web'de görünen ve iPhone'a özel madde olmalı");
+  eq(unseenNews("1.8.0").length, 1, "aynı sürümün kayıtları tek başlıkta birleşir");
+  eq(unseenNews("1.8.0")[0].items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -1596,6 +1600,258 @@ test("sağlık: eklenti, yetki, gizlilik metinleri ve iOS beyanları yerinde", a
   tab = "settings"; meTab = "set"; render();
   ok(!app.innerHTML.includes("Apple Sağlık'a bağlanırsan"), "web'de Sağlık gizlilik cümlesi yazılmamalı");
   state = null; tab = "today"; meTab = "body";
+});
+
+/* ---- kendi yiyeceklerim: düzenleme ve silme ---- */
+const NUTELLA = "bc_3017620422003";
+const myFoodsFixture = async () => {
+  await openAddPanel();
+  const slot = slotList()[0][0];
+  state.customFoods = {
+    cf_1: { n: "Annemin mercimek köftesi", p: 8, c: 20, f: 5, lif: 4, i: "grain" },
+    [NUTELLA]: { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, i: "grain", bc: "3017620422003", a: "3017620422003 Ferrero",
+      br: "Ferrero", src: "off", por: [{ n: "porsiyon", g: 15 }] }
+  };
+  const past = shiftDays(today(), -3);
+  const line = (id, k, g, f) => ({ id, k, n: f.n, g, p: f.p, c: f.c, f: f.f, lif: f.lif, v: [], i: "grain", slot });
+  state.days[past] = { tasks: [], seeded: true, log: [line(101, "cf_1", 150, state.customFoods.cf_1), line(102, NUTELLA, 30, state.customFoods[NUTELLA])] };
+  syncKcal(state.days[past]);
+  state.days[today()].log = [line(103, "cf_1", 100, state.customFoods.cf_1)];
+  syncKcal(state.days[today()]);
+  myFoodsOpen = false; myFoodEdit = null;
+  render();
+  return { slot, past };
+};
+const closeMyFoods = () => { myFoodsOpen = false; myFoodEdit = null; viewDate = null; editLog = null; mealTab = "log"; closeAddPanel(); };
+const clickYes = async (btn, yes) => {
+  const done = btn.onclick();
+  const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.querySelector("#ask-ok"), "onay sayfası açılmalı");
+  sheet.querySelector(yes ? "#ask-ok" : "#ask-no").click();
+  await done;
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+};
+
+test("kendi yiyeceklerim: liste yalnızca yiyecek varsa çıkar; ad, marka, 100 g kalori ve barkod işareti", async () => {
+  await openAddPanel();
+  try {
+    ok(!app.querySelector("#mf-toggle"), "kendi yiyeceği olmayana düğme çizilmez");
+    closeMyFoods();
+    await myFoodsFixture();
+    ok(app.querySelector("#mf-toggle") && !app.querySelector(".mf-row"), "liste kapalı başlar");
+    eq(app.querySelector("#mf-toggle").getAttribute("aria-expanded"), "false");
+    app.querySelector("#mf-toggle").onclick();
+    eq(app.querySelector("#mf-toggle").getAttribute("aria-expanded"), "true");
+    const rows = [...app.querySelectorAll(".mf-row")];
+    eq(rows.length, 2);
+    const nut = app.querySelector(`[data-mf-edit="${NUTELLA}"]`).closest(".mf-row");
+    ok(nut.textContent.includes("Nutella") && nut.textContent.includes("Ferrero") && nut.textContent.includes("533"), "ad, marka, kcal: " + nut.textContent);
+    ok(nut.querySelector(".bc-mark"), "barkodlu üründe işaret");
+    const mine = app.querySelector('[data-mf-edit="cf_1"]').closest(".mf-row");
+    ok(mine.textContent.includes("157") && !mine.querySelector(".bc-mark"), "barkodsuzda işaret yok");
+    eq(app.querySelectorAll(".bc-mark").length, 1);
+    for (const b of app.querySelectorAll(".mf-row button")) ok((b.getAttribute("aria-label") || b.textContent).trim().length > 2, "düğme adı");
+    eq(a11yBad("kendi yiyeceklerim"), []);
+    app.querySelector("#mf-toggle").onclick();
+    ok(!app.querySelector(".mf-row"), "tekrar basınca kapanır");
+  } finally { closeMyFoods(); }
+});
+
+test("kendi yiyeceklerim: düzenleme alanları dolu gelir, barkod ve ek alanlar kalır, geçersiz değer reddedilir", async () => {
+  const { slot, past } = await myFoodsFixture();
+  try {
+    app.querySelector("#mf-toggle").onclick();
+    app.querySelector(`[data-mf-edit="${NUTELLA}"]`).onclick();
+    eq(app.querySelector(`[data-mf-edit="${NUTELLA}"]`).getAttribute("aria-expanded"), "true");
+    eq(app.querySelector("#cf-n").value, "Nutella");
+    eq(["cf-p", "cf-c", "cf-f", "cf-l"].map(id => +app.querySelector("#" + id).value), [6.3, 57.5, 30.9, 0]);
+    ok(app.querySelector("#mf-edit").textContent.includes("3017620422003"), "barkod başlıkta görünür");
+    ok(!app.querySelector("#mf-edit input[id*='bc'], #mf-edit [id*='bc-num']"), "barkod alanı düzenlenemez");
+    eq(app.querySelectorAll("#cf-n").length, 1);
+    eq(a11yBad("düzenleme"), []);
+
+    /* geçersiz: ad boş, değer 100'ü aşıyor, barkodlu üründe değer boş */
+    const before = JSON.stringify(state.customFoods);
+    const errNow = () => app.querySelector("#cf-err").textContent;
+    app.querySelector("#cf-n").value = "";
+    await app.querySelector("#cf-save").onclick();
+    ok(errNow().length > 0, "ad zorunlu");
+    app.querySelector("#cf-err").textContent = "";
+    app.querySelector("#cf-n").value = "Nutella";
+    app.querySelector("#cf-p").value = "101";
+    await app.querySelector("#cf-save").onclick();
+    ok(errNow().length > 0, "100'ü aşan değer");
+    app.querySelector("#cf-err").textContent = "";
+    app.querySelector("#cf-p").value = "";
+    await app.querySelector("#cf-save").onclick();
+    ok(errNow().length > 0, "barkodlu üründe boş değer");
+    eq(JSON.stringify(state.customFoods), before, "geçersiz kayıt hiçbir şeyi değiştirmemeli");
+
+    /* vazgeç */
+    app.querySelector("#cf-cancel").onclick();
+    ok(!app.querySelector("#mf-edit"), "vazgeçince form kapanır");
+    eq(JSON.stringify(state.customFoods), before);
+
+    /* kaydet: yalnızca ad ve değerler değişir; anahtar, barkod, marka, porsiyon, kaynak kalır */
+    const pastBefore = JSON.stringify(state.days[past]);
+    app.querySelector(`[data-mf-edit="${NUTELLA}"]`).onclick();
+    app.querySelector("#cf-n").value = "Fındık kreması";
+    app.querySelector("#cf-p").value = "7"; app.querySelector("#cf-p").oninput();
+    ok(app.querySelector("#cf-kcal").textContent.includes("536"), "canlı kalori: " + app.querySelector("#cf-kcal").textContent);
+    app.querySelector("#cf-l").value = "2";
+    await app.querySelector("#cf-save").onclick();
+    eq(Object.keys(state.customFoods).sort(), [NUTELLA, "cf_1"], "kopya oluşmamalı");
+    eq(state.customFoods[NUTELLA], { n: "Fındık kreması", p: 7, c: 57.5, f: 30.9, lif: 2, i: "grain", bc: "3017620422003",
+      a: "3017620422003 Ferrero", br: "Ferrero", src: "off", por: [{ n: "porsiyon", g: 15 }] });
+    ok(!app.querySelector("#mf-edit") && myFoodEdit === null, "kayıttan sonra form kapanır");
+    eq(logPick, null, "düzenleme besin ekleme akışını başlatmamalı");
+    ok(app.querySelector(".mf-row").textContent.length > 0 && app.innerHTML.includes("Fındık kreması"), "liste güncellenir");
+    eq(foodByBarcode("3017620422003")[0], NUTELLA, "barkodla hâlâ bulunur");
+    eq(searchFoods("3017620422003", 8)[0][0], NUTELLA);
+    eq(searchFoods("fındık kreması", 8)[0][0], NUTELLA);
+    eq(JSON.stringify(state.days[past]), pastBefore, "geçmiş gün kaydı düzenlemeden etkilenmemeli");
+    const lastPast = state.days[past].log.find(it => it.k === NUTELLA);
+    eq([lastPast.n, lastPast.p], ["Nutella", 6.3], "eski kalem eklendiği andaki değerlerini korur");
+    addFoodDirect(state.days[today()], NUTELLA, 30, slot);
+    const added = state.days[today()].log.at(-1);
+    eq([added.n, added.p, added.lif], ["Fındık kreması", 7, 2], "yeni kalem yeni değerleri alır");
+
+    /* barkodsuz yiyecek: ad ve değerler değişir, barkod alanı eklenmez */
+    app.querySelector('[data-mf-edit="cf_1"]').onclick();
+    eq(app.querySelector("#cf-n").value, "Annemin mercimek köftesi");
+    ok(!app.querySelector("#mf-edit").textContent.includes("Barkod"), "barkodsuzda barkod başlığı yok");
+    app.querySelector("#cf-n").value = "Mercimek köftesi";
+    app.querySelector("#cf-c").value = "";
+    await app.querySelector("#cf-save").onclick();
+    eq(state.customFoods.cf_1, { n: "Mercimek köftesi", p: 8, c: 0, f: 5, lif: 4, i: "grain" }, "boş değer 0 olur, yeni alan eklenmez");
+  } finally { closeMyFoods(); }
+});
+
+test("kendi yiyeceklerim: başka form açılınca düzenleme formu kapanır, kimlikler çakışmaz", async () => {
+  await myFoodsFixture();
+  try {
+    await withBarcode(async () => {
+      render();
+      app.querySelector("#mf-toggle").onclick();
+      app.querySelector('[data-mf-edit="cf_1"]').onclick();
+      ok(app.querySelector("#mf-edit #cf-card"));
+      app.querySelector("#custom-toggle").onclick();
+      ok(!app.querySelector("#mf-edit") && myFoodEdit === null, "elle tanımlama düzenlemeyi kapatır");
+      eq(app.querySelectorAll("#cf-card").length, 1);
+      eq(a11yBad("elle tanımlama"), []);
+      app.querySelector('[data-mf-edit="cf_1"]').onclick();
+      eq(app.querySelectorAll("#cf-card").length, 1, "düzenleme açılınca eski form silinir");
+      bcShow(customFoodForm({ n: "Su", bc: "96385074" }));
+      ok(!app.querySelector("#mf-edit"), "barkod önizlemesi düzenlemeyi kapatır");
+      eq(a11yBad("barkod önizleme"), []);
+    });
+  } finally { closeMyFoods(); }
+});
+
+test("kendi yiyeceklerim: silme onay ister; vazgeçilirse kalır", async () => {
+  await myFoodsFixture();
+  try {
+    app.querySelector("#mf-toggle").onclick();
+    const sheetTitle = () => [...document.querySelectorAll(".sheet-bg")].pop().textContent;
+    const btn = app.querySelector('[data-mf-del="cf_1"]');
+    const done = btn.onclick();
+    ok(sheetTitle().includes("Annemin mercimek köftesi"), "onay sayfası yiyeceğin adını anar");
+    ok(state.customFoods.cf_1, "onaydan önce silinmemeli");
+    [...document.querySelectorAll(".sheet-bg")].pop().querySelector("#ask-no").click();
+    await done;
+    document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+    ok(state.customFoods.cf_1 && app.querySelector('[data-mf-del="cf_1"]'), "vazgeçilince kalır");
+    await clickYes(app.querySelector('[data-mf-del="cf_1"]'), true);
+    ok(!state.customFoods.cf_1 && !app.querySelector('[data-mf-del="cf_1"]'), "onaylanınca silinir");
+    eq(Object.keys(state.customFoods), [NUTELLA]);
+  } finally { closeMyFoods(); }
+});
+
+test("kendi yiyeceklerim: silinen yiyeceğin geçmiş günlerdeki kayıtları bozulmaz", async () => {
+  const { slot, past } = await myFoodsFixture();
+  try {
+    mealPrefs().exclude.push("cf_1");
+    mealPrefs().fixed[slot] = [{ k: "cf_1", g: 100 }, { k: "yulaf", g: 50 }];
+    state.shopping = { days: 1, recipes: [], checked: { cf_1: true, yulaf: true } };
+    state.savedMeals = [{ id: "s1", name: "Köfteli", items: [{ k: "cf_1", n: "Annemin mercimek köftesi", g: 100, p: 8, c: 20, f: 5, lif: 4, v: [], i: "grain" }] }];
+    const pastBefore = JSON.stringify(state.days[past]), todayBefore = JSON.stringify(state.days[today()]);
+    const totBefore = logTotals(state.days[past]);
+    const kcalBefore = state.days[past].kcal;
+    ok(favoriteFoods().some(([k]) => k === "cf_1"), "silmeden önce sık yediklerde");
+
+    app.querySelector("#mf-toggle").onclick();
+    await clickYes(app.querySelector('[data-mf-del="cf_1"]'), true);
+    ok(!state.customFoods.cf_1 && !foodOf("cf_1"), "yiyecek silindi");
+
+    /* günlük kayıtları kendi değerlerini taşır: toplamlar ve satırlar aynı kalır */
+    eq(JSON.stringify(state.days[past]), pastBefore, "geçmiş gün dokunulmadan kalmalı");
+    eq(JSON.stringify(state.days[today()]), todayBefore, "bugünün kaydı dokunulmadan kalmalı");
+    eq(logTotals(state.days[past]), totBefore);
+    eq(state.days[past].kcal, kcalBefore);
+    eq(totBefore.kcal, 395, "150 g mercimek köftesi + 30 g Nutella");
+    viewDate = past; tab = "meals"; mealTab = "log"; addOpen = null; render();
+    ok(app.innerHTML.includes("Annemin mercimek köftesi") && app.innerHTML.includes("Nutella"), "geçmiş günde satırlar görünür");
+    ok(app.textContent.includes(`${kcalBefore} / `), "günün kalorisi görünür");
+    const line = [...app.querySelectorAll(".log-line")].find(l => l.textContent.includes("Annemin"));
+    ok(line && line.textContent.includes("150 g") && line.textContent.includes("236"), "silinen yiyeceğin satırı gramla ve kaloriyle durur: " + (line && line.textContent));
+    editLog = "101"; render();
+    ok(app.querySelector("#le-amt") && +app.querySelector("#le-amt").value === 150, "silinen yiyeceğin kalemi hâlâ düzenlenebilir");
+    editLog = null;
+    eq(a11yBad("geçmiş gün"), []);
+
+    /* bağlı olduğu yerlerden temizlenir, çizim hata vermez */
+    ok(!favoriteFoods().some(([k]) => k === "cf_1"), "sık yediklerden düşer");
+    ok(!mealPrefs().exclude.includes("cf_1"), "öneri dışlamalarından düşer");
+    eq(mealPrefs().fixed[slot], [{ k: "yulaf", g: 50 }], "sabit öğünlerden düşer");
+    eq(state.shopping.checked, { yulaf: true });
+    eq(state.savedMeals[0].items[0].n, "Annemin mercimek köftesi", "kayıtlı öğün kendi değerlerini taşır");
+    eq(itemsKcal(state.savedMeals[0].items), 157);
+    viewDate = null; mealTab = "plan"; render();
+    mealTab = "list"; render();
+    mealTab = "log"; render();
+    ok(app.querySelector(".seg"), "ekranlar çizilir");
+  } finally { closeMyFoods(); }
+});
+
+test("kendi yiyeceklerim: son yiyecek silinince liste ve düğme kalkar; barkod yeniden okutulunca kayıt yeniden oluşur", async () => {
+  const { past } = await myFoodsFixture();
+  try {
+    app.querySelector("#mf-toggle").onclick();
+    await clickYes(app.querySelector('[data-mf-del="cf_1"]'), true);
+    await clickYes(app.querySelector(`[data-mf-del="${NUTELLA}"]`), true);
+    eq(state.customFoods, undefined, "boşalınca alan kalkar");
+    ok(!app.querySelector("#mf-toggle") && !app.querySelector(".mf-row") && myFoodsOpen === false, "düğme ve liste kalkar");
+    eq(foodByBarcode("3017620422003"), null, "barkod artık cihazda yok");
+    ok(state.days[past].log.length === 2 && state.days[past].log[1].n === "Nutella", "geçmiş kayıtlar yerinde");
+    ok(!favoriteFoods().some(([k]) => k === "cf_1" || k === NUTELLA), "silinenler sık yediklerde çıkmaz");
+    saveBarcodeFood("3017620422003", { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, br: "Ferrero" });
+    eq(foodByBarcode("3017620422003")[0], NUTELLA, "aynı barkod aynı anahtarla yeniden kaydedilir");
+    ok(favoriteFoods().some(([k]) => k === NUTELLA), "geçmiş kalem aynı anahtara yeniden bağlanır");
+    eq(deleteCustomFood("yok"), false, "olmayan anahtar sessizce geçilir");
+  } finally { closeMyFoods(); }
+});
+
+test("kendi yiyeceklerim: İngilizcede de çalışır ve sözlükte olmayan metin kalmaz", async () => {
+  await myFoodsFixture();
+  try {
+    await withLang("en", async () => {
+      I18N_MISSING.clear();
+      render();
+      app.querySelector("#mf-toggle").onclick();
+      ok(app.querySelector("#mf-toggle").textContent.trim() === "My foods", "düğme İngilizce");
+      ok(app.querySelector(".bc-mark").getAttribute("aria-label") === "Barcode product");
+      app.querySelector(`[data-mf-edit="${NUTELLA}"]`).onclick();
+      ok(app.querySelector("#mf-edit").textContent.includes("Barcode 3017620422003"));
+      eq(a11yBad("edit en"), []);
+      app.querySelector("#cf-cancel").onclick();
+      const done = app.querySelector('[data-mf-del="cf_1"]').onclick();
+      const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+      ok(sheet.textContent.includes("Delete “Annemin mercimek köftesi”?") && sheet.querySelector("#ask-ok").textContent === "Delete", "onay sayfası İngilizce: " + sheet.textContent);
+      sheet.querySelector("#ask-no").click(); await done;
+      document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+  } finally { closeMyFoods(); }
 });
 
 window.STARBOARD_TESTS = TESTS;

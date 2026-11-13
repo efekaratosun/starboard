@@ -4,4 +4,4 @@
 
 "NSHealthShareUsageDescription" = "Starboard, günlük hedeflerinin yanında göstermek için Apple Sağlık'tan adım, uyku ve kilo verilerini okur. Starboard bu verileri hiçbir yere göndermez.";
 
-"NSHealthUpdateUsageDescription" = "Starboard, Apple Sağlık'a yalnızca Ayarlar'da bunu açarsan veri kaydeder. Starboard bu verileri hiçbir yere göndermez.";
+"NSHealthUpdateUsageDescription" = "Starboard Apple Sağlık'a veri yazmaz; yalnızca adım, uyku ve kilonu okur.";
