@@ -98,7 +98,7 @@ Bitti sayılır: uygulama TestFlight üzerinden kendi telefonunda çalışıyor.
 - [ ] Destek sayfası: şimdilik iletişim GitHub Issues üzerinden; App Store için ayrı bir destek adresi (e-posta ya da sayfa) gerekebilir
 - [x] Sağlık içeriği (1.8.0): hesaplamaların kaynakları ve "tıbbi tavsiye değildir" uyarısı (kural 1.4.1); Ayarlar › Hakkında ve ilk girişin özeti
 - [ ] App Store gizlilik beyanı ve HealthKit kullanım açıklamaları (App Store Connect'te barkod için "Arama Geçmişi – sizinle ilişkilendirilmez – izleme yok – uygulama işlevi" işaretlenir; `PrivacyInfo.xcprivacy` ile aynı. İnceleme notu: "Paketli herhangi bir ürünün barkodunu okutun, örnek: 3017620422003". Not: Open Food Facts'in gizlilik politikası ziyaret kayıtlarını (IP dahil) tuttuğunu yazıyor; 12 Kasım notundaki "ne kadar sakladığını belirtmiyor" kısmı bununla örtüşmüyor, beyan yine temkinli kalır)
-- [x] Kendi yiyeceklerini düzenleme ve silme ekranı (1.9.0): Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim; web ve iPhone'da, barkodsuz yiyecekler de listede. Geçmiş günler bozulmaz (günlük kalemleri değerlerini kendi taşır)
+- [x] Kendi yiyeceklerini düzenleme ve silme ekranı (1.9.0): Beslenme › Bugün › Besin ekle › Kendi yiyeceklerim; web ve iPhone'da, barkodsuz yiyecekler de listede. Geçmiş günler bozulmaz (günlük kalemleri değerlerini kendi taşır)
 - [ ] Simge, ekran görüntüleri, açıklama metni, anahtar kelimeler
 - [ ] TestFlight hattı hazır (anahtarlar girilince çalışır): docs/TESTFLIGHT.md
 - [ ] TestFlight ile dış test

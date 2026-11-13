@@ -2,7 +2,7 @@
 
 /* ---------------- alışveriş listesi ----------------
    Liste iki kaynaktan toplanır:
-     1) öneri planının seçilen gün sayısı kadarı: her gün "Başka kombinasyon"daki
+     1) öneri planının seçilen gün sayısı kadarı: her gün öğün kartındaki "Başka"daki
         gibi sıradaki planı kullanır, böylece haftalık liste yedi kez aynı şey olmaz;
      2) listeye eklenen tariflerin bütün malzemeleri.
    Aynı besin tek satırda toplanır, satırlar market reyonlarına göre gruplanır.

@@ -12,6 +12,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* Sık yediklerin ve "dünkü öğünü kopyala" görünsün diye son iki güne günlük yazar. */
 const FOOD_HISTORY = "(() => { const s = slotList()[0][0], mk = (k, g, id) => { const f = FOODS[k]; return { id, k, n:f.n, g, p:f.p, c:f.c, f:f.f, lif:f.lif||0, v:f.v||[], i:f.i, slot:s }; }; for (const b of [1, 2]){ const d = shiftDays(today(), -b); state.days[d] = { tasks:[], seeded:true, log:[mk('yulaf',40,b*10),mk('muz',120,b*10+1),mk('yumurta',100,b*10+2),mk('ekmek',60,b*10+3),mk('beyazpeynir',60,b*10+4),mk('elma',180,b*10+5)] }; } })()";
+/* Bugüne iki kalem yazar: özet, Ayrıntılar ve dolu öğün kartı görünsün. */
+const LOG_TODAY = "(() => { const s = slotList()[0][0], mk = (k, g, id) => { const f = FOODS[k]; return { id, k, n:f.n, g, p:f.p, c:f.c, f:f.f, lif:f.lif||0, v:f.v||[], i:f.i, slot:s }; }; state.days[today()].log = [mk('yulaf',60,901), mk('muz',120,902)]; syncKcal(state.days[today()]); })()";
 const SCREENS = [
   ["bugün", "tab='today'; goalOpen=null"],
   ["bugün: su açık", "tab='today'; goalOpen='water'"],
@@ -19,9 +21,12 @@ const SCREENS = [
   ["antrenman: kaydım", "goalOpen=null; tab='plan'; planTab='log'"],
   ["antrenman: program", "tab='plan'; planTab='program'"],
   ["antrenman: nasıl yapılır", "tab='plan'; planTab='howto'"],
-  ["beslenme: günlük", "tab='meals'; mealTab='log'"],
-  ["beslenme: plan", "tab='meals'; mealTab='plan'"],
-  ["beslenme: tarifler", "tab='meals'; mealTab='recipes'"],
+  ["beslenme: bugün (öneriler)", "delete state.days[today()].log; state.ui={}; mealVariant=0; viewDate=null; addOpen=null; tab='meals'; mealTab='log'"],
+  ["beslenme: bugün (öneriler, Başka sonrası)", "mealVariant=3; tab='meals'; mealTab='log'"],
+  ["beslenme: bugün (kayıtlar, Ayrıntılar ve katlananlar açık)", LOG_TODAY + "; state.savedMeals=[{ id:'s1', name:'Sabah kasesi', items:[{ k:'yulaf', n:'Yulaf ezmesi', g:40, p:13, c:60, f:7, lif:10, v:[], i:'grain' }] }]; state.ui={ fold:{ detail:true, mymeals:true, saved:true } }; mealVariant=0; tab='meals'; mealTab='log'"],
+  ["beslenme: geçmiş gün (öneri yok)", "state.ui={}; viewDate=shiftDays(today(),-1); tab='meals'; mealTab='log'"],
+  ["beslenme: tarifler", "viewDate=null; delete state.days[today()].log; tab='meals'; mealTab='recipes'"],
+  ["beslenme: liste", "tab='meals'; mealTab='list'"],
   ["beslenme: besin ekle (barkod düğmesi)", "barcodeAvailable=()=>true; tab='meals'; mealTab='log'; addOpen=slotList()[0][0]"],
   ["beslenme: barkod önizleme", "barcodeAvailable=()=>true; tab='meals'; mealTab='log'; addOpen=slotList()[0][0]; setTimeout(()=>bcShow(customFoodForm({ title:tx('Barkod {0}',['3017620422003']), bc:'3017620422003', n:'Nutella', p:6.3, c:57.5, f:30.9, lif:0, saveLabel:tx('Kaydet ve ekle'), notes:[[tx('Marka: {0}',['Ferrero']),false],[tx('Etiket {0} kcal diyor, değerleri kontrol et.',[600]),true],[tx('Kaynak: Open Food Facts'),false]] })),0)"],
   ["beslenme: kendi yiyeceklerim", "state.customFoods={ cf_1:{ n:'Annemin mercimek köftesi', p:8, c:20, f:5, lif:4, i:'grain' }, bc_3017620422003:{ n:'Fındıklı kakaolu sürülebilir krema, sütlü ve çok uzun adlı ürün', p:6.3, c:57.5, f:30.9, lif:0, i:'grain', bc:'3017620422003', br:'Ferrero Uluslararası', a:'3017620422003' } }; barcodeAvailable=()=>true; tab='meals'; mealTab='log'; addOpen=slotList()[0][0]; myFoodsOpen=true; myFoodEdit=null"],
@@ -43,6 +48,7 @@ const SCREENS = [
 const SHEETS = [
   ["hızlı giriş", "tab='today'; render(); openQuickSheet()", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove())"],
   ["antrenman modu", "tab='plan'; planTab='log'; render(); openWorkout()", "closeWorkout()"],
+  ["beslenme: Ayarla penceresi", "delete state.days[today()].log; state.mealPrefs.exclude=['yulaf']; viewDate=null; addOpen=null; tab='meals'; mealTab='log'; render(); openPrefsSheet()", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove()); state.mealPrefs.exclude=[]"],
 ];
 
 /* Çerçevenin içinde çalışır: taşan öğeler ve erişilebilirlik bulguları. */

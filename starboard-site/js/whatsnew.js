@@ -7,16 +7,18 @@
    Yeni bir sürümde kullanıcının fark edeceği bir şey varsa buraya en üste eklenir;
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
+  { v:"1.10.0", items:[
+    tx("Beslenme sadeleşti: öneriler boş öğünün içinde, tek dokunuşla Ekle. Bugün · Tarifler · Liste.")] },
   { v:"1.9.1", items:[
     tx("Besin ekleme kolaylaştı: sık yediklerin panelin başında, aramadaki + ile tek dokunuşla ekle, yanlışsa Geri al.")] },
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
   { v:"1.9.1", items:[
     tx("Öğün önerileri daha gerçekçi: her öğün anlamlı bir tabak, makul porsiyonlar ve her gün farklı bir menü.")] },
   { v:"1.9.0", items:[
-    tx("Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.")] },
+    tx("Kendi yiyeceklerini düzenle ya da sil: Beslenme › Bugün › Besin ekle › Kendi yiyeceklerim.")] },
   /* native: yalnızca iPhone uygulamasında gösterilir (web'de bu özellik yok). */
   { v:"1.9.0", native:true, items:[
-    tx("Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Günlüğüm › Besin ekle › Barkod okut."),
+    tx("Paketli ürünlerin barkodunu okut, besin değerleri Open Food Facts'ten gelsin: Beslenme › Bugün › Besin ekle › Barkod okut."),
     tx("Apple Sağlık bağlantısı: adımın, uykun ve kilon Sağlık'tan gelsin, hedeflerin kendiliğinden işaretlensin: Ben › Ayarlar › Apple Sağlık.")] },
   { v:"1.8.0", items:[
     tx("Alışveriş listesi: Beslenme › Liste. Öneri planından ve seçtiğin tariflerden oluşur."),

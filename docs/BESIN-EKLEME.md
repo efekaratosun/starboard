@@ -1,10 +1,10 @@
 # Besin ekleme akışı
 
-Kapsam: Beslenme › Günlüğüm içindeki besin ekleme (arama, sonuç listesi, miktar seçimi, sık yedikler, hızlı ekleme, kopyalama). Öğün önerisi/plan üretimi ve besin veritabanı bu işin dışındadır. Kod: `starboard-site/js/meals.js` (`addPanel`, `quickChips`, `foodRow`, `pickCard`, `quickAdd`, `searchFoods`), `widgets.js` (`toast`), `nutrition.js` (`foodOf`, `foodUsage`; değişmedi).
+Kapsam: Beslenme › Bugün içindeki besin ekleme (arama, sonuç listesi, miktar seçimi, sık yedikler, hızlı ekleme, kopyalama). Öğün önerisi/plan üretimi ve besin veritabanı bu işin dışındadır. Kod: `starboard-site/js/meals.js` (`addPanel`, `quickChips`, `foodRow`, `pickCard`, `quickAdd`, `searchFoods`), `widgets.js` (`toast`), `nutrition.js` (`foodOf`, `foodUsage`; değişmedi).
 
 ## Ölçüt
 
-"Dokunuş" bir düğmeye, satıra ya da alana yapılan her dokunuştur; arama alanına odaklanmak da bir dokunuştur. Yazılan harfler ayrıca belirtilir. Başlangıç: Beslenme › Günlüğüm açık, ilgili öğün kartı ekranda.
+"Dokunuş" bir düğmeye, satıra ya da alana yapılan her dokunuştur; arama alanına odaklanmak da bir dokunuştur. Yazılan harfler ayrıca belirtilir. Başlangıç: Beslenme › Bugün açık, ilgili öğün kartı ekranda.
 
 ## Önceki akış (1.9.0), adım adım
 

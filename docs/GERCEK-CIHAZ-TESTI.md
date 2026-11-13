@@ -52,7 +52,7 @@ iOS bazen web içeriğinin verisini siler. Starboard bunu önlemek için veriyi 
 
 ## 3. Barkod
 
-Yol: **Beslenme › Günlüğüm › Besin ekle › Barkod okut.** (Düğme yalnızca iPhone uygulamasında vardır.) İzin penceresi iOS'ta **yalnızca bir kez** çıkar; bu yüzden aşağıdaki sıra önemli: önce reddet, sonra Ayarlar'dan aç.
+Yol: **Beslenme › Bugün › Besin ekle › Barkod okut.** (Düğme yalnızca iPhone uygulamasında vardır.) İzin penceresi iOS'ta **yalnızca bir kez** çıkar; bu yüzden aşağıdaki sıra önemli: önce reddet, sonra Ayarlar'dan aç.
 
 - [ ] Besin ekle'yi aç. **Görmelisin:** "Barkod okut" ve "Kendim tanımlayayım" düğmeleri.
 - [ ] **İlk kullanım bilgi penceresi.** "Barkod okut"a dokun. **Görmelisin:** "Barkod okut" başlıklı pencere: "Yalnızca barkod numarası Open Food Facts'e gönderilir; başka hiçbir verin cihazdan çıkmaz." Düğmeler: **Devam**, **Vazgeç**, sağ üstte ×.
@@ -63,7 +63,7 @@ Yol: **Beslenme › Günlüğüm › Besin ekle › Barkod okut.** (Düğme yaln
 - [ ] **İzni reddet.** İzin penceresinde **İzin Verme**'ye dokun. **Görmelisin:** Barkod bölümünde uyarı: "Kamera izni kapalı: Ayarlar › Starboard › Kamera" ve altında **Barkod numarası** alanı ile **Bul** düğmesi (elle giriş). Uygulama kapanmaz. **(doğrula: bazı iOS sürümlerinde mesaj yerine "Tarayıcı açılamadı." + Tekrar dene / Elle gir çıkabilir; bu da kabul edilebilir, ama not et.)**
 - [ ] **Elle barkod girişi.** Alana `1234567890123` yaz, **Bul**'a dokun. **Görmelisin:** kırmızı uyarı "Geçersiz barkod".
 - [ ] Alana `3017620422003` yaz (Nutella), **Bul**. **Görmelisin:** "Ürün aranıyor…", sonra "Barkod 3017620422003" başlıklı form: ad, protein / karbonhidrat / yağ / lif dolu, altında "Kaynak: Open Food Facts" ve marka notu. Kalori satırı "≈ … kcal / 100 g" yazar. (İnternet gerekir.)
-- [ ] Formu değiştirmeden **Kaydet ve ekle**'ye dokun. **Görmelisin:** ürün seçili olarak miktar kartı açılır; miktarı girip günlüğe ekleyebilirsin. Ürün Günlüğüm'de görünür.
+- [ ] Formu değiştirmeden **Kaydet ve ekle**'ye dokun. **Görmelisin:** ürün seçili olarak miktar kartı açılır; miktarı girip günlüğe ekleyebilirsin. Ürün Bugün ekranında görünür.
 - [ ] **İzni Ayarlar'dan aç.** iPhone'da Ayarlar › Starboard › **Kamera**'yı aç, uygulamaya dön. **Görmelisin:** Barkod okut'a basınca artık kamera açılır (bilgi penceresi bu kez çıkmaz, çünkü Devam'ı zaten seçtin). **(doğrula: iOS, izin değişince uygulamayı kapatıp yeniden açabilir; veriler yerinde kalmalı.)**
 - [ ] **Tarama.** Barkod okut'a dokun. **Görmelisin:** tam ekran kamera görüntüsü, üstte "Barkodu çerçevenin içine getir" yazısı; kapatma ve fener düğmeleri. **(doğrula: görünen düğme adları eklentiye ait; yalnızca ekran okuyucu adları Starboard'dan gelir.)**
 - [ ] Örnek barkodu okut: **3017620422003** (Nutella kavanozu; elinde yoksa bilgisayar ekranında barkod resmini göster). **Görmelisin:** barkod birkaç saniyede okunur, "Ürün aranıyor…" ve ürün formu çıkar. Ürün daha önce kaydedildiyse doğrudan miktar kartı gelir (aşağıdaki "ikinci kez" maddesi).

@@ -35,13 +35,12 @@ function syncKcal(entry){
 
 function mealsView(program){
   const entry = ensureDay(vKey());
-  const body = mealTab === "plan" ? planView(program)
-             : mealTab === "log" ? logView(program, entry)
+  const body = mealTab === "recipes" ? recipesView()
              : mealTab === "list" ? shoppingView(program)
-             : recipesView();
+             : logView(program, entry);
   return `<div class="seg">
-    ${[["log",tx("Günlüğüm")],["plan",tx("Öneriler")],["recipes",tx("Tarifler")],["list",tx("Liste")]].map(([k,l]) =>
-      `<button data-meal-tab="${k}" aria-current="${mealTab===k}">${l}</button>`).join("")}
+    ${[["log",tx("Bugün")],["recipes",tx("Tarifler")],["list",tx("Liste")]].map(([k,l]) =>
+      `<button data-meal-tab="${k}" aria-current="${(mealTab === "recipes" || mealTab === "list" ? mealTab : "log")===k}">${l}</button>`).join("")}
   </div>` + body;
 }
 
@@ -149,11 +148,14 @@ function macroRow(label, got, target, unit, ic, color){
     <span class="v num">${got}${unit}<span class="tgt">/ ${target}${unit}</span></span></div>`;
 }
 
-function microSection(micros){
+/* Lif ve mikro besinler tek katlanır bölümde: ana özet dört çubukla kalır. */
+function detailSection(tot, program){
   const keys = Object.keys(NUTRIENTS);
-  const missing = keys.filter(k => !micros.has(k));
-  return fold("micro", tx("Mikro besinler"), `${keys.length - missing.length}/${keys.length}`, `
-    <div class="pills">${keys.map(k => micros.has(k)
+  const missing = keys.filter(k => !tot.micros.has(k));
+  return fold("detail", tx("Ayrıntılar"), "", `
+    ${macroRow(tx("Lif"), tot.lif, fiberTarget(program), " g", "veg", "ml")}
+    <div class="metric-note" style="margin:14px 0 10px">${tx("Mikro besinler")} · ${keys.length - missing.length}/${keys.length}</div>
+    <div class="pills">${keys.map(k => tot.micros.has(k)
       ? `<span class="pill on"><svg class="ico"><use href="#i-check"/></svg>${NUTRIENTS[k].n}</span>`
       : `<span class="pill">${NUTRIENTS[k].n}</span>`).join("")}</div>
     ${missing.length ? `<div class="metric-note" style="margin-top:14px">
@@ -164,7 +166,11 @@ function microSection(micros){
 function logView(program, entry){
   const log = entry.log || [];
   const tot = logTotals(entry);
-  const fib = fiberTarget(program);
+  /* Öneri yalnızca bugün için; günün planı alışveriş listesiyle aynı sıradan gelir. */
+  const plan = onToday() ? buildMeals(program, planDay() + mealVariant) : null;
+  const sug = k => suggestedMeal(entry, plan, k);
+  const anySug = !!plan && slotList().some(([k]) => sug(k));
+  const off = plan ? plan.total.kcal - program.kcal : 0;
 
   return `
   ${favBlock(entry)}
@@ -174,17 +180,71 @@ function logView(program, entry){
     ${macroRow(tx("Protein"), tot.p, program.protein, " g", "poultry", "mp")}
     ${macroRow(tx("Karbonhidrat"), tot.c, program.carb, " g", "bread", "mc")}
     ${macroRow(tx("Yağ"), tot.f, program.fat, " g", "oil", "mf")}
-    ${macroRow(tx("Lif"), tot.lif, fib, " g", "veg", "ml")}
-    ${tot.kcal > program.kcal * 1.1 ? `<div class="metric-note" style="margin-top:12px"><b class="out">${tx("Hedefi {0} kcal aştın.", [(tot.kcal-program.kcal)])}</b></div>`
-      : tot.kcal ? `<div class="metric-note" style="margin-top:12px">${tx("Hedefe {0} kcal kaldı.", [(Math.max(program.kcal-tot.kcal,0))])}</div>` : ""}
+    ${tot.kcal > program.kcal * 1.1 ? `<div class="metric-note" style="margin-top:12px"><b class="out">${tx("Hedefi {0} kcal aştın.", [(tot.kcal-program.kcal)])}</b></div>` : ""}
   </section>
 
-  ${log.length ? microSection(tot.micros) : ""}
+  ${log.length ? detailSection(tot, program) : ""}
 
-  ${mealCards(entry)}
+  ${onToday() ? `${anySug && Math.abs(off) > program.kcal * 0.08
+    ? `<div class="metric-note" style="margin:0 4px 10px"><b class="out">${tx("Öneri hedeften {0} kcal {1}.", [Math.abs(off), off > 0 ? tx("yüksek") : tx("düşük")])}</b></div>` : ""}
+  <button class="ghost" id="prefs-open" aria-haspopup="dialog" aria-label="${tx("Önerileri kendine göre ayarla")}" style="margin-bottom:12px">${tx("Ayarla")}</button>` : ""}
+
+  ${mealCards(entry, sug)}
   ${mealManager()}
   ${savedManager()}
   <div class="foot">${tx("Değerler ortalamadır.")}</div>`;
+}
+
+/* Boş öğünün o günkü önerisi; dolu öğünde, geçmiş günde ya da öğün doluysa yok. */
+function suggestedMeal(entry, plan, slot){
+  if (!plan || !onToday() || addOpen === slot || itemsOfSlot(entry.log, slot).length) return null;
+  const m = plan.meals.find(x => x.slot === slot);
+  return m && m.items.length ? m : null;
+}
+
+function suggestionHTML(m, label){
+  const added = m.items.filter(i => i.key && i.g && foodOf(i.key));
+  const kcal = added.reduce((a, i) => a + foodKcal(foodOf(i.key), i.g), 0);
+  const row = i => {
+    const f = i.key ? foodOf(i.key) : null;
+    const name = f ? esc(f.n) : esc(i.text);
+    const rec = i.key ? recipeFor(i.key) : null;
+    const amt = f && i.g ? ` <span class="sug-g">${esc(shortAmount(i.key, i.g))}</span>` : "";
+    return `<div class="item">${iconBox(i.icon)}
+      ${rec ? `<button class="item-main tap" data-recipefor="${i.key}"><h3>${name}${amt}</h3></button><svg class="ico chev" aria-hidden="true"><use href="#i-next"/></svg>`
+            : `<div class="item-main"><h3>${name}${amt}</h3></div>`}
+      ${i.fixed ? `<button class="del" data-fixdel="${m.slot}|${i.key}" aria-label="${name}, ${tx("Kaldır")}">×</button>`
+        : i.key ? `<button class="del" data-mex="${i.key}" aria-label="${name}, ${tx("Bu besini önerilerden çıkar")}">×</button>` : ""}
+    </div>`;
+  };
+  return `<div class="sug" role="group" aria-label="${tx("Öneri")}">
+    <div class="sug-h"><span>${tx("Öneri")}</span><span class="num">${tx("{0} kcal", [kcal])}</span></div>
+    ${m.items.map(row).join("")}
+    ${added.length ? `<div class="row" style="margin-top:10px">
+      <button data-sug-add="${m.slot}" aria-label="${esc(label)}, ${tx("Ekle")}">${tx("Ekle")}</button>
+      <button class="ghost" data-sug-other="${m.slot}" aria-label="${esc(label)}, ${tx("Başka")}">${tx("Başka")}</button>
+    </div>` : ""}
+  </div>`;
+}
+
+/* Önerilen tabağın tamamını tek dokunuşla günlüğe ekler; toast'tan geri alınır. */
+let sugBusy = false;
+async function addSuggested(entry, slot){
+  if (sugBusy || !onToday()) return null;
+  sugBusy = true;
+  try {
+    const program = currentProgram();
+    if (!program) return null;
+    const m = suggestedMeal(entry, buildMeals(program, planDay() + mealVariant), slot);
+    const items = m ? m.items.filter(i => i.key && i.g && foodOf(i.key)) : [];
+    if (!items.length || !(await guardKcal(entry))) return null;
+    const day = vKey(), snap = logSnap(entry);
+    const added = items.map(i => addFoodDirect(entry, i.key, Math.round(i.g), slot)).filter(Boolean);
+    if (!added.length) return null;
+    await saveState(state); render();
+    toastUndo(tx("{0} eklendi · {1} kcal", [m.name, added.reduce((a, it) => a + foodKcal(it, it.g), 0)]), day, added.map(it => it.id), snap);
+    return added;
+  } finally { sugBusy = false; }
 }
 
 /* ---- dünün aynısı ----
@@ -229,13 +289,10 @@ function savedChips(){
 function savedManager(){
   const list = savedMeals();
   if (!list.length) return "";
-  return `<section>
-    <h2>${tx("Kayıtlı öğünler")} <span class="count">${list.length}</span></h2>
-    ${list.map(s => `<div class="rt">${iconBox(s.items[0] && s.items[0].i || "grain")}
+  return fold("saved", tx("Kayıtlı öğünler"), list.length, list.map(s => `<div class="rt">${iconBox(s.items[0] && s.items[0].i || "grain")}
       <div class="m"><h3>${esc(s.name)}</h3><p>${tx("{0} kalem · {1} kcal", [(s.items.length), (itemsKcal(s.items))])}</p></div>
-      <button class="del" data-saved-del="${s.id}" aria-label="${tx("Kayıtlı öğünü sil")}">×</button>
-    </div>`).join("")}
-  </section>`;
+      <button class="del" data-saved-del="${s.id}" aria-label="${esc(s.name)}, ${tx("Kayıtlı öğünü sil")}">×</button>
+    </div>`).join(""));
 }
 
 function ydayLog(){
@@ -254,7 +311,7 @@ function copyItems(entry, items, slot){
 }
 
 /* Her öğün kendi kartı: o öğünün kayıtları ve besin eklemesi bir arada. */
-function mealCards(entry){
+function mealCards(entry, sug){
   const log = entry.log || [];
   const list = slotList();
   const known = new Set(list.map(([k]) => k));
@@ -265,9 +322,11 @@ function mealCards(entry){
   const cards = list.map(([k,l]) => {
     const items = log.filter(x => slotOf(x) === k);
     const yIt = items.length ? [] : ydayLog().filter(x => slotOf(x) === k);
+    const sm = !items.length && sug ? sug(k) : null;
     return `<section>
       <h2>${esc(l)}${items.length ? `<span class="count">${tx("{0} kcal", [(kcalOf(items))])}</span>` : ""}</h2>
       ${items.length ? items.map(logLine).join("")
+        : sm ? suggestionHTML(sm, l)
         : `<div class="empty">${tx("Bu öğüne henüz bir şey eklemedin.")}</div>`}
       ${saveMealOpen === k && items.length ? saveMealForm(items)
         : items.length >= 2 && addOpen !== k ? `<button class="link" data-savemeal="${k}" style="margin-top:10px">${tx("Bu öğünü kaydet")}</button>` : ""}
@@ -456,9 +515,7 @@ function wireCustomForm(box, pre){
 function mealManager(){
   const list = userMeals();
   const shares = mealShares(list);
-  const T = MEAL_TIMES.find(x => x.key === mealAddTime) || MEAL_TIMES[1];
-  return `<section>
-    <h2>${tx("Öğünlerim")} <span class="count">${list.length}</span></h2>
+  return fold("mymeals", tx("Öğünlerim"), list.length, `
     ${list.map((m,i) => `<div class="rt">${iconBox(m.cat === "kahvalti" ? "egg" : m.cat === "ara" ? "fruit" : "grain")}
       <div class="m"><h3>${esc(mealName(m))}</h3><p>${tx("günlük hedefin %{0} kadarı · {1}:00 civarı", [(Math.round(shares[i]*100)), (m.h)])}</p></div>
       ${list.length > 1 ? `<button class="del" data-meal-del="${m.id}" aria-label="${tx("Öğünü kaldır")}">×</button>` : ""}
@@ -472,8 +529,7 @@ function mealManager(){
       <div class="row" style="margin-top:14px">
         <button id="ml-save">${tx("Ekle")}</button>
         <button class="ghost" id="ml-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button>
-      </div>    </div>` : `<button class="ghost" id="ml-add" style="margin-top:12px">${tx("Öğün ekle")}</button>`}
-  </section>`;
+      </div>    </div>` : `<button class="ghost" id="ml-add" style="margin-top:12px">${tx("Öğün ekle")}</button>`}`);
 }
 
 function logBySlot(log){
@@ -766,102 +822,67 @@ function pickCard(){
   </div>`;
 }
 
-function fixResults(){
-  const q = norm(fixQuery.trim());
-  if (q.length < 2) return "";
-  const hits = searchFoods(fixQuery, 8);
-  if (!hits.length) return `<div class="empty" style="padding-top:10px">${tx("Bulunamadı.")}</div>`;
-  return hits.map(([k,f]) => `<div class="item" data-fixfood="${k}">${iconBox(f.i || "grain")}
-    <div class="item-main"><h3>${esc(f.n)}</h3><p>${tx("100 g: {0} kcal", [(Math.round(f.p*4+f.c*4+f.f*9))])}</p></div>
-    <span class="add">+</span></div>`).join("");
-}
-
-function fixPicker(){
-  const f = fixPick ? foodOf(fixPick) : null;
-  const chips = f && f.unit ? [1,2,3] : [50,100,150,200];
-  return `<div class="pick">
-    <label for="fix-q">${tx("Ne yiyeceksin?")}</label>
-    <input id="fix-q" type="text" placeholder="${tx("Ara: yumurta, döner, muz…")}" value="${esc(fixQuery)}" autocomplete="off">
-    <div class="res" id="fix-res">${fixResults()}</div>
-    ${f ? `<div style="margin-top:14px">
-      <label for="fix-amt">${tx("{0} — miktar ({1})", [(esc(f.n)), (f.unit ? f.unitName : "g")])}</label>
-      <input id="fix-amt" type="number" inputmode="decimal" value="${f.unit ? 1 : 100}">
-      <div class="chips">${chips.map(c => `<button class="chip" data-fixamt="${c}">${c} ${f.unit?f.unitName:"g"}</button>`).join("")}</div>
-      <button id="fix-save" style="margin-top:12px">${tx("Bu öğüne ekle")}</button>
-    </div>` : ""}  </div>`;
-}
-
-function prefsSection(){
+/* Öneri tercihleri sayfada durmaz; "Ayarla" bir pencerede açar. Değişiklik hemen
+   kaydedilir ve arkadaki sayfa (öneriler, tarifler) yeniden çizilir. */
+function prefsBody(){
   const prefs = mealPrefs();
-  const usage = foodUsage();
-  const known = Object.keys(usage).filter(k => usage[k] >= 2).length;
-
-  return `<section>
-    <h2>${tx("Önerileri kendine göre ayarla")}</h2>
-    <label for="cuisine-sel">${tx("Mutfak")}</label>
+  return `<label for="cuisine-sel">${tx("Mutfak")}</label>
     <select id="cuisine-sel" style="margin-bottom:14px">${Object.entries(CUISINES)
       .map(([k,l]) => `<option value="${k}"${currentCuisine()===k?" selected":""}>${l}</option>`).join("")}</select>
     <label for="diet-sel">${tx("Beslenme türü")}</label>
     <select id="diet-sel" style="margin-bottom:14px">${dietOptions(currentDiet())
       .map(([k,l]) => `<option value="${k}"${currentDiet()===k?" selected":""}>${l}</option>`).join("")}</select>
     <div class="chips">
-      <button class="chip${prefs.useMine?" sel":""}" id="use-mine">
+      <button class="chip${prefs.useMine?" sel":""}" id="use-mine" aria-pressed="${!!prefs.useMine}">
         <svg class="ico" style="width:14px;height:14px;flex:0 0 14px;vertical-align:-2px" aria-hidden="true"><use href="#i-repeat"/></svg>
         ${tx("Sık yediğim besinlerle kur")}</button>
-    </div>    ${currentDiet() !== "hepsi" ? `<div class="metric-note" style="margin-top:10px">
-      ${tx("{0} seçili: {1} besin uygun, kalanı önerilerden çıkarıldı. Günlüğe istediğini yazmaya devam edebilirsin.", [(DIETS[currentDiet()]), (Object.keys(FOODS).filter(k => foodAllowed(k, currentDiet())).length)])}
-      ${INTL_DIETS.includes(currentDiet()) ? tx("Etin kesim şekli bilinemez; paketin etiketine bak.") : ""}</div>` : ""}
+    </div>
+    ${currentDiet() !== "hepsi" && INTL_DIETS.includes(currentDiet()) ? `<div class="metric-note" style="margin-top:10px">${tx("Etin kesim şekli bilinemez; paketin etiketine bak.")}</div>` : ""}
     ${prefs.exclude.length ? `<div style="margin-top:14px">
       <div class="metric-note" style="margin-bottom:8px">${tx("Önerilerden çıkardıkların:")}</div>
       <div class="chips">${prefs.exclude.map(k => `<button class="chip" data-munex="${k}">
-        ${esc((FOODS[k]||{n:k}).n)} <span style="opacity:.6">${tx("geri al")}</span></button>`).join("")}</div>
-    </div>` : ""}
-  </section>`;
+        ${esc((foodOf(k)||{n:k}).n)} <span style="opacity:.6">${tx("geri al")}</span></button>`).join("")}</div>
+    </div>` : ""}`;
 }
 
-function planView(program){
-  const plan = buildMeals(program, planDay() + mealVariant);
-  const off = Math.abs(plan.total.kcal - program.kcal);
-
-  return `
-  <section>
-    <h2>${plan.setName} <span class="count">${tx("{0} kcal", [(plan.total.kcal)])}</span></h2>
-    ${macroRow(tx("Kalori"), plan.total.kcal, program.kcal, "", "grain", "band")}
-    ${macroRow(tx("Protein"), plan.total.p, program.protein, " g", "poultry", "mp")}
-    ${macroRow(tx("Karbonhidrat"), plan.total.c, program.carb, " g", "bread", "mc")}
-    ${macroRow(tx("Yağ"), plan.total.f, program.fat, " g", "oil", "mf")}
-    ${macroRow(tx("Lif"), plan.total.lif, fiberTarget(program), " g", "veg", "ml")}
-    ${off > program.kcal * 0.08 ? `<div class="metric-note" style="margin-top:12px">
-      <b class="out">Bu kombinasyon hedeften ${off} kcal ${plan.total.kcal>program.kcal?tx("yüksek"):tx("düşük")}.</b>
-      ${tx("Yağlı besinler kendi yağını da getirdiği için bazı setler düşük kalorili hedeflere oturmuyor; başka kombinasyon dene.")}</div>` : ""}
-    <button class="ghost" id="reroll" style="margin-top:14px">${tx("Başka kombinasyon")}</button>
-  </section>
-  ${prefsSection()}
-  ${microSection(plan.micros)}
-  ${plan.meals.map(m => `<section>
-    <h2>${m.name} <span class="count">${tx("{0} kcal", [(m.kcal)])}</span></h2>
-    ${m.items.map(i => {
-      const rec = i.key ? recipeFor(i.key) : null;
-      return `<div class="item">${iconBox(i.icon)}
-      ${rec
-        ? `<button class="item-main tap" data-recipefor="${i.key}">
-             <h3>${esc(i.text)}</h3>
-             <p>${i.fixed?tx("senin girdiğin · "):""}${rec.idx >= 0 ? tx("tarifi gör") : rec.uses + tx(" tarifte kullanılıyor")}</p>
-           </button><svg class="ico chev" aria-hidden="true"><use href="#i-next"/></svg>`
-        : `<div class="item-main"><h3>${esc(i.text)}</h3>${i.fixed?`<p>${tx("senin girdiğin")}</p>`:""}</div>`}
-      ${i.fixed
-        ? `<button class="del" data-fixdel="${m.slot}|${i.key}" aria-label="${tx("Kaldır")}">×</button>`
-        : i.key ? `<button class="del" data-mex="${i.key}" aria-label="${tx("Bu besini önerilerden çıkar")}">×</button>` : ""}
-    </div>`; }).join("")}
-    ${m.full ? `<div class="metric-note" style="margin-top:10px">${tx("Bu öğün doldu.")}</div>` : ""}
-    <button class="ghost" data-fixadd="${m.slot}" style="margin-top:12px">${fixSlot===m.slot?tx("Kapat"):tx("Kendi yiyeceğini ekle")}</button>
-    ${fixSlot===m.slot ? fixPicker() : ""}
-  </section>`).join("")}
-  <div class="foot">${tx("Miktarlar çiğ ağırlıktır.")}</div>`;
+function openPrefsSheet(){
+  const el = document.createElement("div");
+  el.className = "sheet-bg";
+  el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pf-t">
+    <div class="sheet-h"><b id="pf-t">${tx("Önerileri kendine göre ayarla")}</b><button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
+    <div id="pf-body"></div>
+    <button id="pf-ok" style="margin-top:16px">${tx("Tamam")}</button>
+  </div>`;
+  document.body.appendChild(el);
+  const box = el.querySelector("#pf-body");
+  const close = () => sheetOut(el);
+  const save = async focusId => {
+    await saveState(state); render(); draw();
+    const f = el.querySelector("#" + focusId) || el.querySelector("#pf-ok");
+    if (f) f.focus();
+  };
+  function draw(){
+    box.innerHTML = prefsBody();
+    const cs = box.querySelector("#cuisine-sel");
+    cs.onchange = () => { mealPrefs().cuisine = cs.value; recipeOffset = 0; return save("cuisine-sel"); };
+    const ds = box.querySelector("#diet-sel");
+    ds.onchange = () => { mealPrefs().diet = ds.value; return save("diet-sel"); };
+    box.querySelector("#use-mine").onclick = () => { const p = mealPrefs(); p.useMine = !p.useMine; return save("use-mine"); };
+    box.querySelectorAll("[data-munex]").forEach(b => b.onclick = () => {
+      const p = mealPrefs(); p.exclude = p.exclude.filter(k => k !== b.dataset.munex); return save("pf-ok");
+    });
+  }
+  draw();
+  el.onclick = ev => { if (ev.target === el) close(); };
+  el.querySelector(".sheet-x").onclick = close;
+  el.querySelector("#pf-ok").onclick = close;
+  el.querySelector("#pf-ok").focus();
+  return el;
 }
 
 function wireMeals(entry){
   wireShopping(currentProgram());
+  wireFolds();
   app.querySelectorAll("[data-meal-tab]").forEach(b => b.onclick = () => {
     if (b.dataset.mealTab === mealTab) return;
     navTo(() => { mealTab = b.dataset.mealTab; render(); window.scrollTo(0,0); }, segDir(b), "k-seg");
@@ -905,36 +926,15 @@ function bindRecipes(entry){
 }
 
 function wireMealsRest(entry){
-  const btn = document.getElementById("reroll");
-  if (btn) btn.onclick = () => { mealVariant++; render(); };
+  const po = document.getElementById("prefs-open");
+  if (po) po.onclick = () => openPrefsSheet();
 
-  const cs = document.getElementById("cuisine-sel");
-  if (cs) cs.onchange = async () => {
-    mealPrefs().cuisine = cs.value; recipeOffset = 0;
-    await saveState(state); render();
-  };
-  const ds = document.getElementById("diet-sel");
-  if (ds) ds.onchange = async () => {
-    mealPrefs().diet = ds.value;
-    await saveState(state); render();
-  };
-
-  const um = document.getElementById("use-mine");
-  if (um) um.onclick = async () => {
-    const prefs = mealPrefs();
-    prefs.useMine = !prefs.useMine;
-    await saveState(state); render();
-  };
+  app.querySelectorAll("[data-sug-add]").forEach(b => b.onclick = () => addSuggested(entry, b.dataset.sugAdd));
+  app.querySelectorAll("[data-sug-other]").forEach(b => b.onclick = () => { mealVariant++; render(); });
 
   app.querySelectorAll("[data-mex]").forEach(b => b.onclick = async () => {
     const prefs = mealPrefs();
     if (!prefs.exclude.includes(b.dataset.mex)) prefs.exclude.push(b.dataset.mex);
-    await saveState(state); render();
-  });
-
-  app.querySelectorAll("[data-munex]").forEach(b => b.onclick = async () => {
-    const prefs = mealPrefs();
-    prefs.exclude = prefs.exclude.filter(k => k !== b.dataset.munex);
     await saveState(state); render();
   });
 
@@ -947,12 +947,6 @@ function wireMealsRest(entry){
     render(); window.scrollTo(0,0);
   });
 
-  app.querySelectorAll("[data-fixadd]").forEach(b => b.onclick = () => {
-    fixSlot = fixSlot === b.dataset.fixadd ? null : b.dataset.fixadd;
-    fixQuery = ""; fixPick = null;
-    render();
-  });
-
   app.querySelectorAll("[data-fixdel]").forEach(b => b.onclick = async () => {
     const [slot, key] = b.dataset.fixdel.split("|");
     const prefs = mealPrefs();
@@ -961,29 +955,6 @@ function wireMealsRest(entry){
     if (i >= 0) list.splice(i, 1);
     await saveState(state); render();
   });
-
-  const fq = document.getElementById("fix-q");
-  if (fq) {
-    fq.oninput = () => { fixQuery = fq.value;
-      document.getElementById("fix-res").innerHTML = fixResults(); bindFix(); };
-    bindFix();
-    const amt = document.getElementById("fix-amt");
-    if (amt) {
-      app.querySelectorAll("[data-fixamt]").forEach(x => x.onclick = () => { amt.value = x.dataset.fixamt; });
-      document.getElementById("fix-save").onclick = async () => {
-        const food = foodOf(fixPick);
-        const n = num(amt.value);
-        if (!food || !n || n <= 0) return;
-        const grams = Math.round(food.unit ? n * food.unit : n);
-        const prefs = mealPrefs();
-        const list = prefs.fixed[fixSlot] || (prefs.fixed[fixSlot] = []);
-        const ex = list.find(x => x.k === fixPick);
-        if (ex) ex.g = grams; else list.push({ k:fixPick, g:grams });
-        fixPick = null; fixQuery = "";
-        await saveState(state); render();
-      };
-    }
-  }
 
   app.querySelectorAll("[data-fav]").forEach(b => b.onclick = () =>
     quickAdd(entry, b.dataset.fav, Number(b.dataset.favG), { slot: b.dataset.favSlot || null }));
@@ -1227,10 +1198,6 @@ function wireMealsRest(entry){
 
   const bs = document.getElementById("bc-scan");
   if (bs) bs.onclick = () => startBarcodeFlow();
-}
-
-function bindFix(){
-  app.querySelectorAll("[data-fixfood]").forEach(b => b.onclick = () => { fixPick = b.dataset.fixfood; render(); });
 }
 
 function bindResults(entry){

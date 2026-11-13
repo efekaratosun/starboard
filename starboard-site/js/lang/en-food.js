@@ -821,7 +821,6 @@ Object.assign(window.STARBOARD_EN, {
   "kuruyemiş": "nuts",
   "meyve tatlı": "fruit dessert sweet",
   "Mutfak": "Cuisine",
-  "{0} seçili: {1} besin uygun, kalanı önerilerden çıkarıldı. Günlüğe istediğini yazmaya devam edebilirsin.": "{0} selected: {1} foods fit; the rest are left out of suggestions. You can still log anything you like.",
   "Etin kesim şekli bilinemez; paketin etiketine bak.": "The app can't know how meat was slaughtered; check the label.",
   "Domuz eti": "Pork",
   "Hangi mutfak?": "Which cuisine?"

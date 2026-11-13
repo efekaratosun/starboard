@@ -3,6 +3,23 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.10.0 (yayınlanmadı)
+
+### Değişti
+- Beslenme ekranı sadeleşti (web ve iPhone). Sekmeler **Bugün · Tarifler · Liste**: "Günlüğüm" ve "Öneriler" tek ekran oldu (dört sekme üç oldu; iç ad `mealTab = "log"` aynı kaldı, Bugün ekranındaki kısa yol bozulmaz). Yeni ekran açık bölüm sayısı 14'ten 6'ya indi (eski iki sekmede toplam 14 açık bölüm, şimdi dolu bir günde 6 açık bölüm ve 3 katlı başlık).
+- Her öğün kartında, öğün boşken o günün önerisi soluk, kesik çerçeveli bir tabak olarak durur: besin adları ve miktarlar, toplam kcal, **Ekle** (bütün tabağı tek dokunuşla günlüğe yazar; toast'ta Geri al) ve **Başka** (günün planını bir sonrakine geçirir). Kaydı olan öğünde, besin ekle paneli açıkken ve geçmiş günde öneri çıkmaz. Plan kullanıcının sabit öğünlerini de içerir; satırdaki tarif bağlantısı Tarifler'e götürür, `×` besini önerilerden çıkarır. Öneri üretimi (`PLATES`, `PORTION`, `buildMeals`) değişmedi; alışveriş listesi aynı gün sırasını (`planDay() + mealVariant`) kullanmaya devam eder.
+- Özet dört çubukla başlar (kalori, protein, karbonhidrat, yağ). Lif ve mikro besinler tek katlanır "Ayrıntılar" bölümünde. Eski "Hedefe X kcal kaldı" satırı kalktı (başlıkta zaten "X / Y kcal" yazıyor); hedeften sapan öneri varsa tek satırlık uyarı çıkar.
+- "Öğünlerim" ve "Kayıtlı öğünler" günlüğün altında katlanır, varsayılan kapalı.
+- "Önerileri kendine göre ayarla" sayfada durmaz: tek bir **Ayarla** düğmesi mutfak, beslenme türü, "sık yediğim besinlerle kur" ve çıkarılanlar listesini bir pencerede açar; değişiklikler hemen kaydedilir ve arkadaki öneriler yenilenir.
+- Azaltılan metinler: seçili beslenme türü açıklaması, "yağlı besinler kendi yağını getirdiği için…" ve "Miktarlar çiğ ağırlıktır." gibi uzun açıklamalar, "tarifi gör" ve "senin girdiğin" alt yazıları kalktı; kullanılmayan sözlük anahtarları temizlendi.
+
+### Kaldırıldı
+- Öneriler sekmesindeki "Kendi yiyeceğini ekle" (öğüne sabit besin yazma) arayüzü kalktı; daha önce sabitlenmiş besinler öneriye girmeye ve tabaktaki `×` ile kaldırılmaya devam eder. Gerekirse yeniden eklenebilir.
+
+### Düzeltildi
+- Beslenme'deki "Mikro besinler" başlığı açılıp kapanmıyordu (katlanır bölümler bu ekranda bağlanmamıştı); artık bağlanıyor.
+- Geçmiş gün şeridindeki düğmeler (önceki gün, sonraki gün, bugüne dön) en az 44 px yüksekliğinde.
+
 ## 1.9.1 (yayınlanmadı)
 
 ### Değişti

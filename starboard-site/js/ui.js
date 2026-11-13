@@ -100,7 +100,7 @@ function wireBento(key){
 }
 
 /* ---- açılır / kapanır bölümler ---- */
-const FOLD_DEFAULT = { body:false, eval:false, review:false, sugg:false, micro:false, lifts:false };
+const FOLD_DEFAULT = { body:false, eval:false, review:false, sugg:false, detail:false, mymeals:false, saved:false, lifts:false };
 function isOpen(key){
   const f = state.ui && state.ui.fold;
   return f && key in f ? f[key] : (FOLD_DEFAULT[key] ?? true);

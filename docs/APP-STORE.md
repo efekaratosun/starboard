@@ -259,7 +259,7 @@ Starboard hesap, oturum açma ya da deneme hesabı gerektirmez. Uygulamanın bü
 İlk açılış: birkaç profil sorusu (yaş, boy, kilo, hedef) günlük hedefleri hesaplamak için kullanılır. Her şey cihazda kalır.
 
 BARKOD OKUMA (Open Food Facts)
-1. Beslenme sekmesi > Günlüğüm > Besin ekle > Barkod okut.
+1. Beslenme sekmesi > Bugün > Besin ekle > Barkod okut.
 2. Bilgi penceresinde Devam'a dokun, sonra kamera iznini ver.
 3. Paketli herhangi bir ürünü okut. Deneme barkodu: 3017620422003
 4. Open Food Facts'ten gelen besin değerleri önizlemede görünür. Kaydet ve ekle'ye dokun.
@@ -315,7 +315,7 @@ Boyut: 6,9 inç iPhone, **1320 × 2868** piksel, dikey. İlk üç görüntü ara
 | # | Ekran | Neden bu sırada | Başlık TR | Başlık EN |
 |---|---|---|---|---|
 | 1 | **Bugün**: hedef halkası, hafta şeridi, hedef listesi (7 hedefin 4-5'i tamam) | Uygulamanın özü | `Günün hedefleri tek ekranda` (27 karakter) | `Your day's goals at a glance` (28 karakter) |
-| 2 | **Beslenme › Günlüğüm**: öğünler, kalori ve makro çubukları | En sık kullanılan özellik | `Yediklerini kolayca kaydet` (26 karakter) | `Log what you eat, easily` (24 karakter) |
+| 2 | **Beslenme › Bugün**: öğünler, kalori ve makro çubukları | En sık kullanılan özellik | `Yediklerini kolayca kaydet` (26 karakter) | `Log what you eat, easily` (24 karakter) |
 | 3 | **Besin ekle › Barkod okut**: Open Food Facts değerlerinin dolu olduğu önizleme formu (örnek barkod 3017620422003) | Web sitesinden ayıran yerel özellik | `Barkodu okut, değerler gelsin` (29 karakter) | `Scan a barcode, skip the typing` (31 karakter) |
 | 4 | **Program › Kaydım**: antrenman modu, set onayı, dinlenme sayacı | Antrenman tarafı | `Set set kaydet, dinlen, devam et` (32 karakter) | `Log every set, rest, repeat` (27 karakter) |
 | 5 | **Program › Nasıl yapılır**: çizgi figür animasyonlu hareket kartı | Görsel olarak güçlü, 83 hareketin hepsinde var | `Her hareket için animasyonlu rehber` (35 karakter) | `An animated guide for every move` (32 karakter) |

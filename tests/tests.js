@@ -903,7 +903,7 @@ test("erişilebilirlik: her alanın etiketi, her düğmenin adı var", async () 
     state = JSON.parse(JSON.stringify(fixture)); migrateMeals(); notice = null; viewDate = null; ensureToday();
     for (const t of ["today", "plan", "meals", "calendar"]) { tab = t; render(); check(t); }
     for (const p of ["log", "program", "howto"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
-    for (const m of ["log", "plan", "recipes", "list"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
+    for (const m of ["log", "recipes", "list"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
     for (const m of ["body", "chart", "set"]) { tab = "settings"; meTab = m; render(); check("me:" + m); }
     for (const g of ["kcal", "protein", "water", "sleep", "weigh", "train"]) { tab = "today"; goalOpen = g; render(); check("goal:" + g); }
     goalOpen = null; planTab = "log"; mealTab = "log"; meTab = "body";
@@ -1932,7 +1932,7 @@ test("kendi yiyeceklerim: silinen yiyeceğin geçmiş günlerdeki kayıtları bo
     eq(state.shopping.checked, { yulaf: true });
     eq(state.savedMeals[0].items[0].n, "Annemin mercimek köftesi", "kayıtlı öğün kendi değerlerini taşır");
     eq(itemsKcal(state.savedMeals[0].items), 157);
-    viewDate = null; mealTab = "plan"; render();
+    viewDate = null; mealTab = "log"; render();
     mealTab = "list"; render();
     mealTab = "log"; render();
     ok(app.querySelector(".seg"), "ekranlar çizilir");
@@ -2271,10 +2271,265 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.9.1");
-  const n = WHATS_NEW.find(x => x.v === "1.9.1");
-  ok(n && !n.native && n.items.length === 1, "web'de görünen kısa madde");
-  ok(STARBOARD_EN[n.items[0]], "maddenin İngilizcesi");
+  eq(APP_VERSION, "1.10.0");
+  for (const v of ["1.9.1", "1.10.0"]) {
+    const n = WHATS_NEW.find(x => x.v === v);
+    ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
+    ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
+  }
+});
+
+/* ---- sade beslenme ekranı ---- */
+const sugFixture = async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  delete state.days[today()].log; mealVariant = 0; addOpen = null; logQuery = ""; logPick = null; logCat = null;
+  tab = "meals"; mealTab = "log"; render();
+  const program = currentProgram();
+  const plan = () => buildMeals(program, planDay() + mealVariant);
+  const slots = slotList().map(x => x[0]);
+  const keyed = m => m.items.filter(i => i.key && i.g);
+  return { program, plan, slots, keyed };
+};
+const closeSug = () => {
+  clearToasts(); document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  viewDate = null; mealVariant = 0; addOpen = null; editLog = null; mealTab = "log"; tab = "today"; state = null;
+};
+const sectionOf = slot => {
+  const b = app.querySelector(`[data-addfood="${slot}"]`);
+  return b && b.closest("section");
+};
+
+test("sade beslenme: sekmeler Bugün · Tarifler · Liste; Günlüğüm ve Öneriler sekmesi yok; eski plan sekmesi Bugün'e düşer", async () => {
+  await sugFixture();
+  try {
+    const tabs = () => [...app.querySelectorAll("[data-meal-tab]")];
+    eq(tabs().map(b => [b.dataset.mealTab, b.textContent.trim()]), [["log", "Bugün"], ["recipes", "Tarifler"], ["list", "Liste"]]);
+    eq(tabs().filter(b => b.getAttribute("aria-current") === "true").map(b => b.dataset.mealTab), ["log"]);
+    mealTab = "plan"; render();
+    eq(tabs().filter(b => b.getAttribute("aria-current") === "true").map(b => b.dataset.mealTab), ["log"], "bilinmeyen sekme Bugün olur");
+    ok(app.querySelector("[data-addfood]"), "Bugün ekranı çizilir");
+    ok(!app.querySelector("#reroll") && !app.querySelector("[data-fixadd]"), "eski öneri ekranı kalmadı");
+    mealTab = "recipes"; render(); ok(app.querySelector("#rec-q"), "tarifler");
+    mealTab = "list"; render(); ok(app.querySelector("[data-shop-days]"), "liste");
+  } finally { closeSug(); }
+});
+
+test("öneri: boş öğünde soluk tabak (besinler, toplam kcal, Ekle, Başka); günün planıyla aynı", async () => {
+  const { plan, slots, keyed } = await sugFixture();
+  try {
+    const p = plan();
+    let shown = 0;
+    for (const s of slots) {
+      const m = p.meals.find(x => x.slot === s), card = sectionOf(s), box = card.querySelector(".sug");
+      if (!m || !m.items.length) { ok(!box, "öneri olmayan öğünde tabak çizilmez"); continue; }
+      shown++;
+      ok(box && box.getAttribute("role") === "group" && box.getAttribute("aria-label") === "Öneri", "tabak adlı grup");
+      const k = keyed(m).reduce((a, i) => a + foodKcal(foodOf(i.key), i.g), 0);
+      ok(box.querySelector(".sug-h").textContent.includes(`${k} kcal`), "toplam kcal: " + box.querySelector(".sug-h").textContent);
+      for (const i of keyed(m)) ok(box.textContent.includes(foodOf(i.key).n), "besin adı: " + i.key);
+      const add = box.querySelector(`[data-sug-add="${s}"]`), other = box.querySelector(`[data-sug-other="${s}"]`);
+      ok(add && add.textContent === "Ekle" && other && other.textContent === "Başka", "Ekle ve Başka");
+      ok(add.getAttribute("aria-label").endsWith("Ekle") && other.getAttribute("aria-label").endsWith("Başka"), "düğmeler öğünle adlı");
+      ok(!card.querySelector(".empty"), "öneri varken boş öğün yazısı yok");
+      ok(!box.querySelector(".log-line"), "öneri günlük satırı değildir");
+    }
+    ok(shown >= 2, "en az iki öğünde öneri var");
+    eq(state.days[today()].log, undefined, "çizim günlüğe bir şey yazmaz");
+    eq(a11yBad("öneri"), []);
+  } finally { closeSug(); }
+});
+
+test("öneri: kayıt olan öğünde, besin ekle paneli açıkken ve geçmiş günde gösterilmez", async () => {
+  const { slots } = await sugFixture();
+  try {
+    const [s0, s1] = slots;
+    state.days[today()].log = [logItem("yulaf", 40, s0, 1)]; syncKcal(state.days[today()]); render();
+    ok(!sectionOf(s0).querySelector(".sug"), "dolu öğünde öneri yok");
+    ok(sectionOf(s1).querySelector(".sug"), "boş öğünde öneri sürer");
+    addOpen = s1; render();
+    ok(!app.querySelector(`[data-sug-add="${s1}"]`) && app.querySelector("#food-q"), "panel açıkken tabak gizli");
+    addOpen = null;
+    state.days[today()].log = [logItem("yulaf", 40, "kayip_ogun", 2)]; render();
+    ok(app.querySelectorAll(".sug").length >= 1, "öğünü bilinmeyen kayıt öneriyi saklamaz");
+    const past = shiftDays(today(), -2);
+    state.days[past] = { tasks: [], seeded: true }; viewDate = past; render();
+    ok(!app.querySelector(".sug") && !app.querySelector("[data-sug-add]"), "geçmiş günde öneri yok");
+    ok(!app.querySelector("#prefs-open"), "geçmiş günde Ayarla yok");
+    ok(app.querySelectorAll("[data-addfood]").length === slots.length, "geçmiş günde besin ekle sürer");
+  } finally { closeSug(); }
+});
+
+test("öneri: Ekle bütün tabağı tek dokunuşla öğüne yazar, kalori güncellenir, Geri al eski haline getirir; çift dokunuş iki kez eklemez", async () => {
+  const { plan, slots, keyed } = await sugFixture();
+  try {
+    const s = slots.find(k => keyed(plan().meals.find(m => m.slot === k)).length >= 2) || slots[0];
+    const items = keyed(plan().meals.find(m => m.slot === s));
+    const before = JSON.stringify(state.days[today()]);
+    const b = app.querySelector(`[data-sug-add="${s}"]`);
+    await Promise.all([b.onclick(), b.onclick()]);
+    const e = state.days[today()];
+    eq(e.log.map(x => [x.k, x.g, x.slot]), items.map(i => [i.key, Math.round(i.g), s]), "tabaktaki her besin, doğru öğünde");
+    eq(new Set(e.log.map(x => x.id)).size, e.log.length, "kimlikler ayrı");
+    eq(e.kcal, logTotals(e).kcal, "günün kalorisi günlükten");
+    ok(!sectionOf(s).querySelector(".sug") && sectionOf(s).querySelectorAll(".log-line").length === items.length, "öneri yerini günlük satırlarına bırakır");
+    const t = document.querySelector(".toast.act");
+    ok(t && t.textContent.includes("eklendi") && t.textContent.includes(`${e.kcal} kcal`) && t.textContent.includes("Geri al"), t && t.textContent);
+    await undoToast();
+    eq(JSON.stringify(state.days[today()]), before, "geri alma günü eski haline getirir");
+    ok(sectionOf(s).querySelector(".sug"), "geri alınca öneri geri gelir");
+    state.days[today()].kcal = 300; state.days[today()].kcalManual = true;
+    const yes = app.querySelector(`[data-sug-add="${s}"]`).onclick();
+    const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+    ok(sheet && sheet.querySelector("#ask-ok"), "elle girilmiş kalori sorulur");
+    sheet.querySelector("#ask-no").click(); await yes;
+    eq(state.days[today()].log, undefined, "vazgeçilince eklenmez");
+  } finally { closeSug(); }
+});
+
+test("öneri: Başka günün planını bir sonrakine geçirir; alışveriş listesi aynı günü kullanır; tarif bağlantısı çalışır", async () => {
+  const { program, plan, slots, keyed } = await sugFixture();
+  try {
+    const text = () => [...app.querySelectorAll(".sug")].map(x => x.textContent).join("|");
+    const t0 = text(), v0 = mealVariant;
+    app.querySelector("[data-sug-other]").onclick();
+    eq(mealVariant, v0 + 1, "mealVariant artar");
+    ok(text() !== t0, "öneri değişir");
+    const exp = {};
+    for (const m of plan().meals) for (const i of keyed(m)) exp[i.key] = (exp[i.key] || 0) + i.g;
+    const list = shoppingList(program, { days: 1, recipes: [], checked: {} }, planDay() + mealVariant);
+    for (const [k, g] of Object.entries(exp)) eq((list.find(x => x.k === k) || {}).g, Math.round(g), "liste, ekrandaki öneriyle aynı gün: " + k);
+    /* tarifi olan bir besin çıkana kadar günleri çevir */
+    let link = null;
+    for (let v = 0; v < 40 && !link; v++) { mealVariant = v; render(); link = app.querySelector(".sug [data-recipefor]"); }
+    ok(link, "önerilen tabakta tarif bağlantısı var");
+    ok(link.textContent.trim().length > 2 && link.closest(".item").querySelector(".chev"), "bağlantı adlı ve işaretli");
+    const key = link.dataset.recipefor, rec = recipeFor(key);
+    link.onclick();
+    eq(mealTab, "recipes", "bağlantı Tarifler'e götürür");
+    eq(recipeQuery, rec.q);
+    ok(app.querySelector("#rec-q"), "tarifler çizildi");
+    recipeQuery = ""; recipeOpen = null;
+  } finally { closeSug(); }
+});
+
+test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarla penceresinden geri alınır", async () => {
+  await sugFixture();
+  try {
+    const x = app.querySelector(".sug [data-mex]");
+    ok(x && x.getAttribute("aria-label").includes(","), "× düğmesi besin adıyla adlı");
+    const key = x.dataset.mex;
+    await x.onclick();
+    ok(mealPrefs().exclude.includes(key), "dışlandı");
+    ok(!app.querySelector(`.sug [data-mex="${key}"]`), "tabaktan çıktı");
+    app.querySelector("#prefs-open").onclick();
+    const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+    const chip = sheet.querySelector(`[data-munex="${key}"]`);
+    ok(chip && chip.textContent.includes("geri al"), "pencerede geri al düğmesi");
+    await chip.onclick();
+    ok(!mealPrefs().exclude.includes(key), "geri alındı");
+    ok(!sheet.querySelector("[data-munex]"), "pencere tazelendi");
+  } finally { closeSug(); }
+});
+
+test("özet: dört çubuk görünür; Lif ve mikro besinler tek katlanır Ayrıntılar altında (varsayılan kapalı)", async () => {
+  const { slots } = await sugFixture();
+  try {
+    ok(!app.querySelector('[data-fold="detail"]'), "kayıt yokken Ayrıntılar yok");
+    eq(app.querySelectorAll(".macro").length, 4);
+    state.days[today()].log = [logItem("yulaf", 60, slots[0], 1), logItem("muz", 120, slots[0], 2)]; syncKcal(state.days[today()]); render();
+    const macros = [...app.querySelectorAll(".macro")];
+    eq(macros.length, 5, "dört çubuk + katlanmış lif");
+    const outside = macros.filter(m => !m.closest(".fold")).map(m => m.querySelector(".lbl").textContent.trim());
+    eq(outside, ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
+    const h = app.querySelector('[data-fold="detail"]');
+    ok(h && h.textContent.includes("Ayrıntılar"), "Ayrıntılar başlığı");
+    eq(h.getAttribute("aria-expanded"), "false", "kapalı başlar");
+    ok(h.closest(".fold").classList.contains("shut"));
+    const inside = h.closest(".fold");
+    ok(inside.querySelector(".macro").textContent.includes("Lif") && inside.querySelector(".pills"), "lif ve mikro besinler içeride");
+    eq(app.querySelectorAll('[data-fold="micro"]').length, 0, "ayrı mikro besin bölümü yok");
+    await h.onclick();
+    eq(h.getAttribute("aria-expanded"), "true"); ok(!inside.classList.contains("shut"), "açılır");
+    eq(state.ui.fold.detail, true, "durum kaydedilir");
+    eq(a11yBad("özet"), []);
+  } finally { closeSug(); }
+});
+
+test("öğünlerim ve kayıtlı öğünler günlüğün altında katlıdır (varsayılan kapalı); içindeki işlemler çalışır", async () => {
+  const { slots } = await sugFixture();
+  try {
+    state.savedMeals = [{ id: "s1", name: "Sabah kasesi", items: [{ k: "yulaf", n: "Yulaf ezmesi", g: 40, p: 13, c: 60, f: 7, lif: 10, v: [], i: "grain" }] }]; render();
+    const hs = ["mymeals", "saved"].map(k => app.querySelector(`[data-fold="${k}"]`));
+    ok(hs.every(Boolean), "iki başlık da var");
+    eq(hs.map(h => h.getAttribute("aria-expanded")), ["false", "false"]);
+    eq(hs.map(h => h.querySelector(".count").textContent), [String(slots.length), "1"], "sayılar başlıkta");
+    ok(hs.every(h => h.closest(".fold").classList.contains("shut")));
+    const cards = [...app.querySelectorAll("[data-addfood]")].map(b => b.closest("section"));
+    ok(cards.every(c => c.compareDocumentPosition(hs[0]) & Node.DOCUMENT_POSITION_FOLLOWING), "öğün kartlarının altında");
+    ok(app.querySelector("#ml-add") && app.querySelector("[data-saved-del]"), "içerik gövdede durur");
+    await app.querySelector("#ml-add").onclick();
+    ok(app.querySelector("#ml-name"), "Öğün ekle formu açılır");
+    mealAddOpen = false;
+    ok(!app.querySelector("#reroll"));
+  } finally { mealAddOpen = false; closeSug(); }
+});
+
+test("Ayarla: tercihler sayfada durmaz; tek düğme pencerede açar, değişiklik kaydedilir ve öneriyi yeniler", async () => {
+  await sugFixture();
+  try {
+    eq(app.querySelectorAll("#prefs-open").length, 1, "tek Ayarla düğmesi");
+    ok(!app.querySelector("#cuisine-sel") && !app.querySelector("#diet-sel") && !app.querySelector("#use-mine"), "tercihler sayfada yok");
+    const btn = app.querySelector("#prefs-open");
+    ok(btn.textContent.trim() === "Ayarla" && btn.getAttribute("aria-haspopup") === "dialog", "adlı düğme");
+    btn.onclick();
+    const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+    const dlg = sheet.querySelector('.sheet[role="dialog"]');
+    ok(dlg && dlg.getAttribute("aria-modal") === "true" && sheet.querySelector("#" + dlg.getAttribute("aria-labelledby")).textContent === "Önerileri kendine göre ayarla", "adlı pencere");
+    for (const id of ["cuisine-sel", "diet-sel"]) ok(sheet.querySelector(`label[for="${id}"]`) && sheet.querySelector("#" + id), id + " etiketli");
+    ok(sheet.querySelector("#use-mine").getAttribute("aria-pressed") === "false");
+    for (const b of sheet.querySelectorAll("button")) ok((b.getAttribute("aria-label") || b.textContent).trim(), "adsız düğme");
+    const ds = sheet.querySelector("#diet-sel");
+    ds.value = "vegan"; await ds.onchange();
+    eq(mealPrefs().diet, "vegan", "beslenme türü kaydedildi");
+    const keysOf = () => app.querySelector(".sug") ? [...app.querySelectorAll(".sug [data-mex]")].map(b => b.dataset.mex) : [];
+    ok(keysOf().every(k => foodAllowed(k, "vegan")), "arkadaki öneri yeni türe uyar");
+    ok(sheet.querySelector("#diet-sel").value === "vegan" && document.activeElement.id === "diet-sel", "pencere tazelenir, odak kalır");
+    await sheet.querySelector("#use-mine").onclick();
+    eq(mealPrefs().useMine, true);
+    eq(sheet.querySelector("#use-mine").getAttribute("aria-pressed"), "true");
+    const cs = sheet.querySelector("#cuisine-sel");
+    cs.value = Object.keys(CUISINES).find(k => k !== currentCuisine()); await cs.onchange();
+    eq(mealPrefs().cuisine, cs.value, "mutfak kaydedildi");
+    sheet.querySelector(".sheet-x").onclick();
+    await new Promise(r => setTimeout(r, 300));
+    ok(!sheet.isConnected, "kapanır");
+    ok(app.querySelector("#prefs-open"), "sayfa yerinde");
+  } finally { closeSug(); }
+});
+
+test("sade beslenme: İngilizcede de çalışır, sözlükte olmayan metin kalmaz", async () => {
+  const { slots } = await sugFixture();
+  try {
+    await withLang("en", async () => {
+      I18N_MISSING.clear(); render();
+      eq([...app.querySelectorAll("[data-meal-tab]")].map(b => b.textContent.trim()), ["Today", "Recipes", "List"]);
+      const s = slots.find(k => sectionOf(k).querySelector(".sug"));
+      const box = sectionOf(s).querySelector(".sug");
+      ok(box.getAttribute("aria-label") === "Suggestion" && box.querySelector("[data-sug-add]").textContent === "Add" && box.querySelector("[data-sug-other]").textContent === "Another", "tabak İngilizce");
+      eq(app.querySelector("#prefs-open").textContent.trim(), "Tune");
+      state.days[today()].log = [logItem("yulaf", 60, slots[0], 1)]; syncKcal(state.days[today()]); render();
+      ok(app.querySelector('[data-fold="detail"]').textContent.includes("Details"), "Details");
+      ok(app.querySelector('[data-fold="mymeals"]').textContent.includes("My meals"), "My meals");
+      app.querySelector("#prefs-open").onclick();
+      const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+      ok(sheet.textContent.includes("Tune the suggestions") && sheet.querySelector("#pf-ok").textContent === "OK", sheet.textContent);
+      sheet.remove();
+      delete state.days[today()].log; mealVariant = 0; render();
+      await app.querySelector("[data-sug-add]").onclick();
+      ok(document.querySelector(".toast.act").textContent.includes("added") && document.querySelector(".toast.act").textContent.includes("Undo"));
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+  } finally { closeSug(); }
 });
 
 window.STARBOARD_TESTS = TESTS;

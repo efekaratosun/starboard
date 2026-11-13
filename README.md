@@ -40,6 +40,12 @@ Besinler, tarifler ve hazır menüler `nutrition.js` (temel ve Türk mutfağı) 
 
 `buildMeals(program, gün)` (`nutrition.js`) her öğünü bir tabak kalıbından kurar: `PLATES` öğün türüne göre (kahvaltı, ara, ana) kalıpları ve her kalıbın gözlerini (asıl besin, tahıl, meyve, yağ…) tutar. Yalnızca `PORTION` tablosunda en az ve en çok miktarı yazılı besinler önerilir; yeni bir besini önerilere sokmak için hem bir kalıbın listesine hem `PORTION`'a yazılır (test bunu denetler). Kalıp ve besin, gün sırasına göre döner: ekran `planDay() + mealVariant`, alışveriş listesi aynı sırayı kullanır; ardışık günlerde ana yemek ve aynı öğün tekrar etmez. Miktarlar `solvePortions()` ile bütün gün için birlikte çözülür. Kurallar ve denetim sonuçları: [docs/OGUN-DENETIMI.md](docs/OGUN-DENETIMI.md); testleri "öğün kuralları" adıyla `tests.js` içindedir.
 
+### Beslenme ekranı
+
+Sekmeler: Bugün (`mealTab = "log"`; bilinmeyen değer de buraya düşer), Tarifler (`"recipes"`), Liste (`"list"`). Ayrı bir Öneriler sekmesi yoktur. Bugün ekranı: özet (kalori, protein, karbonhidrat, yağ çubukları; lif ve mikro besinler katlanır "Ayrıntılar" bölümünde), `Ayarla` düğmesi, öğün kartları, sonra katlanır "Öğünlerim" ve "Kayıtlı öğünler" (`fold()`; varsayılan kapalı, anahtarlar `detail`, `mymeals`, `saved`).
+
+Boş öğünün kartında o günün önerisi soluk, kesik çerçeveli bir tabak olarak görünür (`suggestionHTML()`): `buildMeals(program, planDay() + mealVariant)` planının o öğünü, besin adları, toplam kcal, **Ekle** (`addSuggested()`: bütün tabağı günlüğe yazar, toast'tan Geri al) ve **Başka** (`mealVariant++`: günün planı bir sonrakine geçer; alışveriş listesi aynı sıradan hesaplandığı için ekranla uyumlu kalır, ama bu yüzden Başka bütün boş öğünlerin önerisini birlikte değiştirir). Öneri yalnızca bugün, yalnızca kaydı olmayan ve besin ekle paneli kapalı öğünde çıkar; geçmiş günde çıkmaz. Besinin tarifi varsa satır `data-recipefor` ile Tarifler'e götürür; `×` besini önerilerden çıkarır (sabitlenmiş besinde sabiti kaldırır). Mutfak, beslenme türü, "sık yediğim besinlerle kur" ve çıkarılanlar `Ayarla` ile açılan pencerededir (`openPrefsSheet()`); her değişiklik hemen kaydedilir ve arkadaki sayfa yenilenir. Öneri üretimi (`nutrition.js`) bu ekranla değişmedi.
+
 ## Sürüm çıkarırken
 
 1. `starboard-site/js/storage.js` içindeki `APP_VERSION`'ı artır, `CHANGELOG.md`'ye yaz.
@@ -111,7 +117,7 @@ Yalnızca iPhone uygulamasında (`healthAvailable()` web'de ve Sağlık'ı olmay
 
 ## Kendi yiyeceklerim
 
-`state.customFoods` (elle tanımlanan `cf_<zaman>` ve barkodla gelen `bc_<barkod>` kayıtları) Beslenme › Günlüğüm › Besin ekle › "Kendi yiyeceklerim" ile düzenlenir ve silinir (`meals.js`: `myFoodsBlock()`, `deleteCustomFood()`; web ve iPhone'da aynı). Düzenleme `customFoodForm()` / `wireCustomForm()` yeniden kullanır (`pre.edit`): yalnızca ad, protein, karbonhidrat, yağ ve lif değişir; anahtar, barkod, marka, porsiyon ve kaynak olduğu gibi kalır.
+`state.customFoods` (elle tanımlanan `cf_<zaman>` ve barkodla gelen `bc_<barkod>` kayıtları) Beslenme › Bugün › Besin ekle › "Kendi yiyeceklerim" ile düzenlenir ve silinir (`meals.js`: `myFoodsBlock()`, `deleteCustomFood()`; web ve iPhone'da aynı). Düzenleme `customFoodForm()` / `wireCustomForm()` yeniden kullanır (`pre.edit`): yalnızca ad, protein, karbonhidrat, yağ ve lif değişir; anahtar, barkod, marka, porsiyon ve kaynak olduğu gibi kalır.
 
 Silme ve düzenleme geçmişi bozmaz, çünkü günlük kalemi (`state.days[g].log[]`) eklendiği anda ad, makrolar, lif, mikro besinler ve simgeyi kendi içine kopyalar; `k` yalnızca "sık yediklerin", `foodUsage()` ve porsiyon ölçüsü (`unit`, `por`) için kullanılır. Silinmiş bir `k` için `foodOf()` boş döner ve bütün okuyanlar bunu karşılar: günlük toplamları ve satırlar aynı kalır, yalnızca "2 dilim" yerine gram yazılır. Bu yüzden "gizle" ya da şema artırma gerekmedi (`SCHEMA` 2). Kural: günlük kalemlerinin değerlerini `foodOf(it.k)` üzerinden okuma; kalemin kendi alanlarını kullan. `deleteCustomFood()` ayrıca yiyeceği sabit öğünlerden, öneri dışlamalarından ve alışveriş işaretlerinden temizler; kayıtlı öğünler zaten değerlerini taşır.
 

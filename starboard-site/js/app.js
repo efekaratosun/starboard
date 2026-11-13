@@ -27,7 +27,6 @@ function ensureDay(k){
 let calMonth = today().slice(0,7), calSel = null;
 let mealTab = "log", logQuery = "", logPick = null, logCat = null;
 let mealAddOpen = false, mealAddTime = "oglen", addOpen = null;
-let fixSlot = null, fixQuery = "", fixPick = null;
 let recipeOpen = null, recipeQuery = "", recipeOffset = 0;
 let calTab = "cal", newTaskRepeat = false, editLog = null;
 let goalOpen = null, meTab = "body";
