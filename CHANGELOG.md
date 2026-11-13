@@ -3,6 +3,18 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.9.1 (yayınlanmadı)
+
+### Değişti
+- Besin ekleme kolaylaştı (web ve iPhone; ayrıntı ve dokunuş sayıları: [docs/BESIN-EKLEME.md](docs/BESIN-EKLEME.md)). Besin ekle paneli açılınca en üstte "Sık yediklerin" (o öğünde en çok yenenler, son yenen miktarla) durur; dokunuşla o öğüne eklenir: daha önce yenen bir besin 5 yerine 2 dokunuş.
+- Arama sonuçlarındaki `+` gerçek bir düğme oldu: satırda yazan miktar ve kaloriyle (son yenen miktar, yoksa 1 porsiyon / 1 adet) tek dokunuşla ekler. Satıra dokunmak miktar kartını açar; satırlar klavye ve ekran okuyucuyla kullanılabilir.
+- Eklemeler (sık yedikler, `+`, Ekle, kayıtlı öğün, dünkü öğün ve dünün tamamını kopyalama) toast'ta **Geri al** taşır; geri alma günün kalorisini ve diğer kalemleri korur. Ekleme bildirimi ekran okuyucuya okunur.
+- Miktar kartı 100 g yerine 1 porsiyonla (ya da son yenen miktarla) açılır; kalori canlı yazılır, − / + düğmeleri ve seçili hazır düğme vardır.
+- Kayıtlı öğün eklenince panel kapanmaz; arama temizlenir, kategori listesi açık kalır. Geçmiş yoksa panel açılınca arama alanı odaklanır.
+- Arama küçük yazım hatalarına toleranslı: sonuç bulunamazsa eksik, fazla, yanlış ya da yer değişmiş bir harf kabul edilir ("peynr", "yogrt", "elam"). Doğru yazılan aramanın sırası değişmez.
+- Sık yedikler düğmeleri en az 44 px yüksekliğinde; miktar kartındaki −/+ 44×44 px.
+- Besin veritabanına ve öneri/plan mantığına dokunulmadı; veri şeması aynı (`SCHEMA` 2).
+
 ## 1.9.0 (13 Kasım 2026)
 
 ### Eklendi

@@ -111,6 +111,10 @@ Yalnızca iPhone uygulamasında (`healthAvailable()` web'de ve Sağlık'ı olmay
 
 Silme ve düzenleme geçmişi bozmaz, çünkü günlük kalemi (`state.days[g].log[]`) eklendiği anda ad, makrolar, lif, mikro besinler ve simgeyi kendi içine kopyalar; `k` yalnızca "sık yediklerin", `foodUsage()` ve porsiyon ölçüsü (`unit`, `por`) için kullanılır. Silinmiş bir `k` için `foodOf()` boş döner ve bütün okuyanlar bunu karşılar: günlük toplamları ve satırlar aynı kalır, yalnızca "2 dilim" yerine gram yazılır. Bu yüzden "gizle" ya da şema artırma gerekmedi (`SCHEMA` 2). Kural: günlük kalemlerinin değerlerini `foodOf(it.k)` üzerinden okuma; kalemin kendi alanlarını kullan. `deleteCustomFood()` ayrıca yiyeceği sabit öğünlerden, öneri dışlamalarından ve alışveriş işaretlerinden temizler; kayıtlı öğünler zaten değerlerini taşır.
 
+## Besin ekleme
+
+Besin ekle paneli (`meals.js`): önce `quickChips()` (o öğünde en çok yenenler), arama (`searchFoods()`; sonuç yoksa `nearWord()` ile küçük yazım hatası toleransı), sonuç satırında `+` (`quickAdd()`, tek dokunuş) ya da satıra dokunup `pickCard()`. Her ekleme `toastUndo()` ile geri alınabilir; yeni bir ekleme yolu da aynı toast'ı kullanmalı (`logSnap()` ekleme öncesi alınır). Eklemeden önce günün durumunu `logSnap()` ile al, kalemlerin kimliklerini `toastUndo()`'ya ver. Akışın önceki ve şimdiki dokunuş sayıları: [docs/BESIN-EKLEME.md](docs/BESIN-EKLEME.md).
+
 ## Yerelde çalıştırma
 
 Site (http://localhost:8765):

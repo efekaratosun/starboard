@@ -426,8 +426,10 @@ function checkPR(name, before){
 /* ---- kısa bilgi ---- */
 /* Kısa bildirim. Görünen kutu her seferinde yeniden kurulur; ekran okuyucu için
    sayfada sabit duran bir canlı bölge kullanılır, çünkü sonradan eklenen bir
-   role="status" öğesini VoiceOver her zaman okumuyor. */
-function toast(msg){
+   role="status" öğesini VoiceOver her zaman okumuyor.
+   action = { label, fn } verilirse toast bir düğme taşır ("Geri al"): ekran okuyucunun
+   ulaşabilmesi için gizlenmez ve düğmeye basacak zaman kalsın diye daha uzun durur. */
+function toast(msg, action){
   let live = document.getElementById("sr-live");
   if (!live){
     live = document.createElement("div");
@@ -435,12 +437,24 @@ function toast(msg){
     document.body.appendChild(live);
   }
   live.textContent = "";
-  setTimeout(() => { live.textContent = msg; }, 60);
+  const said = action ? `${msg}. ${action.label}` : msg;
+  setTimeout(() => { live.textContent = said; }, 60);
   document.querySelectorAll(".toast").forEach(x => x.remove());
   const el = document.createElement("div");
-  el.className = "toast"; el.setAttribute("aria-hidden", "true"); el.textContent = msg;
+  el.className = "toast";
+  if (action){
+    el.classList.add("act");
+    const t = document.createElement("span");
+    t.textContent = msg;
+    const b = document.createElement("button");
+    b.className = "toast-act"; b.textContent = action.label;
+    b.onclick = () => { el.remove(); return action.fn(); };
+    el.append(t, b);
+  } else {
+    el.setAttribute("aria-hidden", "true"); el.textContent = msg;
+  }
   document.body.appendChild(el);
-  setTimeout(() => el.remove(), 3600);
+  setTimeout(() => el.remove(), action ? 7000 : 3600);
 }
 
 /* ---- kutlama ---- */

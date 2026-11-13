@@ -268,8 +268,9 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   for (let i = 1; i < WHATS_NEW.length; i++) ok(verCmp(WHATS_NEW[i - 1].v, WHATS_NEW[i].v) >= 0, "sürümler yeniden eskiye sıralı olmalı");
   const v190 = WHATS_NEW.filter(n => n.v === "1.9.0");
   ok(v190.some(n => !n.native) && v190.some(n => n.native), "1.9.0 için web'de görünen ve iPhone'a özel madde olmalı");
-  eq(unseenNews("1.8.0").length, 1, "aynı sürümün kayıtları tek başlıkta birleşir");
-  eq(unseenNews("1.8.0")[0].items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
+  const after180 = unseenNews("1.8.0");
+  eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
+  eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -1853,6 +1854,303 @@ test("kendi yiyeceklerim: İngilizcede de çalışır ve sözlükte olmayan meti
       eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
     });
   } finally { closeMyFoods(); }
+});
+
+/* ---- kolay besin ekleme ---- */
+const clearToasts = () => document.querySelectorAll(".toast").forEach(x => x.remove());
+const logItem = (k, g, slot, id) => { const f = FOODS[k]; return { id, k, n: f.n, g, p: f.p, c: f.c, f: f.f, lif: f.lif || 0, v: f.v || [], i: f.i, slot }; };
+/* Geçmiş: yulaf 3 kez (ilk öğünde), muz ve yumurta (ikinci öğünde) birer kez; dünün ilk öğünü yulaf + muz. */
+const quickFixture = async () => {
+  await openAddPanel();
+  const [s0, s1] = slotList().map(x => x[0]);
+  const hist = [[3, [logItem("yulaf", 40, s0, 5)]],
+    [2, [logItem("yulaf", 40, s0, 3), logItem("yumurta", 100, s1, 4)]],
+    [1, [logItem("yulaf", 80, s0, 1), logItem("muz", 120, s0, 2)]]];
+  for (const [back, items] of hist){
+    const d = shiftDays(today(), -back);
+    state.days[d] = { tasks: [], seeded: true, log: items }; syncKcal(state.days[d]);
+  }
+  delete state.days[today()].log;
+  render();
+  return { s0, s1 };
+};
+const closeQuick = () => { clearToasts(); viewDate = null; editLog = null; mealTab = "log"; closeAddPanel(); };
+const undoToast = async () => {
+  const t = document.querySelector(".toast.act");
+  ok(t && t.querySelector("button"), "Geri al düğmesi olan toast yok");
+  await t.querySelector("button").onclick();
+};
+
+test("arama: Türkçe karakter ve büyük/küçük harf fark etmez; ad ve takma adda bulur", async () => {
+  state = await loadFixture(); state.customFoods = {
+    cf_x: { n: "Annemin mercimek köftesi", a: "ev yapımı", p: 8, c: 20, f: 5, lif: 4, i: "grain" } };
+  try {
+    const keys = q => searchFoods(q, 30).map(([k]) => k);
+    ok(keys("yogurt").includes("yogurt"), "yogurt bulunamadı");
+    eq(keys("YOĞURT"), keys("yogurt"), "büyük harf ve ğ");
+    eq(keys("Yoğurt"), keys("yogurt"));
+    eq(keys("TAVUK GÖĞSÜ")[0], "tavuk");
+    eq(keys("SÜT")[0], keys("sut")[0], "süt/sut");
+    ok(keys("PEYNİR").includes("beyazpeynir"), "İ harfi ve takma ad (peynir)");
+    ok(keys("inek sutu").includes("sut"), "takma ad: inek sütü");
+    ok(keys("ev yapimi").includes("cf_x") && keys("EV YAPIMI").includes("cf_x"), "kendi besininin takma adı");
+    ok(keys("kofte").includes("cf_x"), "kendi besinin adı");
+  } finally { state = null; }
+});
+
+test("arama: küçük yazım hatalarına tolerans; doğru yazımın sırası bozulmaz, kısa ya da saçma sorgu eşleşmez", async () => {
+  state = await loadFixture(); state.customFoods = {
+    cf_x: { n: "Annemin mercimek köftesi", a: "ev yapımı", p: 8, c: 20, f: 5, lif: 4, i: "grain" } };
+  try {
+    const keys = q => searchFoods(q, 30).map(([k]) => k);
+    ok(keys("peynr").includes("beyazpeynir"), "eksik harf");
+    ok(keys("yogrt").includes("yogurt"), "eksik harf (yoğurt)");
+    ok(keys("tavk").includes("tavuk"), "yarım ve eksik yazım");
+    ok(keys("elam").includes("elma"), "yer değiştirmiş harf");
+    ok(keys("peynirr").includes("beyazpeynir"), "fazla harf");
+    ok(keys("mrcimek").includes("cf_x") && keys("mecrimek").includes("cf_x"), "kendi besinin adında");
+    ok(keys("inke sutu").includes("sut"), "takma adda yer değiştirmiş harf");
+    ok(keys("ev yapmi").includes("cf_x"), "çok sözcüklü: biri tam, biri hatalı");
+    ok(!keys("tavuk").some(k => k === "cf_x"), "doğru yazımda hata payı devreye girmez");
+    eq(keys("qzxwv"), [], "alakasız sorgu");
+    ok(!nearWord("elm", "elma") && !nearWord("sut", "su") && nearWord("emla", "elma"), "dört harften kısa sözcükte hata payı yok");
+    eq(keys("1234"), [], "rakamlar için hata payı yok");
+    eq(editDist("yogurt", "yogrt"), 1); eq(editDist("elma", "emla"), 1); eq(editDist("abc", "xyz"), 3);
+  } finally { state = null; }
+});
+
+test("kolay ekleme: sık yediklerin panelin başında öğüne göre sıralanır; tek dokunuşla son miktarla eklenir, panel açık kalır, Geri al geri alır", async () => {
+  const { s0 } = await quickFixture();
+  try {
+    const chips = [...app.querySelectorAll(".pick .fav [data-qadd]")];
+    eq(chips.map(b => b.dataset.qadd), ["yulaf", "muz", "yumurta"], "bu öğünde en çok yenen önce");
+    eq(chips[0].dataset.qg, "80", "son yenen miktar");
+    ok(chips[0].textContent.includes("Yulaf ezmesi") && chips[0].textContent.includes("2 porsiyon"), chips[0].textContent);
+    eq(app.querySelector(".pick").firstElementChild.textContent.trim(), "Sık yediklerin", "panelin en üstünde");
+    ok(!app.querySelector("[data-fav]"), "panel açıkken aynı liste ikinci kez çizilmez");
+    const before = JSON.stringify(state.days[today()]);
+    await chips[0].onclick();
+    const e = state.days[today()];
+    eq(e.log.map(x => [x.k, x.g, x.slot]), [["yulaf", 80, s0]], "açık panelin öğününe yazılır");
+    eq(e.kcal, foodKcal(FOODS.yulaf, 80), "günün kalorisi güncellenir");
+    eq(addOpen, s0, "panel açık kalır"); ok(app.querySelector("#food-q"), "panel çizili");
+    eq(app.querySelectorAll(".log-line").length, 1, "günlük satırı çizildi");
+    const t = document.querySelector(".toast.act");
+    ok(t && t.textContent.includes("Yulaf ezmesi eklendi") && t.textContent.includes(`${e.kcal} kcal`) && t.textContent.includes("Geri al"), t && t.textContent);
+    ok(!t.hasAttribute("aria-hidden"), "düğmeli toast ekran okuyucudan gizlenmez");
+    await new Promise(r => setTimeout(r, 120));
+    ok(document.getElementById("sr-live").textContent.includes("Yulaf ezmesi eklendi"), "ekran okuyucuya bildirilir");
+    await undoToast();
+    eq(JSON.stringify(state.days[today()]), before, "geri alma günü eski haline getirir");
+    eq(app.querySelectorAll(".log-line").length, 0);
+    eq(addOpen, s0, "geri alınca da panel açık");
+    ok(!document.querySelector(".toast.act") && document.querySelector(".toast").textContent === "Geri alındı.");
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: geri alma kalori durumunu, öncesinde yazılı olanları ve başka kalemleri korur", async () => {
+  const { s0 } = await quickFixture();
+  try {
+    state.days[today()].kcal = 300;
+    await app.querySelector('[data-qadd="muz"]').onclick();
+    eq(state.days[today()].log.length, 1);
+    ok(state.days[today()].kcal !== 300);
+    await undoToast();
+    eq([state.days[today()].kcal, state.days[today()].log], [300, undefined], "boş güne geri dönünce yazılı kalori geri gelir");
+    await app.querySelector('[data-qadd="muz"]').onclick();
+    await app.querySelector('[data-qadd="yulaf"]').onclick();
+    eq(state.days[today()].log.map(x => x.k), ["muz", "yulaf"]);
+    await undoToast();
+    eq(state.days[today()].log.map(x => x.k), ["muz"], "yalnızca son eklenen geri alınır");
+    eq(state.days[today()].kcal, foodKcal(FOODS.muz, 120), "kalori kalan kalemlerden hesaplanır");
+    ok(await undoLogAdd(today(), [999], logSnap(state.days[today()])) === false, "olmayan kalem sessizce geçilir");
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: çift dokunuş iki kalem eklemez", async () => {
+  const { s0 } = await quickFixture();
+  try {
+    const b = app.querySelector('[data-qadd="yulaf"]');
+    await Promise.all([b.onclick(), b.onclick()]);
+    eq(state.days[today()].log.length, 1);
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: arama sonucunda + varsayılan porsiyonla ekler; satır miktarı ve kaloriyi yazar; arama temizlenir, panel açık kalır", async () => {
+  await openAddPanel();
+  try {
+    eq([defaultGrams("yumurta"), defaultGrams("yulaf"), defaultGrams("elma"), defaultGrams("ekmek")], [50, 40, 180, 30], "1 adet / 1 porsiyon");
+    logQuery = "yumurta"; render();
+    const plus = app.querySelector('#food-results [data-qadd="yumurta"]');
+    ok(plus && plus.dataset.qg === "50", "+ düğmesi");
+    const item = plus.closest(".item");
+    ok(item.textContent.includes("1 adet (50 g)") && item.textContent.includes(`${foodKcal(FOODS.yumurta, 50)} kcal`), item.textContent);
+    ok(plus.getAttribute("aria-label").startsWith("Yumurta, 1 adet") && plus.getAttribute("aria-label").endsWith("Ekle"), plus.getAttribute("aria-label"));
+    ok(item.querySelector("[data-food]"), "satıra dokunmak miktar kartını açar");
+    await plus.onclick();
+    eq(state.days[today()].log.map(x => [x.k, x.g]), [["yumurta", 50]]);
+    eq([logQuery, logPick, addOpen === slotList()[0][0]], ["", null, true]);
+    ok(!app.querySelector("#food-results [data-qadd]"), "sonuç listesi temizlendi");
+    ok(document.querySelector(".toast.act"), "geri al toast'ı");
+    /* ikinci kez: son yenen miktar sunulur */
+    logQuery = "yumurta"; render();
+    eq(app.querySelector('#food-results [data-qadd="yumurta"]').dataset.qg, "50");
+    state.days[today()].log[0].g = 150;
+    logQuery = "yumurta"; render();
+    eq(app.querySelector('#food-results [data-qadd="yumurta"]').dataset.qg, "150", "en son kaydedilen miktar");
+    ok(app.querySelector('#food-results [data-qadd="yumurta"]').closest(".item").textContent.includes("3 adet (150 g)"));
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: kategori listesinde ekleyince kategori açık kalır", async () => {
+  await openAddPanel();
+  try {
+    logCat = "meyve"; render();
+    const first = app.querySelector("#food-results [data-qadd]");
+    ok(first, "kategori satırlarında + var");
+    await first.onclick();
+    eq(logCat, "meyve"); ok(app.querySelector("#food-results [data-qadd]"), "liste durur");
+    eq(state.days[today()].log.length, 1);
+  } finally { logCat = null; closeQuick(); }
+});
+
+test("kolay ekleme: miktar kartı varsayılan porsiyonla açılır; +/− ve hazır düğmeler miktarı ve kaloriyi günceller; Ekle toast'la geri alınır", async () => {
+  await openAddPanel();
+  try {
+    logPick = "yulaf"; render();
+    const amt = () => app.querySelector("#pick-amt");
+    const kcal = () => app.querySelector("#pick-kcal").textContent;
+    eq(amt().value, "40", "1 porsiyonla başlar");
+    eq(kcal(), `${foodKcal(FOODS.yulaf, 40)} kcal`);
+    eq([...app.querySelectorAll("[data-amt].sel")].map(b => b.textContent), ["1 porsiyon"], "seçili hazır düğme");
+    eq(app.querySelectorAll("[data-pick-step]").length, 2);
+    app.querySelector('[data-pick-step="1"]').onclick();
+    eq(amt().value, "45"); eq(kcal(), `${foodKcal(FOODS.yulaf, 45)} kcal`);
+    ok(!app.querySelector("[data-amt].sel"), "hazır olmayan miktarda seçili düğme yok");
+    app.querySelector('[data-pick-step="-1"]').onclick(); app.querySelector('[data-pick-step="-1"]').onclick();
+    eq(amt().value, "35");
+    app.querySelector("[data-amt='80']").onclick();
+    eq(amt().value, "80"); eq(kcal(), `${foodKcal(FOODS.yulaf, 80)} kcal`);
+    ok(app.querySelector("[data-amt='80']").classList.contains("sel"));
+    amt().value = "abc"; amt().oninput && amt().oninput();
+    eq(kcal(), "—");
+    amt().value = "80"; amt().oninput();
+    await app.querySelector("#pick-add").onclick();
+    eq(state.days[today()].log.map(x => [x.k, x.g]), [["yulaf", 80]]);
+    eq([logPick, logQuery], [null, ""]); ok(app.querySelector("#food-q"), "panel açık");
+    await undoToast();
+    eq(state.days[today()].log, undefined);
+    /* birimli besin: giriş birim cinsinden */
+    logPick = "yumurta"; render();
+    eq(amt().value, "1"); eq(kcal(), `${foodKcal(FOODS.yumurta, 50)} kcal`);
+    app.querySelector('[data-pick-step="1"]').onclick();
+    eq(amt().value, "2"); eq(kcal(), `${foodKcal(FOODS.yumurta, 100)} kcal`);
+    await app.querySelector("#pick-add").onclick();
+    eq(state.days[today()].log.map(x => [x.k, x.g]), [["yumurta", 100]]);
+    /* sonraki sefer son miktarla açılır */
+    logPick = "yumurta"; render();
+    eq(amt().value, "2", "son yenen miktar");
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: dünkü öğünü ve dünün tamamını kopyalamak toast'tan geri alınır; sık yedikler tek dokunuşla eklenir", async () => {
+  const { s0 } = await quickFixture();
+  try {
+    addOpen = null; render();
+    const btn = app.querySelector(`[data-copymeal="${s0}"]`);
+    ok(btn, "boş öğünde dünkü öğünü kopyala düğmesi");
+    await btn.onclick();
+    eq(state.days[today()].log.map(x => x.k), ["yulaf", "muz"]);
+    ok(document.querySelector(".toast.act").textContent.includes("2 kalem kopyalandı."));
+    const ids = state.days[today()].log.map(x => String(x.id));
+    ok(!state.days[shiftDays(today(), -1)].log.some(x => ids.includes(String(x.id))), "kopyalar yeni kimlik alır");
+    await undoToast();
+    eq(state.days[today()].log, undefined, "kopya geri alındı");
+    eq(state.days[shiftDays(today(), -1)].log.length, 2, "dünkü gün dokunulmadan kalır");
+
+    await app.querySelector("#copy-y").onclick();
+    eq(state.days[today()].log.length, 2);
+    await undoToast();
+    eq(state.days[today()].log, undefined);
+
+    /* sayfanın başındaki sık yedikler: toast'lı ve geri alınır */
+    const fav = app.querySelector('[data-fav="yulaf"]');
+    ok(fav && fav.textContent.includes("2 porsiyon"), "sık yediklerde miktar");
+    await fav.onclick();
+    eq(state.days[today()].log.map(x => [x.k, x.g, x.slot]), [["yulaf", 80, s0]]);
+    await undoToast();
+    eq(state.days[today()].log, undefined);
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: kayıtlı öğün eklenince panel açık kalır ve geri alınır", async () => {
+  const { s0, s1 } = await quickFixture();
+  try {
+    addOpen = s1;
+    state.savedMeals = [{ id: "s1", name: "Kahvaltım", items: [{ k: "yulaf", n: FOODS.yulaf.n, g: 40, p: 13, c: 60, f: 7, lif: 10, v: [], i: "grain" }] }];
+    render();
+    await app.querySelector('[data-saved-add="s1"]').onclick();
+    eq(state.days[today()].log.map(x => [x.k, x.slot]), [["yulaf", s1]], "açık panelin öğününe");
+    eq(addOpen, s1, "panel açık kalır");
+    await undoToast();
+    eq(state.days[today()].log, undefined);
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: panel açılırken sık yediklerin yoksa arama kutusu odaklanır, varsa odaklanmaz", async () => {
+  await openAddPanel();
+  app.style.display = "block";           /* odak için öğe görünür olmalı */
+  try {
+    addOpen = null; render();
+    app.querySelector(`[data-addfood="${slotList()[0][0]}"]`).onclick();
+    eq(document.activeElement && document.activeElement.id, "food-q", "geçmiş yokken arama kutusu odakta");
+    document.activeElement.blur();
+    state.days[shiftDays(today(), -1)] = { tasks: [], seeded: true, log: [logItem("yulaf", 40, slotList()[0][0], 1)] };
+    addOpen = null; render();
+    app.querySelector(`[data-addfood="${slotList()[0][0]}"]`).onclick();
+    ok(document.activeElement && document.activeElement.id !== "food-q", "sık yedikler varken klavye açılmaz");
+    ok(app.querySelector('.pick [data-qadd="yulaf"]'));
+  } finally { app.style.display = ""; closeQuick(); }
+});
+
+test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta düğme) ve İngilizce", async () => {
+  const { s0 } = await quickFixture();
+  try {
+    logQuery = "yogrt"; render();
+    ok(app.querySelector("#food-results [data-qadd='yogurt']"), "yazım hatalı arama sonuç verir");
+    for (const b of app.querySelectorAll("[data-qadd]")) ok((b.getAttribute("aria-label") || b.textContent).trim().length > 3, "adsız ekle düğmesi");
+    logPick = "yulaf"; render();
+    eq(a11yBad("kolay ekleme"), []);
+    for (const b of app.querySelectorAll("[data-pick-step]")) ok(b.getAttribute("aria-label"), "adımlama düğmesi etiketli");
+    logPick = null; logQuery = ""; render();
+    await withLang("en", async () => {
+      I18N_MISSING.clear();
+      render();
+      eq(app.querySelector(".pick").firstElementChild.textContent.trim(), "Your frequent foods");
+      logQuery = "yogrt"; render();
+      ok(app.querySelector("#food-results [data-qadd='yogurt']").getAttribute("aria-label").endsWith("Add"));
+      logPick = "yulaf"; render();
+      ok(app.querySelector('[data-pick-step="1"]').getAttribute("aria-label") === "Increase");
+      logPick = null; logQuery = ""; render();
+      await app.querySelector('[data-qadd="yulaf"]').onclick();
+      const t = document.querySelector(".toast.act");
+      ok(t.textContent.includes("added") && t.textContent.includes("Undo") && t.textContent.includes("kcal"), t.textContent);
+      await undoToast();
+      ok(document.querySelector(".toast").textContent === "Undone.");
+      addOpen = null; render();
+      await app.querySelector(`[data-copymeal="${s0}"]`).onclick();
+      ok(document.querySelector(".toast.act").textContent.includes("items copied."));
+      await undoToast();
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+  } finally { closeQuick(); }
+});
+
+test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
+  eq(APP_VERSION, "1.9.1");
+  const n = WHATS_NEW.find(x => x.v === "1.9.1");
+  ok(n && !n.native && n.items.length === 1, "web'de görünen kısa madde");
+  ok(STARBOARD_EN[n.items[0]], "maddenin İngilizcesi");
 });
 
 window.STARBOARD_TESTS = TESTS;

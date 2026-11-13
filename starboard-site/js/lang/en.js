@@ -367,7 +367,6 @@ window.STARBOARD_EN = {
   "Tahıl & ekmek": "Grains & bread",
   "Kuruyemiş": "Nuts",
   "Yağ & zeytin": "Oils & olives",
-  "100 g: {0} kcal{1}": "100 g: {0} kcal{1}",
   "100 g: {0} kcal": "100 g: {0} kcal",
   "Bulunamadı. Aşağıdan kendin tanımlayabilirsin.": "Not found. You can define it below.",
   "Bulunamadı.": "Not found.",
@@ -1020,5 +1019,9 @@ window.STARBOARD_EN = {
   "Kendi yiyeceklerim": "My foods",
   "Barkodlu ürün": "Barcode product",
   "“{0}” silinsin mi?": "Delete “{0}”?",
-  "Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.": "Edit or delete your own foods: Meals › My diary › Add food › My foods."
+  "Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.": "Edit or delete your own foods: Meals › My diary › Add food › My foods.",
+  "{0} eklendi · {1} kcal": "{0} added · {1} kcal",
+  "Geri al": "Undo",
+  "Geri alındı.": "Undone.",
+  "Besin ekleme kolaylaştı: sık yediklerin panelin başında, aramadaki + ile tek dokunuşla ekle, yanlışsa Geri al.": "Adding food is easier: your frequent foods sit at the top of the panel, add in one tap with +, and tap Undo if it was a mistake."
 };

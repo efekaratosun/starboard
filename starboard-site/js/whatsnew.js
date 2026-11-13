@@ -7,6 +7,8 @@
    Yeni bir sürümde kullanıcının fark edeceği bir şey varsa buraya en üste eklenir;
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
+  { v:"1.9.1", items:[
+    tx("Besin ekleme kolaylaştı: sık yediklerin panelin başında, aramadaki + ile tek dokunuşla ekle, yanlışsa Geri al.")] },
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
   { v:"1.9.0", items:[
     tx("Kendi yiyeceklerini düzenle ya da sil: Beslenme › Günlüğüm › Besin ekle › Kendi yiyeceklerim.")] },

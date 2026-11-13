@@ -242,9 +242,15 @@ function ydayLog(){
   const p = state.days[shiftDays(vKey(), -1)];
   return (p && p.log) ? p.log : [];
 }
-function copyItems(entry, items){
+function copyItems(entry, items, slot){
   entry.log = entry.log || [];
-  for (const it of items) entry.log.push({ ...it, id: Date.now() + Math.random() });
+  const ids = [];
+  for (const it of items){
+    const id = Date.now() + Math.random();
+    ids.push(id);
+    entry.log.push(slot ? { ...it, id, slot } : { ...it, id });
+  }
+  return ids;
 }
 
 /* Her öğün kendi kartı: o öğünün kayıtları ve besin eklemesi bir arada. */
@@ -344,6 +350,7 @@ function addPanel(){
   /* Barkod düğmesi yalnızca iPhone uygulamasında; web'de panel eskisiyle aynı kalır. */
   const bc = barcodeAvailable();
   return `<div class="pick" style="margin-top:12px">
+    ${quickChips()}
     ${savedChips()}
     <input id="food-q" type="text" aria-label="${tx("Ara: karnıyarık, hellim, kivi…")}" placeholder="${tx("Ara: karnıyarık, hellim, kivi…")}" value="${esc(logQuery)}" autocomplete="off">
     ${logQuery.trim().length >= 2 ? "" : catChips()}
@@ -535,13 +542,16 @@ function favBlock(entry){
   const favs = favoriteFoods();
   const y = shiftDays(vKey(), -1);
   const yLog = (state.days[y] && state.days[y].log) || [];
+  /* Besin ekleme paneli açıkken aynı besinler panelin başında, o öğüne göre sıralı durur. */
+  const chips = !addOpen;
   if (!favs.length && !yLog.length) return "";
+  if (!chips && !yLog.length) return "";
   return `<section class="favs">
-    <h2>${tx("Sık yediklerin")} <span class="count">${tx("dokun, eklensin")}</span></h2>
+    ${chips ? `<h2>${tx("Sık yediklerin")} <span class="count">${tx("dokun, eklensin")}</span></h2>
     ${favs.length ? `<div class="fav">${favs.map(([k,c]) =>
-      `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${c.g} g</button>`).join("")}</div>`
-      : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`}
-    ${yLog.length ? `<button class="ghost rep" id="copy-y" style="margin-top:14px">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? tx("Dünün") : tx("Bir önceki günün")), (yLog.length)])}</button>` : ""}
+      `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${esc(shortAmount(k, c.g))}</button>`).join("")}</div>`
+      : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`}` : ""}
+    ${yLog.length ? `<button class="ghost rep" id="copy-y" style="margin-top:${chips ? 14 : 0}px">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? tx("Dünün") : tx("Bir önceki günün")), (yLog.length)])}</button>` : ""}
   </section>`;
 }
 
@@ -574,19 +584,20 @@ function catCounts(){
   return c;
 }
 
-function foodRow(k, f){
-  const P = porsOf(f);
-  const per = f.unit ? ` · 1 ${f.unitName} ${Math.round((f.p*4+f.c*4+f.f*9)*f.unit/100)} kcal`
-    : P.length ? ` · 1 ${P[0].n} ${Math.round((f.p*4+f.c*4+f.f*9)*P[0].g/100)} kcal` : "";
-  return `<div class="item" data-food="${k}">${iconBox(f.i || "grain")}
-    <div class="item-main"><h3>${esc(f.n)}</h3><p>${tx("100 g: {0} kcal{1}", [(Math.round(f.p*4+f.c*4+f.f*9)), (per)])}</p></div>
-    <span class="add">+</span></div>`;
+/* Satır, "+" ile tek dokunuşta ekleneceği miktarı ve kalorisini gösterir;
+   satıra dokunmak miktar kartını açar. */
+function foodRow(k, f, habits){
+  const g = defaultGrams(k, habits);
+  const amount = amountText({ k, g });
+  return `<div class="item">${iconBox(f.i || "grain")}
+    <button class="item-main tap" data-food="${k}"><h3>${esc(f.n)}</h3><p>${esc(amount)} · ${tx("{0} kcal", [foodKcal(f, g)])}</p></button>
+    <button class="add" data-qadd="${k}" data-qg="${g}" aria-label="${esc(f.n)}, ${esc(shortAmount(k, g))}, ${tx("Ekle")}">+</button></div>`;
 }
 
 /* Kelime sırasından bağımsız arama: sorgudaki her kelime adın bir kelimesinde
    geçmeli. Tam kelime > kelime başı > kelime içi diye puanlanır, böylece
    "hindi" yazınca "Hindi salam" "Hindistan cevizi"nden önce gelir. */
-function matchScore(text, q){
+function matchScore(text, q, fuzzy){
   const words = norm(text).split(/[^a-z0-9]+/).filter(Boolean);
   const toks = norm(q).split(/[^a-z0-9]+/).filter(Boolean);
   if (!toks.length) return 0;
@@ -609,16 +620,40 @@ function matchScore(text, q){
       if (w.startsWith(t) || (ts && w.startsWith(ts))) best = Math.max(best, 2);
       else if (t.length >= 3 && w.includes(t)) best = Math.max(best, 1);
     }
+    /* Yazım hatası: yalnızca hiçbir şey bulunamayınca denenir (fuzzy). */
+    if (!best && fuzzy && /[a-z]/.test(t) && words.some(w => nearWord(t, w))) best = 0.5;
     if (!best) return 0;
     score += best;
   }
   return score;
 }
+/* İki sözcük arası uzaklık: eksik, fazla, yanlış ya da yer değiştirmiş harf 1 sayılır. */
+function editDist(a, b){
+  let p2 = null, p = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++){
+    const c = [i];
+    for (let j = 1; j <= b.length; j++){
+      let v = Math.min(p[j] + 1, c[j-1] + 1, p[j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+      if (i > 1 && j > 1 && a[i-1] === b[j-2] && a[i-2] === b[j-1]) v = Math.min(v, p2[j-2] + 1);
+      c[j] = v;
+    }
+    p2 = p; p = c;
+  }
+  return p[b.length];
+}
+/* Dört harften kısa sözcüklerde hata payı yok; 4–7 harfte 1, 8 ve üstünde 2.
+   Yarım yazılmış sözcük de (başı tutuyorsa) yakın sayılır. */
+function nearWord(t, w){
+  if (t.length < 4) return false;
+  const max = t.length >= 8 ? 2 : 1;
+  if (Math.abs(w.length - t.length) <= max && editDist(t, w) <= max) return true;
+  return w.length > t.length && editDist(t, w.slice(0, t.length)) <= max;
+}
 /* Ad eşleşmesi takma ad eşleşmesinden biraz öne geçer. */
-function foodScore(f, q){
-  const a = matchScore(f.n, q);
+function foodScore(f, q, fuzzy){
+  const a = matchScore(f.n, q, fuzzy);
   if (a) return a + 0.5;
-  return f.a ? matchScore(f.n + " " + f.a, q) : 0;
+  return f.a ? matchScore(f.n + " " + f.a, q, fuzzy) : 0;
 }
 /* Bir besinin ne kadar "temel" olduğu: hazır öğün setlerinde ve tariflerde
    kaç kez geçtiği. Eşit puanlı aramada "Tavuk göğsü" "Tavuk şiş"in önüne geçsin. */
@@ -638,9 +673,13 @@ function searchFoods(q, limit){
   /* Eşit puanda önce sık kullandığın besin, sonra temel besin (spor ürünü ya da
      atıştırmalık değil), sonra kısa ad: "yulaf" → önce Yulaf ezmesi, sonra barı. */
   const side = f => (f.cat === "spor" || f.cat === "ara") ? 1 : 0;
-  return allFoods()
-    .map(([k,f]) => [k, f, foodScore(f, q)])
-    .filter(x => x[2] > 0)
+  const rank = fuzzy => allFoods()
+    .map(([k,f]) => [k, f, foodScore(f, q, fuzzy)])
+    .filter(x => x[2] > 0);
+  /* Hiçbir şey bulunamadıysa küçük yazım hatalarına tolerans ("peynr", "tavk"). */
+  let rows = rank(false);
+  if (!rows.length) rows = rank(true);
+  return rows
     .sort((a,b) => b[2] - a[2] || (use[b[0]]||0) - (use[a[0]]||0)
                  || side(a[1]) - side(b[1]) || foodPop(b[0]) - foodPop(a[0])
                  || a[1].n.length - b[1].n.length)
@@ -653,13 +692,15 @@ function resultsHTML(){
   if (q.length >= 2){
     const hits = searchFoods(logQuery, 12);
     if (!hits.length) return `<div class="empty" style="padding-top:12px">${tx("Bulunamadı. Aşağıdan kendin tanımlayabilirsin.")}</div>`;
-    return hits.map(([k,f]) => foodRow(k,f)).join("");
+    const habits = foodHabits();
+    return hits.map(([k,f]) => foodRow(k, f, habits)).join("");
   }
   if (logCat){
     const list = allFoods().filter(([,f]) => foodCat(f) === logCat)
       .sort((a,b) => a[1].n.localeCompare(b[1].n, "tr"));
+    const habits = foodHabits();
     return `<div class="metric-note" style="margin:12px 4px 0">${tx("{0} · {1} kalem", [(CAT_LABELS[logCat]), (list.length)])}</div>`
-      + list.map(([k,f]) => foodRow(k,f)).join("");
+      + list.map(([k,f]) => foodRow(k, f, habits)).join("");
   }
   return "";
 }
@@ -687,7 +728,9 @@ const nfmt = n => Number.isInteger(n) || LANG !== "tr" ? String(n) : String(n).r
 function pickCard(){
   const f = foodOf(logPick);
   if (!f) return "";
-  const def = f.unit ? 1 : 100;
+  /* Miktar, satırdaki "+" ile eklenecek olanla başlar: son yediğin ya da 1 porsiyon. */
+  const g0 = defaultGrams(logPick);
+  const def = f.unit ? +(g0 / f.unit).toFixed(2) : g0;
   /* Birimli besinlerde giriş birim cinsinden; diğerlerinde gram,
      porsiyon rozetleri gram alanını doldurur. */
   const P = porsOf(f);
@@ -706,9 +749,14 @@ function pickCard(){
   else chips = [50,100,150,200].map(c => [c, `${c} g`]);
   return `<div class="pick" style="background:var(--surface);margin-top:14px">
     <h3>${esc(f.n)}</h3>
-    <label for="pick-amt">${tx("Miktar ({0})", [(f.unit ? f.unitName : "g")])}</label>
-    <input id="pick-amt" type="number" inputmode="decimal" value="${def}">
-    <div class="chips">${chips.map(([v,l]) => `<button class="chip" data-amt="${v}">${esc(l)}</button>`).join("")}</div>
+    <div class="lbl-row"><label for="pick-amt">${tx("Miktar ({0})", [(f.unit ? esc(f.unitName) : "g")])}</label>
+      <span class="lbl-v num" id="pick-kcal">${tx("{0} kcal", [foodKcal(f, g0)])}</span></div>
+    <div class="le-row">
+      <button class="lf-sb" data-pick-step="-1" aria-label="${tx("Azalt")}">−</button>
+      <input id="pick-amt" type="number" inputmode="decimal" value="${def}" data-unit="${f.unit || 1}">
+      <button class="lf-sb" data-pick-step="1" aria-label="${tx("Artır")}">+</button>
+    </div>
+    <div class="chips">${chips.map(([v,l]) => `<button class="chip${Math.abs(v - def) < 0.01 ? " sel" : ""}" data-amt="${v}">${esc(l)}</button>`).join("")}</div>
     ${f.unit ? `<div class="metric-note" style="margin-top:9px">1 ${esc(f.unitName)} ≈ ${f.unit} g</div>`
       : P.length ? `<div class="metric-note" style="margin-top:9px">${P.map(x => `1 ${esc(x.n)} ≈ ${x.g} g`).join(" · ")}</div>` : ""}
     <div class="row" style="margin-top:14px">
@@ -937,11 +985,8 @@ function wireMealsRest(entry){
     }
   }
 
-  app.querySelectorAll("[data-fav]").forEach(b => b.onclick = async () => {
-    if (!(await guardKcal(entry))) return;
-    addFoodDirect(entry, b.dataset.fav, Number(b.dataset.favG), b.dataset.favSlot || null);
-    await saveState(state); render();
-  });
+  app.querySelectorAll("[data-fav]").forEach(b => b.onclick = () =>
+    quickAdd(entry, b.dataset.fav, Number(b.dataset.favG), { slot: b.dataset.favSlot || null }));
 
   /* kayıtlı öğünler */
   app.querySelectorAll("[data-savemeal]").forEach(b => b.onclick = () => {
@@ -968,12 +1013,12 @@ function wireMealsRest(entry){
     if (!s) return;
     if (!(await guardKcal(entry))) return;
     const slot = addOpen || defaultSlot();
-    entry.log = entry.log || [];
-    for (const it of s.items) entry.log.push({ ...it, id: Date.now() + Math.random(), slot });
+    const day = vKey(), snap = logSnap(entry);
+    const ids = copyItems(entry, s.items, slot);
     syncKcal(entry);
-    addOpen = null; logQuery = ""; logPick = null;
+    logQuery = ""; logPick = null;
     await saveState(state); render();
-    toast(tx("{0} eklendi ({1} kalem).", [(`“${s.name}”`), (s.items.length)]));
+    toastUndo(tx("{0} eklendi ({1} kalem).", [(`“${s.name}”`), (s.items.length)]), day, ids, snap);
   });
   app.querySelectorAll("[data-saved-del]").forEach(b => b.onclick = async () => {
     state.savedMeals = savedMeals().filter(x => x.id !== b.dataset.savedDel);
@@ -991,10 +1036,11 @@ function wireMealsRest(entry){
     });
     if (!items.length) return;
     if (!(await guardKcal(entry))) return;
-    copyItems(entry, items);
+    const day = vKey(), snap = logSnap(entry);
+    const ids = copyItems(entry, items);
     syncKcal(entry);                 /* günlük doldu, günün kalorisi de güncellensin */
     await saveState(state); render();
-    toast(tx("{0} kalem kopyalandı.", [(items.length)]));
+    toastUndo(tx("{0} kalem kopyalandı.", [(items.length)]), day, ids, snap);
   });
 
   app.querySelectorAll("[data-addfood]").forEach(b => b.onclick = () => {
@@ -1002,7 +1048,11 @@ function wireMealsRest(entry){
     logQuery = ""; logCat = null; logPick = null; myFoodsOpen = false; myFoodEdit = null;
     render();
     const el = document.getElementById("food-q");
-    if (el) el.scrollIntoView({ behavior:"smooth", block:"center" });
+    if (el){
+      /* Dokunulacak sık yediklerin varsa klavye açılıp onları örtmesin. */
+      if (!quickFoods(addOpen).length) el.focus({ preventScroll: true });
+      el.scrollIntoView({ behavior:"smooth", block:"center" });
+    }
   });
   const addClose = document.getElementById("add-close");
   if (addClose) addClose.onclick = () => { addOpen = null; logPick = null; logQuery = ""; logCat = null; myFoodsOpen = false; myFoodEdit = null; render(); };
@@ -1061,10 +1111,11 @@ function wireMealsRest(entry){
     const yLog = (state.days[y] && state.days[y].log) || [];
     if (!yLog.length) return;
     if (!(await guardKcal(entry))) return;
-    entry.log = entry.log || [];
-    for (const it of yLog) entry.log.push({ ...it, id: Date.now()+Math.random() });
+    const day = vKey(), snap = logSnap(entry);
+    const ids = copyItems(entry, yLog);
     syncKcal(entry);
     await saveState(state); render();
+    toastUndo(tx("{0} kalem kopyalandı.", [(yLog.length)]), day, ids, snap);
   };
 
   app.querySelectorAll("[data-log-edit]").forEach(b => b.onclick = () => {
@@ -1128,9 +1179,9 @@ function wireMealsRest(entry){
       return;
     }
     document.getElementById("food-results").innerHTML = resultsHTML();
-    bindResults();
+    bindResults(entry);
   };
-  bindResults();
+  bindResults(entry);
 
   app.querySelectorAll("[data-cat]").forEach(b => b.onclick = () => {
     logCat = logCat === b.dataset.cat ? null : b.dataset.cat;
@@ -1140,20 +1191,25 @@ function wireMealsRest(entry){
 
   const amt = document.getElementById("pick-amt");
   if (amt) {
-    app.querySelectorAll("[data-amt]").forEach(b => b.onclick = () => { amt.value = b.dataset.amt; });
+    const f = foodOf(logPick), u = +amt.dataset.unit;
+    const showK = () => {
+      const n = num(amt.value);
+      document.getElementById("pick-kcal").textContent = n && n > 0 ? tx("{0} kcal", [foodKcal(f, n * u)]) : "—";
+      app.querySelectorAll("[data-amt]").forEach(x => x.classList.toggle("sel", n !== null && Math.abs(Number(x.dataset.amt) - n) < 0.01));
+    };
+    amt.oninput = showK;
+    app.querySelectorAll("[data-amt]").forEach(b => b.onclick = () => { amt.value = b.dataset.amt; showK(); });
+    app.querySelectorAll("[data-pick-step]").forEach(b => b.onclick = () => {
+      const v = num(amt.value) || 0;
+      const step = u > 1 ? 1 : v >= 200 ? 50 : v >= 50 ? 10 : 5;
+      amt.value = Math.max(u > 1 ? 1 : 5, +(v + step * Number(b.dataset.pickStep)).toFixed(2));
+      showK();
+    });
     document.getElementById("pick-cancel").onclick = () => { logPick = null; render(); };
-    document.getElementById("pick-add").onclick = async () => {
-      const f = FOODS[logPick] || (state.customFoods||{})[logPick];
+    document.getElementById("pick-add").onclick = () => {
       const n = num(amt.value);
       if (!f || !n || n <= 0) return;
-      if (!(await guardKcal(entry))) return;
-      const grams = f.unit ? n * f.unit : n;
-      entry.log = entry.log || [];
-      entry.log.push({ id: Date.now()+Math.random(), k:logPick, n:f.n, g:Math.round(grams),
-        p:f.p, c:f.c, f:f.f, lif:f.lif || 0, v:f.v || [], i:f.i, slot: addOpen || defaultSlot() });
-      syncKcal(entry);
-      logPick = null; logQuery = "";
-      await saveState(state); render();
+      return quickAdd(entry, logPick, n * u);
     };
   }
 
@@ -1177,12 +1233,15 @@ function bindFix(){
   app.querySelectorAll("[data-fixfood]").forEach(b => b.onclick = () => { fixPick = b.dataset.fixfood; render(); });
 }
 
-function bindResults(){
+function bindResults(entry){
   app.querySelectorAll("[data-food]").forEach(b => b.onclick = () => {
     logPick = b.dataset.food; render();
     const el = document.getElementById("pick-amt");
     if (el) el.scrollIntoView({ behavior:"smooth", block:"center" });
   });
+  /* "+" ve sık yediklerin: miktar sormadan ekler, toast'tan geri alınır. */
+  app.querySelectorAll("[data-qadd]").forEach(b => b.onclick = () =>
+    quickAdd(entry, b.dataset.qadd, Number(b.dataset.qg), { refocus: !!b.closest("#food-results") && logQuery.trim().length >= 2 }));
 }
 
 /* ---- sık kullanılan besinler ---- */
@@ -1199,9 +1258,102 @@ function favoriteFoods(){
 
 function addFoodDirect(entry, key, grams, slot){
   const f = FOODS[key] || (state.customFoods||{})[key];
-  if (!f) return;
+  if (!f) return null;
   entry.log = entry.log || [];
-  entry.log.push({ id: Date.now()+Math.random(), k:key, n:f.n, g:grams,
-    p:f.p, c:f.c, f:f.f, lif:f.lif || 0, v:f.v || [], i:f.i, slot: slot || defaultSlot() });
+  const it = { id: Date.now()+Math.random(), k:key, n:f.n, g:grams,
+    p:f.p, c:f.c, f:f.f, lif:f.lif || 0, v:f.v || [], i:f.i, slot: slot || defaultSlot() };
+  entry.log.push(it);
   syncKcal(entry);
+  return it;
+}
+
+/* ---- kolay ekleme ----
+   Her besin için geçmişten bir kez okunur: kaç kez, hangi öğünde, en son kaç gram yendi. */
+function foodHabits(){
+  const h = {};
+  let seq = 0;
+  for (const day of Object.keys(state.days).sort())
+    for (const it of (state.days[day].log || [])){
+      if (!it.k || !foodOf(it.k)) continue;
+      const x = h[it.k] || (h[it.k] = { n:0, slots:{}, g:0, last:0 });
+      x.n++; x.g = it.g; x.last = seq++;
+      x.slots[it.slot || ""] = (x.slots[it.slot || ""] || 0) + 1;
+    }
+  return h;
+}
+
+/* O öğünde en çok yediklerin, yoksa genel olarak en çok yediklerin: [anahtar, son gram]. */
+function quickFoods(slot, limit){
+  const h = foodHabits();
+  return Object.entries(h)
+    .sort((a, b) => (b[1].slots[slot] || 0) - (a[1].slots[slot] || 0) || b[1].n - a[1].n || b[1].last - a[1].last)
+    .slice(0, limit || 6)
+    .map(([k, x]) => [k, x.g]);
+}
+
+/* Tek dokunuşla eklenecek miktar: daha önce yediysen son yediğin; yoksa 1 porsiyon
+   (1 adet, 1 dilim…); onların hiçbiri tanımlı değilse 100 g. */
+function defaultGrams(key, habits){
+  const x = (habits || foodHabits())[key];
+  if (x && x.g > 0) return x.g;
+  const f = foodOf(key);
+  if (f && f.unit) return f.unit;
+  const P = porsOf(f);
+  return P.length ? P[0].g : 100;
+}
+const foodKcal = (f, g) => Math.round((f.p*4 + f.c*4 + f.f*9) * g / 100);
+/* "2 dilim (60 g)" yerine "2 dilim". */
+const shortAmount = (k, g) => amountText({ k, g }).replace(/ \(\d+(?:\.\d+)? g\)$/, "");
+
+function quickChips(){
+  const list = quickFoods(addOpen, 5);
+  if (!list.length) return "";
+  return `<div class="metric-note" style="margin:0 0 8px">${tx("Sık yediklerin")}</div>
+    <div class="fav" style="margin:0 0 12px">${list.map(([k, g]) =>
+      `<button data-qadd="${esc(k)}" data-qg="${g}"><b>${esc(foodOf(k).n)}</b> · ${esc(shortAmount(k, g))}</button>`).join("")}</div>`;
+}
+
+/* Geri almak için günün kalori durumunu eklemeden önce kaydeder. */
+const logSnap = entry => ({ kcal: entry.kcal, manual: entry.kcalManual, cleared: entry.logCleared, had: !!entry.log });
+function undoLogAdd(day, ids, snap){
+  const e = state.days[day];
+  if (!e || !e.log) return false;
+  const gone = new Set(ids.map(String));
+  const left = e.log.filter(x => !gone.has(String(x.id)));
+  if (left.length === e.log.length) return false;
+  e.log = left;
+  if (left.length) syncKcal(e);
+  else {
+    const put = (k, v) => { if (v === undefined) delete e[k]; else e[k] = v; };
+    put("kcal", snap.kcal); put("kcalManual", snap.manual); put("logCleared", snap.cleared);
+    if (!snap.had) delete e.log;
+  }
+  return true;
+}
+function toastUndo(msg, day, ids, snap){
+  toast(msg, { label: tx("Geri al"), fn: async () => {
+    if (!undoLogAdd(day, ids, snap)) return;
+    await saveState(state); render();
+    toast(tx("Geri alındı."));
+  } });
+}
+
+/* Bir besini miktar sormadan ekler; panel açık kalır, toast'tan geri alınır.
+   Çift dokunuşta iki kalem eklenmesin diye ekleme bitene kadar yenisi sayılmaz. */
+let quickBusy = false;
+async function quickAdd(entry, key, grams, opts){
+  opts = opts || {};
+  if (quickBusy || !foodOf(key) || !(grams > 0)) return null;
+  quickBusy = true;
+  try {
+    if (!(await guardKcal(entry))) return null;
+    const day = vKey(), snap = logSnap(entry);
+    const it = addFoodDirect(entry, key, Math.round(grams), opts.slot || addOpen || defaultSlot());
+    if (!it) return null;
+    logPick = null; logQuery = "";
+    await saveState(state); render();
+    if (opts.refocus){ const q = document.getElementById("food-q"); if (q) q.focus({ preventScroll: true }); }
+    toastUndo(tx("{0} eklendi · {1} kcal", [it.n, foodKcal(it, it.g)]), day, [it.id], snap);
+    return it;
+  } finally { quickBusy = false; }
 }
