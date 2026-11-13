@@ -158,6 +158,54 @@ function goalRow(t, entry, program, key){
   </div>`;
 }
 
+/* ---- kısa yol ----
+   Bugün ekranında saate, güne ve duruma göre tek düğme. Karar saf bir işlevdir
+   (shortcutPick): saat 05:00-22:00 arasında kullanıcının öğün listesinin sırasına göre
+   eşit dilimlere bölünür, o saatin öğünü günlükte boşsa "<öğün> ekle" çıkar. Öğün ya da
+   günün antrenmanı yapıldıysa sıradaki olası işe geçer; iş kalmadıysa düğme çıkmaz. */
+const SC_MEAL = [5, 22], SC_TRAIN = [6, 22];
+const scIn = (h, r) => h >= r[0] && h < r[1];
+
+/* c: { today, hour, meals:[öğün kimlikleri sırayla], logged:[günlüğü dolu öğünler], train:"none"|"todo"|"done" }
+   Döner: { kind:"meal", slot } | { kind:"train" } | null */
+function shortcutPick(c){
+  if (!c || !c.today) return null;
+  const meals = c.meals || [], logged = c.logged || [];
+  if (meals.length && scIn(c.hour, SC_MEAL)){
+    const i = Math.min(meals.length - 1, Math.floor((c.hour - SC_MEAL[0]) / (SC_MEAL[1] - SC_MEAL[0]) * meals.length));
+    if (!logged.includes(meals[i])) return { kind:"meal", slot:meals[i] };
+  }
+  if (c.train === "todo" && scIn(c.hour, SC_TRAIN)) return { kind:"train" };
+  return null;
+}
+
+function shortcutCtx(entry, program, key){
+  const ses = program && !program.training.none ? program.training.days.find(d => d.wd === isoWeekday(key)) : null;
+  const st = ses && ses.b ? taskStatus("train", entry, program, key) : null;
+  const ids = userMeals().map(m => m.id);
+  const d = new Date();
+  return { today: !!program && key === today(), hour: d.getHours() + d.getMinutes() / 60, meals: ids,
+    logged: ids.filter(id => itemsOfSlot(entry.log, id).length),
+    train: !st ? "none" : (st.ok || hasFree(entry)) ? "done" : "todo" };
+}
+
+function shortcutButton(entry, program, key){
+  const p = shortcutPick(shortcutCtx(entry, program, key));
+  if (!p) return "";
+  const label = p.kind === "meal" ? tx("{0} ekle", [esc(slotLabel(p.slot))]) : tx("Antrenmanı başlat");
+  return `<button id="today-sc" data-sc="${p.kind}" data-slot="${esc(p.slot || "")}" style="margin-bottom:12px">${label}</button>`;
+}
+
+function runShortcut(kind, slot){
+  if (kind === "train"){ openWorkout(); return; }
+  navTo(() => {
+    tab = "meals"; mealTab = "log"; resetMealUI(); addOpen = slot;
+    render();
+    const el = document.getElementById("food-q");
+    if (el) el.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block:"center" }); else window.scrollTo(0,0);
+  }, 1);
+}
+
 function todayView(entry, program, key){
   key = key || today();
   const now = key === today();
@@ -179,6 +227,8 @@ function todayView(entry, program, key){
     <i>${tx("Kilonu girdiğinde günün hedefleri burada belirir.")}</i>
     <button id="np-go">${tx("Kilonu gir")}</button>
   </section>`}
+
+  ${shortcutButton(entry, program, key)}
 
   <section class="gl" id="goal-list">
     ${rows}
@@ -328,7 +378,7 @@ function goToTask(kind, key){
     tab = "meals"; mealTab = "log"; render(); window.scrollTo(0,0); return;
   }
   if (kind === "train"){
-    tab = "plan"; planTab = "log"; render(); window.scrollTo(0,0); return;
+    tab = "plan"; planTab = "today"; render(); window.scrollTo(0,0); return;
   }
   tab = "today";
   if (kind !== "own"){ if (goalOpen !== kind) goalJust = kind; goalOpen = kind; }
@@ -467,7 +517,9 @@ function wireToday(entry, program, key){
   });
 
   const gtr = document.getElementById("go-train");
-  if (gtr) gtr.onclick = () => { tab = "plan"; planTab = "log"; render(); window.scrollTo(0,0); };
+  if (gtr) gtr.onclick = () => { tab = "plan"; planTab = "today"; render(); window.scrollTo(0,0); };
+  const sc = document.getElementById("today-sc");
+  if (sc) sc.onclick = () => runShortcut(sc.dataset.sc, sc.dataset.slot);
   wireFolds();
 
 }

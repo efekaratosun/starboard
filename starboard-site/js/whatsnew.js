@@ -7,11 +7,14 @@
    Yeni bir sürümde kullanıcının fark edeceği bir şey varsa buraya en üste eklenir;
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
+  /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
   { v:"1.10.0", items:[
     tx("Beslenme sadeleşti: öneriler boş öğünün içinde, tek dokunuşla Ekle. Bugün · Tarifler · Liste.")] },
+  { v:"1.10.0", items:[
+    tx("Antrenman ekranı sadeleşti: Program › Bugün ve Program. Hareket rehberi Program'da, rekorlar Ben › Grafikler'de."),
+    tx("Bugün ekranında saate göre tek kısa yol: öğün ekle ya da antrenmanı başlat.")] },
   { v:"1.9.1", items:[
     tx("Besin ekleme kolaylaştı: sık yediklerin panelin başında, aramadaki + ile tek dokunuşla ekle, yanlışsa Geri al.")] },
-  /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
   { v:"1.9.1", items:[
     tx("Öğün önerileri daha gerçekçi: her öğün anlamlı bir tabak, makul porsiyonlar ve her gün farklı bir menü.")] },
   { v:"1.9.0", items:[

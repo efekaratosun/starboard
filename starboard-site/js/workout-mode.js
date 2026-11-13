@@ -75,8 +75,8 @@ function wireRest(){
 }
 
 const tgNum = tg => { const m = String(tg ?? "").match(/\d+/); return m ? +m[0] : null; };
-const woStep = (f, v) => f === "kg" ? liftStep() : f === "km" ? 0.5 : f === "min" ? 5 : f === "m" ? 25 : 1;
-const woRound = (f, v) => f === "kg" || f === "km" || f === "min" ? Math.round(v * 100) / 100 : Math.round(v);
+const woStep = (f, v) => f === "kg" || f === "kg2" ? liftStep() : f === "km" ? 0.5 : f === "min" ? 5 : f === "m" ? 25 : 1;
+const woRound = (f, v) => f === "kg" || f === "kg2" || f === "km" || f === "min" ? Math.round(v * 100) / 100 : Math.round(v);
 
 function woList(){
   const p = currentProgram();
@@ -95,7 +95,8 @@ function woRec(name, t){
 }
 function woTidy(name){
   const e = state.days[vKey()] || {};
-  if (e.lifts && !liftHas(e.lifts[name])) delete e.lifts[name];
+  const r = e.lifts && e.lifts[name];
+  if (r && !liftHas(r) && !r.kg2) delete e.lifts[name];   /* ek ağırlık, setlerden önce girilebilir */
 }
 
 /* Bir alanın önerilen değeri: bugün girilen > bugünkü önceki set > geçen antrenman > programdaki hedef. */
@@ -152,6 +153,7 @@ function woBody(ex, name, rec, prev){
       const canCopy = !all && (prev || (ex.t !== "w" && tgNum(ex.tg) !== null));
       return `${canCopy ? `<button class="ghost wo-copy" id="wo-copy">${prev ? tx("Hepsi geçen seferki gibi") : tx("Hepsini hedefe göre doldur")}</button>` : ""}
         <div class="wo-sets">${Array.from({ length:n }, (_, k) => woSetRow(ex, rec, prev, k)).join("")}</div>
+        ${ex.xkg ? `<div class="wo-fields" style="margin-top:14px">${woField("kg2", (rec.kg2 ?? (prev && prev.kg2) ?? null) === null ? null : liftOut(rec.kg2 ?? prev.kg2), tx("Ek {0}", [(wUnit())]), "")}</div>` : ""}
         <div class="wo-note">${tx("Değerler {0} geliyor. Aynıysa ✓'e bas, farklıysa − / + ile düzelt ya da sayıya dokunup yaz.", [(prev ? tx("geçen antrenmandan") : tx("programdaki hedeften"))])}</div>`;
     }
     case "wc": {
@@ -282,10 +284,7 @@ function wireWO(){
   q("[data-wohow]").forEach(b => b.onclick = () => {
     const id = b.dataset.wohow;
     closeWorkout();
-    tab = "plan"; planTab = "howto"; howQuery = ""; howOpen = id;
-    render();
-    const t = app.querySelector(`[data-how="${id}"]`);
-    if (t) t.scrollIntoView({ block:"center" }); else window.scrollTo(0,0);
+    goHow(id);
   });
 
   if (woDone || woIdx >= list.length) return;
@@ -298,7 +297,27 @@ function wireWO(){
     return n !== null && n >= 0 ? n : null;
   };
 
-  /* ± düğmeleri: kutuyu değiştirir, kaydetmez (✓ kaydeder) */
+  /* Onaylı bir setin değeri değişince yeniden kaydedilir; ✓'e iki kez basmak gerekmez. */
+  const resave = async k => {
+    const cur = ((state.days[vKey()] || {}).lifts || {})[name];
+    if (!cur || !woSetDone(ex, cur, k)) return;
+    const before = records().find(r => r.name === name);
+    if (ex.t === "w"){
+      const r = val("r", k);
+      if (!r) return;
+      const kgIn = val("kg", k);
+      cur.sets[k] = kgIn === null ? { r } : { kg: liftIn(kgIn), r };
+    } else {
+      const v = val("s", k);
+      if (!v) return;
+      cur.sets[k] = v;
+    }
+    await save();
+    checkPR(name, before);
+  };
+  const setField = f => ["w","r","t"].includes(ex.t) && f !== "kg2";
+
+  /* ± düğmeleri: kutuyu değiştirir; ✓ kaydeder, onaylı setlerde değişiklik hemen kaydedilir */
   q("[data-wpm]").forEach(b => b.onclick = () => {
     const f = b.dataset.wpm, k = b.dataset.wk;
     const i = woEl.querySelector(`[data-wi="${f}"][data-wk="${k}"]`);
@@ -306,7 +325,8 @@ function wireWO(){
     const cur = num(i.value) ?? 0;
     i.value = fmtN(Math.max(0, woRound(f, cur + woStep(f) * (+b.dataset.wd))));
     i.dispatchEvent(new Event("input", { bubbles:true }));
-    if (["kg","min","km","m"].includes(f) && !["w","r","t"].includes(ex.t)) i.onchange();
+    if (setField(f)) resave(+k);
+    else if (i.onchange) i.onchange();
   });
 
   /* set onayı */
@@ -377,12 +397,12 @@ function wireWO(){
   /* tek alanlı tipler: değer değişince kaydet */
   q("[data-wi]").forEach(i => {
     const f = i.dataset.wi;
-    if (["w","r","t"].includes(ex.t)) return;
+    if (setField(f)){ i.onchange = () => resave(+i.dataset.wk); return; }
     i.onchange = async () => {
       const rec = woRec(name, ex.t);
       const before = records().find(r => r.name === name);
       const n = num(i.value);
-      const v = n !== null && n >= 0 ? (f === "m" ? Math.round(n) : f === "kg" ? liftIn(n) : n) : null;
+      const v = n !== null && n >= 0 ? (f === "m" ? Math.round(n) : f === "kg" || f === "kg2" ? liftIn(n) : n) : null;
       if (v === null) delete rec[f]; else rec[f] = v;
       woTidy(name); await save();
       const ae = document.activeElement === i;
@@ -416,30 +436,27 @@ function howCard(id){
 
 function howList(program){
   const q = norm(howQuery.trim());
-  let body;
   if (q.length >= 2){
     const hits = GUIDE.filter(g => matchScore(g.n, q) > 0);
-    body = `<section>${hits.length ? hits.map(g => howCard(g.id)).join("")
-      : `<div class="empty">${tx("\"{0}\" için anlatım bulunamadı.", [(esc(howQuery))])}</div>`}</section>`;
-  } else {
-    const seen = new Set();
-    body = program.training.days.filter(d => d.b).map(d => {
-      const ids = [];
-      for (const ex of exercisesOf(d)) for (const id of guidesFor(ex))
-        if (!seen.has(id)){ seen.add(id); ids.push(id); }
-      if (!ids.length) return "";
-      return `<section><h2>${WD_NAMES[d.wd]} · ${esc(d.t)}</h2>${ids.map(howCard).join("")}</section>`;
-    }).join("");
+    return hits.length ? hits.map(g => howCard(g.id)).join("")
+      : `<div class="empty">${tx("\"{0}\" için anlatım bulunamadı.", [(esc(howQuery))])}</div>`;
   }
-  return body;
+  const seen = new Set();
+  return program.training.days.filter(d => d.b).map(d => {
+    const ids = [];
+    for (const ex of exercisesOf(d)) for (const id of guidesFor(ex))
+      if (!seen.has(id)){ seen.add(id); ids.push(id); }
+    if (!ids.length) return "";
+    return `<div class="lbl" style="margin:14px 0 2px">${WD_NAMES[d.wd]} · ${esc(d.t)}</div>${ids.map(howCard).join("")}`;
+  }).join("");
 }
 
+/* Program sekmesinin altındaki hareket rehberi: arama ve açılır liste. */
 function howtoView(program){
-  return `<section>
+  return fold("how", tx("Nasıl yapılır"), "", `
     <input id="how-q" type="text" aria-label="${tx("Hareket ara")}" placeholder="${tx("Hareket ara: squat, barfiks, plank…")}" value="${esc(howQuery)}" autocomplete="off">
-    <div class="metric-note" style="margin-top:10px">${tx("Ağrı hissedersen dur.")}</div>
-  </section>
-  <div id="how-res">${howList(program)}</div>`;
+    <div class="metric-note" style="margin:10px 0 4px">${tx("Ağrı hissedersen dur.")}</div>
+    <div id="how-res">${howList(program)}</div>`);
 }
 
 function wireHowto(){

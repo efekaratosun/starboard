@@ -395,6 +395,8 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
+  eq(APP_VERSION, "1.10.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.10.0"], "1.10.0 web maddesi görünür");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -732,12 +734,12 @@ test("animasyon: açık rehber kartında sahne kurulur ve Motion ile oynar", asy
   ok(window.Motion && typeof Motion.animate === "function", "Motion kütüphanesi yüklenmedi");
   state = await loadFixture();
   migrateMeals(); notice = null; viewDate = null;
-  tab = "plan"; planTab = "howto"; howQuery = "squat"; howOpen = "squat";
+  tab = "plan"; planTab = "program"; howQuery = "squat"; howOpen = "squat";
   render();
   const svg = app.querySelector('.how-anim[data-anim="squat"] svg');
   ok(svg, "sahne kurulmadı");
   ok(svg.querySelector('[data-j="leg"]').getAttribute("points").split(" ").length === 3, "bacak çizilmedi");
-  howOpen = null; howQuery = ""; planTab = "log"; tab = "today"; render();
+  howOpen = null; howQuery = ""; planTab = "today"; tab = "today"; render();
   exAnimStop();
 });
 
@@ -902,11 +904,11 @@ test("erişilebilirlik: her alanın etiketi, her düğmenin adı var", async () 
   for (const lang of ["tr", "en"]) await withLang(lang, () => {
     state = JSON.parse(JSON.stringify(fixture)); migrateMeals(); notice = null; viewDate = null; ensureToday();
     for (const t of ["today", "plan", "meals", "calendar"]) { tab = t; render(); check(t); }
-    for (const p of ["log", "program", "howto"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
+    for (const p of ["today", "program"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
     for (const m of ["log", "recipes", "list"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
     for (const m of ["body", "chart", "set"]) { tab = "settings"; meTab = m; render(); check("me:" + m); }
     for (const g of ["kcal", "protein", "water", "sleep", "weigh", "train"]) { tab = "today"; goalOpen = g; render(); check("goal:" + g); }
-    goalOpen = null; planTab = "log"; mealTab = "log"; meTab = "body";
+    goalOpen = null; planTab = "today"; mealTab = "log"; meTab = "body";
     state = null; ob = obDefaults(); ob.sex = "male";
     for (let i = 0; i < OB_STEPS.length - 1; i++) { obStep = i; render(); check("ilk giriş " + OB_STEPS[i].id); }
     ob = null; obStep = 0;
@@ -2530,6 +2532,334 @@ test("sade beslenme: İngilizcede de çalışır, sözlükte olmayan metin kalma
       eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
     });
   } finally { closeSug(); }
+});
+
+/* ---- antrenman ekranlarının sadeleşmesi (1.10.0) ---- */
+/* Bugünün antrenman günü olduğu (on) ya da dinlenme günü olduğu bir profil; haftanın günü ne olursa olsun çalışsın diye 5 günlük program. */
+const trainFx = async on => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null;
+  const wd = isoWeekday(today()), others = [1, 2, 3, 4, 5, 6, 7].filter(d => d !== wd);
+  state.profile.programId = "gym_ppl5"; state.profile.venue = "gym"; delete state.profile.noPlan;
+  state.profile.days = (on ? [wd, ...others.slice(0, 4)] : others.slice(0, 5)).sort((a, b) => a - b);
+  state.days = {};
+  calcReset(); ensureToday();
+  return currentProgram();
+};
+const trainReset = () => { freeOpenKey = null; woDone = false; viewDate = null; howOpen = null; howQuery = ""; planTab = "today"; tab = "today"; state = null; };
+const sections = () => app.querySelectorAll("main > section").length;
+
+test("antrenman: alt sekmeler yalnızca Bugün ve Program; rehber Program sekmesinde arama ile açılır", async () => {
+  try {
+    await trainFx(true);
+    tab = "plan"; planTab = "today"; render();
+    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.dataset.planTab), ["today", "program"]);
+    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Bugün", "Program"]);
+    ok(!app.querySelector("#how-q"), "rehber Bugün'de değil");
+    planTab = "program"; render();
+    ok(app.querySelector("#how-q") && app.querySelector('[data-fold="how"]'), "rehber Program'da");
+    const q = app.querySelector("#how-q");
+    q.value = "squat"; q.oninput();
+    ok(app.querySelectorAll("[data-how]").length > 0, "arama rehber kartı buldu");
+    /* program dışındaki bir hareket de bulunur */
+    q.value = "plank"; q.oninput();
+    ok(app.querySelector('[data-how="plank"]'), "tüm rehbere ulaşılır");
+    eq(a11yBad("program"), []);
+  } finally { trainReset(); }
+});
+
+test("antrenman: eski 'nasıl' bağlantıları Program sekmesindeki rehbere yönlenir", async () => {
+  try {
+    const program = await trainFx(true);
+    tab = "plan"; planTab = "today"; render();
+    const link = app.querySelector("[data-howgo]");
+    ok(link, "hareketin yanında nasıl bağlantısı var");
+    const id = link.dataset.howgo;
+    link.onclick();
+    eq([tab, planTab, howOpen], ["plan", "program", id]);
+    ok(app.querySelector(".how.on") && app.querySelector(`[data-how="${id}"]`), "rehber kartı açık");
+    ok(!app.querySelector(".fold.shut"), "rehber bölümü açıldı");
+
+    /* antrenman modundaki bağlantı da aynı yere gider */
+    tab = "plan"; planTab = "today"; howOpen = null; render();
+    openWorkout();
+    const { list } = woList();
+    woIdx = list.findIndex(n => guidesFor(n).length); drawWO();
+    const wid = woEl.querySelector("[data-wohow]").dataset.wohow;
+    woEl.querySelector("[data-wohow]").onclick();
+    ok(!woEl, "antrenman modu kapandı");
+    eq([tab, planTab, howOpen], ["plan", "program", wid]);
+  } finally { if (woEl) closeWorkout(); trainReset(); }
+});
+
+test("antrenman: Bugün tek bölüm, salt okunur liste; giriş alanı ve rekor panosu yok", async () => {
+  try {
+    const program = await trainFx(true);
+    const ses = program.training.days.find(d => d.wd === isoWeekday(today()));
+    const list = exercisesOf(ses);
+    tab = "plan"; planTab = "today"; render();
+    eq(sections(), 1);
+    eq(app.querySelectorAll(".lift").length, list.length, "bugünün hareketleri listelenir");
+    eq(app.querySelectorAll("main input, main select, main textarea").length, 0, "set girişi yalnızca antrenman modunda");
+    ok(!app.querySelector(".prs") && !app.innerHTML.includes("Kişisel rekorlar"), "rekor panosu burada değil");
+    ok(!app.querySelector('[data-fold="lifts"]'), "tek tek giriş bölümü yok");
+    ok(app.querySelector("h2 .count").textContent.includes(`0/${list.length}`), "ilerleme sayısı");
+    ok(app.querySelector("#wo-start").textContent.trim() === "Antrenmanı başlat");
+    ok(app.querySelector(".lift-sub").textContent.trim().length > 0, "set × tekrar yazar");
+    eq(a11yBad("bugün"), []);
+    /* bir hareket kaydedilince sayı ve düğme değişir */
+    state.days[today()].lifts = { [list[0]]: { t: "ok", ok: 1 } };
+    render();
+    ok(app.querySelector("h2 .count").textContent.includes(`1/${list.length}`));
+    ok(app.querySelector("#wo-start").textContent.trim() === "Antrenman moduna dön");
+    ok(app.querySelectorAll(".lift-tick").length === 1);
+    app.querySelector("#wo-start").onclick();
+    ok(woEl, "düğme antrenman modunu açar");
+    closeWorkout();
+    /* serbest antrenman kartı antrenman gününde bağlantısız */
+    ok(!app.querySelector("#free-open"));
+  } finally { if (woEl) closeWorkout(); trainReset(); }
+});
+
+test("antrenman: dinlenme günü tek kart; serbest antrenman kartı bağlantıyla açılır", async () => {
+  try {
+    const program = await trainFx(false);
+    const nx = nextSession(program, today());
+    ok(nx, "sıradaki antrenman bulunur");
+    tab = "plan"; planTab = "today"; render();
+    eq(sections(), 1);
+    const h = app.querySelector("main section h2").textContent;
+    eq(h, `Bugün dinlenme · Sıradaki: ${WD_NAMES[nx.wd]}, ${nx.t}`);
+    ok(app.querySelector("#free-open") && !app.querySelector("#free-add"), "kart kapalı, bağlantı var");
+    ok(!app.querySelector(".prs"), "rekor panosu yok");
+    eq(a11yBad("dinlenme"), []);
+    app.querySelector("#free-open").onclick();
+    ok(app.querySelector("#free-add") && !app.querySelector("#free-open"), "bağlantı kartı açtı");
+    eq(sections(), 2);
+    eq(a11yBad("dinlenme, kart açık"), []);
+    /* kayıtlı serbest antrenman kartı kendiliğinden görünür */
+    freeOpenKey = null;
+    ensureDay(today()).free = { k: "walk", min: 30, note: null };
+    render();
+    ok(app.querySelector("#free-del") && !app.querySelector("#free-open"));
+    /* geçmiş gün: sıradaki yazılmaz */
+    delete state.days[today()].free;
+    viewDate = shiftDays(today(), -1); ensureDay(viewDate); render();
+    ok(app.querySelector("main section h2") && !app.querySelector("main section h2").textContent.includes("Sıradaki"), "geçmiş günde sıradaki yok");
+  } finally { trainReset(); }
+});
+
+test("antrenman: program kapalıyken de tek kart ve küçük serbest antrenman bağlantısı", async () => {
+  try {
+    await trainFx(false);
+    state.profile.noPlan = true; calcReset();
+    tab = "plan"; planTab = "today"; render();
+    eq(sections(), 1);
+    ok(app.querySelector("#plan-on") && app.querySelector("#free-open") && !app.querySelector(".prs"));
+    eq(a11yBad("program kapalı"), []);
+    planTab = "program"; render();
+    ok(app.querySelector("#plan-on") && app.querySelector("#how-q"), "kapalıyken de rehber aranabilir");
+  } finally { trainReset(); }
+});
+
+test("rekorlar: panosu Ben › Grafikler'de; yeni rekor kutlaması sürer", async () => {
+  try {
+    await trainFx(true);
+    state.days[today()].lifts = { "Bench press 4×6-8": { t: "w", sets: [{ kg: 60, r: 5 }] } };
+    ok(records().length === 1);
+    tab = "settings"; meTab = "chart"; render();
+    ok(app.querySelector(".prs .pr.new"), "rekor panosu grafiklerde");
+    ok(app.innerHTML.includes("Kişisel rekorlar"));
+    tab = "plan"; planTab = "today"; render();
+    ok(!app.querySelector(".prs"), "antrenman ekranında yok");
+    tab = "today"; render();
+    ok(!app.querySelector(".prs"));
+    tab = "settings"; meTab = "body"; render();
+    ok(!app.querySelector(".prs"), "Vücudum'da yok");
+    /* kutlama: önceki en iyiden yüksekse bildirim çıkar */
+    const before = records().find(r => r.name === "Bench press 4×6-8");
+    state.days[today()].lifts["Bench press 4×6-8"].sets.push({ kg: 80, r: 5 });
+    document.querySelectorAll(".toast").forEach(e => e.remove());
+    checkPR("Bench press 4×6-8", before);
+    ok(document.querySelector(".toast") && document.querySelector(".toast").textContent.includes("Yeni rekor"), "rekor kutlaması");
+    document.querySelectorAll(".toast").forEach(e => e.remove());
+  } finally { trainReset(); }
+});
+
+test("antrenman modu: ek ağırlık, süre, kardiyo ve ağırlık×tekrar eksiksiz girilir; onaylı set düzeltilir", async () => {
+  try {
+    await trainFx(true);
+    state.profile.programId = "custom";
+    state.profile.custom = { days: { [isoWeekday(today())]: { t: "Deneme", ex: [
+      { n: "Barfiks", s: 4, r: 8 }, { n: "Plank", s: 3, r: "45 sn" }, { n: "20 dk koşu", s: 1, r: 1 }, { n: "Squat", s: 3, r: 10 }] } } };
+    calcReset();
+    const L = () => state.days[today()].lifts;
+    tab = "plan"; planTab = "today"; render();
+    eq(app.querySelectorAll(".lift").length, 4);
+    openWorkout();
+    const { list, venue } = woList();
+    eq(list.map(n => parseEx(n, venue).t), ["r", "t", "c", "w"]);
+    const set = async (sel, v) => { const i = woEl.querySelector(sel); i.value = v; await i.onchange(); };
+
+    /* ek ağırlıklı tekrar (barfiks): ek kg setlerden önce de saklanır */
+    woIdx = 0; drawWO();
+    ok(woEl.querySelector('[data-wi="kg2"]'), "ek ağırlık alanı");
+    await set('[data-wi="kg2"]', "10");
+    eq(L()["Barfiks 4×8"].kg2, 10);
+    await set('[data-wi="s"][data-wk="0"]', "8");
+    await woEl.querySelector('[data-wok="0"]').onclick();
+    eq(L()["Barfiks 4×8"].sets[0], 8);
+    stopRest();
+    await set('[data-wi="s"][data-wk="0"]', "9");
+    eq(L()["Barfiks 4×8"].sets[0], 9, "onaylı set değişince kaydedilir");
+    ok(liftHas(L()["Barfiks 4×8"]));
+
+    /* süre (plank) */
+    woIdx = 1; drawWO();
+    await set('[data-wi="s"][data-wk="0"]', "45");
+    await woEl.querySelector('[data-wok="0"]').onclick();
+    stopRest();
+    eq(L()["Plank 3×45 sn"].sets[0], 45);
+
+    /* kardiyo: süre ve mesafe */
+    woIdx = 2; drawWO();
+    ok(woEl.querySelector('[data-wi="min"]') && woEl.querySelector('[data-wi="km"]'), "süre ve mesafe alanları");
+    await set('[data-wi="min"]', "20");
+    await set('[data-wi="km"]', "3,5");
+    eq([L()["20 dk koşu 1×1"].min, L()["20 dk koşu 1×1"].km], [20, 3.5]);
+
+    /* ağırlık × tekrar */
+    woIdx = 3; drawWO();
+    await set('[data-wi="kg"][data-wk="0"]', "60");
+    await set('[data-wi="r"][data-wk="0"]', "5");
+    await woEl.querySelector('[data-wok="0"]').onclick();
+    stopRest();
+    eq(L()["Squat 3×10"].sets[0], { kg: 60, r: 5 });
+    await set('[data-wi="kg"][data-wk="0"]', "65");
+    eq(L()["Squat 3×10"].sets[0], { kg: 65, r: 5 }, "onaylı setin kilosu düzeltilir");
+
+    /* özet ekranı hepsini gösterir */
+    woDone = true; drawWO();
+    eq(woEl.querySelectorAll(".wo-sum:not(.skip)").length, 4);
+    closeWorkout();
+    ok(app.querySelector("h2 .count").textContent.includes("4/4"), "Bugün ekranında ilerleme 4/4");
+  } finally { if (woEl) closeWorkout(); trainReset(); }
+});
+
+test("kısa yol: saate göre öğün, sıraya göre dilim; yapılan iş atlanır, iş kalmadıysa düğme yok", () => {
+  const M3 = ["kahvalti", "ara", "aksam"];
+  const pick = (hour, o) => shortcutPick({ today: true, hour, meals: M3, logged: [], train: "none", ...o });
+  const slot = (h, o) => { const p = pick(h, o); return p && p.kind === "meal" ? p.slot : p && p.kind; };
+  /* öğünler listedeki sıraya göre 05:00-22:00 arasına eşit dağılır */
+  eq(slot(4.9), null, "gece öğün yok");
+  eq([5, 7, 10].map(h => slot(h)), ["kahvalti", "kahvalti", "kahvalti"]);
+  eq([11, 13, 15].map(h => slot(h)), ["ara", "ara", "ara"]);
+  eq([17, 19, 21.9].map(h => slot(h)), ["aksam", "aksam", "aksam"]);
+  eq(slot(22), null, "22:00'den sonra yok");
+  /* öğün sayısı değişince dilimler de değişir */
+  const five = h => slot(h, { meals: ["a", "b", "c", "d", "e"] });
+  eq([5, 8, 9, 12, 14, 16, 18, 21].map(five), ["a", "a", "b", "c", "c", "d", "d", "e"]);
+  eq(slot(12, { meals: ["tek"] }), "tek");
+  eq(slot(12, { meals: [] }), null);
+  /* günlüğü dolu öğün atlanır: antrenman gününde antrenmana geçer */
+  eq(slot(8, { logged: ["kahvalti"] }), null, "iş yoksa gizlenir");
+  eq(slot(8, { logged: ["kahvalti"], train: "todo" }), "train");
+  eq(slot(8, { train: "todo" }), "kahvalti", "önce o saatin öğünü");
+  eq(slot(13, { logged: ["ara"], train: "todo" }), "train");
+  eq(slot(13, { logged: ["kahvalti", "aksam"], train: "todo" }), "ara", "başka öğünün kaydı bu öğünü saklamaz");
+  /* antrenman bitti ya da bugün antrenman yok */
+  eq(slot(13, { logged: ["ara"], train: "done" }), null);
+  eq(slot(13, { logged: ["ara"], train: "none" }), null);
+  /* antrenman uygun saatte */
+  eq(slot(5.5, { meals: [], train: "todo" }), null, "çok erken");
+  eq(slot(6, { meals: [], train: "todo" }), "train");
+  eq(slot(21.9, { logged: ["aksam"], train: "todo" }), "train");
+  eq(slot(22.5, { logged: ["aksam"], train: "todo" }), null);
+  /* geçmiş günde ya da program yokken çıkmaz */
+  eq(pick(8, { today: false }), null);
+  eq(shortcutPick(null), null);
+  /* sonuç metin içermez */
+  eq(Object.keys(pick(8)).sort(), ["kind", "slot"]);
+});
+
+test("kısa yol: bağlam kayıttan okunur; düğme yalnızca bugün çıkar; öğün düğmesi günlüğün besin panelini açar", async () => {
+  try {
+    const program = await trainFx(true);
+    const entry = state.days[today()];
+    const ses = program.training.days.find(d => d.wd === isoWeekday(today()));
+    eq(shortcutCtx(entry, program, today()).train, "todo");
+    entry.lifts = Object.fromEntries(exercisesOf(ses).map(n => [n, { t: "ok", ok: 1 }]));
+    eq(shortcutCtx(entry, program, today()).train, "done");
+    delete entry.lifts; entry.free = { k: "walk", min: 20, note: null };
+    eq(shortcutCtx(entry, program, today()).train, "done", "serbest antrenman da sayılır");
+    delete entry.free;
+    const ids = userMeals().map(m => m.id);
+    eq(shortcutCtx(entry, program, today()).meals, ids, "öğün listesinden, sırayla");
+    entry.log = [{ id: 1, n: "Yulaf", g: 50, p: 5, c: 30, f: 3, lif: 3, slot: ids[0] }];
+    eq(shortcutCtx(entry, program, today()).logged, [ids[0]]);
+    delete entry.log;
+    eq(shortcutCtx(entry, program, today()).today, true);
+    eq(shortcutCtx(entry, program, shiftDays(today(), -1)).today, false);
+
+    const real = shortcutPick;
+    try {
+      /* öğün düğmesi: adı kullanıcının öğün listesinden gelir */
+      shortcutPick = () => ({ kind: "meal", slot: ids[1] });
+      tab = "today"; render();
+      const b = app.querySelector("#today-sc");
+      ok(b && b.textContent.includes(slotLabel(ids[1])) && b.textContent.includes("ekle"), "düğme: " + (b && b.textContent));
+      eq(app.querySelectorAll("#today-sc").length, 1, "tek düğme");
+      eq(a11yBad("bugün kısa yol"), []);
+      b.onclick();
+      await new Promise(r => setTimeout(r, 400));
+      eq([tab, mealTab, addOpen], ["meals", "log", ids[1]]);
+      ok(app.querySelector("#food-q"), "besin ekleme paneli açık");
+      addOpen = null; resetMealUI();
+
+      /* antrenman düğmesi antrenman modunu açar */
+      shortcutPick = () => ({ kind: "train" });
+      tab = "today"; render();
+      const t = app.querySelector("#today-sc");
+      ok(t && t.textContent.trim() === "Antrenmanı başlat");
+      t.onclick();
+      ok(woEl, "antrenman modu açıldı");
+      closeWorkout();
+    } finally { shortcutPick = real; }
+
+    /* geçmiş günde düğme çıkmaz (gerçek karar işleviyle) */
+    viewDate = shiftDays(today(), -1); ensureDay(viewDate); tab = "today"; render();
+    ok(!app.querySelector("#today-sc"), "geçmiş günde kısa yol yok");
+  } finally { if (woEl) closeWorkout(); addOpen = null; trainReset(); }
+});
+
+test("antrenman: yeni ekranlar İngilizcede tam çevrilir ve erişilebilir", async () => {
+  try {
+    await withLang("en", async () => {
+      const program = await trainFx(false);
+      I18N_MISSING.clear();
+      tab = "plan"; planTab = "today"; render();
+      ok(app.querySelector("main section h2").textContent.startsWith("Rest today · Next: "), app.querySelector("main section h2").textContent);
+      ok(app.querySelector("#free-open").textContent.trim() === "Add a free workout");
+      eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Today", "Plan"]);
+      freeOpenKey = today(); render();
+      eq(a11yBad("en dinlenme"), []);
+      freeOpenKey = null;
+      await trainFx(true);
+      tab = "plan"; planTab = "today"; render();
+      ok(app.querySelector("#wo-start").textContent.trim() === "Start workout");
+      eq(a11yBad("en bugün"), []);
+      planTab = "program"; howOpen = "squat"; render();
+      eq(a11yBad("en program"), []);
+      const real = shortcutPick;
+      try {
+        shortcutPick = () => ({ kind: "meal", slot: userMeals()[0].id });
+        tab = "today"; render();
+        ok(/^Add /.test(app.querySelector("#today-sc").textContent.trim()), app.querySelector("#today-sc").textContent);
+      } finally { shortcutPick = real; }
+      tab = "settings"; meTab = "chart"; render();
+      ok(app.querySelector(".prs") || app.innerHTML.includes("Personal records"));
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+  } finally { trainReset(); meTab = "body"; }
 });
 
 window.STARBOARD_TESTS = TESTS;

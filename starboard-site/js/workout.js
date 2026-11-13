@@ -13,6 +13,9 @@ const freeLabel = f => (FREE_KINDS.find(([k]) => k === f.k) || ["", tx("Antrenma
 
 function hasFree(d){ return !!(d && d.free && d.free.k); }
 
+/* Serbest antrenman kartı kapalı durur; "Serbest antrenman ekle" bağlantısı o günün kartını açar. */
+let freeOpenKey = null;
+
 function freeCard(entry, key){
   const f = entry.free;
   const now = key === today();
@@ -79,6 +82,7 @@ function wireFree(key){
   const d = document.getElementById("free-del");
   if (d) d.onclick = async () => {
     delete ensureDay(key).free;
+    freeOpenKey = null;
     await saveState(state); render();
   };
 }
@@ -203,207 +207,89 @@ function liftSummary(l, ex){
 
 const LIFT_KIND = { w:tx("Ağırlık × tekrar"), r:tx("Tekrar"), t:tx("Süre"), wc:tx("Ağırlık + set"), n:tx("Tur"), sw:tx("Tekrar + süre"), sd:tx("Mesafe + süre"), c:tx("Süre + mesafe"), ok:"" };
 
-function liftInput(i, f, k, val, ph, dec, label){
-  return `<label class="lf-cell">${label ? `<span>${label}</span>` : ""}<input type="number" inputmode="${dec?"decimal":"numeric"}"
-    data-lx="${i}" data-f="${f}"${k !== undefined ? ` data-k="${k}"` : ""} value="${val ?? ""}" placeholder="${ph ?? ""}"></label>`;
-}
-
-function stepper(i, cur, max, unit){
-  return `<div class="lf-step">
-    <button class="lf-sb" data-lstep="${i}" data-d="-1" aria-label="${tx("Azalt")}"${cur <= 0 ? " disabled" : ""}>−</button>
-    <div class="lf-sv num"><b>${cur}</b> / ${max} <span>${unit}</span></div>
-    <button class="lf-sb" data-lstep="${i}" data-d="1" aria-label="${tx("Artır")}"${cur >= max ? " disabled" : ""}>+</button>
-  </div>`;
-}
-
-function liftBody(i, ex, cur, prev){
-  const sets = cur.sets || [];
-  const pSets = prev && prev.sets || [];
-  const idx = Array.from({ length: ex.n || 0 }, (_, k) => k);
-  switch (ex.t){
-    case "w": return `<div class="lf-sets">${idx.map(k => {
-        const s = sets[k] || {}, p = pSets[k] || {};
-        const prevKg = (k > 0 && sets[k-1] && sets[k-1].kg) || undefined;
-        const kgPrev = p.kg ?? prevKg ?? (prev && prev.kg);
-        const kgPh = ex.pc && ex.pc[k] ? ex.pc[k] : (kgPrev != null ? liftOut(kgPrev) : wUnit());
-        return `<div class="lf-set"><span class="lf-no">${k+1}</span>
-          ${liftInput(i,"kg",k,s.kg == null ? s.kg : liftOut(s.kg),kgPh,true,wUnit())}
-          ${liftInput(i,"r",k,s.r,p.r ?? ex.tg ?? "",false,tx("tekrar"))}</div>`;
-      }).join("")}</div>`;
-    case "r": case "t": return `<div class="lf-grid">${idx.map(k =>
-        liftInput(i,"s",k,sets[k],(typeof pSets[k] === "number" ? pSets[k] : ex.tg),false,`${k+1}. set${ex.t==="t"?" · sn":""}`)).join("")}
-        ${ex.xkg ? liftInput(i,"kg2",undefined,cur.kg2 == null ? cur.kg2 : liftOut(cur.kg2),prev && prev.kg2 ? liftOut(prev.kg2) : "",true,tx("Ek {0}", [(wUnit())])) : ""}</div>`;
-    case "wc": return `<div class="lf-row">${liftInput(i,"kg",undefined,cur.kg == null ? cur.kg : liftOut(cur.kg),prev && prev.kg ? liftOut(prev.kg) : "",true,tx("Ağırlık ({0})", [(wUnit())]))}</div>${stepper(i, cur.n || 0, ex.n, exText(ex.unit))}`;
-    case "n":  return stepper(i, cur.n || 0, ex.n, exText(ex.unit));
-    case "sw": return `${stepper(i, cur.n || 0, ex.n, "× " + ex.d + " m")}<div class="lf-row">${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
-    case "sd": return `<div class="lf-row">${liftInput(i,"m",undefined,cur.m,ex.d,false,tx("Mesafe (m)"))}${liftInput(i,"min",undefined,cur.min,prev && prev.min || "",true,tx("Süre (dk)"))}</div>`;
-    case "c":  return `<div class="lf-row">${liftInput(i,"min",undefined,cur.min,ex.tg || "",true,tx("Süre (dk)"))}${ex.km ? liftInput(i,"km",undefined,cur.km,prev && prev.km || "",true,tx("Mesafe (km)")) : ""}</div>
-                 ${cur.min && cur.km ? `<div class="metric-note">${tx("Tempo:")} <b>${pace(cur.min, cur.km)}</b></div>` : ""}`;
-    default:   return "";
-  }
-}
-
 function howLink(name){
   const ids = guidesFor(name);
   return ids.length ? `<button class="how-link" data-howgo="${ids[0]}">${tx("Nasıl yapılır")}</button>` : "";
 }
 
-/* ---- antrenman kaydı ----
-   Beslenmedeki günlükle aynı mantık: kayıt kendi sekmesinde durur,
-   Bugün sayfası yalnızca "bugün ne var" der ve buraya gönderir. */
-function trainLogView(entry, program, key){
+/* Hareket rehberi Program sekmesindedir; her "nasıl yapılır" bağlantısı oraya açar. */
+function goHow(id){
+  tab = "plan"; planTab = "program"; howQuery = ""; howOpen = id; openFold("how");
+  render();
+  const el = app.querySelector(`[data-how="${id}"]`);
+  if (el) el.scrollIntoView({ block:"center" }); else window.scrollTo(0,0);
+}
+
+/* ---- Program › Bugün ----
+   Salt okunur: bugünün antrenmanı, ilerleme ve hareket listesi. Set girişi
+   yalnızca antrenman modunda yapılır. */
+function trainTodayView(entry, program, key){
   key = key || today();
   const none = program.training.none;
   const session = none ? null : program.training.days.find(d => d.wd === isoWeekday(key));
   const now = key === today();
+  const freeOn = hasFree(entry) || freeOpenKey === key;
+  const freeLink = freeOn ? "" : `<div><button class="link" id="free-open">${tx("Serbest antrenman ekle")}</button></div>`;
 
   if (none) return `
-    ${freeCard(entry, key)}
     <section>
       <h2>${tx("Spor programın kapalı")}</h2>
-      <div class="metric-note">${tx("Program kurulu değil. Ayarlar'dan açabilirsin.")}</div>
-      <button class="ghost" id="plan-on" style="margin-top:12px">${tx("Spor programı kur")}</button>
+      <button class="ghost" id="plan-on">${tx("Spor programı kur")}</button>
+      ${freeLink}
     </section>
-    ${prBoard()}`;
+    ${freeOn ? freeCard(entry, key) : ""}`;
 
-  if (!session || !session.b) return `
+  if (!session || !session.b){
+    const nx = now ? nextSession(program, key) : null;
+    const head = !now ? tx("O gün dinlenme günüydü")
+      : nx ? tx("Bugün dinlenme · Sıradaki: {0}, {1}", [WD_NAMES[nx.wd], esc(nx.t)]) : tx("Bugün dinlenme");
+    return `
     <section>
-      <h2>${now ? tx("Bugün dinlenme") : tx("O gün dinlenme günüydü")}</h2>
-      ${session && session.t && session.icon !== "rest" ? `<div class="metric-note">${esc(session.t)}</div>` : ""}
+      <h2>${head}</h2>
+      ${freeLink}
     </section>
-    ${freeCard(entry, key)}
-    ${nextSessionCard(program, key)}
-    ${prBoard()}`;
+    ${freeOn ? freeCard(entry, key) : ""}`;
+  }
 
   const list = exercisesOf(session);
+  const venue = venueOf(program);
   const lifts = entry.lifts || {};
   const doneN = list.filter(n => liftHas(lifts[n])).length;
 
   return `
   <section>
     <h2>${esc(session.t)} <span class="count">${tx("{0}/{1} hareket", [(doneN), (list.length)])}</span></h2>
-    <div class="metric-note" style="margin-bottom:13px">${esc(exText(session.b))}</div>
-    <button id="wo-start">${doneN ? tx("Antrenman moduna dön") : tx("Antrenman modunu başlat")}</button>  </section>
-  ${liftsSection(entry, session, key)}
-  ${freeCard(entry, key)}
-  ${prBoard()}`;
+    ${list.map(name => {
+      const ex = parseEx(name, venue);
+      return `<div class="lift lift-ok">
+        <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>${ex.sub ? `<div class="lift-sub">${esc(exText(ex.sub))}</div>` : ""}${howLink(name)}</div>
+        ${liftHas(lifts[name]) ? `<svg class="ico lift-tick" role="img" aria-label="${tx("tamam")}"><use href="#i-check"/></svg>` : ""}
+      </div>`;
+    }).join("")}
+    <button id="wo-start" style="margin-top:14px;padding:18px 16px;font-size:17px">${doneN ? tx("Antrenman moduna dön") : tx("Antrenmanı başlat")}</button>
+  </section>
+  ${hasFree(entry) ? freeCard(entry, key) : ""}`;
 }
 
-/* Bugün antrenman yoksa sıradaki günü söyler. */
-function nextSessionCard(program, key){
+/* Bugün antrenman yoksa sıradaki antrenman günü. */
+function nextSession(program, key){
   const days = program.training.days.filter(d => d.b);
-  if (!days.length) return "";
   const wd = isoWeekday(key);
   let best = null, bestGap = 99;
   for (const d of days){
     const gap = ((d.wd - wd) % 7 + 7) % 7 || 7;
     if (gap < bestGap){ bestGap = gap; best = d; }
   }
-  if (!best) return "";
-  return `<section>
-    <h2>${tx("Sıradaki antrenman")}</h2>
-    <div class="item">${iconBox(best.icon)}
-      <div class="item-main"><h3>${esc(best.t)}</h3>
-        <p>${WD_NAMES[best.wd]}${bestGap === 1 ? tx(" · yarın") : tx(" · {0} gün sonra", [(bestGap)])}</p></div></div>
-  </section>`;
+  return best;
 }
 
-function liftsSection(entry, session, key){
-  key = key || today();
-  const list = exercisesOf(session);
-  if (!list.length) return "";
-  const venue = venueOf(currentProgram());
-  const lifts = entry.lifts || {};
-  const doneN = list.filter(n => liftHas(lifts[n])).length;
-  return fold("lifts", tx("Hareketleri tek tek gir"), `${doneN}/${list.length}`, `
-    ${list.map((name, i) => {
-      const ex = parseEx(name, venue);
-      const cur = lifts[name] || {};
-      const prev = lastLift(name, key);
-      const has = liftHas(cur);
-      const ps = prev ? liftSummary(prev, ex) : "";
-      if (ex.t === "ok") return `<div class="lift lift-ok">
-        <button class="check" data-done="${cur.ok?1:0}" data-ltog="${i}" aria-label="${esc(exText(ex.name))} ${tx("tamamlandı")}"></button>
-        <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>${ex.sub?`<div class="lift-sub">${esc(exText(ex.sub))}</div>`:""}${howLink(name)}</div>
-      </div>`;
-      return `<div class="lift${has?" on":""}">
-        <div class="lift-head">
-          <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>
-            <div class="lift-sub">${esc(exText(ex.sub))}${LIFT_KIND[ex.t] ? ` · ${LIFT_KIND[ex.t]}` : ""}</div>${howLink(name)}</div>
-          ${has ? `<svg class="ico lift-tick" aria-hidden="true"><use href="#i-check"/></svg>` : ""}
-        </div>
-        ${liftBody(i, ex, cur, prev)}
-        <div class="metric-note">${ps ? tx("Son: {0} · {1}", [(esc(ps)), (prettyDate(prev.k))]) : ""}</div>
-      </div>`;
-    }).join("")}`);
-}
-
-function wireLifts(entry, key){
-  key = key || today();
-  const session = currentProgram()
-    ? currentProgram().training.days.find(d => d.wd === isoWeekday(key)) : null;
-  const list = exercisesOf(session);
-  const venue = venueOf(currentProgram());
-  const recOf = i => {
-    entry.lifts = entry.lifts || {};
-    const name = list[i];
-    let r = entry.lifts[name];
-    if (!r || !r.t) r = entry.lifts[name] = {};
-    r.t = parseEx(name, venue).t;
-    return r;
-  };
-  const tidy = i => { const n = list[i]; if (entry.lifts && !liftHas(entry.lifts[n])) delete entry.lifts[n]; };
-
-  app.querySelectorAll("[data-lx]").forEach(el => el.onchange = async () => {
-    const i = +el.dataset.lx, f = el.dataset.f, k = el.dataset.k;
-    const before = records().find(r => r.name === list[i]);
-    const rec = recOf(i);
-    let n = num(el.value);
-    if (n !== null && n < 0) n = null;
-    const intF = f === "r" || f === "s" || f === "m";
-    if (n !== null && intF) n = Math.round(n);
-    if (n !== null && (f === "kg" || f === "kg2")) n = liftIn(n);
-    if (k === undefined){
-      if (n === null) delete rec[f]; else rec[f] = n;
-    } else {
-      rec.sets = rec.sets || [];
-      const kk = +k;
-      if (f === "s") rec.sets[kk] = n;
-      else {
-        const s = rec.sets[kk] = rec.sets[kk] || {};
-        if (n === null) delete s[f]; else s[f] = n;
-        // tekrar girilip kg boşsa önceki setin kilosunu devral
-        if (f === "r" && n !== null && s.kg === undefined && kk > 0 && rec.sets[kk-1] && rec.sets[kk-1].kg) s.kg = rec.sets[kk-1].kg;
-      }
-      for (let j = 0; j < rec.sets.length; j++) if (rec.sets[j] === undefined) rec.sets[j] = null;
-    }
-    tidy(i);
-    await saveState(state); render();
-    checkPR(list[i], before);
-  });
-  app.querySelectorAll("[data-lstep]").forEach(b => b.onclick = async () => {
-    const i = +b.dataset.lstep, ex = parseEx(list[i], venue), rec = recOf(i);
-    const before = records().find(r => r.name === list[i]);
-    rec.n = Math.max(0, Math.min(ex.n, (rec.n || 0) + (+b.dataset.d)));
-    if (!rec.n) delete rec.n;
-    tidy(i);
-    await saveState(state); render();
-    checkPR(list[i], before);
-  });
+function wireTrain(key){
   const woBtn = document.getElementById("wo-start");
   if (woBtn) woBtn.onclick = openWorkout;
-  app.querySelectorAll("[data-howgo]").forEach(b => b.onclick = () => {
-    tab = "plan"; planTab = "howto"; howQuery = ""; howOpen = b.dataset.howgo;
-    render();
-    const el = app.querySelector(`[data-how="${howOpen}"]`);
-    if (el) el.scrollIntoView({ block:"center" }); else window.scrollTo(0,0);
-  });
-  app.querySelectorAll("[data-ltog]").forEach(b => b.onclick = async () => {
-    const i = +b.dataset.ltog, rec = recOf(i);
-    if (rec.ok) delete rec.ok; else rec.ok = 1;
-    tidy(i);
-    await saveState(state); render();
-  });
+  app.querySelectorAll("[data-howgo]").forEach(b => b.onclick = () => goHow(b.dataset.howgo));
+  const fo = document.getElementById("free-open");
+  if (fo) fo.onclick = () => { freeOpenKey = key; render(); };
+  wireFree(key);
 }
 
 /* ---- onay sayfası ----
