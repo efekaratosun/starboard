@@ -56,6 +56,7 @@ function render(){
   const _s1 = stampStar(t);
   const _s2 = t !== today() ? stampStar(today()) : false;   /* kısa devre olmasın: ikisi de denensin */
   if (_s1 || _s2) { calcReset(); saveState(state); }
+  if (ensureSkyWeek()) saveState(state);   /* haftanın takımyıldızı ilk açılışta kayda yazılır */
   const party = onToday() && !wasAll && allDoneNow() && render.ready;
   const noProgram = `<section class="welcome">
     <span class="brand-i">${BRAND_SVG}</span>
@@ -142,6 +143,7 @@ function render(){
   }
   if (tab === "today") wireToday(entry, program, t);
   wireCharts();
+  wireSky();
   /* Sekme değişince içerik kayarak gelsin; aynı sekmede veri girişi
      sayfayı yeniden çizdiğinde animasyon tekrarlanmasın. */
   const mainEl = app.querySelector("main");

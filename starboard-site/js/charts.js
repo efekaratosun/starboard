@@ -272,6 +272,7 @@ function chartsView(){
 
   return `
   ${weeklySummary()}
+  ${skyAtlas()}
   ${nutritionCard(currentProgram())}
   ${prBoard()}
   ${card(tx("Kilo"), D.weight.delta !== null ? `${D.weight.delta>0?"+":""}${fmtN(+wOut(D.weight.delta).toFixed(1))} ${wUnit()}` : "",

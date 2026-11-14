@@ -3,6 +3,22 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.11.0 (yayınlanmadı)
+
+### Eklendi
+- Haftanın takımyıldızının gerçek şekli var: 14 takımyıldızın her biri adına benzeyen elle çizilmiş 7 yıldızlık bir şekil (`CONSTELLATIONS`, yeni dosya `js/sky.js`). Pazartesi ilk, pazar son yıldız. Çizgi yalnızca iki ucu da yanınca parlar; şekil baştan soluk görünür.
+- Hedef baştan belli: haftanın takımyıldızı haftanın ilk açılışında seçilir ve kayda yazılır (`state.sky`). Önce hiç kazanılmamışlar, hepsi kazanıldıysa en az kazanılanlar; mümkünse geçen haftanınki tekrar etmez. Kart başlığı "Bu hafta: Lale".
+- Yıldız günün puanına göre parlar: boş gün sönük nokta, yarım gün orantılı soluk, tam (ya da damgalı) gün tam parlak. Takımyıldız yine 5 tam günle belirir.
+- Yıldıza dokununca o günün hedefleri tamam/eksik listelenir; "O güne git" günü Bugün ekranında açar. Her yıldız ekran okuyucuya "Çarşamba: yüzde 60" diye okunur.
+- Gökyüzü atlası (Ben › Grafikler): 14 takımyıldız, kazanılanlar parlak ve kaç kez kazanıldığıyla, kazanılmayanlar soluk siluet; başlıkta "N / 14". Dokununca büyük hali ve kazanıldığı haftalar.
+- Hafta kapanışı: hafta bittikten sonraki ilk açılışta bir kez geçen haftanın takımyıldızı kendini çizer; altında yıldız sayısı, en iyi gün ve antrenman sayısı. Neler yeni penceresinden sonra gelir; azaltılmış harekette animasyonsuz.
+- Bugün kartında tek satır: "2 yıldız daha, Lale belirecek" ya da "Lale belirdi"; kalan günler yetmiyorsa satır yok.
+
+### Değişti
+- Takvimdeki "Gökyüzün · son 6 hafta" kalktı, yerini Grafikler'deki atlas aldı. Karttaki "Haftada beş yıldız…" notu kalktı.
+- Veri sürümü 3: göç geçmiş haftaları eski formülün adıyla kayda yazar (adları değişmez); bu hafta beşi tamamlamışsa onun adı da korunur. Hafta kapanışı göçten sonraki haftadan başlar. Günlük seri değişmedi.
+- İngilizcede "Kayık" Boat, "Fener" Lighthouse oldu (şekillerle uyumlu).
+
 ## 1.10.0 (yayınlanmadı)
 
 ### Değişti

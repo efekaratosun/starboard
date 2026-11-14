@@ -46,7 +46,7 @@ Amaç: yeni özellik eklemek mevcut olanı bozmasın.
 - [x] Kalan arayüz parçaları: Bugün sayfası açıklamaları, grafik notları, rekor ve süre birimleri, ekran okuyucu etiketleri (47 yeni karşılık). Kayıtlı görev başlıkları kayıtta Türkçe kalır, ekranda çevrilir
 - [x] Birimler: metrik (kg, cm, ml) ya da imperial (lb, ft·in, fl oz). Ayarlar'da ve ilk girişte seçilir; varsayılan tarayıcının bölgesinden (ABD imperial). Kayıt hep metrik kalır, çeviri yalnızca ekranda (`starboard-site/js/units.js`). İngilizcede ondalık ayırıcı nokta
 - [x] İngilizcenin "beta" etiketi kalktı. Yeni kullanıcıda dil tarayıcıdan gelir (Türkçe değilse İngilizce); kaydı olan eski kullanıcı Türkçe kalır; karşılama ekranında dil bağlantısı var
-- [x] Sürüm numarası (`APP_VERSION`, şu an 1.10.0) ve değişiklik günlüğü (`CHANGELOG.md`)
+- [x] Sürüm numarası (`APP_VERSION`, şu an 1.11.0) ve değişiklik günlüğü (`CHANGELOG.md`)
 - [x] Veri şeması sürümleme: `SCHEMA` ve `MIGRATIONS` (`storage.js`); açılışta ve yedek yüklerken kayıt güncel biçime taşınır
 - [x] Test kapsamı genişledi: gün puanı, yıldızlar, haftalık yenileme, veri göçü, dil seçimi (toplam 76 test)
 - [x] Depolama anahtarı `starboard-state` oldu; eski adla duran kayıt ilk açılışta taşınır ve yedek olarak yerinde kalır
@@ -69,6 +69,7 @@ Amaç: App Store'a çıkmaya değer bir ürün.
 - [x] Yazı tipi uygulamaya gömüldü (1.8.1): Nunito `starboard-site/fonts/` altından yüklenir, Google Fonts isteği kalmadı
 - [ ] İçerik genişletme (isteğe bağlı): ülkeye özgü ürünler, daha çok uluslararası tarif, alkollü içecekler (alkolün kalorisi ayrı hesap gerektirir)
 - [x] Erişilebilirlik ve küçük ekran denetimi (1.5.2): 320–414 px'de taşma yok; kontrast AA; dokunma alanları en az 44 px yükseklik; etiketler ve ekran okuyucu bildirimleri. Denetim aracı `tools/a11y-audit.html`. Gerçek iPhone'da VoiceOver ve büyük yazı denemesi Faz 3'te
+- [x] Haftanın takımyıldızı (1.11.0, 14 Kasım kararları): 14 elle çizilmiş şekil, hedef baştan belli (önce kazanılmamışlar), günün puanına göre parlaklık, yıldıza dokununca günün hedefleri, Ben › Grafikler'de gökyüzü atlası, hafta kapanışı, hafta ortası satırı; seri aynı
 - [ ] Faz 3'te gerçek cihazda: VoiceOver ile bütün akış, iOS büyük yazı boyutu (Dynamic Type), çentik ve ana ekran çubuğu çevresi. Adım adım liste: [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#8-erişilebilirlik) (görünüm: [bölüm 7](docs/GERCEK-CIHAZ-TESTI.md#7-görünüm))
 
 Bu faz diğerleriyle paralel yürür ve yayından sonra da sürer.
@@ -86,6 +87,7 @@ Amaç: web sitesini saran bir kabuk değil, gerçek bir iPhone uygulaması. Appl
 - [x] Barkod okuma (1.9.0, kod ve testler hazır; gerçek cihaz denemesi bekliyor, bkz. [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#3-barkod)): paketli ürünün barkodu kamerayla okunur, besin değerleri Open Food Facts'ten (ücretsiz, açık veri) gelir ve kendi yiyeceklerine kaydedilir. Dışarıya yalnızca barkod numarası gider; web'de özellik gizli olduğu için oradaki "hiçbir yere gönderilmez" sözü aynen durur, iPhone'daki metinler ve `PrivacyInfo.xcprivacy` (Arama Geçmişi) güncellendi. Uygulamayı web sitesinden ayıran yerel özelliklerden biri olur (kural 4.2). Eklenti: `@capacitor/barcode-scanner` (Apple Vision, SPM uyumlu)
 - [ ] Barkod okumayı gerçek iPhone'da dene (TestFlight): kamera izni, tarama, vazgeçme, izni reddetme, uçak modu, bulunamayan ürün, aynı barkodun ikinci kez okutulması, VoiceOver. Simülatörde kamera yok. Adım adım liste: [GERCEK-CIHAZ-TESTI.md](docs/GERCEK-CIHAZ-TESTI.md#3-barkod)
 - [x] Dokunsal geri bildirim, güvenli alan ve karanlık mod ayarları: dokunsal geri bildirim, çentik payı; açık/koyu tema zaten vardı, iOS'ta durum çubuğu temaya uyar
+- [ ] iPhone ana ekran widget'ı: bu haftanın takımyıldızı (TestFlight kurulunca)
 - [x] Mac olmadan derleme: bulutta macOS derleme hattı (GitHub Actions veya Codemagic): simülatör derlemesi Intel macOS makinesine taşındı
 
 Gerekenler: Apple Developer hesabı (yıllık 99 USD) ve test için bir iPhone.

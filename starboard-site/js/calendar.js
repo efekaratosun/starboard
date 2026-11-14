@@ -253,7 +253,6 @@ function calendarView(){
     </div>
   </section>
 
-  ${skyGallery()}
   <section>
     <h2>${monthLabel}</h2>
     <div class="cal-stats">

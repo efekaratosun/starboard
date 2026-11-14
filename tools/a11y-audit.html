@@ -63,6 +63,9 @@ const SHEETS = [
   ["antrenman modu: kardiyo", WO_SETUP + "; woIdx=2; drawWO()", "closeWorkout()"],
   ["antrenman modu: ağırlık × tekrar", WO_SETUP + "; woIdx=3; drawWO()", "closeWorkout()"],
   ["antrenman modu: özet", WO_SETUP + "; woDone=true; drawWO()", "closeWorkout()"],
+  ["takımyıldız: gün penceresi", "tab='today'; render(); openSkyDay(shiftDays(today(),-1))", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove())"],
+  ["takımyıldız: atlas penceresi", "tab='settings'; meTab='chart'; render(); openAtlas('lale')", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove())"],
+  ["takımyıldız: hafta kapanışı", "tab='today'; render(); state.days[shiftDays(weekStart(today()),-7)]={weight:82,tasks:[]}; delete state.skyClosed; maybeShowWeekClose()", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove())"],
   ["beslenme: Ayarla penceresi", "delete state.days[today()].log; state.mealPrefs.exclude=['yulaf']; viewDate=null; addOpen=null; tab='meals'; mealTab='log'; render(); openPrefsSheet()", "document.querySelectorAll('.sheet-bg').forEach(e=>e.remove()); state.mealPrefs.exclude=[]"],
 ];
 

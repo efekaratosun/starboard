@@ -20,8 +20,9 @@
     }
   }
   render();
-  /* Güncellemeden sonra bir kez: neler yeni. Uyarı (notice) varsa önce o okunsun. */
-  if (!notice) maybeShowWhatsNew();
+  /* Güncellemeden sonra bir kez: neler yeni. Uyarı (notice) varsa önce o okunsun.
+     Hafta kapanışı ondan sonra gelir, ikisi aynı anda açılmaz. */
+  if (!notice) maybeShowWhatsNew(maybeShowWeekClose); else maybeShowWeekClose();
   rescheduleSoon();
   healthSoon();
 })();

@@ -8,6 +8,8 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.11.0", items:[
+    tx("Her haftanın takımyıldızı baştan belli ve gerçek bir şekli var; yıldıza dokununca o günün hedefleri açılır. Kazandıkların Ben › Grafikler › Gökyüzü atlası'nda.")] },
   { v:"1.10.0", items:[
     tx("Beslenme sadeleşti: öneriler boş öğünün içinde, tek dokunuşla Ekle. Bugün · Tarifler · Liste.")] },
   { v:"1.10.0", items:[
@@ -55,11 +57,14 @@ function unseenNews(seen){
   return (seen ? list.filter(n => verCmp(n.v, seen) > 0) : list.slice(0, 3));
 }
 
-function maybeShowWhatsNew(){
-  if (!state || !state.profile || state.seenVersion === APP_VERSION) return;
+/* then: pencere kapanınca (ya da gösterilecek bir şey yoksa hemen) çalışır; ikinci bir
+   pencere bununla aynı anda açılmaz. */
+function maybeShowWhatsNew(then){
+  then = then || (() => {});
+  if (!state || !state.profile || state.seenVersion === APP_VERSION){ then(); return; }
   const news = unseenNews(state.seenVersion);
   const done = async () => { state.seenVersion = APP_VERSION; await saveState(state); };
-  if (!news.length){ done(); return; }
+  if (!news.length){ done(); then(); return; }
   const el = document.createElement("div");
   el.className = "sheet-bg";
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="wn-t">
@@ -69,7 +74,7 @@ function maybeShowWhatsNew(){
     <button id="wn-ok" style="margin-top:8px">${tx("Tamam")}</button>
   </div>`;
   document.body.appendChild(el);
-  const close = () => { sheetOut(el); done(); };
+  const close = () => { sheetOut(el); done(); then(); };
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
   el.querySelector("#wn-ok").onclick = close;

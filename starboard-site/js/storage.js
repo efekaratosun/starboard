@@ -2,7 +2,7 @@
 
 /* ---------------- depolama ---------------- */
 /* Uygulama sürümü: Ayarlar'da ve yedek dosyasında görünür. Değişiklikler CHANGELOG.md'de. */
-const APP_VERSION = "1.10.0";
+const APP_VERSION = "1.11.0";
 
 /* Kayıt, KEY altında tek bir JSON olarak durur. Eski adla (OLD_KEYS) kaydedilmiş veri
    ilk açılışta okunur ve yeni adla yazılır; eski kayıt yedek olarak yerinde bırakılır. */
@@ -42,7 +42,7 @@ async function clearState(){
    bir sonrakine taşıyan adım eklenir. Adımlar sırayla çalışır, böylece çok eski
    bir kayıt ya da yedek de güncel biçime gelir. Kural: bir adım yayınlandıktan
    sonra değiştirilmez; yeni değişiklik yeni adım olarak eklenir. */
-const SCHEMA = 2;
+const SCHEMA = 3;
 const MIGRATIONS = {
   /* 1 -> 2: antrenman ortamı zorunlu alan oldu; tamamlanan günlere yıldız damgası eklendi. */
   1: s => {
@@ -52,6 +52,22 @@ const MIGRATIONS = {
       const keep = state; state = s;      /* damgalama geçerli kayıt üzerinde çalışır */
       try { stampAllStars(); } finally { state = keep; calcReset(); }
     }
+  },
+  /* 2 -> 3: haftanın takımyıldızı kayda yazılır (s.sky: hafta başı -> kimlik). Geçmiş haftalar
+     eski formülün adıyla yazılır, böylece değişmez; bu hafta beşi tamamladıysa onun adı da korunur,
+     yoksa ilk açılışta yeni kurala göre seçilir. Hafta kapanışı gelecek haftadan başlar. */
+  2: s => {
+    if (!s.sky) s.sky = {};
+    const cw = weekStart(today());
+    const keep = state; state = s;
+    calcReset();
+    try {
+      for (const ws of new Set(Object.keys(s.days || {}).map(weekStart))){
+        if (s.sky[ws] || ws > cw || (ws === cw && !weekInfo(ws).done)) continue;
+        s.sky[ws] = legacyConst(ws).id;
+      }
+    } finally { state = keep; calcReset(); }
+    if (!s.skyClosed) s.skyClosed = shiftDays(cw, -7);
   }
 };
 

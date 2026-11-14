@@ -46,6 +46,10 @@ Sekmeler: Bugün (`mealTab = "log"`; bilinmeyen değer de buraya düşer), Tarif
 
 Boş öğünün kartında o günün önerisi soluk, kesik çerçeveli bir tabak olarak görünür (`suggestionHTML()`): `buildMeals(program, planDay() + mealVariant)` planının o öğünü, besin adları, toplam kcal, **Ekle** (`addSuggested()`: bütün tabağı günlüğe yazar, toast'tan Geri al) ve **Başka** (`mealVariant++`: günün planı bir sonrakine geçer; alışveriş listesi aynı sıradan hesaplandığı için ekranla uyumlu kalır, ama bu yüzden Başka bütün boş öğünlerin önerisini birlikte değiştirir). Öneri yalnızca bugün, yalnızca kaydı olmayan ve besin ekle paneli kapalı öğünde çıkar; geçmiş günde çıkmaz. Besinin tarifi varsa satır `data-recipefor` ile Tarifler'e götürür; `×` besini önerilerden çıkarır (sabitlenmiş besinde sabiti kaldırır). Mutfak, beslenme türü, "sık yediğim besinlerle kur" ve çıkarılanlar `Ayarla` ile açılan pencerededir (`openPrefsSheet()`); her değişiklik hemen kaydedilir ve arkadaki sayfa yenilenir. Öneri üretimi (`nutrition.js`) bu ekranla değişmedi.
 
+## Takımyıldız
+
+Kod `starboard-site/js/sky.js`. `CONSTELLATIONS` 14 şekli tutar (320×150 kutuda 7 yıldız, `p[0]` pazartesi; `e` çizgiler); sıra değiştirilmez, çünkü kaydı olmayan eski haftaların adı `legacyConst()` ile bu sıradan gelir. Haftanın takımyıldızı `state.sky[hafta başı] = kimlik` olarak haftanın ilk açılışında yazılır (`ensureSkyWeek()`, seçim `pickConst()`); hafta kapanışının gösterildiği hafta `state.skyClosed`. Takımyıldız 5 tam günle (`fullDay`) belirir; parlaklık `dayRatio`. Saf hesaplar: `weekInfo`, `skyEarned`, `pickConst`, `skyMid`, `weekSummary`; testleri "takımyıldız", "atlas", "hafta kapanışı" adlarıyla `tests.js` içinde.
+
 ## Sürüm çıkarırken
 
 1. `starboard-site/js/storage.js` içindeki `APP_VERSION`'ı artır, `CHANGELOG.md`'ye yaz.
