@@ -578,6 +578,7 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 .mr-t{display:flex;flex-direction:column;gap:1px;min-width:0}
 .mr-t span{font-size:13.5px;font-weight:700;color:var(--ink)}
 .mr-t b{font-family:var(--font-d);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mr-t i{font-style:normal;font-size:12px;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* hedef satırı: tamamlanma parlaması yalnızca opacity ile */
 .g{position:relative}

@@ -179,7 +179,7 @@ function macroRing(label, got, target, unit, id){
       </svg>
       <span class="mr-n num" aria-hidden="true">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span>
     </div>
-    <div class="mr-t" aria-hidden="true"><span>${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><b>${label}</b></div>
+    <div class="mr-t" aria-hidden="true"><span>${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><b>${label}</b><i>${fmtN(got)} / ${fmtN(target)} ${unit}</i></div>
   </div>`;
 }
 
