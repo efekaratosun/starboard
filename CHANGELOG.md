@@ -3,6 +3,21 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.12.0 (yayınlanmadı)
+
+### Değişti
+- Yeni tasarım dili, "performans paneli": koyu tema ana tasarım (derin lacivert zemin `#060A19`, kartlar `#0E1430`, neon vurgu `#FF4D94`); açık tema aynı dilde (`#F3F4F9` zemin, lacivert yazı `#0D1230`). Turuncu-pembe kimlik daha doygun (`--grad` `#FF6A13` → `#FF2D72`). Tema seçimi ve varsayılanı değişmedi.
+- Başlıklar ve büyük rakamlar Barlow Condensed (600–800, SIL OFL), uygulamaya gömülü (`fonts/barlow-condensed-*.woff2`, latin + latin-ext, `sw.js` önbelleğinde); gövde Nunito. Rakamlar eşit genişlikte (tabular-nums).
+- Bugün halkası, sekme çubuğu, segment düğmeleri, kartlar ve düğmeler yeni dile uyarlandı. Beslenme çubukları yeni makro renklerini aldı (biçim aynı); hedefin %10'undan fazla aşılan çubuk `--over` renginde.
+- Sekmeler arası geçiş daha belirgin bir yatay kayma (yalnızca transform ve opacity, bulanıklık yok).
+
+### Eklendi
+- Makro renk jetonları: `--kcal`, `--protein`, `--fat`, `--carb` (her birinin `-soft` zemini) ve aşım rengi `--over`.
+- Hareket altyapısı: `countAt()` (saf) ve `countUp(el, from, to)`; `data-count` taşıyan rakamlar sayfaya girilirken sıfırdan sayılır. Çubuklar (`.mbar`, `.task-bar`, `.bt-bar`) açılışta sıfırdan dolar (yalnızca transform); halka dolumu için `.fx-ring` (`--fx-len` çevre), gecikme `--fx-delay`; Bugün halkası sayfaya girerken bununla dolar. Hedef tamamlanınca halkada kısa parlama ve `haptic("success")`. Hepsi `prefers-reduced-motion`'da kapalı.
+
+### Düzeltildi
+- Öneri tabağı eklenince toast'taki kalori, günün toplamıyla aynı yuvarlamayla hesaplanır (bazı günlerde 1 kcal farklı yazıyordu).
+
 ## 1.11.0 (yayınlanmadı)
 
 ### Eklendi

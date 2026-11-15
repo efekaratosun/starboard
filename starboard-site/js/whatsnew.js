@@ -8,6 +8,8 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.12.0", items:[
+    tx("Yeni görünüm: koyu temada derin lacivert zemin, canlı renkler ve büyük, okunaklı rakamlar.")] },
   { v:"1.11.0", items:[
     tx("Her haftanın takımyıldızı baştan belli ve gerçek bir şekli var; yıldıza dokununca o günün hedefleri açılır. Kazandıkların Ben › Grafikler › Gökyüzü atlası'nda.")] },
   { v:"1.10.0", items:[

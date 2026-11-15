@@ -20,7 +20,7 @@ Yeni bir dosya eklenince hem `index.html` hem `sw.js` içindeki listeye yazılma
 
 ## Yazı tipi
 
-Nunito `starboard-site/fonts/` altındaki `woff2` dosyalarından yüklenir (`css/tokens.css` içindeki `@font-face`; Türkçe için `latin-ext` gerekli). Dışarıdan yazı tipi ya da stil yüklenmez. Yeni bir yazı tipi dosyası eklenince `sw.js` içindeki `SHELL` listesine de yazılmalıdır; test bunu denetler.
+Gövde metni Nunito, başlıklar ve büyük rakamlar Barlow Condensed (`--font-d`; 600, 700, 800). İkisi de `starboard-site/fonts/` altındaki `woff2` dosyalarından yüklenir (`css/tokens.css` içindeki `@font-face`; Türkçe için `latin-ext` gerekli; lisanslar aynı klasörde). Dışarıdan yazı tipi ya da stil yüklenmez. Yeni bir yazı tipi dosyası eklenince `sw.js` içindeki `SHELL` listesine de yazılmalıdır; test bunu denetler.
 
 ## Çeviri
 

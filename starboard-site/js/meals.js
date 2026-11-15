@@ -143,9 +143,10 @@ function recipesView(){
 }
 
 function macroRow(label, got, target, unit, ic, color){
+  const c = got > target * 1.1 ? "over" : (color || "band");
   return `<div class="macro">${iconBox(ic)}<div class="lbl">${label}
-    <div class="mbar"><i style="width:${clamp(got/target*100,0,100)}%;background:var(--${color||"band"})"></i></div></div>
-    <span class="v num">${got}${unit}<span class="tgt">/ ${target}${unit}</span></span></div>`;
+    <div class="mbar"><i style="width:${clamp(got/target*100,0,100)}%;background:var(--${c})"></i></div></div>
+    <span class="v num"><span data-count="m-${ic}" data-v="${got}">${got}</span>${unit}<span class="tgt">/ ${target}${unit}</span></span></div>`;
 }
 
 /* Lif ve mikro besinler tek katlanır bölümde: ana özet dört çubukla kalır. */
@@ -176,10 +177,10 @@ function logView(program, entry){
   ${favBlock(entry)}
   <section>
     <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
-    ${macroRow(tx("Kalori"), tot.kcal, program.kcal, "", "grain", "band")}
-    ${macroRow(tx("Protein"), tot.p, program.protein, " g", "poultry", "mp")}
-    ${macroRow(tx("Karbonhidrat"), tot.c, program.carb, " g", "bread", "mc")}
-    ${macroRow(tx("Yağ"), tot.f, program.fat, " g", "oil", "mf")}
+    ${macroRow(tx("Kalori"), tot.kcal, program.kcal, "", "grain", "kcal")}
+    ${macroRow(tx("Protein"), tot.p, program.protein, " g", "poultry", "protein")}
+    ${macroRow(tx("Karbonhidrat"), tot.c, program.carb, " g", "bread", "carb")}
+    ${macroRow(tx("Yağ"), tot.f, program.fat, " g", "oil", "fat")}
     ${tot.kcal > program.kcal * 1.1 ? `<div class="metric-note" style="margin-top:12px"><b class="out">${tx("Hedefi {0} kcal aştın.", [(tot.kcal-program.kcal)])}</b></div>` : ""}
   </section>
 
@@ -242,7 +243,7 @@ async function addSuggested(entry, slot){
     const added = items.map(i => addFoodDirect(entry, i.key, Math.round(i.g), slot)).filter(Boolean);
     if (!added.length) return null;
     await saveState(state); render();
-    toastUndo(tx("{0} eklendi · {1} kcal", [m.name, added.reduce((a, it) => a + foodKcal(it, it.g), 0)]), day, added.map(it => it.id), snap);
+    toastUndo(tx("{0} eklendi · {1} kcal", [m.name, logTotals({ log: added }).kcal]), day, added.map(it => it.id), snap);
     return added;
   } finally { sugBusy = false; }
 }

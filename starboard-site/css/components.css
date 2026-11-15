@@ -565,7 +565,7 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .comp{display:flex;height:14px;border-radius:999px;overflow:hidden;gap:3px}
 .comp i{display:block;height:100%}
 .comp .lean,.dot.lean{background:var(--good-vivid)}
-.comp .fat,.dot.fat{background:var(--mc)}
+.comp .fat,.dot.fat{background:var(--kcal)}
 .comp .lean{border-radius:999px 0 0 999px}.comp .fat{border-radius:0 999px 999px 0}
 .comp-lbl{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-size:13px;color:var(--muted);font-weight:700;flex-wrap:wrap}
 .comp-lbl b{color:var(--ink);font-weight:900}
@@ -641,51 +641,7 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .rt .m h3{margin:0;font-size:15px;font-weight:600}
 .rt .m p{margin:3px 0 0;font-size:12.5px;color:var(--muted)}
 
-/* Önizleme kutusu kendi jetonlarını taşır; sayfanın teması değişmez. */
-.thm-light{
-  /* yüzeyler: sıcak beyaz zemin, beyaz kartlar */
-  --bg:#FFF6F2; --surface:#FFFFFF; --raise:#FFFFFF;
-  --ink:#241A22; --muted:#6E6270; --line:#F3E4DE;
-  --shell:#FFF0EA; --track:#F7E2DA; --tint:#FFE6DD;
-
-  /* marka: parlak mercan. --band yazı ve ince çizgiler (beyazda AA),
-     --band-vivid grafik ve dolgu, --grad hero öğeleri ve butonlar. */
-  --band:#C9340C; --band-vivid:#FF5A3C; --on-brand:#FFFFFF;
-  --grad:linear-gradient(135deg,#FF7A2F 0%,#FF3D6E 100%);
-  --grad-btn:linear-gradient(135deg,#D93A12 0%,#D6285C 100%);
-  --g1:#FF7A2F; --g2:#FF3D6E;
-  /* anlam renkleri: yazı / grafik */
-  --good:#0B8A4B; --good-vivid:#16C172; --off:#B45800; --bad:#D92D3A;
-
-  /* makrolar ve alanlar */
-  --mp:#FF3B5C; --mc:#FF9500; --mf:#F5B800; --ml:#34C759;
-  --sleep:#7C5CFF; --water:#0A9BFF;
-
-  /* besin grupları */
-  --g-veg:#2FAE35; --g-fruit:#F0368A; --g-meat:#E8323C; --g-fish:#0A8FEA;
-  --g-dairy:#4A6BFF; --g-grain:#E88A00; --g-nuts:#A0612A; --g-egg:#D9A300;
-
-  --male:#2F7BEA; --male-t:#E6F0FF; --female:#E84A93; --female-t:#FFE6F2;
-  --neutral:#7C4DFF; --neutral-t:#EFE8FF;
-
-  /* takvim yoğunluğu: kırmızıdan yeşile */
-  --d1:#FFA894; --d2:#FFC48A; --d3:#FFE07A; --d4:#A7E38A; --d5:#10A95C;
-  --dnone:#F4695C; --dnone-ink:#3A120E;
-  --dtoday:#35CBF0; --dtoday-ink:#04303D;
-  --cal4-ink:var(--ink); --cal5-ink:#FFFFFF; --cal-lo-ink:var(--ink);
-
-  /* takımyıldız: gece gökyüzü */
-  --sky1:#17124A; --sky2:#4B2A9C; --star:#FFD36B; --star-off:rgba(255,255,255,.28);
-  --sky-ink:#F6F2FF; --sky-muted:#CFC6F2;
-
-  /* sekme vurguları (varsayılan: mercan) */
-  --accent:#FF5A3C; --accent2:#FF3D6E;
-
-  --sh1:0 1px 2px rgba(80,30,20,.05), 0 8px 22px rgba(80,30,20,.07);
-  --sh2:0 2px 6px rgba(80,30,20,.07), 0 12px 30px rgba(80,30,20,.10);
-  --r:22px;
-  --font:"Nunito", ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
+/* Önizleme kutusunun açık jetonları tokens.css içinde (:root, .thm-light). */
 
 /* ---- tema önizlemesi ---- */
 .tp{background:var(--bg);color:var(--ink);border-radius:20px;padding:14px 12px 10px;

@@ -152,14 +152,14 @@ function render(){
     mainEl.classList.add("page-in");
     if (navDir < 0) mainEl.classList.add("rev");
     if (navKeep) mainEl.classList.add(navKeep);
-    if (prevTab !== tab) app.querySelector("header")?.classList.add("page-in");
+    if (prevTab !== tab) app.querySelector("header")?.classList.add("page-in", ...(navDir < 0 ? ["rev"] : []));
     render.lastTab = tab;
   }
   const entered = !!(mainEl && mainEl.classList.contains("page-in"));
   navDir = 0; navKeep = "";
   tabIndicator(prevTab);
   motionAfter(mainEl, entered);
-  animateCounts();
+  animateCounts(entered);
 
   render.ready = true;
   if (party) celebrate();

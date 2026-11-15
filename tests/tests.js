@@ -395,8 +395,8 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.11.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.11.0", "1.10.0"], "1.10.0 ve 1.11.0 web maddeleri görünür");
+  eq(APP_VERSION, "1.12.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.12.0", "1.11.0", "1.10.0"], "1.10.0, 1.11.0 ve 1.12.0 web maddeleri görünür");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -428,18 +428,90 @@ test("hakkında: sağlık uyarısı, kaynaklar ve gizlilik sayfası yerinde", as
   ok(res.ok && (await res.text()).includes("Gizlilik politikası"), "privacy.html yok");
   tab = "today"; meTab = "body"; state = null;
 });
-test("yazı tipi: Nunito uygulamanın içinden gelir, dışarıya istek yok, çevrimdışı önbellekte", async () => {
+test("yazı tipi: Nunito ve Barlow Condensed uygulamanın içinden gelir, dışarıya istek yok, çevrimdışı önbellekte", async () => {
   const get = async p => { const r = await fetch("../starboard-site/" + p); ok(r.ok, p + " açılmadı"); return r.text(); };
-  const [html, tokens, sw] = await Promise.all([get("index.html"), get("css/tokens.css"), get("sw.js")]);
-  for (const [name, src] of [["index.html", html], ["tokens.css", tokens], ["sw.js", sw]])
+  const css = ["css/tokens.css", "css/components.css", "css/app.css"];
+  const [html, sw, ...sheets] = await Promise.all([get("index.html"), get("sw.js"), ...css.map(get)]);
+  for (const [name, src] of [["index.html", html], ["sw.js", sw], ...css.map((c, i) => [c, sheets[i]])]){
     ok(!/fonts\.(googleapis|gstatic)\.com/.test(src), name + " Google Fonts'a bağlanıyor");
-  const files = [...tokens.matchAll(/url\("\.\.\/(fonts\/[^"]+)"\)/g)].map(m => m[1]);
-  ok(files.length >= 2, "@font-face dosyaları bulunamadı");
+    ok(!/@import/.test(src), name + " dışarıdan stil alıyor");
+  }
+  const tokens = sheets[0];
+  const faces = [...tokens.matchAll(/@font-face\{([^}]+)\}/g)].map(m => m[1]);
+  const files = faces.map(f => (/url\("\.\.\/(fonts\/[^"]+)"\)/.exec(f) || [])[1]);
+  ok(files.length >= 8 && files.every(Boolean), "@font-face dosyaları bulunamadı");
+  for (const fam of ["Nunito", "Barlow Condensed"]){
+    const mine = faces.filter(f => f.includes(`font-family:"${fam}"`));
+    ok(mine.some(f => f.includes("latin-ext")) && mine.some(f => /latin\.woff2/.test(f)), fam + ": latin ve latin-ext yok");
+    ok(mine.every(f => /unicode-range:/.test(f) && /font-display:swap/.test(f)), fam + ": unicode-range ya da font-display eksik");
+  }
+  for (const w of ["600", "700", "800"])
+    ok(faces.some(f => f.includes('"Barlow Condensed"') && f.includes("font-weight:" + w + ";")), "Barlow Condensed " + w + " yok");
   for (const f of files) {
     const r = await fetch("../starboard-site/" + f);
     ok(r.ok && (await r.arrayBuffer()).byteLength > 1000, f + " yok ya da boş");
     ok(sw.includes(`"${f}"`), f + " sw.js SHELL listesinde değil");
   }
+  for (const lic of ["fonts/Nunito-OFL.txt", "fonts/BarlowCondensed-OFL.txt"])
+    ok((await get(lic)).includes("SIL Open Font License"), lic + " lisans metni yok");
+  ok(/--font-d:"Barlow Condensed"/.test(tokens), "başlık yazı tipi jetonu yok");
+});
+test("tasarım: makro renk jetonları iki temada da tanımlı; varsayılan tema değişmedi", async () => {
+  const tokens = await fetch("../starboard-site/css/tokens.css").then(r => r.text());
+  const blocks = [/:root, \.thm-light\{([^}]+)\}/, /:root:not\(\[data-theme="light"\]\)\{([^}]+)\}/, /:root\[data-theme="dark"\], \.thm-dark\{([^}]+)\}/]
+    .map(re => (re.exec(tokens) || [])[1]);
+  ok(blocks.every(Boolean), "tema blokları bulunamadı");
+  for (const b of blocks)
+    for (const v of ["--kcal", "--kcal-soft", "--protein", "--protein-soft", "--fat", "--fat-soft", "--carb", "--carb-soft", "--over", "--neon", "--bg", "--ink"])
+      ok(new RegExp(v + ":").test(b), v + " eksik");
+  eq(THEMES.map(t => t[0]), ["auto", "light", "dark"]);
+});
+
+/* ---- hareket ---- */
+test("hareket: countAt sıfırdan hedefe yavaşlayarak sayar, uçlarda tam değer verir", () => {
+  eq(countAt(0, 100, 0), 0);
+  eq(countAt(0, 100, 1), 100);
+  eq(countAt(0, 100, 2), 100, "1'den büyük ilerleme hedefte kalır");
+  eq(countAt(0, 100, -1), 0);
+  eq(countAt(0, 100, 0.5), 88, "yavaşlayan eğri: yarı sürede %87,5");
+  eq(countAt(80, 40, 1), 40, "aşağı da sayar");
+  eq(countAt(0, 1, 0.5, 2), 0.88, "ondalık basamak");
+  let prev = -1;
+  for (let i = 0; i <= 20; i++){ const v = countAt(0, 2400, i / 20); ok(v >= prev, "azalmamalı"); prev = v; }
+});
+test("hareket: Bugün halkası sayfaya girerken .fx-ring ile sıfırdan dolar, sayfa içinde sınıf taşımaz", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  try {
+    tab = "plan"; render();
+    tab = "today"; render();
+    const fg = app.querySelector(".gh-fg");
+    ok(fg && fg.classList.contains("fx-ring"), "girişte fx-ring yok");
+    ok(/--fx-len:\d/.test(fg.getAttribute("style")), "çevre uzunluğu yok");
+    eq(fg.getAttribute("stroke-dashoffset"), fg.dataset.to, "son değer HTML'de");
+    render();
+    ok(!app.querySelector(".gh-fg").classList.contains("fx-ring"), "aynı sekmede yeniden çizim halkayı baştan doldurmamalı");
+  } finally { state = null; }
+});
+test("hareket: countUp görünmeyen ya da hareketi azaltılmış öğeye dokunmaz; sayfa girişinde sayaçlar sıfırdan başlar", async () => {
+  const el = document.createElement("span");
+  el.textContent = "1.234";
+  countUp(el, 0, 1234);
+  eq(el.textContent, "1.234", "görünmeyen öğe son değerde kalır");
+  const box = document.createElement("div");
+  box.style.cssText = "position:fixed;left:0;top:0";
+  box.innerHTML = `<span data-count="tst" data-v="500">500</span>`;
+  document.body.appendChild(box);
+  const span = box.firstChild;
+  const realApp = app.querySelectorAll;
+  try {
+    app.querySelectorAll = sel => box.querySelectorAll(sel);
+    animateCounts(true);
+    if (!reduceMotion()){
+      ok(+span.textContent.replace(/\D/g, "") < 500, "girişte sıfırdan sayar: " + span.textContent);
+    }
+    await new Promise(r => setTimeout(r, 1000));
+    eq(span.textContent, "500", "sonunda çizilen değer");
+  } finally { app.querySelectorAll = realApp; box.remove(); }
 });
 
 /* ---- hatırlatmalar ---- */
@@ -2273,8 +2345,8 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.11.0");
-  for (const v of ["1.9.1", "1.10.0", "1.11.0"]) {
+  eq(APP_VERSION, "1.12.0");
+  for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");

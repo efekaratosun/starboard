@@ -561,6 +561,7 @@ window.STARBOARD_EN = {
   "Geçen hafta: {0}": "Last week: {0}",
   "en iyi gün {0}": "best day {0}",
   "{0} antrenman": "{0} workouts",
+  "Yeni görünüm: koyu temada derin lacivert zemin, canlı renkler ve büyük, okunaklı rakamlar.": "New look: a deep navy background in dark mode, vivid colours and big, easy-to-read numbers.",
   "Her haftanın takımyıldızı baştan belli ve gerçek bir şekli var; yıldıza dokununca o günün hedefleri açılır. Kazandıkların Ben › Grafikler › Gökyüzü atlası'nda.": "Each week's constellation is known from the start and has a real shape; tap a star to see that day's goals. The ones you earn are in Me › Charts › Sky atlas.",
   "Takımyıldızına bir yıldız eklendi. Seri: {0} gün.": "A star was added to your constellation. Streak: {0} days.",
 

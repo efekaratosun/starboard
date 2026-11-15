@@ -245,10 +245,10 @@ function nutritionCard(program){
   const row = (l, v) => `<div class="macro"><span class="lbl">${l}</span><span class="v num">${v}</span></div>`;
   return `<section>
     <h2>${tx("Beslenme")} <span class="count">${tx("son 7 günde {0} gün kayıt", [(N.days)])}</span></h2>
-    ${macroRow(tx("Kalori"), N.kcal, program.kcal, "", "grain", "band")}
-    ${macroRow(tx("Protein"), N.p, program.protein, " g", "poultry", "mp")}
-    ${macroRow(tx("Karbonhidrat"), N.c, program.carb, " g", "bread", "mc")}
-    ${macroRow(tx("Yağ"), N.f, program.fat, " g", "oil", "mf")}
+    ${macroRow(tx("Kalori"), N.kcal, program.kcal, "", "grain", "kcal")}
+    ${macroRow(tx("Protein"), N.p, program.protein, " g", "poultry", "protein")}
+    ${macroRow(tx("Karbonhidrat"), N.c, program.carb, " g", "bread", "carb")}
+    ${macroRow(tx("Yağ"), N.f, program.fat, " g", "oil", "fat")}
     ${macroRow(tx("Lif"), N.lif, N.fiberTarget, " g", "veg", "ml")}
     <div class="metric-note" style="margin:10px 0 6px">${tx("Kayıt girilen günlerin ortalaması.")}</div>
     ${row(tx("Protein hedefi tutan gün"), `${N.proteinDays}/${N.days}`)}

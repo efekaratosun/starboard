@@ -73,20 +73,24 @@ function goalHero(key, sc){
   const C = 2 * Math.PI * 34;
   const off = +(C * (1 - pct)).toFixed(1);
   const entering = render.lastTab !== "today" || !!navDir;
-  const prevOff = entering || _ringPrev[key] === undefined ? +C.toFixed(1) : _ringPrev[key].off;
+  /* Sayfaya girerken halka CSS ile sıfırdan dolar (.fx-ring); sayfa içinde eski değerden geçer. */
+  const prevOff = entering || reduceMotion() ? off : _ringPrev[key] === undefined ? +C.toFixed(1) : _ringPrev[key].off;
   const bump = !entering && _ringPrev[key] && _ringPrev[key].done !== sc.done;
   const rollFrom = String(bump && !reduceMotion() ? _ringPrev[key].done : sc.done);
+  const up = bump && sc.done > _ringPrev[key].done;
   _ringPrev[key] = { off, done: sc.done };
   const w = weekInfo(weekStart(today())), streak = streakNow();
   const title = !sc.total ? tx("Hedef yok") : full ? (now ? tx("Bugün tamam") : tx("Gün tamam")) : tx("{0} hedef kaldı", [(sc.total - sc.done)]);
   const sub = !now ? `${prettyDate(key)} · ${weekdayName(key)}`
             : full ? tx("Bugünün yıldızı yandı.") : tx("Satıra dokun, olduğu yerde gir.");
   return `<div class="gh${full ? " full" : ""}${now ? "" : " past"}">
-    <div class="gh-ring">
+    <div class="gh-ring${up ? " flash" : ""}">
       <svg viewBox="0 0 84 84" aria-hidden="true">
+        <defs><linearGradient id="gh-gr" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" style="stop-color:var(--g1)"/><stop offset="1" style="stop-color:var(--neon)"/></linearGradient></defs>
         <circle class="gh-bg" cx="42" cy="42" r="34"/>
-        <circle class="gh-fg" cx="42" cy="42" r="34" transform="rotate(-90 42 42)"
-          stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${reduceMotion() ? off : prevOff}" data-to="${off}"/>
+        <circle class="gh-fg${entering ? " fx-ring" : ""}" cx="42" cy="42" r="34" transform="rotate(-90 42 42)" style="--fx-len:${C.toFixed(1)}px"
+          stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${prevOff}" data-to="${off}"/>
       </svg>
       <span class="gh-n num${bump ? " bump" : ""}" aria-label="${tx("{0} hedeften {1} tamam", [(sc.total), (sc.done)])}"><b class="roll" data-v="${rollFrom}" data-to="${sc.done}">${rollHTML(rollFrom)}</b>/${sc.total}</span>
     </div>
@@ -144,7 +148,7 @@ function goalRow(t, entry, program, key){
   const ses = kind === "train" ? program.training.days.find(d => d.wd === isoWeekday(key)) : null;
   const ic = kind === "train" ? ((ses && ses.icon) || "fullbody") : GOAL_ICON[kind];
   const seen = _doneSeen[key];
-  if (info.ok && seen && !seen.has(kind)) _justAt[key + kind] = Date.now();
+  if (info.ok && seen && !seen.has(kind)){ _justAt[key + kind] = Date.now(); goalRow.buzz = true; }
   const just = info.ok && Date.now() - (_justAt[key + kind] || 0) < 1000;
   return `<div class="g${open ? " open" : ""}${just ? " just" : ""}" data-done="${info.ok ? 1 : 0}" data-kind="${kind}">
     <button class="g-h" data-goal="${kind}" aria-expanded="${open}">
@@ -468,6 +472,8 @@ function wireToday(entry, program, key){
   const fg = app.querySelector(".gh-fg[data-to]");
   if (fg) requestAnimationFrame(() => requestAnimationFrame(() => { fg.style.strokeDashoffset = fg.dataset.to; }));
   app.querySelectorAll(".g.just .g-ok").forEach(el => setTimeout(() => sparkle(el), 200));
+  /* yeni tamamlanan hedef: kısa parlama (CSS .g.just) ve dokunsal onay */
+  if (goalRow.buzz){ goalRow.buzz = false; haptic("success"); }
   const rn = app.querySelector(".gh-n b.roll");
   if (rn && rn.dataset.to !== rn.dataset.v) requestAnimationFrame(() => requestAnimationFrame(() => rollSet(rn, rn.dataset.to)));
   app.querySelectorAll("[data-wk]").forEach(b => b.onclick = () => {

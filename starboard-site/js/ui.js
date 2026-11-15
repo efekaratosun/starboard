@@ -6,24 +6,46 @@
 const reduceMotion = () =>
   !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 
+/* Sayacın p (0–1) anındaki değeri: yavaşlayarak biter, dec basamağa yuvarlanır. Saf. */
+function countAt(from, to, p, dec){
+  const q = Math.min(1, Math.max(0, p));
+  const e = 1 - Math.pow(1 - q, 3);
+  return +(from + (to - from) * e).toFixed(dec || 0);
+}
+/* Bir öğedeki rakamı from'dan to'ya sayar. Hareket azaltılmışsa doğrudan son değer yazılır. */
+function countUp(el, from, to, opt){
+  const o = opt || {}, dec = o.dec || 0, dur = o.dur || 700;
+  const put = v => { el.textContent = fmtN(v); };
+  /* Çizilen HTML son değeri zaten taşır; animasyon yoksa dokunulmaz. */
+  if (!el || from === to || reduceMotion() || !el.getClientRects().length) return;
+  const last = el.textContent;
+  const t0 = performance.now() + (o.delay || 0);
+  let done = false;
+  const end = () => { if (!done){ done = true; el.textContent = last; } };
+  put(countAt(from, to, 0, dec));
+  const step = now => {
+    if (done || !el.isConnected) return;
+    const p = (now - t0) / dur;
+    if (p >= 1) return end();
+    put(countAt(from, to, p, dec));
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+  /* Kare gelmezse (arka planda sekme) rakam yarıda kalmasın. */
+  setTimeout(end, (o.delay || 0) + dur + 150);
+}
+/* data-count="anahtar" data-v="değer" [data-dec] taşıyan rakamlar her çizimden sonra:
+   sayfaya girilirken sıfırdan, sayfa içindeki değişimde eski değerden sayılır. */
 const _counted = new Map();
-function animateCounts(){
+function animateCounts(entered){
   app.querySelectorAll("[data-count]").forEach(el => {
     const key = el.dataset.count;
     const to = parseFloat(el.dataset.v);
     if (!isFinite(to)) { _counted.delete(key); return; }
     const had = _counted.has(key);
-    const from = had ? _counted.get(key) : to;
+    const from = entered ? 0 : had ? _counted.get(key) : to;
     _counted.set(key, to);
-    if (!had || from === to || reduceMotion()) return;
-    const dec = +(el.dataset.dec || 0), t0 = performance.now(), dur = 620;
-    const step = now => {
-      const p = Math.min(1, (now - t0) / dur);
-      const e = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmtN(+(from + (to - from) * e).toFixed(dec));
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
+    if (from !== to) countUp(el, from, to, { dec: +(el.dataset.dec || 0), delay: entered ? 120 : 0 });
   });
 }
 

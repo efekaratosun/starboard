@@ -303,23 +303,25 @@ main.on{overflow-x:clip}
 
 /* ===== uygulama içi sahne geçişleri ===== */
 main{overflow-x:clip}
-@keyframes pageInX{from{opacity:0;transform:translate(24px,8px) scale(.985);filter:blur(5px)}}
-@keyframes pageInXr{from{opacity:0;transform:translate(-24px,8px) scale(.985);filter:blur(5px)}}
-main.page-in > *{animation:pageInX .52s var(--e-out) backwards}
+/* Sekmeler arası: içerik yön yönüne belirgin bir kaymayla gelir (yalnızca transform ve opacity). */
+@keyframes pageInX{from{opacity:0;transform:translateX(72px)}}
+@keyframes pageInXr{from{opacity:0;transform:translateX(-72px)}}
+main.page-in > *{animation:pageInX .5s var(--e-out) backwards}
 main.page-in.rev > *{animation-name:pageInXr}
-main.page-in > *:nth-child(1){animation-delay:20ms}
-main.page-in > *:nth-child(2){animation-delay:70ms}
-main.page-in > *:nth-child(3){animation-delay:120ms}
-main.page-in > *:nth-child(4){animation-delay:170ms}
-main.page-in > *:nth-child(5){animation-delay:215ms}
-main.page-in > *:nth-child(n+6){animation-delay:255ms}
+main.page-in > *:nth-child(1){animation-delay:0ms}
+main.page-in > *:nth-child(2){animation-delay:45ms}
+main.page-in > *:nth-child(3){animation-delay:90ms}
+main.page-in > *:nth-child(4){animation-delay:130ms}
+main.page-in > *:nth-child(5){animation-delay:165ms}
+main.page-in > *:nth-child(n+6){animation-delay:195ms}
 main.page-in.k-seg > .seg,main.page-in.k-day > .wk,main.page-in.k-day > .wk-back{animation:none}
 main.page-out > *{animation:pageOutX .17s cubic-bezier(.4,0,1,1) forwards}
 main.page-out.rev > *{animation-name:pageOutXr}
 main.page-out.k-seg > .seg,main.page-out.k-day > .wk{animation:none}
-@keyframes pageOutX{to{opacity:0;transform:translateX(-30px) scale(.985);filter:blur(5px)}}
-@keyframes pageOutXr{to{opacity:0;transform:translateX(30px) scale(.985);filter:blur(5px)}}
-header.page-in .htext{animation:pageIn .45s var(--e-out) backwards}
+@keyframes pageOutX{to{opacity:0;transform:translateX(-64px)}}
+@keyframes pageOutXr{to{opacity:0;transform:translateX(64px)}}
+header.page-in .htext{animation:pageInX .45s var(--e-out) backwards}
+header.page-in.rev .htext{animation-name:pageInXr}
 header.page-in .gear{animation:starPop .5s var(--e-spring) backwards}
 
 /* hedef satırları sırayla düşer */
@@ -451,9 +453,14 @@ main.page-in > .rv{animation:none}
 .rv-in .item:nth-child(2){animation-delay:50ms}.rv-in .item:nth-child(3){animation-delay:100ms}
 .rv-in .item:nth-child(4){animation-delay:150ms}.rv-in .item:nth-child(n+5){animation-delay:200ms}
 
-/* çubuklar dolarak gelir */
-@keyframes barGrow{from{width:0}}
-main.page-in .task-bar i,main.page-in .mbar i,.rv-in .task-bar i,.rv-in .mbar i{animation:barGrow .95s var(--e-out) .28s backwards}
+/* çubuklar açılışta sıfırdan dolar (.mbar i, .task-bar i, .bt-bar s); gecikme --fx-delay */
+@keyframes barGrow{from{transform:scaleX(0)}}
+.mbar i,.task-bar i,.bt-bar s{transform-origin:0 50%}
+:is(main.page-in,.rv-in) :is(.task-bar i,.mbar i,.bt-bar s){animation:barGrow .9s var(--e-out) var(--fx-delay,.26s) backwards}
+/* Halka: .fx-ring çemberi --fx-len (çevre) uzunluğundan kendi stroke-dashoffset değerine dolar
+   (Bugün halkası, sayfaya girerken). */
+@keyframes fxRing{from{stroke-dashoffset:var(--fx-len)}}
+:is(main.page-in,.rv-in) .fx-ring{animation:fxRing 1s var(--e-out) var(--fx-delay,.2s) backwards}
 
 /* grafikler çizilerek gelir */
 .ch-line{stroke-dasharray:1;stroke-dashoffset:0}
@@ -487,4 +494,105 @@ main.page-in .cal-day:nth-child(7n){animation-delay:.3s}
 
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important;animation:none !important}
+}
+
+/* ===== 1.12.0: performans paneli =====
+   Koyu zemin öncelikli, veri odaklı dil: sıkıştırılmış kalın başlıklar ve rakamlar
+   (Barlow Condensed), gövde Nunito. Kartlar ince çizgili panel; vurgular neon. */
+
+/* tipografi */
+h1{font-family:var(--font-d);font-weight:800;font-size:36px;letter-spacing:-.2px;line-height:1.02}
+h2{font-family:var(--font-d);font-weight:700;font-size:21px;letter-spacing:.03em;line-height:1.1;text-transform:uppercase}
+h2 .count{font-family:var(--font);text-transform:none}
+.fold-h{font-family:var(--font-d);font-weight:700;font-size:20px;letter-spacing:.03em;text-transform:uppercase}
+.on h1{font-family:var(--font-d);font-weight:800;font-size:38px;letter-spacing:-.2px;line-height:1.02}
+.on-w h1{font-size:50px;letter-spacing:-.4px}
+.gh-n b,.bt-v,.stat b,.hero-num,.os-k b,.os-t b,.rl-n,.wk-d b,.macro .v,.lbl-v,.on-num input,.tp-h b{
+  font-family:var(--font-d);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:0}
+.macro .v{font-size:18px;font-weight:700}
+.macro .tgt{font-family:var(--font)}
+.stat b{font-size:28px}
+.bt-v{font-size:34px}
+.hero-num{font-size:44px}
+.os-k b{font-size:84px}
+.rl-n{font-size:62px}
+.on-num input{font-size:66px}
+
+/* kartlar: ince çizgili panel */
+section,.bt,.eve,.os-t,.os-p,.rl{box-shadow:inset 0 0 0 1px var(--line)}
+section{border-radius:var(--r)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) :is(section,.bt,.eve){box-shadow:inset 0 0 0 1px var(--line), var(--edge)} }
+:root[data-theme="dark"] :is(section,.bt,.eve){box-shadow:inset 0 0 0 1px var(--line), var(--edge)}
+
+/* düğmeler */
+button:not([class]),button.ghost{font-family:var(--font-d);font-weight:700;font-size:18px;letter-spacing:.04em;text-transform:uppercase;border-radius:14px}
+button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
+.chip,.pill{border-radius:10px}
+
+/* segment düğmeleri: seçili olan ters renk, saat ekranı gibi */
+.seg{border-radius:14px;padding:4px;gap:4px;box-shadow:inset 0 0 0 1px var(--line)}
+.seg button{font-family:var(--font-d);font-weight:700;font-size:16px;letter-spacing:.05em;text-transform:uppercase;border-radius:10px;padding:10px 6px}
+.seg button[aria-current="true"]{background:var(--ink);color:var(--bg);border-bottom:0;box-shadow:0 6px 16px -8px var(--glow)}
+
+/* başlık: sekme renginde eğik şerit */
+.htext::after{display:block;width:44px;height:4px;border-radius:2px;margin-top:10px;transform:skewX(-24deg);
+  background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* hafta şeridi */
+.wk-d b{font-size:22px;line-height:1.05}
+.wk-n{text-transform:uppercase;letter-spacing:.04em}
+.wk-d[aria-current="true"]{box-shadow:inset 0 0 0 1px var(--line), inset 0 -3px 0 var(--neon)}
+
+/* günün halkası */
+.gh{gap:20px;padding:6px 4px 20px}
+.gh-ring{width:116px;height:116px;flex:0 0 116px}
+.gh-ring::before{content:"";position:absolute;inset:-14px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,var(--glow),transparent);opacity:.45}
+.gh-ring svg{position:relative}
+.gh-bg{stroke-width:9}
+.gh-fg{stroke:url(#gh-gr);stroke-width:9}
+.gh-n{padding-top:36px;font-family:var(--font-d);font-size:20px;font-weight:700}
+.gh-n b{font-size:46px;line-height:.9;margin-right:2px}
+.gh-t > b{font-family:var(--font-d);font-weight:800;font-size:32px;letter-spacing:0;line-height:1}
+.gh-s{box-shadow:inset 0 0 0 1px var(--line)}
+/* hedef tamamlanınca: halkadan kısa bir parlama dalgası */
+.gh-ring::after{content:"";position:absolute;inset:2px;border-radius:50%;pointer-events:none;opacity:0;
+  box-shadow:0 0 0 3px var(--neon),0 0 26px 6px var(--glow)}
+.gh-ring.flash::after{animation:ghFlash .75s var(--e-out) .35s}
+@keyframes ghFlash{0%{opacity:0;transform:scale(.92)}35%{opacity:1}100%{opacity:0;transform:scale(1.22)}}
+.gh.full .gh-ring{animation:none}
+.gh.full:not(.past) .gh-ring::before{animation:ghPulse 2.6s ease-in-out infinite}
+@keyframes ghPulse{50%{opacity:.9;transform:scale(1.06)}}
+
+/* hedef satırı: tamamlanma parlaması yalnızca opacity ile */
+.g{position:relative}
+.g.just{animation:none}
+.g.just::before{content:"";position:absolute;inset:0 -8px;border-radius:14px;pointer-events:none;
+  background:color-mix(in srgb,var(--good-vivid) 18%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--good-vivid) 40%,transparent);
+  animation:gFlash .9s var(--e-out) forwards}
+@keyframes gFlash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+.task-bar{height:6px;border-radius:2px}
+.task-bar i{border-radius:2px;background:var(--grad)}
+.mbar{height:8px;border-radius:2px}
+.mbar i{border-radius:2px}
+
+/* bento: kalori kutusu neon parıltılı */
+.bt{border-radius:18px}
+.bt-kcal{box-shadow:0 12px 30px -12px var(--glow), var(--edge)}
+.bt-nm{font-family:var(--font-d);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase}
+.bt-bar{height:5px;border-radius:2px}
+.bt-bar s{border-radius:2px}
+
+/* alt menü: koyu cam, seçili sekme neon hapta */
+.tabbar{box-shadow:0 12px 34px rgba(4,8,24,.28), inset 0 0 0 1px var(--line);border:0}
+.tabbar button[data-tab]{font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.tab-ind{background:var(--grad);box-shadow:0 4px 16px -2px var(--glow)}
+.tabbar button[aria-current="true"] .ico{color:var(--on-brand)}
+.tabbar .fab{background:var(--grad);box-shadow:0 8px 24px -4px var(--glow), inset 0 0 0 2px color-mix(in srgb,#FFFFFF 22%,transparent)}
+
+/* kısa bildirim */
+.toast{border-radius:14px}
+@media (prefers-reduced-motion: reduce){
+  *::before,*::after{transition:none !important;animation:none !important}
+  .g.just::before{display:none}
 }
