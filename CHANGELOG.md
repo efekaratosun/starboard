@@ -3,6 +3,22 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.13.0 (yayınlanmadı)
+
+### Değişti
+- Beslenme özeti dört halka oldu (kalori, protein, karbonhidrat, yağ; renkleri `--kcal`, `--protein`, `--carb`, `--fat`). Ortada kalan miktar büyük yazılır, altında "kcal kaldı" / "g kaldı", ad ve küçük yazıyla tüketilen / hedef ("1340 / 2200 kcal"). Hedef aşılınca (hedefin bir üstünden başlar; eşitlikte "0 kaldı") halka dolu ve `--over` renginde olur, ortada "+120" gibi fazlalık yazar. Eski çubuklar ve "Hedefi X kcal aştın" satırı kalktı; lif çubuğu "Ayrıntılar" içinde kaldı. Halkalar 1.12.0 hareket altyapısını kullanır (`.fx-ring`, `countUp`); hareket azaltma ayarında anında son değerde durur.
+- "Sık yediklerin" açılır kapanır (`fold("favs")`), varsayılan kapalı, dokununca açılır; "dünü kopyala" düğmesi dışarıda kalır.
+- Bugün ekranının en üstündeki hafta şeridi artık bu haftanın (Pzt-Paz) takımyıldızı: ~64 px yüksekliğinde küçültülmüş gerçek şekil, altında gün harfleri, bugün belirgin. Şeridin her yerine dokunmak hafta penceresini açar: büyük şekil (yıldıza dokununca günün hedefleri ve "O güne git"), günlük seri, "N yıldız daha, … belirecek" satırı ve Gökyüzü atlası. Eski günlere takvimden ya da penceredeki yıldızlardan gidilir; şeritte gün seçilmez.
+
+### Eklendi
+- Gün tamamlanınca şeritteki bugünün yıldızı kısa bir an yansır ve tek `haptic("success")` olur (hedefin ya da kutlamanın titreşimi aynı anda ikinci kez eklenmez); oturumun ilk çiziminde ve yeniden çizimde olmaz; hareket azaltmada yansıma görünmez.
+- Erişilebilirlik aracına yeni ekranlar: sık yedikler kapalı/açık, hedef aşıldı (halkalar), hafta penceresi.
+
+### Kaldırıldı
+- Bugün ekranındaki büyük takımyıldız kartı ve Ben › Grafikler'deki Gökyüzü atlası (ikisi de hafta penceresinde). Kullanılmayan çeviri anahtarları ve hafta şeridinin eski gün düğmeleri/stilleri temizlendi.
+
+Veri şeması aynı kalır (`SCHEMA` 3).
+
 ## 1.12.0 (yayınlanmadı)
 
 ### Değişti

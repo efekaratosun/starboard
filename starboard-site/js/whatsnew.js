@@ -8,6 +8,10 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.13.0", items:[
+    tx("Beslenme özeti dört halka oldu: kalan miktar önde, hedef aşılınca fazlalık kırmızıyla yazar. Sık yediklerin artık açılıp kapanıyor.")] },
+  { v:"1.13.0", items:[
+    tx("Bugün'ün en üstündeki hafta şeridi artık haftanın takımyıldızı: dokununca büyük hali ve gökyüzü atlası açılır. Gün tamamlanınca yıldız parlar.")] },
   { v:"1.12.0", items:[
     tx("Yeni görünüm: koyu temada derin lacivert zemin, canlı renkler ve büyük, okunaklı rakamlar.")] },
   { v:"1.11.0", items:[
