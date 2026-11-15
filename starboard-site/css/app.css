@@ -81,7 +81,7 @@ button.g-h:focus-visible{outline:2px solid var(--band);outline-offset:-2px;borde
 #goal-add{margin-top:16px}
 
 /* sık yediklerin */
-.favs .fav{margin-top:0}
+.favs .fav,.fold .fav{margin-top:0}
 
 /* yüzen alt menü */
 .tabbar{left:50%;right:auto;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));
@@ -563,6 +563,21 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 .gh.full .gh-ring{animation:none}
 .gh.full:not(.past) .gh-ring::before{animation:ghPulse 2.6s ease-in-out infinite}
 @keyframes ghPulse{50%{opacity:.9;transform:scale(1.06)}}
+
+/* beslenme özeti: dört halka (kalori, protein, karbonhidrat, yağ); renk --c, aşılınca --over */
+.mrings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px;padding:10px 0 4px}
+.mring{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-width:0}
+.mr-r{position:relative;width:96px;height:96px}
+.mr-r svg{width:100%;height:100%;display:block}
+.mr-bg,.mr-fg{fill:none;stroke-width:9}
+.mr-bg{stroke:var(--track)}
+.mr-fg{stroke:var(--c);stroke-linecap:round;transition:stroke-dashoffset .9s var(--e-out,ease),stroke .4s}
+.mr-n{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-weight:800;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.mring.over .mr-n{color:var(--over)}
+.mr-t{display:flex;flex-direction:column;gap:1px;min-width:0}
+.mr-t span{font-size:13.5px;font-weight:700;color:var(--ink)}
+.mr-t b{font-family:var(--font-d);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 
 /* hedef satırı: tamamlanma parlaması yalnızca opacity ile */
 .g{position:relative}

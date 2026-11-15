@@ -2505,16 +2505,17 @@ test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarla p
   } finally { closeSug(); }
 });
 
-test("özet: dört çubuk görünür; Lif ve mikro besinler tek katlanır Ayrıntılar altında (varsayılan kapalı)", async () => {
+test("özet: dört halka görünür; Lif ve mikro besinler tek katlanır Ayrıntılar altında (varsayılan kapalı)", async () => {
   const { slots } = await sugFixture();
   try {
     ok(!app.querySelector('[data-fold="detail"]'), "kayıt yokken Ayrıntılar yok");
-    eq(app.querySelectorAll(".macro").length, 4);
+    eq(app.querySelectorAll(".mring").length, 4);
+    eq(app.querySelectorAll(".macro").length, 0, "çubuk kalmadı");
     state.days[today()].log = [logItem("yulaf", 60, slots[0], 1), logItem("muz", 120, slots[0], 2)]; syncKcal(state.days[today()]); render();
     const macros = [...app.querySelectorAll(".macro")];
-    eq(macros.length, 5, "dört çubuk + katlanmış lif");
-    const outside = macros.filter(m => !m.closest(".fold")).map(m => m.querySelector(".lbl").textContent.trim());
-    eq(outside, ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
+    eq(macros.length, 1, "yalnızca katlanmış lif çubuk olarak kalır");
+    ok(macros[0].closest(".fold"), "lif katlı bölümde");
+    eq([...app.querySelectorAll(".mring .mr-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
     const h = app.querySelector('[data-fold="detail"]');
     ok(h && h.textContent.includes("Ayrıntılar"), "Ayrıntılar başlığı");
     eq(h.getAttribute("aria-expanded"), "false", "kapalı başlar");
@@ -2527,6 +2528,136 @@ test("özet: dört çubuk görünür; Lif ve mikro besinler tek katlanır Ayrın
     eq(state.ui.fold.detail, true, "durum kaydedilir");
     eq(a11yBad("özet"), []);
   } finally { closeSug(); }
+});
+
+/* ---- beslenme özeti halkaları ve katlanır Sık yediklerin (1.13.0) ---- */
+test("halka: ringInfo kalanı ve fazlalığı hesaplar; aşım yalnızca hedefin üstünde başlar", () => {
+  eq(ringInfo(0, 2000), { pct: 0, over: false, left: 2000, extra: 0 });
+  eq(ringInfo(1140, 2000), { pct: 0.57, over: false, left: 860, extra: 0 });
+  eq(ringInfo(2000, 2000), { pct: 1, over: false, left: 0, extra: 0 }, "tam hedefte aşım yok");
+  eq(ringInfo(2001, 2000), { pct: 1, over: true, left: 0, extra: 1 }, "bir üstü aşım");
+  eq(ringInfo(2120, 2000), { pct: 1, over: true, left: 0, extra: 120 }, "halka dolu kalır, fazlalık ayrı");
+  eq(ringInfo(50, 0), { pct: 0, over: false, left: 0, extra: 0 }, "hedef yoksa bölme hatası yok");
+});
+
+const ringLog = (program, slot, c) => [{ id: 1, k: "yulaf", n: "Deneme", g: 100, p: 0, c, f: 0, lif: 0, v: [], i: "grain", slot }];
+const ringOf = id => app.querySelectorAll(".mring")[["kcal", "protein", "carb", "fat"].indexOf(id)];
+
+test("halka: dört halka sırayla kalan miktarı yazar ve makro rengini taşır; hedef aşılınca --over ve +fazlalık", async () => {
+  const { program, slots } = await sugFixture();
+  try {
+    eq([...app.querySelectorAll(".mring .mr-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
+    let say = [...app.querySelectorAll(".mring")].map(r => r.getAttribute("aria-label"));
+    eq(say, [`Kalori: ${fmtN(program.kcal)} kcal kaldı`, `Protein: ${program.protein} g kaldı`,
+      `Karbonhidrat: ${program.carb} g kaldı`, `Yağ: ${program.fat} g kaldı`], "boş günde hedefin tamamı kalır");
+    const c = Math.floor(program.carb * 0.6);
+    state.days[today()].log = ringLog(program, slots[0], c); syncKcal(state.days[today()]); render();
+    const left = program.kcal - 4 * c;
+    ok(left > 0 && c < program.carb, "deneme verisi hedefin altında kalmalı");
+    let k = ringOf("kcal");
+    eq(k.querySelector(".mr-n").textContent, fmtN(left), "ortada kalan kalori");
+    eq(k.querySelector(".mr-t span").textContent, "kcal kaldı", "860 kcal kaldı biçimi");
+    eq(k.style.getPropertyValue("--c"), "var(--kcal)");
+    ok(!k.classList.contains("over"), "aşım yok");
+    eq(ringOf("protein").querySelector(".mr-t span").textContent, "g kaldı");
+    eq(ringOf("carb").style.getPropertyValue("--c"), "var(--carb)");
+    eq(ringOf("fat").style.getPropertyValue("--c"), "var(--fat)");
+    eq(ringOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    const fg = k.querySelector(".mr-fg"), C = 2 * Math.PI * 34;
+    ok(Math.abs(+fg.dataset.to - C * (1 - 4 * c / program.kcal)) < 0.2, "dolu oran hedefe göre");
+
+    /* hedefin 120 kcal üstü: kalori ve karbonhidrat aşar, protein ve yağ aşmaz */
+    const c2 = Math.ceil((program.kcal + 120) / 4);
+    state.days[today()].log = ringLog(program, slots[0], c2); syncKcal(state.days[today()]); render();
+    k = ringOf("kcal");
+    ok(k.classList.contains("over"), "kalori aştı");
+    eq(k.querySelector(".mr-n").textContent, "+" + fmtN(4 * c2 - program.kcal), "ortada +fazlalık");
+    eq(k.querySelector(".mr-t span").textContent, "kcal");
+    eq(k.style.getPropertyValue("--c"), "var(--over)", "halka rengi --over");
+    eq(k.getAttribute("aria-label"), `Kalori: ${fmtN(4 * c2 - program.kcal)} kcal aşıldı`);
+    eq(+k.querySelector(".mr-fg").dataset.to, 0, "aşan halka tam dolu");
+    ok(ringOf("carb").classList.contains("over") && ringOf("carb").querySelector(".mr-n").textContent === "+" + fmtN(c2 - program.carb), "karbonhidrat aştı");
+    ok(!ringOf("protein").classList.contains("over") && !ringOf("fat").classList.contains("over"), "diğerleri aşmadı");
+    eq(ringOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    ok(!app.querySelector(".metric-note .out"), "eski 'Hedefi aştın' satırı yok");
+    eq(a11yBad("halka"), []);
+  } finally { closeSug(); }
+});
+
+test("halka: sayfaya girerken fx-ring ile dolar; hareket azaltılmışsa eski değerden değil doğrudan son değerde durur", async () => {
+  const { program, slots } = await sugFixture();
+  const realMM = window.matchMedia;
+  try {
+    window.matchMedia = () => ({ matches: false });
+    tab = "plan"; render(); tab = "meals"; render();
+    ok(app.querySelector(".mr-fg").classList.contains("fx-ring"), "girişte fx-ring");
+    ok(/--fx-len:\d/.test(app.querySelector(".mr-fg").getAttribute("style")), "çevre uzunluğu");
+    render();
+    ok(!app.querySelector(".mr-fg").classList.contains("fx-ring"), "aynı sayfada yeniden çizim baştan doldurmaz");
+    const before = +app.querySelector(".mr-fg").getAttribute("stroke-dashoffset");
+    state.days[today()].log = ringLog(program, slots[0], 100); syncKcal(state.days[today()]); render();
+    const fg = app.querySelector(".mr-fg");
+    eq(+fg.getAttribute("stroke-dashoffset"), before, "yeni değere eski değerinden geçer");
+    ok(+fg.dataset.to !== before, "yeni değer farklı");
+    window.matchMedia = q => ({ matches: /reduce/.test(q) });
+    state.days[today()].log = ringLog(program, slots[0], 150); syncKcal(state.days[today()]); render();
+    const rm = app.querySelector(".mr-fg");
+    eq(rm.getAttribute("stroke-dashoffset"), rm.dataset.to, "hareket azaltılmış: animasyonsuz son değer");
+    const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
+    ok(/prefers-reduced-motion: reduce\)\{\s*\*\{transition:none !important;animation:none !important\}/.test(css), "azaltılmış harekette geçişler kapalı");
+  } finally { window.matchMedia = realMM; closeSug(); }
+});
+
+test("halka: İngilizcede de çalışır (kcal left, g left, +fazlalık), eksik çeviri kalmaz", async () => {
+  const { program, slots } = await sugFixture();
+  try {
+    await withLang("en", async () => {
+      I18N_MISSING.clear(); render();
+      eq([...app.querySelectorAll(".mring .mr-t b")].map(b => b.textContent), ["Calories", "Protein", "Carbs", "Fat"]);
+      eq([...app.querySelectorAll(".mring .mr-t span")].map(b => b.textContent), ["kcal left", "g left", "g left", "g left"]);
+      eq(ringOf("kcal").getAttribute("aria-label"), `Calories: ${fmtN(program.kcal)} kcal left`);
+      const c2 = Math.ceil((program.kcal + 120) / 4);
+      state.days[today()].log = ringLog(program, slots[0], c2); syncKcal(state.days[today()]); render();
+      eq(ringOf("kcal").querySelector(".mr-n").textContent, "+" + fmtN(4 * c2 - program.kcal));
+      eq(ringOf("kcal").getAttribute("aria-label"), `Calories: ${fmtN(4 * c2 - program.kcal)} kcal over`);
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+  } finally { closeSug(); }
+});
+
+test("Sık yediklerin: katlanır, varsayılan kapalı, dokununca açılır; dünü kopyala düğmesi dışarıda kalır; İngilizcesi var", async () => {
+  await quickFixture();
+  try {
+    addOpen = null; render();
+    const h = app.querySelector('[data-fold="favs"]');
+    ok(h && h.textContent.includes("Sık yediklerin"), "başlık");
+    eq(h.getAttribute("aria-expanded"), "false", "varsayılan kapalı");
+    const box = h.closest(".fold");
+    ok(box.classList.contains("shut"), "kapalı görünür");
+    ok(box.querySelector('[data-fav="yulaf"]'), "besin düğmeleri katlı bölümün içinde");
+    const cy = app.querySelector("#copy-y");
+    ok(cy && !cy.closest(".fold"), "dünü kopyala katlı bölümün dışında");
+    ok(!app.querySelector('[data-fold="favs"]').closest(".favs"), "ayrı bölüm");
+    await h.onclick();
+    eq(h.getAttribute("aria-expanded"), "true", "dokununca açılır");
+    ok(!box.classList.contains("shut"));
+    eq(state.ui.fold.favs, true, "durum kaydedilir");
+    render();
+    eq(app.querySelector('[data-fold="favs"]').getAttribute("aria-expanded"), "true", "yeniden çizimde açık kalır");
+    await app.querySelector('[data-fold="favs"]').onclick();
+    eq(state.ui.fold.favs, false, "yeniden dokununca kapanır");
+    render();
+    ok(app.querySelector('[data-fold="favs"]').closest(".fold").classList.contains("shut"));
+    await withLang("en", async () => {
+      I18N_MISSING.clear(); render();
+      const e = app.querySelector('[data-fold="favs"]');
+      ok(e.textContent.includes("Your frequent foods") && e.textContent.includes("tap to add"), e.textContent);
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+    addOpen = slotList()[0][0]; render();
+    ok(!app.querySelector('[data-fold="favs"]'), "besin ekle paneli açıkken liste panelde, katlı bölüm çizilmez");
+    eq(a11yBad("favs"), []);
+  } finally { closeQuick(); }
 });
 
 test("öğünlerim ve kayıtlı öğünler günlüğün altında katlıdır (varsayılan kapalı); içindeki işlemler çalışır", async () => {

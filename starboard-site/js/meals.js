@@ -149,7 +149,41 @@ function macroRow(label, got, target, unit, ic, color){
     <span class="v num"><span data-count="m-${ic}" data-v="${got}">${got}</span>${unit}<span class="tgt">/ ${target}${unit}</span></span></div>`;
 }
 
-/* Lif ve mikro besinler tek katlanır bölümde: ana özet dört çubukla kalır. */
+/* Halkanın durumu (saf): dolu oran, hedef aşıldı mı, kalan ya da fazla miktar.
+   Aşım yalnızca hedefin üstünde başlar (eşitlikte "0 kaldı"). */
+function ringInfo(got, target){
+  const t = target > 0 ? target : 0;
+  const over = t > 0 && got > t;
+  return { pct: t ? clamp(got / t, 0, 1) : 0, over, left: Math.max(t - got, 0), extra: over ? got - t : 0 };
+}
+
+/* Özetin dört halkası: ortada kalan miktar (aşılınca +fazlalık), altında birim ve ad.
+   Sayfaya girerken halka sıfırdan dolar (.fx-ring), sayfa içinde eski değerinden yenisine geçer. */
+const _mRingPrev = {};
+function macroRing(label, got, target, unit, id){
+  const R = ringInfo(got, target);
+  const C = 2 * Math.PI * 34;
+  const off = +(C * (1 - R.pct)).toFixed(1);
+  const entering = render.lastTab !== "meals" || !!navDir;
+  const still = entering || reduceMotion();
+  const from = still ? off : _mRingPrev[id] === undefined ? +C.toFixed(1) : _mRingPrev[id];
+  _mRingPrev[id] = off;
+  const n = R.over ? R.extra : R.left;
+  const say = R.over ? tx("{0}: {1} {2} aşıldı", [label, fmtN(n), unit]) : tx("{0}: {1} {2} kaldı", [label, fmtN(n), unit]);
+  return `<div class="mring${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${R.over ? "over" : id})">
+    <div class="mr-r">
+      <svg viewBox="0 0 84 84" aria-hidden="true">
+        <circle class="mr-bg" cx="42" cy="42" r="34"/>
+        <circle class="mr-fg${entering ? " fx-ring" : ""}" cx="42" cy="42" r="34" transform="rotate(-90 42 42)" style="--fx-len:${C.toFixed(1)}px"
+          stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${from}" data-to="${off}"/>
+      </svg>
+      <span class="mr-n num" aria-hidden="true">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span>
+    </div>
+    <div class="mr-t" aria-hidden="true"><span>${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><b>${label}</b></div>
+  </div>`;
+}
+
+/* Lif ve mikro besinler tek katlanır bölümde: ana özet dört halkayla kalır. */
 function detailSection(tot, program){
   const keys = Object.keys(NUTRIENTS);
   const missing = keys.filter(k => !tot.micros.has(k));
@@ -177,11 +211,12 @@ function logView(program, entry){
   ${favBlock(entry)}
   <section>
     <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
-    ${macroRow(tx("Kalori"), tot.kcal, program.kcal, "", "grain", "kcal")}
-    ${macroRow(tx("Protein"), tot.p, program.protein, " g", "poultry", "protein")}
-    ${macroRow(tx("Karbonhidrat"), tot.c, program.carb, " g", "bread", "carb")}
-    ${macroRow(tx("Yağ"), tot.f, program.fat, " g", "oil", "fat")}
-    ${tot.kcal > program.kcal * 1.1 ? `<div class="metric-note" style="margin-top:12px"><b class="out">${tx("Hedefi {0} kcal aştın.", [(tot.kcal-program.kcal)])}</b></div>` : ""}
+    <div class="mrings">
+      ${macroRing(tx("Kalori"), tot.kcal, program.kcal, "kcal", "kcal")}
+      ${macroRing(tx("Protein"), tot.p, program.protein, "g", "protein")}
+      ${macroRing(tx("Karbonhidrat"), tot.c, program.carb, "g", "carb")}
+      ${macroRing(tx("Yağ"), tot.f, program.fat, "g", "fat")}
+    </div>
   </section>
 
   ${log.length ? detailSection(tot, program) : ""}
@@ -603,13 +638,12 @@ function favBlock(entry){
   const chips = !addOpen;
   if (!favs.length && !yLog.length) return "";
   if (!chips && !yLog.length) return "";
-  return `<section class="favs">
-    ${chips ? `<h2>${tx("Sık yediklerin")} <span class="count">${tx("dokun, eklensin")}</span></h2>
-    ${favs.length ? `<div class="fav">${favs.map(([k,c]) =>
-      `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${esc(shortAmount(k, c.g))}</button>`).join("")}</div>`
-      : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`}` : ""}
-    ${yLog.length ? `<button class="ghost rep" id="copy-y" style="margin-top:${chips ? 14 : 0}px">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? tx("Dünün") : tx("Bir önceki günün")), (yLog.length)])}</button>` : ""}
-  </section>`;
+  /* Sık yediklerin katlanır, varsayılan kapalı; dünü kopyalama düğmesi dışarıda kalır. */
+  return `${chips ? fold("favs", tx("Sık yediklerin"), tx("dokun, eklensin"), favs.length
+      ? `<div class="fav">${favs.map(([k,c]) =>
+        `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${esc(shortAmount(k, c.g))}</button>`).join("")}</div>`
+      : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`) : ""}
+  ${yLog.length ? `<section class="favs"><button class="ghost rep" id="copy-y">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? tx("Dünün") : tx("Bir önceki günün")), (yLog.length)])}</button></section>` : ""}`;
 }
 
 function amountText(it){
@@ -884,6 +918,9 @@ function openPrefsSheet(){
 function wireMeals(entry){
   wireShopping(currentProgram());
   wireFolds();
+  /* halkalar eski değerinden yenisine dolar */
+  const rings = app.querySelectorAll(".mr-fg[data-to]");
+  if (rings.length) requestAnimationFrame(() => requestAnimationFrame(() => rings.forEach(c => { c.style.strokeDashoffset = c.dataset.to; })));
   app.querySelectorAll("[data-meal-tab]").forEach(b => b.onclick = () => {
     if (b.dataset.mealTab === mealTab) return;
     navTo(() => { mealTab = b.dataset.mealTab; render(); window.scrollTo(0,0); }, segDir(b), "k-seg");
