@@ -106,7 +106,7 @@ const STAR_D = "M0-6.5 1.6-1.6 6.5 0 1.6 1.6 0 6.5-1.6 1.6-6.5 0-1.6-1.6Z";
 const FULL7 = [1,1,1,1,1,1,1], GHOST7 = [0,0,0,0,0,0,0];
 
 /* Takımyıldızın çizimi. lv: yedi yıldızın parlaklığı (null gelecek gün).
-   o: { mini, anim (kendini çizer), today (bugünün yıldız sırası), seed } */
+   o: { mini, anim (kendini çizer), today (bugünün yıldız sırası), glint (kısa an yansıyan yıldızın sırası), seed } */
 function skySVG(c, lv, o){
   o = o || {};
   const r = rng(o.seed || seedOf("2026-01-05") + c.id.length);
@@ -129,7 +129,7 @@ function skySVG(c, lv, o){
     if (v <= 0) return `${ring}<circle cx="${x}" cy="${y}" r="${2.4 * z}" class="sk-d"${d}/>`;
     const full = v >= 1;
     return `${ring}<g class="sk-s${full ? " on" : ""}" transform="translate(${x} ${y})"${d}>
-      ${full ? `<circle r="${12 * z}" class="sk-glow"/>` : ""}
+      ${full ? `<circle r="${12 * z}" class="sk-glow"/>` : ""}${full && o.glint === i ? `<circle r="${14 * z}" class="sk-flash"/>` : ""}
       <path d="${STAR_D}" transform="scale(${full ? 1.15 * z : (0.6 + 0.35 * v).toFixed(2)})" opacity="${full ? 1 : (0.3 + 0.5 * v).toFixed(2)}"/></g>`;
   }).join("");
   return `<svg class="sky-svg${o.anim ? " sk-anim" : ""}" viewBox="0 0 ${SKY_W} ${SKY_H}" aria-hidden="true">${dust}${lines}${stars}</svg>`;
@@ -137,7 +137,26 @@ function skySVG(c, lv, o){
 
 const skyPct = (x, w) => (x / w * 100).toFixed(2) + "%";
 
-function skyCard(){
+/* Bugün ekranının en üstündeki şerit: haftanın takımyıldızı (~64 px) ve altında gün harfleri.
+   Tamamı tek düğme; dokununca hafta penceresi açılır (openSkyWeek). Gün tamamlanınca (önceki
+   çizimde tamam değildi, şimdi tamam) bugünün yıldızı kısa bir an yansır: skyStrip.buzz, wireToday'de haptic. */
+const _starPrev = { k: null, lit: false };
+function skyStrip(){
+  const t = today(), ws = weekStart(t), w = weekInfo(ws);
+  const ti = w.days.indexOf(t), lit = fullDay(t);
+  const glint = _starPrev.k === t && !_starPrev.lit && lit;
+  _starPrev.k = t; _starPrev.lit = lit;
+  if (glint) skyStrip.buzz = true;
+  const letters = w.days.map((k, i) => `<i class="${[k === t ? "now" : "", w.lit[i] ? "on" : ""].join(" ").trim()}">${[...WD_SHORT[i + 1]][0].toUpperCase()}</i>`).join("");
+  const label = `${tx("Bu hafta: {0}", [constName(w.c)])}, ${tx("{0}/7 yıldız", [w.n])}`;
+  return `<button class="wk-sky" id="wk-open" aria-haspopup="dialog" aria-label="${esc(label)}">
+    <span class="wk-fig">${skySVG(w.c, w.lv, { mini: true, today: ti, glint: glint ? ti : -1, seed: seedOf(ws) })}</span>
+    <span class="wk-d" aria-hidden="true">${letters}</span>
+  </button>`;
+}
+
+/* Hafta penceresi: bu haftanın büyük hali (yıldıza dokununca günün hedefleri), seri, ilerleme satırı ve atlas. */
+function openSkyWeek(){
   const t = today(), ws = weekStart(t), w = weekInfo(ws);
   const name = constName(w.c);
   const left = w.days.filter((k, i) => k >= t && !w.lit[i]).length;
@@ -148,16 +167,20 @@ function skyCard(){
     const label = `${WD_NAMES[i + 1]}: ${v === null ? tx("henüz gelmedi") : tx("yüzde {0}", [Math.round(v >= 1 ? 100 : v * 100)])}`;
     return `<button class="sky-b" data-sky-day="${k}" style="left:${skyPct(x, SKY_W)};top:${skyPct(y, SKY_H)}"${v === null ? ` aria-disabled="true"` : ""} aria-label="${label}"></button>`;
   }).join("");
-  return `<section class="sky">
-    <div class="sky-head">
-      <div><div class="sky-t">${tx("Bu hafta: {0}", [name])}</div>
-        <div class="sky-s">${tx("{0}/7 yıldız", [w.n])}</div></div>
-      <div class="sky-n"><b class="num">${streakNow()}</b><span>${tx("günlük seri")}</span></div>
+  const { el } = skySheet("sw", `${sheetHead("sw", tx("Bu hafta: {0}", [name]))}
+    <div class="sky-pan sw-pan">
+      <div class="sky-head">
+        <div><div class="sky-s">${tx("{0}/7 yıldız", [w.n])}</div></div>
+        <div class="sky-n"><b class="num">${streakNow()}</b><span>${tx("günlük seri")}</span></div>
+      </div>
+      <div class="sky-stage" role="group" aria-label="${tx("Haftanın takımyıldızı")}">${skySVG(w.c, w.lv, { today: ti, seed: seedOf(ws) })}${btns}</div>
+      ${mid ? `<div class="sky-note">${mid.done ? tx("{0} belirdi", [name])
+        : mid.need === 1 ? tx("Bir yıldız daha, {0} belirecek", [name]) : tx("{0} yıldız daha, {1} belirecek", [mid.need, name])}</div>` : ""}
     </div>
-    <div class="sky-stage" role="group" aria-label="${tx("Haftanın takımyıldızı")}">${skySVG(w.c, w.lv, { today: ti, seed: seedOf(ws) })}${btns}</div>
-    ${mid ? `<div class="sky-note">${mid.done ? tx("{0} belirdi", [name])
-      : mid.need === 1 ? tx("Bir yıldız daha, {0} belirecek", [name]) : tx("{0} yıldız daha, {1} belirecek", [mid.need, name])}</div>` : ""}
-  </section>`;
+    ${skyAtlas()}`);
+  wireSkyIn(el);
+  el.querySelector(".sheet-x").focus();
+  return el;
 }
 
 /* Bir günün hedefleri: gün puanıyla (dayScore) aynı liste. [{ t: başlık, ok }] */
@@ -177,6 +200,7 @@ function skyDayGoals(k){
 function skySheet(id, inner){
   const el = document.createElement("div");
   el.className = "sheet-bg";
+  el.dataset.sky = id;
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="${id}-t">${inner}</div>`;
   document.body.appendChild(el);
   const close = () => sheetOut(el);
@@ -189,11 +213,12 @@ const sheetHead = (id, title) => `<div class="sheet-h"><b id="${id}-t">${title}<
 function openSkyDay(k){
   if (!k || k > today()) return;
   const items = skyDayGoals(k);
-  const { el, close } = skySheet("sd", `${sheetHead("sd", `${prettyDate(k)} · ${weekdayName(k)}`)}
+  const { el } = skySheet("sd", `${sheetHead("sd", `${prettyDate(k)} · ${weekdayName(k)}`)}
     ${items.length ? `<ul class="sd-l">${items.map(x => `<li class="${x.ok ? "ok" : ""}">${icon(x.ok ? "star4" : "next")}<span>${esc(x.t)}</span><i>${x.ok ? tx("tamam") : tx("eksik")}</i></li>`).join("")}</ul>`
       : `<div class="empty">${tx("Hedef yok")}</div>`}
     <button id="sd-go" style="margin-top:14px">${tx("O güne git")}</button>`);
-  el.querySelector("#sd-go").onclick = () => { close(); goToDay(k); };
+  /* hafta penceresinden açıldıysa o da kapanır: gün ekranı açık kalan pencerenin arkasında kalmasın */
+  el.querySelector("#sd-go").onclick = () => { document.querySelectorAll(".sheet-bg[data-sky]").forEach(sheetOut); goToDay(k); };
   el.querySelector("#sd-go").focus();
 }
 
@@ -214,7 +239,7 @@ const weekRange = ws => {
 function skyAtlas(){
   const earned = skyEarned();
   const got = CONSTELLATIONS.filter(c => earned[c.id]).length;
-  return `<section>
+  return `<div class="sw-atlas">
     <h2>${tx("Gökyüzü atlası")} <span class="count num">${got} / ${CONSTELLATIONS.length}</span></h2>
     <div class="atlas">${CONSTELLATIONS.map(c => {
       const n = (earned[c.id] || []).length;
@@ -222,7 +247,7 @@ function skyAtlas(){
         ${skySVG(c, n ? FULL7 : GHOST7, { mini: true })}
         <b>${constName(c)}</b>${n ? `<i class="num" aria-hidden="true">${n}</i>` : ""}</button>`;
     }).join("")}</div>
-  </section>`;
+  </div>`;
 }
 
 function openAtlas(id){
@@ -270,10 +295,15 @@ function maybeShowWeekClose(){
   return true;
 }
 
+/* Şerit dokununca hafta penceresi; penceredeki yıldızlar günün hedeflerini, atlas kartları takımyıldızı açar. */
 function wireSky(){
-  app.querySelectorAll("[data-sky-day]").forEach(b => b.onclick = () => {
+  const b = document.getElementById("wk-open");
+  if (b) b.onclick = () => openSkyWeek();
+}
+function wireSkyIn(root){
+  root.querySelectorAll("[data-sky-day]").forEach(b => b.onclick = () => {
     if (b.getAttribute("aria-disabled") === "true") return;
     openSkyDay(b.dataset.skyDay);
   });
-  app.querySelectorAll("[data-atlas]").forEach(b => b.onclick = () => openAtlas(b.dataset.atlas));
+  root.querySelectorAll("[data-atlas]").forEach(b => b.onclick = () => openAtlas(b.dataset.atlas));
 }

@@ -50,7 +50,9 @@ Boş öğünün kartında o günün önerisi soluk, kesik çerçeveli bir tabak 
 
 ## Takımyıldız
 
-Kod `starboard-site/js/sky.js`. `CONSTELLATIONS` 14 şekli tutar (320×150 kutuda 7 yıldız, `p[0]` pazartesi; `e` çizgiler); sıra değiştirilmez, çünkü kaydı olmayan eski haftaların adı `legacyConst()` ile bu sıradan gelir. Haftanın takımyıldızı `state.sky[hafta başı] = kimlik` olarak haftanın ilk açılışında yazılır (`ensureSkyWeek()`, seçim `pickConst()`); hafta kapanışının gösterildiği hafta `state.skyClosed`. Takımyıldız 5 tam günle (`fullDay`) belirir; parlaklık `dayRatio`. Saf hesaplar: `weekInfo`, `skyEarned`, `pickConst`, `skyMid`, `weekSummary`; testleri "takımyıldız", "atlas", "hafta kapanışı" adlarıyla `tests.js` içinde.
+Kod `starboard-site/js/sky.js`. `CONSTELLATIONS` 14 şekli tutar (320×150 kutuda 7 yıldız, `p[0]` pazartesi; `e` çizgiler); sıra değiştirilmez, çünkü kaydı olmayan eski haftaların adı `legacyConst()` ile bu sıradan gelir. Haftanın takımyıldızı `state.sky[hafta başı] = kimlik` olarak haftanın ilk açılışında yazılır (`ensureSkyWeek()`, seçim `pickConst()`); hafta kapanışının gösterildiği hafta `state.skyClosed`. Takımyıldız 5 tam günle (`fullDay`) belirir; parlaklık `dayRatio`. Saf hesaplar: `weekInfo`, `skyEarned`, `pickConst`, `skyMid`, `weekSummary`; testleri "takımyıldız", "şerit", "atlas", "hafta kapanışı" adlarıyla `tests.js` içinde.
+
+Bugün ekranının en üstündeki hafta şeridi bu haftanın (Pzt-Paz) takımyıldızıdır (`skyStrip()`: ~64 px yüksekliğinde küçültülmüş gerçek şekil, altında gün harfleri, bugün belirgin); ayrı bir takımyıldız kartı yoktur. Şeridin her yerine dokunmak hafta penceresini açar (`openSkyWeek()`): büyük şekil (yıldıza dokununca günün hedefleri, "O güne git"), günlük seri, "N yıldız daha, Lale belirecek" satırı ve Gökyüzü atlası. Eski günlere takvimden ya da penceredeki yıldızlardan gidilir; şeritte gün seçilmez. Gün tamamlanınca (önceki çizimde tamam değildi, şimdi tamam; oturumun ilk çizimi sayılmaz) bugünün yıldızı kısa bir an yansır (`.sk-flash`, hareket azaltmada görünmez) ve tek `haptic("success")` olur; aynı anda hedef ya da kutlama titreşimi ayrıca eklenmez.
 
 ## Sürüm çıkarırken
 

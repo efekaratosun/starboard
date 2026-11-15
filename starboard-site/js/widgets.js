@@ -373,7 +373,8 @@ function toast(msg, action){
 
 /* ---- kutlama ---- */
 function celebrate(){
-  haptic("success");
+  /* şeritteki yıldız yansırken az önce titreşildiyse aynı anda ikinci titreşim olmaz */
+  if (!(skyStrip.buzzed && Date.now() - skyStrip.buzzed < 1500)) haptic("success");
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   const cols = ["--band-vivid","--star","--good-vivid","--sleep","--water","--g-fruit"];
   const el = document.createElement("div");

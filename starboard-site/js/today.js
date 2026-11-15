@@ -2,22 +2,11 @@
 
 /* ---- bugün ---- */
 /* ---- hafta şeridi ----
-   Takvime gitmeden son yedi gün arasında gezilir; seçilen gün çok eskiyse
-   şerit o günün çevresine kayar. */
-const LV_WORD = { e:tx("veri yok"), t:tx("tamamlandı"), 5:tx("tamamlandı"), 4:tx("çoğu tamam"), 3:tx("yarısı tamam"), 2:tx("az tamam"), 1:tx("başlandı") };
+   Bu haftanın (Pzt-Paz) takımyıldızı şeridin kendisidir (skyStrip, sky.js); dokununca hafta
+   penceresi açılır. Eski günlere takvimden ya da penceredeki yıldızlardan gidilir. */
 function weekStrip(key){
-  const t = today();
-  let end = t;
-  if (key < shiftDays(t, -6)){ const c = shiftDays(key, 3); end = c > t ? t : c; }
-  const days = [];
-  for (let i = 6; i >= 0; i--) days.push(shiftDays(end, -i));
-  return `<div class="wk" role="group" aria-label="${tx("Gün seç")}">${days.map(k => {
-    const lv = dayLevel(k);
-    return `<button class="wk-d" data-wk="${k}" data-lv="${lv}" aria-current="${k === key}"
-      aria-label="${prettyDate(k)} ${weekdayName(k)}, ${k === t ? tx("bugün, ") : ""}${LV_WORD[lv] || ""}">
-      <span class="wk-n">${k === t ? tx("Bugün") : WD_SHORT[isoWeekday(k)]}</span><b class="num">${+k.slice(8)}</b><i></i></button>`;
-  }).join("")}</div>
-  ${key !== t ? `<div class="wk-back"><button class="link" id="back-today">${tx("Bugüne dön")}</button></div>` : ""}`;
+  return `${skyStrip()}
+  ${key !== today() ? `<div class="wk-back"><button class="link" id="back-today">${tx("Bugüne dön")}</button></div>` : ""}`;
 }
 
 /* ---- akşam kapanış satırı ----
@@ -239,9 +228,7 @@ function todayView(entry, program, key){
     <button class="ghost" id="goal-add">${tx("＋ Hedef ekle")}</button>
   </section>
 
-  ${notice && now ? `<div class="notice">${iconBox("day")}<div>${esc(notice)}</div></div>` : ""}
-
-  ${now ? skyCard() : ""}`;
+  ${notice && now ? `<div class="notice">${iconBox("day")}<div>${esc(notice)}</div></div>` : ""}`;
 }
 
 /* Kapalıyken de bir şey söylesin: son kilo ve kaç günlük veri var. */
@@ -473,19 +460,11 @@ function wireToday(entry, program, key){
   if (fg) requestAnimationFrame(() => requestAnimationFrame(() => { fg.style.strokeDashoffset = fg.dataset.to; }));
   app.querySelectorAll(".g.just .g-ok").forEach(el => setTimeout(() => sparkle(el), 200));
   /* yeni tamamlanan hedef: kısa parlama (CSS .g.just) ve dokunsal onay */
+  /* gün tamamlandıysa tek titreşim: yıldızın yansıması hedefin kendi titreşiminin yerini alır */
+  if (skyStrip.buzz){ skyStrip.buzz = false; skyStrip.buzzed = Date.now(); goalRow.buzz = false; haptic("success"); }
   if (goalRow.buzz){ goalRow.buzz = false; haptic("success"); }
   const rn = app.querySelector(".gh-n b.roll");
   if (rn && rn.dataset.to !== rn.dataset.v) requestAnimationFrame(() => requestAnimationFrame(() => rollSet(rn, rn.dataset.to)));
-  app.querySelectorAll("[data-wk]").forEach(b => b.onclick = () => {
-    const k = b.dataset.wk;
-    if (k === key) return;
-    navTo(() => {
-      if (k >= today()){ viewDate = null; calSel = today(); }
-      else { ensureDay(k); viewDate = k; calSel = k; }
-      goalOpen = null; resetMealUI();
-      saveState(state); render();
-    }, k > key ? 1 : -1, "k-day");
-  });
   const ga = document.getElementById("goal-add");
   if (ga) ga.onclick = () => openGoalSheet(key);
   const gc = document.getElementById("gh-cal");

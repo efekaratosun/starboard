@@ -37,7 +37,6 @@ window.STARBOARD_EN = {
   "isteğe bağlı": "optional",
   "(isteğe bağlı)": "(optional)",
   "tamam": "done",
-  "tamamlandı": "completed",
   "yapıldı": "done",
   "Yapıldı": "Done",
   "Yaptım": "Done",
@@ -46,7 +45,6 @@ window.STARBOARD_EN = {
   "bugün": "today",
   "Bugün": "Today",
   "Bugün ": "Today ",
-  "bugün, ": "today, ",
   "O gün": "That day",
   "o gün": "that day",
   " · bugün": " · today",
@@ -233,9 +231,6 @@ window.STARBOARD_EN = {
   "Kendi programın kullanılıyor.": "Your own plan is in use.",
 
   /* ---- bugün ---- */
-  "çoğu tamam": "mostly done",
-  "yarısı tamam": "half done",
-  "başlandı": "started",
   "Gün seç": "Pick a day",
   "uyku hedefin altında": "below your sleep goal",
   "{0} adım eksik": "{0} steps short",
@@ -766,7 +761,6 @@ window.STARBOARD_EN = {
   "Yeterli": "OK",
 
   /* ---- kalan ekran metinleri ---- */
-  "az tamam": "a little done",
   "uyku girilmedi": "sleep not logged",
   "kilo girilmedi": "weight not logged",
   "antrenmanda {0} hareket eksik": "{0} exercises left in your workout",
