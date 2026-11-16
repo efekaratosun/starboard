@@ -921,7 +921,7 @@ portionRule(["tofu"], 100, 250);
 portionRule(["humus"], 40, 150);
 portionRule(["yulaf","musli","granola"], 30, 80);
 portionRule(["tahilhalka"], 30, 60);
-portionRule(["sut","kefir","soyasutu","tamsut","yagsizsut"], 150, 300);
+portionRule(["sut","kefir","soyasutu","tamyagsut","yagsizsut"], 150, 300);
 portionRule(["ayran"], 200, 300);
 portionRule(["suzme","yunanyogurt","skyr","bitkiselyogurt"], 100, 300);
 portionRule(["yogurt"], 100, 250);

@@ -1604,7 +1604,7 @@ test("barkod: gizlilik metinleri, kaynaklar, bağımlılık ve iOS beyanları ye
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
   tab = "settings"; meTab = "set"; render();
   ok(!app.innerHTML.includes("Tek istisna"), "web'de barkod istisnası yazılmamalı");
-  ok(app.innerHTML.includes("hiçbir yere gönderilmez"), "web'deki söz aynen durmalı");
+  ok(app.innerHTML.includes("Çevrimiçi besin araması") && app.innerHTML.includes("Open Food Facts"), "web'deki isteğe bağlı arama açıklanmalı");
   state = null; tab = "today"; meTab = "body";
 
   eq(/^\d+\.\d+\.\d+$/.test(JSON.parse(await get("package.json")).dependencies["@capacitor/barcode-scanner"]), true, "eklenti tam sürümle sabitlenmeli");
@@ -1830,8 +1830,8 @@ test("sağlık: eklenti, yetki, gizlilik metinleri ve iOS beyanları yerinde", a
   const priv = await get("ios/App/App/PrivacyInfo.xcprivacy");
   ok(!/NSPrivacyCollectedDataType(Health|Fitness)/.test(priv), "Sağlık verisi cihazdan çıkmadığı için beyan edilmez");
   const [tr, en] = (await get("starboard-site/privacy.html")).split('<article id="en"');
-  ok(tr.includes("Apple Sağlık (yalnızca iPhone uygulaması)") && tr.includes("Yalnızca okuma") && tr.includes("13 Kasım 2026"), "Türkçe gizlilik metni");
-  ok(en.includes("Apple Health (iPhone app only)") && en.includes("Read only") && en.includes("November 13, 2026"), "İngilizce gizlilik metni");
+  ok(tr.includes("Apple Sağlık (yalnızca iPhone uygulaması)") && tr.includes("Yalnızca okuma") && tr.includes("16 Kasım 2026"), "Türkçe gizlilik metni");
+  ok(en.includes("Apple Health (iPhone app only)") && en.includes("Read only") && en.includes("November 16, 2026"), "İngilizce gizlilik metni");
   ok(WHATS_NEW.some(n => n.native && n.items.some(s => s.includes("Apple Sağlık"))), "Neler yeni maddesi yalnızca iPhone'da");
   ok(!WHATS_NEW.some(n => !n.native && n.items.some(s => s.includes("Apple Sağlık"))), "Sağlık maddesi web'de görünmemeli");
   const scripts = [...(await get("starboard-site/index.html")).matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
