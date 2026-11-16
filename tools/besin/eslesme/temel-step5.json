@@ -1,0 +1,2648 @@
+[
+ {
+  "ad": "Ada çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "sage tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Ihlamur çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "linden tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuşburnu çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "rosehip tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Papatya çayı",
+  "fdc": 174156,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, brewed, chamomile",
+  "arama": "chamomile tea",
+  "gerekce": "SR papatya çayı demlenmiş kaydıyla birebir aynı.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Rezene çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "fennel tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Zencefil çayı",
+  "fdc": 2710507,
+  "kaynak": "FNDDS",
+  "description": "Tea, ginger",
+  "arama": "ginger tea",
+  "gerekce": "FNDDS zencefilli sıcak çay kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Melisa çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "lemon balm tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Nane çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "mint tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kekik çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "oregano tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Anason çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "anise tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Lavanta çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "lavender tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Hibiskus çayı",
+  "fdc": 171946,
+  "kaynak": "SR",
+  "description": "Beverages, tea, hibiscus, brewed",
+  "arama": "hibiscus tea",
+  "gerekce": "SR hibiskus çayı demlenmiş kaydıyla birebir aynı.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Zeytin yaprağı çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "olive leaf tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kiraz sapı çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "cherry stem tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Beyaz çay",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "white tea",
+  "gerekce": "Beyaz çay için kayıt yok (USDA yalniz siyah/yesil/oolong demlenmis kayit tasir); null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Oolong çayı",
+  "fdc": 174120,
+  "kaynak": "SR",
+  "description": "Beverages, tea, Oolong, brewed",
+  "arama": "oolong tea",
+  "gerekce": "SR oolong demlenmiş kaydıyla birebir aynı.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Pu-erh çayı",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "pu-erh, puerh, dark tea",
+  "gerekce": "Pu-erh çayı için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Rooibos çayı",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "rooibos, red tea",
+  "gerekce": "Rooibos çayı için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Mate",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "yerba mate, mate",
+  "gerekce": "Mate hazır içecek kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Matcha latte",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "matcha latte, matcha",
+  "gerekce": "Matcha latte için hazır içecek kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Sütlü çay",
+  "fdc": 2710506,
+  "kaynak": "FNDDS",
+  "description": "Tea, hot, with milk",
+  "arama": "milk tea, tea hot",
+  "gerekce": "FNDDS sütlü sıcak çay kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Cascara çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "cascara tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Amerikano",
+  "fdc": 2710375,
+  "kaynak": "FNDDS",
+  "description": "Coffee, brewed",
+  "arama": "americano, coffee brewed",
+  "gerekce": "Americano (espresso+sıcak su) sade siyah kahve sınıfında; sade demlenmiş kahve kaydı kullanıldı, belirtilen fark: espressodan sulandırma yöntemi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Cortado",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "cortado, coffee macchiato, cafe con leche",
+  "gerekce": "Cortado için tam kayıt yok; macchiato/con leche ile süt oranı farklı olduğu için eşleştirilemedi.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Flat white",
+  "fdc": 2710386,
+  "kaynak": "FNDDS",
+  "description": "Coffee, Latte",
+  "arama": "flat white, coffee latte",
+  "gerekce": "Flat white microfoamlı latte ile aynı sınıf; genel latte kaydı kullanıldı, belirtilen fark: süt miktarı biraz daha az.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Latte macchiato",
+  "fdc": 2710386,
+  "kaynak": "FNDDS",
+  "description": "Coffee, Latte",
+  "arama": "latte macchiato, coffee latte",
+  "gerekce": "Latte macchiato espresso+sütlü kahve sınıfında; genel latte kaydı kullanıldı, belirtilen fark: sunum farklı, besin değerleri aynı.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Mocha",
+  "fdc": 2710410,
+  "kaynak": "FNDDS",
+  "description": "Coffee, Cafe Mocha",
+  "arama": "mocha, cafe mocha",
+  "gerekce": "FNDDS cafe mocha kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Sütlü kahve (sade)",
+  "fdc": 2710384,
+  "kaynak": "FNDDS",
+  "description": "Coffee, cafe con leche",
+  "arama": "sutlu kahve, coffee milk, cafe con leche",
+  "gerekce": "Sütlü kahve (sade) kahve+süt içeceği; cafe con leche kaydı kullanıldı, belirtilen fark: genel kayıt.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Menengiç kahvesi",
+  "fdc": 2710486,
+  "kaynak": "FNDDS",
+  "description": "Coffee substitute",
+  "arama": "turkey tail coffee, coffee substitute, menengic",
+  "gerekce": "Menengiç kahvesi kahve ikamesi; genel coffee substitute kaydı kullanıldı, belirtilen fark: mantara özgü kayıt yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dibek kahvesi",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "dibek coffee, coffee substitute, coffee chicory",
+  "gerekce": "Dibek kahvesi kahve içeren karışım; uygun tam kayıt yok (chicory/substitute farklı), null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Sıcak çikolata",
+  "fdc": 2705472,
+  "kaynak": "FNDDS",
+  "description": "Hot chocolate / cocoa, NFS",
+  "arama": "hot chocolate, cocoa hot",
+  "gerekce": "FNDDS sıcak çikolata/kakao genel kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Sıcak baharatlı elma içeceği",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "spiced apple drink, hot apple",
+  "gerekce": "Baharatlı sıcak elma içeceği için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Espresso con panna",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "espresso con panna, espresso cream",
+  "gerekce": "Espresso con panna (kremalı espresso) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Zerdeçal çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "turmeric tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Ekinezya çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "echinacea tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Tarçınlı süt",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "cinnamon milk, tarakli sut",
+  "gerekce": "Tarçınlı süt için hazır içecek kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Sakız çayı",
+  "fdc": 173232,
+  "kaynak": "SR",
+  "description": "Beverages, tea, herb, other than chamomile, brewed",
+  "arama": "mastic tea, herb tea",
+  "gerekce": "Demlenmiş bitki çayı; bitkiye özgü kayıt yok, besin değerleri papatya kaydıyla aynı olan genel bitki çayı kaydı kullanıldı (belirtilen fark: bitki türü genel tutuldu).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Limonata",
+  "fdc": 2710570,
+  "kaynak": "FNDDS",
+  "description": "Lemonade, fruit juice drink",
+  "arama": "lemonade",
+  "gerekce": "FNDDS limonata (meyve suyu bazlı limonata) kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Frambuazlı limonata",
+  "fdc": 2710570,
+  "kaynak": "FNDDS",
+  "description": "Lemonade, fruit juice drink",
+  "arama": "frambuazli limonata, lemonade",
+  "gerekce": "Frambuazlı limonata için özgü kayıt yok; genel limonata kaydı kullanıldı, belirtilen fark: frambuaz aroması besin değerlerini değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Soğuk çay (dondurulmuş)",
+  "fdc": 174144,
+  "kaynak": "SR",
+  "description": "Beverages, tea, black, ready to drink",
+  "arama": "iced tea, tea ready to drink, cold brew tea",
+  "gerekce": "Soğuk çay RTD siyah çay sınıfında; şekersiz RTD siyah çay kaydı kullanıldı, belirtilen fark: tatlandırma derecesi belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Buzlu americano",
+  "fdc": 2710428,
+  "kaynak": "FNDDS",
+  "description": "Iced Coffee, brewed",
+  "arama": "buzlu americano, iced coffee",
+  "gerekce": "Buzlu americano icelek siyah kahve sınıfında; buzlu demlenmiş kahve kaydı kullanıldı, belirtilen fark: espressodan sulandırma.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Cold brew",
+  "fdc": 2710428,
+  "kaynak": "FNDDS",
+  "description": "Iced Coffee, brewed",
+  "arama": "cold brew, iced coffee",
+  "gerekce": "Cold brew soğuk demlenmiş siyah kahve; buzlu demlenmiş kahve kaydı kullanıldı, belirtilen fark: soğuk demleme yöntemi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Frappe",
+  "fdc": 2710398,
+  "kaynak": "FNDDS",
+  "description": "Frozen coffee drink",
+  "arama": "frappe, frozen coffee",
+  "gerekce": "Frappe buzlu/blend kahve sınıfında; frozen coffee drink kaydı kullanıldı, belirtilen fark: süt/şeker oranı tarife göre değişir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Buzlu mocha",
+  "fdc": 2710443,
+  "kaynak": "FNDDS",
+  "description": "Coffee, Iced Cafe Mocha",
+  "arama": "buzlu mocha, iced cafe mocha",
+  "gerekce": "FNDDS buzlu cafe mocha kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Çırpılmış sütlü kahve",
+  "fdc": 2710431,
+  "kaynak": "FNDDS",
+  "description": "Coffee, Iced Latte",
+  "arama": "cirpilmis sutlu kahve, iced latte",
+  "gerekce": "Çırpılmış sütlü kahve soğuk sütlü kahve sınıfında; buzlu latte kaydı kullanıldı, belirtilen fark: genel kayıt.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Affogato",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "affogato, espresso ice cream",
+  "gerekce": "Affogato (espresso üzerine dondurma) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Buzlu matcha",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "buzlu matcha, iced matcha",
+  "gerekce": "Buzlu matcha için kayıt yok (matcha kaydı USDA dizinlerinde yok); null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Karpuz limonatası",
+  "fdc": 2710570,
+  "kaynak": "FNDDS",
+  "description": "Lemonade, fruit juice drink",
+  "arama": "karpuz limonatasi, lemonade",
+  "gerekce": "Karpuzlu limonata için özgü kayıt yok; genel limonata kaydı kullanıldı, belirtilen fark: karpuz aroması besin değerlerini değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Fesleğenli limonata",
+  "fdc": 2710570,
+  "kaynak": "FNDDS",
+  "description": "Lemonade, fruit juice drink",
+  "arama": "feslekenli limonata, lemonade",
+  "gerekce": "Fesleğenli limonata için özgü kayıt yok; genel limonata kaydı kullanıldı, belirtilen fark: fesleğen aroması besin değerlerini değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Aromalı maden suyu",
+  "fdc": 2710540,
+  "kaynak": "FNDDS",
+  "description": "Water, carbonated, flavored",
+  "arama": "aromali maden suyu, flavored sparkling water",
+  "gerekce": "FNDDS aromalı karbonatlı su kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Limonlu gazoz",
+  "fdc": 2710551,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, fruit flavored, caffeine free",
+  "arama": "limonlu gazoz, soft drink",
+  "gerekce": "Limonlu gazoz için özgü kayıt yok; genel meyveli kafeinsiz gazoz kaydı kullanıldı, belirtilen fark: aroma türü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Portakallı gazoz",
+  "fdc": 2710551,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, fruit flavored, caffeine free",
+  "arama": "portakalli gazoz, orange soda",
+  "gerekce": "Portakallı gazoz için özgü kayıt yok; genel meyveli kafeinsiz gazoz kaydı kullanıldı, belirtilen fark: aroma türü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Çilekli gazoz",
+  "fdc": 2710551,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, fruit flavored, caffeine free",
+  "arama": "cilekli gazoz, strawberry soda",
+  "gerekce": "Çilekli gazoz için özgü kayıt yok; genel meyveli kafeinsiz gazoz kaydı kullanıldı, belirtilen fark: aroma türü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Ahududulu gazoz",
+  "fdc": 2710551,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, fruit flavored, caffeine free",
+  "arama": "ahududulu gazoz, raspberry soda",
+  "gerekce": "Ahududulu gazoz için özgü kayıt yok; genel meyveli kafeinsiz gazoz kaydı kullanıldı, belirtilen fark: aroma türü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Zencefilli gazoz",
+  "fdc": 2710555,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, ginger ale",
+  "arama": "zencefilli gazoz, ginger ale",
+  "gerekce": "FNDDS ginger ale kaydı zencefilli gazozla aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Elmalı gazoz",
+  "fdc": 2710551,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, fruit flavored, caffeine free",
+  "arama": "elmali gazoz, apple soda",
+  "gerekce": "Elmalı gazoz için özgü kayıt yok; genel meyveli kafeinsiz gazoz kaydı kullanıldı, belirtilen fark: aroma türü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Böğürtlen gazoz",
+  "fdc": 2710551,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, fruit flavored, caffeine free",
+  "arama": "bogurtlen gazoz, blackberry soda",
+  "gerekce": "Böğürtlen gazoz için özgü kayıt yok; genel meyveli kafeinsiz gazoz kaydı kullanıldı, belirtilen fark: aroma türü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Ananaslı gazoz",
+  "fdc": 2710551,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, fruit flavored, caffeine free",
+  "arama": "ananasli gazoz, pineapple soda",
+  "gerekce": "Ananaslı gazoz için özgü kayıt yok; genel meyveli kafeinsiz gazoz kaydı kullanıldı, belirtilen fark: aroma türü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Zencefil birası (alkolsüz)",
+  "fdc": 2710555,
+  "kaynak": "FNDDS",
+  "description": "Soft drink, ginger ale",
+  "arama": "zencefil birasi, ginger beer, ginger ale",
+  "gerekce": "Alkolsüz zencefil birası için özgü kayıt yok; ginger ale kaydı kullanıldı, belirtilen fark: ginger beer ginger ale'den daha yoğun ama besin değerleri aynı sınıf.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Elma suyu",
+  "fdc": 2709320,
+  "kaynak": "FNDDS",
+  "description": "Apple juice, 100%",
+  "arama": "apple juice, elma suyu",
+  "gerekce": "FNDDS %100 elma suyu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Vişne suyu",
+  "fdc": 167807,
+  "kaynak": "SR",
+  "description": "Cherry juice, tart",
+  "arama": "cherry juice, sour cherry, visne suyu",
+  "gerekce": "Vişne ekşi/tart cherry; SR tart cherry juice kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Üzüm suyu",
+  "fdc": 2709325,
+  "kaynak": "FNDDS",
+  "description": "Grape juice, 100%",
+  "arama": "grape juice, uzum suyu",
+  "gerekce": "FNDDS %100 üzüm suyu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Armut suyu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "pear juice, armut suyu",
+  "gerekce": "Armut suyu için kayıt yok; yalnızca şeker eklenmiş armut nektarı var, besin değerleri farklı olduğu için null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Ananas suyu",
+  "fdc": 2709329,
+  "kaynak": "FNDDS",
+  "description": "Pineapple juice, 100%",
+  "arama": "pineapple juice, ananas suyu",
+  "gerekce": "FNDDS %100 ananas suyu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Havuç suyu",
+  "fdc": 2709683,
+  "kaynak": "FNDDS",
+  "description": "Carrot juice, 100%",
+  "arama": "carrot juice, havuc suyu",
+  "gerekce": "FNDDS %100 havuç suyu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Greyfurt suyu",
+  "fdc": 2709177,
+  "kaynak": "FNDDS",
+  "description": "Grapefruit juice, 100%, NS as to form",
+  "arama": "grapefruit juice, greyfurt suyu",
+  "gerekce": "FNDDS %100 greyfurt suyu (form belirtilmemiş) kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Nar suyu",
+  "fdc": 2709330,
+  "kaynak": "FNDDS",
+  "description": "Pomegranate juice, 100%",
+  "arama": "pomegranate juice, nar suyu",
+  "gerekce": "FNDDS %100 nar suyu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Karpuz suyu",
+  "fdc": 2709333,
+  "kaynak": "FNDDS",
+  "description": "Watermelon juice, 100%",
+  "arama": "watermelon juice, karpuz suyu",
+  "gerekce": "FNDDS %100 karpuz suyu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Limon suyu",
+  "fdc": 2709180,
+  "kaynak": "FNDDS",
+  "description": "Lemon juice, 100%, NS as to form",
+  "arama": "lemon juice, limon suyu",
+  "gerekce": "FNDDS %100 limon suyu (form belirtilmemiş) kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Domates suyu",
+  "fdc": 2709728,
+  "kaynak": "FNDDS",
+  "description": "Tomato juice, 100%",
+  "arama": "tomato juice, domates suyu",
+  "gerekce": "FNDDS %100 domates suyu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Kavun suyu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "melon juice, cantaloupe juice, kavun suyu",
+  "gerekce": "Kavun suyu için kayıt yok; kantalup nektarı eklenmiş şeker içerir, besin değerleri farklı olduğu için null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Guava suyu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "guava juice, guava suyu",
+  "gerekce": "Guava suyu için kayıt yok; yalnızca guava nektarı var (farklı hazırlık), null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Karışık meyve suyu",
+  "fdc": 2709316,
+  "kaynak": "FNDDS",
+  "description": "Fruit juice blend, 100% juice",
+  "arama": "fruit juice blend, mixed fruit juice",
+  "gerekce": "FNDDS %100 karışık meyve suyu kaydı aynı yiyecek sınıfı ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Şeftali nektarı",
+  "fdc": 2709346,
+  "kaynak": "FNDDS",
+  "description": "Peach nectar",
+  "arama": "peach nectar, seftali nektari",
+  "gerekce": "FNDDS şeftali nektarı kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Kayısı nektarı",
+  "fdc": 2709341,
+  "kaynak": "FNDDS",
+  "description": "Apricot nectar",
+  "arama": "apricot nectar, kayisi nektari",
+  "gerekce": "FNDDS kayısı nektarı kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Mango nektarı",
+  "fdc": 2709345,
+  "kaynak": "FNDDS",
+  "description": "Mango nectar",
+  "arama": "mango nectar, mango nektari",
+  "gerekce": "FNDDS mango nektarı kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Erik suyu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "plum juice, prune juice, erik suyu",
+  "gerekce": "Erik suyu için kayıt yok; prune juice kuru erikten (farklı hazırlık), null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Kızılcık suyu",
+  "fdc": 2709324,
+  "kaynak": "FNDDS",
+  "description": "Cranberry juice, 100%, not a blend",
+  "arama": "cranberry juice, kizilcik suyu",
+  "gerekce": "Kızılcık = cranberry; FNDDS %100 kızılcık suyu (karışım olmayan) kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Kiraz suyu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "cherry juice, sweet cherry, kiraz suyu",
+  "gerekce": "Tatlı kiraz suyu için kayıt yok (yalnızca tart/vişne var); null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Ananas hindistan cevizi suyu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "pineapple coconut water, pina colada water",
+  "gerekce": "Ananas hindistan cevizi suyu karışımı için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Elma armut suyu",
+  "fdc": 2709316,
+  "kaynak": "FNDDS",
+  "description": "Fruit juice blend, 100% juice",
+  "arama": "apple pear juice, fruit juice blend",
+  "gerekce": "Elma-armut suyu için özgü kayıt yok; genel %100 meyve suyu karışımı kaydı kullanıldı, belirtilen fark: iki meyveli özel karışım.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Frenk üzümü nektarı",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "gooseberry nectar, frenk uzumu",
+  "gerekce": "Frenk üzümü nektarı için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Çilekli smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "strawberry smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Muzlu smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "banana smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Mango smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "mango smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Orman meyveli smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "forest fruit smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Yeşil smoothie",
+  "fdc": 2710146,
+  "kaynak": "FNDDS",
+  "description": "Fruit and vegetable smoothie, with dairy",
+  "arama": "green smoothie, vegetable smoothie",
+  "gerekce": "Yeşil smoothie (meyve+sebze) için uygun kayıt meyve-sebze smoothie kaydı; sütlü genel kayıt kullanıldı, belirtilen fark: sebze/meyve oranı belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Avokadolu smoothie",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "avocado smoothie",
+  "gerekce": "Avokadolu smoothie için kayıt yok; avokado yağ oranı genel meyveli smoothie kaydından yüksek, besin değerleri uyuşmadığı için null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Ananaslı smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "pineapple smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Şeftalili smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "peach smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kahveli smoothie",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "coffee smoothie, kahveli smoothie",
+  "gerekce": "Kahveli smoothie için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Çilekli milkshake",
+  "fdc": 2705504,
+  "kaynak": "FNDDS",
+  "description": "Milk shake, home recipe, flavors other than chocolate",
+  "arama": "strawberry milkshake, milkshake",
+  "gerekce": "Çilekli milkshake çikolata dışı milkshake sınıfında; ev tarifi çikolata-dışı milkshake kaydı kullanıldı, belirtilen fark: aroma türü genel tutuldu.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Çikolatalı milkshake",
+  "fdc": 2705503,
+  "kaynak": "FNDDS",
+  "description": "Milk shake, home recipe, chocolate",
+  "arama": "chocolate milkshake",
+  "gerekce": "Çikolatalı milkshake için ev tarifi çikolatalı milkshake kaydı aynı yiyecek; belirtilen fark: hazır/biraya göre fast-food kaydından farklı kcal, ev tarifi seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Muzlu milkshake",
+  "fdc": 2705504,
+  "kaynak": "FNDDS",
+  "description": "Milk shake, home recipe, flavors other than chocolate",
+  "arama": "banana milkshake",
+  "gerekce": "Muzlu milkshake çikolata dışı milkshake sınıfında; ev tarifi genel kayıt kullanıldı, belirtilen fark: aroma türü genel tutuldu.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Vanilyalı milkshake",
+  "fdc": 2705504,
+  "kaynak": "FNDDS",
+  "description": "Milk shake, home recipe, flavors other than chocolate",
+  "arama": "vanilla milkshake",
+  "gerekce": "Vanilyalı milkshake çikolata dışı milkshake sınıfında; ev tarifi genel kayıt kullanıldı, belirtilen fark: aroma türü genel tutuldu.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Bisküvilı milkshake",
+  "fdc": 2705504,
+  "kaynak": "FNDDS",
+  "description": "Milk shake, home recipe, flavors other than chocolate",
+  "arama": "biscuit milkshake, cookie milkshake",
+  "gerekce": "Bisküvili milkshake çikolata dışı milkshake sınıfında; ev tarifi genel kayıt kullanıldı, belirtilen fark: bisküvi eklenmesi Kayıtta ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kivili smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "kiwi smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Karpuzlu smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "watermelon smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kirazlı smoothie",
+  "fdc": 2705514,
+  "kaynak": "FNDDS",
+  "description": "Fruit smoothie, with whole fruit and dairy",
+  "arama": "cherry smoothie, fruit smoothie",
+  "gerekce": "Meyveli smoothie için özgü kayıt yok; bütün meyve+sütlü genel smoothie kaydı kullanıldı, belirtilen fark: meyve türü besin değerlerini USDA modelinde değiştirmez.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Enerji içeceği",
+  "fdc": 2710756,
+  "kaynak": "FNDDS",
+  "description": "Energy Drink",
+  "arama": "energy drink, enerji icecegi",
+  "gerekce": "FNDDS genel enerji içeceği kaydı aynı yiyecek sınıfı ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Şekersiz enerji içeceği",
+  "fdc": 2710768,
+  "kaynak": "FNDDS",
+  "description": "Energy drink, sugar free",
+  "arama": "energy drink sugar free, sekersiz enerji",
+  "gerekce": "FNDDS şekersiz enerji içeceği kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Elektrolit suyu",
+  "fdc": 2710775,
+  "kaynak": "FNDDS",
+  "description": "Fluid replacement, electrolyte solution",
+  "arama": "electrolyte water, elektrolit suyu",
+  "gerekce": "Elektrolit suyu elektrolit çözeltisi sınıfında; FNDDS elektrolit sıvı kaydı kullanıldı, belirtilen fark: marka formülasyonu değişebilir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Pre-workout içeceği",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "pre workout powder, preworkout drink",
+  "gerekce": "Pre-workout tozu konsantre formda; USDA dizininde karşılığı yok, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Amino asitli içecek",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "amino acid drink, bcaa drink",
+  "gerekce": "Amino asitli içecek için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Yerba mate enerji içeceği",
+  "fdc": 2710756,
+  "kaynak": "FNDDS",
+  "description": "Energy Drink",
+  "arama": "yerba mate energy drink, energy drink",
+  "gerekce": "Yerba mate enerji içeceği için özgü kayıt yok; genel enerji içeceği kaydı kullanıldı, belirtilen fark: yerba mate bazlı çeşitleme ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kafeinli maden suyu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "caffeinated water, kafeinli maden suyu",
+  "gerekce": "Kafeinli maden suyu için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Kreatinli spor içeceği",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "creatine sports drink, kreatinli icecek",
+  "gerekce": "Kreatinli spor içeceği için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Guarana özlü enerji içeceği",
+  "fdc": 2710756,
+  "kaynak": "FNDDS",
+  "description": "Energy Drink",
+  "arama": "guarana energy drink, energy drink",
+  "gerekce": "Guarana özlü enerji içeceği için özgü kayıt yok; genel enerji içeceği kaydı kullanıldı, belirtilen fark: guarana çeşitlemesi ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Fındık sütü",
+  "fdc": 2705403,
+  "kaynak": "FNDDS",
+  "description": "Non-dairy milk, NFS",
+  "arama": "hazelnut milk, non-dairy milk",
+  "gerekce": "hazelnut milk sütü için özgü kayıt yok; FNDDS genel bitki sütü (NFS) kaydı kullanıldı, belirtilen fark: bu bitki türüne özgü kayıt USDA dizininde yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Pirinç sütü",
+  "fdc": 2705411,
+  "kaynak": "FNDDS",
+  "description": "Rice milk",
+  "arama": "rice milk, pirinc sutu",
+  "gerekce": "FNDDS pirinç sütü kaydı aynı yiyecek; belirtilen fark: tatlandırma derecesi belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kenevir sütü",
+  "fdc": 2705403,
+  "kaynak": "FNDDS",
+  "description": "Non-dairy milk, NFS",
+  "arama": "hemp milk, non-dairy milk",
+  "gerekce": "hemp milk sütü için özgü kayıt yok; FNDDS genel bitki sütü (NFS) kaydı kullanıldı, belirtilen fark: bu bitki türüne özgü kayıt USDA dizininde yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Makadamia sütü",
+  "fdc": 2705403,
+  "kaynak": "FNDDS",
+  "description": "Non-dairy milk, NFS",
+  "arama": "macadamia milk, non-dairy milk",
+  "gerekce": "macadamia milk sütü için özgü kayıt yok; FNDDS genel bitki sütü (NFS) kaydı kullanıldı, belirtilen fark: bu bitki türüne özgü kayıt USDA dizininde yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Hindistan cevizi sütü (içecek)",
+  "fdc": 2705413,
+  "kaynak": "FNDDS",
+  "description": "Coconut milk",
+  "arama": "coconut milk drink, hindistan cevizi sutu",
+  "gerekce": "FNDDS hindistan cevizi sütü (içecek) kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Susam sütü",
+  "fdc": 2705403,
+  "kaynak": "FNDDS",
+  "description": "Non-dairy milk, NFS",
+  "arama": "sesame milk, non-dairy milk",
+  "gerekce": "sesame milk sütü için özgü kayıt yok; FNDDS genel bitki sütü (NFS) kaydı kullanıldı, belirtilen fark: bu bitki türüne özgü kayıt USDA dizininde yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kaju sütü",
+  "fdc": 2705403,
+  "kaynak": "FNDDS",
+  "description": "Non-dairy milk, NFS",
+  "arama": "cashew milk, non-dairy milk",
+  "gerekce": "cashew milk sütü için özgü kayıt yok; FNDDS genel bitki sütü (NFS) kaydı kullanıldı, belirtilen fark: bu bitki türüne özgü kayıt USDA dizininde yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Antep fıstığı sütü",
+  "fdc": 2705403,
+  "kaynak": "FNDDS",
+  "description": "Non-dairy milk, NFS",
+  "arama": "pistachio milk, non-dairy milk",
+  "gerekce": "pistachio milk sütü için özgü kayıt yok; FNDDS genel bitki sütü (NFS) kaydı kullanıldı, belirtilen fark: bu bitki türüne özgü kayıt USDA dizininde yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Hardaliye",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "hardaliye, fermented grape drink",
+  "gerekce": "Hardaliye (fermente üzüm+şıra içeceği) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Meyan kökü şerbeti",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "licorice sherbet, meyan kok",
+  "gerekce": "Meyan kökü şerbeti için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Güllü şerbet",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "rose sherbet, gulu serbet",
+  "gerekce": "Güllü şerbet için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Lohusa şerbeti",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "lohusa sherbet, postpartum drink",
+  "gerekce": "Lohusa şerbeti için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Demirhindi şerbeti",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "demirhindi sherbet, sherbet drink",
+  "gerekce": "Demirhindi şerbeti için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Koruk şerbeti",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "koruk sherbet, unripe plum drink",
+  "gerekce": "Koruk şerbeti için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Vişne şerbeti",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "sour cherry sherbet, serbet",
+  "gerekce": "Vişne şerbeti için kayıt yok; şerbet (şuruplu sulandırılmış içecek) vişne suyundan farklı hazırlık, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Nar şerbeti",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "pomegranate sherbet, nar serbet",
+  "gerekce": "Nar şerbeti için kayıt yok; şuruplu sulandırma hazırlığı nar suyundan farklı, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Soğuk komposto",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "cold compote, soguk komposto",
+  "gerekce": "Soğuk komposto (şuruplu meyve) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Sıcak komposto",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "hot compote, sicak komposto",
+  "gerekce": "Sıcak komposto (şuruplu meyve) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Kızılcık şerbeti",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "cranberry sherbet, kizilcik serbet",
+  "gerekce": "Kızılcık şerbeti için kayıt yok; şuruplu içecek kızılcık suyundan farklı hazırlık, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Buğday birası (weissbier)",
+  "fdc": 2710616,
+  "kaynak": "FNDDS",
+  "description": "Beer",
+  "arama": "wheat beer, weissbier, beer",
+  "gerekce": "Buğday birası (weissbier) bira sınıfında; genel bira kaydı kullanıldı, belirtilen fark: buğday birası stili ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "IPA",
+  "fdc": 2710616,
+  "kaynak": "FNDDS",
+  "description": "Beer",
+  "arama": "IPA, india pale ale, beer",
+  "gerekce": "IPA bira sınıfında; genel bira kaydı kullanıldı, belirtilen fark: IPA alkol oranı biraz daha yüksek olabilir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Stout (kara bira)",
+  "fdc": 2710616,
+  "kaynak": "FNDDS",
+  "description": "Beer",
+  "arama": "stout, dark beer, beer",
+  "gerekce": "Stout bira sınıfında; genel bira kaydı kullanıldı, belirtilen fark: koyu bira stili ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Elma şarabı (cidre)",
+  "fdc": 2710621,
+  "kaynak": "FNDDS",
+  "description": "Hard cider",
+  "arama": "cider, apple cider alcohol",
+  "gerekce": "Elma şarabı (cidre) = hard cider kaydıyla aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Pirinç şarabı (sake)",
+  "fdc": 167723,
+  "kaynak": "SR",
+  "description": "Alcoholic beverage, rice (sake)",
+  "arama": "sake, rice wine",
+  "gerekce": "SR sake (pirinç şarabı) kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Rakı",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "raki, anise spirit, ouzo",
+  "gerekce": "Rakı için USDA kaydı yok (arap/ouzodan farklı türkiye içkisi olarak kayıtlı değil); null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Votka",
+  "fdc": 2710704,
+  "kaynak": "FNDDS",
+  "description": "Vodka",
+  "arama": "vodka, votka",
+  "gerekce": "FNDDS votka kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Viski",
+  "fdc": 2710700,
+  "kaynak": "FNDDS",
+  "description": "Whiskey",
+  "arama": "whiskey, whisky, viski",
+  "gerekce": "FNDDS viski kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Tekila",
+  "fdc": 2710705,
+  "kaynak": "FNDDS",
+  "description": "Tequila",
+  "arama": "tequila, tekila",
+  "gerekce": "FNDDS tekila kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Rom",
+  "fdc": 2710703,
+  "kaynak": "FNDDS",
+  "description": "Rum",
+  "arama": "rom, rum",
+  "gerekce": "FNDDS rom kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Konyak",
+  "fdc": 2710699,
+  "kaynak": "FNDDS",
+  "description": "Brandy",
+  "arama": "cognac, brandy, konyak",
+  "gerekce": "Konyak = brandy; FNDDS brandy kaydı aynı yiyecek sınıfı ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Vermut",
+  "fdc": 2710692,
+  "kaynak": "FNDDS",
+  "description": "Wine, dessert, sweet",
+  "arama": "vermouth, sweet wine",
+  "gerekce": "Vermut için özgü kayıt yok; tatlı vermut tatlı dessert wine kaydına benzer değerlerde, belirtilen fark: otlu aromalandırma ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Portakal likörü",
+  "fdc": 2710623,
+  "kaynak": "FNDDS",
+  "description": "Liqueur",
+  "arama": "orange liqueur, likor",
+  "gerekce": "Portakal likörü için özgü kayıt yok; genel likör kaydı kullanıldı, belirtilen fark: aroma türü ve alkol oranı markaya göre değişir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kahveli likör",
+  "fdc": 2710625,
+  "kaynak": "FNDDS",
+  "description": "Liqueur, coffee flavored",
+  "arama": "coffee liqueur, kahveli likor",
+  "gerekce": "FNDDS kahve aromalı likör kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Badem likörü",
+  "fdc": 2710623,
+  "kaynak": "FNDDS",
+  "description": "Liqueur",
+  "arama": "amaretto, almond liqueur",
+  "gerekce": "Badem likörü için özgü kayıt yok; genel likör kaydı kullanıldı, belirtilen fark: aroma türü ve alkol oranı markaya göre değişir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Krema likörü",
+  "fdc": 2710624,
+  "kaynak": "FNDDS",
+  "description": "Liqueur, cream",
+  "arama": "cream liqueur, krema likor",
+  "gerekce": "FNDDS kremalı likör kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Vişne likörü",
+  "fdc": 2710623,
+  "kaynak": "FNDDS",
+  "description": "Liqueur",
+  "arama": "cherry liqueur, visne likor",
+  "gerekce": "Vişne likörü için özgü kayıt yok; genel likör kaydı kullanıldı, belirtilen fark: aroma türü ve alkol oranı markaya göre değişir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Mojito",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "mojito, rum cocktail",
+  "gerekce": "Mojito için kayıt yok; kokteyl tarifleri kalori bakımından çok değişken olduğu için genel kokteyl kaydına eşlenmedi, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Margarita",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "margarita, tequila cocktail",
+  "gerekce": "Margarita için yalnızca alkolsüz margarita mix kaydı var, alkollü içeceğe uygun değil; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Piña colada",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "pina colada, coconut cocktail",
+  "gerekce": "Piña colada için yalnızca alkolsüz kayıt var, alkollü içeceğe uygun değil; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Cosmopolitan",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "cosmopolitan, vodka cocktail",
+  "gerekce": "Cosmopolitan için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Martini",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "martini, gin cocktail",
+  "gerekce": "Martini için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Bloody Mary",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "bloody mary, vodka tomato",
+  "gerekce": "Bloody Mary için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Gin tonik",
+  "fdc": 2710633,
+  "kaynak": "FNDDS",
+  "description": "Gin and tonic",
+  "arama": "gin tonic, cin tonik",
+  "gerekce": "FNDDS gin and tonic kaydı cin tonikle aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Sangria",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "sangria, wine punch",
+  "gerekce": "Sangria için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Long Island iced tea",
+  "fdc": 2710679,
+  "kaynak": "FNDDS",
+  "description": "Long Island iced tea",
+  "arama": "long island iced tea",
+  "gerekce": "FNDDS Long Island iced tea kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Daiquiri",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "daiquiri, rum lime",
+  "gerekce": "Daiquiri için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Tekila sunrise",
+  "fdc": 2710678,
+  "kaynak": "FNDDS",
+  "description": "Tequila Sunrise",
+  "arama": "tequila sunrise, tekila gunes",
+  "gerekce": "FNDDS Tequila Sunrise kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Acı aperatif spritz",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "aperol spritz, bitter spritz",
+  "gerekce": "Acı aperatif spritz için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "İrlanda kahvesi",
+  "fdc": 2710681,
+  "kaynak": "FNDDS",
+  "description": "Alcoholic coffee drink",
+  "arama": "irish coffee, alkollu kahve",
+  "gerekce": "İrlanda kahvesi alkollü kahve içeceği; FNDDS alcoholic coffee drink kaydı aynı sınıf ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Sıcak şarap (glühwein)",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "mulled wine, gluhwein, hot wine",
+  "gerekce": "Sıcak şarap (glühwein) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Bitter likör (digestif)",
+  "fdc": 2710623,
+  "kaynak": "FNDDS",
+  "description": "Liqueur",
+  "arama": "bitters liqueur, digestif",
+  "gerekce": "Bitter digestif likörü için özgü kayıt yok; genel likör kaydı kullanıldı, belirtilen fark: alkol oranı bitter türe göre değişir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Maracuya",
+  "fdc": 2709248,
+  "kaynak": "FNDDS",
+  "description": "Passion fruit, raw",
+  "arama": "passion fruit, maracuya",
+  "gerekce": "Maracuya = passion fruit; FNDDS çiğ passion fruit kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Ejder meyvesi (pitaya)",
+  "fdc": 2709234,
+  "kaynak": "FNDDS",
+  "description": "Dragon fruit",
+  "arama": "dragon fruit, pitaya",
+  "gerekce": "Ejder meyvesi = dragon fruit; FNDDS dragon fruit kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Karadut",
+  "fdc": 169913,
+  "kaynak": "SR",
+  "description": "Mulberries, raw",
+  "arama": "mulberry, karadut",
+  "gerekce": "Karadut dut sınıfında; SR genel dut kaydı kullanıldı, belirtilen fark: kayıt Morus spp. genel tutmuş, siyah dut (M. nigra) doğrulanamadı.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Rambutan",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "rambutan, rambutan raw",
+  "gerekce": "Rambutan için yalnızca şuruplu konserve kaydı var, çiğ meyveye uygun değil; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Pomelo",
+  "fdc": 167754,
+  "kaynak": "SR",
+  "description": "Pummelo, raw",
+  "arama": "pummelo, pomelo",
+  "gerekce": "Pomelo = pummelo; SR çiğ pummelo kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Mürdüm eriği",
+  "fdc": 169949,
+  "kaynak": "SR",
+  "description": "Plums, raw",
+  "arama": "plum, damson, murdum erigi",
+  "gerekce": "Mürdüm eriği erik sınıfında; SR genel çiğ erik kaydı kullanıldı, belirtilen fark: mürdüm (damson) çeşidi ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kızılcık",
+  "fdc": 171722,
+  "kaynak": "SR",
+  "description": "Cranberries, raw",
+  "arama": "cranberry, kizilcik",
+  "gerekce": "Kızılcık = cranberry; SR çiğ cranberry kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Kuşburnu (taze)",
+  "fdc": 168998,
+  "kaynak": "SR",
+  "description": "Rose Hips, wild (Northern Plains Indians)",
+  "arama": "rose hip, rosehip, kusburnu",
+  "gerekce": "Kuşburnu (taze) kuş üzümü/rose hip; SR yabanî rose hip kaydı kullanıldı (su oranı %59 ile taze durumla uyumlu), belirtilen fark: kayıt Amerikan yerli geleneksel gıda kaydı, Rosa türü belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Frenk üzümü",
+  "fdc": 173030,
+  "kaynak": "SR",
+  "description": "Gooseberries, raw",
+  "arama": "gooseberry, frenk uzumu",
+  "gerekce": "Frenk üzümü = gooseberry; SR çiğ gooseberry kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Salak",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "salak, snake fruit",
+  "gerekce": "Salak (snake fruit) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Turunç",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "citron, bitter orange, turunc",
+  "gerekce": "Turunç (Citrus medica/aurantium) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Acur",
+  "fdc": 173472,
+  "kaynak": "SR",
+  "description": "Horseradish, prepared",
+  "arama": "horseradish, acur",
+  "gerekce": "Acur = hazırlanmış yaban turpu; SR prepared horseradish kaydı kullanıldı, belirtilen fark: sirke/karışım oranı belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Siyah turp",
+  "fdc": 2709803,
+  "kaynak": "FNDDS",
+  "description": "Radish",
+  "arama": "radish, black radish, siyah turp",
+  "gerekce": "Siyah turp turp sınıfında; FNDDS genel turp kaydı kullanıldı, belirtilen fark: siyah turp çeşidi ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Nane (taze)",
+  "fdc": 173475,
+  "kaynak": "SR",
+  "description": "Spearmint, fresh",
+  "arama": "spearmint fresh, nane taze",
+  "gerekce": "Nane = spearmint; SR taze spearmint kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Rezene",
+  "fdc": 169385,
+  "kaynak": "SR",
+  "description": "Fennel, bulb, raw",
+  "arama": "fennel bulb, rezene",
+  "gerekce": "Rezene = fenugreek değil, tere (fennel); SR çiğ fennel bulb kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Kenger",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "kenger, eryngium, sea holly",
+  "gerekce": "Kenger (Eryngium) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Hindiba",
+  "fdc": 169992,
+  "kaynak": "SR",
+  "description": "Chicory greens, raw",
+  "arama": "chicory greens, hindiba",
+  "gerekce": "Hindiba = chicory greens; SR çiğ hindiba kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Deniz yosunu (nori)",
+  "fdc": 2709988,
+  "kaynak": "FNDDS",
+  "description": "Seaweed, dried",
+  "arama": "nori, seaweed dried",
+  "gerekce": "Nori kurutulmuş yosun sınıfında; FNDDS genel kuru yosun kaydı kullanıldı, belirtilen fark: nori/laver türü ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Trüf mantarı",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "truffle, trifle mantari",
+  "gerekce": "Trüf mantarı için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Mung filizi",
+  "fdc": 2709768,
+  "kaynak": "FNDDS",
+  "description": "Bean sprouts, raw",
+  "arama": "mung bean sprouts, bean sprouts",
+  "gerekce": "Mung filizi çiğ filiz sınıfında; FNDDS genel çiğ bean sprouts kaydı kullanıldı, belirtilen fark: maş fasulyesi filizi Türü ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Tam buğday unu",
+  "fdc": 168893,
+  "kaynak": "SR",
+  "description": "Wheat flour, whole-grain (Includes foods for USDA's Food Distribution Program)",
+  "arama": "whole wheat flour, tam bugday unu",
+  "gerekce": "Tam buğday unu = whole-grain wheat flour; SR tam buğday unu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Çavdar unu",
+  "fdc": 168886,
+  "kaynak": "SR",
+  "description": "Rye flour, medium",
+  "arama": "rye flour, cavdar unu",
+  "gerekce": "Çavdar unu = rye flour; SR orta kavrulma dereceli çavdar unu kaydı kullanıldı, belirtilen fark: koyu/açık çavdar unundan farklı değerler taşır, orta seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Mısır unu",
+  "fdc": 170290,
+  "kaynak": "SR",
+  "description": "Corn flour, whole-grain, yellow",
+  "arama": "corn flour yellow, misir unu",
+  "gerekce": "Mısır unu = corn flour; SR tam tahıl sarı mısır unu kaydı kullanıldı, belirtilen fark: kepeği ayrılmış (degermed) unla farklı değerler taşır.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Yulaf unu",
+  "fdc": 169741,
+  "kaynak": "SR",
+  "description": "Oat flour, partially debranned",
+  "arama": "oat flour, yulaf unu",
+  "gerekce": "Yulaf unu = oat flour; SR kısmen kepekten arınmış yulaf unu kaydı kullanıldı, belirtilen fark: tam kepekli yulaf unundan farklı olabilir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "İrmik",
+  "fdc": 168933,
+  "kaynak": "SR",
+  "description": "Semolina, unenriched",
+  "arama": "semolina, irmik",
+  "gerekce": "İrmik = semolina (durum); SR semolina kaydı aynı yiyecek, kuru hâlde; belirtilen fark: hazırlık durumu belirtilmemiş, kuru un hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Arpa (kuru)",
+  "fdc": 170283,
+  "kaynak": "SR",
+  "description": "Barley, hulled",
+  "arama": "barley hulled, arpa kuru",
+  "gerekce": "Arpa (kuru) tam tane arpa; SR kabuğu soyulmuş (hulled) çiğ arpa kaydı kullanıldı, belirtilen fark: pearled arpa biraz daha farklı değerler taşır.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Buğday (bütün, kuru)",
+  "fdc": 169719,
+  "kaynak": "SR",
+  "description": "Wheat, hard white",
+  "arama": "wheat whole grain, bugday",
+  "gerekce": "Buğday (bütün, kuru) tam buğday tanesi; SR hard white buğday kaydı kullanıldı, belirtilen fark: buğday çeşidi belirtilmemiş, sert beyaz çeşit seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dövme",
+  "fdc": 170688,
+  "kaynak": "SR",
+  "description": "Bulgur, dry",
+  "arama": "bulgur dry, dovme",
+  "gerekce": "Dövme iri öğütülmüş bulgur sınıfında; SR kuru bulgur kaydı kullanıldı, belirtilen fark: dövme öğütüm boyutu kayıtta ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Soba eriştesi",
+  "fdc": 168906,
+  "kaynak": "SR",
+  "description": "Noodles, japanese, soba, dry",
+  "arama": "soba noodles dry",
+  "gerekce": "Soba eriştesi = Japon soba eriştesi; SR kuru soba kaydı aynı yiyecek, kuru hâlde; belirtilen fark: hazırlık durumu belirtilmemiş, kuru erişte seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Udon eriştesi",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "udon noodles",
+  "gerekce": "Udon eriştesi için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Basmati pirinci",
+  "fdc": 168877,
+  "kaynak": "SR",
+  "description": "Rice, white, long-grain, regular, raw, enriched",
+  "arama": "long grain rice raw, basmati",
+  "gerekce": "Basmati uzun taneli pirinç sınıfında; SR çiğ uzun taneli pirinç kaydı kullanıldı, belirtilen fark: basmati aromatik çeşidi ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Jasmin pirinci",
+  "fdc": 168877,
+  "kaynak": "SR",
+  "description": "Rice, white, long-grain, regular, raw, enriched",
+  "arama": "jasmine rice raw, long grain rice",
+  "gerekce": "Jasmin pirinci uzun taneli pirinç sınıfında; SR çiğ uzun taneli pirinç kaydı kullanıldı, belirtilen fark: jasmin aromatik çeşidi ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Glutensiz un karışımı",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "gluten free flour blend",
+  "gerekce": "Glutensiz un karışımı markaya özgü formülasyon taşır, USDA kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Firik (kuru)",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "freekeh, firik",
+  "gerekce": "Firik (freekeh) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Polenta (kuru)",
+  "fdc": 169697,
+  "kaynak": "SR",
+  "description": "Cornmeal, whole-grain, yellow",
+  "arama": "cornmeal yellow, polenta",
+  "gerekce": "Polenta (kuru) sarı mısır irmiği sınıfında; SR tam tahıl sarı cornmeal kaydı kullanıldı, belirtilen fark: polenta öğütüm kalınlığı kayıtta ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Pirinç unu",
+  "fdc": 169714,
+  "kaynak": "SR",
+  "description": "Rice flour, white, unenriched",
+  "arama": "rice flour white, pirinc unu",
+  "gerekce": "Pirinç unu = rice flour; SR beyaz pirinç unu kaydı kullanıldı, belirtilen fark: kahverengi pirinç unu seçilmedi, beyaz varsayıldı.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Badem unu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "almond flour, badem unu",
+  "gerekce": "Badem unu için kayıt yok (USDA yalnızca badem ezmesi/pastası taşır); null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Panko ekmek kırıntısı",
+  "fdc": 174928,
+  "kaynak": "SR",
+  "description": "Bread, crumbs, dry, grated, plain",
+  "arama": "bread crumbs dry, panko",
+  "gerekce": "Panko kuru ekmek kırıntısı sınıfında; SR sade kuru ekmek kırıntısı kaydı kullanıldı, belirtilen fark: panko Japon tarzı lavaş dokusu kayıtta ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Acı bakla (kuru)",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "bitter vetch, aci bakla",
+  "gerekce": "Acı bakla (Vicia ervilia) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Taze bakla",
+  "fdc": 170377,
+  "kaynak": "SR",
+  "description": "Broadbeans, immature seeds, raw",
+  "arama": "broadbeans young raw, taze bakla",
+  "gerekce": "Taze bakla = olgunlaşmamış bakla; SR çiğ immature broadbeans kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Taze börülce",
+  "fdc": 168405,
+  "kaynak": "SR",
+  "description": "Cowpeas, young pods with seeds, raw",
+  "arama": "cowpeas young pods raw, taze borulce",
+  "gerekce": "Taze börülce = genç börülce sapları ve taneleri; SR çiğ cowpeas young pods kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Sarı bezelye (kuru)",
+  "fdc": 172428,
+  "kaynak": "SR",
+  "description": "Peas, green, split, mature seeds, raw",
+  "arama": "split peas raw, sari bezelye",
+  "gerekce": "Sarı bezelye (kuru) bölünmüş bezelye sınıfında; SR çiğ split peas kaydı kullanıldı, belirtilen fark: kayıt yeşil bezelye olarak geçer, sarı çeşit besin değerleri aynıdır.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Azuki fasulyesi (kuru)",
+  "fdc": 173727,
+  "kaynak": "SR",
+  "description": "Beans, adzuki, mature seeds, raw",
+  "arama": "adzuki beans raw, azuki",
+  "gerekce": "Azuki fasulyesi = adzuki; SR çiğ adzuki fasulyesi kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Çörek otu",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "nigella seed, corek otu",
+  "gerekce": "Çörek otu (nigella) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Kenevir tohumu",
+  "fdc": 170148,
+  "kaynak": "SR",
+  "description": "Seeds, hemp seed, hulled",
+  "arama": "hemp seed hulled, kenevir tohumu",
+  "gerekce": "Kenevir tohumu = hemp seed; SR kabukları çıkarılmış kenevir tohumu kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Kavun çekirdeği",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "melon seeds, pumpkin seeds, kavun cekirdegi",
+  "gerekce": "Kavun çekirdeği için kayıt yok (USDA yalnızca kabak çekirdeği taşır, farklı tür); null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Kuru dut",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "dried mulberry, kuru dut",
+  "gerekce": "Kuru dut için kayıt yok (USDA yalnızca taze dut taşır); null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Fıstık ezmesi (sade)",
+  "fdc": 172470,
+  "kaynak": "SR",
+  "description": "Peanut butter, smooth style, without salt",
+  "arama": "peanut butter smooth, fistik ezmesi",
+  "gerekce": "Fıstık ezmesi (sade) smooth plain peanut butter; SR tuzsuz smooth fıstık ezmesi kaydı kullanıldı, belirtilen fark: tuzlama durumu belirtilmemiş, sade için tuzsuz kayıt seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Badem ezmesi",
+  "fdc": 168588,
+  "kaynak": "SR",
+  "description": "Nuts, almond butter, plain, without salt added",
+  "arama": "almond butter plain, badem ezmesi",
+  "gerekce": "Badem ezmesi = almond butter; SR tuzsuz sade badem ezmesi kaydı kullanıldı, belirtilen fark: şeker/tuz eklenip eklenmediği belirtilmemiş, sade kayıt seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Yağlı tohum karışımı",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "mixed seeds, yagli tohum karisimi",
+  "gerekce": "Yağlı tohum karışımı karışım oranlarına göre değişir, uygun tek kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Dana kontrfile",
+  "fdc": 168726,
+  "kaynak": "SR",
+  "description": "Beef, top sirloin, steak, separable lean and fat, trimmed to 1/8\" fat, all grades, raw",
+  "arama": "top sirloin steak raw, dana kontrfile",
+  "gerekce": "Dana kontrfile sırt (top sirloin) sınıfında; SR çiğ sırt bifteği kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi; yağ payı ortalama alındı.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dana pirzola",
+  "fdc": 168726,
+  "kaynak": "SR",
+  "description": "Beef, top sirloin, steak, separable lean and fat, trimmed to 1/8\" fat, all grades, raw",
+  "arama": "sirloin steak raw, dana pirzola",
+  "gerekce": "Dana pirzola kemiksiz sırt bifteği sınıfında; kontrfile ile aynı sırt kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dana incik",
+  "fdc": 169441,
+  "kaynak": "SR",
+  "description": "Beef, shank crosscuts, separable lean only, trimmed to 1/4\" fat, choice, raw",
+  "arama": "beef shank raw, dana incik",
+  "gerekce": "Dana incik incik (shank) sınıfında; SR çiğ incik çapraz dilim kaydı kullanıldı, belirtilen fark: yalnızca choice kalite mevcut, kalite belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dana gerdan",
+  "fdc": 172134,
+  "kaynak": "SR",
+  "description": "Beef, chuck, shoulder clod, top blade, steak, separable lean and fat, trimmed to 0\" fat, all grades, raw",
+  "arama": "shoulder clod steak raw, dana gerdan",
+  "gerekce": "Dana gerdan omuz/kanat (chuck) bölgesi sınıfında; SR chuck shoulder clod top blade kaydı kullanıldı, belirtilen fark: boyun/omuz ayrımı kayıtta yok, chuck kaydı seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dana kaburga",
+  "fdc": 170826,
+  "kaynak": "SR",
+  "description": "Beef, chuck, short ribs, boneless, separable lean and fat, trimmed to 0\" fat, all grades, raw",
+  "arama": "beef short ribs raw, dana kaburga",
+  "gerekce": "Dana kaburga kısa kaburga (short ribs) sınıfında; SR çiğ short ribs kaydı kullanıldı, belirtilen fark: kemiksiz kayıt, kemikli kaburga ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuşbaşı (dana)",
+  "fdc": 171206,
+  "kaynak": "SR",
+  "description": "Beef, chuck for stew, separable lean and fat, all grades, raw",
+  "arama": "beef stew meat raw, kusbasi dana",
+  "gerekce": "Kuşbaşı (dana) güveç/küp et sınıfında; SR chuck for stew çiğ kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuzu pirzola",
+  "fdc": 172551,
+  "kaynak": "SR",
+  "description": "Lamb, loin, separable lean and fat, trimmed to 1/8\" fat, choice, raw",
+  "arama": "lamb loin chops raw, kuzu pirzola",
+  "gerekce": "Kuzu pirzola kuzu bel/kaburga pirzolası sınıfında; SR çiğ kuzu loin kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuzu kolu",
+  "fdc": 174380,
+  "kaynak": "SR",
+  "description": "Lamb, shoulder, arm, separable lean and fat, trimmed to 1/8\" fat, choice, raw",
+  "arama": "lamb shoulder arm raw, kuzu kolu",
+  "gerekce": "Kuzu kolu kuzu omuz kolu (shoulder arm) sınıfında; SR çiğ shoulder arm kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuzu incik",
+  "fdc": 174315,
+  "kaynak": "SR",
+  "description": "Lamb, leg, shank half, separable lean and fat, trimmed to 1/4\" fat, choice, raw",
+  "arama": "lamb shank raw, kuzu incik",
+  "gerekce": "Kuzu incik kuzu incik (shank) sınıfında; SR çiğ bacak shank half kaydı kullanıldı, belirtilen fark: ön/arka incik ayrımı kayıtta yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuzu kaburga",
+  "fdc": 174377,
+  "kaynak": "SR",
+  "description": "Lamb, rib, separable lean and fat, trimmed to 1/8\" fat, choice, raw",
+  "arama": "lamb ribs raw, kuzu kaburga",
+  "gerekce": "Kuzu kaburga kuzu kaburga (rib) sınıfında; SR çiğ kuzu rib kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Tavuk kanat",
+  "fdc": 172390,
+  "kaynak": "SR",
+  "description": "Chicken, broilers or fryers, wing, meat and skin, raw",
+  "arama": "chicken wing raw, tavuk kanat",
+  "gerekce": "Tavuk kanat tavuk kanadı sınıfında; SR çiğ derili tavuk kanadı kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Hindi but",
+  "fdc": 171493,
+  "kaynak": "SR",
+  "description": "Turkey, all classes, leg, meat and skin, raw",
+  "arama": "turkey leg raw, hindi but",
+  "gerekce": "Hindi but hindi but (bacak) sınıfında; SR çiğ derili hindi butu kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dana antrikot",
+  "fdc": 173389,
+  "kaynak": "SR",
+  "description": "Beef, rib eye steak/roast, bone-in, lip-on, separable lean and fat, trimmed to 1/8\" fat, select, raw",
+  "arama": "ribeye raw, dana antrikot",
+  "gerekce": "Dana antrikot ribeye (kaburga gözü) sınıfında; SR çiğ rib eye steak kaydı kullanıldı, belirtilen fark: select kalite seçildi (prime/choice mevcut), çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuzu kuşbaşı",
+  "fdc": 172508,
+  "kaynak": "SR",
+  "description": "Lamb, cubed for stew or kabob (leg and shoulder), separable lean only, trimmed to 1/4\" fat, raw",
+  "arama": "lamb stew cubes raw, kuzu kusbasi",
+  "gerekce": "Kuzu kuşbaşı küp kesilmiş kuzu eti sınıfında; SR çiğ cubed for stew/kabob kaydı kullanıldı, belirtilen fark: kayıt sadece yağsız (separable lean only) kısmı taşır.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kuzu but (bacak)",
+  "fdc": 172488,
+  "kaynak": "SR",
+  "description": "Lamb, leg, sirloin half, separable lean and fat, trimmed to 1/4\" fat, choice, raw",
+  "arama": "lamb leg raw, kuzu but",
+  "gerekce": "Kuzu but (bacak) kuzu but bölgesi sınıfında; SR çiğ bacak sirloin half kaydı kullanıldı, belirtilen fark: butun bacağın tek kaydı yok, sirloin half seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Hindi kanat",
+  "fdc": 171132,
+  "kaynak": "SR",
+  "description": "Turkey, retail parts, wing, meat and skin, raw",
+  "arama": "turkey wing raw, hindi kanat",
+  "gerekce": "Hindi kanat hindi kanadı sınıfında; SR çiğ derili hindi kanadı kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Tavuk karaciğeri",
+  "fdc": 171060,
+  "kaynak": "SR",
+  "description": "Chicken, liver, all classes, raw",
+  "arama": "chicken liver raw, tavuk karacigeri",
+  "gerekce": "Tavuk karaciğeri tavuk ciğeri; SR çiğ tavuk ciğeri kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Tavuk yüreği",
+  "fdc": 171458,
+  "kaynak": "SR",
+  "description": "Chicken, heart, all classes, raw",
+  "arama": "chicken heart raw, tavuk yuregi",
+  "gerekce": "Tavuk yüreği tavuk yüreği; SR çiğ tavuk yüreği kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Tavuk taşlığı (mide)",
+  "fdc": 171456,
+  "kaynak": "SR",
+  "description": "Chicken, gizzard, all classes, raw",
+  "arama": "chicken gizzard raw, tavuk tasligi",
+  "gerekce": "Tavuk taşlığı tavuk midesi (gizzard); SR çiğ tavuk taşlığı kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Uykuluk",
+  "fdc": 2706158,
+  "kaynak": "FNDDS",
+  "description": "Sweetbreads",
+  "arama": "sweetbreads, thymus, uykuluk",
+  "gerekce": "Uykuluk = sweetbread (timüs); FNDDS genel sweetbread kaydı kullanıldı, belirtilen fark: timüs/pancreas ayrımı kayıtta yok.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Beyin (koyun/dana)",
+  "fdc": 168622,
+  "kaynak": "SR",
+  "description": "Beef, variety meats and by-products, brain, raw",
+  "arama": "beef brain raw, beyin",
+  "gerekce": "Beyin (koyun/dana) sakatat beyni; SR çiğ sığır beyni kaydı kullanıldı, belirtilen fark: koyun/dana belirtilmemiş, sığır beyni seçildi (kuzu beyni 122 kcal ile farklı).",
+  "guven": "orta"
+ },
+ {
+  "ad": "Böbrek (dana)",
+  "fdc": 2706157,
+  "kaynak": "FNDDS",
+  "description": "Kidney",
+  "arama": "beef kidney raw, bobrek",
+  "gerekce": "Böbrek (dana) böbrek sınıfında; FNDDS genel böbrek kaydı kullanıldı, belirtilen fark: sığıra özgü böbrek kaydı yok, tür doğrulanamadı.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kelle (koyun)",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "sheep head, kelle",
+  "gerekce": "Kelle (koyun) için USDA kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Paça",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "trotters, lamb feet, paca",
+  "gerekce": "Paça (ayak) için koyun/sığır ayağına özgü kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Palamut",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "bonito, atlantic bonito, palamut",
+  "gerekce": "Palamut (Atlantic bonito) için USDA kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Kılıç balığı",
+  "fdc": 173703,
+  "kaynak": "SR",
+  "description": "Fish, swordfish, raw",
+  "arama": "swordfish raw, kilic baligi",
+  "gerekce": "Kılıç balığı = swordfish; SR çiğ swordfish kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Çinekop",
+  "fdc": 171949,
+  "kaynak": "SR",
+  "description": "Fish, bluefish, raw",
+  "arama": "bluefish raw, cinekop",
+  "gerekce": "Çinekop = bluefish (Pomatomus saltatrix); SR çiğ bluefish kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Sinarit",
+  "fdc": 174196,
+  "kaynak": "SR",
+  "description": "Fish, flatfish (flounder and sole species), raw",
+  "arama": "flatfish raw, sinarit",
+  "gerekce": "Sinarit yassı balık (sole family) sınıfında; SR flounder/sole türleri çiğ kaydı kullanıldı, belirtilen fark: sinarit türü (Pegusa/Synaptura) doğrulanamadı.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Barbun",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "red mullet, barbun",
+  "gerekce": "Barbun kırmızı mullet (Mullidae); USDA yalnızca striped mullet (Mugilidae) taşır, farklı tür olduğu için null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "İstavrit",
+  "fdc": 173672,
+  "kaynak": "SR",
+  "description": "Fish, mackerel, Pacific and jack, mixed species, raw",
+  "arama": "jack mackerel raw, istavrit",
+  "gerekce": "İstavrit Trachurus (at/ jack mackerel) cinsi; SR Pacific/jack mackerel karışık tür çiğ kaydı kullanıldı, belirtilen fark: tür doğrulanamadı, Trachurus sınıfı eşleştirildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kefal",
+  "fdc": 175123,
+  "kaynak": "SR",
+  "description": "Fish, mullet, striped, raw",
+  "arama": "striped mullet raw, kefal",
+  "gerekce": "Keful grey mullet (Mugil cephalus) = striped mullet; SR çiğ striped mullet kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Sazan",
+  "fdc": 171952,
+  "kaynak": "SR",
+  "description": "Fish, carp, raw",
+  "arama": "carp raw, sazan",
+  "gerekce": "Sazan = carp; SR çiğ carp kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Midye (haşlanmış)",
+  "fdc": 174217,
+  "kaynak": "SR",
+  "description": "Mollusks, mussel, blue, cooked, moist heat",
+  "arama": "mussel cooked boiled, midye haslanmis",
+  "gerekce": "Midye (haşlanmış) nemli ısıyla pişmiş midye; SR pişmiş midye kaydı aynı yiyecek ve \"haşlanmış\" hazırlık, belirtilen fark: kayıt Mytilus edulis (blue), Akdeniz midyesi M. galloprovincialis ile aynı cins.",
+  "guven": "orta"
+ },
+ {
+  "ad": "İstakoz",
+  "fdc": 174211,
+  "kaynak": "SR",
+  "description": "Crustaceans, spiny lobster, mixed species, raw",
+  "arama": "spiny lobster raw, istakoz",
+  "gerekce": "İstakoz Akdeniz istakozu (Palinurus) = spiny lobster; SR çiğ spiny lobster kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Yengeç eti",
+  "fdc": 2706344,
+  "kaynak": "FNDDS",
+  "description": "Crab",
+  "arama": "crab meat, yengec eti",
+  "gerekce": "Yengeç eti yengeç eti sınıfında; FNDDS genel yengeç (anket kaydı) kullanıldı, belirtilen fark: türü belirtilmemiş, kayıt pişmiş hâli temsil eder.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kalamar",
+  "fdc": 174223,
+  "kaynak": "SR",
+  "description": "Mollusks, squid, mixed species, raw",
+  "arama": "squid raw, kalamar",
+  "gerekce": "Kalamar = squid; SR çiğ squid kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Ahtapot",
+  "fdc": 174218,
+  "kaynak": "SR",
+  "description": "Mollusks, octopus, common, raw",
+  "arama": "octopus raw, ahtapot",
+  "gerekce": "Ahtapot = octopus; SR çiğ octopus kaydı kullanıldı, belirtilen fark: hazırlık durumu belirtilmemiş, çiğ hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "İstiridye",
+  "fdc": 174219,
+  "kaynak": "SR",
+  "description": "Mollusks, oyster, Pacific, raw",
+  "arama": "oyster pacific raw, istiridye",
+  "gerekce": "İstiridye istiridye sınıfında; SR çiğ Pacific istiridye kaydı kullanıldı, belirtilen fark: Avrupa istiridyesi (O. edulis) ayrılmamış, Türkiye'de üretilen Pasifik türü seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Lakerda",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "lakerda, cured bonito",
+  "gerekce": "Lakerda (sala çökelek bonito) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Mascarpone",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "mascarpone, cream cheese",
+  "gerekce": "Mascarpone için kayıt yok; cream cheese kaydından belirgin şekilde farklı yağ oranı taşır, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Gorgonzola",
+  "fdc": 172175,
+  "kaynak": "SR",
+  "description": "Cheese, blue",
+  "arama": "blue cheese, gorgonzola",
+  "gerekce": "Gorgonzola mavi peynir sınıfında; SR genel mavi peynir kaydı kullanıldı, belirtilen fark: gorgonzola Roquefort/blue içinde ayrılmamış.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Çerkez peyniri",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "circassian cheese, cerkez peyniri",
+  "gerekce": "Çerkez peyniri için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Otlu peynir",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "herbed cheese, otlu peynir",
+  "gerekce": "Otlu peynir için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Küp peyniri",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "cubed cheese, kup peyniri",
+  "gerekce": "Küp peynir (işlenmiş küp peynir) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Krema (yemeklik)",
+  "fdc": 170857,
+  "kaynak": "SR",
+  "description": "Cream, fluid, light (coffee cream or table cream)",
+  "arama": "cooking cream, table cream, yemeklik krema",
+  "gerekce": "Yemeklik krema sıvı krema sınıfında; SR hafif sıvı krema kaydı kullanıldı, belirtilen fark: %18-20 yağlı yemeklik krema, ağır krema (heavy whipping) kaydından daha düşük yağ.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Krem şanti",
+  "fdc": 2705598,
+  "kaynak": "FNDDS",
+  "description": "Cream, whipped",
+  "arama": "whipped cream, krem santi",
+  "gerekce": "Krem şanti çırpılmış krema; FNDDS whipped cream kaydı kullanıldı, belirtilen fark: şeker eklenip eklenmediği belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Çikolatalı süt",
+  "fdc": 2705466,
+  "kaynak": "FNDDS",
+  "description": "Chocolate milk, NFS",
+  "arama": "chocolate milk, cikolatali sut",
+  "gerekce": "Çikolatalı süt çikolatalı süt sınıfında; FNDDS genel çikolatalı süt kaydı kullanıldı, belirtilen fark: yağ oranı (tam/yağsız) belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Çilekli süt",
+  "fdc": 2705495,
+  "kaynak": "FNDDS",
+  "description": "Strawberry milk, NFS",
+  "arama": "strawberry milk, cilekli sut",
+  "gerekce": "Çilekli süt çilekli süt sınıfında; FNDDS genel çilekli süt kaydı kullanıldı, belirtilen fark: yağ oranı belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Muzlu süt",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "banana milk, muzlu sut",
+  "gerekce": "Muzlu süt için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Margarin",
+  "fdc": 2710158,
+  "kaynak": "FNDDS",
+  "description": "Margarine, NFS",
+  "arama": "margarine, margarin",
+  "gerekce": "Margarin genel margarin kaydı; FNDDS NFS margarin kaydı kullanıldı, belirtilen fark: stick/tub formu belirtilmemiş, değerler arasında.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Acı biber sosu",
+  "fdc": 2710093,
+  "kaynak": "FNDDS",
+  "description": "Hot pepper sauce",
+  "arama": "hot pepper sauce, aci biber sosu",
+  "gerekce": "Acı biber sosu sıcak biber sosu sınıfında; FNDDS genel hot pepper sauce kaydı kullanıldı, belirtilen fark: marka/reçete değişebilir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Barbekü sosu",
+  "fdc": 174523,
+  "kaynak": "SR",
+  "description": "Sauce, barbecue",
+  "arama": "barbecue sauce, barbeku sosu",
+  "gerekce": "Barbekü sosu barbekü sosu; SR barbecue sauce kaydı kullanıldı, belirtilen fark: marka/tatlılık değişebilir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Pesto sosu",
+  "fdc": 171580,
+  "kaynak": "SR",
+  "description": "Sauce, pesto, ready-to-serve, shelf stable",
+  "arama": "pesto sauce, pesto sosu",
+  "gerekce": "Pesto sosu pesto sosu sınıfında; SR raf ömrü uzatılmış hazır pesto kaydı kullanıldı, belirtilen fark: taze/püre pesto değerleri farklı olabilir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Beşamel sos",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "bechamel sauce, besamel sos",
+  "gerekce": "Beşamel sos tarifine bağlı karışım; USDA kaydı yok, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Biber salçası",
+  "fdc": 170459,
+  "kaynak": "SR",
+  "description": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)",
+  "arama": "tomato paste, biber salcasi",
+  "gerekce": "Biber salçası salça sınıfında; SR tuzsuz domates salçası kaydı kullanıldı, belirtilen fark: biber/domates karışımı oranı belirtilmemiş, salça kaydı seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Nar ekşisi",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "pomegranate molasses, nar eksisi",
+  "gerekce": "Nar ekşisi (nar molası) için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Balzamik sirke",
+  "fdc": 172241,
+  "kaynak": "SR",
+  "description": "Vinegar, balsamic",
+  "arama": "balsamic vinegar, balzamik sirke",
+  "gerekce": "Balzamik sirke = balsamic vinegar; SR balzamik sirke kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Elma sirkesi",
+  "fdc": 173469,
+  "kaynak": "SR",
+  "description": "Vinegar, cider",
+  "arama": "cider vinegar, elma sirkesi",
+  "gerekce": "Elma sirkesi = cider vinegar; SR elma sirkesi kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Karışık turşu",
+  "fdc": 2710097,
+  "kaynak": "FNDDS",
+  "description": "Pickles, NFS",
+  "arama": "pickles mixed, karisik turşu",
+  "gerekce": "Karışık turşu turşu sınıfında; FNDDS genel turşu kaydı kullanıldı, belirtilen fark: karışık sebze türleri ve sirkeleri belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Pul biber",
+  "fdc": 170932,
+  "kaynak": "SR",
+  "description": "Spices, pepper, red or cayenne",
+  "arama": "red pepper spice, pul biber",
+  "gerekce": "Pul biber kırmızı biber baharatı; SR red/cayenne pepper spice kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Kuru nane",
+  "fdc": 172239,
+  "kaynak": "SR",
+  "description": "Spearmint, dried",
+  "arama": "dried mint, kuru nane",
+  "gerekce": "Kuru nane kurutulmuş nane; SR kuru spearmint kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Safran",
+  "fdc": 170934,
+  "kaynak": "SR",
+  "description": "Spices, saffron",
+  "arama": "saffron, safran",
+  "gerekce": "Safran safran; SR safran baharatı kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Biberiye",
+  "fdc": 171333,
+  "kaynak": "SR",
+  "description": "Spices, rosemary, dried",
+  "arama": "dried rosemary, biberiye",
+  "gerekce": "Biberiye baharat olarak kurutulmuş biberiye; SR kuru biberiye kaydı kullanıldı, belirtilen fark: taze biberiye değil, kuru hâli seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Sumak",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "sumac, sumak",
+  "gerekce": "Sumak için USDA kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Sarımsak tozu",
+  "fdc": 171325,
+  "kaynak": "SR",
+  "description": "Spices, garlic powder",
+  "arama": "garlic powder, sarimsak tozu",
+  "gerekce": "Sarımsak tozı sarımsak tozu baharatı; SR garlic powder kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Köri (harman)",
+  "fdc": 170924,
+  "kaynak": "SR",
+  "description": "Spices, curry powder",
+  "arama": "curry powder, kori",
+  "gerekce": "Köri (harman) köri tozu; SR curry powder kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Garam masala",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "garam masala",
+  "gerekce": "Garam masala için USDA kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Vanilya şekeri",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "vanilla sugar, vanilya sekeri",
+  "gerekce": "Vanilya şekeri (şeker+vanilya karışımı) için kayıt yok; vanilya ekstresi farklı besin, null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Stevia",
+  "fdc": 170679,
+  "kaynak": "SR",
+  "description": "Sweetener, herbal extract powder from Stevia leaf",
+  "arama": "stevia powder, stevia",
+  "gerekce": "Stevia stevia bitkisel tatlandırıcı; SR stevia yaprağı tozu kaydı kullanıldı, belirtilen fark: dolgu maddesi içeriği markaya göre değişir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Eritritol",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "erythritol, eritritol",
+  "gerekce": "Eritritol için USDA kaydı yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Marmelat (turunç)",
+  "fdc": 168819,
+  "kaynak": "SR",
+  "description": "Marmalade, orange",
+  "arama": "marmalade orange, turunc marmelat",
+  "gerekce": "Marmelat (turunç) portakal marmeladı; SR orange marmalade kaydı aynı yiyecek ve hazırlık.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Hurma ezmesi",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "date paste, hurma ezmesi",
+  "gerekce": "Hurma ezmesi için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Karamel sosu",
+  "fdc": 2710284,
+  "kaynak": "FNDDS",
+  "description": "Topping, butterscotch or caramel",
+  "arama": "caramel sauce, karamel sosu",
+  "gerekce": "Karamel sosu karamel sos sınıfında; FNDDS butterscotch/karamel topping kaydı kullanıldı, belirtilen fark: kıvam/yoğunluk değişebilir.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kek (dilim)",
+  "fdc": 2707853,
+  "kaynak": "FNDDS",
+  "description": "Cake or cupcake, NFS",
+  "arama": "cake nfs, kek dilim",
+  "gerekce": "Kek (dilim) genel kek sınıfında; FNDDS genel kek kaydı kullanıldı, belirtilen fark: kek çeşidi (kakaolu/meyveli) belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Browni",
+  "fdc": 2707903,
+  "kaynak": "FNDDS",
+  "description": "Cookie, brownie, NS as to icing",
+  "arama": "brownie, brownie",
+  "gerekce": "Browni brownie; FNDDS üzeri sosu belirtilmemiş brownie kaydı kullanıldı, belirtilen fark: frosting/dolgu durumu belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Donut",
+  "fdc": 2708062,
+  "kaynak": "FNDDS",
+  "description": "Doughnut, NFS",
+  "arama": "doughnut nfs, donut",
+  "gerekce": "Donut donut; FNDDS genel donut kaydı kullanıldı, belirtilen fark: dolgu/şekerleme türü belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Kurabiye (sade)",
+  "fdc": 2707970,
+  "kaynak": "FNDDS",
+  "description": "Cookie, butter or sugar",
+  "arama": "sugar cookie, kurabiye sade",
+  "gerekce": "Kurabiye (sade) sade kurabiye sınıfında; FNDDS tereyağı/şeker kurabiyesi kaydı kullanıldı, belirtilen fark: çikolata/fındık eklenmemiş sade kayıt seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Karışık çerez",
+  "fdc": 2707504,
+  "kaynak": "FNDDS",
+  "description": "Mixed nuts, NFS",
+  "arama": "mixed nuts, karisik cerez",
+  "gerekce": "Karışık çerez karışık kuruyemiş; FNDDS genel karışık kuruyemiş kaydı kullanıldı, belirtilen fark: fıstık içerip içermemesi ve tuzlama belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Waffle",
+  "fdc": 2708312,
+  "kaynak": "FNDDS",
+  "description": "Waffle, NFS",
+  "arama": "waffle nfs, waffle",
+  "gerekce": "Waffle genel waffle; FNDDS genel waffle kaydı kullanıldı, belirtilen fark: çeşni (çikolatalı/meyveli) belirtilmemiş.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dondurulmuş sebze karışımı",
+  "fdc": 170471,
+  "kaynak": "SR",
+  "description": "Vegetables, mixed, frozen, unprepared",
+  "arama": "mixed vegetables frozen, dondurulmus sebze",
+  "gerekce": "Dondurulmuş sebze karışımı satış hâliyle (pişmemiş/neverileştirilmemiş) dondurulmuş karışık sebze; SR aynı kayıt.",
+  "guven": "yuksek"
+ },
+ {
+  "ad": "Dondurulmuş köfte",
+  "fdc": 171638,
+  "kaynak": "SR",
+  "description": "Meatballs, frozen, Italian style",
+  "arama": "meatballs frozen, dondurulmus kofte",
+  "gerekce": "Dondurulmuş köfte dondurulmuş köfte sınıfında; SR İtalyan tarzı dondurulmuş köfte kaydı kullanıldı, belirtilen fark: tarz tek kaydı İtalyan usulü.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Dondurulmuş börek",
+  "fdc": null,
+  "kaynak": null,
+  "description": null,
+  "arama": "borek frozen, frozen pastry",
+  "gerekce": "Dondurulmuş börek için kayıt yok; null.",
+  "guven": "dusuk"
+ },
+ {
+  "ad": "Tavuk parmak (tender)",
+  "fdc": 173346,
+  "kaynak": "SR",
+  "description": "Chicken tenders, breaded, frozen, prepared",
+  "arama": "chicken tenders frozen, tavuk parmak",
+  "gerekce": "Tavuk parmak ekmekli tavuk parmak; SR dondurulmuş ekmekli tavuk parmak kaydı kullanıldı, belirtilen fark: çiğ/pişmiş durum belirtilmemiş, hazır dondurulmuş hâl seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Bezelye konserve",
+  "fdc": 2709961,
+  "kaynak": "FNDDS",
+  "description": "Green peas, canned, cooked, no added fat",
+  "arama": "green peas canned, bezelye konserve",
+  "gerekce": "Bezelye konserve konserve bezelye; FNDDS yağ eklenmemiş pişmiş konserve bezelye kaydı kullanıldı, belirtilen fark: sodyum/yağ oranı belirtilmemiş, yağsız hâl seçildi.",
+  "guven": "orta"
+ },
+ {
+  "ad": "Beyaz fasulye konserve",
+  "fdc": 175204,
+  "kaynak": "SR",
+  "description": "Beans, white, mature seeds, canned",
+  "arama": "white beans canned, beyaz fasulye konserve",
+  "gerekce": "Beyaz fasulye konserve konserve beyaz fasulye; SR konserve beyaz fasulye kaydı kullanıldı, belirtilen fark: sıvı/suzme ve sodyum oranı belirtilmemiş.",
+  "guven": "orta"
+ }
+]
