@@ -133,36 +133,36 @@
   },
   {
     "ad": "Kalamari",
-    "fdc": null,
+    "fdc": 2706334,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Fried calamari",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Calamari, fried",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 135.0,
+    "arama": "calamari",
+    "gerekce": "Üçüncü turda Kızarmış kalamarın doğrudan kaydını buldum; limon ve mayonez eşlikçileri kayıt açıklamasında yer almıyor.",
+    "guven": "yüksek"
   },
   {
     "ad": "Gnocchi di patate",
-    "fdc": null,
+    "fdc": 2708722,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Potato gnocchi",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Gnocchi, potato",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 188.0,
+    "arama": "gnocchi",
+    "gerekce": "Üçüncü turda Patates gnocchisinin doğrudan kaydını buldum; sos bileşeni kayıtta ayrı belirtilmiyor.",
+    "guven": "yüksek"
   },
   {
     "ad": "Ravioli di spinaci",
-    "fdc": null,
+    "fdc": 2708772,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Spinach ravioli",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Ravioli, cheese and spinach-filled, no sauce",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 160.0,
+    "arama": "ravioli",
+    "gerekce": "Üçüncü turda Peynir ve ıspanak dolgulu ravioli kaydı doğrudan eşleşir; sos eklenmemiş kayıt seçildi.",
+    "guven": "yüksek"
   },
   {
     "ad": "Canelloni",
@@ -188,14 +188,14 @@
   },
   {
     "ad": "Bruschetta al pomodoro",
-    "fdc": null,
+    "fdc": 2707652,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Tomato bruschetta",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Bruschetta",
+    "porsiyon_adi": "1 large or thick slice",
+    "porsiyon_g": 59.0,
+    "arama": "bruschetta",
+    "gerekce": "Üçüncü turda Bruschetta kaydı aynı ekmekli yemeği gösterir; domates ve ekşi maya ayrıntısı açıklamada yoktur.",
+    "guven": "orta"
   },
   {
     "ad": "Pizza margherita",
@@ -397,14 +397,14 @@
   },
   {
     "ad": "Profiteroles",
-    "fdc": null,
+    "fdc": 2708030,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Profiteroles",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Cream puff, eclair, custard or cream filled, not iced",
+    "porsiyon_adi": "1 cream puff (3-1/2\" x 2\")",
+    "porsiyon_g": 100.0,
+    "arama": "cream puff",
+    "gerekce": "Üçüncü turda Krema dolgulu choux hamur tatlısına uygun cream puff kaydını buldum; üzeri kaplama belirtilmediğinden güven orta düzeydedir.",
+    "guven": "orta"
   },
   {
     "ad": "Madeleines",
@@ -485,14 +485,14 @@
   },
   {
     "ad": "Flan",
-    "fdc": null,
+    "fdc": 2705683,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Custard flan",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Flan",
+    "porsiyon_adi": "Quantity not specified",
+    "porsiyon_g": 130.0,
+    "arama": "flan",
+    "gerekce": "Üçüncü turda Flan tatlısının doğrudan kaydını buldum ve porsiyon hedefiyle aynı ağırlığı seçtim.",
+    "guven": "yüksek"
   },
   {
     "ad": "Tarta de Santiago",
@@ -540,36 +540,36 @@
   },
   {
     "ad": "Jamón serrano",
-    "fdc": null,
+    "fdc": 2705879,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Serrano ham",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Ham, prosciutto",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 56.0,
+    "arama": "prosciutto",
+    "gerekce": "Üçüncü turda Serrano ile aynı kuru kürlenmiş jambon türündeki prosciutto kaydını yakın eşleşme olarak kullandım; bölgesel ürün farkı nedeniyle güven orta düzeydedir.",
+    "guven": "orta"
   },
   {
     "ad": "Chorizo",
-    "fdc": null,
+    "fdc": 2706179,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Spanish chorizo",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Chorizo",
+    "porsiyon_adi": "Quantity not specified",
+    "porsiyon_g": 60.0,
+    "arama": "chorizo",
+    "gerekce": "Üçüncü turda Chorizo sosisinin doğrudan kaydını buldum; kaynak İspanyol usulünü belirtirken FNDDS bölgesel türü ayırmıyor.",
+    "guven": "orta"
   },
   {
     "ad": "Croquetas de jamón",
-    "fdc": null,
+    "fdc": 2706508,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Ham croquettes",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Ham croquette",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 140.0,
+    "arama": "ham croquette",
+    "gerekce": "Üçüncü turda Beşamel kaplı jambon kroketinin doğrudan kaydını buldum ve hedefe en yakın porsiyonu seçtim.",
+    "guven": "yüksek"
   },
   {
     "ad": "Empanada gallega",
@@ -650,14 +650,14 @@
   },
   {
     "ad": "Horiatiki",
-    "fdc": 2709830,
+    "fdc": null,
     "kaynak": "FNDDS",
-    "description": "Greek Salad, no dressing",
-    "porsiyon_adi": "1 cup",
-    "porsiyon_g": 105.0,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
     "arama": "Greek salad",
-    "gerekce": "Yunan köy salatasıyla eşleşir; kayıtta sos belirtilmediğinden güven orta düzeydedir.",
-    "guven": "orta"
+    "gerekce": "USDA kaydı marullu Greek salad tarifidir; kaynak Horiatiki ile aynı tarif bileşimi doğrulanamadı.",
+    "guven": "düşük"
   },
   {
     "ad": "Spanakopita",
@@ -903,14 +903,14 @@
   },
   {
     "ad": "Kartoffelsalat",
-    "fdc": 2709543,
+    "fdc": null,
     "kaynak": "FNDDS",
-    "description": "Potato salad, made with mayonnaise",
-    "porsiyon_adi": "1 cup",
-    "porsiyon_g": 275.0,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
     "arama": "potato salad",
-    "gerekce": "Mayonezli patates salatası kaydıdır ve kaynak tarifin temel bileşenleriyle uyumludur.",
-    "guven": "orta"
+    "gerekce": "USDA kaydı mayonezli Amerikan patates salatasıdır; Alman Kartoffelsalat tarifiyle aynı hazırlama doğrulanamadı.",
+    "guven": "düşük"
   },
   {
     "ad": "Sauerkraut",
@@ -1343,14 +1343,14 @@
   },
   {
     "ad": "Kåldolmar",
-    "fdc": 2706620,
+    "fdc": null,
     "kaynak": "FNDDS",
-    "description": "Stuffed cabbage rolls with beef and rice",
-    "porsiyon_adi": "Quantity not specified",
-    "porsiyon_g": 202.0,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
     "arama": "cabbage rolls",
-    "gerekce": "Et ve pirinç dolgulu lahana sarmasıyla eşleşir; kaynak et karışımı ayrıntısını belirtmediği için güven orta düzeydedir.",
-    "guven": "orta"
+    "gerekce": "Bulunan kayıt Amerikan usulü lahana sarmasıdır; Kåldolmar ile aynı tarif doğrulanamadı.",
+    "guven": "düşük"
   },
   {
     "ad": "Semla",
@@ -1607,14 +1607,14 @@
   },
   {
     "ad": "Buffalo chicken wings",
-    "fdc": null,
+    "fdc": 2706070,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Buffalo wings",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Chicken \"wings\" with hot sauce, from fast food / restaurant",
+    "porsiyon_adi": "Quantity not specified",
+    "porsiyon_g": 140.0,
+    "arama": "hot sauce",
+    "gerekce": "Üçüncü turda acı soslu tavuk kanadı kaydını buldum; yan sebze eşlikçisi kayda dahil değildir.",
+    "guven": "orta"
   },
   {
     "ad": "Meatloaf",
@@ -1684,14 +1684,14 @@
   },
   {
     "ad": "Hush puppies",
-    "fdc": null,
+    "fdc": 2707819,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Hush puppies",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Hush puppy",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 152.0,
+    "arama": "hush puppy",
+    "gerekce": "Üçüncü turda Mısır unlu hush puppy kızartmasının doğrudan kaydıdır ve porsiyon hedefe en yakındır.",
+    "guven": "yüksek"
   },
   {
     "ad": "Corned beef hash",
@@ -1706,14 +1706,14 @@
   },
   {
     "ad": "Philly cheesesteak",
-    "fdc": null,
+    "fdc": 2706960,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Cheesesteak",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Cheese steak sandwich or sub on white",
+    "porsiyon_adi": "1 large",
+    "porsiyon_g": 220.0,
+    "arama": "cheese steak sandwich",
+    "gerekce": "Üçüncü turda Dana eti ve peynirli steak sandwich kaydı aynı sandviç türüdür ve hedef porsiyona yakındır.",
+    "guven": "yüksek"
   },
   {
     "ad": "Reuben sandwich",
@@ -1750,25 +1750,25 @@
   },
   {
     "ad": "Sloppy joe",
-    "fdc": null,
+    "fdc": 2706883,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Sloppy joe",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Sloppy joe sandwich, on white bun",
+    "porsiyon_adi": "1 sandwich, any size",
+    "porsiyon_g": 185.0,
+    "arama": "sloppy joe",
+    "gerekce": "Üçüncü turda ekmekli Sloppy Joe sandviçinin doğrudan kaydını kullandım; porsiyon hedefe yakındır.",
+    "guven": "yüksek"
   },
   {
     "ad": "Fried catfish",
-    "fdc": null,
+    "fdc": 2706238,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Fried catfish",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Fish, catfish, fried",
+    "porsiyon_adi": "1 whole fish, any size",
+    "porsiyon_g": 270.0,
+    "arama": "catfish fried",
+    "gerekce": "Üçüncü turda Kızarmış yayın balığının doğrudan kaydıdır; mısır unu kaplaması belirtilmediğinden güven orta düzeydedir.",
+    "guven": "orta"
   },
   {
     "ad": "Baked beans",
@@ -1816,25 +1816,25 @@
   },
   {
     "ad": "Enchiladas de pollo",
-    "fdc": null,
+    "fdc": 2708568,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Chicken enchiladas",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Enchilada, chicken",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 170.0,
+    "arama": "chicken enchilada",
+    "gerekce": "Üçüncü turda Tavuklu enchilada kaydıdır ve hedefe en yakın porsiyon seçeneğidir.",
+    "guven": "orta"
   },
   {
     "ad": "Fajitas de pollo",
-    "fdc": null,
+    "fdc": 2708604,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Chicken fajitas",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Fajita, chicken",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 120.0,
+    "arama": "chicken fajita",
+    "gerekce": "Üçüncü turda Tavuk fajita kaydı aynı yemeği gösterir; mevcut porsiyonlar kaynak porsiyonundan küçüktür.",
+    "guven": "orta"
   },
   {
     "ad": "Salsa verde",
@@ -1904,14 +1904,14 @@
   },
   {
     "ad": "Mexican rice",
-    "fdc": null,
+    "fdc": 2709084,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Mexican rice",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Spanish rice, from restaurant",
+    "porsiyon_adi": "Quantity not specified",
+    "porsiyon_g": 182.0,
+    "arama": "Spanish rice",
+    "gerekce": "Üçüncü turda İspanyol/Meksika usulü domatesli baharatlı pilav kaydıdır ve porsiyon hedefe yakındır.",
+    "guven": "orta"
   },
   {
     "ad": "Refried beans",
@@ -1948,14 +1948,14 @@
   },
   {
     "ad": "Fish tacos",
-    "fdc": null,
+    "fdc": 2708529,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Fish tacos",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Taco, fish",
+    "porsiyon_adi": "1 large",
+    "porsiyon_g": 150.0,
+    "arama": "fish taco",
+    "gerekce": "Üçüncü turda Balıklı taco kaydı doğrudan eşleşir ve en yakın porsiyon seçeneğidir.",
+    "guven": "orta"
   },
   {
     "ad": "Chimichanga",
@@ -2069,14 +2069,14 @@
   },
   {
     "ad": "Ceviche",
-    "fdc": null,
+    "fdc": 2706463,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Peruvian ceviche",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Ceviche",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 250.0,
+    "arama": "ceviche",
+    "gerekce": "Üçüncü turda Ceviche yemeğinin doğrudan kaydıdır ve mevcut porsiyonlar içinde hedefe en yakındır.",
+    "guven": "yüksek"
   },
   {
     "ad": "Anticuchos",
@@ -2289,14 +2289,14 @@
   },
   {
     "ad": "Wonton soup",
-    "fdc": null,
+    "fdc": 2709160,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Wonton soup",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Soup, wonton",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245.0,
+    "arama": "wonton",
+    "gerekce": "Üçüncü turda Wonton çorbasının doğrudan kaydıdır; kaynakta eklenen sebzeler kayıtta ayrı belirtilmediği için güven orta düzeydedir.",
+    "guven": "orta"
   },
   {
     "ad": "Egg fried rice",
@@ -2564,14 +2564,14 @@
   },
   {
     "ad": "Saba",
-    "fdc": null,
+    "fdc": 2706265,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Grilled mackerel",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Fish, mackerel, grilled",
+    "porsiyon_adi": "1 small/regular fillet",
+    "porsiyon_g": 140.0,
+    "arama": "grilled mackerel",
+    "gerekce": "Üçüncü turda Izgara uskumru kaydı Saba ile balık ve pişirme yöntemi bakımından eşleşir; Japon baharatları açıklamada yer almıyor.",
+    "guven": "orta"
   },
   {
     "ad": "Onigiri",
@@ -2641,14 +2641,14 @@
   },
   {
     "ad": "Miso soup",
-    "fdc": null,
+    "fdc": 2707455,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Miso soup",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Soup, miso or tofu",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245.0,
+    "arama": "miso",
+    "gerekce": "Üçüncü turda Miso çorbasının doğrudan kaydıdır; deniz yosunu ayrıntısı kayıtta doğrulanmadığından güven orta düzeydedir.",
+    "guven": "orta"
   },
   {
     "ad": "Mochi",
@@ -3136,14 +3136,14 @@
   },
   {
     "ad": "Chicken biryani",
-    "fdc": null,
+    "fdc": 2706538,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Chicken biryani",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Biryani with chicken",
+    "porsiyon_adi": "Quantity not specified",
+    "porsiyon_g": 245.0,
+    "arama": "biryani",
+    "gerekce": "Üçüncü turda Tavuklu biryani kaydı doğrudan eşleşir; kaynakta geçen kaju ayrıntısı kayıtta belirtilmiyor.",
+    "guven": "orta"
   },
   {
     "ad": "Khichdi",
@@ -3741,14 +3741,14 @@
   },
   {
     "ad": "Injera",
-    "fdc": null,
+    "fdc": 2707796,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
+    "description": "Injera, Ethiopian bread",
+    "porsiyon_adi": "1 injera (12\" dia)",
+    "porsiyon_g": 127.0,
     "arama": "Ethiopian injera",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "gerekce": "Üçüncü turda Etiyopya injera ekmeğinin doğrudan kaydını buldum; porsiyon hedefe yakındır.",
+    "guven": "yüksek"
   },
   {
     "ad": "Malva pudding",
@@ -3780,7 +3780,7 @@
     "porsiyon_adi": "1 double cheeseburger",
     "porsiyon_g": 165.0,
     "arama": "Double cheeseburger",
-    "gerekce": "Çift peynirli burger kaydı aynı yemek türüdür; kaynak zinciri belirtilmediği için güven orta düzeydedir.",
+    "gerekce": "McDonalds marka double cheeseburger kaydıdır; marka belirtilmeyen aday için aynı burger türüne en yakın mevcut kayıttır.",
     "guven": "orta"
   },
   {
@@ -3807,14 +3807,14 @@
   },
   {
     "ad": "Fish burger",
-    "fdc": null,
+    "fdc": 2707027,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Fish burger",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Fish sandwich, fried, on white bun",
+    "porsiyon_adi": "1 regular sandwich",
+    "porsiyon_g": 130.0,
+    "arama": "fish sandwich fried",
+    "gerekce": "Üçüncü turda kızarmış balık fileto burgerine uyan sandviç kaydını buldum; porsiyon hedefe en yakın seçenektir.",
+    "guven": "yüksek"
   },
   {
     "ad": "Veggie burger",
@@ -3928,14 +3928,14 @@
   },
   {
     "ad": "Caffe latte",
-    "fdc": null,
+    "fdc": 2710386,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "Caffe latte",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Coffee, Latte",
+    "porsiyon_adi": "1 cup (8 fl oz)",
+    "porsiyon_g": 240.0,
+    "arama": "coffee latte",
+    "gerekce": "Üçüncü turda Latte kahvesinin doğrudan kaydı ve kaynak porsiyonuyla aynıdır.",
+    "guven": "yüksek"
   },
   {
     "ad": "Cappuccino",
@@ -3949,7 +3949,7 @@
     "guven": "yüksek"
   },
   {
-    "ad": "Iced tea",
+    "ad": "Iced tea (şekerli)",
     "fdc": 2710515,
     "kaynak": "FNDDS",
     "description": "Tea, iced, brewed, black, pre-sweetened with sugar",
@@ -3975,8 +3975,8 @@
     "fdc": 2708062,
     "kaynak": "FNDDS",
     "description": "Doughnut, NFS",
-    "porsiyon_adi": "1 cup",
-    "porsiyon_g": 60.0,
+    "porsiyon_adi": "1 doughnut",
+    "porsiyon_g": 75.0,
     "arama": "doughnut",
     "gerekce": "Sade halka donut kaydıdır; porsiyon seçenekleri içinde hedefe en yakınıdır.",
     "guven": "orta"
@@ -4273,7 +4273,7 @@
     "kaynak": "FNDDS",
     "description": "Vegetable sandwich wrap",
     "porsiyon_adi": "Quantity not specified",
-    "porsiyon_g": 160.0,
+    "porsiyon_g": 165.0,
     "arama": "vegetable wrap",
     "gerekce": "Sebzeli dürüm kaydı temel ürünle eşleşir; humus ve sos ayrıntıları kayıtta yoktur.",
     "guven": "orta"
@@ -4654,14 +4654,14 @@
   },
   {
     "ad": "New York cheesecake",
-    "fdc": null,
+    "fdc": 2707861,
     "kaynak": "FNDDS",
-    "description": null,
-    "porsiyon_adi": null,
-    "porsiyon_g": null,
-    "arama": "New York cheesecake",
-    "gerekce": "İngilizce ad ve uygun eşanlamlılarla FNDDS aramasında aynı hazırlama ve temel bileşenlere sahip güvenilir kayıt belirlenemedi.",
-    "guven": "düşük"
+    "description": "Cheesecake, plain",
+    "porsiyon_adi": "1 piece/slice, any size",
+    "porsiyon_g": 175.0,
+    "arama": "cheesecake",
+    "gerekce": "Üçüncü turda sade cheesecake kaydını New York cheesecake ile aynı temel tatlı olarak eşleştirdim; porsiyon hedefe yakındır.",
+    "guven": "orta"
   },
   {
     "ad": "Brownie",
