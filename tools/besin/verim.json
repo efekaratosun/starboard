@@ -1,0 +1,830 @@
+{
+  "title": "USDA SR Legacy kayıtlarından kuru madde verimi ve net yağ farkı",
+  "source_files": [
+    "tools/usda/cache/index.json (SR Legacy)",
+    "tools/usda/cache/index-survey.json (FNDDS index)",
+    "tools/usda/cache/surveyDownload.json (SurveyFoods inputFoods)"
+  ],
+  "methods": {
+    "yield": "verim_katsayisi = (100 - cig.su_g_100g) / (100 - pismis.su_g_100g); katsayi g pişmiş/g çiğ, yüzde için ×100. Kuru madde korunumu varsayılır.",
+    "fat": "net_yag_degisim_g_per_100g_raw = (pismis.yag_g_100g × verim_katsayisi) - cig.yag_g_100g. Bu makro farkıdır; yağın kaynağını/gerçek emilimini tek başına kanıtlamaz."
+  },
+  "pisme_verimi": [
+    {
+      "hedef": "Bulgur, kuru",
+      "cig": {
+        "fdcId": 170688,
+        "description": "Bulgur, dry",
+        "water_g_100g": 9,
+        "fat_g_100g": 1.33
+      },
+      "pismis": {
+        "fdcId": 170287,
+        "description": "Bulgur, cooked",
+        "water_g_100g": 77.8,
+        "fat_g_100g": 0.24
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 91,
+      "dry_matter_g_100g_cooked": 22.2,
+      "verim_katsayisi_cooked_g_per_raw_g": 4.0991,
+      "verim_yuzde": 409.91,
+      "net_yag_degisim_g_per_100g_raw": -0.346,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Pirinç, uzun taneli beyaz",
+      "cig": {
+        "fdcId": 169756,
+        "description": "Rice, white, long-grain, regular, raw, unenriched",
+        "water_g_100g": 11.6,
+        "fat_g_100g": 0.66
+      },
+      "pismis": {
+        "fdcId": 169757,
+        "description": "Rice, white, long-grain, regular, unenriched, cooked without salt",
+        "water_g_100g": 68.4,
+        "fat_g_100g": 0.28
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 88.4,
+      "dry_matter_g_100g_cooked": 31.6,
+      "verim_katsayisi_cooked_g_per_raw_g": 2.79747,
+      "verim_yuzde": 279.75,
+      "net_yag_degisim_g_per_100g_raw": 0.123,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Makarna, zenginleştirilmiş kuru/pişmiş",
+      "cig": {
+        "fdcId": 169736,
+        "description": "Pasta, dry, enriched",
+        "water_g_100g": 9.9,
+        "fat_g_100g": 1.51
+      },
+      "pismis": {
+        "fdcId": 169737,
+        "description": "Pasta, cooked, enriched, without added salt",
+        "water_g_100g": 62.1,
+        "fat_g_100g": 0.93
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 90.1,
+      "dry_matter_g_100g_cooked": 37.9,
+      "verim_katsayisi_cooked_g_per_raw_g": 2.37731,
+      "verim_yuzde": 237.73,
+      "net_yag_degisim_g_per_100g_raw": 0.701,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Kuru fasulye, navy tipi olgun tohum",
+      "cig": {
+        "fdcId": 173745,
+        "description": "Beans, navy, mature seeds, raw",
+        "water_g_100g": 12.1,
+        "fat_g_100g": 1.5
+      },
+      "pismis": {
+        "fdcId": 173746,
+        "description": "Beans, navy, mature seeds, cooked, boiled, without salt",
+        "water_g_100g": 63.8,
+        "fat_g_100g": 0.62
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 87.9,
+      "dry_matter_g_100g_cooked": 36.2,
+      "verim_katsayisi_cooked_g_per_raw_g": 2.42818,
+      "verim_yuzde": 242.82,
+      "net_yag_degisim_g_per_100g_raw": 0.005,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Nohut, olgun tohum",
+      "cig": {
+        "fdcId": 173756,
+        "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, raw",
+        "water_g_100g": 7.68,
+        "fat_g_100g": 6.04
+      },
+      "pismis": {
+        "fdcId": 173757,
+        "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+        "water_g_100g": 60.2,
+        "fat_g_100g": 2.59
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 92.32,
+      "dry_matter_g_100g_cooked": 39.8,
+      "verim_katsayisi_cooked_g_per_raw_g": 2.3196,
+      "verim_yuzde": 231.96,
+      "net_yag_degisim_g_per_100g_raw": -0.032,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Mercimek, olgun tohum (renk belirtilmemiş)",
+      "cig": {
+        "fdcId": 172420,
+        "description": "Lentils, raw",
+        "water_g_100g": 8.26,
+        "fat_g_100g": 1.06
+      },
+      "pismis": {
+        "fdcId": 172421,
+        "description": "Lentils, mature seeds, cooked, boiled, without salt",
+        "water_g_100g": 69.6,
+        "fat_g_100g": 0.38
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 91.74,
+      "dry_matter_g_100g_cooked": 30.4,
+      "verim_katsayisi_cooked_g_per_raw_g": 3.01776,
+      "verim_yuzde": 301.78,
+      "net_yag_degisim_g_per_100g_raw": 0.087,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Barbunya / cranberry bean",
+      "cig": null,
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Börülce, olgun tohum (common blackeye)",
+      "cig": {
+        "fdcId": 173758,
+        "description": "Cowpeas, common (blackeyes, crowder, southern), mature seeds, raw",
+        "water_g_100g": 12,
+        "fat_g_100g": 1.26
+      },
+      "pismis": {
+        "fdcId": 173759,
+        "description": "Cowpeas, common (blackeyes, crowder, southern), mature seeds, cooked, boiled, without salt",
+        "water_g_100g": 70,
+        "fat_g_100g": 0.53
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 88,
+      "dry_matter_g_100g_cooked": 30,
+      "verim_katsayisi_cooked_g_per_raw_g": 2.93333,
+      "verim_yuzde": 293.33,
+      "net_yag_degisim_g_per_100g_raw": 0.295,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Yeşil mercimek, renge özel kayıt",
+      "cig": null,
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Kırmızı mercimek",
+      "cig": {
+        "fdcId": 174284,
+        "description": "Lentils, pink or red, raw",
+        "water_g_100g": 7.82,
+        "fat_g_100g": 2.17
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Bakla, olgun tohum",
+      "cig": {
+        "fdcId": 175205,
+        "description": "Broadbeans (fava beans), mature seeds, raw",
+        "water_g_100g": 11,
+        "fat_g_100g": 1.53
+      },
+      "pismis": {
+        "fdcId": 173753,
+        "description": "Broadbeans (fava beans), mature seeds, cooked, boiled, without salt",
+        "water_g_100g": 71.5,
+        "fat_g_100g": 0.4
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 89,
+      "dry_matter_g_100g_cooked": 28.5,
+      "verim_katsayisi_cooked_g_per_raw_g": 3.12281,
+      "verim_yuzde": 312.28,
+      "net_yag_degisim_g_per_100g_raw": -0.281,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Ispanak",
+      "cig": {
+        "fdcId": 168462,
+        "description": "Spinach, raw",
+        "water_g_100g": 91.4,
+        "fat_g_100g": 0.39
+      },
+      "pismis": {
+        "fdcId": 168463,
+        "description": "Spinach, cooked, boiled, drained, without salt",
+        "water_g_100g": 91.2,
+        "fat_g_100g": 0.26
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 8.6,
+      "dry_matter_g_100g_cooked": 8.8,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.97727,
+      "verim_yuzde": 97.73,
+      "net_yag_degisim_g_per_100g_raw": -0.136,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Patates, kabuklu, haşlanmış",
+      "cig": {
+        "fdcId": 170026,
+        "description": "Potatoes, flesh and skin, raw",
+        "water_g_100g": 79.2,
+        "fat_g_100g": 0.09
+      },
+      "pismis": {
+        "fdcId": 170438,
+        "description": "Potatoes, boiled, cooked in skin, flesh, without salt",
+        "water_g_100g": 77,
+        "fat_g_100g": 0.1
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 20.8,
+      "dry_matter_g_100g_cooked": 23,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.90435,
+      "verim_yuzde": 90.43,
+      "net_yag_degisim_g_per_100g_raw": 0,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Havuç",
+      "cig": {
+        "fdcId": 170393,
+        "description": "Carrots, raw",
+        "water_g_100g": 88.3,
+        "fat_g_100g": 0.24
+      },
+      "pismis": {
+        "fdcId": 170394,
+        "description": "Carrots, cooked, boiled, drained, without salt",
+        "water_g_100g": 90.2,
+        "fat_g_100g": 0.18
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 11.7,
+      "dry_matter_g_100g_cooked": 9.8,
+      "verim_katsayisi_cooked_g_per_raw_g": 1.19388,
+      "verim_yuzde": 119.39,
+      "net_yag_degisim_g_per_100g_raw": -0.025,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Kabak (zucchini)",
+      "cig": {
+        "fdcId": 169291,
+        "description": "Squash, summer, zucchini, includes skin, raw",
+        "water_g_100g": 94.8,
+        "fat_g_100g": 0.32
+      },
+      "pismis": {
+        "fdcId": 169292,
+        "description": "Squash, summer, zucchini, includes skin, cooked, boiled, drained, without salt",
+        "water_g_100g": 95.2,
+        "fat_g_100g": 0.36
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 5.2,
+      "dry_matter_g_100g_cooked": 4.8,
+      "verim_katsayisi_cooked_g_per_raw_g": 1.08333,
+      "verim_yuzde": 108.33,
+      "net_yag_degisim_g_per_100g_raw": 0.07,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Patlıcan",
+      "cig": {
+        "fdcId": 169228,
+        "description": "Eggplant, raw",
+        "water_g_100g": 92.3,
+        "fat_g_100g": 0.18
+      },
+      "pismis": {
+        "fdcId": 169229,
+        "description": "Eggplant, cooked, boiled, drained, without salt",
+        "water_g_100g": 89.7,
+        "fat_g_100g": 0.23
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 7.7,
+      "dry_matter_g_100g_cooked": 10.3,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.74757,
+      "verim_yuzde": 74.76,
+      "net_yag_degisim_g_per_100g_raw": -0.008,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Tatlı yeşil biber",
+      "cig": {
+        "fdcId": 170427,
+        "description": "Peppers, sweet, green, raw",
+        "water_g_100g": 93.9,
+        "fat_g_100g": 0.17
+      },
+      "pismis": {
+        "fdcId": 170428,
+        "description": "Peppers, sweet, green, cooked, boiled, drained, without salt",
+        "water_g_100g": 91.9,
+        "fat_g_100g": 0.2
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 6.1,
+      "dry_matter_g_100g_cooked": 8.1,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.75309,
+      "verim_yuzde": 75.31,
+      "net_yag_degisim_g_per_100g_raw": -0.019,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Beyaz lahana",
+      "cig": {
+        "fdcId": 169975,
+        "description": "Cabbage, raw",
+        "water_g_100g": 92.2,
+        "fat_g_100g": 0.1
+      },
+      "pismis": {
+        "fdcId": 169976,
+        "description": "Cabbage, cooked, boiled, drained, without salt",
+        "water_g_100g": 92.6,
+        "fat_g_100g": 0.06
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 7.8,
+      "dry_matter_g_100g_cooked": 7.4,
+      "verim_katsayisi_cooked_g_per_raw_g": 1.05405,
+      "verim_yuzde": 105.41,
+      "net_yag_degisim_g_per_100g_raw": -0.037,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Pırasa",
+      "cig": {
+        "fdcId": 169246,
+        "description": "Leeks, (bulb and lower leaf-portion), raw",
+        "water_g_100g": 83,
+        "fat_g_100g": 0.3
+      },
+      "pismis": {
+        "fdcId": 168426,
+        "description": "Leeks, (bulb and lower leaf-portion), cooked, boiled, drained, without salt",
+        "water_g_100g": 90.8,
+        "fat_g_100g": 0.2
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 17,
+      "dry_matter_g_100g_cooked": 9.2,
+      "verim_katsayisi_cooked_g_per_raw_g": 1.84783,
+      "verim_yuzde": 184.78,
+      "net_yag_degisim_g_per_100g_raw": 0.07,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Enginar",
+      "cig": {
+        "fdcId": 169205,
+        "description": "Artichokes, (globe or french), raw",
+        "water_g_100g": 84.9,
+        "fat_g_100g": 0.15
+      },
+      "pismis": {
+        "fdcId": 168386,
+        "description": "Artichokes, (globe or french), cooked, boiled, drained, without salt",
+        "water_g_100g": 84.1,
+        "fat_g_100g": 0.34
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 15.1,
+      "dry_matter_g_100g_cooked": 15.9,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.94969,
+      "verim_yuzde": 94.97,
+      "net_yag_degisim_g_per_100g_raw": 0.173,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Bamya",
+      "cig": {
+        "fdcId": 169260,
+        "description": "Okra, raw",
+        "water_g_100g": 89.6,
+        "fat_g_100g": 0.19
+      },
+      "pismis": {
+        "fdcId": 169261,
+        "description": "Okra, cooked, boiled, drained, without salt",
+        "water_g_100g": 92.6,
+        "fat_g_100g": 0.21
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 10.4,
+      "dry_matter_g_100g_cooked": 7.4,
+      "verim_katsayisi_cooked_g_per_raw_g": 1.40541,
+      "verim_yuzde": 140.54,
+      "net_yag_degisim_g_per_100g_raw": 0.105,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Taze fasulye (snap bean)",
+      "cig": {
+        "fdcId": 169961,
+        "description": "Beans, snap, green, raw",
+        "water_g_100g": 90.3,
+        "fat_g_100g": 0.22
+      },
+      "pismis": {
+        "fdcId": 169141,
+        "description": "Beans, snap, green, cooked, boiled, drained, without salt",
+        "water_g_100g": 89.2,
+        "fat_g_100g": 0.28
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 9.7,
+      "dry_matter_g_100g_cooked": 10.8,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.89815,
+      "verim_yuzde": 89.81,
+      "net_yag_degisim_g_per_100g_raw": 0.031,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Soğan",
+      "cig": {
+        "fdcId": 170000,
+        "description": "Onions, raw",
+        "water_g_100g": 89.1,
+        "fat_g_100g": 0.1
+      },
+      "pismis": {
+        "fdcId": 170001,
+        "description": "Onions, cooked, boiled, drained, without salt",
+        "water_g_100g": 87.9,
+        "fat_g_100g": 0.19
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 10.9,
+      "dry_matter_g_100g_cooked": 12.1,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.90083,
+      "verim_yuzde": 90.08,
+      "net_yag_degisim_g_per_100g_raw": 0.071,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Kuzu, perakende kesim bileşik, 1/4 inç yağlı",
+      "cig": {
+        "fdcId": 172479,
+        "description": "Lamb, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/4\" fat, choice, raw",
+        "water_g_100g": 60.7,
+        "fat_g_100g": 21.6
+      },
+      "pismis": {
+        "fdcId": 172480,
+        "description": "Lamb, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/4\" fat, choice, cooked",
+        "water_g_100g": 53.7,
+        "fat_g_100g": 20.9
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 39.3,
+      "dry_matter_g_100g_cooked": 46.3,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.84881,
+      "verim_yuzde": 84.88,
+      "net_yag_degisim_g_per_100g_raw": -3.86,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Dana, omuz üst/orta biftek, bütün kalite, 0 inç yağ, ızgara",
+      "cig": {
+        "fdcId": 172132,
+        "description": "Beef, chuck, shoulder clod, shoulder top and center steaks, separable lean and fat, trimmed to 0\" fat, all grades, raw",
+        "water_g_100g": 72.5,
+        "fat_g_100g": 5.88
+      },
+      "pismis": {
+        "fdcId": 172133,
+        "description": "Beef, chuck, shoulder clod, shoulder top and center steaks, separable lean and fat, trimmed to 0\" fat, all grades, cooked, grilled",
+        "water_g_100g": 64.9,
+        "fat_g_100g": 7.66
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 27.5,
+      "dry_matter_g_100g_cooked": 35.1,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.78348,
+      "verim_yuzde": 78.35,
+      "net_yag_degisim_g_per_100g_raw": 0.121,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Dana kıyma, %70 yağsız, çiğ / tavada pişmiş köfte",
+      "cig": {
+        "fdcId": 168652,
+        "description": "Beef, ground, 70% lean meat / 30% fat, raw",
+        "water_g_100g": 54.3,
+        "fat_g_100g": 30
+      },
+      "pismis": {
+        "fdcId": 168650,
+        "description": "Beef, ground, 70% lean meat / 30% fat, patty cooked, pan-broiled",
+        "water_g_100g": 59.4,
+        "fat_g_100g": 15.5
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 45.7,
+      "dry_matter_g_100g_cooked": 40.6,
+      "verim_katsayisi_cooked_g_per_raw_g": 1.12562,
+      "verim_yuzde": 112.56,
+      "net_yag_degisim_g_per_100g_raw": -12.553,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Tavuk göğsü, et ve deri / fırında pişmiş",
+      "cig": {
+        "fdcId": 171474,
+        "description": "Chicken, broilers or fryers, breast, meat and skin, raw",
+        "water_g_100g": 69.5,
+        "fat_g_100g": 9.25
+      },
+      "pismis": {
+        "fdcId": 171075,
+        "description": "Chicken, broilers or fryers, breast, meat and skin, cooked, roasted",
+        "water_g_100g": 62.4,
+        "fat_g_100g": 7.78
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 30.5,
+      "dry_matter_g_100g_cooked": 37.6,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.81117,
+      "verim_yuzde": 81.12,
+      "net_yag_degisim_g_per_100g_raw": -2.939,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Tavuk but, et ve deri / fırında pişmiş",
+      "cig": {
+        "fdcId": 172385,
+        "description": "Chicken, broilers or fryers, thigh, meat and skin, raw",
+        "water_g_100g": 66.5,
+        "fat_g_100g": 16.6
+      },
+      "pismis": {
+        "fdcId": 173625,
+        "description": "Chicken, broilers or fryers, thigh, meat and skin, cooked, roasted",
+        "water_g_100g": 62,
+        "fat_g_100g": 14.7
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 33.5,
+      "dry_matter_g_100g_cooked": 38,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.88158,
+      "verim_yuzde": 88.16,
+      "net_yag_degisim_g_per_100g_raw": -3.641,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    },
+    {
+      "hedef": "Balık, Atlantik morina / kuru ısıda pişmiş",
+      "cig": {
+        "fdcId": 171955,
+        "description": "Fish, cod, Atlantic, raw",
+        "water_g_100g": 81.2,
+        "fat_g_100g": 0.67
+      },
+      "pismis": {
+        "fdcId": 171956,
+        "description": "Fish, cod, Atlantic, cooked, dry heat",
+        "water_g_100g": 75.9,
+        "fat_g_100g": 0.86
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 18.8,
+      "dry_matter_g_100g_cooked": 24.1,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.78008,
+      "verim_yuzde": 78.01,
+      "net_yag_degisim_g_per_100g_raw": 0.001,
+      "not": "Kuru madde korunumu varsayımı; kayıtlı pişirme yöntemi/veri tanımı yukarıdaki açıklamalardadır."
+    }
+  ],
+  "kizartma_yag_farki": [
+    {
+      "hedef": "Patates, çiğ / kızarmış patates",
+      "cig": {
+        "fdcId": 170026,
+        "description": "Potatoes, flesh and skin, raw",
+        "water_g_100g": 79.2,
+        "fat_g_100g": 0.09
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Patlıcan, çiğ / kızarmış",
+      "cig": {
+        "fdcId": 169228,
+        "description": "Eggplant, raw",
+        "water_g_100g": 92.3,
+        "fat_g_100g": 0.18
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Kabak, çiğ / kızarmış",
+      "cig": {
+        "fdcId": 169291,
+        "description": "Squash, summer, zucchini, includes skin, raw",
+        "water_g_100g": 94.8,
+        "fat_g_100g": 0.32
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Biber, çiğ / kızarmış",
+      "cig": {
+        "fdcId": 170427,
+        "description": "Peppers, sweet, green, raw",
+        "water_g_100g": 93.9,
+        "fat_g_100g": 0.17
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Karnabahar, çiğ / kızarmış",
+      "cig": {
+        "fdcId": 169986,
+        "description": "Cauliflower, raw",
+        "water_g_100g": 92.1,
+        "fat_g_100g": 0.28
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Balık, çiğ / kızarmış (aynı tür)",
+      "cig": {
+        "fdcId": 171955,
+        "description": "Fish, cod, Atlantic, raw",
+        "water_g_100g": 81.2,
+        "fat_g_100g": 0.67
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Küçük balık (hamsi) / kızarmış benzer tür",
+      "cig": {
+        "fdcId": 174182,
+        "description": "Fish, anchovy, european, raw",
+        "water_g_100g": 73.4,
+        "fat_g_100g": 4.84
+      },
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    },
+    {
+      "hedef": "Kalamar, karışık tür, çiğ / kızarmış",
+      "cig": {
+        "fdcId": 174223,
+        "description": "Mollusks, squid, mixed species, raw",
+        "water_g_100g": 78.6,
+        "fat_g_100g": 1.38
+      },
+      "pismis": {
+        "fdcId": 171982,
+        "description": "Mollusks, squid, mixed species, cooked, fried",
+        "water_g_100g": 64.5,
+        "fat_g_100g": 7.48
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 21.4,
+      "dry_matter_g_100g_cooked": 35.5,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.60282,
+      "verim_yuzde": 60.28,
+      "net_yag_degisim_g_per_100g_raw": 3.129,
+      "not": "Formülün verdiği net yağ farkı; kaplama/hamur ve diğer bileşen etkileri ayrıştırılmaz, saf emilmiş yağ ölçümü değildir."
+    },
+    {
+      "hedef": "Tavuk göğsü et ve deri, çiğ / kaplamalı kızarmış",
+      "cig": {
+        "fdcId": 171474,
+        "description": "Chicken, broilers or fryers, breast, meat and skin, raw",
+        "water_g_100g": 69.5,
+        "fat_g_100g": 9.25
+      },
+      "pismis": {
+        "fdcId": 171475,
+        "description": "Chicken, broilers or fryers, breast, meat and skin, cooked, fried, batter",
+        "water_g_100g": 51.6,
+        "fat_g_100g": 13.2
+      },
+      "durum": "turetilmis",
+      "dry_matter_g_100g_raw": 30.5,
+      "dry_matter_g_100g_cooked": 48.4,
+      "verim_katsayisi_cooked_g_per_raw_g": 0.63017,
+      "verim_yuzde": 63.02,
+      "net_yag_degisim_g_per_100g_raw": -0.932,
+      "not": "Formülün verdiği net yağ farkı; kaplama/hamur ve diğer bileşen etkileri ayrıştırılmaz, saf emilmiş yağ ölçümü değildir."
+    },
+    {
+      "hedef": "Mayalı hamur / doughnut veya kızarmış hamur",
+      "cig": null,
+      "pismis": null,
+      "durum": "bulunamadi",
+      "not": "İstenen formda eşleşmiş iki USDA SR Legacy kaydı bulunamadı; hesap yapılmadı."
+    }
+  ],
+  "tatli_inputfoods": [
+    {
+      "hedef": "Baklava / şerbet",
+      "durum": "bulunamadi",
+      "fdcId": 2708044,
+      "description": "Baklava",
+      "inputFoods": [
+        {
+          "ingredientCode": 2052,
+          "ingredientDescription": "Vanilla extract, imitation, no alcohol",
+          "ingredientWeight_g": 13
+        },
+        {
+          "ingredientCode": 19335,
+          "ingredientDescription": "Sugars, granulated",
+          "ingredientWeight_g": 125
+        },
+        {
+          "ingredientCode": 12155,
+          "ingredientDescription": "Nuts, walnuts, English, halves, raw",
+          "ingredientWeight_g": 60
+        },
+        {
+          "ingredientCode": 9152,
+          "ingredientDescription": "Lemon juice, raw",
+          "ingredientWeight_g": 31
+        },
+        {
+          "ingredientCode": 18338,
+          "ingredientDescription": "Phyllo dough",
+          "ingredientWeight_g": 453.6
+        },
+        {
+          "ingredientCode": 1001,
+          "ingredientDescription": "Butter, stick, salted",
+          "ingredientWeight_g": 224
+        },
+        {
+          "ingredientCode": 12061,
+          "ingredientDescription": "Nuts, almonds, whole, raw",
+          "ingredientWeight_g": 70
+        },
+        {
+          "ingredientCode": 2010,
+          "ingredientDescription": "Spices, cinnamon, ground",
+          "ingredientWeight_g": 2.6
+        },
+        {
+          "ingredientCode": 14429,
+          "ingredientDescription": "Beverages, water, tap, municipal",
+          "ingredientWeight_g": 177.75
+        },
+        {
+          "ingredientCode": 12152,
+          "ingredientDescription": "Nuts, pistachio nuts, dry roasted, without salt added",
+          "ingredientWeight_g": 64
+        }
+      ],
+      "not": "Şeker ve su inputFoods içinde mevcut; şerbet olarak ayrılmış bileşen veya bitmiş tarif ağırlığı/yield alanı yok. Emilim çıkarılamaz."
+    },
+    {
+      "hedef": "Sütlaç / rice pudding",
+      "durum": "bulunamadi",
+      "fdcId": 2705685,
+      "description": "Pudding, rice",
+      "inputFoods": [
+        {
+          "ingredientCode": 19193,
+          "ingredientDescription": "Puddings, rice, ready-to-eat",
+          "ingredientWeight_g": 100
+        }
+      ],
+      "not": "FNDDS inputFoods yalnızca 100 g hazır rice pudding girdisi; çiğ süt/pirinç tarifi ve pişmiş yield yok. Pişme kaybı çıkarılamaz."
+    },
+    {
+      "hedef": "Kadayıf",
+      "durum": "bulunamadi",
+      "not": "İstenen adla FNDDS SurveyFoods kaydı bulunamadı.",
+      "fdcId": null
+    }
+  ]
+}

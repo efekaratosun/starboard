@@ -75,3 +75,68 @@ TÜBER porsiyonları beslenme rehberi standardıdır, restoran porsiyonunun evre
 - T.C. Sağlık Bakanlığı, *Türkiye Beslenme Rehberi (TÜBER) 2022*: https://ogmmateryal.eba.gov.tr/panel/upload/kitap/ihbzzxrspnf.pdf
 - USDA FoodData Central, SR Legacy, April 2018 lokal JSON, foodPortions: `tools/usda/cache/FoodData_Central_sr_legacy_food_json_2018-04.json`.
 - Oil absorption study: https://doi.org/10.1080/15428052.2018.1465503
+
+## USDA kayıtlarından türetilen verim ve yağ emilimi
+
+Hesaplar yalnız yerel USDA kayıtlarındaki su ve yağ alanlarından türetilmiştir. Kuru madde korunumu varsayımıyla **verim katsayısı (g pişmiş/g çiğ) = (100 − su_çiğ) / (100 − su_pişmiş)**; verim yüzdesi = katsayı × 100. **Net yağ farkı (g/100 g çiğ) = yağ_pişmiş × verim katsayısı − yağ_çiğ.** Yağ farkı gerçek emilen yağın ölçümü değildir: yağın kaynağını ayırmaz; kaplama, tarif bileşenleri, süzülen yağ ve besin kaybı sonucu etkileyebilir. Eşleşen kayıt bulunmayan satırlara oran tahmini yapılmadı.
+
+Kaynak kayıtları: USDA FoodData Central SR Legacy, Nisan 2018 yerel indeks tools/usda/cache/index.json (FDC açıklamaları ve su/yağ alanları; [dataset](https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_json_2018-04.zip)). FNDDS bileşenleri: tools/usda/cache/surveyDownload.json / SurveyFoods inputFoods ([dataset](https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_survey_food_json_2024-10-31.zip)). Hesaplar tekrar üretilebilir: node tools/besin/verim.js. Tam kayıt ve kullanılan FDC numaraları tools/besin/verim.json içindedir.
+
+### Pişirme verimi
+
+| Hedef | Verim (%) | Çiğ kayıt (FDC, açıklama; su ve yağ /100 g) | Pişmiş kayıt (FDC, açıklama; su ve yağ /100 g) | Net yağ farkı (g/100 g çiğ) |
+|---|---:|---|---|---:|
+| Bulgur, kuru | 409.91 | 170688 — Bulgur, dry (su 9 g, yağ 1.33 g/100 g) | 170287 — Bulgur, cooked (su 77.8 g, yağ 0.24 g/100 g) | -0.346 |
+| Pirinç, uzun taneli beyaz | 279.75 | 169756 — Rice, white, long-grain, regular, raw, unenriched (su 11.6 g, yağ 0.66 g/100 g) | 169757 — Rice, white, long-grain, regular, unenriched, cooked without salt (su 68.4 g, yağ 0.28 g/100 g) | 0.123 |
+| Makarna, zenginleştirilmiş kuru/pişmiş | 237.73 | 169736 — Pasta, dry, enriched (su 9.9 g, yağ 1.51 g/100 g) | 169737 — Pasta, cooked, enriched, without added salt (su 62.1 g, yağ 0.93 g/100 g) | 0.701 |
+| Kuru fasulye, navy tipi olgun tohum | 242.82 | 173745 — Beans, navy, mature seeds, raw (su 12.1 g, yağ 1.5 g/100 g) | 173746 — Beans, navy, mature seeds, cooked, boiled, without salt (su 63.8 g, yağ 0.62 g/100 g) | 0.005 |
+| Nohut, olgun tohum | 231.96 | 173756 — Chickpeas (garbanzo beans, bengal gram), mature seeds, raw (su 7.68 g, yağ 6.04 g/100 g) | 173757 — Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt (su 60.2 g, yağ 2.59 g/100 g) | -0.032 |
+| Mercimek, olgun tohum (renk belirtilmemiş) | 301.78 | 172420 — Lentils, raw (su 8.26 g, yağ 1.06 g/100 g) | 172421 — Lentils, mature seeds, cooked, boiled, without salt (su 69.6 g, yağ 0.38 g/100 g) | 0.087 |
+| Barbunya / cranberry bean | bulunamadı | bulunamadı (eşleşen FDC ID/açıklama yok) | bulunamadı (eşleşen FDC ID/açıklama yok) | bulunamadı |
+| Börülce, olgun tohum (common blackeye) | 293.33 | 173758 — Cowpeas, common (blackeyes, crowder, southern), mature seeds, raw (su 12 g, yağ 1.26 g/100 g) | 173759 — Cowpeas, common (blackeyes, crowder, southern), mature seeds, cooked, boiled, without salt (su 70 g, yağ 0.53 g/100 g) | 0.295 |
+| Yeşil mercimek, renge özel kayıt | bulunamadı | bulunamadı (eşleşen FDC ID/açıklama yok) | bulunamadı (eşleşen FDC ID/açıklama yok) | bulunamadı |
+| Kırmızı mercimek | bulunamadı | 174284 — Lentils, pink or red, raw (su 7.82 g, yağ 2.17 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) | bulunamadı |
+| Bakla, olgun tohum | 312.28 | 175205 — Broadbeans (fava beans), mature seeds, raw (su 11 g, yağ 1.53 g/100 g) | 173753 — Broadbeans (fava beans), mature seeds, cooked, boiled, without salt (su 71.5 g, yağ 0.4 g/100 g) | -0.281 |
+| Ispanak | 97.73 | 168462 — Spinach, raw (su 91.4 g, yağ 0.39 g/100 g) | 168463 — Spinach, cooked, boiled, drained, without salt (su 91.2 g, yağ 0.26 g/100 g) | -0.136 |
+| Patates, kabuklu, haşlanmış | 90.43 | 170026 — Potatoes, flesh and skin, raw (su 79.2 g, yağ 0.09 g/100 g) | 170438 — Potatoes, boiled, cooked in skin, flesh, without salt (su 77 g, yağ 0.1 g/100 g) | 0 |
+| Havuç | 119.39 | 170393 — Carrots, raw (su 88.3 g, yağ 0.24 g/100 g) | 170394 — Carrots, cooked, boiled, drained, without salt (su 90.2 g, yağ 0.18 g/100 g) | -0.025 |
+| Kabak (zucchini) | 108.33 | 169291 — Squash, summer, zucchini, includes skin, raw (su 94.8 g, yağ 0.32 g/100 g) | 169292 — Squash, summer, zucchini, includes skin, cooked, boiled, drained, without salt (su 95.2 g, yağ 0.36 g/100 g) | 0.07 |
+| Patlıcan | 74.76 | 169228 — Eggplant, raw (su 92.3 g, yağ 0.18 g/100 g) | 169229 — Eggplant, cooked, boiled, drained, without salt (su 89.7 g, yağ 0.23 g/100 g) | -0.008 |
+| Tatlı yeşil biber | 75.31 | 170427 — Peppers, sweet, green, raw (su 93.9 g, yağ 0.17 g/100 g) | 170428 — Peppers, sweet, green, cooked, boiled, drained, without salt (su 91.9 g, yağ 0.2 g/100 g) | -0.019 |
+| Beyaz lahana | 105.41 | 169975 — Cabbage, raw (su 92.2 g, yağ 0.1 g/100 g) | 169976 — Cabbage, cooked, boiled, drained, without salt (su 92.6 g, yağ 0.06 g/100 g) | -0.037 |
+| Pırasa | 184.78 | 169246 — Leeks, (bulb and lower leaf-portion), raw (su 83 g, yağ 0.3 g/100 g) | 168426 — Leeks, (bulb and lower leaf-portion), cooked, boiled, drained, without salt (su 90.8 g, yağ 0.2 g/100 g) | 0.07 |
+| Enginar | 94.97 | 169205 — Artichokes, (globe or french), raw (su 84.9 g, yağ 0.15 g/100 g) | 168386 — Artichokes, (globe or french), cooked, boiled, drained, without salt (su 84.1 g, yağ 0.34 g/100 g) | 0.173 |
+| Bamya | 140.54 | 169260 — Okra, raw (su 89.6 g, yağ 0.19 g/100 g) | 169261 — Okra, cooked, boiled, drained, without salt (su 92.6 g, yağ 0.21 g/100 g) | 0.105 |
+| Taze fasulye (snap bean) | 89.81 | 169961 — Beans, snap, green, raw (su 90.3 g, yağ 0.22 g/100 g) | 169141 — Beans, snap, green, cooked, boiled, drained, without salt (su 89.2 g, yağ 0.28 g/100 g) | 0.031 |
+| Soğan | 90.08 | 170000 — Onions, raw (su 89.1 g, yağ 0.1 g/100 g) | 170001 — Onions, cooked, boiled, drained, without salt (su 87.9 g, yağ 0.19 g/100 g) | 0.071 |
+| Kuzu, perakende kesim bileşik, 1/4 inç yağlı | 84.88 | 172479 — Lamb, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/4" fat, choice, raw (su 60.7 g, yağ 21.6 g/100 g) | 172480 — Lamb, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/4" fat, choice, cooked (su 53.7 g, yağ 20.9 g/100 g) | -3.86 |
+| Dana, omuz üst/orta biftek, bütün kalite, 0 inç yağ, ızgara | 78.35 | 172132 — Beef, chuck, shoulder clod, shoulder top and center steaks, separable lean and fat, trimmed to 0" fat, all grades, raw (su 72.5 g, yağ 5.88 g/100 g) | 172133 — Beef, chuck, shoulder clod, shoulder top and center steaks, separable lean and fat, trimmed to 0" fat, all grades, cooked, grilled (su 64.9 g, yağ 7.66 g/100 g) | 0.121 |
+| Dana kıyma, %70 yağsız, çiğ / tavada pişmiş köfte | 112.56 | 168652 — Beef, ground, 70% lean meat / 30% fat, raw (su 54.3 g, yağ 30 g/100 g) | 168650 — Beef, ground, 70% lean meat / 30% fat, patty cooked, pan-broiled (su 59.4 g, yağ 15.5 g/100 g) | -12.553 |
+| Tavuk göğsü, et ve deri / fırında pişmiş | 81.12 | 171474 — Chicken, broilers or fryers, breast, meat and skin, raw (su 69.5 g, yağ 9.25 g/100 g) | 171075 — Chicken, broilers or fryers, breast, meat and skin, cooked, roasted (su 62.4 g, yağ 7.78 g/100 g) | -2.939 |
+| Tavuk but, et ve deri / fırında pişmiş | 88.16 | 172385 — Chicken, broilers or fryers, thigh, meat and skin, raw (su 66.5 g, yağ 16.6 g/100 g) | 173625 — Chicken, broilers or fryers, thigh, meat and skin, cooked, roasted (su 62 g, yağ 14.7 g/100 g) | -3.641 |
+| Balık, Atlantik morina / kuru ısıda pişmiş | 78.01 | 171955 — Fish, cod, Atlantic, raw (su 81.2 g, yağ 0.67 g/100 g) | 171956 — Fish, cod, Atlantic, cooked, dry heat (su 75.9 g, yağ 0.86 g/100 g) | 0.001 |
+
+### Kızartmada net yağ farkı
+
+| Hedef | Net yağ farkı (g/100 g çiğ) | Çiğ kayıt (FDC, açıklama; su ve yağ /100 g) | Kızarmış kayıt (FDC, açıklama; su ve yağ /100 g) |
+|---|---:|---|---|
+| Patates, çiğ / kızarmış patates | bulunamadı | 170026 — Potatoes, flesh and skin, raw (su 79.2 g, yağ 0.09 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+| Patlıcan, çiğ / kızarmış | bulunamadı | 169228 — Eggplant, raw (su 92.3 g, yağ 0.18 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+| Kabak, çiğ / kızarmış | bulunamadı | 169291 — Squash, summer, zucchini, includes skin, raw (su 94.8 g, yağ 0.32 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+| Biber, çiğ / kızarmış | bulunamadı | 170427 — Peppers, sweet, green, raw (su 93.9 g, yağ 0.17 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+| Karnabahar, çiğ / kızarmış | bulunamadı | 169986 — Cauliflower, raw (su 92.1 g, yağ 0.28 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+| Balık, çiğ / kızarmış (aynı tür) | bulunamadı | 171955 — Fish, cod, Atlantic, raw (su 81.2 g, yağ 0.67 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+| Küçük balık (hamsi) / kızarmış benzer tür | bulunamadı | 174182 — Fish, anchovy, european, raw (su 73.4 g, yağ 4.84 g/100 g) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+| Kalamar, karışık tür, çiğ / kızarmış | 3.129 | 174223 — Mollusks, squid, mixed species, raw (su 78.6 g, yağ 1.38 g/100 g) | 171982 — Mollusks, squid, mixed species, cooked, fried (su 64.5 g, yağ 7.48 g/100 g) |
+| Tavuk göğsü et ve deri, çiğ / kaplamalı kızarmış | -0.932 | 171474 — Chicken, broilers or fryers, breast, meat and skin, raw (su 69.5 g, yağ 9.25 g/100 g) | 171475 — Chicken, broilers or fryers, breast, meat and skin, cooked, fried, batter (su 51.6 g, yağ 13.2 g/100 g) |
+| Mayalı hamur / doughnut veya kızarmış hamur | bulunamadı | bulunamadı (eşleşen FDC ID/açıklama yok) | bulunamadı (eşleşen FDC ID/açıklama yok) |
+
+### Şerbet ve sütlü tatlı bileşen kayıtları
+
+FNDDS inputFoods, içerik bileşenlerini listeler; toplam tarifin pişme öncesi/sonrası ağırlığını ve şerbetin son üründe kalan miktarını vermediği için şerbet emilimi veya pişme kaybı hesabı kurulamadı.
+
+| Hedef | FNDDS kayıt | inputFoods bileşenleri (ingredientCode, açıklama, ağırlık) | Sonuç |
+|---|---|---|---|
+| Baklava / şerbet | 2708044 — Baklava | 2052: Vanilla extract, imitation, no alcohol (13 g); 19335: Sugars, granulated (125 g); 12155: Nuts, walnuts, English, halves, raw (60 g); 9152: Lemon juice, raw (31 g); 18338: Phyllo dough (453.6 g); 1001: Butter, stick, salted (224 g); 12061: Nuts, almonds, whole, raw (70 g); 2010: Spices, cinnamon, ground (2.6 g); 14429: Beverages, water, tap, municipal (177.75 g); 12152: Nuts, pistachio nuts, dry roasted, without salt added (64 g) | Bulunamadı: Şeker ve su inputFoods içinde mevcut; şerbet olarak ayrılmış bileşen veya bitmiş tarif ağırlığı/yield alanı yok. Emilim çıkarılamaz. |
+| Sütlaç / rice pudding | 2705685 — Pudding, rice | 19193: Puddings, rice, ready-to-eat (100 g) | Bulunamadı: FNDDS inputFoods yalnızca 100 g hazır rice pudding girdisi; çiğ süt/pirinç tarifi ve pişmiş yield yok. Pişme kaybı çıkarılamaz. |
+| Kadayıf | bulunamadı — eşleşen kayıt yok | inputFoods bulunamadı | Bulunamadı: İstenen adla FNDDS SurveyFoods kaydı bulunamadı. |
