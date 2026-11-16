@@ -8,6 +8,7 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { calistir } = require('./hesapla');
+const { karsilastir } = require('./karsilastir');
 
 const KOK = __dirname;
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'besin-test-'));
@@ -399,6 +400,15 @@ test('HATA: fdc iki dizinde varsa', () => {
   fs.writeFileSync(SAHTE_FNDDS, onceki);
   assert.ok(hata && hata.message.includes('hem SR Legacy'), hata && hata.message);
   assert.strictEqual(fs.existsSync(f.ciktiYolu), false);
+});
+
+test('karsilastir: ayni fdc uyumlu, farkli veya null celiski', () => {
+  const r = karsilastir(
+    [{ ad: 'A', fdc: 4 }, { ad: 'B', fdc: 5 }, { ad: 'C', fdc: null }],
+    [{ ad: 'A', fdc: 4 }, { ad: 'B', fdc: 6 }, { ad: 'C', fdc: null }]
+  );
+  assert.strictEqual(r.uyumlu.length, 1);
+  assert.strictEqual(r.celiski.length, 2);
 });
 
 fs.rmSync(TMP, { recursive: true, force: true });
