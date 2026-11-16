@@ -1891,11 +1891,11 @@
  },
  {
   "ad": "Dana pirzola",
-  "fdc": 168642,
+  "fdc": 172118,
   "kaynak": "SR",
-  "description": "Beef, short loin, t-bone steak, bone-in, separable lean only, trimmed to 1/8\" fat, all grades, raw",
+  "description": "Beef, short loin, t-bone steak, separable lean and fat, trimmed to 1/8\" fat, all grades, raw",
   "arama": "sirloin steak raw, dana pirzola",
-  "gerekce": "Dana pirzola kemikli short loin (T-bone) sınıfında; SR kemikli T-bone çiğ kaydı kullanıldı, belirtilen fark: kontrfile (top sirloin) kaydından farklı kesim; yalnızca yağsız (lean only) kısım ve çiğ hâl seçildi.",
+  "gerekce": "Dana pirzola kemikli short loin (T-bone) sınıfında; ayni kesimin separable lean and fat (T-bone, raw) kaydı kullanıldı, belirtilen fark: kontrfile (top sirloin) kaydından farklı kesim; all grades ve çiğ hâl seçildi.",
   "guven": "orta"
  },
  {
@@ -2278,11 +2278,11 @@
  },
  {
   "ad": "Krema (yemeklik)",
-  "fdc": 170859,
+  "fdc": 170857,
   "kaynak": "SR",
-  "description": "Cream, fluid, heavy whipping",
+  "description": "Cream, fluid, light (coffee cream or table cream)",
   "arama": "cooking cream, table cream, yemeklik krema",
-  "gerekce": "Krema (yemeklik) çırpma kreması sınıfında; SR heavy whipping cream kaydı kullanıldı, belirtilen fark: hafif yemeklik krema (yaklaşık %18-20 yağ) yerine ağır krema (%36 yağ) kaydı seçildi.",
+  "gerekce": "Türk yemeklik kreması yaklaşık yüzde 18-20 yağlıdır; SR yüzde 19,1 yağlı (195 kcal) hafif sıvı krema kaydı yakın kayıt olarak kullanıldı, belirtilen fark: ağır çırpma kreması (yüzde 36 yağ) yerine kahve/masa kreması kaydı seçildi.",
   "guven": "orta"
  },
  {
