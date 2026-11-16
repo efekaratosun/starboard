@@ -3,6 +3,20 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.14.0 (yayınlanmadı)
+
+### Değişti
+- Uygulamanın bütün yazı tipi Saira oldu (başlık, rakam ve gövde aynı aile): Barlow Condensed ve Nunito kaldırıldı. Saira değişken yazı tipidir (400–800, SIL OFL), `fonts/saira-latin.woff2` ve `fonts/saira-latin-ext.woff2` olarak gömülür (`css/tokens.css` `@font-face`, `--font`, `--font-d` = `--font`; `index.html` preload; `sw.js` `SHELL`). Saira daha geniş olduğundan büyük başlık ve rakam boyutları küçüldü (h1 36→30, h2 21→18, Bugün ve onboarding rakamları, düğmeler, segment düğmeleri), alt menü etiketleri büyük harften normal yazıya geçti (320 px'te "Nutrition" ile "Calendar" çakışıyordu); sınıfsız düğmelere en az 44 px yükseklik verildi. Rakamlar `tabular-nums` ile eşit genişlikte kalır; ğ, ş, ı, İ doğru çıkar.
+- Beslenme özeti dört halka yerine dört ay evresi oldu (kalori, protein, karbonhidrat, yağ). Ay, makro renginde dolu bir daire; üstünde aynı yarıçapta, zemin renginde (`-soft` jeton) bir gölge dairesi ayın içine kırpılır ve oran × çap kadar sola kayar: oran 0'da ay karanlık, 1'de dolunay; arkada oranla koyulaşan hafif bir ışık halesi. Altında ad, büyük rakamla kalan miktar ("kcal kaldı" / "g kaldı") ve küçük yazıyla tüketilen / hedef ("86 / 131 g"). Hedef aşılınca ay `--over` renginde dolunay olur ve "+fazlalık" yazar. Ekrana girişte gölge kayarak açılır (`.fx-moon`, `countUp` ile); sayfa içinde eski yerinden yenisine geçer; hareket azaltmada anında son halinde durur. Ekran okuyucu etiketleri aynı kaldı.
+
+### Eklendi
+- `--over-soft` renk jetonu (aşan ayın gölgesi; üç tema bloğunda).
+
+### Kaldırıldı
+- Nunito ve Barlow Condensed yazı tipi dosyaları ile lisansları. Eski halka kodu (`macroRing`, `ringInfo`) ve stilleri (`.mring`, `.mr-*`); yerlerine `macroMoon`, `moonInfo`, `moonShift` ve `.moon`, `.mn-*` geldi. Bugün halkasının `.fx-ring` altyapısı yerinde.
+
+Veri şeması aynı kalır (`SCHEMA` 3).
+
 ## 1.13.0 (yayınlanmadı)
 
 ### Değişti

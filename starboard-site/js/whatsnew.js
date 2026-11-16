@@ -8,6 +8,8 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.14.0", items:[
+    tx("Yazı tipi Saira oldu. Beslenme özeti artık dört ay evresi: yedikçe ay hilalden dolunaya aydınlanır, hedef aşılınca kırmızı dolunay olur.")] },
   { v:"1.13.0", items:[
     tx("Beslenme özeti dört halka oldu: kalan miktar önde, hedef aşılınca fazlalık kırmızıyla yazar. Sık yediklerin artık açılıp kapanıyor.")] },
   { v:"1.13.0", items:[

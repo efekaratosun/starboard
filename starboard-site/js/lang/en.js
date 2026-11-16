@@ -558,6 +558,7 @@ window.STARBOARD_EN = {
   "Geçen hafta: {0}": "Last week: {0}",
   "en iyi gün {0}": "best day {0}",
   "{0} antrenman": "{0} workouts",
+  "Yazı tipi Saira oldu. Beslenme özeti artık dört ay evresi: yedikçe ay hilalden dolunaya aydınlanır, hedef aşılınca kırmızı dolunay olur.": "The app now uses the Saira typeface. The nutrition summary is now four moon phases: each moon brightens from crescent to full as you eat, and turns a full red moon when you go over the target.",
   "Beslenme özeti dört halka oldu: kalan miktar önde, hedef aşılınca fazlalık kırmızıyla yazar. Sık yediklerin artık açılıp kapanıyor.": "The nutrition summary is now four rings: what's left comes first, and going over the target shows the excess in red. Your frequent foods now fold open and shut.",
   "Bugün'ün en üstündeki hafta şeridi artık haftanın takımyıldızı: dokununca büyük hali ve gökyüzü atlası açılır. Gün tamamlanınca yıldız parlar.": "The week strip at the top of Today is now the week's constellation: tap it for the big version and the sky atlas. The star lights up when the day is complete.",
   "Yeni görünüm: koyu temada derin lacivert zemin, canlı renkler ve büyük, okunaklı rakamlar.": "New look: a deep navy background in dark mode, vivid colours and big, easy-to-read numbers.",
