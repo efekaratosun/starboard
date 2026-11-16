@@ -3114,69 +3114,69 @@
   },
   {
     "ad": "Boerewors",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 400,
+    "p": 15,
+    "c": 25,
+    "f": 25,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/boerewors-421081"
   },
   {
     "ad": "Waakye",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 250,
+    "p": 8,
+    "c": 40,
+    "f": 5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/waakye-421082"
   },
   {
     "ad": "Kelewele",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 150,
+    "p": 1,
+    "c": 15,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/kelewele-421083"
   },
   {
     "ad": "Puff-puff",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 350,
+    "p": 5,
+    "c": 45,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/puff-puff-421084"
   },
   {
     "ad": "Morogo",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 250,
+    "p": 4,
+    "c": 40,
+    "f": 5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/morogo-421085"
   },
   {
     "ad": "Madumbo",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 280,
+    "p": 3,
+    "c": 50,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/madumbo-421086"
   },
   {
     "ad": "Doro wat",
@@ -3191,36 +3191,36 @@
   },
   {
     "ad": "Malva pudding",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 400,
+    "p": 3,
+    "c": 65,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/malva-pudding-421087"
   },
   {
     "ad": "Bacon burger",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 450,
+    "p": 25,
+    "c": 30,
+    "f": 20,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/bacon-burger-421088"
   },
   {
     "ad": "Mozzarella sticks",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 300,
+    "p": 10,
+    "c": 15,
+    "f": 20,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/mozzarella-sticks-421089"
   },
   {
     "ad": "Calzone",
@@ -3235,25 +3235,25 @@
   },
   {
     "ad": "Tater tots",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 180,
+    "p": 3,
+    "c": 25,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/tater-tots-421090"
   },
   {
     "ad": "Vanilla milkshake",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 350,
+    "p": 10,
+    "c": 45,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/vanilla-milkshake-421091"
   },
   {
     "ad": "Lemonade",
@@ -3279,58 +3279,58 @@
   },
   {
     "ad": "Eggs on toast",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 300,
+    "p": 15,
+    "c": 25,
+    "f": 15,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/eggs-on-toast-421092"
   },
   {
     "ad": "Soft-boiled eggs with soldiers",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 160,
+    "p": 7,
+    "c": 10,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/soft-boiled-eggs-with-soldiers-421093"
   },
   {
     "ad": "Scrambled eggs",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 250,
+    "p": 13,
+    "c": 2,
+    "f": 18,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/scrambled-eggs-421094"
   },
   {
     "ad": "Deviled eggs",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 300,
+    "p": 5,
+    "c": 10,
+    "f": 26,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/deviled-eggs-421095"
   },
   {
     "ad": "Breakfast burrito",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 450,
+    "p": 15,
+    "c": 30,
+    "f": 25,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/breakfast-burrito-421096"
   },
   {
     "ad": "Waffle",
@@ -3345,14 +3345,14 @@
   },
   {
     "ad": "Brussels waffle",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 330,
+    "p": 8,
+    "c": 40,
+    "f": 12,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/brussels-waffle-421097"
   },
   {
     "ad": "Biscuits and gravy",
@@ -3378,14 +3378,14 @@
   },
   {
     "ad": "Chia pudding",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 200,
+    "p": 5,
+    "c": 15,
+    "f": 12,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/chia-pudding-421098"
   },
   {
     "ad": "Avocado toast",
@@ -3400,25 +3400,25 @@
   },
   {
     "ad": "Lox bagel",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 200,
+    "p": 10,
+    "c": 2,
+    "f": 15,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/lox-bagel-421099"
   },
   {
     "ad": "Peanut butter toast",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 350,
+    "p": 12,
+    "c": 25,
+    "f": 18,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/peanut-butter-toast-421100"
   },
   {
     "ad": "Kaya toast",
