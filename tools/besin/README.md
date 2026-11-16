@@ -5,7 +5,7 @@ node tools/besin/test.js            # testler (Node assert)
 ```
 
 ## Girdi (`tools/besin/kaynak/PARTI.json`, bir dizi)
-- `usda`: `{ "key", "ad", "tip": "usda", "fdc": 172421 }`; degerler `tools/usda/cache/index.json` kaydindan aynen alinir.
+- `usda`: `{ "key", "ad", "tip": "usda", "fdc": 172421 }`; fdc SR Legacy ve FNDDS dizinlerinde aranir. FNDDS kaydinda istege bagli `porsiyon_adi` tam porsiyon aciklamasini belirtir; gram degeri kayittan alinip `porsiyon_g` alanina yazilir. Ayni fdc iki dizinde de varsa hata verilir.
 - `tarif`: `{ "key", "ad", "tip": "tarif", "malz": [...], "pismis_g": 1800, "porsiyon": 4 }`
 - `malz` icin `ad` zorunlu; `fdc`, `key`, `su` alanlarindan TAM OLARAK biri verilir:
   - `{ "ad": "Kuru mercimek", "fdc": 172420, "g": 200 }` USDA kaydi + gram
@@ -19,7 +19,7 @@ yalniz en sonda tam sayiya yuvarlanir. `kcal_449 = 4p + 4c + 9f + 7alk` (yuvarla
 
 ## Cikti
 `cikti/PARTI.json`: her kayit icin `p, c, f, lif, alk, kcal_usda, kcal_449, porsiyon_g, porsiyon_kcal, kaynak`.
-`kaynak` usda tipinde USDA description; tarif tipinde `{ ad, g, fdc, aciklama }` listesi. Ekranda her tarif icin
+`kaynak` usda tipinde veri seti adi (`SR Legacy` veya `FNDDS 2021-2023`); USDA `description` ayri alandadir. Tarif tipinde `kaynak` `{ ad, g, fdc, aciklama }` listesi. Ekranda her tarif icin
 malzeme dokumu (ad, g, fdc, description, o malzemenin kcal katkisi) basilir.
 
 ## Kurallar
@@ -30,3 +30,6 @@ UYARI, devam eder: pismis_g toplam agirligin %40 indan kucuk; kcal_449 ile kcal_
 100 g basina 15 kcal den buyuk (karsilastirmada 4p + 4(c-lif) + 2lif + 9f + 7alk kullanilir); lif null (0 sayilir);
 lif > c; malz adi pismis/haslanmis/kizarmis/kavrulmus iken USDA kaydi raw, ya da adi cig iken kayit
 cooked/boiled/roasted/fried/baked. Uyarilar `UYARI [key]: ...` olarak stderr'e yazilir.
+
+Eslesme karsilastirmasi: `node tools/besin/karsilastir.js LISTE-birinci.json LISTE-ikinci.json`.
+Iki dosyada ayni ad ve ayni null olmayan fdc varsa uyumlu; digerleri celiski ciktisina gider.

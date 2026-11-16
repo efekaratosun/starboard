@@ -10,7 +10,11 @@ const VARSAYILAN = {
   kaynakDir: path.join(__dirname, 'kaynak'),
   ciktiDir: path.join(__dirname, 'cikti'),
   indexYolu: path.join(__dirname, '..', 'usda', 'cache', 'index.json'),
+  fnddsIndexYolu: path.join(__dirname, '..', 'usda', 'cache', 'index-survey.json'),
 };
+
+const SR_ADI = 'SR Legacy';
+const FNDDS_ADI = 'FNDDS 2021-2023';
 
 class BesinHatasi extends Error {}
 class UyariListesi {
@@ -52,17 +56,61 @@ function indexOku(yol) {
   return harita;
 }
 
+// FNDDS dizini istege baglidir: yoksa yalniz SR Legacy ile calisilir.
+function fnddsIndexOku(yol) {
+  return yol && fs.existsSync(yol) ? indexOku(yol) : new Map();
+}
+
 // Bir USDA kaydinin 100 g degerleri. protein/yag/karbonhidrat/kcal null ise hata.
-function usdaDegerleri(index, fdc) {
+// fdc iki dizinde de aranir; ikisinde birden varsa belirsizlik oldugu icin hata verilir.
+// porsiyonAdi yalniz FNDDS kayitlarinda gecerlidir ve o porsiyonun gramini dondurur.
+function usdaDegerleri(veri, fdc, porsiyonAdi) {
+  if (veri instanceof Map) veri = { sr: veri, fndds: new Map() };
   if (!sayi(fdc)) throw new BesinHatasi('fdc sayi olmali (gelen: ' + JSON.stringify(fdc) + ')');
-  const r = index.get(fdc);
+  const srKayit = veri.sr.get(fdc);
+  const fnddsKayit = veri.fndds.get(fdc);
+  if (srKayit && fnddsKayit) {
+    throw new BesinHatasi(
+      'fdc ' + fdc + ' hem SR Legacy ("' + srKayit.description + '") hem FNDDS ("' +
+        fnddsKayit.description + '") dizininde var, hangisi oldugu belirsiz'
+    );
+  }
+  const r = srKayit || fnddsKayit;
   if (!r) throw new BesinHatasi('fdc ' + fdc + ' USDA dizininde yok');
+  const fndds = !!fnddsKayit;
   for (const alan of ['protein', 'fat', 'carbs', 'kcal']) {
     if (!sayi(r[alan])) {
       throw new BesinHatasi('fdc ' + fdc + ' (' + r.description + ') alaninda ' + alan + ' null');
     }
   }
+
+  let porsiyonG = null;
+  if (porsiyonAdi !== undefined) {
+    if (typeof porsiyonAdi !== 'string' || porsiyonAdi.trim() === '') {
+      throw new BesinHatasi('fdc ' + fdc + ': porsiyon_adi bos olmayan bir metin olmali');
+    }
+    if (!fndds) {
+      throw new BesinHatasi('fdc ' + fdc + ' (' + r.description + '): porsiyon_adi yalniz FNDDS kayitlarinda kullanilir');
+    }
+    const eslesen = (r.porsiyonlar || []).filter((p) => p.aciklama === porsiyonAdi);
+    if (eslesen.length === 0) {
+      const mevcut = (r.porsiyonlar || []).map((p) => '"' + p.aciklama + '"').join(', ');
+      throw new BesinHatasi(
+        'fdc ' + fdc + ' (' + r.description + '): porsiyon "' + porsiyonAdi + '" bulunamadi (mevcut: ' + mevcut + ')'
+      );
+    }
+    if (eslesen.length > 1) {
+      throw new BesinHatasi('fdc ' + fdc + ': porsiyon "' + porsiyonAdi + '" birden fazla kez var');
+    }
+    if (!sayi(eslesen[0].g) || eslesen[0].g <= 0) {
+      throw new BesinHatasi('fdc ' + fdc + ': porsiyon "' + porsiyonAdi + '" icin gram agirligi yok ya da sifir');
+    }
+    porsiyonG = eslesen[0].g;
+  }
+
   return {
+    veriSeti: fndds ? FNDDS_ADI : SR_ADI,
+    porsiyonG,
     p: r.protein,
     c: r.carbs,
     f: r.fat,
@@ -210,6 +258,7 @@ function tarifCoz(k, zincir, index, coz, uyarilar) {
 
 // Kayitlari cozer, cikti nesnesini ve uyarilari uretir. Hatalar BesinHatasi firlatir.
 function hesapla(kayitlar, index) {
+  const veri = index && index.sr instanceof Map ? index : { sr: index, fndds: new Map() };
   if (!Array.isArray(kayitlar)) throw new BesinHatasi('girdi bir dizi olmali');
 
   const harita = new Map();
@@ -234,7 +283,7 @@ function hesapla(kayitlar, index) {
 
     let d;
     if (k.tip === 'usda') {
-      d = usdaDegerleri(index, k.fdc);
+      d = usdaDegerleri(veri, k.fdc, k.porsiyon_adi);
     } else if (k.tip === 'tarif') {
       d = tarifCoz(k, zincir.concat(key), index, coz, uyarilar);
     } else {
@@ -272,7 +321,8 @@ function hesapla(kayitlar, index) {
       porsiyon_kcal: porsiyonKcal === null ? null : Math.round(porsiyonKcal),
       kaynak: d.malzemeler
         ? d.malzemeler.map((m) => ({ ad: m.ad, g: m.g, fdc: m.fdc, aciklama: m.aciklama }))
-        : d.aciklama,
+        : (k.tip === 'usda' ? d.veriSeti : d.aciklama),
+      ...(k.tip === 'usda' ? { description: d.aciklama, porsiyon_adi: k.porsiyon_adi || null, porsiyon_g: d.porsiyonG } : {}),
     };
     katkilar[k.key] = d.malzemeler || null;
 
@@ -350,7 +400,7 @@ function calistir(parti, ayarlar) {
   if (!fs.existsSync(kaynakYolu)) throw new BesinHatasi('girdi bulunamadi: ' + kaynakYolu);
 
   const kayitlar = JSON.parse(fs.readFileSync(kaynakYolu, 'utf8'));
-  const index = indexOku(ayar.indexYolu);
+  const index = { sr: indexOku(ayar.indexYolu), fndds: fnddsIndexOku(ayar.fnddsIndexYolu) };
   const { sonuc, uyarilar, katkilar } = hesapla(kayitlar, index);
 
   fs.mkdirSync(ayar.ciktiDir, { recursive: true });

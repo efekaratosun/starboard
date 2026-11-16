@@ -1,6 +1,9 @@
 #!/usr/bin/env node
-// USDA FoodData Central SR Legacy veri setini indirir, acar ve kucuk bir dizin uretir.
+// USDA FoodData Central veri setlerini indirir, acar ve kucuk dizinler uretir:
+//   SR Legacy (temel besinler)           -> cache/index.json
+//   FNDDS Survey Foods (hazir yemekler)  -> cache/index-survey.json
 // Yalnizca Node yerlesik modulleri kullanilir.
+// Kullanim: node tools/usda/fetch.js [--sr] [--fndds]   (bayraksiz: ikisi de)
 'use strict';
 
 const fs = require('fs');
@@ -9,13 +12,9 @@ const https = require('https');
 const { execFileSync } = require('child_process');
 
 const CACHE_DIR = path.join(__dirname, 'cache');
-const ZIP_PATH = path.join(CACHE_DIR, 'sr_legacy.zip');
-const INDEX_PATH = path.join(CACHE_DIR, 'index.json');
-const ZIP_URL = 'https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_json_2018-04.zip';
-const JSON_NAME = 'FoodData_Central_sr_legacy_food_json_2018-04.json';
 const TIMEOUT_MS = 120000;
 
-// Besin numaralari (nutrient.number) -> index alani
+// Besin numaralari (nutrient.number) -> index alani. SR Legacy ve FNDDS ayni numaralari kullanir.
 const FIELDS = [
   ['208', 'kcal'],
   ['203', 'protein'],
@@ -26,6 +25,24 @@ const FIELDS = [
   ['221', 'alcohol'],
   ['255', 'water'],
 ];
+
+const SR = {
+  ad: 'SR Legacy',
+  zipYolu: path.join(CACHE_DIR, 'sr_legacy.zip'),
+  indexYolu: path.join(CACHE_DIR, 'index.json'),
+  url: 'https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_json_2018-04.zip',
+  jsonAdi: 'FoodData_Central_sr_legacy_food_json_2018-04.json',
+  dizi: 'SRLegacyFoods',
+};
+
+const FNDDS = {
+  ad: 'FNDDS',
+  zipYolu: path.join(CACHE_DIR, 'survey.zip'),
+  indexYolu: path.join(CACHE_DIR, 'index-survey.json'),
+  url: 'https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_survey_food_json_2024-10-31.zip',
+  jsonAdi: 'surveyDownload.json',
+  dizi: 'SurveyFoods',
+};
 
 function download(url, dest, redirects) {
   redirects = redirects || 0;
@@ -74,44 +91,92 @@ function extract(zipPath) {
   });
 }
 
-function buildIndex() {
-  const source = path.join(CACHE_DIR, JSON_NAME);
+// foodNutrients dizisinden FIELDS alanlarini cikarir; eksik deger null kalir.
+function besinAlanlari(food) {
+  const rec = {};
+  for (const [, key] of FIELDS) rec[key] = null;
+  for (const fn of food.foodNutrients || []) {
+    const number = fn.nutrient && fn.nutrient.number;
+    if (number === undefined || number === null) continue;
+    const target = FIELDS.find((f) => f[0] === String(number));
+    if (!target) continue;
+    rec[target[1]] = typeof fn.amount === 'number' ? fn.amount : null;
+  }
+  return rec;
+}
+
+function kaynakOku(set) {
+  const source = path.join(CACHE_DIR, set.jsonAdi);
   if (!fs.existsSync(source)) throw new Error('Acilan JSON dosyasi bulunamadi: ' + source);
   const raw = JSON.parse(fs.readFileSync(source, 'utf8'));
-  const foods = raw.SRLegacyFoods || [];
-  const list = [];
+  const foods = raw[set.dizi];
+  if (!Array.isArray(foods)) throw new Error(set.jsonAdi + ' icinde ' + set.dizi + ' dizisi yok');
+  return foods;
+}
 
-  for (const food of foods) {
-    const rec = { fdcId: food.fdcId, description: food.description };
-    for (const [, key] of FIELDS) rec[key] = null;
-
-    for (const fn of food.foodNutrients || []) {
-      const number = fn.nutrient && fn.nutrient.number;
-      if (number === undefined || number === null) continue;
-      const target = FIELDS.find((f) => f[0] === String(number));
-      if (!target) continue;
-      const amount = typeof fn.amount === 'number' ? fn.amount : null;
-      rec[target[1]] = amount;
-    }
-    list.push(rec);
-  }
-
-  fs.writeFileSync(INDEX_PATH, JSON.stringify(list));
+function buildSrIndex() {
+  const list = kaynakOku(SR).map((food) =>
+    Object.assign({ fdcId: food.fdcId, description: food.description }, besinAlanlari(food))
+  );
+  fs.writeFileSync(SR.indexYolu, JSON.stringify(list));
   return list.length;
 }
 
-async function main() {
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
-  console.log('Indiriliyor: ' + ZIP_URL);
-  const bytes = await download(ZIP_URL, ZIP_PATH);
-  console.log('Indirildi: ' + (bytes / 1024 / 1024).toFixed(1) + ' MB -> ' + ZIP_PATH);
+function kategoriAdi(food) {
+  const k = food.wweiaFoodCategory && food.wweiaFoodCategory.wweiaFoodCategoryDescription;
+  if (k) return k;
+  const a = (food.foodAttributes || []).find((x) => x.name === 'WWEIA Category description');
+  return a ? a.value : null;
+}
 
+function buildSurveyIndex() {
+  const list = kaynakOku(FNDDS).map((food) =>
+    Object.assign(
+      {
+        fdcId: food.fdcId,
+        description: food.description,
+        foodCode: food.foodCode === undefined ? null : String(food.foodCode),
+        kategori: kategoriAdi(food),
+      },
+      besinAlanlari(food),
+      {
+        porsiyonlar: (food.foodPortions || [])
+          .slice()
+          .sort((a, b) => (a.sequenceNumber || 0) - (b.sequenceNumber || 0))
+          .map((p) => ({ aciklama: p.portionDescription, g: p.gramWeight })),
+      }
+    )
+  );
+  fs.writeFileSync(FNDDS.indexYolu, JSON.stringify(list));
+  return list.length;
+}
+
+async function indirVeAc(set) {
+  console.log('Indiriliyor (' + set.ad + '): ' + set.url);
+  const bytes = await download(set.url, set.zipYolu);
+  console.log('Indirildi: ' + (bytes / 1024 / 1024).toFixed(1) + ' MB -> ' + set.zipYolu);
   console.log('Aciliyor...');
-  extract(ZIP_PATH);
+  extract(set.zipYolu);
   console.log('Acildi.');
+}
 
-  const count = buildIndex();
-  console.log('index.json yazildi: ' + count + ' kayit -> ' + INDEX_PATH);
+async function main() {
+  const args = process.argv.slice(2);
+  const yalnizSr = args.includes('--sr');
+  const yalnizFndds = args.includes('--fndds');
+  const srYap = yalnizSr || !yalnizFndds;
+  const fnddsYap = yalnizFndds || !yalnizSr;
+
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+
+  if (srYap) {
+    await indirVeAc(SR);
+    console.log('index.json yazildi: ' + buildSrIndex() + ' kayit -> ' + SR.indexYolu);
+  }
+  if (fnddsYap) {
+    await indirVeAc(FNDDS);
+    console.log('index-survey.json yazildi: ' + buildSurveyIndex() + ' kayit -> ' + FNDDS.indexYolu);
+  }
 }
 
 main().catch((err) => {

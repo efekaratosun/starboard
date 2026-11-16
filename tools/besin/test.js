@@ -12,6 +12,7 @@ const { calistir } = require('./hesapla');
 const KOK = __dirname;
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'besin-test-'));
 const SAHTE_INDEX = path.join(TMP, 'index.json');
+const SAHTE_FNDDS = path.join(TMP, 'index-survey.json');
 
 // Testler gercek USDA verisine bagimli olmasin diye kucuk bir dizin.
 fs.writeFileSync(
@@ -31,6 +32,9 @@ fs.writeFileSync(
     { fdcId: 12, description: 'Porsiyon testi', kcal: 56.662, protein: 5, fat: 4, carbs: 10, fiber: 2, alcohol: 0 },
   ])
 );
+fs.writeFileSync(SAHTE_FNDDS, JSON.stringify([
+  { fdcId: 20, description: 'Chicken curry', kcal: 150, protein: 10, fat: 5, carbs: 15, fiber: 2, alcohol: 0, porsiyonlar: [{ aciklama: '1 cup', g: 240 }] },
+]));
 
 let sayac = 0;
 let gecen = 0;
@@ -56,7 +60,7 @@ function fixture(kayitlar) {
   fs.writeFileSync(path.join(kaynakDir, ad + '.json'), JSON.stringify(kayitlar));
   return {
     ad,
-    ayar: { kaynakDir, ciktiDir, indexYolu: SAHTE_INDEX },
+    ayar: { kaynakDir, ciktiDir, indexYolu: SAHTE_INDEX, fnddsIndexYolu: SAHTE_FNDDS },
     ciktiYolu: path.join(ciktiDir, ad + '.json'),
   };
 }
@@ -356,7 +360,7 @@ if (fs.existsSync(GERCEK_INDEX)) {
     assert.strictEqual(kaynak[0].aciklama, 'Lentils, raw');
     assert.strictEqual(kaynak[5].aciklama, null);
 
-    const { kaynak: k2, ...mercimek } = r.sonuc.pismis_mercimek;
+    const { kaynak: k2, description: d2, porsiyon_adi: pa2, ...mercimek } = r.sonuc.pismis_mercimek;
     assert.deepStrictEqual(mercimek, {
       p: 9,
       c: 20.1,
@@ -368,11 +372,34 @@ if (fs.existsSync(GERCEK_INDEX)) {
       porsiyon_g: null,
       porsiyon_kcal: null,
     });
-    assert.strictEqual(k2, 'Lentils, mature seeds, cooked, boiled, without salt');
+    assert.strictEqual(k2, 'SR Legacy');
+    assert.strictEqual(d2, 'Lentils, mature seeds, cooked, boiled, without salt');
+    assert.strictEqual(pa2, null);
   });
 } else {
   console.log('ATLANDI  ornek.json gercek USDA testi (cache/index.json yok)');
 }
+
+test('FNDDS usda kaydi porsiyon adindan gram ve veri seti alir', () => {
+  const f = fixture([{ key: 'curry', ad: 'Curry', tip: 'usda', fdc: 20, porsiyon_adi: '1 cup' }]);
+  const r = calistir(f.ad, f.ayar);
+  assert.strictEqual(r.sonuc.curry.kaynak, 'FNDDS 2021-2023');
+  assert.strictEqual(r.sonuc.curry.description, 'Chicken curry');
+  assert.strictEqual(r.sonuc.curry.porsiyon_g, 240);
+});
+
+hataBekle('HATA: FNDDS porsiyonu bulunamadi', [{ key: 'a', ad: 'A', tip: 'usda', fdc: 20, porsiyon_adi: 'big bowl' }], 'bulunamadi');
+
+test('HATA: fdc iki dizinde varsa', () => {
+  const onceki = fs.readFileSync(SAHTE_FNDDS, 'utf8');
+  fs.writeFileSync(SAHTE_FNDDS, JSON.stringify([{ fdcId: 1, description: 'Duplicate test ID', kcal: 150, protein: 10, fat: 5, carbs: 15, fiber: 2, alcohol: 0 }]));
+  const f = fixture([{ key: 'a', ad: 'A', tip: 'usda', fdc: 1 }]);
+  let hata;
+  try { calistir(f.ad, f.ayar); } catch (e) { hata = e; }
+  fs.writeFileSync(SAHTE_FNDDS, onceki);
+  assert.ok(hata && hata.message.includes('hem SR Legacy'), hata && hata.message);
+  assert.strictEqual(fs.existsSync(f.ciktiYolu), false);
+});
 
 fs.rmSync(TMP, { recursive: true, force: true });
 
