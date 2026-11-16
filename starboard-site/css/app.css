@@ -483,25 +483,25 @@ main.page-in .cal-day:nth-child(7n){animation-delay:.3s}
 
 /* ===== 1.12.0: performans paneli =====
    Koyu zemin öncelikli, veri odaklı dil: sıkıştırılmış kalın başlıklar ve rakamlar
-   (Barlow Condensed), gövde Nunito. Kartlar ince çizgili panel; vurgular neon. */
+   (Saira, başlık ve gövde aynı aile). Kartlar ince çizgili panel; vurgular neon. */
 
 /* tipografi */
-h1{font-family:var(--font-d);font-weight:800;font-size:36px;letter-spacing:-.2px;line-height:1.02}
-h2{font-family:var(--font-d);font-weight:700;font-size:21px;letter-spacing:.03em;line-height:1.1;text-transform:uppercase}
+h1{font-family:var(--font-d);font-weight:800;font-size:30px;letter-spacing:-.2px;line-height:1.02}
+h2{font-family:var(--font-d);font-weight:700;font-size:18px;letter-spacing:.02em;line-height:1.1;text-transform:uppercase}
 h2 .count{font-family:var(--font);text-transform:none}
-.fold-h{font-family:var(--font-d);font-weight:700;font-size:20px;letter-spacing:.03em;text-transform:uppercase}
-.on h1{font-family:var(--font-d);font-weight:800;font-size:38px;letter-spacing:-.2px;line-height:1.02}
-.on-w h1{font-size:50px;letter-spacing:-.4px}
+.fold-h{font-family:var(--font-d);font-weight:700;font-size:17px;letter-spacing:.02em;text-transform:uppercase}
+.on h1{font-family:var(--font-d);font-weight:800;font-size:31px;letter-spacing:-.2px;line-height:1.02}
+.on-w h1{font-size:40px;letter-spacing:-.4px}
 .gh-n b,.bt-v,.stat b,.hero-num,.os-k b,.os-t b,.rl-n,.macro .v,.lbl-v,.on-num input,.tp-h b{
   font-family:var(--font-d);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:0}
-.macro .v{font-size:18px;font-weight:700}
+.macro .v{font-size:16px;font-weight:700}
 .macro .tgt{font-family:var(--font)}
-.stat b{font-size:28px}
-.bt-v{font-size:34px}
-.hero-num{font-size:44px}
-.os-k b{font-size:84px}
-.rl-n{font-size:62px}
-.on-num input{font-size:66px}
+.stat b{font-size:24px}
+.bt-v{font-size:28px}
+.hero-num{font-size:38px}
+.os-k b{font-size:68px}
+.rl-n{font-size:50px}
+.on-num input{font-size:54px}
 
 /* kartlar: ince çizgili panel */
 section,.bt,.eve,.os-t,.os-p,.rl{box-shadow:inset 0 0 0 1px var(--line)}
@@ -510,13 +510,13 @@ section{border-radius:var(--r)}
 :root[data-theme="dark"] :is(section,.bt,.eve){box-shadow:inset 0 0 0 1px var(--line), var(--edge)}
 
 /* düğmeler */
-button:not([class]),button.ghost{font-family:var(--font-d);font-weight:700;font-size:18px;letter-spacing:.04em;text-transform:uppercase;border-radius:14px}
+button:not([class]),button.ghost{font-family:var(--font-d);font-weight:700;font-size:15px;letter-spacing:.03em;text-transform:uppercase;border-radius:14px;min-height:44px}
 button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 .chip,.pill{border-radius:10px}
 
 /* segment düğmeleri: seçili olan ters renk, saat ekranı gibi */
 .seg{border-radius:14px;padding:4px;gap:4px;box-shadow:inset 0 0 0 1px var(--line)}
-.seg button{font-family:var(--font-d);font-weight:700;font-size:16px;letter-spacing:.05em;text-transform:uppercase;border-radius:10px;padding:10px 6px}
+.seg button{font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;border-radius:10px;padding:10px 6px}
 .seg button[aria-current="true"]{background:var(--ink);color:var(--bg);border-bottom:0;box-shadow:0 6px 16px -8px var(--glow)}
 
 /* başlık: sekme renginde eğik şerit */
@@ -531,9 +531,9 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 .gh-ring svg{position:relative}
 .gh-bg{stroke-width:9}
 .gh-fg{stroke:url(#gh-gr);stroke-width:9}
-.gh-n{padding-top:36px;font-family:var(--font-d);font-size:20px;font-weight:700}
-.gh-n b{font-size:46px;line-height:.9;margin-right:2px}
-.gh-t > b{font-family:var(--font-d);font-weight:800;font-size:32px;letter-spacing:0;line-height:1}
+.gh-n{padding-top:36px;font-family:var(--font-d);font-size:17px;font-weight:700}
+.gh-n b{font-size:38px;line-height:.9;margin-right:2px}
+.gh-t > b{font-family:var(--font-d);font-weight:800;font-size:27px;letter-spacing:0;line-height:1}
 .gh-s{box-shadow:inset 0 0 0 1px var(--line)}
 /* hedef tamamlanınca: halkadan kısa bir parlama dalgası */
 .gh-ring::after{content:"";position:absolute;inset:2px;border-radius:50%;pointer-events:none;opacity:0;
@@ -575,13 +575,13 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 /* bento: kalori kutusu neon parıltılı */
 .bt{border-radius:18px}
 .bt-kcal{box-shadow:0 12px 30px -12px var(--glow), var(--edge)}
-.bt-nm{font-family:var(--font-d);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase}
+.bt-nm{font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
 .bt-bar{height:5px;border-radius:2px}
 .bt-bar s{border-radius:2px}
 
 /* alt menü: koyu cam, seçili sekme neon hapta */
 .tabbar{box-shadow:0 12px 34px rgba(4,8,24,.28), inset 0 0 0 1px var(--line);border:0}
-.tabbar button[data-tab]{font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.tabbar button[data-tab]{font-family:var(--font-d);font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
 .tab-ind{background:var(--grad);box-shadow:0 4px 16px -2px var(--glow)}
 .tabbar button[aria-current="true"] .ico{color:var(--on-brand)}
 .tabbar .fab{background:var(--grad);box-shadow:0 8px 24px -4px var(--glow), inset 0 0 0 2px color-mix(in srgb,#FFFFFF 22%,transparent)}

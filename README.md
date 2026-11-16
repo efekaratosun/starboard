@@ -20,7 +20,7 @@ Yeni bir dosya eklenince hem `index.html` hem `sw.js` içindeki listeye yazılma
 
 ## Yazı tipi
 
-Gövde metni Nunito, başlıklar ve büyük rakamlar Barlow Condensed (`--font-d`; 600, 700, 800). İkisi de `starboard-site/fonts/` altındaki `woff2` dosyalarından yüklenir (`css/tokens.css` içindeki `@font-face`; Türkçe için `latin-ext` gerekli; lisanslar aynı klasörde). Dışarıdan yazı tipi ya da stil yüklenmez. Yeni bir yazı tipi dosyası eklenince `sw.js` içindeki `SHELL` listesine de yazılmalıdır; test bunu denetler.
+Uygulamanın bütün metni Saira'dır: gövde (`--font`), başlıklar ve büyük rakamlar (`--font-d`, `--font`'a eşittir) aynı aile. Değişken yazı tipidir (400–800), `starboard-site/fonts/` altındaki `saira-latin.woff2` ve `saira-latin-ext.woff2` dosyalarından yüklenir (`css/tokens.css` içindeki `@font-face`; Türkçe için `latin-ext` gerekli; lisans `Saira-OFL.txt` aynı klasörde). Saira geniş bir yazı tipidir: büyük başlık ve rakam boyutları ona göre seçildi, yeni büyük bir başlık eklerken 320 px genişlikte taşmadığını `tools/a11y-audit.html` ile denetle. Rakamlar `tabular-nums` ile eşit genişlikte kalır. Dışarıdan yazı tipi ya da stil yüklenmez. Yeni bir yazı tipi dosyası eklenince `sw.js` içindeki `SHELL` listesine de yazılmalıdır; test bunu denetler.
 
 ## Çeviri
 

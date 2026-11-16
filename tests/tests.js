@@ -430,7 +430,7 @@ test("hakkında: sağlık uyarısı, kaynaklar ve gizlilik sayfası yerinde", as
   ok(res.ok && (await res.text()).includes("Gizlilik politikası"), "privacy.html yok");
   tab = "today"; meTab = "body"; state = null;
 });
-test("yazı tipi: Nunito ve Barlow Condensed uygulamanın içinden gelir, dışarıya istek yok, çevrimdışı önbellekte", async () => {
+test("yazı tipi: Saira uygulamanın içinden gelir (başlık, rakam ve gövde aynı aile), dışarıya istek yok, çevrimdışı önbellekte", async () => {
   const get = async p => { const r = await fetch("../starboard-site/" + p); ok(r.ok, p + " açılmadı"); return r.text(); };
   const css = ["css/tokens.css", "css/components.css", "css/app.css"];
   const [html, sw, ...sheets] = await Promise.all([get("index.html"), get("sw.js"), ...css.map(get)]);
@@ -441,22 +441,38 @@ test("yazı tipi: Nunito ve Barlow Condensed uygulamanın içinden gelir, dışa
   const tokens = sheets[0];
   const faces = [...tokens.matchAll(/@font-face\{([^}]+)\}/g)].map(m => m[1]);
   const files = faces.map(f => (/url\("\.\.\/(fonts\/[^"]+)"\)/.exec(f) || [])[1]);
-  ok(files.length >= 8 && files.every(Boolean), "@font-face dosyaları bulunamadı");
-  for (const fam of ["Nunito", "Barlow Condensed"]){
-    const mine = faces.filter(f => f.includes(`font-family:"${fam}"`));
-    ok(mine.some(f => f.includes("latin-ext")) && mine.some(f => /latin\.woff2/.test(f)), fam + ": latin ve latin-ext yok");
-    ok(mine.every(f => /unicode-range:/.test(f) && /font-display:swap/.test(f)), fam + ": unicode-range ya da font-display eksik");
-  }
-  for (const w of ["600", "700", "800"])
-    ok(faces.some(f => f.includes('"Barlow Condensed"') && f.includes("font-weight:" + w + ";")), "Barlow Condensed " + w + " yok");
+  eq(files.length, 2, "Saira için latin ve latin-ext olmak üzere iki @font-face beklenir");
+  ok(files.every(Boolean), "@font-face dosyaları bulunamadı");
+  ok(faces.every(f => f.includes('font-family:"Saira"')), "Saira dışında bir yazı tipi yüklenmemeli");
+  ok(faces.some(f => f.includes("latin-ext")) && faces.some(f => /latin\.woff2/.test(f)), "Saira: latin ve latin-ext yok");
+  ok(faces.every(f => /unicode-range:/.test(f) && /font-display:swap/.test(f)), "Saira: unicode-range ya da font-display eksik");
+  ok(faces.every(f => /font-weight:400 800;/.test(f)), "Saira değişken dosyası 400–800 kalınlığı kapsamalı");
+  const latinFace = faces.find(f => /latin\.woff2/.test(f)), extFace = faces.find(f => f.includes("latin-ext"));
+  ok(/U\+0131/.test(latinFace), "noktasız ı (U+0131) latin aralığında olmalı");
+  ok(/U\+0100-02BA/.test(extFace), "ğ, ş, İ latin-ext aralığında olmalı");
   for (const f of files) {
     const r = await fetch("../starboard-site/" + f);
     ok(r.ok && (await r.arrayBuffer()).byteLength > 1000, f + " yok ya da boş");
     ok(sw.includes(`"${f}"`), f + " sw.js SHELL listesinde değil");
+    ok(html.includes(`href="${f}"`) && new RegExp(`<link rel="preload" href="${f}" as="font"`).test(html), f + " index.html içinde preload edilmemiş");
   }
-  for (const lic of ["fonts/Nunito-OFL.txt", "fonts/BarlowCondensed-OFL.txt"])
-    ok((await get(lic)).includes("SIL Open Font License"), lic + " lisans metni yok");
-  ok(/--font-d:"Barlow Condensed"/.test(tokens), "başlık yazı tipi jetonu yok");
+  ok((await get("fonts/Saira-OFL.txt")).includes("SIL Open Font License"), "Saira lisans metni yok");
+  ok(!/Barlow|Nunito/.test(tokens + html + sw), "eski yazı tipi izi kaldı");
+  ok(/--font:"Saira"/.test(tokens), "gövde yazı tipi jetonu Saira değil");
+  ok(/--font-d:var\(--font\)/.test(tokens), "başlık ve rakam yazı tipi gövdeyle aynı aile olmalı");
+  /* test sayfasında tokens.css yok: dosyalar gerçek dosyalardan, tokens.css'teki aralıklarla yüklenir */
+  const range = f => /unicode-range:([^}]+)/.exec(f)[1];
+  const url = f => "url(../starboard-site/" + /url\("\.\.\/([^"]+)"\)/.exec(f)[1] + ")";
+  for (const f of [extFace, latinFace]){
+    const face = new FontFace("SairaTest", url(f), { weight: "400 800", unicodeRange: range(f) });
+    document.fonts.add(await face.load());
+  }
+  const width = (t, fam, extra = "") => { const s = document.createElement("span"); s.style.cssText = `font:700 40px ${fam};${extra};position:absolute;visibility:hidden;white-space:pre`; s.textContent = t; document.body.appendChild(s); const w = s.getBoundingClientRect().width; s.remove(); return w; };
+  for (const ch of ["ğ", "Ğ", "ş", "Ş", "İ", "ı", "ç", "Ç", "ö", "Ö", "ü", "Ü"])
+    ok(width(ch, "SairaTest, monospace") !== width(ch, "monospace"), `Türkçe harf "${ch}" Saira'dan gelmiyor`);
+  const tab = "font-variant-numeric:tabular-nums";
+  eq(Math.round(width("1111", "SairaTest", tab)), Math.round(width("0000", "SairaTest", tab)), "Saira rakamları eşit genişlikte değil (tabular-nums)");
+  eq(Math.round(width("1111", "SairaTest", tab)), Math.round(width("8888", "SairaTest", tab)), "Saira rakamları eşit genişlikte değil (tabular-nums)");
 });
 test("tasarım: makro renk jetonları iki temada da tanımlı; varsayılan tema değişmedi", async () => {
   const tokens = await fetch("../starboard-site/css/tokens.css").then(r => r.text());
