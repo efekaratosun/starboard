@@ -117,6 +117,37 @@ async function nativeGet(url, headers, timeoutMs){
 
 /* Durum çubuğu (saat, pil) temaya uyar: koyu zeminde açık yazı, açık zeminde koyu yazı.
    Capacitor'da "DARK" stili koyu zemin içindir, yani yazıyı açık yapar. */
+/* JSON POST is used for explicit product searches. The query stays out of the URL. */
+async function nativePostJson(url, body, headers, timeoutMs){
+  const H = nativePlugin("CapacitorHttp");
+  if (H && typeof H.request === "function"){
+    let timer;
+    try {
+      const r = await Promise.race([
+        H.request({ url, method:"POST", headers:{ ...(headers || {}), "Content-Type":"application/json" },
+          data:body, connectTimeout:timeoutMs, readTimeout:timeoutMs }),
+        new Promise((_, rej) => { timer = setTimeout(() => rej(nativeTimeout()), timeoutMs); })
+      ]);
+      let data = r.data;
+      if (typeof data === "string"){ try { data = JSON.parse(data); } catch(e){ data = null; } }
+      return { status:r.status, data };
+    } catch(e){
+      if (!(e && (e.code === "UNIMPLEMENTED" || /not implemented/i.test(e.message || "")))) throw e;
+    } finally { clearTimeout(timer); }
+  }
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, { method:"POST", headers:{ Accept:"application/json", "Content-Type":"application/json" },
+      body:JSON.stringify(body), signal:ctl.signal, credentials:"omit", referrerPolicy:"no-referrer" });
+    let data = null;
+    try { data = await r.json(); } catch(e){}
+    return { status:r.status, data };
+  } catch(e){
+    throw e && e.name === "AbortError" ? nativeTimeout() : e;
+  } finally { clearTimeout(timer); }
+}
+
 function nativeStatusBar(dark){
   const S = nativePlugin("StatusBar");
   if (!S) return;

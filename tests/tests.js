@@ -335,6 +335,27 @@ test("beslenme özeti: yalnızca günlüğü olan günler, ortalama ve en sık e
   eq(N.proteinDays, [t1, t2].filter(x => x.p >= 108).length);
   eq(nutritionWeek({}, program, "2026-11-11"), null);
 });
+test("kaynak kalorisi kullanılır, eski kayıtlar makrolardan hesaplanır", () => {
+  const source = { log:[{ g:100, p:1, c:2, f:1, lif:0, kcal100:50 }] };
+  const legacy = { log:[{ g:100, p:1, c:2, f:1, lif:0 }] };
+  eq(logTotals(source).kcal, 50, "kaynak enerji değeri korunmalı");
+  eq(logTotals(legacy).kcal, 21, "kcal100 olmayan eski kayıtlar geriye uyumlu kalmalı");
+  eq(foodEnergyPer100({ p:1, c:2, f:1, kcal100:0 }), 0, "sıfır enerji kaynağı geçerli olmalı");
+  const key = Object.keys(FOODS)[0], food = FOODS[key], previous = food.kcal100;
+  food.kcal100 = 50;
+  try {
+    const recipe = recipeMacros({ ing:[[key,100]], srv:1 });
+    eq(recipe.serving.kcal, 50, "tarif kaynak enerjisini kullanmalı");
+    eq(recipe.per100.kcal, 50, "tarifin 100 g değeri kaynak enerjisini taşımalı");
+    const entry = { log:[] };
+    addFoodDirect(entry, key, 100, "kahvalti");
+    eq(entry.log[0].kcal100, 50, "günlük kaydı kaynak enerjisini korumalı");
+    eq(logTotals(entry).kcal, 50, "günlük toplam kaynak enerjisini kullanmalı");
+  } finally {
+    if (previous === undefined) delete food.kcal100;
+    else food.kcal100 = previous;
+  }
+});
 
 /* ---- alışveriş listesi ---- */
 test("alışveriş listesi: plan ve tarifler toplanır, aynı besin tek satır, işaretleme çalışır", async () => {
