@@ -2524,17 +2524,17 @@ test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarla p
   } finally { closeSug(); }
 });
 
-test("özet: dört halka görünür; Lif ve mikro besinler tek katlanır Ayrıntılar altında (varsayılan kapalı)", async () => {
+test("özet: dört ay görünür; Lif ve mikro besinler tek katlanır Ayrıntılar altında (varsayılan kapalı)", async () => {
   const { slots } = await sugFixture();
   try {
     ok(!app.querySelector('[data-fold="detail"]'), "kayıt yokken Ayrıntılar yok");
-    eq(app.querySelectorAll(".mring").length, 4);
+    eq(app.querySelectorAll(".moon").length, 4);
     eq(app.querySelectorAll(".macro").length, 0, "çubuk kalmadı");
     state.days[today()].log = [logItem("yulaf", 60, slots[0], 1), logItem("muz", 120, slots[0], 2)]; syncKcal(state.days[today()]); render();
     const macros = [...app.querySelectorAll(".macro")];
     eq(macros.length, 1, "yalnızca katlanmış lif çubuk olarak kalır");
     ok(macros[0].closest(".fold"), "lif katlı bölümde");
-    eq([...app.querySelectorAll(".mring .mr-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
+    eq([...app.querySelectorAll(".moon .mn-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
     const h = app.querySelector('[data-fold="detail"]');
     ok(h && h.textContent.includes("Ayrıntılar"), "Ayrıntılar başlığı");
     eq(h.getAttribute("aria-expanded"), "false", "kapalı başlar");
@@ -2549,100 +2549,138 @@ test("özet: dört halka görünür; Lif ve mikro besinler tek katlanır Ayrınt
   } finally { closeSug(); }
 });
 
-/* ---- beslenme özeti halkaları ve katlanır Sık yediklerin (1.13.0) ---- */
-test("halka: ringInfo kalanı ve fazlalığı hesaplar; aşım yalnızca hedefin üstünde başlar", () => {
-  eq(ringInfo(0, 2000), { pct: 0, over: false, left: 2000, extra: 0 });
-  eq(ringInfo(1140, 2000), { pct: 0.57, over: false, left: 860, extra: 0 });
-  eq(ringInfo(2000, 2000), { pct: 1, over: false, left: 0, extra: 0 }, "tam hedefte aşım yok");
-  eq(ringInfo(2001, 2000), { pct: 1, over: true, left: 0, extra: 1 }, "bir üstü aşım");
-  eq(ringInfo(2120, 2000), { pct: 1, over: true, left: 0, extra: 120 }, "halka dolu kalır, fazlalık ayrı");
-  eq(ringInfo(50, 0), { pct: 0, over: false, left: 0, extra: 0 }, "hedef yoksa bölme hatası yok");
+/* ---- beslenme özeti ay evreleri (1.14.0) ve katlanır Sık yediklerin (1.13.0) ---- */
+test("ay: moonInfo kalanı ve fazlalığı hesaplar; aşım yalnızca hedefin üstünde başlar", () => {
+  eq(moonInfo(0, 2000), { pct: 0, over: false, left: 2000, extra: 0 });
+  eq(moonInfo(1140, 2000), { pct: 0.57, over: false, left: 860, extra: 0 });
+  eq(moonInfo(2000, 2000), { pct: 1, over: false, left: 0, extra: 0 }, "tam hedefte aşım yok");
+  eq(moonInfo(2001, 2000), { pct: 1, over: true, left: 0, extra: 1 }, "bir üstü aşım");
+  eq(moonInfo(2120, 2000), { pct: 1, over: true, left: 0, extra: 120 }, "ay dolunay kalır, fazlalık ayrı");
+  eq(moonInfo(50, 0), { pct: 0, over: false, left: 0, extra: 0 }, "hedef yok: bölme hatası yok");
 });
 
-const ringLog = (program, slot, c) => [{ id: 1, k: "yulaf", n: "Deneme", g: 100, p: 0, c, f: 0, lif: 0, v: [], i: "grain", slot }];
-const ringOf = id => app.querySelectorAll(".mring")[["kcal", "protein", "carb", "fat"].indexOf(id)];
+test("ay: gölge kayması oran x çap; 0'da ay karanlık, 1'de dolunay, aşımda da dolunay", () => {
+  eq(moonShift(0), 0, "oran 0: gölge ayı tamamen örter");
+  eq(moonShift(1), -68, "oran 1: gölge ayın dışında (çap = 68)");
+  eq(moonShift(0.5), -34, "yarım oran yarım çap");
+  eq(moonShift(1.7), -68, "oran 1'in üstüne çıkmaz");
+  eq(moonShift(-1), 0, "oran 0'ın altına inmez");
+  eq(MOON_R * 2, 68);
+});
 
-test("halka: dört halka sırayla kalan miktarı yazar ve makro rengini taşır; hedef aşılınca --over ve +fazlalık", async () => {
+const moonLog = (program, slot, c) => [{ id: 1, k: "yulaf", n: "Deneme", g: 100, p: 0, c, f: 0, lif: 0, v: [], i: "grain", slot }];
+const moonOf = id => app.querySelectorAll(".moon")[["kcal", "protein", "carb", "fat"].indexOf(id)];
+
+test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölge dairesi ayın içine kırpılır; hedef aşılınca --over, dolunay ve +fazlalık", async () => {
   const { program, slots } = await sugFixture();
   try {
-    eq([...app.querySelectorAll(".mring .mr-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
-    let say = [...app.querySelectorAll(".mring")].map(r => r.getAttribute("aria-label"));
+    eq([...app.querySelectorAll(".moon .mn-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
+    eq(app.querySelectorAll(".mring, .mrings, .mr-fg").length, 0, "eski halka kalmadı");
+    let say = [...app.querySelectorAll(".moon")].map(r => r.getAttribute("aria-label"));
     eq(say, [`Kalori: ${fmtN(program.kcal)} kcal kaldı`, `Protein: ${program.protein} g kaldı`,
       `Karbonhidrat: ${program.carb} g kaldı`, `Yağ: ${program.fat} g kaldı`], "boş günde hedefin tamamı kalır");
+    ok([...app.querySelectorAll(".moon")].every(m => m.getAttribute("role") === "img"), "ekran okuyucu etiketi (role=img)");
+    let k = moonOf("kcal");
+    ok(k.querySelector(".mn-lit") && k.querySelector(".mn-sh") && k.querySelector(".mn-halo"), "dolu daire, gölge dairesi ve hale");
+    eq(+k.querySelector(".mn-sh").dataset.to, 0, "boş günde gölge ayı örter (ay karanlık)");
+    const lit = k.querySelector(".mn-lit"), sh = k.querySelector(".mn-sh");
+    eq(sh.getAttribute("r"), lit.getAttribute("r"), "gölge ayın yarıçapında");
+    eq([sh.getAttribute("cx"), sh.getAttribute("cy")], [lit.getAttribute("cx"), lit.getAttribute("cy")], "gölge ayla aynı merkezde başlar");
+    const clip = sh.parentNode;
+    eq(clip.tagName.toLowerCase(), "g");
+    const cid = /url\(#([^)]+)\)/.exec(clip.getAttribute("clip-path"))[1];
+    const cp = k.querySelector("#" + cid + " circle");
+    ok(cp && cp.getAttribute("r") === lit.getAttribute("r"), "gölge ayın dairesine kırpılır");
     const c = Math.floor(program.carb * 0.6);
-    state.days[today()].log = ringLog(program, slots[0], c); syncKcal(state.days[today()]); render();
+    state.days[today()].log = moonLog(program, slots[0], c); syncKcal(state.days[today()]); render();
     const left = program.kcal - 4 * c;
     ok(left > 0 && c < program.carb, "deneme verisi hedefin altında kalmalı");
-    let k = ringOf("kcal");
-    eq(k.querySelector(".mr-n").textContent, fmtN(left), "ortada kalan kalori");
-    eq(k.querySelector(".mr-t span").textContent, "kcal kaldı", "860 kcal kaldı biçimi");
+    k = moonOf("kcal");
+    eq(k.querySelector(".mn-v").textContent, fmtN(left), "altta kalan kalori");
+    eq(k.querySelector(".mn-u").textContent, "kcal kaldı", "kcal kaldı biçimi");
     eq(k.style.getPropertyValue("--c"), "var(--kcal)");
+    eq(k.style.getPropertyValue("--cs"), "var(--kcal-soft)", "gölge zemin rengi -soft jetonu");
     ok(!k.classList.contains("over"), "aşım yok");
-    eq(ringOf("protein").querySelector(".mr-t span").textContent, "g kaldı");
-    eq(k.querySelector(".mr-t i").textContent, `${fmtN(4 * c)} / ${fmtN(program.kcal)} kcal`, "kaloride tüketilen / hedef");
-    eq(ringOf("protein").querySelector(".mr-t i").textContent, `0 / ${fmtN(program.protein)} g`, "proteinde tüketilen / hedef");
-    eq(ringOf("fat").querySelector(".mr-t i").textContent, `0 / ${fmtN(program.fat)} g`);
-    eq(ringOf("carb").style.getPropertyValue("--c"), "var(--carb)");
-    eq(ringOf("fat").style.getPropertyValue("--c"), "var(--fat)");
-    eq(ringOf("protein").style.getPropertyValue("--c"), "var(--protein)");
-    const fg = k.querySelector(".mr-fg"), C = 2 * Math.PI * 34;
-    ok(Math.abs(+fg.dataset.to - C * (1 - 4 * c / program.kcal)) < 0.2, "dolu oran hedefe göre");
+    eq(moonOf("protein").querySelector(".mn-u").textContent, "g kaldı");
+    eq(k.querySelector(".mn-t i").textContent, `${fmtN(4 * c)} / ${fmtN(program.kcal)} kcal`, "kaloride tüketilen / hedef");
+    eq(moonOf("protein").querySelector(".mn-t i").textContent, `0 / ${fmtN(program.protein)} g`, "proteinde tüketilen / hedef");
+    eq(moonOf("fat").querySelector(".mn-t i").textContent, `0 / ${fmtN(program.fat)} g`);
+    eq(moonOf("carb").style.getPropertyValue("--c"), "var(--carb)");
+    eq(moonOf("carb").style.getPropertyValue("--cs"), "var(--carb-soft)");
+    eq(moonOf("fat").style.getPropertyValue("--c"), "var(--fat)");
+    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    ok(Math.abs(+k.querySelector(".mn-sh").dataset.to - moonShift(4 * c / program.kcal)) < 0.1, "gölge kayması hedefe göre");
+    ok(+k.querySelector(".mn-sh").dataset.to < 0 && +k.querySelector(".mn-sh").dataset.to > -68, "ay kısmen aydınlık");
+    eq(moonOf("protein").querySelector(".mn-sh").dataset.to, "0", "boş protein karanlık kalır");
 
     /* hedefin 120 kcal üstü: kalori ve karbonhidrat aşar, protein ve yağ aşmaz */
     const c2 = Math.ceil((program.kcal + 120) / 4);
-    state.days[today()].log = ringLog(program, slots[0], c2); syncKcal(state.days[today()]); render();
-    k = ringOf("kcal");
+    state.days[today()].log = moonLog(program, slots[0], c2); syncKcal(state.days[today()]); render();
+    k = moonOf("kcal");
     ok(k.classList.contains("over"), "kalori aştı");
-    eq(k.querySelector(".mr-n").textContent, "+" + fmtN(4 * c2 - program.kcal), "ortada +fazlalık");
-    eq(k.querySelector(".mr-t span").textContent, "kcal");
-    eq(k.querySelector(".mr-t i").textContent, `${fmtN(4 * c2)} / ${fmtN(program.kcal)} kcal`, "aşımda da tüketilen / hedef");
-    eq(k.style.getPropertyValue("--c"), "var(--over)", "halka rengi --over");
+    eq(k.querySelector(".mn-v").textContent, "+" + fmtN(4 * c2 - program.kcal), "altta +fazlalık");
+    eq(k.querySelector(".mn-u").textContent, "kcal");
+    eq(k.querySelector(".mn-t i").textContent, `${fmtN(4 * c2)} / ${fmtN(program.kcal)} kcal`, "aşımda da tüketilen / hedef");
+    eq(k.style.getPropertyValue("--c"), "var(--over)", "ay rengi --over");
+    eq(k.style.getPropertyValue("--cs"), "var(--over-soft)", "aşımda gölge -soft");
     eq(k.getAttribute("aria-label"), `Kalori: ${fmtN(4 * c2 - program.kcal)} kcal aşıldı`);
-    eq(+k.querySelector(".mr-fg").dataset.to, 0, "aşan halka tam dolu");
-    ok(ringOf("carb").classList.contains("over") && ringOf("carb").querySelector(".mr-n").textContent === "+" + fmtN(c2 - program.carb), "karbonhidrat aştı");
-    ok(!ringOf("protein").classList.contains("over") && !ringOf("fat").classList.contains("over"), "diğerleri aşmadı");
-    eq(ringOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    eq(+k.querySelector(".mn-sh").dataset.to, -68, "aşan ay dolunay (gölge dışarıda)");
+    ok(moonOf("carb").classList.contains("over") && moonOf("carb").querySelector(".mn-v").textContent === "+" + fmtN(c2 - program.carb), "karbonhidrat aştı");
+    ok(!moonOf("protein").classList.contains("over") && !moonOf("fat").classList.contains("over"), "diğerleri aşmadı");
+    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--protein)");
     ok(!app.querySelector(".metric-note .out"), "eski 'Hedefi aştın' satırı yok");
-    eq(a11yBad("halka"), []);
+    eq(a11yBad("ay"), []);
   } finally { closeSug(); }
 });
 
-test("halka: sayfaya girerken fx-ring ile dolar; hareket azaltılmışsa eski değerden değil doğrudan son değerde durur", async () => {
+test("ay: -soft ve --over-soft jetonları üç tema bloğunda tanımlı; eski halka stilleri kalmadı", async () => {
+  const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
+  const tokens = await fetch("../starboard-site/css/tokens.css").then(r => r.text());
+  const blocks = [/:root, \.thm-light\{([^}]+)\}/, /:root:not\(\[data-theme="light"\]\)\{([^}]+)\}/, /:root\[data-theme="dark"\], \.thm-dark\{([^}]+)\}/]
+    .map(re => (re.exec(tokens) || [])[1]);
+  ok(blocks.every(Boolean), "tema blokları bulunamadı");
+  for (const b of blocks) for (const v of ["--kcal-soft", "--protein-soft", "--carb-soft", "--fat-soft", "--over-soft"]) ok(new RegExp(v + ":").test(b), v + " eksik");
+  ok(!/\.mring|\.mrings|\.mr-(r|n|t|bg|fg)\b/.test(css), "eski özet halkası stilleri kalmış");
+  ok(/\.fx-moon/.test(css) && /@keyframes fxMoon/.test(css), "ay giriş animasyonu yok");
+  ok(/\.mn-sh\{[^}]*transition:transform/.test(css), "gölge kayması geçişi yok");
+});
+
+test("ay: sayfaya girerken fx-moon ile gölge kayarak açılır; hareket azaltılmışsa eski değerden değil doğrudan son değerde durur", async () => {
   const { program, slots } = await sugFixture();
   const realMM = window.matchMedia;
   try {
     window.matchMedia = () => ({ matches: false });
     tab = "plan"; render(); tab = "meals"; render();
-    ok(app.querySelector(".mr-fg").classList.contains("fx-ring"), "girişte fx-ring");
-    ok(/--fx-len:\d/.test(app.querySelector(".mr-fg").getAttribute("style")), "çevre uzunluğu");
+    ok(app.querySelector(".mn-sh").classList.contains("fx-moon"), "girişte fx-moon");
+    ok(app.querySelector(".mn-v [data-count]"), "rakam data-count ile sayılır (countUp)");
     render();
-    ok(!app.querySelector(".mr-fg").classList.contains("fx-ring"), "aynı sayfada yeniden çizim baştan doldurmaz");
-    const before = +app.querySelector(".mr-fg").getAttribute("stroke-dashoffset");
-    state.days[today()].log = ringLog(program, slots[0], 100); syncKcal(state.days[today()]); render();
-    const fg = app.querySelector(".mr-fg");
-    eq(+fg.getAttribute("stroke-dashoffset"), before, "yeni değere eski değerinden geçer");
-    ok(+fg.dataset.to !== before, "yeni değer farklı");
+    ok(!app.querySelector(".mn-sh").classList.contains("fx-moon"), "aynı sayfada yeniden çizim baştan açmaz");
+    const before = parseFloat(app.querySelector(".mn-sh").style.transform.replace("translateX(", ""));
+    state.days[today()].log = moonLog(program, slots[0], 100); syncKcal(state.days[today()]); render();
+    const sh = app.querySelector(".mn-sh");
+    eq(parseFloat(sh.style.transform.replace("translateX(", "")), before, "yeni değere eski yerinden geçer");
+    ok(+sh.dataset.to !== before, "yeni değer farklı");
     window.matchMedia = q => ({ matches: /reduce/.test(q) });
-    state.days[today()].log = ringLog(program, slots[0], 150); syncKcal(state.days[today()]); render();
-    const rm = app.querySelector(".mr-fg");
-    eq(rm.getAttribute("stroke-dashoffset"), rm.dataset.to, "hareket azaltılmış: animasyonsuz son değer");
+    state.days[today()].log = moonLog(program, slots[0], 150); syncKcal(state.days[today()]); render();
+    const rm = app.querySelector(".mn-sh");
+    eq(rm.style.transform, `translateX(${rm.dataset.to}px)`, "hareket azaltılmış: animasyonsuz son değer");
     const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
     ok(/prefers-reduced-motion: reduce\)\{\s*\*\{transition:none !important;animation:none !important\}/.test(css), "azaltılmış harekette geçişler kapalı");
   } finally { window.matchMedia = realMM; closeSug(); }
 });
 
-test("halka: İngilizcede de çalışır (kcal left, g left, +fazlalık), eksik çeviri kalmaz", async () => {
+test("ay: İngilizcede de çalışır (kcal left, g left, +fazlalık), eksik çeviri kalmaz", async () => {
   const { program, slots } = await sugFixture();
   try {
     await withLang("en", async () => {
       I18N_MISSING.clear(); render();
-      eq([...app.querySelectorAll(".mring .mr-t b")].map(b => b.textContent), ["Calories", "Protein", "Carbs", "Fat"]);
-      eq([...app.querySelectorAll(".mring .mr-t span")].map(b => b.textContent), ["kcal left", "g left", "g left", "g left"]);
-      eq(ringOf("kcal").getAttribute("aria-label"), `Calories: ${fmtN(program.kcal)} kcal left`);
+      eq([...app.querySelectorAll(".moon .mn-t b")].map(b => b.textContent), ["Calories", "Protein", "Carbs", "Fat"]);
+      eq([...app.querySelectorAll(".moon .mn-u")].map(b => b.textContent), ["kcal left", "g left", "g left", "g left"]);
+      eq(moonOf("kcal").getAttribute("aria-label"), `Calories: ${fmtN(program.kcal)} kcal left`);
       const c2 = Math.ceil((program.kcal + 120) / 4);
-      state.days[today()].log = ringLog(program, slots[0], c2); syncKcal(state.days[today()]); render();
-      eq(ringOf("kcal").querySelector(".mr-n").textContent, "+" + fmtN(4 * c2 - program.kcal));
-      eq(ringOf("kcal").getAttribute("aria-label"), `Calories: ${fmtN(4 * c2 - program.kcal)} kcal over`);
+      state.days[today()].log = moonLog(program, slots[0], c2); syncKcal(state.days[today()]); render();
+      eq(moonOf("kcal").querySelector(".mn-v").textContent, "+" + fmtN(4 * c2 - program.kcal));
+      eq(moonOf("kcal").getAttribute("aria-label"), `Calories: ${fmtN(4 * c2 - program.kcal)} kcal over`);
       eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
     });
   } finally { closeSug(); }

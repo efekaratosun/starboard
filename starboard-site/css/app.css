@@ -446,6 +446,9 @@ main.page-in > .rv{animation:none}
    (Bugün halkası, sayfaya girerken). */
 @keyframes fxRing{from{stroke-dashoffset:var(--fx-len)}}
 :is(main.page-in,.rv-in) .fx-ring{animation:fxRing 1s var(--e-out) var(--fx-delay,.2s) backwards}
+/* Ay: .fx-moon gölgesi sıfır kaymadan (ay karanlık) kendi son yerine kayar (Beslenme özeti, sayfaya girerken). */
+@keyframes fxMoon{from{transform:translateX(0)}}
+:is(main.page-in,.rv-in) .fx-moon{animation:fxMoon 1s var(--e-out) var(--fx-delay,.2s) backwards}
 
 /* grafikler çizilerek gelir */
 .ch-line{stroke-dasharray:1;stroke-dashoffset:0}
@@ -544,21 +547,19 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 .gh.full:not(.past) .gh-ring::before{animation:ghPulse 2.6s ease-in-out infinite}
 @keyframes ghPulse{50%{opacity:.9;transform:scale(1.06)}}
 
-/* beslenme özeti: dört halka (kalori, protein, karbonhidrat, yağ); renk --c, aşılınca --over */
-.mrings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px;padding:10px 0 4px}
-.mring{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-width:0}
-.mr-r{position:relative;width:96px;height:96px}
-.mr-r svg{width:100%;height:100%;display:block}
-.mr-bg,.mr-fg{fill:none;stroke-width:9}
-.mr-bg{stroke:var(--track)}
-.mr-fg{stroke:var(--c);stroke-linecap:round;transition:stroke-dashoffset .9s var(--e-out,ease),stroke .4s}
-.mr-n{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-d);font-weight:800;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
-.mring.over .mr-n{color:var(--over)}
-.mr-t{display:flex;flex-direction:column;gap:1px;min-width:0}
-.mr-t span{font-size:13.5px;font-weight:700;color:var(--ink)}
-.mr-t b{font-family:var(--font-d);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.mr-t i{font-style:normal;font-size:12px;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
+/* beslenme özeti: dört ay evresi (kalori, protein, karbonhidrat, yağ); renk --c, gölge --cs (-soft), aşılınca --over */
+.moons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px;padding:10px 0 4px}
+.moon{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
+.mn-r{width:96px;height:96px}
+.mn-r svg{width:100%;height:100%;display:block;overflow:visible}
+.mn-lit{fill:var(--c)}
+.mn-sh{fill:var(--cs);transition:transform .9s var(--e-out,ease)}
+.mn-t{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;max-width:100%}
+.mn-t b{font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.mn-v{font-family:var(--font-d);font-weight:800;font-size:28px;line-height:1.05;font-variant-numeric:tabular-nums}
+.moon.over .mn-v{color:var(--over)}
+.mn-u{font-size:13px;font-weight:700;color:var(--ink)}
+.mn-t i{font-style:normal;font-size:12px;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* hedef satırı: tamamlanma parlaması yalnızca opacity ile */
 .g{position:relative}
@@ -581,7 +582,7 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 
 /* alt menü: koyu cam, seçili sekme neon hapta */
 .tabbar{box-shadow:0 12px 34px rgba(4,8,24,.28), inset 0 0 0 1px var(--line);border:0}
-.tabbar button[data-tab]{font-family:var(--font-d);font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.tabbar button[data-tab]{font-family:var(--font-d);font-weight:700;font-size:11.5px;letter-spacing:0;text-transform:none}
 .tab-ind{background:var(--grad);box-shadow:0 4px 16px -2px var(--glow)}
 .tabbar button[aria-current="true"] .ico{color:var(--on-brand)}
 .tabbar .fab{background:var(--grad);box-shadow:0 8px 24px -4px var(--glow), inset 0 0 0 2px color-mix(in srgb,#FFFFFF 22%,transparent)}

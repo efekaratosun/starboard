@@ -30,7 +30,7 @@ const SCREENS = [
   ["beslenme: bugün (öneriler, Başka sonrası)", "mealVariant=3; tab='meals'; mealTab='log'"],
   ["beslenme: bugün (kayıtlar, Ayrıntılar ve katlananlar açık)", LOG_TODAY + "; state.savedMeals=[{ id:'s1', name:'Sabah kasesi', items:[{ k:'yulaf', n:'Yulaf ezmesi', g:40, p:13, c:60, f:7, lif:10, v:[], i:'grain' }] }]; state.ui={ fold:{ detail:true, mymeals:true, saved:true } }; mealVariant=0; tab='meals'; mealTab='log'"],
   ["beslenme: geçmiş gün (öneri yok)", "state.ui={}; viewDate=shiftDays(today(),-1); tab='meals'; mealTab='log'"],
-  ["beslenme: bugün (hedef aşıldı, halkalar --over)", "state.days[today()].log=[{ id:950, k:'yulaf', n:'Deneme', g:100, p:0, c:Math.ceil(currentProgram().kcal/4)+30, f:0, lif:0, v:[], i:'grain', slot:slotList()[0][0] }]; syncKcal(state.days[today()]); state.ui={}; viewDate=null; addOpen=null; tab='meals'; mealTab='log'"],
+  ["beslenme: bugün (hedef aşıldı, aylar --over)", "state.days[today()].log=[{ id:950, k:'yulaf', n:'Deneme', g:100, p:0, c:Math.ceil(currentProgram().kcal/4)+30, f:0, lif:0, v:[], i:'grain', slot:slotList()[0][0] }]; syncKcal(state.days[today()]); state.ui={}; viewDate=null; addOpen=null; tab='meals'; mealTab='log'"],
   ["beslenme: tarifler", "viewDate=null; delete state.days[today()].log; tab='meals'; mealTab='recipes'"],
   ["beslenme: liste", "tab='meals'; mealTab='list'"],
   ["antrenman: program (rehber açık)", "openFold('how'); howQuery=''; howOpen='squat'; tab='plan'; planTab='program'"],

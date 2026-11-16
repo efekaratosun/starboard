@@ -149,41 +149,51 @@ function macroRow(label, got, target, unit, ic, color){
     <span class="v num"><span data-count="m-${ic}" data-v="${got}">${got}</span>${unit}<span class="tgt">/ ${target}${unit}</span></span></div>`;
 }
 
-/* Halkanın durumu (saf): dolu oran, hedef aşıldı mı, kalan ya da fazla miktar.
-   Aşım yalnızca hedefin üstünde başlar (eşitlikte "0 kaldı"). */
-function ringInfo(got, target){
+/* Ayın durumu (saf): aydınlık oran (0 karanlık, 1 dolunay), hedef aşıldı mı, kalan ya da fazla miktar.
+   Aşım yalnızca hedefin üstünde başlar (eşitlikte "0 kaldı", dolunay ama aşım yok). */
+function moonInfo(got, target){
   const t = target > 0 ? target : 0;
   const over = t > 0 && got > t;
   return { pct: t ? clamp(got / t, 0, 1) : 0, over, left: Math.max(t - got, 0), extra: over ? got - t : 0 };
 }
 
-/* Özetin dört halkası: ortada kalan miktar (aşılınca +fazlalık), altında birim ve ad.
-   Sayfaya girerken halka sıfırdan dolar (.fx-ring), sayfa içinde eski değerinden yenisine geçer. */
-const _mRingPrev = {};
-function macroRing(label, got, target, unit, id){
-  const R = ringInfo(got, target);
-  const C = 2 * Math.PI * 34;
-  const off = +(C * (1 - R.pct)).toFixed(1);
+/* Gölge dairesinin yatay kayması (saf, çizim birimi): oran x çap kadar sola. 0'da gölge ayı tamamen örter,
+   1'de ayın dışına çıkar ve dolunay kalır. */
+const MOON_R = 34;
+const moonShift = pct => +(-2 * MOON_R * clamp(pct, 0, 1)).toFixed(1);
+
+/* Özetin dört ayı: makro renginde dolu daire, üstünde zemin renginde (-soft) aynı yarıçaplı gölge dairesi;
+   gölge ayın içine kırpılır ve moonShift kadar kayar. Altında ad, büyük rakamla kalan miktar (aşılınca +fazlalık)
+   ve küçük yazıyla tüketilen / hedef. Sayfaya girerken gölge sıfırdan kayarak açılır (.fx-moon),
+   sayfa içinde eski değerinden yenisine geçer; hareket azaltmada doğrudan son değerde durur. */
+const _moonPrev = {};
+function macroMoon(label, got, target, unit, id){
+  const R = moonInfo(got, target);
+  const to = moonShift(R.pct);
   const entering = render.lastTab !== "meals" || !!navDir;
   const still = entering || reduceMotion();
-  const from = still ? off : _mRingPrev[id] === undefined ? +C.toFixed(1) : _mRingPrev[id];
-  _mRingPrev[id] = off;
+  const from = still ? to : _moonPrev[id] === undefined ? 0 : _moonPrev[id];
+  _moonPrev[id] = to;
+  const col = R.over ? "over" : id;
   const n = R.over ? R.extra : R.left;
   const say = R.over ? tx("{0}: {1} {2} aşıldı", [label, fmtN(n), unit]) : tx("{0}: {1} {2} kaldı", [label, fmtN(n), unit]);
-  return `<div class="mring${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${R.over ? "over" : id})">
-    <div class="mr-r">
-      <svg viewBox="0 0 84 84" aria-hidden="true">
-        <circle class="mr-bg" cx="42" cy="42" r="34"/>
-        <circle class="mr-fg${entering ? " fx-ring" : ""}" cx="42" cy="42" r="34" transform="rotate(-90 42 42)" style="--fx-len:${C.toFixed(1)}px"
-          stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${from}" data-to="${off}"/>
+  return `<div class="moon${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${col});--cs:var(--${col}-soft)">
+    <div class="mn-r">
+      <svg viewBox="0 0 96 96" aria-hidden="true">
+        <defs>
+          <radialGradient id="mn-h-${id}"><stop offset=".66" style="stop-color:var(--c);stop-opacity:.5"/><stop offset="1" style="stop-color:var(--c);stop-opacity:0"/></radialGradient>
+          <clipPath id="mn-c-${id}"><circle cx="48" cy="48" r="${MOON_R}"/></clipPath>
+        </defs>
+        <circle class="mn-halo" cx="48" cy="48" r="48" fill="url(#mn-h-${id})" style="opacity:${(0.2 + 0.8 * R.pct).toFixed(2)}"/>
+        <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
+        <g clip-path="url(#mn-c-${id})"><circle class="mn-sh${entering ? " fx-moon" : ""}" cx="48" cy="48" r="${MOON_R}" style="transform:translateX(${from}px)" data-to="${to}"/></g>
       </svg>
-      <span class="mr-n num" aria-hidden="true">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span>
     </div>
-    <div class="mr-t" aria-hidden="true"><span>${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><b>${label}</b><i>${fmtN(got)} / ${fmtN(target)} ${unit}</i></div>
+    <div class="mn-t" aria-hidden="true"><b>${label}</b><span class="mn-v num">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span><span class="mn-u">${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><i>${fmtN(got)} / ${fmtN(target)} ${unit}</i></div>
   </div>`;
 }
 
-/* Lif ve mikro besinler tek katlanır bölümde: ana özet dört halkayla kalır. */
+/* Lif ve mikro besinler tek katlanır bölümde: ana özet dört ayla kalır. */
 function detailSection(tot, program){
   const keys = Object.keys(NUTRIENTS);
   const missing = keys.filter(k => !tot.micros.has(k));
@@ -211,11 +221,11 @@ function logView(program, entry){
   ${favBlock(entry)}
   <section>
     <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
-    <div class="mrings">
-      ${macroRing(tx("Kalori"), tot.kcal, program.kcal, "kcal", "kcal")}
-      ${macroRing(tx("Protein"), tot.p, program.protein, "g", "protein")}
-      ${macroRing(tx("Karbonhidrat"), tot.c, program.carb, "g", "carb")}
-      ${macroRing(tx("Yağ"), tot.f, program.fat, "g", "fat")}
+    <div class="moons">
+      ${macroMoon(tx("Kalori"), tot.kcal, program.kcal, "kcal", "kcal")}
+      ${macroMoon(tx("Protein"), tot.p, program.protein, "g", "protein")}
+      ${macroMoon(tx("Karbonhidrat"), tot.c, program.carb, "g", "carb")}
+      ${macroMoon(tx("Yağ"), tot.f, program.fat, "g", "fat")}
     </div>
   </section>
 
@@ -918,9 +928,9 @@ function openPrefsSheet(){
 function wireMeals(entry){
   wireShopping(currentProgram());
   wireFolds();
-  /* halkalar eski değerinden yenisine dolar */
-  const rings = app.querySelectorAll(".mr-fg[data-to]");
-  if (rings.length) requestAnimationFrame(() => requestAnimationFrame(() => rings.forEach(c => { c.style.strokeDashoffset = c.dataset.to; })));
+  /* ayların gölgesi eski yerinden yenisine kayar */
+  const shades = app.querySelectorAll(".mn-sh[data-to]");
+  if (shades.length) requestAnimationFrame(() => requestAnimationFrame(() => shades.forEach(c => { c.style.transform = `translateX(${c.dataset.to}px)`; })));
   app.querySelectorAll("[data-meal-tab]").forEach(b => b.onclick = () => {
     if (b.dataset.mealTab === mealTab) return;
     navTo(() => { mealTab = b.dataset.mealTab; render(); window.scrollTo(0,0); }, segDir(b), "k-seg");

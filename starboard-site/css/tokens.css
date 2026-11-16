@@ -25,12 +25,12 @@
      rozetlerinde en az 4,5:1 kontrast verir (WCAG AA). */
   --good:#0A7A42; --good-vivid:#12C46E; --off:#A24F00; --bad:#C12834;
 
-  /* makrolar: kalori, protein, yağ, karbonhidrat; -soft zemin, --over hedef aşımı */
+  /* makrolar: kalori, protein, yağ, karbonhidrat; -soft zemin (ay evresinin gölgesi), --over hedef aşımı (-soft gölgesi) */
   --kcal:#FF6A00; --kcal-soft:#FFE8D4;
   --protein:#EC1F5C; --protein-soft:#FDE0EA;
   --fat:#E8AA00; --fat-soft:#FFF3C7;
   --carb:#5A55F0; --carb-soft:#E5E4FF;
-  --over:#D1142C;
+  --over:#D1142C; --over-soft:#FFE0E3;
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#2BB84F;
   --sleep:#6E4DFF; --water:#008FF5;
 
@@ -80,7 +80,7 @@
   --protein:#FF4D7E; --protein-soft:#3C1428;
   --fat:#FFD23F; --fat-soft:#373012;
   --carb:#8C88FF; --carb-soft:#1F2052;
-  --over:#FF4D4D;
+  --over:#FF4D4D; --over-soft:#3D1519;
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
   --sleep:#9C86FF; --water:#3DB2FF;
 
@@ -120,7 +120,7 @@
   --protein:#FF4D7E; --protein-soft:#3C1428;
   --fat:#FFD23F; --fat-soft:#373012;
   --carb:#8C88FF; --carb-soft:#1F2052;
-  --over:#FF4D4D;
+  --over:#FF4D4D; --over-soft:#3D1519;
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
   --sleep:#9C86FF; --water:#3DB2FF;
 
