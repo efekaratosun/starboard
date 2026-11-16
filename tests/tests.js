@@ -3325,6 +3325,35 @@ test("şerit: Bugün ekranının en üstü bu haftanın (Pzt-Paz) takımyıldız
   } finally { skyDone(); }
 });
 
+test("pencere: Escape hafta penceresini kapatır", async () => {
+  try {
+    const { full, cw } = await skyFx();
+    full(cw); tab = "today"; render();
+    const sw = openSkyWeek();
+    const ev = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    document.activeElement.dispatchEvent(ev);
+    ok(ev.defaultPrevented, "Escape ele alınmalı");
+    ok(sw.classList.contains("out") || !sw.isConnected, "pencere kapanmalı");
+    await new Promise(r => setTimeout(r, 300));
+    ok(!sw.isConnected, "pencere kaldırılmalı");
+    ok(!document.querySelector(".sheet-bg"), "açık pencere kalmamalı");
+  } finally { skyDone(); }
+});
+
+test("pencere: açık pencere yokken Escape hata vermez", () => {
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  const errs = [];
+  const onErr = e => errs.push(e.message);
+  window.addEventListener("error", onErr);
+  try {
+    const ev = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    document.body.dispatchEvent(ev);
+    ok(!ev.defaultPrevented, "Escape ele alınmamalı");
+    ok(!document.querySelector(".sheet-bg"), "pencere açılmamalı");
+    eq(errs, [], "hata olmamalı");
+  } finally { window.removeEventListener("error", onErr); }
+});
+
 test("şerit: gün tamamlanınca bugünün yıldızı bir kez yansır ve tek titreşim olur; ilk çizimde ve tekrar çizimde olmaz", async () => {
   const realHaptic = haptic, calls = [];
   haptic = k => calls.push(k);
