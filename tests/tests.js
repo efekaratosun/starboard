@@ -1604,7 +1604,8 @@ test("barkod: gizlilik metinleri, kaynaklar, bağımlılık ve iOS beyanları ye
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
   tab = "settings"; meTab = "set"; render();
   ok(!app.innerHTML.includes("Tek istisna"), "web'de barkod istisnası yazılmamalı");
-  ok(app.innerHTML.includes("Çevrimiçi besin araması") && app.innerHTML.includes("Open Food Facts"), "web'deki isteğe bağlı arama açıklanmalı");
+  ok(!app.innerHTML.includes("Tek istisna"), "web'de barkod istisnası yazılmamalı");
+  ok(app.innerHTML.includes("hiçbir yere gönderilmez"), "web'deki söz aynen durmalı");
   state = null; tab = "today"; meTab = "body";
 
   eq(/^\d+\.\d+\.\d+$/.test(JSON.parse(await get("package.json")).dependencies["@capacitor/barcode-scanner"]), true, "eklenti tam sürümle sabitlenmeli");

@@ -19,8 +19,6 @@
 const OFF_HOST = "https://world.openfoodfacts.org";
 const OFF_FIELDS = "code,product_name,product_name_tr,product_name_en,brands,nutriments,serving_quantity,serving_quantity_unit,product_quantity_unit";
 const OFF_TIMEOUT = 8000;
-const OFF_SEARCH_URL = "https://search.openfoodfacts.org/search";
-let offSearchState = { query:"", status:"idle", foods:[] };
 
 /* Testlerde üzerine yazılabilsin diye düz işlev. */
 function barcodeAvailable(){ return IS_NATIVE; }
@@ -129,60 +127,6 @@ async function lookupBarcode(code, get){
   if (r.status === 404) return { status: "notfound", food: null, flags: {} };
   if (r.status !== 200 || !r.data || typeof r.data !== "object") return { status: "error", food: null, flags: {} };
   return offToFood(r.data, LANG);
-}
-
-/* Explicit text search: only the typed query and requested fields leave the device. */
-async function searchOffFoods(query, post){
-  const q = String(query || "").trim();
-  if (q.length < 2) return { status:"empty", foods:[] };
-  post = post || nativePostJson;
-  let r;
-  try {
-    r = await post(OFF_SEARCH_URL, {
-      q, langs:LANG === "tr" ? ["tr","en"] : ["en","tr"], page:1, page_size:20,
-      fields:["code","product_name","product_name_tr","product_name_en","brands","nutriments",
-        "serving_quantity","serving_quantity_unit","product_quantity_unit","categories_tags","categories_tags_en"]
-    }, { "User-Agent":`Starboard/${APP_VERSION} (github.com/efekaratosun/starboard)` }, OFF_TIMEOUT);
-  } catch(e){ return { status:"offline", foods:[] }; }
-  if (!r || r.status !== 200 || !r.data || typeof r.data !== "object") return { status:"error", foods:[] };
-  let hits = r.data.hits;
-  if (hits && !Array.isArray(hits)) hits = hits.hits;
-  if (!Array.isArray(hits)) hits = r.data.products;
-  if (!Array.isArray(hits)) return { status:"error", foods:[] };
-
-  const foods = [], seen = new Set();
-  for (const h of hits){
-    const p = h && (h._source || h.document || h);
-    if (!p || typeof p !== "object") continue;
-    const code = String(p.code || p.id || h._id || "").replace(/\D/g, "");
-    if (!code || seen.has(code)) continue;
-    seen.add(code);
-    const res = offToFood({ status:1, product:p }, LANG);
-    if (res.status !== "ok" || !res.food.n) continue;
-    const key = "off_" + code;
-    const cats = [].concat(p.categories_tags_en || [], p.categories_tags || []).join(" ").toLowerCase();
-    const i = /fish|seafood/.test(cats) ? "fish"
-      : /meat|poultry|beef|pork|chicken|turkey/.test(cats) ? "meat"
-      : /dairy|milk|cheese|yogurt/.test(cats) ? "dairy"
-      : /fruit/.test(cats) ? "fruit"
-      : /vegetable/.test(cats) ? "veg"
-      : /legume|bean|lentil/.test(cats) ? "legume"
-      : /nut|seed/.test(cats) ? "nuts"
-      : /oil|fat/.test(cats) ? "oil"
-      : /bread|cereal|pasta|rice|grain/.test(cats) ? "grain" : "grain";
-    const f = { ...res.food, n:res.food.br ? `${res.food.n} (${res.food.br})` : res.food.n,
-      i, src:"off", bc:code, a:code + (res.food.br ? " " + res.food.br : "") };
-    if (res.food.serving) f.por = [{ n:tx("porsiyon"), g:Math.round(res.food.serving) }];
-    if (res.flags.labelKcal !== null && !res.flags.kcalMismatch) f.kcal100 = res.flags.labelKcal;
-    OFF_SEARCH_CACHE[key] = f;
-    foods.push([key, f]);
-  }
-  return { status:foods.length ? "ok" : "notfound", foods };
-}
-
-function offSearchView(query){
-  return norm(offSearchState.query) === norm(String(query || "").trim()) ? offSearchState
-    : { query:String(query || "").trim(), status:"idle", foods:[] };
 }
 
 /* ---- kayıt ---- */
@@ -332,7 +276,7 @@ function bcConsent(){
     el.className = "sheet-bg";
     el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="bc-t">
       <div class="sheet-h"><b id="bc-t">${tx("Barkod okut")}</b><button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
-      <p>${tx("Barkod isteğinde yalnızca barkod numarası Open Food Facts'e gönderilir; profilin, günlüğün ve kamera görüntüsü gönderilmez.")}</p>
+      <p>${tx("Yalnızca barkod numarası Open Food Facts'e gönderilir; başka hiçbir verin cihazdan çıkmaz.")}</p>
       <div class="row" style="margin-top:8px"><button id="bc-go">${tx("Devam")}</button>
         <button class="ghost" id="bc-no">${tx("Vazgeç")}</button></div>
     </div>`;

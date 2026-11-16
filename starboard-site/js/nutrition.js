@@ -761,8 +761,7 @@ function fixedOf(slot){
   return (mealPrefs().fixed[slot] || []).filter(x => FOODS[x.k] || (state.customFoods||{})[x.k]);
 }
 
-const OFF_SEARCH_CACHE = {};
-function foodOf(k){ return FOODS[k] || (state.customFoods||{})[k] || OFF_SEARCH_CACHE[k]; }
+function foodOf(k){ return FOODS[k] || (state.customFoods||{})[k]; }
 const foodEnergyPer100 = f => Number.isFinite(f.kcal100) ? f.kcal100 : f.p*4 + f.c*4 + f.f*9;
 
 /* Beslenme türleri. Bir besinin uygunluğu çoğunlukla simgesinden çıkar;

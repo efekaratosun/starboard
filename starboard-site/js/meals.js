@@ -794,9 +794,8 @@ function resultsHTML(){
   if (q.length >= 2){
     const hits = searchFoods(logQuery, 12);
     const habits = foodHabits();
-    const local = hits.length ? hits.map(([k,f]) => foodRow(k, f, habits)).join("")
-      : `<div class="empty" style="padding-top:12px">${tx("Yerel katalogda eşleşme yok.")}</div>`;
-    return local + offSearchResultsHTML(logQuery);
+    if (!hits.length) return `<div class="empty" style="padding-top:12px">${tx("Bulunamadı. Aşağıdan kendin tanımlayabilirsin.")}</div>`;
+    return hits.map(([k,f]) => foodRow(k, f, habits)).join("");
   }
   if (logCat){
     const list = allFoods().filter(([,f]) => foodCat(f) === logCat)
@@ -1259,35 +1258,6 @@ function bindResults(entry){
   /* "+" ve sık yediklerin: miktar sormadan ekler, toast'tan geri alınır. */
   app.querySelectorAll("[data-qadd]").forEach(b => b.onclick = () =>
     quickAdd(entry, b.dataset.qadd, Number(b.dataset.qg), { refocus: !!b.closest("#food-results") && logQuery.trim().length >= 2 }));
-  const online = document.getElementById("off-search");
-  if (online) online.onclick = async () => {
-    const q = logQuery.trim();
-    offSearchState = { query:q, status:"loading", foods:[] };
-    renderFoodResults(entry);
-    const result = await searchOffFoods(q);
-    if (norm(logQuery.trim()) !== norm(q)) return;
-    offSearchState = { query:q, status:result.status, foods:result.foods || [] };
-    renderFoodResults(entry);
-  };
-}
-
-function offSearchResultsHTML(q){
-  const v = offSearchView(q);
-  if (v.status === "loading") return `<div class="metric-note" style="margin:12px 4px">${tx("Open Food Facts aranıyor…")}</div>`;
-  const button = `<button class="ghost" id="off-search" style="margin:12px 4px">${tx(v.status === "offline" || v.status === "error" ? "Çevrimiçi aramayı tekrar dene" : "Daha fazla ürünü çevrimiçi ara")}</button>`;
-  const disclosure = `<div class="metric-note" style="margin:8px 4px">${tx("Bu işlem arama metnini ve gerekli ayarları Open Food Facts'e gönderir; profilin ve günlüğün gönderilmez.")}</div>`;
-  if (v.status === "offline" || v.status === "error") return `<div class="metric-note" style="margin:12px 4px">${tx("Çevrimiçi arama açılamadı; yerel sonuçlar gösteriliyor.")}</div>${disclosure}${button}`;
-  const found = v.status === "ok" ? `<div class="metric-note" style="margin:12px 4px">${tx("Open Food Facts sonuçları · değerleri kontrol et")}</div>`
-    + v.foods.map(([k,f]) => foodRow(k, f, foodHabits())).join("")
-    : v.status === "notfound" ? `<div class="metric-note" style="margin:12px 4px">${tx("Open Food Facts'te uygun besin bulunamadı.")}</div>` : "";
-  return found + disclosure + button;
-}
-
-function renderFoodResults(entry){
-  const box = document.getElementById("food-results");
-  if (!box) return;
-  box.innerHTML = resultsHTML();
-  bindResults(entry);
 }
 
 /* ---- sık kullanılan besinler ---- */
@@ -1303,11 +1273,7 @@ function favoriteFoods(){
 }
 
 function addFoodDirect(entry, key, grams, slot){
-  if (OFF_SEARCH_CACHE[key] && !(state.customFoods||{})[key]){
-    state.customFoods = state.customFoods || {};
-    state.customFoods[key] = { ...OFF_SEARCH_CACHE[key] };
-  }
-  const f = foodOf(key);
+  const f = FOODS[key] || (state.customFoods||{})[key];
   if (!f) return null;
   entry.log = entry.log || [];
   const it = { id: Date.now()+Math.random(), k:key, n:f.n, g:grams,
