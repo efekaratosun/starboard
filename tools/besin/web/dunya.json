@@ -1318,5 +1318,596 @@
     "alk": null,
     "porsiyon_g": null,
     "kaynak_url": null
+  },
+  {
+    "ad": "Meatloaf",
+    "kcal": 185,
+    "p": 14,
+    "c": 8,
+    "f": 10,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/meatloaf"
+  },
+  {
+    "ad": "Fried chicken",
+    "kcal": 280,
+    "p": 20,
+    "c": 12,
+    "f": 16,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/fried-chicken"
+  },
+  {
+    "ad": "BBQ pork ribs",
+    "kcal": 280,
+    "p": 20,
+    "c": 10,
+    "f": 18,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/bbq-pork-ribs"
+  },
+  {
+    "ad": "Pulled pork",
+    "kcal": 220,
+    "p": 20,
+    "c": 10,
+    "f": 10,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/pulled-pork"
+  },
+  {
+    "ad": "Louisiana gumbo",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Lobster roll",
+    "kcal": 260,
+    "p": 13,
+    "c": 20,
+    "f": 14,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/lobster-roll"
+  },
+  {
+    "ad": "Tuna melt",
+    "kcal": 225,
+    "p": 14,
+    "c": 14,
+    "f": 12,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/tuna-melt"
+  },
+  {
+    "ad": "Baked beans",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Chicken and waffles",
+    "kcal": 290,
+    "p": 12,
+    "c": 28,
+    "f": 14,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/chicken-and-waffles"
+  },
+  {
+    "ad": "Hot brown",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Carne asada tacos",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Salsa verde",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Chile relleno",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tamales",
+    "kcal": 230,
+    "p": 9,
+    "c": 26,
+    "f": 10,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/tamales"
+  },
+  {
+    "ad": "Elote",
+    "kcal": 180,
+    "p": 5,
+    "c": 18,
+    "f": 10,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/elote"
+  },
+  {
+    "ad": "Menudo",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Birria tacos",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Feijoada",
+    "kcal": 175,
+    "p": 11,
+    "c": 14,
+    "f": 8,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/feijoada"
+  },
+  {
+    "ad": "Pão de queijo",
+    "kcal": 275,
+    "p": 8,
+    "c": 32,
+    "f": 13,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/pão-de-queijo"
+  },
+  {
+    "ad": "Brigadeiro",
+    "kcal": 370,
+    "p": 5,
+    "c": 63,
+    "f": 10,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/brigadeiro"
+  },
+  {
+    "ad": "Coxinha",
+    "kcal": 240,
+    "p": 11,
+    "c": 22,
+    "f": 12,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/coxinha"
+  },
+  {
+    "ad": "Empanada",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Asado",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Provoleta",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Lomo saltado",
+    "kcal": 185,
+    "p": 12,
+    "c": 15,
+    "f": 8,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/lomo-saltado"
+  },
+  {
+    "ad": "Anticuchos",
+    "kcal": 175,
+    "p": 22,
+    "c": 4,
+    "f": 8,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/anticuchos"
+  },
+  {
+    "ad": "Ají de gallina",
+    "kcal": 175,
+    "p": 12,
+    "c": 13,
+    "f": 8,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/ají-de-gallina"
+  },
+  {
+    "ad": "Pisco sour",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Caipirinha",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Chimichurri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Farofa",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Moqueca",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bandeja paisa",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Arepas",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Dim sum",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Char siu bao",
+    "kcal": 200,
+    "p": 7,
+    "c": 32,
+    "f": 5,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/char-siu-bao"
+  },
+  {
+    "ad": "Xiaolongbao",
+    "kcal": 220,
+    "p": 10,
+    "c": 22,
+    "f": 10,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/xiaolongbao"
+  },
+  {
+    "ad": "Peking duck",
+    "kcal": 260,
+    "p": 16,
+    "c": 12,
+    "f": 16,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/peking-duck"
+  },
+  {
+    "ad": "Chow mein",
+    "kcal": 220,
+    "p": 10,
+    "c": 27,
+    "f": 8,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/chow-mein"
+  },
+  {
+    "ad": "Mapo tofu",
+    "kcal": 130,
+    "p": 9,
+    "c": 4,
+    "f": 8,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/mapo-tofu"
+  },
+  {
+    "ad": "Hainan chicken rice",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Congee",
+    "kcal": 90,
+    "p": 4,
+    "c": 15,
+    "f": 1,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/congee"
+  },
+  {
+    "ad": "Egg fried rice",
+    "kcal": 185,
+    "p": 6,
+    "c": 28,
+    "f": 6,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/egg-fried-rice"
+  },
+  {
+    "ad": "Yangzhou fried rice",
+    "kcal": 205,
+    "p": 8,
+    "c": 27,
+    "f": 7,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/yangzhou-fried-rice"
+  },
+  {
+    "ad": "Spring rolls",
+    "kcal": 230,
+    "p": 7,
+    "c": 25,
+    "f": 12,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/spring-rolls"
+  },
+  {
+    "ad": "Gai lan",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Beef chow fun",
+    "kcal": 230,
+    "p": 10,
+    "c": 28,
+    "f": 8,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/spring-rolls"
+  },
+  {
+    "ad": "Scallion pancake",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mantou",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Buddha's delight",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Century egg",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sesame balls",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sichuan boiled fish",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Nigiri sushi",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Maki roll",
+    "kcal": 120,
+    "p": 2,
+    "c": 20,
+    "f": 3,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/maki-roll"
+  },
+  {
+    "ad": "Sashimi",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Chirashi sushi",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tonkotsu ramen",
+    "kcal": 280,
+    "p": 12,
+    "c": 24,
+    "f": 14,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/tonkotsu-ramen"
+  },
+  {
+    "ad": "Shoyu ramen",
+    "kcal": 240,
+    "p": 11,
+    "c": 27,
+    "f": 9,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": "https://menutrition.app/dishes/shoyu-ramen"
+  },
+  {
+    "ad": "Udon",
+    "kcal": null,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": null,
+    "kaynak_url": null
   }
 ]
