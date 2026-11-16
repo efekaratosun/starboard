@@ -2178,5 +2178,65 @@
   "lif": null,
   "porsiyon_g": 250,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/d%C3%B6vme-pilav%C4%B1"
+ },
+ {
+  "ad": "Peynirli börek",
+  "kcal": 312,
+  "p": 7.31,
+  "c": 34.52,
+  "f": 12.29,
+  "lif": null,
+  "porsiyon_g": 120,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/peynirli-b%C3%B6rek"
+ },
+ {
+  "ad": "Ispanaklı börek",
+  "kcal": 264,
+  "p": 6.52,
+  "c": 29.33,
+  "f": 10.31,
+  "lif": null,
+  "porsiyon_g": 120,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ispanakl%C4%B1-b%C3%B6rek"
+ },
+ {
+  "ad": "Patatesli börek",
+  "kcal": 245,
+  "p": 4.47,
+  "c": 34.47,
+  "f": 7.03,
+  "lif": null,
+  "porsiyon_g": 120,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/patatesli-b%C3%B6rek"
+ },
+ {
+  "ad": "Fırın mantı",
+  "kcal": 191,
+  "p": 20.13,
+  "c": 27.78,
+  "f": 11.89,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/etli-mant%C4%B1"
+ },
+ {
+  "ad": "Kızarmış mantı",
+  "kcal": 180,
+  "p": 7.56,
+  "c": 26.51,
+  "f": 4.54,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/mant%C4%B1"
+ },
+ {
+  "ad": "Mantı çorbası",
+  "kcal": 36,
+  "p": 0.92,
+  "c": 5.6,
+  "f": 1,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/knorr/mant%C4%B1-%C3%87orbas%C4%B1/1-porsiyon"
  }
 ]
