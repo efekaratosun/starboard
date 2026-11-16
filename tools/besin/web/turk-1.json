@@ -2238,5 +2238,55 @@
   "lif": null,
   "porsiyon_g": 300,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/knorr/mant%C4%B1-%C3%87orbas%C4%B1/1-porsiyon"
+ },
+ {
+  "ad": "Firik pilavı",
+  "kcal": 119,
+  "p": 4,
+  "c": 18.5,
+  "f": 4.4,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/yuvam/firik-pilav%C4%B1-zeytinya%C4%9Fl%C4%B1/100g"
+ },
+ {
+  "ad": "Salçalı makarna",
+  "kcal": 127,
+  "p": 6.31,
+  "c": 19.55,
+  "f": 2.79,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sal%C3%A7al%C4%B1-makarna"
+ },
+ {
+  "ad": "Yoğurtlu makarna",
+  "kcal": 165,
+  "p": 5.93,
+  "c": 29.5,
+  "f": 2.4,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yo%C4%9Furtlu-makarna"
+ },
+ {
+  "ad": "Mantarlı makarna",
+  "kcal": 253,
+  "p": 6.23,
+  "c": 30.87,
+  "f": 11.78,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kremal%C4%B1-mantarl%C4%B1-makarna"
+ },
+ {
+  "ad": "Kuskus pilavı",
+  "kcal": 112,
+  "p": 3.79,
+  "c": 23.2,
+  "f": 0.16,
+  "lif": null,
+  "porsiyon_g": 220,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuskus-%28pi%C5%9Fmi%C5%9F%29"
  }
 ]
