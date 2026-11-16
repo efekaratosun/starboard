@@ -2288,5 +2288,55 @@
   "lif": null,
   "porsiyon_g": 220,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuskus-%28pi%C5%9Fmi%C5%9F%29"
+ },
+ {
+  "ad": "Patates oturtma",
+  "kcal": 175,
+  "p": 7.25,
+  "c": 12.05,
+  "f": 11,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/patates-oturtma"
+ },
+ {
+  "ad": "Fırında patates",
+  "kcal": 90,
+  "p": 2.43,
+  "c": 20.53,
+  "f": 0.12,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-patates"
+ },
+ {
+  "ad": "Bezelye yemeği",
+  "kcal": 147,
+  "p": 3.48,
+  "c": 11.07,
+  "f": 10.38,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/bezelye-yeme%C4%9Fi"
+ },
+ {
+  "ad": "Sebze güveç",
+  "kcal": 56,
+  "p": 6.33,
+  "c": 23.25,
+  "f": 2.32,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebze-g%C3%BCve%C3%A7-%28etsiz%29"
+ },
+ {
+  "ad": "Fırında karnabahar",
+  "kcal": 190,
+  "p": 9.68,
+  "c": 13.53,
+  "f": 16.76,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-baharatl%C4%B1-karnabahar"
  }
 ]
