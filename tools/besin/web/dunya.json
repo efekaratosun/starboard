@@ -2080,14 +2080,14 @@
   },
   {
     "ad": "Unagi",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 203,
+    "p": 18,
+    "c": 5.6,
+    "f": 6,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/unagi-421042"
   },
   {
     "ad": "Takoyaki",
@@ -2113,14 +2113,14 @@
   },
   {
     "ad": "Unagi",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 203,
+    "p": 18,
+    "c": 5.6,
+    "f": 6,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/unagi-421042"
   },
   {
     "ad": "Mochi",
@@ -2135,14 +2135,14 @@
   },
   {
     "ad": "Dango",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 180,
+    "p": 4,
+    "c": 40,
+    "f": 9,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/dango-421043"
   },
   {
     "ad": "Dorayaki",
@@ -2223,14 +2223,14 @@
   },
   {
     "ad": "Jajangmyeon",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 155,
+    "p": 6,
+    "c": 25,
+    "f": 6,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/jajangmyeon-421044"
   },
   {
     "ad": "Naengmyeon",
@@ -2256,14 +2256,14 @@
   },
   {
     "ad": "Gimbap",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 320,
+    "p": 8,
+    "c": 55,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/gimbap-421045"
   },
   {
     "ad": "Mandu",
@@ -2278,36 +2278,36 @@
   },
   {
     "ad": "Tteok",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 80,
+    "p": 1.5,
+    "c": 16,
+    "f": 0.5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/tteok-421046"
   },
   {
     "ad": "Gyeran-mari",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 200,
+    "p": 6,
+    "c": 20,
+    "f": 14,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/gyeran-mari-421047"
   },
   {
     "ad": "Yukhoe",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 130,
+    "p": 12,
+    "c": 1,
+    "f": 4,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/yukhoe-421048"
   },
   {
     "ad": "Korean corn dog",
@@ -2454,14 +2454,14 @@
   },
   {
     "ad": "Chicken satay",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 250,
+    "p": 20,
+    "c": 5,
+    "f": 15,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/chicken-satay-421049"
   },
   {
     "ad": "Larb",
@@ -2531,14 +2531,14 @@
   },
   {
     "ad": "Chicken curry",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 450,
+    "p": 30,
+    "c": 15,
+    "f": 25,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/chicken-curry-421050"
   },
   {
     "ad": "Lamb rogan josh",
@@ -2586,25 +2586,25 @@
   },
   {
     "ad": "Saag aloo",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 180,
+    "p": 4,
+    "c": 36,
+    "f": 2,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/saag-aloo-421051"
   },
   {
     "ad": "Khichdi",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 150,
+    "p": 6,
+    "c": 25,
+    "f": 5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/khichdi-421052"
   },
   {
     "ad": "Paneer tikka",
@@ -2630,25 +2630,25 @@
   },
   {
     "ad": "Seekh kebab",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 280,
+    "p": 20,
+    "c": 5,
+    "f": 18,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/seekh-kebab-421053"
   },
   {
     "ad": "Garlic naan",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 150,
+    "p": 4,
+    "c": 25,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/garlic-naan-421054"
   },
   {
     "ad": "Chapati",
@@ -2685,25 +2685,25 @@
   },
   {
     "ad": "Vegetable samosa",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 200,
+    "p": 4,
+    "c": 25,
+    "f": 12,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/vegetable-samosa-421055"
   },
   {
     "ad": "Vegetable pakora",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 240,
+    "p": 4,
+    "c": 32,
+    "f": 12,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/vegetable-pakora-421056"
   },
   {
     "ad": "Chole bhature",
@@ -2740,14 +2740,14 @@
   },
   {
     "ad": "Baba ghanoush",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 175,
+    "p": 4,
+    "c": 15,
+    "f": 12,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/baba-ghanoush-421057"
   },
   {
     "ad": "Fattoush",
@@ -2762,36 +2762,36 @@
   },
   {
     "ad": "Chicken shawarma",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 280,
+    "p": 12,
+    "c": 10,
+    "f": 20,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/chicken-shawarma-421058"
   },
   {
     "ad": "Za'atar manakish",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 320,
+    "p": 8,
+    "c": 10,
+    "f": 22,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/zaatar-manakish-421059"
   },
   {
     "ad": "Fatayer",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 350,
+    "p": 8,
+    "c": 5,
+    "f": 24,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/fatayer-421060"
   },
   {
     "ad": "Kibbeh",
