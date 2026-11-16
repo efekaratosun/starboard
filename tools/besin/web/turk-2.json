@@ -1,0 +1,3142 @@
+[
+  {
+    "ad": "Tepsi böreği",
+    "kcal": 300,
+    "p": 9,
+    "c": 30,
+    "f": 14,
+    "lif": 1.8,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/tepsi-boregi/"
+  },
+  {
+    "ad": "Yufka böreği",
+    "kcal": 265,
+    "p": 7,
+    "c": 35,
+    "f": 10,
+    "lif": 1.5,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/yufka-boregi/"
+  },
+  {
+    "ad": "Talaş böreği",
+    "kcal": 281,
+    "p": 8.96,
+    "c": 30.5,
+    "f": 13.32,
+    "lif": 2.61,
+    "porsiyon_g": 130,
+    "kaynak_url": "https://www.diyetkolik.com/yemek-tarifi/talas-boregi"
+  },
+  {
+    "ad": "Muska böreği",
+    "kcal": 245,
+    "p": 6.6,
+    "c": 42.07,
+    "f": 5.5,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/muska-boregi/"
+  },
+  {
+    "ad": "Ot böreği",
+    "kcal": 205,
+    "p": 6,
+    "c": 30,
+    "f": 6,
+    "lif": 1.8,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/ispanakli-borek"
+  },
+  {
+    "ad": "Puf böreği",
+    "kcal": 338,
+    "p": 8.7,
+    "c": 36.7,
+    "f": 17,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.ktb.gov.tr/EN-99073/puff-borek.html"
+  },
+  {
+    "ad": "Milföy böreği",
+    "kcal": 302,
+    "p": 8.9,
+    "c": 27,
+    "f": 9.7,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/peynirli-milfoy-boregi/"
+  },
+  {
+    "ad": "Kıvrım börek",
+    "kcal": 270,
+    "p": 8,
+    "c": 32,
+    "f": 12,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=B%C3%B6rek"
+  },
+  {
+    "ad": "El açması börek",
+    "kcal": 255,
+    "p": 2.4,
+    "c": 32.3,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 130,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/ispanakli-acma-borek/"
+  },
+  {
+    "ad": "Saç böreği",
+    "kcal": 300,
+    "p": 8,
+    "c": 32,
+    "f": 15,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.ntv.com.tr/kac-kalori/ispanakli-sac-boregi"
+  },
+  {
+    "ad": "Sucuklu börek",
+    "kcal": 320,
+    "p": 11,
+    "c": 30,
+    "f": 17,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=B%C3%B6rek"
+  },
+  {
+    "ad": "Kaşarlı börek",
+    "kcal": 260,
+    "p": 10.11,
+    "c": 33.48,
+    "f": 9.14,
+    "lif": 1.95,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/peynirli-borek"
+  },
+  {
+    "ad": "Mantarlı börek",
+    "kcal": 250,
+    "p": 8,
+    "c": 30,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=B%C3%B6rek"
+  },
+  {
+    "ad": "Kete",
+    "kcal": 335,
+    "p": 7.7,
+    "c": 54.59,
+    "f": 8.6,
+    "lif": 1.93,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.ntv.com.tr/kac-kalori/kete"
+  },
+  {
+    "ad": "Pişi",
+    "kcal": 244,
+    "p": 7.5,
+    "c": 46,
+    "f": 2.82,
+    "lif": 1.5,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/pisi"
+  },
+  {
+    "ad": "Krep",
+    "kcal": 187,
+    "p": 7,
+    "c": 27,
+    "f": 4,
+    "lif": 1.5,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/krep/"
+  },
+  {
+    "ad": "Akıtma",
+    "kcal": 197,
+    "p": 5,
+    "c": 14.3,
+    "f": 13,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/akitma/"
+  },
+  {
+    "ad": "Cizleme",
+    "kcal": 197,
+    "p": 4,
+    "c": 22,
+    "f": 9,
+    "lif": 2.5,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/cizleme/"
+  },
+  {
+    "ad": "Katmer",
+    "kcal": 256,
+    "p": 7.68,
+    "c": 50.41,
+    "f": 2.26,
+    "lif": 3.28,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/katmer"
+  },
+  {
+    "ad": "Kuşbaşılı pide",
+    "kcal": 132,
+    "p": 7.25,
+    "c": 18.77,
+    "f": 2.96,
+    "lif": 1.6,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/kusbasili-pide"
+  },
+  {
+    "ad": "Sucuklu pide",
+    "kcal": 260,
+    "p": 10,
+    "c": 28,
+    "f": 11,
+    "lif": 1.5,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://www.neyediginibil.com/besin-degerleri/usta-pideci"
+  },
+  {
+    "ad": "Pastırmalı pide",
+    "kcal": 260,
+    "p": 13.1,
+    "c": 29.5,
+    "f": 10.2,
+    "lif": null,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/harras/past%C4%B1rmal%C4%B1-ka%C5%9Farl%C4%B1-pide/100g"
+  },
+  {
+    "ad": "Ispanaklı pide",
+    "kcal": 158,
+    "p": 4,
+    "c": 19.8,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://www.ntv.com.tr/kac-kalori/ispanakli-pide"
+  },
+  {
+    "ad": "Yumurtalı pide",
+    "kcal": 205,
+    "p": 9,
+    "c": 27,
+    "f": 6.5,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/pratik-yumurtali-pide"
+  },
+  {
+    "ad": "Karışık pide",
+    "kcal": 250,
+    "p": 12,
+    "c": 28,
+    "f": 10,
+    "lif": null,
+    "porsiyon_g": 280,
+    "kaynak_url": "https://www.nefisyemektarifleri.com/kac-kalori/pide/"
+  },
+  {
+    "ad": "Mantarlı pide",
+    "kcal": 205,
+    "p": 8,
+    "c": 27,
+    "f": 7,
+    "lif": 1.8,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://ye-mek.net/kalori/kasarli-mantarli-ev-pidesi"
+  },
+  {
+    "ad": "Tavuklu pide",
+    "kcal": 167,
+    "p": 6.4,
+    "c": 25.82,
+    "f": 4.35,
+    "lif": 0.95,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Tavuklu+Pide"
+  },
+  {
+    "ad": "Beyaz peynirli pide",
+    "kcal": 196,
+    "p": 7,
+    "c": 25.83,
+    "f": 6,
+    "lif": 2,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/peynirli-pide/"
+  },
+  {
+    "ad": "Fıstıklı lahmacun",
+    "kcal": 230,
+    "p": 11,
+    "c": 26,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=lahmacun"
+  },
+  {
+    "ad": "Etli ekmek",
+    "kcal": 210,
+    "p": 11.59,
+    "c": 23.55,
+    "f": 7.25,
+    "lif": 1.47,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/etli-ekmek"
+  },
+  {
+    "ad": "Biberli ekmek",
+    "kcal": 257,
+    "p": 6.8,
+    "c": 25,
+    "f": 14.4,
+    "lif": 3,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/hatay-usulu-biberli-ekmek"
+  },
+  {
+    "ad": "Kır pidesi",
+    "kcal": 260,
+    "p": 8,
+    "c": 52,
+    "f": 3,
+    "lif": 2.5,
+    "porsiyon_g": 240,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=pide"
+  },
+  {
+    "ad": "Antep lahmacunu",
+    "kcal": 230,
+    "p": 11,
+    "c": 26,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 140,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=lahmacun"
+  },
+  {
+    "ad": "Patlıcan dolma",
+    "kcal": 150,
+    "p": 6,
+    "c": 14,
+    "f": 8,
+    "lif": 3,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=patl%C4%B1can%20dolma"
+  },
+  {
+    "ad": "Soğan dolma",
+    "kcal": 136,
+    "p": 2,
+    "c": 19.8,
+    "f": 5.5,
+    "lif": 2,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=so%C4%9Fan%20dolma"
+  },
+  {
+    "ad": "Domates dolma",
+    "kcal": 96,
+    "p": 4.75,
+    "c": 9.9,
+    "f": 4.2,
+    "lif": 1.5,
+    "porsiyon_g": 160,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=domates%20dolma"
+  },
+  {
+    "ad": "Ayva dolma",
+    "kcal": 165,
+    "p": 4,
+    "c": 20,
+    "f": 6,
+    "lif": 2.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=ayva%20dolma"
+  },
+  {
+    "ad": "Enginar dolma",
+    "kcal": 90,
+    "p": 3,
+    "c": 13,
+    "f": 3.5,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/enginar-dolmasi/"
+  },
+  {
+    "ad": "Kuru patlıcan dolma",
+    "kcal": 161,
+    "p": 2,
+    "c": 19.4,
+    "f": 8.5,
+    "lif": 1.1,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kuru-patlican-dolmasi"
+  },
+  {
+    "ad": "Kuru biber dolma",
+    "kcal": 175,
+    "p": 2.1,
+    "c": 20.3,
+    "f": 9.7,
+    "lif": 0.9,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kuru-biber-dolmasi"
+  },
+  {
+    "ad": "Kuru kabak dolma",
+    "kcal": 146,
+    "p": 2.8,
+    "c": 17.9,
+    "f": 9.3,
+    "lif": 2,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/kuru-kabak-dolmasi-zeytinyagli"
+  },
+  {
+    "ad": "Pancar yaprağı sarma",
+    "kcal": 140,
+    "p": 4,
+    "c": 20,
+    "f": 4.5,
+    "lif": 2,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/pancar-yapragi/"
+  },
+  {
+    "ad": "Pazı sarma",
+    "kcal": 194,
+    "p": 10.03,
+    "c": 20.41,
+    "f": 7.34,
+    "lif": 2,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.haberturk.com/kac-kalori/pazi-sarmasi-besin-degeri"
+  },
+  {
+    "ad": "Zeytinyağlı lahana sarma",
+    "kcal": 106,
+    "p": 2.48,
+    "c": 20.32,
+    "f": 1.44,
+    "lif": 1.93,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/zeytinyagli-lahana-sarmasi"
+  },
+  {
+    "ad": "Ekşili dolma",
+    "kcal": 150,
+    "p": 9,
+    "c": 16,
+    "f": 6,
+    "lif": 2,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/etli-bulgurlu-dolma"
+  },
+  {
+    "ad": "Yoğurtlu dolma",
+    "kcal": 112,
+    "p": 5,
+    "c": 12,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 160,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/dolma-biber-yogurtlu/"
+  },
+  {
+    "ad": "Yalancı dolma",
+    "kcal": 135,
+    "p": 3,
+    "c": 18,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/zeytinyagli-patlican-dolmasi"
+  },
+  {
+    "ad": "Kabak çiçeği dolması",
+    "kcal": 178,
+    "p": 2.2,
+    "c": 20.4,
+    "f": 9.9,
+    "lif": 1.1,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kabak-cicegi-dolmasi"
+  },
+  {
+    "ad": "Karışık dolma",
+    "kcal": 168,
+    "p": 5,
+    "c": 22,
+    "f": 7,
+    "lif": 2,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/karisik-dolma"
+  },
+  {
+    "ad": "Etli lahana sarma",
+    "kcal": 130,
+    "p": 5,
+    "c": 16,
+    "f": 5,
+    "lif": 1.5,
+    "porsiyon_g": 50,
+    "kaynak_url": "https://antrena.app/kalori/lahana-sarmasi"
+  },
+  {
+    "ad": "Kuru lahana sarma",
+    "kcal": 135,
+    "p": 4,
+    "c": 17,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/lahana-sarmasi/"
+  },
+  {
+    "ad": "Patlıcan salatası",
+    "kcal": 34,
+    "p": 1.16,
+    "c": 3.03,
+    "f": 1.82,
+    "lif": 2.29,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/patlican-salatasi"
+  },
+  {
+    "ad": "Babagannuş",
+    "kcal": 119,
+    "p": 2.2,
+    "c": 9.5,
+    "f": 9.1,
+    "lif": 2.9,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.slimfit.net/kalori/babagannus.html"
+  },
+  {
+    "ad": "Muhammara",
+    "kcal": 417,
+    "p": 8.2,
+    "c": 21.1,
+    "f": 35.7,
+    "lif": 3,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/muhammara"
+  },
+  {
+    "ad": "Atom meze",
+    "kcal": 144,
+    "p": 7.9,
+    "c": 5.1,
+    "f": 10.6,
+    "lif": 1,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.slimfit.net/kalori/atom.html"
+  },
+  {
+    "ad": "Girit ezmesi",
+    "kcal": 407,
+    "p": 11.4,
+    "c": 6.4,
+    "f": 38.9,
+    "lif": 3,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/girit-ezmesi"
+  },
+  {
+    "ad": "Tarator",
+    "kcal": 149,
+    "p": 3.86,
+    "c": 7.48,
+    "f": 12.3,
+    "lif": 1,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Tarator"
+  },
+  {
+    "ad": "Havuç tarator",
+    "kcal": 90,
+    "p": 2.2,
+    "c": 6.2,
+    "f": 7.5,
+    "lif": 1.5,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/havuc-tarator"
+  },
+  {
+    "ad": "Kabak tarator",
+    "kcal": 101,
+    "p": 3,
+    "c": 3.4,
+    "f": 8.4,
+    "lif": 1,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/kabak-tarator"
+  },
+  {
+    "ad": "Yoğurtlu semizotu",
+    "kcal": 69,
+    "p": 3,
+    "c": 3.6,
+    "f": 4.9,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/yogurtlu-semizotu"
+  },
+  {
+    "ad": "Yoğurtlu kereviz",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Rus salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Patates salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuskus salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Makarna salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Roka salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Gavurdağı salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Köpoğlu salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Cevizli biber",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Şakşuka",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tabbule",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Zahter salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Batırık",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Lakerda",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ton balıklı salata",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Peynirli salata",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mevsim salata",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kırmızı biber salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yoğurtlu közlenmiş biber",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kalamar salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Midye salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Rafadan yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pastırmalı yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kavurmalı yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sosisli yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Peynirli omlet",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sebzeli omlet",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 160,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mantarlı omlet",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 160,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kaşarlı omlet",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Çılbır",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bal kaymak",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tahin pekmez",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yumurtalı ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Patatesli yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Soğanlı yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 160,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Domatesli yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Biberli yumurta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kargı tulum peyniri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Van otlu peynir",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Çerkez peyniri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Köy peyniri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kalamata zeytin",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bursa siyah zeytin",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Çizik zeytin",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Cevizli sucuk",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pestil",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Köme",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Dürüm döner",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Islak hamburger",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Hamburger",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ayvalık tostu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kumru",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Boyoz",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 90,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Gevrek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Adana dürüm",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 280,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Urfa dürüm",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 280,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Et dürüm",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 260,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Midye ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kağıt helva",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Macun",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Akide şekeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 10,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Horoz şekeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 25,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pamuk şeker",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Falafel dürüm",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 260,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sucuk ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Köfte ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ciğer ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Patso",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Döner ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Arnavut ciğeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ciğer tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ciğer sote",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Edirne ciğeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuzu ciğeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk ciğeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yürek tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Böbrek tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuzu böbrek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Beyin tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Beyin salatası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Uykuluk",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Şırdan",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mumbar dolması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kelle tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tandır kelle",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Dil sote",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "İşkembe tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Koç yumurtası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sakatat güveç",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ciğer dürüm",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Dalak tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk yürek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk taşlık",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kaz ciğeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kelle söğüş",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Paça haşlama",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kıkırdak tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ciğer köftesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bursa cantık",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Balıkesir höşmerim",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Çanakkale peynir helvası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bursa kestane şekeri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "İzmit pişmaniyesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tire köftesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ödemiş mercimekli mantısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ege ot kavurması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Manisa tulum peyniri",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bodrum kurabiyesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tarsus kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Burdur şiş",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Isparta kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Adana bici bici",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mersin cezerye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ankara tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ankara keşkek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Nevşehir güveci",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sivas yarma çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "İskilip dolması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuymak",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Laz böreği",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Karadeniz pidesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Karalahana çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Karalahana sarması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 50,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Keledoş",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Erzurum lor dolması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bitlis büryan",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Elazığ kömbe",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Malatya kayısı tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Beyran çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mardin kaburga dolması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kilis tava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Nizip kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Fıstık sucuğu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Muhallebi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Keşkül",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Profiterol",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Supangle",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sütlü irmik tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "İrmik helvası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Puding",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kakaolu puding",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Vanilyalı puding",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Meyveli puding",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Güllaç",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Muhallebili kadayıf",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sütlü kadayıf",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sakızlı muhallebi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Fıstıklı muhallebi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Karamel muhallebi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pelte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sıcak çikolata",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Şöbiyet",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Burma kadayıf",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kadayıf dolması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ekmek kadayıfı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kemalpaşa tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sütlü nuriye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bülbül yuvası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 50,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Saray sarması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Dilber dudağı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Hanım göbeği",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tulumba tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Şambali",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kalburabastı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sarığıburma",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Halka tatlı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 50,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Şekerpare",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 50,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Nevzine",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Midye baklava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Havuç dilimi baklava",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 45,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ayva tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kabak tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Elma tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Armut tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "İncir tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Un helvası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Süt helvası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Koz helvası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Cevizli helva",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Lokma",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kerebiç",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Maraş dondurması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Elmalı turta",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Erik tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Hurma tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Vişne tatlısı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kestane püresi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Fıstıklı helva",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Susamlı helva",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yaz helvası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kandil simidi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Peynirli simit",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tandır ekmeği",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ramazan pidesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Köy ekmeği",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mısır ekmeği",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Haşhaşlı ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Cevizli ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Zeytinli ekmek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 60,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pide ekmeği",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tırnak pide",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tahinli çörek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 90,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Cevizli çörek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 90,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Haşhaşlı çörek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 90,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Un kurabiyesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 25,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Acıbadem kurabiyesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Elmalı kurabiye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 40,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Cevizli kurabiye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 35,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kakaolu kurabiye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Vanilyalı kurabiye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 30,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Şeker kurabiyesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 25,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kakaolu kek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Meyveli kek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Havuçlu kek",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bazlama",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bebek bisküvisi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 8,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Grissini",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 5,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Karışık turşu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kornişon turşu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Lahana turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pancar turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Biber turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Patlıcan turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Havuç turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sarımsak turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 50,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yeşil domates turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Çubuk turşusu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Acılı turşu",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Vişne reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Çilek reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kayısı reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "İncir reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ayva reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Portakal reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Gül reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Karpuz reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Elma reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Erik reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kiraz reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Dut reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ceviz reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bal kabağı reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Süt reçeli",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Domates salçası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 15,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Biber salçası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 15,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Acı biber salçası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 15,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Nar ekşisi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 15,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Üzüm sirkesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 15,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sumak ekşisi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 15,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Çemen",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 10,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kurut",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 15,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Marmelat",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Vişne marmelatı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 20,
+    "kaynak_url": null
+  }
+]
