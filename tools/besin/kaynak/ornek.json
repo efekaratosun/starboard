@@ -1,0 +1,23 @@
+[
+  {
+    "key": "pismis_mercimek",
+    "ad": "Mercimek, haslanmis (ABD USDA 172421)",
+    "tip": "usda",
+    "fdc": 172421
+  },
+  {
+    "key": "mercimek_corbasi",
+    "ad": "Mercimek corbasi",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Kuru mercimek", "fdc": 172420, "g": 200 },
+      { "ad": "Sogan", "fdc": 170000, "g": 80 },
+      { "ad": "Havuc", "fdc": 170393, "g": 80 },
+      { "ad": "Patates", "fdc": 170026, "g": 100 },
+      { "ad": "Zeytinyagi", "fdc": 171413, "g": 20 },
+      { "ad": "Su", "su": true, "g": 1500 }
+    ],
+    "pismis_g": 1800,
+    "porsiyon": 4
+  }
+]
