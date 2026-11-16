@@ -2108,5 +2108,75 @@
   "lif": null,
   "porsiyon_g": 300,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1n-makarna"
+ },
+ {
+  "ad": "Patlıcan kızartması",
+  "kcal": 148,
+  "p": 2.4,
+  "c": 11.58,
+  "f": 10.75,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/patl%C4%B1can-k%C4%B1zartmas%C4%B1"
+ },
+ {
+  "ad": "Kuru fasulye (sade)",
+  "kcal": 93,
+  "p": 8.53,
+  "c": 29.03,
+  "f": 10.11,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuru-fasulye"
+ },
+ {
+  "ad": "Nohut yemeği",
+  "kcal": 169,
+  "p": 3.22,
+  "c": 15.63,
+  "f": 10.79,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/nohut-yeme%C4%9Fi"
+ },
+ {
+  "ad": "Nohut pilaki",
+  "kcal": 120,
+  "p": 4.5,
+  "c": 20.2,
+  "f": 3.04,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/tat/nohut-pilaki/100g"
+ },
+ {
+  "ad": "Etli pilav",
+  "kcal": 188,
+  "p": 15,
+  "c": 48.24,
+  "f": 12.88,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/etli-pilav"
+ },
+ {
+  "ad": "İç pilav",
+  "kcal": 159,
+  "p": 6.47,
+  "c": 23.68,
+  "f": 4.37,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/%C4%B0%C3%A7-pilav"
+ },
+ {
+  "ad": "Dövme pilavı",
+  "kcal": 227,
+  "p": 13.03,
+  "c": 31.43,
+  "f": 5,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/d%C3%B6vme-pilav%C4%B1"
  }
 ]
