@@ -58,7 +58,10 @@ function indexOku(yol) {
 
 // FNDDS dizini istege baglidir: yoksa yalniz SR Legacy ile calisilir.
 function fnddsIndexOku(yol) {
-  return yol && fs.existsSync(yol) ? indexOku(yol) : new Map();
+  if (yol && fs.existsSync(yol)) return indexOku(yol);
+  const bos = new Map();
+  bos.dizinEksik = true;
+  return bos;
 }
 
 // Bir USDA kaydinin 100 g degerleri. protein/yag/karbonhidrat/kcal null ise hata.
@@ -76,6 +79,9 @@ function usdaDegerleri(veri, fdc, porsiyonAdi) {
     );
   }
   const r = srKayit || fnddsKayit;
+  if (!r && veri.fndds.dizinEksik) {
+    throw new BesinHatasi('FNDDS dizini yok: ' + VARSAYILAN.fnddsIndexYolu + ' (once node tools/usda/fetch.js)');
+  }
   if (!r) throw new BesinHatasi('fdc ' + fdc + ' USDA dizininde yok');
   const fndds = !!fnddsKayit;
   for (const alan of ['protein', 'fat', 'carbs', 'kcal']) {

@@ -183,6 +183,21 @@ test('su malzemesi sifir besin ekler, agirligi toplama girer', () => {
 
 hataBekle('HATA: fdc dizinde yok', [{ key: 'a', ad: 'A', tip: 'usda', fdc: 999 }], 'dizininde yok');
 
+test('HATA: FNDDS kaydi istenirken index-survey.json yoksa fetch yonergesi verilir', () => {
+  const f = fixture([{ key: 'survey', ad: 'FNDDS gida', tip: 'usda', fdc: 2710339 }]);
+  f.ayar.fnddsIndexYolu = path.join(TMP, 'yok', 'index-survey.json');
+  let hata = null;
+  try {
+    calistir(f.ad, f.ayar);
+  } catch (e) {
+    hata = e;
+  }
+  assert.ok(hata, 'FNDDS index eksikken hata bekleniyordu');
+  assert.ok(hata.message.includes('FNDDS dizini yok'), hata.message);
+  assert.ok(hata.message.includes('node tools/usda/fetch.js'), hata.message);
+  assert.strictEqual(fs.existsSync(f.ciktiYolu), false, 'hata durumunda cikti yazilmamali');
+});
+
 hataBekle('HATA: fdc sayi degil', [{ key: 'a', ad: 'A', tip: 'usda', fdc: '172420' }], 'fdc sayi olmali');
 
 hataBekle('HATA: protein null', [{ key: 'a', ad: 'A', tip: 'usda', fdc: 2 }], 'protein null');
