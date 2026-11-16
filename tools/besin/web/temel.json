@@ -518,14 +518,14 @@
   },
   {
     "ad": "Hardaliye",
-    "kcal": 250,
-    "p": 0,
-    "c": 65,
+    "kcal": 85,
+    "p": 0.5,
+    "c": 22,
     "f": 0,
     "lif": 0,
-    "alk": 9,
+    "alk": 0,
     "porsiyon_g": 100,
-    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=fermented+grape+drink"
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/grape+juice+fermented"
   },
   {
     "ad": "Meyan kökü şerbeti",
@@ -644,7 +644,7 @@
     "c": 0,
     "f": 0,
     "lif": 0,
-    "alk": 40,
+    "alk": 35.5,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=raki"
   },
@@ -655,7 +655,7 @@
     "c": 15,
     "f": 0,
     "lif": 0,
-    "alk": 12,
+    "alk": 9.5,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=vermouth"
   },
@@ -666,7 +666,7 @@
     "c": 25,
     "f": 0.5,
     "lif": 1,
-    "alk": 12,
+    "alk": 9.5,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=mojito+cocktail"
   },
@@ -677,7 +677,7 @@
     "c": 10,
     "f": 10,
     "lif": 0,
-    "alk": 14,
+    "alk": 11.9,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=margarita"
   },
@@ -688,7 +688,7 @@
     "c": 27,
     "f": 18,
     "lif": 0,
-    "alk": 9,
+    "alk": 7.1,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=pina+colada"
   },
@@ -699,7 +699,7 @@
     "c": 12,
     "f": 0,
     "lif": 0,
-    "alk": 10,
+    "alk": 7.9,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=cosmopolitan+cocktail"
   },
@@ -710,7 +710,7 @@
     "c": 2,
     "f": 0,
     "lif": 0,
-    "alk": 14,
+    "alk": 11.9,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=martini+cocktail"
   },
@@ -721,7 +721,7 @@
     "c": 8,
     "f": 8,
     "lif": 1,
-    "alk": 12,
+    "alk": 9.5,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=bloody+mary"
   },
@@ -732,7 +732,7 @@
     "c": 22,
     "f": 0.5,
     "lif": 1,
-    "alk": 10,
+    "alk": 7.9,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=sangria"
   },
@@ -743,7 +743,7 @@
     "c": 15,
     "f": 1,
     "lif": 0,
-    "alk": 12,
+    "alk": 9.5,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=daiquiri+cocktail"
   },
@@ -754,7 +754,7 @@
     "c": 8,
     "f": 0,
     "lif": 0,
-    "alk": 12,
+    "alk": 9.5,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=aperitif+spritz"
   },
@@ -765,7 +765,7 @@
     "c": 10,
     "f": 0.5,
     "lif": 0,
-    "alk": 14,
+    "alk": 9.5,
     "porsiyon_g": 100,
     "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=hot+wine"
   },
