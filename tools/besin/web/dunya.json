@@ -1640,71 +1640,80 @@
   },
   {
     "ad": "Chimichurri",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 300,
+    "p": 1.7,
+    "c": 6.7,
+    "f": 30,
+    "lif": 1.7,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://healthybears.ai/food/chimichurri"
   },
   {
     "ad": "Farofa",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 365,
+    "p": 1.4,
+    "c": 80,
+    "f": 2.8,
+    "lif": 6.5,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.calori.com/foods/farofa"
   },
   {
     "ad": "Moqueca",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 198,
+    "p": 12,
+    "c": 14,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 350,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/moqueca-421027"
   },
   {
     "ad": "Bandeja paisa",
-    "kcal": null,
-    "lif": null,
+    "kcal": 244,
+    "p": 10.7,
+    "c": 13.6,
+    "f": 16.5,
+    "lif": 3.5,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.arise-app.com/dish/Bandeja-Paisa"
   },
   {
     "ad": "Arepas",
-    "kcal": null,
-    "lif": null,
+    "kcal": 200,
+    "p": 4,
+    "c": 35,
+    "f": 5,
+    "lif": 3,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://nutrola.app/es/blog/calorias-en-comida-colombiana-bandeja-paisa-arepas"
   },
   {
     "ad": "Dim sum",
-    "kcal": null,
+    "kcal": 180,
+    "p": 8,
+    "c": 20,
+    "f": 6,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/dim-sum-421028"
   },
   {
-    "ad": "Char siu bao",
-    "kcal": 200,
-    "p": 7,
-    "c": 32,
-    "f": 5,
+    "ad": "Dim sum",
+    "kcal": 180,
+    "p": 8,
+    "c": 20,
+    "f": 6,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": "https://menutrition.app/dishes/char-siu-bao"
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/dim-sum-421028"
   },
   {
     "ad": "Xiaolongbao",
@@ -1752,22 +1761,25 @@
   },
   {
     "ad": "Hainan chicken rice",
-    "kcal": null,
+    "kcal": 220,
+    "p": 20,
+    "c": 20,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/hainan-chicken-rice-421029"
   },
   {
-    "ad": "Congee",
-    "kcal": 90,
-    "p": 4,
-    "c": 15,
-    "f": 1,
+    "ad": "Hainan chicken rice",
+    "kcal": 220,
+    "p": 20,
+    "c": 20,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": "https://menutrition.app/dishes/congee"
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/hainan-chicken-rice-421029"
   },
   {
     "ad": "Egg fried rice",
@@ -1804,128 +1816,146 @@
   },
   {
     "ad": "Gai lan",
-    "kcal": null,
-    "lif": null,
+    "kcal": 35,
+    "p": 2.5,
+    "c": 6,
+    "f": 0.5,
+    "lif": 2,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/gai-lan-421030"
   },
   {
-    "ad": "Beef chow fun",
-    "kcal": 230,
-    "p": 10,
-    "c": 28,
-    "f": 8,
-    "lif": null,
+    "ad": "Gai lan",
+    "kcal": 35,
+    "p": 2.5,
+    "c": 6,
+    "f": 0.5,
+    "lif": 2,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": "https://menutrition.app/dishes/spring-rolls"
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/gai-lan-421030"
   },
   {
     "ad": "Scallion pancake",
-    "kcal": null,
-    "lif": null,
+    "kcal": 220,
+    "p": 5,
+    "c": 25,
+    "f": 10,
+    "lif": 2,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/scallion-pancake-421031"
+  },
+  {
+    "ad": "Scallion pancake",
+    "kcal": 220,
+    "p": 5,
+    "c": 25,
+    "f": 10,
+    "lif": 2,
+    "alk": null,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/scallion-pancake-421031"
   },
   {
     "ad": "Mantou",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 250,
+    "p": 6,
+    "c": 40,
+    "f": 4,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/mantou-bao-421032"
   },
   {
     "ad": "Buddha's delight",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 120,
+    "p": 5,
+    "c": 20,
+    "f": 4,
+    "lif": 5,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/buddhas-delight-421033"
   },
   {
     "ad": "Century egg",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 130,
+    "p": 7,
+    "c": 3,
+    "f": 9,
+    "lif": 0,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/century-egg-421034"
   },
   {
     "ad": "Sesame balls",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 370,
+    "p": 5,
+    "c": 63,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/sesame-balls-421035"
   },
   {
     "ad": "Sichuan boiled fish",
-    "kcal": null,
+    "kcal": 250,
+    "p": 25,
+    "c": 10,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/sichuan-boiled-fish-421036"
   },
   {
     "ad": "Nigiri sushi",
-    "kcal": null,
-    "lif": null,
-    "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
-  },
-  {
-    "ad": "Maki roll",
-    "kcal": 120,
-    "p": 2,
-    "c": 20,
+    "kcal": 150,
+    "p": 6,
+    "c": 25,
     "f": 3,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": "https://menutrition.app/dishes/maki-roll"
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/nigiri-sushi-421037"
   },
   {
     "ad": "Sashimi",
-    "kcal": null,
+    "kcal": 90,
+    "p": 18,
+    "c": 0,
+    "f": 1.5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/sashimi-421038"
+  },
+  {
+    "ad": "Sashimi",
+    "kcal": 90,
+    "p": 18,
+    "c": 0,
+    "f": 1.5,
+    "lif": null,
+    "alk": null,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/sashimi-421038"
   },
   {
     "ad": "Chirashi sushi",
-    "kcal": null,
+    "kcal": 180,
+    "p": 8,
+    "c": 30,
+    "f": 5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
-  },
-  {
-    "ad": "Tonkotsu ramen",
-    "kcal": 280,
-    "p": 12,
-    "c": 24,
-    "f": 14,
-    "lif": null,
-    "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": "https://menutrition.app/dishes/tonkotsu-ramen"
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/chirashi-sushi-421039"
   },
   {
     "ad": "Shoyu ramen",
@@ -1940,33 +1970,36 @@
   },
   {
     "ad": "Udon",
-    "kcal": null,
+    "kcal": 185,
+    "p": 6,
+    "c": 35,
+    "f": 5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/udon-noodles-421040"
   },
   {
     "ad": "Udon",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 185,
+    "p": 6,
+    "c": 35,
+    "f": 5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/udon-noodles-421040"
   },
   {
     "ad": "Soba",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 170,
+    "p": 7,
+    "c": 30,
+    "f": 3,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/soba-noodles-421041"
   },
   {
     "ad": "Yakisoba",
