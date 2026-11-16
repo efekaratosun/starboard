@@ -998,5 +998,505 @@
     "lif": 1.5,
     "porsiyon_g": 200,
     "kaynak_url": "https://www.dytseydaertas.com/besin/eksili-kofte"
+  },
+  {
+    "ad": "Terbiyeli köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Fırın köfte",
+    "kcal": 197,
+    "p": 15.5,
+    "c": 6.5,
+    "f": 11.5,
+    "lif": 1.2,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/firin-kofte"
+  },
+  {
+    "ad": "Patatesli köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Peynirli köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kaşarlı köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuru köfte",
+    "kcal": 325,
+    "p": 18.5,
+    "c": 5.8,
+    "f": 25,
+    "lif": 0.6,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kuru-kofte"
+  },
+  {
+    "ad": "Harput köftesi",
+    "kcal": 111,
+    "p": 4.2,
+    "c": 13.7,
+    "f": 4.8,
+    "lif": 2.1,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/harput-koftesi"
+  },
+  {
+    "ad": "Köfte beğendi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yumurtalı köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Misket köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sini köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bulgurlu köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Fellah köftesi",
+    "kcal": 120,
+    "p": 3.75,
+    "c": 17.33,
+    "f": 4,
+    "lif": 1.85,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/fellah-koftesi"
+  },
+  {
+    "ad": "Cızbız köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Oruk köftesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Şehriyeli köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Nohutlu köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yoğurtlu köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Salçalı köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk kavurma",
+    "kcal": 220,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://fitcek.com/kalori/tavuk-kavurma"
+  },
+  {
+    "ad": "Tavuk haşlama",
+    "kcal": 165,
+    "p": 31,
+    "c": 0,
+    "f": 3.6,
+    "lif": 0,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/tavuk/"
+  },
+  {
+    "ad": "Tavuk kanat",
+    "kcal": 254,
+    "p": 23.8,
+    "c": 0,
+    "f": 16.9,
+    "lif": 0,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/tavuk-kanat-pismis"
+  },
+  {
+    "ad": "Tavuk pirzola",
+    "kcal": 185,
+    "p": 24.2,
+    "c": 0.9,
+    "f": 9.3,
+    "lif": 0,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.tavukdunyasi.com/media/s2xn114k/tavuk-dunyasi-besin-degerleri-tablosu.pdf"
+  },
+  {
+    "ad": "Tavuk baget",
+    "kcal": 191,
+    "p": 23.4,
+    "c": 0,
+    "f": 10,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://dadadiet.com/besin-kutuphanesi?kategori=et&sayfa=3"
+  },
+  {
+    "ad": "Tavuk ızgara",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk kızartması",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk pane",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk kiev",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk kapama",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk güveç",
+    "kcal": 161,
+    "p": 8.6,
+    "c": 6,
+    "f": 11.5,
+    "lif": 1.1,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tavuk-guvec"
+  },
+  {
+    "ad": "Tavuklu mantar sote",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu bezelye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu türlü",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu bamya",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu patates",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk döner",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuk burger",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu sandviç",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu makarna",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu karnabahar",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu ıspanak",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kaz kavurma",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tavuklu krep",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Palamut",
+    "kcal": 151,
+    "p": 19.2,
+    "c": 0.06,
+    "f": 7.1,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://yigitersuurunleri.com/balik-besin-degerleri.html"
+  },
+  {
+    "ad": "Lüfer",
+    "kcal": 137,
+    "p": 13,
+    "c": 0,
+    "f": 9,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://yigitersuurunleri.com/balik-besin-degerleri.html"
+  },
+  {
+    "ad": "Çinekop",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sarıkanat",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kefal",
+    "kcal": 173,
+    "p": 67,
+    "c": 0.5,
+    "f": 0.3,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://yigitersuurunleri.com/balik-besin-degerleri.html"
+  },
+  {
+    "ad": "Mezgit",
+    "kcal": 82,
+    "p": 17.9,
+    "c": 0,
+    "f": 0,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://yigitersuurunleri.com/balik-besin-degerleri.html"
   }
 ]
