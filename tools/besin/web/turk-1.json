@@ -1,0 +1,1002 @@
+[
+  {
+    "ad": "Düğün çorbası",
+    "kcal": 94,
+    "p": 6,
+    "c": 5,
+    "f": 5.5,
+    "lif": 0.3,
+    "porsiyon_g": 198,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/dugun-corba"
+  },
+  {
+    "ad": "Yeşil mercimek çorbası",
+    "kcal": 80,
+    "p": 3.5,
+    "c": 7,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/yesil-mercimek-corbasi/"
+  },
+  {
+    "ad": "Nohut çorbası",
+    "kcal": 62,
+    "p": 3.2,
+    "c": 8.5,
+    "f": 1.8,
+    "lif": 2.1,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/nohut-corbasi/"
+  },
+  {
+    "ad": "Şehriye çorbası",
+    "kcal": 135.75,
+    "p": 3,
+    "c": 22.5,
+    "f": 3.75,
+    "lif": 2.92,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.haberturk.com/kac-kalori/sehriye-corbasi-besin-degeri"
+  },
+  {
+    "ad": "Pirinç çorbası",
+    "kcal": 142,
+    "p": 1,
+    "c": 19,
+    "f": 6,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://m-yemektarifleri.gzt.com/corba-tarifleri/pirinc-corbasi-4213831"
+  },
+  {
+    "ad": "Bulgur çorbası",
+    "kcal": 49,
+    "p": 2.31,
+    "c": 8.49,
+    "f": 0.66,
+    "lif": 1.13,
+    "porsiyon_g": 190,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/bulgur-corbasi/"
+  },
+  {
+    "ad": "Analı kızlı çorbası",
+    "kcal": 94,
+    "p": 4,
+    "c": 10,
+    "f": 4.2,
+    "lif": 1.5,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/anali-kizli-corba"
+  },
+  {
+    "ad": "Yuvalama çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tutmaç çorbası",
+    "kcal": 80,
+    "p": 3,
+    "c": 10.25,
+    "f": 3,
+    "lif": 2.06,
+    "porsiyon_g": 270,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/tutmac-corbasi"
+  },
+  {
+    "ad": "Arabaşı çorbası",
+    "kcal": 186.47,
+    "p": 17.85,
+    "c": 14.64,
+    "f": 5.62,
+    "lif": 0.74,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.haberturk.com/kac-kalori/arabasi-corbasi-besin-degeri"
+  },
+  {
+    "ad": "Ayran aşı çorbası",
+    "kcal": 87.9,
+    "p": 4.9,
+    "c": 12.4,
+    "f": 2.1,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.rafinera.com/blog/diyet-yemek-tarifleri/ayran-asi-corbasi"
+  },
+  {
+    "ad": "Un çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mantar çorbası",
+    "kcal": 47,
+    "p": 1.45,
+    "c": 3.5,
+    "f": 3.3,
+    "lif": 0.69,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://dergipark.org.tr/tr/download/issue-full-file/39661"
+  },
+  {
+    "ad": "Sebze çorbası",
+    "kcal": 43,
+    "p": 1,
+    "c": 6.06,
+    "f": 1.68,
+    "lif": 0.99,
+    "porsiyon_g": 260,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/sebze-corbasi"
+  },
+  {
+    "ad": "Brokoli çorbası",
+    "kcal": 100,
+    "p": 1,
+    "c": 6,
+    "f": null,
+    "lif": 2,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://yemektarifleri.gzt.com/corba-tarifleri/brokoli-corbasi-4210788"
+  },
+  {
+    "ad": "Bal kabağı çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ispanak çorbası",
+    "kcal": 101,
+    "p": 6,
+    "c": 9,
+    "f": null,
+    "lif": 3,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://m-yemektarifleri.gzt.com/corba-tarifleri/ispanak-corbasi-4209778"
+  },
+  {
+    "ad": "Havuç çorbası",
+    "kcal": 42,
+    "p": 0.8,
+    "c": 4.4,
+    "f": 2.5,
+    "lif": 2.3,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/havuc-corbasi"
+  },
+  {
+    "ad": "Patates çorbası",
+    "kcal": 48,
+    "p": 1.23,
+    "c": 7.76,
+    "f": 1.2,
+    "lif": 1.3,
+    "porsiyon_g": 225.2,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/patates-corbasi"
+  },
+  {
+    "ad": "Pazı çorbası",
+    "kcal": 74,
+    "p": 2,
+    "c": 7,
+    "f": null,
+    "lif": 2,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://yemektarifleri.gzt.com/corba-tarifleri/agzinin-tadini-bilenlere-pazi-corbasi-4213527"
+  },
+  {
+    "ad": "Semizotu çorbası",
+    "kcal": 50,
+    "p": 1,
+    "c": 10.6,
+    "f": null,
+    "lif": 1.6,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://dilaragoze.com/besin/semizotu-corbasi/"
+  },
+  {
+    "ad": "Isırgan çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kereviz çorbası",
+    "kcal": 44,
+    "p": 0.58,
+    "c": 4.34,
+    "f": 2.77,
+    "lif": 0.69,
+    "porsiyon_g": 228.4,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kereviz-corbasi"
+  },
+  {
+    "ad": "Lebeniye çorbası",
+    "kcal": 100,
+    "p": 5.4,
+    "c": 10.25,
+    "f": 4.15,
+    "lif": 2.03,
+    "porsiyon_g": 310,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/lebeniye-corbasi/"
+  },
+  {
+    "ad": "Dovga çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Erişte çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kelle paça çorbası",
+    "kcal": 37,
+    "p": 4.88,
+    "c": 0.16,
+    "f": 1.84,
+    "lif": 0,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kelle-paca-corbasi"
+  },
+  {
+    "ad": "Bamya çorbası",
+    "kcal": 15,
+    "p": 0.46,
+    "c": 1.64,
+    "f": 0.85,
+    "lif": 0.72,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/bamya-corbasi"
+  },
+  {
+    "ad": "Soğan çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ekşili çorba",
+    "kcal": 57,
+    "p": 2.3,
+    "c": 4.2,
+    "f": 3.6,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/eksili-corbasi"
+  },
+  {
+    "ad": "Gölevez çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Mısır çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Toyga çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ovmaç çorbası",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Alaca çorba",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tas kebabı",
+    "kcal": 170,
+    "p": 12,
+    "c": 8,
+    "f": 10,
+    "lif": 1,
+    "porsiyon_g": 220.6,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/tas-kebabi"
+  },
+  {
+    "ad": "Kuzu tandır",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuzu kapama",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuzu incik",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Dana incik",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Orman kebabı",
+    "kcal": 165,
+    "p": 10.5,
+    "c": 6.5,
+    "f": 11,
+    "lif": 1.5,
+    "porsiyon_g": 277.6,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/orman-kebabi"
+  },
+  {
+    "ad": "Çömlek kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Testi kebabı",
+    "kcal": 157.6,
+    "p": 13.2,
+    "c": 2.8,
+    "f": 10.4,
+    "lif": 1,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.besinanaliz.com/foods/testi-kebabi"
+  },
+  {
+    "ad": "Fırın kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Elbasan tava",
+    "kcal": 185,
+    "p": 10.5,
+    "c": 8.5,
+    "f": 12.5,
+    "lif": 0.4,
+    "porsiyon_g": 277.3,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/elbasan-tava"
+  },
+  {
+    "ad": "İslim kebabı",
+    "kcal": 99,
+    "p": 9,
+    "c": 4.9,
+    "f": 5,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/islim-kebabi"
+  },
+  {
+    "ad": "Çoban kavurma",
+    "kcal": 166,
+    "p": 23.1,
+    "c": 3.37,
+    "f": 6.82,
+    "lif": 0.5,
+    "porsiyon_g": 362,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/coban-kavurma/"
+  },
+  {
+    "ad": "Saç kavurma",
+    "kcal": 223,
+    "p": 17.3,
+    "c": 2,
+    "f": 16,
+    "lif": 0.5,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.yakaetlokantasi.com/yemek/sac-kavurma-779"
+  },
+  {
+    "ad": "Et sote",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Soğan kebabı",
+    "kcal": 196,
+    "p": 10.6,
+    "c": 7.9,
+    "f": 13.6,
+    "lif": 1.6,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/sogan-kebabi"
+  },
+  {
+    "ad": "Etli karnabahar",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Etli türlü",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Etli bamya",
+    "kcal": 88,
+    "p": 6,
+    "c": 7,
+    "f": 4,
+    "lif": 3,
+    "porsiyon_g": 150.6,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/etli-bamya"
+  },
+  {
+    "ad": "Etli bezelye",
+    "kcal": 96,
+    "p": 5.5,
+    "c": 9.6,
+    "f": 4.1,
+    "lif": 2.9,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.slimfit.net/kalori/etli-bezelye.html"
+  },
+  {
+    "ad": "Etli pırasa",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Etli kabak",
+    "kcal": 68,
+    "p": 6,
+    "c": 3.4,
+    "f": 3.5,
+    "lif": 1,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/etli-kabak"
+  },
+  {
+    "ad": "Etli kereviz",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuzu haşlama",
+    "kcal": 110,
+    "p": 12,
+    "c": 4.5,
+    "f": 5,
+    "lif": 1,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://kuzinrestaurant.com/urun/kuzu-haslama/"
+  },
+  {
+    "ad": "Kuzu fırın",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pastırmalı kuru fasulye",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Etli taze fasulye",
+    "kcal": 87,
+    "p": 5.5,
+    "c": 4.5,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 180.5,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/etli-taze-fasulye"
+  },
+  {
+    "ad": "Etli ayva",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Etli erik",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Urfa kebap",
+    "kcal": 183,
+    "p": 15.38,
+    "c": 1.64,
+    "f": 11.88,
+    "lif": 0.61,
+    "porsiyon_g": 217,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/urfa-kebap"
+  },
+  {
+    "ad": "Şiş kebap",
+    "kcal": 256,
+    "p": 21.3,
+    "c": 1.5,
+    "f": 18.9,
+    "lif": 0.2,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/sis-kebab/"
+  },
+  {
+    "ad": "Beyti kebap",
+    "kcal": 245,
+    "p": 11.2,
+    "c": 12,
+    "f": 16.8,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/beyti-kebap"
+  },
+  {
+    "ad": "Bursa kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sultan kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Cağ kebabı",
+    "kcal": 250,
+    "p": 22,
+    "c": 2,
+    "f": 17,
+    "lif": 0.2,
+    "porsiyon_g": 269,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/cag-kebabi"
+  },
+  {
+    "ad": "Manisa kebabı",
+    "kcal": 228,
+    "p": 10.4,
+    "c": 11.1,
+    "f": 15.8,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/manisa-kebabi"
+  },
+  {
+    "ad": "Ali Nazik",
+    "kcal": 136,
+    "p": 8.6,
+    "c": 5.3,
+    "f": 9,
+    "lif": 1.1,
+    "porsiyon_g": 350,
+    "kaynak_url": "https://slimfit.net/kalori/ali-nazik.html"
+  },
+  {
+    "ad": "Yoğurtlu kebap",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Patlıcan kebabı",
+    "kcal": 118,
+    "p": 7.2,
+    "c": 6.5,
+    "f": 6.8,
+    "lif": 2.1,
+    "porsiyon_g": 233.9,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/patlican-kebabi"
+  },
+  {
+    "ad": "Fıstıklı kebap",
+    "kcal": 252,
+    "p": 15,
+    "c": 3,
+    "f": 20,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://fitciapp.com/kalori/fistikli-kebap"
+  },
+  {
+    "ad": "Simit kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kilis kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tokat kebabı",
+    "kcal": 136,
+    "p": 7.5,
+    "c": 8.2,
+    "f": 8.2,
+    "lif": 2.1,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.slimfit.net/kalori/tokat-kebabi.html"
+  },
+  {
+    "ad": "Amasya kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuyu kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Külbastı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuzu pirzola",
+    "kcal": 282,
+    "p": 25.4,
+    "c": 0,
+    "f": 19.7,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://nutrios.com.tr/kalori/kuzu-pirzola/"
+  },
+  {
+    "ad": "Dana pirzola",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Bonfile şiş",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Antrikot ızgara",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Pideli kebap",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Hatay kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kağıt kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 250,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Ciğer şiş",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kiremit kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Yufka kebabı",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kuzu fileto",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Kadınbudu köfte",
+    "kcal": 270,
+    "p": 14.2,
+    "c": null,
+    "f": null,
+    "lif": 0.6,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.besinanaliz.com/foods/kadinbudu-kofte"
+  },
+  {
+    "ad": "İzmir köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 300,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Akçaabat köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "İnegöl köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Tekirdağ köfte",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sivas köftesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Adıyaman köftesi",
+    "kcal": null,
+    "p": null,
+    "c": null,
+    "f": null,
+    "lif": null,
+    "porsiyon_g": 200,
+    "kaynak_url": null
+  },
+  {
+    "ad": "Sulu köfte",
+    "kcal": 95,
+    "p": 17.2,
+    "c": 11.4,
+    "f": 9.9,
+    "lif": 2.6,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/sulu-kofte"
+  },
+  {
+    "ad": "Ekşili köfte",
+    "kcal": 110,
+    "p": 8,
+    "c": 8,
+    "f": 5.5,
+    "lif": 1.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/eksili-kofte"
+  }
+]
