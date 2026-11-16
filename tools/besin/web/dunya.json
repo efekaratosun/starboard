@@ -991,14 +991,14 @@
   },
   {
     "ad": "Beef Rydberg",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 163,
+    "p": 11.73,
+    "c": 9.33,
+    "f": 8.48,
+    "lif": 1.52,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.recipeofhealth.com/recipe/biff-rydberg-beef-rydberg-delicious-beef-and-potato-dish-308381rb"
   },
   {
     "ad": "Salat Olivier",
@@ -1222,14 +1222,14 @@
   },
   {
     "ad": "Kulebyaka",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 221,
+    "p": 11.9,
+    "c": 22.1,
+    "f": 9,
+    "lif": 0.7,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.snapcalorie.com/nutrition/kulebyaka/"
   },
   {
     "ad": "Salat Olivier",
@@ -1266,58 +1266,58 @@
   },
   {
     "ad": "Kotlety",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 243,
+    "p": 14.6,
+    "c": 8.6,
+    "f": 16.8,
+    "lif": 0.5,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://myfoodmate.ru/en/calories/kotlety"
   },
   {
     "ad": "Syrniki",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 195,
+    "p": 12,
+    "c": 24,
+    "f": 14,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://menutrition.app/dishes/syrniki"
   },
   {
     "ad": "Kasha",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 92,
+    "p": 3.37,
+    "c": 19.86,
+    "f": 0.62,
     "lif": null,
     "alk": null,
     "porsiyon_g": null,
-    "kaynak_url": null
+    "kaynak_url": "https://happyforks.com/food/buckwheat-groats/9574"
   },
   {
     "ad": "Kvass",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 27,
+    "p": 0.83,
+    "c": 6.03,
+    "f": 0.18,
     "lif": null,
     "alk": null,
     "porsiyon_g": null,
-    "kaynak_url": null
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/kvass"
   },
   {
     "ad": "Mors",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 30,
+    "p": 1.7,
+    "c": 2.2,
+    "f": 1.6,
     "lif": null,
     "alk": null,
     "porsiyon_g": null,
-    "kaynak_url": null
+    "kaynak_url": "https://foodcaloriecalculator.co.uk/calories/mors-berry-drink-cranberry"
   },
   {
     "ad": "Meatloaf",
@@ -1365,11 +1365,14 @@
   },
   {
     "ad": "Louisiana gumbo",
-    "kcal": null,
+    "kcal": 180,
+    "p": 5,
+    "c": 15,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 350,
+    "kaynak_url": "https://menutrition.app/dishes/louisiana-gumbo"
   },
   {
     "ad": "Lobster roll",
@@ -1395,11 +1398,14 @@
   },
   {
     "ad": "Baked beans",
-    "kcal": null,
+    "kcal": 127,
+    "p": 6.8,
+    "c": 20.1,
+    "f": 1.8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.fatsecret.com/calories-nutrition/generic/baked-beans"
   },
   {
     "ad": "Chicken and waffles",
@@ -1414,35 +1420,47 @@
   },
   {
     "ad": "Hot brown",
-    "kcal": null,
+    "kcal": 485,
+    "p": 28,
+    "c": 15,
+    "f": 25,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.webtilt.com/food/nutrition/hot-brown-sandwich"
   },
   {
     "ad": "Carne asada tacos",
-    "kcal": null,
+    "kcal": 195,
+    "p": 18,
+    "c": 9,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/carne-asada-tacos-3775841"
   },
   {
     "ad": "Salsa verde",
-    "kcal": null,
+    "kcal": 35,
+    "p": 1.5,
+    "c": 7,
+    "f": 1.5,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 50,
+    "kaynak_url": "https://www.calorizecenter.com/cp-food/food-details.php?n=green+salsa&measureid=195"
   },
   {
     "ad": "Chile relleno",
-    "kcal": null,
+    "kcal": 230,
+    "p": 10,
+    "c": 15,
+    "f": 10,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/chile-relleno-245204"
   },
   {
     "ad": "Tamales",
@@ -1468,19 +1486,25 @@
   },
   {
     "ad": "Menudo",
-    "kcal": null,
+    "kcal": 150,
+    "p": 12,
+    "c": 10,
+    "f": 8,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 350,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/menudo-421021"
   },
   {
     "ad": "Birria tacos",
-    "kcal": null,
+    "kcal": 250,
+    "p": 15,
+    "c": 12,
+    "f": 14,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/birria-tacos-421022"
   },
   {
     "ad": "Feijoada",
@@ -1528,27 +1552,36 @@
   },
   {
     "ad": "Empanada",
-    "kcal": null,
+    "kcal": 350,
+    "p": 8,
+    "c": 27,
+    "f": 24,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/empanada-377585"
   },
   {
     "ad": "Asado",
-    "kcal": null,
+    "kcal": 200,
+    "p": 18,
+    "c": 5,
+    "f": 15,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/asado-421023"
   },
   {
     "ad": "Provoleta",
-    "kcal": null,
+    "kcal": 350,
+    "p": 20,
+    "c": 2,
+    "f": 28,
     "lif": null,
     "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/provoleta-421024"
   },
   {
     "ad": "Lomo saltado",
@@ -1585,22 +1618,25 @@
   },
   {
     "ad": "Pisco sour",
-    "kcal": null,
+    "kcal": 165,
+    "p": 0.5,
+    "c": 28,
+    "f": 0,
     "lif": null,
-    "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "alk": 12,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/pisco-sour-421025"
   },
   {
     "ad": "Caipirinha",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
+    "kcal": 150,
+    "p": 0.5,
+    "c": 26,
+    "f": 0,
     "lif": null,
-    "alk": null,
-    "porsiyon_g": null,
-    "kaynak_url": null
+    "alk": 12,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.myfitnesspal.com/food/calories/caipirinha-421026"
   },
   {
     "ad": "Chimichurri",
