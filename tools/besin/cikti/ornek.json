@@ -8,7 +8,8 @@
     "kcal_usda": 116,
     "kcal_449": 120,
     "porsiyon_g": null,
-    "porsiyon_kcal": null
+    "porsiyon_kcal": null,
+    "kaynak": "Lentils, mature seeds, cooked, boiled, without salt"
   },
   "mercimek_corbasi": {
     "p": 2.9,
@@ -19,6 +20,44 @@
     "kcal_usda": 57,
     "kcal_449": 58,
     "porsiyon_g": 450,
-    "porsiyon_kcal": 257
+    "porsiyon_kcal": 256,
+    "kaynak": [
+      {
+        "ad": "Kuru mercimek",
+        "g": 200,
+        "fdc": 172420,
+        "aciklama": "Lentils, raw"
+      },
+      {
+        "ad": "Sogan",
+        "g": 80,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Havuc",
+        "g": 80,
+        "fdc": 170393,
+        "aciklama": "Carrots, raw"
+      },
+      {
+        "ad": "Patates",
+        "g": 100,
+        "fdc": 170026,
+        "aciklama": "Potatoes, flesh and skin, raw"
+      },
+      {
+        "ad": "Zeytinyagi",
+        "g": 20,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      },
+      {
+        "ad": "Su",
+        "g": 1500,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
   }
 }

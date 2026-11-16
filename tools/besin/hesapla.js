@@ -31,6 +31,17 @@ function r1(x) {
   return v === 0 ? 0 : v;
 }
 
+// Turkce harfleri ASCII karsiligina cevirip kucuk harfe indirir.
+const TR_HARF = { ı: 'i', İ: 'i', ş: 's', Ş: 's', ğ: 'g', Ğ: 'g', ç: 'c', Ç: 'c', ö: 'o', Ö: 'o', ü: 'u', Ü: 'u' };
+function norm(s) {
+  return String(s).replace(/[ıİşŞğĞçÇöÖüÜ]/g, (ch) => TR_HARF[ch]).toLowerCase();
+}
+
+const PISMIS_SOZCUK = ['pismis', 'haslanmis', 'kizarmis', 'kavrulmus'];
+const CIG_SOZCUK = ['cig'];
+const RAW_DESEN = /\braw\b/;
+const PISMIS_DESEN = /\b(cooked|boiled|roasted|fried|baked)\b/;
+
 function indexOku(yol) {
   if (!fs.existsSync(yol)) {
     throw new BesinHatasi('USDA dizini yok: ' + yol + ' (once: node tools/usda/fetch.js)');
@@ -41,11 +52,12 @@ function indexOku(yol) {
   return harita;
 }
 
-// Bir USDA kaydinin 100 g degerleri. protein/yag/karbonhidrat null ise hata.
+// Bir USDA kaydinin 100 g degerleri. protein/yag/karbonhidrat/kcal null ise hata.
 function usdaDegerleri(index, fdc) {
-  const r = typeof fdc === 'number' ? index.get(fdc) : undefined;
+  if (!sayi(fdc)) throw new BesinHatasi('fdc sayi olmali (gelen: ' + JSON.stringify(fdc) + ')');
+  const r = index.get(fdc);
   if (!r) throw new BesinHatasi('fdc ' + fdc + ' USDA dizininde yok');
-  for (const alan of ['protein', 'fat', 'carbs']) {
+  for (const alan of ['protein', 'fat', 'carbs', 'kcal']) {
     if (!sayi(r[alan])) {
       throw new BesinHatasi('fdc ' + fdc + ' (' + r.description + ') alaninda ' + alan + ' null');
     }
@@ -57,26 +69,62 @@ function usdaDegerleri(index, fdc) {
     lif: sayi(r.fiber) ? r.fiber : 0,
     lifEksik: !sayi(r.fiber),
     alk: sayi(r.alcohol) ? r.alcohol : 0,
-    kcal: sayi(r.kcal) ? r.kcal : 0,
+    kcal: r.kcal,
+    fdc: r.fdcId,
+    aciklama: r.description,
+    malzemeler: null,
   };
 }
 
-function malzDegerleri(m, key, zincir, index, coz) {
+function malzDegerleri(m, key, zincir, index, coz, uyarilar) {
   if (!m || typeof m !== 'object') {
     throw new BesinHatasi(key + ': malz elemani bir nesne olmali');
   }
   if (typeof m.ad !== 'string' || m.ad.trim() === '') {
     throw new BesinHatasi(key + ': malz elemaninda ad yok');
   }
+
+  const seciciler = [m.fdc !== undefined, m.key !== undefined, m.su !== undefined].filter(Boolean).length;
+  if (seciciler > 1) {
+    throw new BesinHatasi(key + ': malz "' + m.ad + '" icin fdc, key, su alanlarindan yalniz biri verilmeli');
+  }
+  if (seciciler === 0) {
+    throw new BesinHatasi(key + ': malz "' + m.ad + '" icin fdc, key ya da su alanlarindan biri gerekli');
+  }
+
   if (!sayi(m.g) || m.g <= 0) {
     throw new BesinHatasi(key + ': malz "' + m.ad + '" icin gecersiz g');
   }
-  if (m.su === true) {
-    return { p: 0, c: 0, f: 0, lif: 0, lifEksik: false, alk: 0, kcal: 0 };
+
+  let d;
+  if (m.su !== undefined) {
+    if (m.su !== true) throw new BesinHatasi(key + ': malz "' + m.ad + '" icin su true olmali');
+    d = { p: 0, c: 0, f: 0, lif: 0, lifEksik: false, alk: 0, kcal: 0, fdc: null, aciklama: null, malzemeler: null };
+  } else if (m.fdc !== undefined) {
+    if (!sayi(m.fdc)) throw new BesinHatasi(key + ': fdc sayi olmali');
+    d = usdaDegerleri(index, m.fdc);
+  } else {
+    if (typeof m.key !== 'string' || !m.key) {
+      throw new BesinHatasi(key + ': malz "' + m.ad + '" icin key gecersiz');
+    }
+    d = coz(m.key, zincir);
   }
-  if (m.fdc !== undefined) return usdaDegerleri(index, m.fdc);
-  if (typeof m.key === 'string' && m.key) return coz(m.key, zincir);
-  throw new BesinHatasi(key + ': malz "' + m.ad + '" bicimi gecersiz (fdc, key ya da su bekleniyor)');
+
+  // Pismis/cig celiskisi: malz adi ile USDA kaydinin hazirlik bicimi uyusmuyor mu?
+  if (d.aciklama) {
+    const ad = norm(m.ad);
+    const desc = norm(d.aciklama);
+    const adPismis = PISMIS_SOZCUK.some((s) => ad.includes(s));
+    const adCig = CIG_SOZCUK.some((s) => ad.includes(s));
+    if (adPismis && RAW_DESEN.test(desc)) {
+      uyarilar.ekle(key, 'malz "' + m.ad + '": ad pismis diyor, USDA kaydi "' + d.aciklama + '" raw');
+    }
+    if (adCig && PISMIS_DESEN.test(desc)) {
+      uyarilar.ekle(key, 'malz "' + m.ad + '": ad cig diyor, USDA kaydi "' + d.aciklama + '" pismis');
+    }
+  }
+
+  return d;
 }
 
 function tarifCoz(k, zincir, index, coz, uyarilar) {
@@ -86,8 +134,8 @@ function tarifCoz(k, zincir, index, coz, uyarilar) {
   if (!sayi(k.pismis_g) || k.pismis_g <= 0) {
     throw new BesinHatasi(k.key + ': gecersiz pismis_g');
   }
-  if (!sayi(k.porsiyon) || k.porsiyon <= 0) {
-    throw new BesinHatasi(k.key + ': gecersiz porsiyon');
+  if (!Number.isInteger(k.porsiyon) || k.porsiyon < 1) {
+    throw new BesinHatasi(k.key + ': porsiyon tam sayi olmali ve 1 den kucuk olamaz');
   }
 
   let P = 0;
@@ -98,18 +146,21 @@ function tarifCoz(k, zincir, index, coz, uyarilar) {
   let K = 0;
   let toplamAgirlik = 0;
   let lifEksik = false;
+  const malzemeler = [];
 
   for (const m of k.malz) {
-    const d = malzDegerleri(m, k.key, zincir, index, coz);
+    const d = malzDegerleri(m, k.key, zincir, index, coz, uyarilar);
     const oran = m.g / 100;
+    const kcalKatki = d.kcal * oran;
     P += d.p * oran;
     C += d.c * oran;
     F += d.f * oran;
     L += d.lif * oran;
     A += d.alk * oran;
-    K += d.kcal * oran;
+    K += kcalKatki;
     toplamAgirlik += m.g;
     lifEksik = lifEksik || d.lifEksik;
+    malzemeler.push({ ad: m.ad, g: m.g, fdc: d.fdc, aciklama: d.aciklama, kcal: kcalKatki });
   }
 
   if (k.pismis_g > toplamAgirlik + 1e-9) {
@@ -119,8 +170,27 @@ function tarifCoz(k, zincir, index, coz, uyarilar) {
     );
   }
 
+  const porsiyonG = k.pismis_g / k.porsiyon;
+  if (porsiyonG < 1) {
+    throw new BesinHatasi(k.key + ': porsiyon_g 1 den kucuk (' + r1(porsiyonG) + ' g)');
+  }
+
   const oran = 100 / k.pismis_g;
-  const d = { p: P * oran, c: C * oran, f: F * oran, lif: L * oran, alk: A * oran, kcal: K * oran, lifEksik };
+  const d = {
+    p: P * oran,
+    c: C * oran,
+    f: F * oran,
+    lif: L * oran,
+    alk: A * oran,
+    kcal: K * oran,
+    lifEksik,
+    fdc: null,
+    aciklama: null,
+    malzemeler,
+    pismisG: k.pismis_g,
+    porsiyon: k.porsiyon,
+    toplamKcal: K,
+  };
 
   if (d.p + d.c + d.f > 100 + 1e-9) {
     throw new BesinHatasi(
@@ -135,8 +205,6 @@ function tarifCoz(k, zincir, index, coz, uyarilar) {
     );
   }
 
-  d.pismisG = k.pismis_g;
-  d.porsiyon = k.porsiyon;
   return d;
 }
 
@@ -177,6 +245,7 @@ function hesapla(kayitlar, index) {
   }
 
   const sonuc = {};
+  const katkilar = {};
   for (const k of kayitlar) {
     const d = coz(k.key, []);
     const p = r1(d.p);
@@ -186,7 +255,10 @@ function hesapla(kayitlar, index) {
     const alk = r1(d.alk);
     const kcalUsda = Math.round(d.kcal);
     const kcal449 = Math.round(4 * p + 4 * c + 9 * f + 7 * alk);
-    const porsiyonG = d.pismisG ? Math.round(d.pismisG / d.porsiyon) : null;
+
+    // Porsiyon degerleri HAM degerlerden, yalniz en sonda yuvarlanir.
+    const porsiyonG = d.pismisG ? d.pismisG / d.porsiyon : null;
+    const porsiyonKcal = d.pismisG ? d.toplamKcal / d.porsiyon : null;
 
     sonuc[k.key] = {
       p,
@@ -196,24 +268,33 @@ function hesapla(kayitlar, index) {
       alk,
       kcal_usda: kcalUsda,
       kcal_449: kcal449,
-      porsiyon_g: porsiyonG,
-      porsiyon_kcal: porsiyonG === null ? null : Math.round((kcalUsda * porsiyonG) / 100),
+      porsiyon_g: porsiyonG === null ? null : Math.round(porsiyonG),
+      porsiyon_kcal: porsiyonKcal === null ? null : Math.round(porsiyonKcal),
+      kaynak: d.malzemeler
+        ? d.malzemeler.map((m) => ({ ad: m.ad, g: m.g, fdc: m.fdc, aciklama: m.aciklama }))
+        : d.aciklama,
     };
+    katkilar[k.key] = d.malzemeler || null;
 
-    if (kcalUsda > 0 && Math.abs(kcal449 - kcalUsda) / kcalUsda > 0.12) {
-      uyarilar.ekle(
-        k.key,
-        'kcal_449 (' + kcal449 + ') ile kcal_usda (' + kcalUsda + ') farki %12 den fazla'
-      );
+    // Lif 4 kcal/g degil 2 kcal/g sayilir; yuzde ve 15 kcal esikleri birlikte aranir.
+    if (kcalUsda > 0) {
+      const kontrol = 4 * d.p + 4 * (d.c - d.lif) + 2 * d.lif + 9 * d.f + 7 * d.alk;
+      const fark = Math.abs(kontrol - d.kcal);
+      if (fark > 0.12 * d.kcal && fark > 15) {
+        uyarilar.ekle(
+          k.key,
+          'kcal_449 (' + kcal449 + ') ile kcal_usda (' + kcalUsda + ') farki %12 ve 15 kcal esigini asiyor'
+        );
+      }
     }
     if (d.lifEksik) uyarilar.ekle(k.key, 'lif null, 0 sayildi');
     if (lif > c) uyarilar.ekle(k.key, 'lif (' + lif + ') karbonhidrattan (' + c + ') buyuk');
   }
 
-  return { sonuc, uyarilar: uyarilar.kayitlar, adlar: harita };
+  return { sonuc, uyarilar: uyarilar.kayitlar, adlar: harita, katkilar };
 }
 
-function tabloYaz(kayitlar, sonuc, uyarilar) {
+function tabloYaz(kayitlar, sonuc, uyarilar, katkilar) {
   const basliklar = ['key', 'ad', 'p', 'c', 'f', 'lif', 'alk', 'kcal_usda', 'kcal_449', 'por_g', 'por_kcal'];
   const satirlar = kayitlar.map((k) => {
     const r = sonuc[k.key];
@@ -232,14 +313,32 @@ function tabloYaz(kayitlar, sonuc, uyarilar) {
     ];
   });
 
-  const genislik = basliklar.map((b, i) =>
-    Math.max(b.length, ...satirlar.map((s) => s[i].length))
-  );
+  const genislik = basliklar.map((b, i) => Math.max(b.length, ...satirlar.map((s) => s[i].length)));
   const yaz = (s) => s.map((h, i) => h.padEnd(genislik[i])).join('  ').trimEnd();
 
   console.log(yaz(basliklar));
   console.log(genislik.map((g) => '-'.repeat(g)).join('  '));
   for (const s of satirlar) console.log(yaz(s));
+
+  // Her tarif icin malzeme dokumu: yanlis secilmis USDA kaydi gorulebilsin.
+  for (const k of kayitlar) {
+    const malz = (katkilar || {})[k.key];
+    if (!Array.isArray(malz)) continue;
+    console.log('\n' + k.key + ' malzemeleri:');
+    const mSatir = malz.map((m) => [
+      String(m.ad).slice(0, 30),
+      String(m.g),
+      m.fdc === null ? '-' : String(m.fdc),
+      m.aciklama === null ? '-' : String(m.aciklama).slice(0, 44),
+      (m.kcal || 0).toFixed(1),
+    ]);
+    const mBaslik = ['ad', 'g', 'fdc', 'description', 'kcal'];
+    const mGenislik = mBaslik.map((b, i) => Math.max(b.length, ...mSatir.map((s) => s[i].length)));
+    const mYaz = (s) => s.map((h, i) => h.padEnd(mGenislik[i])).join('  ').trimEnd();
+    console.log('  ' + mYaz(mBaslik));
+    for (const s of mSatir) console.log('  ' + mYaz(s));
+  }
+
   for (const u of uyarilar) console.error('UYARI [' + u.key + ']: ' + u.mesaj);
 }
 
@@ -252,13 +351,13 @@ function calistir(parti, ayarlar) {
 
   const kayitlar = JSON.parse(fs.readFileSync(kaynakYolu, 'utf8'));
   const index = indexOku(ayar.indexYolu);
-  const { sonuc, uyarilar } = hesapla(kayitlar, index);
+  const { sonuc, uyarilar, katkilar } = hesapla(kayitlar, index);
 
   fs.mkdirSync(ayar.ciktiDir, { recursive: true });
   const ciktiYolu = path.join(ayar.ciktiDir, parti + '.json');
   fs.writeFileSync(ciktiYolu, JSON.stringify(sonuc, null, 2) + '\n');
 
-  return { sonuc, uyarilar, ciktiYolu, kayitlar };
+  return { sonuc, uyarilar, ciktiYolu, kayitlar, katkilar };
 }
 
 if (require.main === module) {
@@ -269,7 +368,7 @@ if (require.main === module) {
   }
   try {
     const r = calistir(parti);
-    tabloYaz(r.kayitlar, r.sonuc, r.uyarilar);
+    tabloYaz(r.kayitlar, r.sonuc, r.uyarilar, r.katkilar);
     console.log('\nYazildi: ' + r.ciktiYolu);
   } catch (e) {
     console.error('HATA: ' + e.message);

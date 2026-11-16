@@ -61,10 +61,15 @@ function main() {
     process.exit(1);
   }
 
-  const hits = index.filter((r) => {
-    const desc = String(r.description || '').toLowerCase();
-    return words.every((w) => desc.includes(w));
-  });
+  // Her sozcuk TAM SOZCUK olarak aranir: "raw" -> "Lentils, raw" evet, "Strawberries" hayir.
+  const desenler = words.map((w) => new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b'));
+
+  const hits = index
+    .filter((r) => {
+      const desc = String(r.description || '').toLowerCase();
+      return desenler.every((d) => d.test(desc));
+    })
+    .sort((a, b) => a.description.length - b.description.length);
 
   console.log('Eslesen: ' + hits.length + ' (ilk 20 gosteriliyor)');
   for (const r of hits.slice(0, 20)) console.log(line(r));
