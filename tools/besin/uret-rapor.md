@@ -1,73 +1,8 @@
-Üretilen toplam: 150
-Temel: 78; dünya: 30; Türkçe: 42; web kaynağından: 42
-Alınmayan kayıt: 70
-- Filtre kahve: akıl kontrolü (p+c+f=0.1, kcal=1, 4-4-9-7=0.4, fark=%60)
-- Trabzon hurması: mevcut FOODS anahtar/ad çakışması
-- Yulaf kepeği: akıl kontrolü (p+c+f=90.5, kcal=246, 4-4-9-7=397, fark=%38)
-- Karabiber: akıl kontrolü (p+c+f=77.7, kcal=251, 4-4-9-7=327.3, fark=%23.3)
-- Kekik: akıl kontrolü (p+c+f=82.2, kcal=265, 4-4-9-7=350.3, fark=%24.4)
-- Tarçın: akıl kontrolü (p+c+f=85.8, kcal=247, 4-4-9-7=349.2, fark=%29.3)
-- Karanfil: akıl kontrolü (p+c+f=84.5, kcal=274, 4-4-9-7=403, fark=%32)
-- Yenibahar: akıl kontrolü (p+c+f=86.9, kcal=263, 4-4-9-7=391.1, fark=%32.8)
-- Defne yaprağı: akıl kontrolü (p+c+f=91, kcal=313, 4-4-9-7=406, fark=%22.9)
-- Reyhan (taze fesleğen): akıl kontrolü (p+c+f=6.5, kcal=23, 4-4-9-7=29, fark=%20.7)
-- Kişniş: akıl kontrolü (p+c+f=85.2, kcal=298, 4-4-9-7=429.8, fark=%30.7)
-- Kakao (toz): akıl kontrolü (p+c+f=91.2, kcal=228, 4-4-9-7=433.3, fark=%47.4)
-- Yeşil mercimek çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Yuvalama çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Un çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Brokoli çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Bal kabağı çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Ispanak çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Pazı çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Semizotu çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Isırgan çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Dovga çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Erişte çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Soğan çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Gölevez çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Mısır çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Toyga çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Ovmaç çorbası: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Alaca çorba: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kuzu tandır: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kuzu kapama: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kuzu incik: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Dana incik: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Çömlek kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Fırın kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Et sote: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Etli karnabahar: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Etli türlü: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Etli pırasa: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Etli kereviz: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kuzu fırın: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Pastırmalı kuru fasulye: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Etli ayva: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Etli erik: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Bursa kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Sultan kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Yoğurtlu kebap: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Simit kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kilis kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Amasya kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kuyu kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Külbastı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Dana pirzola: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Bonfile şiş: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Antrikot ızgara: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Pideli kebap: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Hatay kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kağıt kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Ciğer şiş: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kiremit kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Yufka kebabı: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kuzu fileto: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Kadınbudu köfte: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- İzmir köfte: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Akçaabat köfte: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- İnegöl köfte: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Tekirdağ köfte: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Sivas köftesi: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Adıyaman köftesi: kcal/protein/karbonhidrat/yağ kaynağında eksik
-- Sulu köfte: akıl kontrolü (p+c+f=38.5, kcal=95, 4-4-9-7=203.5, fark=%53.3)
+Üretilen toplam: 432
+Temel: 277
+Dünya: 109
+Türkçe: 46
+Web kaynağından: 41
+Alınmayan toplam: 58
+Çakışma: 3; eksik değer: 54; cache yok: 0; makro sınırı: 0
+Kalori kontrolü: 1; geçersiz web JSON: 0; diğer: 0

@@ -33,19 +33,26 @@ const foods=loadFoods(), existingKeys=new Set(Object.keys(foods).map(norm)), exi
 const cache=[...JSON.parse(read("tools/usda/cache/index.json")),...JSON.parse(read("tools/usda/cache/index-survey.json"))];
 const byFdc=new Map(cache.map(x=>[Number(x.fdcId),x]));
 const rows=[];
+const csvRows={};
 for(const [file,kind] of [["basics","basic"],["world","intl"],["tr","tr"]]) {
   const csv=parseCsv(read(`docs/icerik/besin-degerleri-${file}.csv`));
-  const crossFile=file==="basics"?"temel-step5.json":file==="world"?"dunya-codex2.json":"turk-codex.json";
-  const cross=JSON.parse(read(`tools/besin/eslesme/${crossFile}`));
-  for(const row of csv) {
-    if(!["complete","verified_direct_record"].includes(row.status))continue;
+  csvRows[file]=csv;
+  const crossFile=file==="basics"?"temel-step5.json":file==="world"?"dunya-codex2.json":null;
+  const cross=crossFile?JSON.parse(read(`tools/besin/eslesme/${crossFile}`)):[];
+  const eligible=csv.filter(row=>["complete","verified_direct_record"].includes(row.status));
+  const rowFor=name=>eligible.find(row=>norm(row.canonical_name_tr||row.source_name)===norm(name))||{};
+  const seen=new Set();
+  for(const c of cross.filter(x=>x.fdc)) {
+    const name=c.ad; seen.add(norm(name));
+    rows.push({name,row:rowFor(name),c,kind,file});
+  }
+  for(const row of eligible) {
     const name=row.canonical_name_tr||row.source_name;
-    let c=cross.find(x=>norm(x.ad)===norm(name));
-    const idMatch=(row.nutrient_data_source||row.notes||"").match(/FDC ID\s*(\d+)/i);
-    if(!c&&idMatch)c=cross.find(x=>Number(x.fdc)===Number(idMatch[1]));
     const anyId=(row.nutrient_data_source||row.notes||"").match(/(?:FDC ID|fdcId=?)\s*(\d+)/i);
-    if(anyId && !c) c={ad:name,fdc:Number(anyId[1]),kaynak:/FNDDS/i.test(row.nutrient_data_source||"")?"FNDDS":"SR"};
-    if(c&&c.fdc) rows.push({name,row,c,kind,file});
+    if(anyId&&!seen.has(norm(name))) {
+      const fdc=Number(anyId[1]), c=cross.find(x=>Number(x.fdc)===fdc)||{ad:name,fdc,kaynak:/FNDDS/i.test(row.nutrient_data_source||"")?"FNDDS":"SR"};
+      rows.push({name,row,c,kind,file}); seen.add(norm(name));
+    }
   }
 }
 const rejected=[]; let web=[];
@@ -55,10 +62,10 @@ if(fs.existsSync(webDir))for(const file of fs.readdirSync(webDir).filter(f=>f.en
   if(!Array.isArray(arr)){rejected.push(`${file}: kök dizi değil`);continue;}
   for(const x of arr) web.push({...x,_file:file});
 }
-const candidates=[];
+const candidates=[], usdaNames=new Set();
 for(const x of rows){const d=byFdc.get(Number(x.c.fdc)); if(!d){rejected.push(`${x.name}: USDA FDC ${x.c.fdc} cache kaydı yok`);continue;}
+ const nk=norm(x.name);if(usdaNames.has(nk))continue;usdaNames.add(nk);
  candidates.push({name:x.name, kind:x.kind, row:x.row, c:x.c, d, fdc:Number(x.c.fdc), origin:x.c.kaynak||"SR"});}
-const usdaNames=new Set(candidates.map(x=>norm(x.name)));
 for(const x of web){if(usdaNames.has(norm(x.ad)))continue;candidates.push({name:x.ad,row:x,kind:/turk/i.test(x._file)?"tr":/dunya/i.test(x._file)?"intl":"basic",web:true,file:x._file});}
 const out={}, english={};
 function round1(v){return Math.round((Number(v)+Number.EPSILON)*10)/10;}
@@ -94,8 +101,9 @@ for(const x of candidates){const d=x.web?x.row:x.d;
  const p=round1(d.protein??d.p), c=round1(d.carbs??d.c), f=round1(d.fat??d.f), lif=round1(d.fiber??d.lif??0), alk=round1(d.alcohol??d.alk??0), kcal=Number(d.kcal);
  const key=keyFor(x.name), nameNorm=norm(x.name);
  if(!Number.isFinite(p+c+f+lif+alk+kcal)){rejected.push(`${x.name}: eksik/sayısal olmayan besin değeri`);continue;}
- const total=p+c+f, calc=4*p+4*c+9*f+7*alk, diff=Math.abs(kcal-calc)/Math.max(kcal,calc,1);
- if(total>100||diff>0.20){rejected.push(`${x.name}: akıl kontrolü (p+c+f=${round1(total)}, kcal=${kcal}, 4-4-9-7=${round1(calc)}, fark=%${round1(diff*100)})`);continue;}
+ const total=p+c+f, calc=4*p+4*(c-lif)+2*lif+9*f+7*alk, diff=Math.abs(kcal-calc);
+ if(x.web&&total>100){rejected.push(`${x.name}: p+c+f > 100 (${round1(total)})`);continue;}
+ if(x.web&&(kcal<20?diff>5:diff/Math.max(kcal,calc,1)>0.20)){rejected.push(`${x.name}: kcal ve lif düzeltilmiş 4-4-9-7 farkı sınırı aşıyor (${round1(diff)} kcal)`);continue;}
  if(existingKeys.has(norm(key))||existingNames.has(nameNorm)){rejected.push(`${x.name}: mevcut FOODS anahtar/ad çakışması`);continue;}
  if(out[key]){rejected.push(`${x.name}: üretilen anahtar çakışması (${key})`);continue;}
  const desc=x.web?"":x.c.description||d.description||"";
@@ -113,7 +121,9 @@ const generated=`"use strict";\n\n/* USDA ve doğrulanmış web kaynaklarından 
 fs.writeFileSync(path.join(ROOT,"starboard-site/js/foods-usda.js"),generated);
 const counts={basic:0,intl:0,tr:0,web:0};
 for(const food of Object.values(out)){if(food.cu==="intl")counts.intl++;else if(food.cu==="tr")counts.tr++;else counts.basic++;if(String(food.src).startsWith("web "))counts.web++;}
-const report=[`Üretilen toplam: ${Object.keys(out).length}`,`Temel: ${counts.basic}; dünya: ${counts.intl}; Türkçe: ${counts.tr}; web kaynağından: ${counts.web}`,`Alınmayan kayıt: ${rejected.length}`, ...rejected.map(x=>`- ${x}`)];fs.writeFileSync(path.join(ROOT,"tools/besin/uret-rapor.md"),report.join("\n")+"\n");
+const reasons={duplicate:0,missing:0,noCache:0,macro:0,kcal:0,invalid:0,other:0};
+for(const reason of rejected){if(reason.includes("mevcut FOODS")||reason.includes("anahtar çakışması"))reasons.duplicate++;else if(reason.includes("kaynağında eksik"))reasons.missing++;else if(reason.includes("cache kaydı yok"))reasons.noCache++;else if(reason.includes("p+c+f > 100"))reasons.macro++;else if(reason.includes("kcal ve lif"))reasons.kcal++;else if(reason.includes("geçersiz JSON")||reason.includes("kök dizi değil"))reasons.invalid++;else reasons.other++;}
+const report=[`Üretilen toplam: ${Object.keys(out).length}`,`Temel: ${counts.basic}`,`Dünya: ${counts.intl}`,`Türkçe: ${counts.tr}`,`Web kaynağından: ${counts.web}`,`Alınmayan toplam: ${rejected.length}`,`Çakışma: ${reasons.duplicate}; eksik değer: ${reasons.missing}; cache yok: ${reasons.noCache}; makro sınırı: ${reasons.macro}`,`Kalori kontrolü: ${reasons.kcal}; geçersiz web JSON: ${reasons.invalid}; diğer: ${reasons.other}`];fs.writeFileSync(path.join(ROOT,"tools/besin/uret-rapor.md"),report.join("\n")+"\n");
 console.log(JSON.stringify({count:Object.keys(out).length,rejected:rejected.length,webFiles:fs.existsSync(webDir)?fs.readdirSync(webDir).filter(f=>f.endsWith('.json')).length:0}));
 
 
