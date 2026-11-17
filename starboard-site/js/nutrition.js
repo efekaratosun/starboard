@@ -786,13 +786,18 @@ const dietOptions = cur => Object.entries(DIETS).filter(([k]) =>
 
 /* ---- mutfak ----
    Öneriler, hazır menüler ve tarif listesi seçilen mutfaktan gelir; arama her zaman
-   bütün besin ve tarifleri kapsar. Seçim yoksa dilden: Türkçe → Türk, diğerleri → uluslararası.
+   bütün besin ve tarifleri kapsar. Kayıtlı seçim yoksa cihaz dilinden: Türkçe → Türk,
+   diğerleri → uluslararası. Kayıtlı seçim elle yapılmış olsa da aynen korunur.
    Besin ve tariflerde cu:"tr" Türk mutfağına, cu:"intl" uluslararası mutfağa özgü demektir;
    etiketsizler iki mutfakta da önerilir. */
 const CUISINES = { tr:tx("Türk mutfağı"), intl:tx("Uluslararası") };
+function deviceCuisine(){
+  const nav = String((navigator.languages && navigator.languages[0]) || navigator.language || "").toLowerCase();
+  return nav.startsWith("tr") ? "tr" : "intl";
+}
 const currentCuisine = () => {
   const c = state && state.mealPrefs && state.mealPrefs.cuisine;
-  return CUISINES[c] ? c : (LANG === "tr" ? "tr" : "intl");
+  return CUISINES[c] ? c : deviceCuisine();
 };
 const cuisineOk = (item, cu) => !item.cu || item.cu === (cu || currentCuisine());
 

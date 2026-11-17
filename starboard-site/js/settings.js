@@ -5,6 +5,7 @@ function settingsView(){
   const p = state.profile;
   const sel = (v, k) => v === k ? " selected" : "";
   const routines = state.routines || [];
+  const cuisine = currentCuisine();
 
   return `
   <section>
@@ -37,6 +38,10 @@ function settingsView(){
     <label>${tx("Dil")}</label>
     <div class="chips">${LANGS.map(([k,l]) =>
       `<button class="chip${LANG === k ? " sel" : ""}" data-slang="${k}">${l}</button>`).join("")}</div>
+    <div style="height:16px"></div>
+    <label>${tx("Mutfak")}</label>
+    <div class="chips">${Object.entries(CUISINES).map(([k,l]) =>
+      `<button class="chip${cuisine === k ? " sel" : ""}" data-scuisine="${k}" aria-pressed="${cuisine === k}">${l}</button>`).join("")}</div>
     <div style="height:16px"></div>
     <label>${tx("Birimler")}</label>
     <div class="chips">${UNIT_SYSTEMS.map(([k,l]) =>
@@ -146,6 +151,14 @@ function wireSettings(){
 
   const save = async () => { await saveState(state); render(); };
   app.querySelectorAll("[data-slang]").forEach(b => b.onclick = () => setLang(b.dataset.slang));
+  app.querySelectorAll("[data-scuisine]").forEach(b => b.onclick = async () => {
+    const c = b.dataset.scuisine;
+    if (!CUISINES[c]) return;
+    mealPrefs().cuisine = c;
+    recipeOffset = 0;
+    await saveState(state);
+    render();
+  });
   app.querySelectorAll("[data-sunit]").forEach(b => b.onclick = async () => {
     state.profile.units = b.dataset.sunit; await save();
   });

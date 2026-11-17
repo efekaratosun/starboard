@@ -2,3 +2,7 @@ ADIM 1: grep ile Ayarla metni starboard-site\js altinda arandi (today.js oncelik
 ADIM 2: Bugun ekranindaki Ayarla dugmesi ve prefs-open cagirisi kaldirildi; oneri tercihleri penceresi ile mealPrefs kullanici verisi korundu. Bu ayarlar baska yerden erisilemedigi icin Ayarlar sayfasina Onerileri kendine gore ayarla adli tek satir eklendi ve ilgili testler guncellendi.
 ADIM 3: Chrome headless testleri calistirildi: 174 gecti, 0 kaldi; sunucu kapatildi.
 BITTI
+ADIM 4: Mutfak secimi onboarding.js icinde ob.cuisine olarak sorulup state.mealPrefs.cuisine icinde saklaniyor; nutrition.js currentCuisine kayitli degeri kullanir, kayit yoksa su anda LANG (uygulama dili) uzerinden Turk/uluslararasi varsayiyor; ayrica meals.js oneri tercihleri penceresinden degistirilebiliyor.
+ADIM 5: Kayitli mutfak secimi state.mealPrefs.cuisine icinde oncelikli tutuldu; kayit yoksa cihaz dili tr/intl varsayilani kullaniliyor ve onboarding varsayilani da cihaz diline baglandi. Ayarlar sayfasinin Kisisellestirme bolumune Mutfak secenekleri eklendi; elle secim kaydedilip korunuyor. Testler Turk/Ingilizce cihaz varsayilanini, elle secimin korunmasini ve Ayarlar uzerinden degistirmeyi dogruluyor.
+ADIM 6: Chrome headless testleri port 8770 uzerinde calistirildi: 175 gecti, 0 kaldi; sunucu kapatildi.
+BITTI

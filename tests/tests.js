@@ -695,6 +695,46 @@ test("mutfak: tarif malzemeleri ve hazır menülerin besinleri veritabanında va
   eq(bad, [], "menüde mutfağa uymayan besin");
   ok(RECIPES.filter(r => cuisineOk(r, "intl")).length >= 15, "uluslararası mutfakta yeterli tarif yok");
 });
+test("mutfak: cihaz dili varsayılanı belirler; elle seçim korunur ve Ayarlar'dan değiştirilebilir", async () => {
+  const fixture = await loadFixture();
+  const oldState = state, oldTab = tab, oldMeTab = meTab, oldLang = LANG, oldRecipeOffset = recipeOffset;
+  const savedState = localStorage.getItem(KEY);
+  const nav = Object.getOwnPropertyDescriptor(Navigator.prototype, "languages");
+  const setNav = list => Object.defineProperty(navigator, "languages", { get: () => list, configurable: true });
+  try {
+    state = JSON.parse(JSON.stringify(fixture));
+    state.mealPrefs = state.mealPrefs || {};
+    delete state.mealPrefs.cuisine;
+
+    setNav(["tr-TR"]); LANG = "en";
+    eq(currentCuisine(), "tr", "Türkçe cihazda Türk mutfağı varsayılanı");
+    eq(obDefaults().cuisine, "tr", "ilk kurulum Türkçe cihazda Türk mutfağıyla başlar");
+    setNav(["en-US"]); LANG = "tr";
+    eq(currentCuisine(), "intl", "İngilizce cihazda uluslararası mutfak varsayılanı");
+    eq(obDefaults().cuisine, "intl", "ilk kurulum İngilizce cihazda uluslararası mutfakla başlar");
+
+    state.mealPrefs.cuisine = "intl";
+    setNav(["tr-TR"]);
+    eq(currentCuisine(), "intl", "kayıtlı elle seçim cihaz dilinden bağımsız korunur");
+    eq(state.mealPrefs.cuisine, "intl", "kayıtlı seçim değiştirilmez veya silinmez");
+
+    tab = "settings"; meTab = "set"; render();
+    const btn = app.querySelector('[data-scuisine="tr"]');
+    ok(btn && btn.getAttribute("aria-pressed") === "false", "Ayarlar'da iki mutfak seçeneği var");
+    await btn.onclick();
+    eq(state.mealPrefs.cuisine, "tr", "Ayarlar'dan yapılan seçim kaydedilir");
+    eq(currentCuisine(), "tr", "yeni elle seçim geçerli olur");
+    render();
+    ok(app.querySelector('[data-scuisine="tr"]').classList.contains("sel"), "seçili mutfak Ayarlar'da işaretlidir");
+    setNav(["en-US"]);
+    eq(currentCuisine(), "tr", "cihaz dili sonradan değişse de elle seçim korunur");
+  } finally {
+    state = oldState; tab = oldTab; meTab = oldMeTab; LANG = oldLang; recipeOffset = oldRecipeOffset;
+    if (savedState === null) localStorage.removeItem(KEY); else localStorage.setItem(KEY, savedState);
+    delete navigator.languages;
+    if (nav) Object.defineProperty(Navigator.prototype, "languages", nav);
+  }
+});
 test("mutfak: öneriler seçili mutfaktan gelir; Türk mutfağında domuz eti önerilmez", async () => {
   const fixture = await loadFixture();
   for (const cuisine of ["tr", "intl"]) for (const diet of ["hepsi", "vejetaryen"]) for (const [o, w] of PROFILES_M) for (let v = 0; v < 5; v++) {
