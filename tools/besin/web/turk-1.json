@@ -2041,13 +2041,13 @@
  },
  {
   "ad": "Zeytinyağlı semizotu",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 112,
+  "p": 1.29,
+  "c": 4.98,
+  "f": 10.26,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/semizotu-yeme%C4%9Fi"
  },
  {
   "ad": "Kabak yemeği",
@@ -2338,5 +2338,55 @@
   "lif": null,
   "porsiyon_g": 250,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-baharatl%C4%B1-karnabahar"
+ },
+ {
+  "ad": "Kapuska",
+  "kcal": 103,
+  "p": 4.91,
+  "c": 5.36,
+  "f": 7.44,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kapuska"
+ },
+ {
+  "ad": "Mantar yemeği",
+  "kcal": 118,
+  "p": 1.67,
+  "c": 5.95,
+  "f": 10.42,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/mantar-yeme%C4%9Fi"
+ },
+ {
+  "ad": "Yeşil mercimek yemeği",
+  "kcal": 167,
+  "p": 5.49,
+  "c": 14.24,
+  "f": 10.37,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ye%C5%9Fil-mercimek-yeme%C4%9Fi"
+ },
+ {
+  "ad": "Kestane yemeği",
+  "kcal": 213,
+  "p": 2.42,
+  "c": 45.54,
+  "f": 2.26,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kestane"
+ },
+ {
+  "ad": "Radika yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": null
  }
 ]
