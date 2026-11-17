@@ -10,6 +10,7 @@ Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artı
 - Beslenme özeti dört halka yerine dört ay evresi oldu (kalori, protein, karbonhidrat, yağ). Ay, makro renginde dolu bir daire; üstünde aynı yarıçapta, zemin renginde (`-soft` jeton) bir gölge dairesi ayın içine kırpılır ve oran × çap kadar sola kayar: oran 0'da ay karanlık, 1'de dolunay; arkada oranla koyulaşan hafif bir ışık halesi. Altında ad, büyük rakamla kalan miktar ("kcal kaldı" / "g kaldı") ve küçük yazıyla tüketilen / hedef ("86 / 131 g"). Hedef aşılınca ay `--over` renginde dolunay olur ve "+fazlalık" yazar. Ekrana girişte gölge kayarak açılır (`.fx-moon`, `countUp` ile); sayfa içinde eski yerinden yenisine geçer; hareket azaltmada anında son halinde durur. Ekran okuyucu etiketleri aynı kaldı.
 
 ### Eklendi
+- Besin veritabanı 432 yeni kayıtla genişletildi: 391 USDA, 41 web kaynağı; alkol içeren besinlerde 7 kcal/g ortak formülle hesaplanır.
 - `--over-soft` renk jetonu (aşan ayın gölgesi; üç tema bloğunda).
 
 ### Kaldırıldı

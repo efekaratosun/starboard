@@ -100,6 +100,63 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
   ok(r.g > 0, "gram eksik");
 });
 
+/* ---- genişletilmiş besin veritabanı ---- */
+const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
+test("besin veritabanı: 432 yeni kayıt (391 USDA, 41 web) eklendi", () => {
+  const added = sourcedFoods();
+  eq([added.length, Object.keys(FOODS).length], [432, 794]);
+  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 391);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 41);
+});
+test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
+  const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
+    || f.p + f.c + f.f > 100.5 || (f.alk !== undefined && (!Number.isFinite(f.alk) || f.alk < 0 || f.alk > 100)));
+  eq(bad.map(([k]) => k), [], "geçersiz yeni besin makroları");
+});
+test("besin veritabanı: yeni kayıtlar mevcut ad ve anahtarlarla çakışmıyor", () => {
+  const base = Object.entries(FOODS).filter(([,f]) => !f.src);
+  const baseNames = new Set(base.map(([,f]) => norm(f.n))), baseKeys = new Set(base.map(([k]) => norm(k)));
+  const added = sourcedFoods();
+  const overlap = added.filter(([k,f]) => baseNames.has(norm(f.n)) || baseKeys.has(norm(k)));
+  eq(overlap.map(([k]) => k), [], "yeni kayıt çakışması");
+  eq(new Set(added.map(([,f]) => norm(f.n))).size, added.length, "yeni kayıt adları yineleniyor");
+});
+test("besin veritabanı: alkol 7 kcal/g hesaplanıyor ve yeni günlük kalemine taşınıyor", async () => {
+  const alcoholic = sourcedFoods().filter(([,f]) => f.alk > 0);
+  eq(alcoholic.length, 28);
+  eq(kcalFromMacros({ p:0, c:0, f:0, alk:10 }), 70);
+  const oldState = state;
+  try {
+    state = await loadFixture();
+    state.customFoods = state.customFoods || {};
+    state.customFoods.alcoholTest = { n:"Test alkolü", p:0, c:0, f:0, alk:10, lif:0, i:"grain" };
+    const entry = { log:[] }, item = addFoodDirect(entry, "alcoholTest", 50, "test");
+    eq([item.alk, entry.kcal], [10, 35]);
+  } finally { state = oldState; }
+});
+test("besin veritabanı: alkolsüz mevcut besin ve eski günlük kalorileri değişmedi", () => {
+  const changed = Object.entries(FOODS).filter(([,f]) => !f.src && !f.alk)
+    .filter(([,f]) => Math.abs(kcalFromMacros(f) - (f.p * 4 + f.c * 4 + f.f * 9)) > 1e-9);
+  eq(changed.map(([k]) => k), [], "alkolsüz besin kalorisi değişti");
+  const old = { log:[{ p:10, c:20, f:5, g:100 }] };
+  eq([logTotals(old).kcal, logTotals(old).alk], [165, 0]);
+});
+test("besin veritabanı: Türkçe adlar veritabanında korunuyor", () => {
+  const names = new Set(sourcedFoods().map(([,f]) => f.n));
+  ok(names.has("Ada çayı") && names.has("Düğün çorbası") && names.has("Bira"), "örnek Türkçe adlar eksik");
+  eq(FOODS.adacayi.n, "Ada çayı");
+  eq(FOODS.duguncorbasi.n, "Düğün çorbası");
+});
+test("besin veritabanı: her yeni Türkçe adın İngilizce karşılığı var", async () => {
+  const missing = sourcedFoods().map(([,f]) => f.n).filter(n => !Object.prototype.hasOwnProperty.call(I18N.en, n));
+  eq(missing, [], "İngilizce adı olmayan yeni besinler");
+  await withLang("en", () => {
+    eq(tx("Ada çayı"), "sage tea");
+    eq(tx("Düğün çorbası"), "Wedding soup");
+    eq(tx("Bira"), "Beer");
+  });
+});
+
 /* ---- öğün önerileri ---- */
 test("öğünler: önerilen menünün kalorisi hedefe yakın", async () => {
   state = await loadFixture();
@@ -1258,7 +1315,7 @@ test("barkod: validGtin sağlama basamağını, uzunluğu ve rakam şartını de
 test("barkod: offToFood örnek yanıtları doğru duruma ve 100 g değerlerine çevirir", async () => {
   const found = offToFood(await offFx("off-found"), "tr");
   eq(found.status, "ok");
-  eq(found.food, { n: "Nutella", br: "Ferrero", p: 6.3, c: 57.5, f: 30.9, lif: 0, serving: null });
+  eq(found.food, { n: "Nutella", br: "Ferrero", p: 6.3, c: 57.5, f: 30.9, alk: 0, lif: 0, serving: null });
   eq([found.flags.ml, found.flags.fromServing, found.flags.kcalMismatch, found.flags.labelKcal], [false, false, false, 539]);
 
   const part = offToFood(await offFx("off-partial"), "tr");
@@ -1285,6 +1342,14 @@ test("barkod: offToFood saçma değerleri reddeder, birimi ve kalori farkını i
   const mod = fn => { const j = cloneJson(base); fn(j.product); return offToFood(j, "tr"); };
   const mismatch = mod(p => { p.nutriments.carbohydrates_100g = 5; p.nutriments.fat_100g = 0; p.nutriments.proteins_100g = 0; });
   eq([mismatch.status, mismatch.flags.kcalMismatch, mismatch.flags.labelKcal], ["ok", true, 539]);
+  const alcoholic = mod(p => { p.nutriments.alcohol_100g = 10; });
+  eq([alcoholic.status, alcoholic.food.alk, alcoholic.flags.kcalMismatch], ["ok", 10, false]);
+  eq(Math.round(kcalFromMacros(alcoholic.food) * 10) / 10, 603.3, "alkol 7 kcal/g katılmalı");
+  const alcoholicMismatch = mod(p => {
+    p.nutriments.proteins_100g = 0; p.nutriments.carbohydrates_100g = 0; p.nutriments.fat_100g = 0;
+    p.nutriments.alcohol_100g = 20;
+  });
+  eq([alcoholicMismatch.food.alk, alcoholicMismatch.flags.kcalMismatch], [20, true], "alkol kalorisi etiketle karşılaştırılmalı");
   eq(mod(p => { p.product_quantity_unit = "ml"; }).flags.ml, true);
   eq(mod(p => { p.serving_quantity_unit = "ml"; delete p.product_quantity_unit; }).flags.ml, true);
   const big = mod(p => { p.nutriments.carbohydrates_100g = 250; });
@@ -1365,7 +1430,7 @@ test("barkod: kayıt kopya oluşturmaz, barkodla ve adla bulunur; dışarıdan m
     const key = saveBarcodeFood("3017620422003", { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, br: "Ferrero", serving: 15, src: "off" });
     eq(key, "bc_3017620422003");
     const rec = state.customFoods[key];
-    eq(rec, { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, i: "grain", bc: "3017620422003", a: "3017620422003 Ferrero",
+    eq(rec, { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, alk: 0, lif: 0, i: "grain", bc: "3017620422003", a: "3017620422003 Ferrero",
       br: "Ferrero", src: "off", por: [{ n: "porsiyon", g: 15 }] });
     ok(!("unit" in rec) && !("unitName" in rec), "unit/unitName yazılmamalı");
     saveBarcodeFood("3017620422003", { n: "Nutella (düzenlendi)", p: 7, c: 57, f: 30, lif: 1, br: "Ferrero", src: "off" });
@@ -1378,6 +1443,9 @@ test("barkod: kayıt kopya oluşturmaz, barkodla ve adla bulunur; dışarıdan m
     saveBarcodeFood("036000291452", { n: "Mısır gevreği", p: 7, c: 84, f: 1 });
     eq(foodByBarcode("0036000291452")[0], "bc_0036000291452", "UPC-A iki biçimde de bulunur");
     eq(foodByBarcode("036000291452")[0], "bc_0036000291452");
+    const alcoholicKey = saveBarcodeFood("4006381333931", { n: "Bira", p: 0, c: 0, f: 0, alk: 5, lif: 0 });
+    eq(state.customFoods[alcoholicKey].alk, 5, "alkol kayda taşınmalı");
+    delete state.customFoods[alcoholicKey];
     state.customFoods.bc_x = { n: "Eski kayıt", p: 1, c: 1, f: 1, lif: 0, i: "grain", bc: "96385074" };
     eq(foodByBarcode("96385074")[0], "bc_x", "anahtarı farklı ama bc alanı eşleşen kayıt");
 
