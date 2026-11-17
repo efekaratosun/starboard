@@ -8,6 +8,15 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.16.0", items:[
+    tx("Bugün ekranındaki Ayarla düğmesi kalktı; beslenme tercihleri artık Ayarlar'da."),
+    tx("Mutfak seçimi artık telefonun diline göre yapılıyor."),
+    tx("Alışveriş listem sadeleşti: yalnızca Listem ve Öneriler."),
+    tx("Öğün önerileri daha isabetli; yeni ve alakasız besinler otomatik önerilmiyor."),
+    tx("Besin eklemede yalnızca arama alanı var; sık yedikler, barkod ve kendi yiyeceklerin korundu."),
+    tx("Program'da nasıl yapılır rehberi ayrı sekmede; antrenman modunda da açılıyor."),
+    tx("Kendi besinlerin aramada daha önce çıkıyor."),
+    tx("İçecek porsiyonları düzeltildi: kadeh, şişe ve bardak gramajları artık doğru.")] },
   { v:"1.15.0", items:[
     tx("Besin listesi 1324 kayıtla büyüdü: Türk ve dünya mutfağından yemekler, çorbalar ve tatlılar; alkollü içeceklerin kalorisi de eklendi."),
     tx("Neler yeni penceresi uygulama güncellendikten sonra artık bir kez gösteriliyor."),

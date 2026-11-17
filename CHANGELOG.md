@@ -3,6 +3,27 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.16.0 (yayınlanmadı)
+
+### Değişti
+- Bugün ekranındaki Ayarla düğmesi kaldırıldı; beslenme tercihleri Ayarlar bölümüne taşındı.
+- Mutfak seçimi kayıtlı tercih yoksa telefonun diline göre belirleniyor; Ayarlar'dan elle de değiştirilebiliyor.
+- Alışveriş listem sadeleşti: yalnızca Listem ve Öneriler bölümleri, geçmiş kullanımdaki sık besinler ve elle eklenen ürünler korunuyor.
+- Öğün önerileri gözden geçirilmiş 105 besinlik havuzla sınırlandırıldı; yeni veritabanı kayıtları ile alkol, sos, baharat ve tatlılar otomatik önerilmiyor.
+- Besin ekleme panelindeki kategori rozetleri ve kategori sonuçları kaldırıldı; yalnızca arama alanı, sık yedikler, kayıtlı öğün, barkod ve kendi yiyecekleri kaldı. Kullanıcı verisi silinmedi.
+- Program ekranında "Nasıl yapılır" rehberi ayrı sekmeye taşındı; antrenman modunda açılır rehber olarak sunuluyor.
+
+### Eklendi
+- Besin veritabanına Rakı eklendi; toplam 1325 kayıt, 35 alkol içeren kayıt.
+- Kendi besinlerin besin aramasında kullanım sıklığına göre daha önce çıkıyor.
+
+### Düzeltildi
+- İçecek porsiyonları içecek türüne göre düzeltildi: sert içki ve likör 1 kadeh 50 g, şarap 1 kadeh 150 g, bira 1 şişe 330 g, kokteyl 1 bardak 150 g, alkolsüz içecek 1 bardak 200 g. Türkçe ve İngilizce porsiyon adları doğru kullanılıyor.
+- Web kaynaklı dokuz çorbanın makro, porsiyon ve kaynak değerleri çapraz kaynaklarla doğrulandı; kereviz kaydındaki yanlış alkol değeri kaldırıldı.
+- İçeceklerin listede görünen simgeleri düzeltildi; bitki çayları, rom, konyak ve meyveli turvalar yanlış besin simgeleriyle görünmüyor.
+
+Veri şeması aynı kalır (`SCHEMA` 3).
+
 ## 1.15.0 (yayınlanmadı)
 
 ### Eklendi
