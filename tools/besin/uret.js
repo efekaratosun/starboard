@@ -131,7 +131,19 @@ function searchEnglish(search,name){
  return parts.find(x=>norm(x)!==key)||parts[0]||"";
 }
 function keyFor(name){return norm(name)||"besin";}
+/* İçecekler uygulamada "meyve" simgesiyle gösterilir (base kayıtlardaki günümüz:
+   kola, meyve suyu, şalgam, boza, kahve → i:"fruit"). Bu kural ad eşleşmelerinden
+   (papatya→"ham" ile et, ton balığı→"ton" ile balık, hindistan cevizi→"ceviz"
+   ile kuruyemiş gibi) ÖNCE çalışır. Anahtarlar norm() çıktısına (Türkçe harf
+   sadeleştirilmiş küçük harf) göre yazılır. */
+const DRINK_WORD=/cay|kahve|meyve suyu|meyveli su|suyu|nektar|limonata|gazoz|kola|soda|tonik|icecek|smoothie|milkshake|ayran|boza|salgam|serbet|raki|bira|sarap|viski|votka|tekila|likor|kokteyl|espresso|amerikano|cappuccino|latte|mocha|frappe|coldbrew|ipa|stout|cidre|gluhwein|yerba mate|enerji|maden suyu|sut/i;
+const NOT_DRINK=/corba|corbasi|sulu|et suyu|ekmek|bread|borek|pide|simit|lavas|kurabiye|kek|pasta|helva|dondurma|cikolata|recel|marmelat|sucuk|incir|sutlac/i;
+const isDrinkText=s=>!NOT_DRINK.test(s)&&DRINK_WORD.test(s);
 function icon(name,desc,category){const s=norm([name,desc,category].join(" "));
+ /* Sıvı içecekler: FNDDS kayıtları "Beverages, ..." açıklamasıyla gelir; web
+    kayıtlarda Türkçe ad aranır. "Rom" ve "Mate" kendi başına durduğunda içecektir
+    ("Saltimbocca alla romana" ya da "domates" gibi adlar bu kurala takılmaz). */
+ if(/^beverages/i.test(String(desc||""))||isDrinkText(s)||/^\s*(rom|mate)\s*$/i.test(name))return "fruit";
  if(/domuz|pork|ham|bacon|meat|beef|lamb|kuzu|dana|et|sucuk|salam/.test(s))return "meat";
  if(/chicken|turkey|poultry|tavuk|hindi/.test(s))return "poultry";
  if(/fish|salmon|tuna|cod|balik|somon|ton|levrek|karides|squid|kalamar/.test(s))return "fish";
@@ -142,7 +154,8 @@ function icon(name,desc,category){const s=norm([name,desc,category].join(" "));
  if(/bread|ekmek/.test(s))return "bread";
  if(/potato|patates/.test(s))return "potato";
  if(/bean|lentil|pea|chickpea|tofu|fasulye|mercimek|nohut|baklagil/.test(s))return "legume";
- if(/fruit|apple|berry|banana|meyve|elma|armut|uzum/.test(s))return "fruit";
+ /* "Meyveli kek" ya da "Kuru üzümlü pilav" meyve değil tahıl ürünüdür. */
+ if(/fruit|apple|berry|banana|meyve|elma|armut|uzum/.test(s)&&!/kek|pilav|pide|borek|corbasi|corba|dondurma|recel|marmelat|helva|sutlac/i.test(s))return "fruit";
  if(/vegetable|broccoli|spinach|veget|sebze|domates|biber|kabak|havuc/.test(s))return "veg";
  if(/rice|oat|grain|cereal|wheat|pirinc|yulaf|tah|makarna/.test(s))return "grain";
  return "grain";
