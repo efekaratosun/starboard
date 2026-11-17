@@ -8,6 +8,10 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.15.0", items:[
+    tx("Besin listesi 432 kayıtla büyüdü: Türk ve dünya mutfağından yemekler, çorbalar ve tatlılar; alkollü içeceklerin kalorisi de eklendi."),
+    tx("Neler yeni penceresi uygulama güncellendikten sonra artık bir kez gösteriliyor."),
+    tx("Sürüm numarası her ekranın sağ alt köşesinde küçük yazıyor; açılan pencereler Escape ile de kapanıyor.")] },
   { v:"1.14.0", items:[
     tx("Yazı tipi Saira oldu. Beslenme özeti artık dört ay evresi: yedikçe ay hilalden dolunaya aydınlanır, hedef aşılınca kırmızı dolunay olur.")] },
   { v:"1.13.0", items:[
