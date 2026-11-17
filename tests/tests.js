@@ -724,6 +724,7 @@ test("hatırlatmalar: 7 günlük plan, geçmiş saat yok, tamamlanan hedef atlan
   eq([sl.at.getHours(), sl.at.getMinutes()], [23, 0], "yatma saatinden 30 dk önce");
   /* Kullanıcının seçtiği saatler: boş bırakılan su saati kullanılmaz; uyku saati
      elle seçildiyse o, silindiyse yeniden otomatik. */
+  for (const d of Object.values(st.days)) delete d.weight; /* haftalık tartı: yakın tartı kaydı hedefi erteler */
   Object.assign(st.profile.reminders, { waterAt:["09:30", "", "15:00", "20:00"], weighAt:"07:15", eveAt:"22:00", sleepAt:"22:45" });
   const tm = shiftDays(t, 1);
   const hm = kind => reminderPlan(st, program, now).filter(n => n.kind === kind && dayKey(n.at) === tm).map(n => minToHm(n.at.getHours() * 60 + n.at.getMinutes()));
@@ -1292,6 +1293,17 @@ test("görevler: İngilizcede öneriler Türkçe başlık ve türle kaydedilir, 
     ok(tasks.every(t => !/^(Workout|Rest day|Morning)/.test(t.title)), "başlık İngilizce kaydedildi");
   });
   state = null;
+});
+test("haftalık tartı: son tartıdan 7 gün dolmadan hedef yok, eski kayıt korunur", () => {
+  const k = "2026-11-20", prog = { kcal:2000, protein:120, water:2500, training:{ none:true, days:[] } };
+  const ctx = days => ({ today:k, hour:9, profile:{ goal:"maintain" }, sleep:[7, 9], steps:0, days });
+  eq(taskStatus("weigh", {}, prog, k, ctx({ [shiftDays(k, -3)]:{ weight:80 } })), null, "3 gün önce tartıldıysa bugün hedef yok");
+  eq(taskStatus("weigh", {}, prog, k, ctx({ [shiftDays(k, -7)]:{ weight:80 } })).ok, false, "7 gün olunca tartı hedefi gelir");
+  eq(taskStatus("weigh", { weight:79.5 }, prog, k, ctx({ [shiftDays(k, -2)]:{ weight:80 } })).ok, true, "bugün tartıldıysa sayılır");
+  eq(taskStatus("weigh", {}, prog, k, ctx({})).ok, false, "hiç kayıt yoksa hedef var");
+  eq(taskKind({ title:"Haftalık kilo ölçümü" }), "weigh");
+  eq(taskKind({ title:"Sabah kilo ölçümü" }), "weigh", "eski başlık da tanınır");
+  eq(taskKind({ title:"Weekly weigh-in" }), "weigh");
 });
 test("görevler: eski İngilizce başlıklar tanınır, birikmiş kopyalar temizlenir", async () => {
   eq(taskKind({ title:"2870 ml of water" }), "water");
@@ -1919,6 +1931,7 @@ test("sağlık: Sağlık'tan gelen adım hedefi işaretler, kilo tartı hatırla
   const st = await loadFixture();
   const k = "2026-11-11", program = buildProgram(st.profile, 82, 0);
   delete st.days[k];
+  for (const d of Object.values(st.days)) delete d.weight; /* son 7 günde tartı yok */
   st.profile.health = { on: true };
   st.profile.reminders = { weigh: true };
   const now = new Date("2026-11-11T06:00:00");

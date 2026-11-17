@@ -279,6 +279,8 @@ window.STARBOARD_EN = {
   "Uyku kadranıyla girince işaretlenir.": "Marked once entered with the sleep dial.",
   "Kendi hedefin en az {0} saat.": "Your goal is at least {0} hours.",
   "Sabah kilo ölçümü": "Morning weigh-in",
+  "Haftalık kilo ölçümü": "Weekly weigh-in",
+  "Haftada bir, aynı gün ve saatte, kahvaltıdan önce tartılman yeterli. Kilo girilince işaretlenir.": "Once a week, on the same day and time before breakfast, is enough. Marked once the weight is entered.",
   "{0} tartılmadın": "{0}: no weigh-in",
   "{0}ün kilosu girilince işaretlenir.": "Marked once the weight is entered.",
   "{0} adım at": "Walk {0} steps",
@@ -952,6 +954,7 @@ window.STARBOARD_EN = {
   "Tamam": "OK",
   /* hatırlatmalar (iOS) */
   "Sabah tartısı": "Morning weigh-in",
+  "Haftalık tartı": "Weekly weigh-in",
   "Kahvaltıdan önce tartılıp kilonu gir.": "Weigh yourself before breakfast and log it.",
   "Su içme vakti": "Time for water",
   "Bugünkü hedefin {0}.": "Today's target is {0}.",

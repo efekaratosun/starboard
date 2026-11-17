@@ -270,7 +270,7 @@ function taskKind(t){
   if (/g of protein$/.test(x)) return "protein";
   if (/ml of water$|^Drink .* of water$/.test(x)) return "water";
   if (/^Sleep [\d-]+ hours$/.test(x)) return "sleep";
-  if (/^Morning weigh-in$/.test(x)) return "weigh";
+  if (/^(Morning|Weekly) weigh-in$/.test(x)) return "weigh";
   return /^Antrenman:/.test(x) ? "train" : /kcal hedefini tut/.test(x) ? "kcal"
        : /g protein al/.test(x) ? "protein" : /ml su iç/.test(x) ? "water"
        : /saat uyu/.test(x) ? "sleep" : /kilo ölçümü/.test(x) ? "weigh"
@@ -316,9 +316,9 @@ function autoInfo(t, entry, program, key){
     }
     case "weigh": {
       const gun = s.today ? tx("Bugün") : tx("O gün");
-      return { title:tx("Sabah kilo ölçümü"), ok, pct,
+      return { title:tx("Haftalık kilo ölçümü"), ok, pct,
         txt: s.value === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} girildi", [(fmtW(s.value))]) + hkTag(entry, "weight"),
-        why:tx("{0}ün kilosu girilince işaretlenir.", [(gun)]) };
+        why:tx("Haftada bir, aynı gün ve saatte, kahvaltıdan önce tartılman yeterli. Kilo girilince işaretlenir.") };
     }
     case "steps":
       return { title:tx("{0} adım at", [(s.target)]), ok, pct, txt:tx("{0} / {1} adım", [(s.value || 0), (s.target)]) + hkTag(entry, "steps"),

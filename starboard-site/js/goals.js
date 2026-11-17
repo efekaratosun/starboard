@@ -10,7 +10,21 @@
    aralığı ve adım hedefi. Verilmezse goalCtx() geçerli kayıttan kurar; testler kendi
    ctx'lerini verebilir. */
 function goalCtx(){
-  return { today: today(), hour: nowHour(), profile: state.profile, sleep: sleepBand(), steps: stepGoal() };
+  return { today: today(), hour: nowHour(), profile: state.profile, sleep: sleepBand(), steps: stepGoal(), days: state.days };
+}
+
+/* Haftalık tartı. Kilo günden güne su ve sindirimle 1-2 kg oynar; kilo takibinde
+   önerilen, haftada bir, aynı gün ve saatte, kahvaltıdan önce tartılmaktır (NHS
+   Better Health, 12 haftalık kilo verme planı). Son tartıdan bu yana 7 gün dolmadıysa
+   tartı hedefi o gün yoktur. Kayıtlı eski günlük tartılar olduğu gibi kalır. */
+const WEIGH_EVERY = 7;
+function weighDue(days, key){
+  days = days || {};
+  for (let n = 1; n < WEIGH_EVERY; n++){
+    const d = days[shiftDays(key, -n)];
+    if (d && typeof d.weight === "number") return false;
+  }
+  return true;
 }
 
 /* Kalori bandı.
@@ -71,6 +85,7 @@ function taskStatus(kind, entry, program, key, ctx){
     }
     case "weigh": {
       const v = typeof entry.weight === "number" ? entry.weight : null;
+      if (v === null && ctx.days && !weighDue(ctx.days, key)) return null;
       return { kind, value: v, ok: v !== null, pct: v === null ? 0 : 1, today: key === ctx.today };
     }
     case "steps": {
@@ -100,7 +115,7 @@ function taskTitle(s){
     case "protein": return `${s.target} g protein al`;
     case "water":   return `${s.target} ml su iç`;
     case "sleep":   return `${s.lo}-${s.hi} saat uyu`;
-    case "weigh":   return "Sabah kilo ölçümü";
+    case "weigh":   return "Haftalık kilo ölçümü";
     case "steps":   return `${s.target} adım at`;
     case "train":   return "Antrenman: " + s.session.t;
   }

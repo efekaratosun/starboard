@@ -341,7 +341,7 @@ function suggestedTitles(program, key){
   out.push(program.protein + " g protein al");
   out.push(program.water + " ml su iç");
   out.push(`${sleepBand()[0]}-${sleepBand()[1]} saat uyu`);
-  out.push("Sabah kilo ölçümü");
+  out.push("Haftalık kilo ölçümü");
   if (stepGoal()) out.push(stepGoal() + " adım at");
   return out;
 }

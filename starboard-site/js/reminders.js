@@ -63,8 +63,8 @@ function reminderPlan(st, program, now){
       const when = at(min);
       if (when > now) out.push({ id: (d + 1) * 10 + slot, at: when, kind, title, body });
     };
-    if (R.weigh && typeof e.weight !== "number")
-      add(0, T.weigh, "weigh", tx("Sabah tartısı"), tx("Kahvaltıdan önce tartılıp kilonu gir."));
+    if (R.weigh && typeof e.weight !== "number" && weighDue(st.days, k))
+      add(0, T.weigh, "weigh", tx("Haftalık tartı"), tx("Kahvaltıdan önce tartılıp kilonu gir."));
     if (R.water && program && !((e.water || 0) >= program.water * 0.9))
       T.water.forEach((m, i) => add(1 + i, m, "water", tx("Su içme vakti"),
         tx("Bugünkü hedefin {0}.", [(fmtV(program.water))])));
