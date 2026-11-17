@@ -901,6 +901,26 @@ const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahin
   /* öğünün yağını tek başına taşıyamayacak tohumlar ve yağlar */
   "susam","ketentohumu","hindistancevizi","hindistancevizyagi"]);
 
+/* Otomatik önerilerde kullanılabilecek gözden geçirilmiş besinler.
+   foods-usda.js veya foods-intl.js ile eklenen kayıtlar otomatik olarak
+   bu havuza katılmaz; yeni bir besin ancak burada açıkça onaylanırsa önerilebilir.
+   Bu liste yalnızca PLATES içindeki adayları denetler, tek başına aday üretmez. */
+const SUGGEST_FOODS = new Set([
+  "ahududu","alabalik","antepfistigi","armut","avokado","ayran","badem","bademezmesi",
+  "bagel","barbunya","beyazekmek","beyazpeynir","biftek","bitkiselyogurt","bogurtlen",
+  "bulgur","cacik","cavdarekmek","ceviz","cheddar","cilek","cipura","cokelek","cottage",
+  "ekmek","eksimaya","elma","esmerpirinc","ezine","findik","findikezmesi","fistikezmesi",
+  "granola","hamsi","hindi","hindikiyma","humus","hurma","incir","ingmuffin","kaju",
+  "karides","kasar","kecipeyniri","kefir","kepekliekmek","kinoa","kivi","kofte","kurufasulye",
+  "kuruincir","kurukayisi","kuruuzum","kuskus","leblebi","levrek","lightbeyaz","lightkasar",
+  "lor","makarna","makarnabeyaz","mandalina","menemen","mercimek","misirtortilla","morina",
+  "mozzarella","musli","muz","nohut","omlet","orgupeyniri","patates","pirinc","portakal",
+  "seftali","seitan","simit","siyahfasulye","skyr","somon","soya","soyasutu","sut","suzme",
+  "tahilhalka","tatlipatates","tavuk","tavukbut","tempeh","tilapia","tofu","ton","uskumru",
+  "vegankiyma","yabanmersini","yerfistigi","yesilmercimek","yesilzeytin","yogurt","yulaf",
+  "yumurta","yunanyogurt","zeytin","zeytinyagi"
+]);
+
 /* Kahvaltı ve ara öğün hafif öğünlerdir: pişirilip yemek olarak yenen tahıllar
    ve kuru baklagiller bu öğünlere önerilmez. */
 const MEAL_GRAINS = new Set(["pirinc","pilav","bulgur","bulgurpilav","makarna","makarnapis",
@@ -971,7 +991,7 @@ portionRule(["tempeh","seitan","vegankiyma"], 100, 250);
 portionRule(["soya"], 30, 80);
 portionRule(["zeytinyagi"], 5, 20);
 
-const BREADS = ["ekmek","cavdarekmek","kepekliekmek","eksimaya","ingmuffin","bagel","beyazekmek","galeta","misirtortilla"];
+const BREADS = ["ekmek","cavdarekmek","kepekliekmek","eksimaya","ingmuffin","bagel","beyazekmek","misirtortilla"];
 const CHEESES = ["beyazpeynir","lor","ezine","kasar","lightbeyaz","cottage","orgupeyniri","lightkasar","cokelek","mozzarella","kecipeyniri","cheddar"];
 const FRUITS = ["muz","elma","mandalina","armut","cilek","portakal","kivi","yabanmersini","seftali","ahududu","incir","bogurtlen"];
 const NUTS = ["badem","ceviz","findik","fistikezmesi","antepfistigi","kaju","findikezmesi","bademezmesi","yerfistigi"];
@@ -1179,9 +1199,9 @@ function buildMeals(program, variantIndex){
   const diet = currentDiet();
   const cuisine = currentCuisine();
   const exclude = new Set(prefs.exclude);
-  /* Pirinç patlağı yalnızca glutensiz beslenmede ekmeğin yerine geçer (PLANT_DAIRY de böyle). */
-  const allowed = k => !!FOODS[k] && !!PORTION[k] && !exclude.has(k) && !NO_SUGGEST.has(k)
-    && foodAllowed(k, diet) && cuisineOk(FOODS[k], cuisine) && (k !== "galeta" || diet === "glutensiz")
+  /* Yalnızca açıkça onaylı havuzdan seçim yapılır; yeni kayıtlar otomatik öneriye girmez. */
+  const allowed = k => SUGGEST_FOODS.has(k) && !!FOODS[k] && !!PORTION[k] && !exclude.has(k) && !NO_SUGGEST.has(k)
+    && foodAllowed(k, diet) && cuisineOk(FOODS[k], cuisine)
     && (!PLANT_DAIRY.has(k) || diet === "vegan" || diet === "laktozsuz");
   /* Protein kalorinin %18'ini geçiyorsa proteini az ara öğünler çıkar ve gözlerde proteinli listeler
      kullanılır; %22'yi geçiyorsa (yağ kaybı) baklagil yemeği de çıkar (bitkisel beslenme dışında). */

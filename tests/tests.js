@@ -178,6 +178,41 @@ test("öğünler: istenmeyen besin önerilerde çıkmaz", async () => {
   for (let v = 0; v < 4; v++)
     ok(!keysOf(buildMeals(p, v)).includes(first[0]), `${first[0]} ${v}. seçenekte yine çıktı`);
 });
+test("öneriler: yalnızca onaylı havuz kullanılır; yeni kayıt, alkol, sos, baharat ve tatlı çıkmaz", async () => {
+  const fixture = await loadFixture();
+  const forbidden = /\b(alkol|bira|şarap|votka|viski|rom|sos|soslu|baharat|tarçın|kekre|tatlı|şeker|çikolata|pasta|kek|dessert|cake|cookie|candy|sweet|sauce|spice)\b/i;
+  const label = k => `${k} ${FOODS[k] ? FOODS[k].n : ""}`;
+  const badPool = [...SUGGEST_FOODS].filter(k => !FOODS[k] || FOODS[k].src || (FOODS[k].alk || 0) > 0
+    || !PORTION[k] || NO_SUGGEST.has(k) || forbidden.test(label(k)));
+  eq(badPool, [], "onaylı öneri havuzu uygun olmayan besin içeriyor");
+
+  const unapproved = new Set();
+  for (const group of Object.values(PLATES)) for (const plate of group) for (const eye of plate.g)
+    for (const k of eye.k.concat(eye.big || [], eye.rich || [])) if (!SUGGEST_FOODS.has(k)) unapproved.add(k);
+  eq([...unapproved], [], "tabak adayları onaylı havuzda değil");
+
+  const profiles = [
+    { sex:"male", goal:"lose", cuisine:"tr", diet:"hepsi", weight:82 },
+    { sex:"male", goal:"maintain", cuisine:"intl", diet:"hepsi", weight:82 },
+    { sex:"male", goal:"gain", cuisine:"tr", diet:"vejetaryen", weight:82 },
+    { sex:"female", goal:"lose", cuisine:"intl", diet:"hepsi", weight:60 },
+    { sex:"female", goal:"maintain", cuisine:"tr", diet:"hepsi", weight:60 },
+    { sex:"female", goal:"gain", cuisine:"intl", diet:"hepsi", weight:60 }
+  ];
+  const used = new Set();
+  for (const o of profiles) {
+    state = JSON.parse(JSON.stringify(fixture));
+    Object.assign(state.mealPrefs, { cuisine:o.cuisine, diet:o.diet });
+    const p = buildProgram(profileOf(o), o.weight, 0);
+    for (let v = 0; v < 14; v++) for (const meal of buildMeals(p, v).meals)
+      for (const item of meal.items) if (item.key && !item.fixed) used.add(item.key);
+  }
+  state = null;
+  eq([...used].filter(k => !SUGGEST_FOODS.has(k)), [], "onaylı havuz dışı besin önerildi");
+  eq([...used].filter(k => FOODS[k].src), [], "yeni kayıtlı besin önerildi");
+  eq([...used].filter(k => (FOODS[k].alk || 0) > 0), [], "alkollü besin önerildi");
+  eq([...used].filter(k => forbidden.test(label(k))), [], "alkol, sos, baharat veya tatlı önerildi");
+});
 
 test("öğünler: her öğün gerçek bir tabak gibi (tek et ya da balık, en fazla dört besin)", async () => {
   const fixture = await loadFixture();
