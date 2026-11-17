@@ -768,23 +768,25 @@
  },
  {
   "ad": "Simit kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Kilis kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Tokat kebabı",
@@ -798,33 +800,36 @@
  },
  {
   "ad": "Amasya kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Kuyu kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Külbastı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 267,
+  "p": 21.21,
+  "c": 0.86,
+  "f": 19.33,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuzu-%C5%9Ei%C5%9F",
+  "not": "yakin_kayit: Kuzu şiş"
  },
  {
   "ad": "Kuzu pirzola",
@@ -838,103 +843,112 @@
  },
  {
   "ad": "Dana pirzola",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 204,
+  "p": 16.16,
+  "c": 6.52,
+  "f": 12.11,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/k%C3%B6fte",
+  "not": "yakin_kayit: Köfte"
  },
  {
   "ad": "Bonfile şiş",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 120,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Antrikot ızgara",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 204,
+  "p": 16.16,
+  "c": 6.52,
+  "f": 12.11,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/k%C3%B6fte",
+  "not": "yakin_kayit: Köfte"
  },
  {
   "ad": "Pideli kebap",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 147,
+  "p": 37.88,
+  "c": 71.25,
+  "f": 15.81,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/%C4%B0skender-kebap",
+  "not": "yakin_kayit: İskender kebap"
  },
  {
   "ad": "Hatay kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Kağıt kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Ciğer şiş",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 174,
+  "p": 33.55,
+  "c": 1.47,
+  "f": 12.64,
   "lif": null,
   "porsiyon_g": 120,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ci%C4%9Fer-%C5%9Fi%C5%9F"
  },
  {
   "ad": "Kiremit kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Yufka kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 147,
+  "p": 37.88,
+  "c": 71.25,
+  "f": 15.81,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/%C4%B0skender-kebap",
+  "not": "yakin_kayit: İskender kebap"
  },
  {
   "ad": "Kuzu fileto",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 267,
+  "p": 21.21,
+  "c": 0.86,
+  "f": 19.33,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuzu-%C5%9Ei%C5%9F",
+  "not": "yakin_kayit: Kuzu şiş"
  },
  {
   "ad": "Kadınbudu köfte",
@@ -948,63 +962,69 @@
  },
  {
   "ad": "İzmir köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 183,
+  "p": 17.75,
+  "c": 15.79,
+  "f": 9.07,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sulu-k%C3%B6fte",
+  "not": "yakin_kayit: Sulu köfte"
  },
  {
   "ad": "Akçaabat köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "İnegöl köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "Tekirdağ köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "Sivas köftesi",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 187,
+  "p": 13.32,
+  "c": 10.02,
+  "f": 10.05,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-k%C3%B6fte",
+  "not": "yakin_kayit: Fırında köfte"
  },
  {
   "ad": "Adıyaman köftesi",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "Sulu köfte",
@@ -1028,13 +1048,14 @@
  },
  {
   "ad": "Terbiyeli köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 183,
+  "p": 17.75,
+  "c": 15.79,
+  "f": 9.07,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sulu-k%C3%B6fte",
+  "not": "yakin_kayit: Sulu köfte"
  },
  {
   "ad": "Fırın köfte",
@@ -1048,33 +1069,36 @@
  },
  {
   "ad": "Patatesli köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 187,
+  "p": 13.32,
+  "c": 10.02,
+  "f": 10.05,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-k%C3%B6fte",
+  "not": "yakin_kayit: Fırında köfte"
  },
  {
   "ad": "Peynirli köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "Kaşarlı köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "Kuru köfte",
@@ -1098,53 +1122,58 @@
  },
  {
   "ad": "Köfte beğendi",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 183,
+  "p": 17.75,
+  "c": 15.79,
+  "f": 9.07,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sulu-k%C3%B6fte",
+  "not": "yakin_kayit: Sulu köfte"
  },
  {
   "ad": "Yumurtalı köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 183,
+  "p": 17.75,
+  "c": 15.79,
+  "f": 9.07,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sulu-k%C3%B6fte",
+  "not": "yakin_kayit: Sulu köfte"
  },
  {
   "ad": "Misket köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 183,
+  "p": 17.75,
+  "c": 15.79,
+  "f": 9.07,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sulu-k%C3%B6fte",
+  "not": "yakin_kayit: Sulu köfte"
  },
  {
   "ad": "Sini köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 187,
+  "p": 13.32,
+  "c": 10.02,
+  "f": 10.05,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-k%C3%B6fte",
+  "not": "yakin_kayit: Fırında köfte"
  },
  {
   "ad": "Bulgurlu köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "Fellah köftesi",
