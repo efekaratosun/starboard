@@ -147,13 +147,19 @@ function icon(name,desc,category){const s=norm([name,desc,category].join(" "));
  if(/rice|oat|grain|cereal|wheat|pirinc|yulaf|tah|makarna/.test(s))return "grain";
  return "grain";
 }
-function portion(x){if(x.web){return Number(x.row.porsiyon_g)>0?[{n:"porsiyon",g:Number(x.row.porsiyon_g)}]:undefined;}
- if(x.origin==="FNDDS"||x.origin==="Survey (FNDDS)"){
-  if(Number(x.c.porsiyon_g)>0)return [{n:x.c.porsiyon_adi||"porsiyon",g:round1(x.c.porsiyon_g)}];
-  const p=(x.d.porsiyonlar||[]).find(p=>Number(p.g)>0&&p.aciklama!=="Quantity not specified");
-  if(p)return [{n:p.aciklama,g:round1(p.g)}];
+function portion(x){
+ let list;
+ if(x.web){ list=Number(x.row.porsiyon_g)>0?[{n:"porsiyon",g:Number(x.row.porsiyon_g)}]:undefined; }
+ else if(x.origin==="FNDDS"||x.origin==="Survey (FNDDS)"){
+  if(Number(x.c.porsiyon_g)>0) list=[{n:x.c.porsiyon_adi||"porsiyon",g:round1(x.c.porsiyon_g)}];
+  else { const p=(x.d.porsiyonlar||[]).find(p=>Number(p.g)>0&&p.aciklama!=="Quantity not specified"); if(p)list=[{n:p.aciklama,g:round1(p.g)}]; }
  }
- const g=Number(x.row.serving_g||x.c.porsiyon_g); return g>0?[{n:"porsiyon",g:round1(g)}]:undefined;
+ else { const g=Number(x.row.serving_g||x.c.porsiyon_g); list=g>0?[{n:"porsiyon",g:round1(g)}]:undefined; }
+ /* İçecek kalemleri (çay, kahve, meyve suyu vb.) sıvı ölçüsüyle (1 fl oz) ve
+    çok küçük bir ilk porsiyonla gelir; varsayılan porsiyon 1 bardak (200 g) olur. */
+ if(list&&list.length&&/fl oz/i.test(list[0].n||"")&&list[0].g<=32)
+  list=[{n:"bardak",g:200}];
+ return list;
 }
 for(const x of candidates){const d=x.web?x.row:x.d;
  if([x.web?d.kcal:d.kcal,x.web?d.p:d.protein,x.web?d.c:d.carbs,x.web?d.f:d.fat].some(v=>v===null||v===""||v===undefined)){
