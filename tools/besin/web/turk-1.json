@@ -2388,5 +2388,45 @@
   "lif": null,
   "porsiyon_g": 200,
   "kaynak_url": null
+ },
+ {
+  "ad": "Barbunya yemeği",
+  "kcal": 150,
+  "p": 5.8,
+  "c": 13,
+  "f": 7.6,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/yayla/barbunya-pilaki/100g"
+ },
+ {
+  "ad": "Bakla yemeği",
+  "kcal": 145,
+  "p": 3.32,
+  "c": 9.76,
+  "f": 10.69,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-bakla"
+ },
+ {
+  "ad": "Taze bakla yemeği",
+  "kcal": 47,
+  "p": 3.61,
+  "c": 4.36,
+  "f": 0.98,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/migros/taze-bakla/100g"
+ },
+ {
+  "ad": "Taze barbunya yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
  }
 ]
