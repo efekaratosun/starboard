@@ -2629,7 +2629,7 @@ test("öneri: Başka günün planını bir sonrakine geçirir; alışveriş list
   } finally { closeSug(); }
 });
 
-test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarla penceresinden geri alınır", async () => {
+test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarlar sayfasındaki pencereden geri alınır", async () => {
   await sugFixture();
   try {
     const x = app.querySelector(".sug [data-mex]");
@@ -2638,7 +2638,9 @@ test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarla p
     await x.onclick();
     ok(mealPrefs().exclude.includes(key), "dışlandı");
     ok(!app.querySelector(`.sug [data-mex="${key}"]`), "tabaktan çıktı");
-    app.querySelector("#prefs-open").onclick();
+    ok(!app.querySelector("#prefs-open"), "Bugün'de Ayarla düğmesi yok");
+    tab = "settings"; meTab = "set"; render();
+    app.querySelector("#s-meal-prefs").onclick();
     const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
     const chip = sheet.querySelector(`[data-munex="${key}"]`);
     ok(chip && chip.textContent.includes("geri al"), "pencerede geri al düğmesi");
@@ -2864,13 +2866,15 @@ test("öğünlerim ve kayıtlı öğünler günlüğün altında katlıdır (var
   } finally { mealAddOpen = false; closeSug(); }
 });
 
-test("Ayarla: tercihler sayfada durmaz; tek düğme pencerede açar, değişiklik kaydedilir ve öneriyi yeniler", async () => {
+test("Ayarlar: Bugün'de Ayarla düğmesi yok; tercihler Ayarlar sayfasındaki tek satırdan pencerede açılır, değişiklik kaydedilir ve öneriyi yeniler", async () => {
   await sugFixture();
   try {
-    eq(app.querySelectorAll("#prefs-open").length, 1, "tek Ayarla düğmesi");
+    eq(app.querySelectorAll("#prefs-open").length, 0, "Bugün'de Ayarla düğmesi yok");
     ok(!app.querySelector("#cuisine-sel") && !app.querySelector("#diet-sel") && !app.querySelector("#use-mine"), "tercihler sayfada yok");
-    const btn = app.querySelector("#prefs-open");
-    ok(btn.textContent.trim() === "Ayarla" && btn.getAttribute("aria-haspopup") === "dialog", "adlı düğme");
+    tab = "settings"; meTab = "set"; render();
+    eq(app.querySelectorAll("#s-meal-prefs").length, 1, "Ayarlar sayfasında tek tercih satırı");
+    const btn = app.querySelector("#s-meal-prefs");
+    ok(btn.textContent.trim() === "Önerileri kendine göre ayarla" && btn.getAttribute("aria-haspopup") === "dialog", "adlı düğme");
     btn.onclick();
     const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
     const dlg = sheet.querySelector('.sheet[role="dialog"]');
@@ -2881,6 +2885,7 @@ test("Ayarla: tercihler sayfada durmaz; tek düğme pencerede açar, değişikli
     const ds = sheet.querySelector("#diet-sel");
     ds.value = "vegan"; await ds.onchange();
     eq(mealPrefs().diet, "vegan", "beslenme türü kaydedildi");
+    tab = "meals"; mealTab = "log"; render();
     const keysOf = () => app.querySelector(".sug") ? [...app.querySelectorAll(".sug [data-mex]")].map(b => b.dataset.mex) : [];
     ok(keysOf().every(k => foodAllowed(k, "vegan")), "arkadaki öneri yeni türe uyar");
     ok(sheet.querySelector("#diet-sel").value === "vegan" && document.activeElement.id === "diet-sel", "pencere tazelenir, odak kalır");
@@ -2893,7 +2898,9 @@ test("Ayarla: tercihler sayfada durmaz; tek düğme pencerede açar, değişikli
     sheet.querySelector(".sheet-x").onclick();
     await new Promise(r => setTimeout(r, 300));
     ok(!sheet.isConnected, "kapanır");
-    ok(app.querySelector("#prefs-open"), "sayfa yerinde");
+    ok(!app.querySelector("#prefs-open"), "Bugün'de Ayarla düğmesi kalmadı");
+    tab = "settings"; meTab = "set"; render();
+    ok(app.querySelector("#s-meal-prefs"), "ayarlar satırı yerinde");
   } finally { closeSug(); }
 });
 
@@ -2906,15 +2913,18 @@ test("sade beslenme: İngilizcede de çalışır, sözlükte olmayan metin kalma
       const s = slots.find(k => sectionOf(k).querySelector(".sug"));
       const box = sectionOf(s).querySelector(".sug");
       ok(box.getAttribute("aria-label") === "Suggestion" && box.querySelector("[data-sug-add]").textContent === "Add" && box.querySelector("[data-sug-other]").textContent === "Another", "tabak İngilizce");
-      eq(app.querySelector("#prefs-open").textContent.trim(), "Tune");
+      ok(!app.querySelector("#prefs-open"), "Bugün'de Ayarla düğmesi yok");
       state.days[today()].log = [logItem("yulaf", 60, slots[0], 1)]; syncKcal(state.days[today()]); render();
       ok(app.querySelector('[data-fold="detail"]').textContent.includes("Details"), "Details");
       ok(app.querySelector('[data-fold="mymeals"]').textContent.includes("My meals"), "My meals");
-      app.querySelector("#prefs-open").onclick();
+      tab = "settings"; meTab = "set"; render();
+      const prefsBtn = app.querySelector("#s-meal-prefs");
+      ok(prefsBtn && prefsBtn.textContent.trim() === "Tune the suggestions", prefsBtn && prefsBtn.textContent);
+      prefsBtn.onclick();
       const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
       ok(sheet.textContent.includes("Tune the suggestions") && sheet.querySelector("#pf-ok").textContent === "OK", sheet.textContent);
       sheet.remove();
-      delete state.days[today()].log; mealVariant = 0; render();
+      tab = "meals"; mealTab = "log"; delete state.days[today()].log; mealVariant = 0; render();
       await app.querySelector("[data-sug-add]").onclick();
       ok(document.querySelector(".toast.act").textContent.includes("added") && document.querySelector(".toast.act").textContent.includes("Undo"));
       eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");

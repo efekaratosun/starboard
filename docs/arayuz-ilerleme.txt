@@ -1,0 +1,4 @@
+ADIM 1: grep ile Ayarla metni starboard-site\js altinda arandi (today.js oncelikli); today.js icinde metin yok, Ayarla dugmesi meals.js icindeki oneri tercihleri penceresini aciyor. Pencere mutfak, beslenme turu, sik yedigim besinlerle kurma ve onerilerden cikarilan besinleri degistiriyor; settings.js bu ayarlari sunmuyor.
+ADIM 2: Bugun ekranindaki Ayarla dugmesi ve prefs-open cagirisi kaldirildi; oneri tercihleri penceresi ile mealPrefs kullanici verisi korundu. Bu ayarlar baska yerden erisilemedigi icin Ayarlar sayfasina Onerileri kendine gore ayarla adli tek satir eklendi ve ilgili testler guncellendi.
+ADIM 3: Chrome headless testleri calistirildi: 174 gecti, 0 kaldi; sunucu kapatildi.
+BITTI

@@ -64,6 +64,8 @@ function settingsView(){
     <label>${tx("Uyku hedefin")}</label>
     <div class="chips">${[6,7,8,9].map(n =>
       `<button class="chip${sleepMin() === n ? " sel" : ""}" data-ssleep="${n}">${tx("{0}-{1} saat", [(n), (n+2)])}</button>`).join("")}</div>
+    <div style="height:16px"></div>
+    <div class="row"><button class="ghost" id="s-meal-prefs" aria-haspopup="dialog">${tx("Önerileri kendine göre ayarla")}</button></div>
   </section>
 
   ${remindersSection()}
@@ -113,6 +115,7 @@ function settingsView(){
 function wireSettings(){
   wireReminders();
   wireHealth();
+  document.getElementById("s-meal-prefs").onclick = () => openPrefsSheet();
   let stAvatar = state.profile.avatar, stColor = state.profile.avColor;
   wireAvatar("st", k => { stAvatar = k; });
   document.getElementById("s-sex").onchange = ev => {

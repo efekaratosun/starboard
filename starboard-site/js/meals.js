@@ -233,9 +233,8 @@ function logView(program, entry){
 
   ${log.length ? detailSection(tot, program) : ""}
 
-  ${onToday() ? `${anySug && Math.abs(off) > program.kcal * 0.08
+  ${onToday() && anySug && Math.abs(off) > program.kcal * 0.08
     ? `<div class="metric-note" style="margin:0 4px 10px"><b class="out">${tx("Öneri hedeften {0} kcal {1}.", [Math.abs(off), off > 0 ? tx("yüksek") : tx("düşük")])}</b></div>` : ""}
-  <button class="ghost" id="prefs-open" aria-haspopup="dialog" aria-label="${tx("Önerileri kendine göre ayarla")}" style="margin-bottom:12px">${tx("Ayarla")}</button>` : ""}
 
   ${mealCards(entry, sug)}
   ${mealManager()}
@@ -984,9 +983,6 @@ alk:+m.per100.alk.toFixed(1), lif:+m.per100.lif.toFixed(1), kcal100:m.per100.kca
 }
 
 function wireMealsRest(entry){
-  const po = document.getElementById("prefs-open");
-  if (po) po.onclick = () => openPrefsSheet();
-
   app.querySelectorAll("[data-sug-add]").forEach(b => b.onclick = () => addSuggested(entry, b.dataset.sugAdd));
   app.querySelectorAll("[data-sug-other]").forEach(b => b.onclick = () => { mealVariant++; render(); });
 
