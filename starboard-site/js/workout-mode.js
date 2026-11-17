@@ -464,12 +464,14 @@ function howList(program){
   }).join("");
 }
 
-/* Program sekmesinin altındaki hareket rehberi: arama ve açılır liste. */
+/* Program içindeki hareket rehberi sekmesi: arama ve açılır liste. */
 function howtoView(program){
-  return fold("how", tx("Nasıl yapılır"), "", `
+  return `<section>
+    <h2>${tx("Nasıl yapılır")}</h2>
     <input id="how-q" type="text" aria-label="${tx("Hareket ara")}" placeholder="${tx("Hareket ara: squat, barfiks, plank…")}" value="${esc(howQuery)}" autocomplete="off">
     <div class="metric-note" style="margin:10px 0 4px">${tx("Ağrı hissedersen dur.")}</div>
-    <div id="how-res">${howList(program)}</div>`);
+    <div id="how-res">${howList(program)}</div>
+  </section>`;
 }
 
 function wireHowto(){
