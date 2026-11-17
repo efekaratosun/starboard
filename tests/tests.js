@@ -531,14 +531,15 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.16.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.16.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[3].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.16.0"], "1.15.0'ı görmüş kullanıcıya yalnızca 1.16.0");
+  eq(APP_VERSION, "1.17.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.17.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[4].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -2625,13 +2626,13 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.16.0");
+  eq(APP_VERSION, "1.17.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */

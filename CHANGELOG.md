@@ -3,6 +3,21 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.17.0 (yayınlanmadı)
+
+### Değişti
+- Takımyıldız haftalara bölünmüyor: ana ekranda devam eden takımyıldız ve son 7 gün görünüyor, şekle dokununca tam şema açılıyor. Bugün başlığındaki haftalık sayaç takımyıldız ilerlemesi oldu.
+- Kilo ölçümü haftalık oldu: son tartıdan 7 gün dolmadan tartı hedefi ve hatırlatması yok; eski günlük kayıtlar korunuyor, eski başlıklar tanınıyor.
+- Uyku girişi kolaylaştırıldı: yatış ve kalkış saati tek ekranda, süre otomatik, son girilen değer tek dokunuşla. Kayıt biçimi (`sleep`, `bed`, `wake`) aynı.
+- Program: antrenman adları sadeleşti (İtiş, Çekiş, Bacak günü; Üst, Alt, Tüm vücut).
+
+### Eklendi
+- Dokuz gerçek takımyıldız (Büyük Ayı, Kassiopeia, Kuğu, Kartal, Orion, İkizler, Aslan, Akrep, Kanatlı At); yeni seri başlangıç ayının akşam gökyüzündekilerinden seçiliyor. TR ve EN adlar.
+
+### Düzeltildi
+- Gün düğmelerine dokunma hatası: basılı düğme kayıyor ve dokunma düğmenin dışında bitiyordu.
+
+Veri şeması aynı kalır (`SCHEMA` 3).
 ## 1.16.0 (yayınlanmadı)
 
 ### Değişti
