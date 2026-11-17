@@ -71,13 +71,14 @@
  },
  {
   "ad": "Yuvalama çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 65,
+  "p": 4.39,
+  "c": 12.56,
+  "f": 9.83,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yayla-%C3%87orbas%C4%B1",
+  "not": "yakin_kayit: Yayla çorbası"
  },
  {
   "ad": "Tutmaç çorbası",
@@ -111,13 +112,13 @@
  },
  {
   "ad": "Un çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 50,
+  "p": 3.96,
+  "c": 15.21,
+  "f": 3.68,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/un-%C3%87orbas%C4%B1"
  },
  {
   "ad": "Mantar çorbası",
@@ -151,13 +152,14 @@
  },
  {
   "ad": "Bal kabağı çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 43,
+  "p": 0.85,
+  "c": 6.26,
+  "f": 1.9,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebze-%C3%A7orbas%C4%B1",
+  "not": "yakin_kayit: Sebze çorbası"
  },
  {
   "ad": "Ispanak çorbası",
@@ -211,13 +213,14 @@
  },
  {
   "ad": "Isırgan çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 60,
+  "p": 2.04,
+  "c": 9.39,
+  "f": 2.01,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/karalahana-%C3%87orbas%C4%B1",
+  "not": "yakin_kayit: Karalahana çorbası"
  },
  {
   "ad": "Kereviz çorbası",
@@ -241,23 +244,25 @@
  },
  {
   "ad": "Dovga çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 73,
+  "p": 5.04,
+  "c": 14.11,
+  "f": 10.88,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yo%C4%9Furt-%C3%A7orbas%C4%B1",
+  "not": "yakin_kayit: Yoğurt çorbası"
  },
  {
   "ad": "Erişte çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 97,
+  "p": 10.09,
+  "c": 31.13,
+  "f": 7.62,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tavuklu-arpa-%C5%9Eehriye-%C3%A7orbas%C4%B1",
+  "not": "yakin_kayit: Tavuklu arpa şehriye çorbası"
  },
  {
   "ad": "Kelle paça çorbası",
@@ -281,13 +286,13 @@
  },
  {
   "ad": "Soğan çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 47,
+  "p": 0.65,
+  "c": 5.61,
+  "f": 2.57,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/so%C4%9Fan-%C3%A7orbas%C4%B1"
  },
  {
   "ad": "Ekşili çorba",
@@ -301,53 +306,57 @@
  },
  {
   "ad": "Gölevez çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 65,
+  "p": 4.39,
+  "c": 12.56,
+  "f": 9.83,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yayla-%C3%87orbas%C4%B1",
+  "not": "yakin_kayit: Yayla çorbası"
  },
  {
   "ad": "Mısır çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 67,
+  "p": 2.18,
+  "c": 6.63,
+  "f": 3.76,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/m%C4%B1s%C4%B1r-%C3%A7orbas%C4%B1"
  },
  {
   "ad": "Toyga çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 73,
+  "p": 5.04,
+  "c": 14.11,
+  "f": 10.88,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yo%C4%9Furt-%C3%A7orbas%C4%B1",
+  "not": "yakin_kayit: Yoğurt çorbası"
  },
  {
   "ad": "Ovmaç çorbası",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 65,
+  "p": 4.39,
+  "c": 12.56,
+  "f": 9.83,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yayla-%C3%87orbas%C4%B1",
+  "not": "yakin_kayit: Yayla çorbası"
  },
  {
   "ad": "Alaca çorba",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 65,
+  "p": 4.39,
+  "c": 12.56,
+  "f": 9.83,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yayla-%C3%87orbas%C4%B1",
+  "not": "yakin_kayit: Yayla çorbası"
  },
  {
   "ad": "Tas kebabı",
@@ -361,43 +370,47 @@
  },
  {
   "ad": "Kuzu tandır",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 267,
+  "p": 21.21,
+  "c": 0.86,
+  "f": 19.33,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuzu-%C5%9Ei%C5%9F",
+  "not": "yakin_kayit: Kuzu şiş"
  },
  {
   "ad": "Kuzu kapama",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 83,
+  "p": 6.74,
+  "c": 8.64,
+  "f": 2.34,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/etli-g%C3%BCve%C3%A7",
+  "not": "yakin_kayit: Etli güveç"
  },
  {
   "ad": "Kuzu incik",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 267,
+  "p": 21.21,
+  "c": 0.86,
+  "f": 19.33,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuzu-%C5%9Ei%C5%9F",
+  "not": "yakin_kayit: Kuzu şiş"
  },
  {
   "ad": "Dana incik",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 83,
+  "p": 6.74,
+  "c": 8.64,
+  "f": 2.34,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/etli-g%C3%BCve%C3%A7",
+  "not": "yakin_kayit: Etli güveç"
  },
  {
   "ad": "Orman kebabı",
@@ -411,13 +424,14 @@
  },
  {
   "ad": "Çömlek kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Testi kebabı",
@@ -431,13 +445,14 @@
  },
  {
   "ad": "Fırın kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 213,
+  "p": 16.45,
+  "c": 2,
+  "f": 15.2,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ca%C4%9F-kebap",
+  "not": "yakin_kayit: Cağ kebap"
  },
  {
   "ad": "Elbasan tava",
@@ -481,13 +496,14 @@
  },
  {
   "ad": "Et sote",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 197,
+  "p": 17.45,
+  "c": 2.27,
+  "f": 12.76,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebzeli-kebap",
+  "not": "yakin_kayit: Sebzeli kebap"
  },
  {
   "ad": "Soğan kebabı",
@@ -501,23 +517,25 @@
  },
  {
   "ad": "Etli karnabahar",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 115,
+  "p": 1.48,
+  "c": 5.29,
+  "f": 10.41,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/karnabahar-yeme%C4%9Fi",
+  "not": "yakin_kayit: Karnabahar yemeği"
  },
  {
   "ad": "Etli türlü",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 83,
+  "p": 6.74,
+  "c": 8.64,
+  "f": 2.34,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/etli-g%C3%BCve%C3%A7",
+  "not": "yakin_kayit: Etli güveç"
  },
  {
   "ad": "Etli bamya",
@@ -541,13 +559,14 @@
  },
  {
   "ad": "Etli pırasa",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 120,
+  "p": 0.91,
+  "c": 7.25,
+  "f": 10.27,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/p%C4%B1rasa-yeme%C4%9Fi",
+  "not": "yakin_kayit: Pırasa yemeği"
  },
  {
   "ad": "Etli kabak",
@@ -561,13 +580,14 @@
  },
  {
   "ad": "Etli kereviz",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 90,
+  "p": 1.92,
+  "c": 7.14,
+  "f": 6.37,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-kereviz",
+  "not": "yakin_kayit: Zeytinyağlı kereviz"
  },
  {
   "ad": "Kuzu haşlama",
@@ -581,23 +601,25 @@
  },
  {
   "ad": "Kuzu fırın",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 267,
+  "p": 21.21,
+  "c": 0.86,
+  "f": 19.33,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuzu-%C5%9Ei%C5%9F",
+  "not": "yakin_kayit: Kuzu şiş"
  },
  {
   "ad": "Pastırmalı kuru fasulye",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 93,
+  "p": 8.53,
+  "c": 29.03,
+  "f": 10.11,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuru-fasulye",
+  "not": "yakin_kayit: Kuru fasulye"
  },
  {
   "ad": "Etli taze fasulye",
@@ -611,23 +633,25 @@
  },
  {
   "ad": "Etli ayva",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 83,
+  "p": 6.74,
+  "c": 8.64,
+  "f": 2.34,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/etli-g%C3%BCve%C3%A7",
+  "not": "yakin_kayit: Etli güveç"
  },
  {
   "ad": "Etli erik",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 83,
+  "p": 6.74,
+  "c": 8.64,
+  "f": 2.34,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/etli-g%C3%BCve%C3%A7",
+  "not": "yakin_kayit: Etli güveç"
  },
  {
   "ad": "Urfa kebap",
@@ -661,23 +685,25 @@
  },
  {
   "ad": "Bursa kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 147,
+  "p": 37.88,
+  "c": 71.25,
+  "f": 15.81,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/%C4%B0skender-kebap",
+  "not": "yakin_kayit: İskender kebap"
  },
  {
   "ad": "Sultan kebabı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 147,
+  "p": 37.88,
+  "c": 71.25,
+  "f": 15.81,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/%C4%B0skender-kebap",
+  "not": "yakin_kayit: İskender kebap"
  },
  {
   "ad": "Cağ kebabı",
@@ -711,13 +737,14 @@
  },
  {
   "ad": "Yoğurtlu kebap",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 147,
+  "p": 37.88,
+  "c": 71.25,
+  "f": 15.81,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/%C4%B0skender-kebap",
+  "not": "yakin_kayit: İskender kebap"
  },
  {
   "ad": "Patlıcan kebabı",
