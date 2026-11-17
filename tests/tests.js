@@ -1433,11 +1433,11 @@ const withBarcode = async fn => {
 };
 const openAddPanel = async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
-  tab = "meals"; mealTab = "log"; addOpen = slotList()[0][0]; logQuery = ""; logPick = null; logCat = null; render();
+  tab = "meals"; mealTab = "log"; addOpen = slotList()[0][0]; logQuery = ""; logPick = null; render();
 };
 const closeAddPanel = () => {
   document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
-  addOpen = null; logPick = null; logQuery = ""; logCat = null; state = null; tab = "today";
+  addOpen = null; logPick = null; logQuery = ""; state = null; tab = "today";
 };
 const confirmBarcodeInfo = async flow => {
   const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
@@ -2438,16 +2438,37 @@ test("kolay ekleme: arama sonucunda + varsayılan porsiyonla ekler; satır mikta
   } finally { closeQuick(); }
 });
 
-test("kolay ekleme: kategori listesinde ekleyince kategori açık kalır", async () => {
-  await openAddPanel();
-  try {
-    logCat = "meyve"; render();
-    const first = app.querySelector("#food-results [data-qadd]");
-    ok(first, "kategori satırlarında + var");
-    await first.onclick();
-    eq(logCat, "meyve"); ok(app.querySelector("#food-results [data-qadd]"), "liste durur");
-    eq(state.days[today()].log.length, 1);
-  } finally { logCat = null; closeQuick(); }
+test("besin ekleme paneli: yalnız arama; sık yedikler, barkod, kayıtlı öğün ve Kendi yiyeceklerim kalır", async () => {
+  await withBarcode(async () => {
+    await openAddPanel();
+    try {
+      const custom = { cf_x:{ n:"Ev yapımı yoğurt", p:4, c:5, f:3, lif:0, i:"dairy" } };
+      const saved = [{ id:"s1", name:"Sabah kahvaltısı", items:[{ k:"yulaf", n:FOODS.yulaf.n, g:40, p:FOODS.yulaf.p, c:FOODS.yulaf.c, f:FOODS.yulaf.f, lif:FOODS.yulaf.lif, v:[], i:"grain" }] }];
+      state.customFoods = custom;
+      state.savedMeals = saved;
+      state.days[shiftDays(today(), -1)] = { tasks:[], seeded:true, log:[logItem("yulaf", 40, slotList()[0][0], 1)] };
+      render();
+
+      const panel = app.querySelector(".pick");
+      ok(panel.querySelector("#food-q"), "arama alanı var");
+      ok(!panel.querySelector("[data-cat]"), "kategori rozetleri kalmadı");
+      for (const label of ["Sarküteri", "Kahvaltılık", "Spor & protein", "Ara öğün"])
+        ok(!panel.textContent.includes(label), "kategori etiketi kalmadı: " + label);
+      eq(panel.querySelector("#food-results").children.length, 0, "sorgu olmadan kategori önerisi yok");
+      ok(panel.querySelector(".fav [data-qadd='yulaf']"), "sık yediklerin düğmeleri kaldı");
+      ok(panel.querySelector("[data-saved-add='s1']"), "kayıtlı öğün düğmesi kaldı");
+      ok(panel.querySelector("#bc-scan"), "barkod düğmesi kaldı");
+      ok(panel.querySelector("#custom-toggle"), "kendi besin tanımlama düğmesi kaldı");
+      ok(panel.querySelector("#mf-toggle"), "Kendi yiyeceklerim düğmesi kaldı");
+
+      eq(state.customFoods, custom, "kendi yiyecek verisi silinmedi");
+      eq(state.savedMeals, saved, "kayıtlı öğün verisi silinmedi");
+      ok(state.days[shiftDays(today(), -1)].log.length === 1, "geçmiş kullanım verisi silinmedi");
+
+      logQuery = "yogurt"; render();
+      ok(app.querySelector("#food-results [data-qadd='yogurt']"), "arama sonuçları çalışıyor");
+    } finally { closeQuick(); }
+  });
 });
 
 test("kolay ekleme: miktar kartı varsayılan porsiyonla açılır; +/− ve hazır düğmeler miktarı ve kaloriyi günceller; Ekle toast'la geri alınır", async () => {
@@ -2595,7 +2616,7 @@ test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
 /* ---- sade beslenme ekranı ---- */
 const sugFixture = async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
-  delete state.days[today()].log; mealVariant = 0; addOpen = null; logQuery = ""; logPick = null; logCat = null;
+  delete state.days[today()].log; mealVariant = 0; addOpen = null; logQuery = ""; logPick = null;
   tab = "meals"; mealTab = "log"; render();
   const program = currentProgram();
   const plan = () => buildMeals(program, planDay() + mealVariant);

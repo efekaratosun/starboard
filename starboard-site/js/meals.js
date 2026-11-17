@@ -299,7 +299,7 @@ async function addSuggested(entry, slot){
 /* Gün değişince açık kalan besin ekleme paneli, arama ve düzenleme
    yanlış güne yazılıyormuş gibi görünüyordu; gün değiştiren yollar sıfırlar. */
 function resetMealUI(){
-  addOpen = null; logPick = null; logQuery = ""; logCat = null; editLog = null;
+  addOpen = null; logPick = null; logQuery = ""; editLog = null;
   mealAddOpen = false; saveMealOpen = null; myFoodsOpen = false; myFoodEdit = null;
 }
 
@@ -459,7 +459,6 @@ function addPanel(){
     ${quickChips()}
     ${savedChips()}
     <input id="food-q" type="text" aria-label="${tx("Ara: karnıyarık, hellim, kivi…")}" placeholder="${tx("Ara: karnıyarık, hellim, kivi…")}" value="${esc(logQuery)}" autocomplete="off">
-    ${logQuery.trim().length >= 2 ? "" : catChips()}
     <div class="res" id="food-results">${resultsHTML()}</div>
     ${logPick ? pickCard() : ""}
     <div class="row" style="margin-top:12px">
@@ -675,17 +674,7 @@ const ICON_CAT = { poultry:"et", meat:"et", fish:"balik", dairy:"sut", egg:"kahv
   grain:"tahil", bread:"tahil", legume:"baklagil", veg:"sebze", potato:"sebze",
   fruit:"meyve", nuts:"kuruyemis", oil:"yag", avocado:"meyve" };
 
-const CAT_LABELS = { kahvaltilik:tx("Kahvaltılık"), sarkuteri:tx("Şarküteri"), spor:tx("Spor & protein"), ara:tx("Ara öğün"),
-  yemek:tx("Ana yemek"), et:tx("Et & tavuk"), balik:tx("Balık"), sut:tx("Süt ürünleri"), sebze:tx("Sebze"),
-  meyve:tx("Meyve"), tahil:tx("Tahıl & ekmek"), baklagil:tx("Baklagil"), kuruyemis:tx("Kuruyemiş"), yag:tx("Yağ & zeytin") };
-
 const foodCat = f => f.cat || ICON_CAT[f.i] || "tahil";
-
-function catCounts(){
-  const c = {};
-  for (const [,f] of allFoods()) { const k = foodCat(f); c[k] = (c[k]||0) + 1; }
-  return c;
-}
 
 /* Satır, "+" ile tek dokunuşta ekleneceği miktarı ve kalorisini gösterir;
    satıra dokunmak miktar kartını açar. */
@@ -804,22 +793,7 @@ function resultsHTML(){
     if (!hits.length) return `<div class="empty" style="padding-top:12px">${tx("Bulunamadı. Aşağıdan kendin tanımlayabilirsin.")}</div>`;
     return hits.map(([k,f]) => foodRow(k, f, habits)).join("");
   }
-  if (logCat){
-    const list = allFoods().filter(([,f]) => foodCat(f) === logCat)
-      .sort((a,b) => a[1].n.localeCompare(b[1].n, "tr"));
-    const habits = foodHabits();
-    return `<div class="metric-note" style="margin:12px 4px 0">${tx("{0} · {1} kalem", [(CAT_LABELS[logCat]), (list.length)])}</div>`
-      + list.map(([k,f]) => foodRow(k, f, habits)).join("");
-  }
   return "";
-}
-
-function catChips(){
-  const counts = catCounts();
-  return `<div class="chips" style="margin-top:12px">${Object.entries(CAT_LABELS)
-    .filter(([k]) => counts[k])
-    .map(([k,l]) => `<button class="chip${logCat===k?" sel":""}" data-cat="${k}">${l} <span style="opacity:.6">${counts[k]}</span></button>`)
-    .join("")}</div>`;
 }
 
 /* Porsiyon çokluğu, bir porsiyonun ağırlığına göre seçilir:
@@ -1069,7 +1043,7 @@ function wireMealsRest(entry){
 
   app.querySelectorAll("[data-addfood]").forEach(b => b.onclick = () => {
     addOpen = b.dataset.addfood;
-    logQuery = ""; logCat = null; logPick = null; myFoodsOpen = false; myFoodEdit = null;
+    logQuery = ""; logPick = null; myFoodsOpen = false; myFoodEdit = null;
     render();
     const el = document.getElementById("food-q");
     if (el){
@@ -1079,7 +1053,7 @@ function wireMealsRest(entry){
     }
   });
   const addClose = document.getElementById("add-close");
-  if (addClose) addClose.onclick = () => { addOpen = null; logPick = null; logQuery = ""; logCat = null; myFoodsOpen = false; myFoodEdit = null; render(); };
+  if (addClose) addClose.onclick = () => { addOpen = null; logPick = null; logQuery = ""; myFoodsOpen = false; myFoodEdit = null; render(); };
 
   const mfToggle = document.getElementById("mf-toggle");
   if (mfToggle) mfToggle.onclick = () => { myFoodsOpen = !myFoodsOpen; myFoodEdit = null; render(); };
@@ -1188,30 +1162,12 @@ g ? `${Math.round(foodEnergyPer100(it)*g/100)} kcal` : "—"; };
   if (!q) return;
 
   /* Arama kutusunda odak kaybolmasın diye tüm ekranı değil, sadece sonuç listesini tazeliyoruz. */
-  let qWasBrowsing = logQuery.trim().length < 2;
   q.oninput = () => {
     logQuery = q.value;
-    if (logQuery.trim().length >= 2) logCat = null;
-    const browsing = logQuery.trim().length < 2;
-    if (browsing !== qWasBrowsing){
-      /* Kategori rozetleri girip çıkarken paneli baştan çiz, odağı geri ver. */
-      qWasBrowsing = browsing;
-      const pos = q.selectionStart;
-      render();
-      const el = document.getElementById("food-q");
-      if (el){ el.focus(); try { el.setSelectionRange(pos, pos); } catch(e){} }
-      return;
-    }
     document.getElementById("food-results").innerHTML = resultsHTML();
     bindResults(entry);
   };
   bindResults(entry);
-
-  app.querySelectorAll("[data-cat]").forEach(b => b.onclick = () => {
-    logCat = logCat === b.dataset.cat ? null : b.dataset.cat;
-    logQuery = ""; logPick = null;
-    render();
-  });
 
   const amt = document.getElementById("pick-amt");
   if (amt) {
