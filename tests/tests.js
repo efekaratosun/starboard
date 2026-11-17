@@ -123,7 +123,7 @@ test("besin veritabanı: yeni kayıtlar mevcut ad ve anahtarlarla çakışmıyor
 });
 test("besin veritabanı: alkol 7 kcal/g hesaplanıyor ve yeni günlük kalemine taşınıyor", async () => {
   const alcoholic = sourcedFoods().filter(([,f]) => f.alk > 0);
-  eq(alcoholic.length, 28);
+  eq(alcoholic.length, 35);
   eq(kcalFromMacros({ p:0, c:0, f:0, alk:10 }), 70);
   const oldState = state;
   try {
@@ -152,7 +152,7 @@ test("besin veritabanı: her yeni Türkçe adın İngilizce karşılığı var",
   eq(missing, [], "İngilizce adı olmayan yeni besinler");
   await withLang("en", () => {
     eq(tx("Ada çayı"), "sage tea");
-    eq(tx("Düğün çorbası"), "Wedding soup");
+    eq(tx("Düğün çorbası"), "Düğün çorbası (wedding soup)");
     eq(tx("Bira"), "Beer");
   });
 });
@@ -2208,7 +2208,9 @@ test("arama: Türkçe karakter ve büyük/küçük harf fark etmez; ad ve takma 
     ok(keys("PEYNİR").includes("beyazpeynir"), "İ harfi ve takma ad (peynir)");
     ok(keys("inek sutu").includes("sut"), "takma ad: inek sütü");
     ok(keys("ev yapimi").includes("cf_x") && keys("EV YAPIMI").includes("cf_x"), "kendi besininin takma adı");
-    ok(keys("kofte").includes("cf_x"), "kendi besinin adı");
+    /* Liste 1000'den fazla kayıtla büyüdü: sıralamada eşit puanda çok gerçek besin
+       var; kendi besinininin adıyla bulunması kendine özgü sözcükle denenir. */
+    ok(keys("annemin").includes("cf_x"), "kendi besinin adı");
   } finally { state = null; }
 });
 
