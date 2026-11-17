@@ -275,7 +275,9 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .sw-pan{color:var(--sky-ink);padding:12px 12px 10px}
 .sw-atlas{margin-top:6px}
 .sw-atlas h2{margin:8px 0 10px}
-.sky-b{all:unset;position:absolute;width:46px;height:46px;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* Konum negatif kenar boşluğuyla: genel button:active{transform:scale} kuralı transform'u ezip basılı düğmeyi 23 px kaydırıyor, dokunma düğmenin dışında bitiyordu. */
+.sky-b{all:unset;position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sky-b:active{transform:none;filter:none}
 .sky-b[aria-disabled="true"]{cursor:default}
 .sky-b:focus-visible{outline:2px solid var(--sky-ink);outline-offset:-6px}
 .sky-pan{background:radial-gradient(120% 100% at 80% 0%, var(--sky2), var(--sky1) 70%);border-radius:18px;padding:8px 10px;margin:6px 0 10px}

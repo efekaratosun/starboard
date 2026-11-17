@@ -3556,6 +3556,25 @@ test("takımyıldız: yıldıza dokununca günün hedefleri tamam/eksik; O güne
   } finally { skyDone(); }
 });
 
+test("takımyıldız: yıldız düğmesi basılıyken yerinden kaymaz (button:active transform'u konumu bozmaz)", async () => {
+  const css = await fetch("../starboard-site/css/components.css").then(r => r.text());
+  const rule = css.match(/\.sky-b\{[^}]*\}/)[0];
+  ok(!/transform/.test(rule), "konum transform ile verilmemeli: " + rule);
+  ok(/margin:-23px 0 0 -23px/.test(rule), "konum negatif kenar boşluğuyla (46 px düğmenin yarısı)");
+  ok(/\.sky-b:active\{transform:none/.test(css), "basılı düğme kaymaz");
+  const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+  try {
+    await skyFx(); tab = "today"; render();
+    const sw = openSkyWeek();
+    for (const b of sw.querySelectorAll(".sky-stage .sky-b")){
+      const cs = getComputedStyle(b), r = b.getBoundingClientRect(), stg = sw.querySelector(".sky-stage").getBoundingClientRect();
+      const i = [...b.parentNode.querySelectorAll(".sky-b")].indexOf(b), [x, y] = weekInfo(weekStart(today())).c.p[i];
+      eq([cs.width, cs.height], ["46px", "46px"]);
+      ok(Math.abs(r.left + r.width / 2 - (stg.left + stg.width * x / SKY_W)) < 1.5, "yatay merkez yıldızın üstünde");
+      ok(Math.abs(r.top + r.height / 2 - (stg.top + stg.height * y / SKY_H)) < 1.5, "dikey merkez yıldızın üstünde");
+    }
+  } finally { st.remove(); skyDone(); }
+});
 test("şerit: Bugün ekranının en üstü bu haftanın (Pzt-Paz) takımyıldızı; gün harfleri, bugün belirgin; dokununca hafta penceresi", async () => {
   try {
     const { full, cw } = await skyFx();
