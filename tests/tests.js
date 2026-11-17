@@ -2003,7 +2003,14 @@ test("sağlık: web'de bölüm yok; uygulamada bölüm erişilebilir ve İngiliz
   /* Bugün satırı kaynağı söyler; kadranın ortasında kayıttaki toplam uyku */
   const e = { tasks: [], sleep: 7.33, bed: 1390, wake: 410, hk: { sleep: 7.33, bed: 1390, wake: 410 } };
   const box = document.createElement("div"); box.innerHTML = sleepHTML(e);
-  eq(box.querySelector("#sl-c1").textContent, durTxt(440), "kadran ortası toplam uyku (aralık 8 sa 20 dk)");
+  eq(box.querySelector("#sl-c1").textContent, durTxt(440), "kayıttaki toplam uyku (aralık 8 sa 20 dk)");
+  eq([box.querySelector("#sl-bed").value, box.querySelector("#sl-wake").value], ["23:10", "06:50"], "kayıtlı saatler girişte görünür");
+  /* tek ekran: yatış ve kalkıştan süre otomatik, kayıt bicimi (sleep, bed, wake) aynı */
+  eq(sleepDur(23 * 60 + 30, 7 * 60), 450);
+  eq([parseHm("07:05"), parseHm("24:00") === 0, parseHm("")], [425, true, null]);
+  state.days[shiftDays(today(), -1)] = { bed: 1410, wake: 420, sleep: 8 };
+  box.innerHTML = sleepHTML({ tasks: [] });
+  eq(box.querySelector("#sl-last").textContent.includes("23:30 → 07:00"), true, "son girilen değer tek dokunuşla");
   eq(hkTag(e, "sleep"), " · Sağlık'tan");
   eq(hkTag({ ...e, sleep: 8 }, "sleep"), "", "elle değişince kaynak yazılmaz");
   state = null;

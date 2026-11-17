@@ -312,7 +312,7 @@ function autoInfo(t, entry, program, key){
       const v = s.value;
       return { title:tx("{0}-{1} saat uyu", [s.lo, s.hi]), ok, pct, warn,
         txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + hkTag(entry, "sleep") + (s.state === "long" ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(s.hi)]) : s.state === "short" ? tx(" · {0} saatin altında", [(s.lo)]) : ""),
-        why: v === null ? tx("Uyku kadranıyla girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(s.lo)]) };
+        why: v === null ? tx("Uyku saatlerini girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(s.lo)]) };
     }
     case "weigh": {
       const gun = s.today ? tx("Bugün") : tx("O gün");

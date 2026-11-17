@@ -276,7 +276,7 @@ window.STARBOARD_EN = {
   "Uyku girilmedi": "No sleep entered",
   " · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir": " · regularly sleeping over {0} hours can be a sign of fatigue",
   " · {0} saatin altında": " · under {0} hours",
-  "Uyku kadranıyla girince işaretlenir.": "Marked once entered with the sleep dial.",
+  "Uyku saatlerini girince işaretlenir.": "Marked once you enter your sleep times.",
   "Kendi hedefin en az {0} saat.": "Your goal is at least {0} hours.",
   "Sabah kilo ölçümü": "Morning weigh-in",
   "Haftalık kilo ölçümü": "Weekly weigh-in",
@@ -581,12 +581,9 @@ window.STARBOARD_EN = {
   /* ---- su ve uyku ---- */
   ", içildi": ", drunk",
   "Saatleri gir": "Enter the times",
-  "Uyku saati kadranı": "Sleep time dial",
-  "Yatış saati": "Bedtime",
-  "Kalkış saati": "Wake-up time",
   "🌙 Yattım": "🌙 Went to bed",
   "☀️ Kalktım": "☀️ Woke up",
-  "Ayı ve güneşi sürükle.": "Drag the moon and the sun.",
+  "Dünkü gibi": "Same as last time",
 
   /* ---- grafikler ---- */
   "Grafik için en az iki günlük veri gerekiyor. Şu an {0} kayıt var.": "Charts need at least two days of data. There are {0} entries now.",
