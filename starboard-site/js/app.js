@@ -120,6 +120,15 @@ function sheetOut(el){
   el.classList.add("out");
   setTimeout(() => el.remove(), 240);
 }
+/* Escape: en üstteki açık pencere kendi Kapat düğmesinin yoluyla kapanır. */
+document.addEventListener("keydown", ev => {
+  if (ev.key !== "Escape" || ev.defaultPrevented) return;
+  const bg = [...document.querySelectorAll(".sheet-bg:not(.out)")].pop();
+  const x = bg && bg.querySelector(".sheet-x, [data-close]");
+  if (!x) return;
+  ev.preventDefault();
+  x.click();
+});
 const nowHour = () => new Date().getHours();
 /* Hazır hedefler: açılıp kapanabilen, veriyle işaretlenen ek hedefler. */
 const stepGoal = () => { const g = state && state.profile && state.profile.goals; return g && g.steps > 0 ? g.steps : 0; };

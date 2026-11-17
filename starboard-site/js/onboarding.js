@@ -237,7 +237,7 @@ function wireRulers(animate){
     /* Açılışta cetvel değerine doğru kayarak gelir; bu sırada değer değişmez. */
     const target = disp();
     let intro = false;
-    const endIntro = () => { if (!intro) return; intro = false; rollSet(out, fmt(disp())); };
+    const endIntro = () => { if (!intro) return; intro = false; if (ob) rollSet(out, fmt(disp())); };
     if (animate && !reduceMotion()){
       intro = true;
       sc.scrollLeft = Math.max(toX(target) - 14 * tw, 0);

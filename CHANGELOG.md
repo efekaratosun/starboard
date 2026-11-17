@@ -3,6 +3,12 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## Yayınlanmamış
+
+### Düzeltildi
+- Onboarding'de cetvel animasyonu sürerken pencere kapanırsa oluşan `TypeError` giderildi; animasyonun bitişi artık değeri yalnızca kurulum verisi varken yazıyor.
+- Açılır pencereler (sheet ve dialog) Escape tuşuyla da kapanıyor; kapanma animasyonu ve odak davranışı Kapat düğmesiyle aynı, üst üste pencerelerde yalnızca en üstteki kapanıyor.
+
 ## 1.14.0 (yayınlanmadı)
 
 ### Değişti
