@@ -2,8 +2,8 @@
 
 /* ---- bugün ---- */
 /* ---- hafta şeridi ----
-   Bu haftanın (Pzt-Paz) takımyıldızı şeridin kendisidir (skyStrip, sky.js); dokununca hafta
-   penceresi açılır. Eski günlere takvimden ya da penceredeki yıldızlardan gidilir. */
+   Devam eden takımyıldız ve son yedi gün şeridin kendisidir (skyStrip, sky.js); şekle dokununca tam
+   şema açılır. Günlerin harflerine dokununca o günün hedefleri, eski günlere takvimden de gidilir. */
 function weekStrip(key){
   return `${skyStrip()}
   ${key !== today() ? `<div class="wk-back"><button class="link" id="back-today">${tx("Bugüne dön")}</button></div>` : ""}`;
@@ -68,7 +68,7 @@ function goalHero(key, sc){
   const rollFrom = String(bump && !reduceMotion() ? _ringPrev[key].done : sc.done);
   const up = bump && sc.done > _ringPrev[key].done;
   _ringPrev[key] = { off, done: sc.done };
-  const w = weekInfo(weekStart(today())), streak = streakNow();
+  const R = skyNow(), streak = streakNow();
   const title = !sc.total ? tx("Hedef yok") : full ? (now ? tx("Bugün tamam") : tx("Gün tamam")) : tx("{0} hedef kaldı", [(sc.total - sc.done)]);
   const sub = !now ? `${prettyDate(key)} · ${weekdayName(key)}`
             : full ? tx("Bugünün yıldızı yandı.") : tx("Satıra dokun, olduğu yerde gir.");
@@ -84,7 +84,7 @@ function goalHero(key, sc){
       <span class="gh-n num${bump ? " bump" : ""}" aria-label="${tx("{0} hedeften {1} tamam", [(sc.total), (sc.done)])}"><b class="roll" data-v="${rollFrom}" data-to="${sc.done}">${rollHTML(rollFrom)}</b>/${sc.total}</span>
     </div>
     <div class="gh-t"><b>${title}</b><i>${sub}</i>
-      <button class="gh-s" id="gh-cal">${icon("star4")}<span>${tx("{0} günlük seri · bu hafta {1}/7", [(streak), (w.n)])}</span></button></div>
+      <button class="gh-s" id="gh-cal">${icon("star4")}<span>${tx("{0} günlük seri · {1}/{2} yıldız", [(streak), (R.n), (R.c.p.length)])}</span></button></div>
   </div>`;
 }
 
@@ -270,7 +270,7 @@ function taskKind(t){
   if (/g of protein$/.test(x)) return "protein";
   if (/ml of water$|^Drink .* of water$/.test(x)) return "water";
   if (/^Sleep [\d-]+ hours$/.test(x)) return "sleep";
-  if (/^Morning weigh-in$/.test(x)) return "weigh";
+  if (/^(Morning|Weekly) weigh-in$/.test(x)) return "weigh";
   return /^Antrenman:/.test(x) ? "train" : /kcal hedefini tut/.test(x) ? "kcal"
        : /g protein al/.test(x) ? "protein" : /ml su iç/.test(x) ? "water"
        : /saat uyu/.test(x) ? "sleep" : /kilo ölçümü/.test(x) ? "weigh"
@@ -312,13 +312,13 @@ function autoInfo(t, entry, program, key){
       const v = s.value;
       return { title:tx("{0}-{1} saat uyu", [s.lo, s.hi]), ok, pct, warn,
         txt: v === null ? tx("Uyku girilmedi") : durTxt(Math.round(v*60)) + hkTag(entry, "sleep") + (s.state === "long" ? tx(" · düzenli olarak {0} saati aşmak yorgunluk işareti olabilir", [(s.hi)]) : s.state === "short" ? tx(" · {0} saatin altında", [(s.lo)]) : ""),
-        why: v === null ? tx("Uyku kadranıyla girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(s.lo)]) };
+        why: v === null ? tx("Uyku saatlerini girince işaretlenir.") : tx("Kendi hedefin en az {0} saat.", [(s.lo)]) };
     }
     case "weigh": {
       const gun = s.today ? tx("Bugün") : tx("O gün");
-      return { title:tx("Sabah kilo ölçümü"), ok, pct,
+      return { title:tx("Haftalık kilo ölçümü"), ok, pct,
         txt: s.value === null ? tx("{0} tartılmadın", [(gun)]) : tx("{0} girildi", [(fmtW(s.value))]) + hkTag(entry, "weight"),
-        why:tx("{0}ün kilosu girilince işaretlenir.", [(gun)]) };
+        why:tx("Haftada bir, aynı gün ve saatte, kahvaltıdan önce tartılman yeterli. Kilo girilince işaretlenir.") };
     }
     case "steps":
       return { title:tx("{0} adım at", [(s.target)]), ok, pct, txt:tx("{0} / {1} adım", [(s.value || 0), (s.target)]) + hkTag(entry, "steps"),

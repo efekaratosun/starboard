@@ -8,6 +8,13 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.17.0", items:[
+    tx("Takımyıldızlar artık gerçek: Büyük Ayı, Orion, Kuğu ve daha fazlası; mevsimine göre seçiliyor."),
+    tx("Takımyıldız haftalara bölünmüyor; ana ekranda son 7 gün görünüyor, şekle dokununca tam şema açılıyor."),
+    tx("Gün düğmelerine dokununca oluşan kayma hatası düzeltildi."),
+    tx("Kilo ölçümü haftalık: son tartıdan 7 gün dolmadan hedef ve hatırlatma çıkmıyor."),
+    tx("Uyku girişi kolaylaştı: yatış ve kalkış saati tek ekranda, son girilen tek dokunuşla."),
+    tx("Antrenman adları sadeleşti: İtiş, Çekiş, Bacak günü.")] },
   { v:"1.16.0", items:[
     tx("Bugün ekranındaki Ayarla düğmesi kalktı; beslenme tercihleri artık Ayarlar'da."),
     tx("Mutfak seçimi artık telefonun diline göre yapılıyor."),
@@ -107,5 +114,5 @@ function maybeShowWhatsNew(then){
    yenilik penceresi sırasını alır. İlk kurulumda seenVersion zaten güncel
    olduğu için hiç açılmaz. */
 function openWelcomeChain(){
-  maybeShowWhatsNew(maybeShowWeekClose);
+  maybeShowWhatsNew(maybeShowSkyClose);
 }

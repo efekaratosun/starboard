@@ -275,7 +275,9 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .sw-pan{color:var(--sky-ink);padding:12px 12px 10px}
 .sw-atlas{margin-top:6px}
 .sw-atlas h2{margin:8px 0 10px}
-.sky-b{all:unset;position:absolute;width:46px;height:46px;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* Konum ve boyut satır içi (yüzde; margin yarım genişlik): genel button:active{transform:scale} kuralı transform'u ezip basılı düğmeyi kaydırıyor, dokunma düğmenin dışında bitiyordu. */
+.sky-b{all:unset;position:absolute;aspect-ratio:1;border-radius:50%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sky-b:active{transform:none;filter:none}
 .sky-b[aria-disabled="true"]{cursor:default}
 .sky-b:focus-visible{outline:2px solid var(--sky-ink);outline-offset:-6px}
 .sky-pan{background:radial-gradient(120% 100% at 80% 0%, var(--sky2), var(--sky1) 70%);border-radius:18px;padding:8px 10px;margin:6px 0 10px}
@@ -326,21 +328,11 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .water-exact input{flex:0 0 110px;padding:8px 11px}
 
 /* ---- uyku kadranı ---- */
-.dial-wrap{display:flex;justify-content:center;margin:4px 0 2px}
-.dial{width:100%;max-width:250px;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
-.dial-track{fill:none;stroke:var(--shell);stroke-width:30}
-.dial-arc{fill:none;stroke:url(#sl-g);stroke-width:30;stroke-linecap:round}
-.dial-tick{stroke:var(--muted);stroke-width:1.2;opacity:.45}
-.dial-tick.big{stroke-width:2;opacity:.8}
-.dial-num{fill:var(--muted);font-size:11px;font-weight:800;text-anchor:middle}
-.dial-dur{fill:var(--ink);font-size:18px;font-weight:900;text-anchor:middle}
-.dial-sub{fill:var(--muted);font-size:11.5px;font-weight:700;text-anchor:middle}
-.dial-h{cursor:grab;outline:none}
-.dial-h circle{fill:var(--surface);stroke:var(--sleep);stroke-width:2.5;filter:drop-shadow(0 2px 4px rgba(40,20,80,.25))}
-.dial-h text{font-size:16px}
-.dial-h:focus-visible circle{stroke:var(--band);stroke-width:4}
-.dial-legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);font-weight:700}
-.dial-legend b{color:var(--ink);font-weight:900}
+.sl-more{display:flex;flex-direction:column;gap:10px;margin-top:8px;align-items:flex-start}
+.sl-times{display:flex;gap:12px;flex-wrap:wrap}
+.sl-times label{display:flex;flex-direction:column;gap:4px;font-size:13.5px;font-weight:700;color:var(--muted);margin:0}
+.sl-times input{width:auto;font-size:18px;min-height:44px}
+.sl-dur{font-size:13.5px;font-weight:700;color:var(--muted)}
 
 /* ---- kişisel rekorlar ---- */
 .prs{display:flex;flex-direction:column}
@@ -913,7 +905,7 @@ h2{font-size:var(--t-h2);letter-spacing:var(--lt-h2);font-weight:900;margin-bott
 label{font-size:var(--t-cap);font-weight:600;letter-spacing:.01em}
 .hero-num{font-size:var(--t-display);letter-spacing:var(--lt-display);font-variant-numeric:tabular-nums}
 .hero-lbl{font-size:var(--t-cap)}
-.num,.stat b,.lbl-v,.v,.dial-dur{font-variant-numeric:tabular-nums}
+.num,.stat b,.lbl-v,.v{font-variant-numeric:tabular-nums}
 .task-title,.task-go{font-size:var(--t-lead)}
 .task-sub{font-size:var(--t-cap);font-weight:700}
 

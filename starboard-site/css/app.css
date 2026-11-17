@@ -12,18 +12,20 @@ section{border:0;box-shadow:none;background-image:none;border-radius:24px;paddin
 .gear.me .ico{width:28px;height:28px}
 
 /* hafta şeridi */
-/* Şerit = haftanın takımyıldızı (~64 px), altında gün harfleri; dokununca hafta penceresi açılır. */
-.wk-sky{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;margin:0 0 16px;padding:10px 12px 9px;
-  border-radius:var(--r);cursor:pointer;-webkit-tap-highlight-color:transparent;
-  background:radial-gradient(120% 90% at 85% 0%, var(--sky2) 0%, var(--sky1) 62%);color:var(--sky-ink);box-shadow:var(--sh2)}
-.wk-sky:focus-visible{outline:2px solid var(--band);outline-offset:2px}
-.wk-fig{display:block;height:64px}
-.wk-fig .sky-svg{height:64px;width:auto;overflow:visible}
-.wk-d{display:grid;grid-template-columns:repeat(7,1fr);width:100%;max-width:230px;text-align:center}
-.wk-d i{font-style:normal;font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--sky-muted);padding:2px 0 3px;border-radius:7px}
-.wk-d i.on{color:var(--star)}
-.wk-d i.now{background:var(--sky-ink);color:var(--sky1);font-weight:800}
-.wk-back{text-align:center;margin:-8px 0 10px}
+/* Şerit = devam eden takımyıldız (~68 px), altında son yedi gün. Şekil ayrı düğme (tam şemayı açar), her gün ayrı düğme. */
+.wk-sky{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;margin:0 0 16px;padding:10px 12px 9px;
+  border-radius:var(--r);background:radial-gradient(120% 90% at 85% 0%, var(--sky2) 0%, var(--sky1) 62%);color:var(--sky-ink);box-shadow:var(--sh2)}
+.wk-fig{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:12px;padding:0 10px}
+.wk-fig:focus-visible,.wk-day:focus-visible{outline:2px solid var(--band);outline-offset:2px}
+.wk-fig .sky-svg{height:68px;width:auto;overflow:visible}
+.wk-n{font-size:12px;font-weight:800;color:var(--sky-muted);letter-spacing:.02em}
+.wk-d{display:grid;grid-template-columns:repeat(7,1fr);width:100%;max-width:280px;text-align:center}
+.wk-day{all:unset;box-sizing:border-box;display:block;min-height:36px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:9px;padding:6px 0 5px}
+.wk-day i{font-style:normal;font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--sky-muted)}
+.wk-day.on i{color:var(--star)}
+.wk-day.now{background:var(--sky-ink)}
+.wk-day.now i{color:var(--sky1);font-weight:800}
+.wk-day:active,.wk-fig:active{transform:none;filter:none}.wk-back{text-align:center;margin:-8px 0 10px}
 
 /* akşam kapanış satırı */
 .eve{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border-radius:20px;padding:15px 16px;margin-bottom:12px;

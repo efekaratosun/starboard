@@ -531,14 +531,15 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.16.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.16.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[3].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.16.0"], "1.15.0'ı görmüş kullanıcıya yalnızca 1.16.0");
+  eq(APP_VERSION, "1.17.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.17.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[4].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -724,6 +725,7 @@ test("hatırlatmalar: 7 günlük plan, geçmiş saat yok, tamamlanan hedef atlan
   eq([sl.at.getHours(), sl.at.getMinutes()], [23, 0], "yatma saatinden 30 dk önce");
   /* Kullanıcının seçtiği saatler: boş bırakılan su saati kullanılmaz; uyku saati
      elle seçildiyse o, silindiyse yeniden otomatik. */
+  for (const d of Object.values(st.days)) delete d.weight; /* haftalık tartı: yakın tartı kaydı hedefi erteler */
   Object.assign(st.profile.reminders, { waterAt:["09:30", "", "15:00", "20:00"], weighAt:"07:15", eveAt:"22:00", sleepAt:"22:45" });
   const tm = shiftDays(t, 1);
   const hm = kind => reminderPlan(st, program, now).filter(n => n.kind === kind && dayKey(n.at) === tm).map(n => minToHm(n.at.getHours() * 60 + n.at.getMinutes()));
@@ -1292,6 +1294,17 @@ test("görevler: İngilizcede öneriler Türkçe başlık ve türle kaydedilir, 
     ok(tasks.every(t => !/^(Workout|Rest day|Morning)/.test(t.title)), "başlık İngilizce kaydedildi");
   });
   state = null;
+});
+test("haftalık tartı: son tartıdan 7 gün dolmadan hedef yok, eski kayıt korunur", () => {
+  const k = "2026-11-20", prog = { kcal:2000, protein:120, water:2500, training:{ none:true, days:[] } };
+  const ctx = days => ({ today:k, hour:9, profile:{ goal:"maintain" }, sleep:[7, 9], steps:0, days });
+  eq(taskStatus("weigh", {}, prog, k, ctx({ [shiftDays(k, -3)]:{ weight:80 } })), null, "3 gün önce tartıldıysa bugün hedef yok");
+  eq(taskStatus("weigh", {}, prog, k, ctx({ [shiftDays(k, -7)]:{ weight:80 } })).ok, false, "7 gün olunca tartı hedefi gelir");
+  eq(taskStatus("weigh", { weight:79.5 }, prog, k, ctx({ [shiftDays(k, -2)]:{ weight:80 } })).ok, true, "bugün tartıldıysa sayılır");
+  eq(taskStatus("weigh", {}, prog, k, ctx({})).ok, false, "hiç kayıt yoksa hedef var");
+  eq(taskKind({ title:"Haftalık kilo ölçümü" }), "weigh");
+  eq(taskKind({ title:"Sabah kilo ölçümü" }), "weigh", "eski başlık da tanınır");
+  eq(taskKind({ title:"Weekly weigh-in" }), "weigh");
 });
 test("görevler: eski İngilizce başlıklar tanınır, birikmiş kopyalar temizlenir", async () => {
   eq(taskKind({ title:"2870 ml of water" }), "water");
@@ -1919,6 +1932,7 @@ test("sağlık: Sağlık'tan gelen adım hedefi işaretler, kilo tartı hatırla
   const st = await loadFixture();
   const k = "2026-11-11", program = buildProgram(st.profile, 82, 0);
   delete st.days[k];
+  for (const d of Object.values(st.days)) delete d.weight; /* son 7 günde tartı yok */
   st.profile.health = { on: true };
   st.profile.reminders = { weigh: true };
   const now = new Date("2026-11-11T06:00:00");
@@ -1990,7 +2004,14 @@ test("sağlık: web'de bölüm yok; uygulamada bölüm erişilebilir ve İngiliz
   /* Bugün satırı kaynağı söyler; kadranın ortasında kayıttaki toplam uyku */
   const e = { tasks: [], sleep: 7.33, bed: 1390, wake: 410, hk: { sleep: 7.33, bed: 1390, wake: 410 } };
   const box = document.createElement("div"); box.innerHTML = sleepHTML(e);
-  eq(box.querySelector("#sl-c1").textContent, durTxt(440), "kadran ortası toplam uyku (aralık 8 sa 20 dk)");
+  eq(box.querySelector("#sl-c1").textContent, durTxt(440), "kayıttaki toplam uyku (aralık 8 sa 20 dk)");
+  eq([box.querySelector("#sl-bed").value, box.querySelector("#sl-wake").value], ["23:10", "06:50"], "kayıtlı saatler girişte görünür");
+  /* tek ekran: yatış ve kalkıştan süre otomatik, kayıt bicimi (sleep, bed, wake) aynı */
+  eq(sleepDur(23 * 60 + 30, 7 * 60), 450);
+  eq([parseHm("07:05"), parseHm("24:00") === 0, parseHm("")], [425, true, null]);
+  state.days[shiftDays(today(), -1)] = { bed: 1410, wake: 420, sleep: 8 };
+  box.innerHTML = sleepHTML({ tasks: [] });
+  eq(box.querySelector("#sl-last").textContent.includes("23:30 → 07:00"), true, "son girilen değer tek dokunuşla");
   eq(hkTag(e, "sleep"), " · Sağlık'tan");
   eq(hkTag({ ...e, sleep: 8 }, "sleep"), "", "elle değişince kaynak yazılmaz");
   state = null;
@@ -2605,13 +2626,13 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.16.0");
+  eq(APP_VERSION, "1.17.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */
@@ -3401,115 +3422,140 @@ const skyDone = () => {
 };
 const skyDom = s => { const d = document.createElement("div"); d.innerHTML = s; return d; };
 
-test("takımyıldız: 14 elle çizilmiş şekil, her birinde 7 yıldız ve geçerli çizgiler", () => {
-  eq(CONSTELLATIONS.map(c => c.n), ["Kervan","Lale","Kayık","Yay","Kartal","Nar","Çınar","Martı","Fener","Pusula","Kule","Tulpar","Kandil","Çapa"], "eski sıra (eski haftaların adı buna bağlı)");
-  eq(new Set(CONSTELLATIONS.map(c => c.id)).size, 14, "kimlikler tekil");
+/* n tam gün, son günü bugünden endOff gün önce biter; ilk günden başlayarak takımyıldız ilerler. */
+const skyLit = (full, n, endOff = 1) => Array.from({ length: n }, (_, i) => { const k = shiftDays(today(), -endOff - (n - 1 - i)); full(k); return k; });
+const skyStamp = k => { state.days[k] = { weight: 82, tasks: [], star: true }; calcReset(); };
+
+test("takımyıldız: 9 gerçek takımyıldız; her biri kendi yıldız sayısında, geçerli çizgilerle, ayları kapsar", () => {
+  eq(CONSTELLATIONS.map(c => c.n), ["Büyük Ayı","Kassiopeia","Kuğu","Kartal","Orion","İkizler","Aslan","Akrep","Kanatlı At"]);
+  eq(new Set(CONSTELLATIONS.map(c => c.id)).size, 9, "kimlikler tekil");
+  const N = Object.fromEntries(CONSTELLATIONS.map(c => [c.id, c.p.length]));
+  eq(N, { buyukayi: 7, kassiopeia: 5, kugu: 6, kartal: 7, orion: 8, ikizler: 8, aslan: 9, akrep: 12, pegasus: 8 }, "gerçek yıldız sayıları");
   for (const c of CONSTELLATIONS){
-    eq(c.p.length, 7, c.id + " yedi yıldız");
-    for (const [x, y] of c.p) ok(x >= 6 && x <= SKY_W - 6 && y >= 6 && y <= SKY_H - 6, `${c.id} kutunun dışında: ${x},${y}`);
-    for (let i = 0; i < 7; i++) for (let j = i + 1; j < 7; j++){
-      const d = Math.hypot(c.p[i][0] - c.p[j][0], c.p[i][1] - c.p[j][1]);
-      ok(d >= 36, `${c.id}: ${i} ile ${j} çok yakın (${d.toFixed(0)}), dokunma alanları çakışır`);
+    eq(c.s.length, c.p.length);
+    for (const [x, y] of c.p) ok(x >= 4 && x <= SKY_W - 4 && y >= 4 && y <= SKY_H - 4, `${c.id} kutunun dışında: ${x},${y}`);
+    for (let i = 0; i < c.p.length; i++) for (let j = i + 1; j < c.p.length; j++){
+      ok(Math.hypot(c.p[i][0] - c.p[j][0], c.p[i][1] - c.p[j][1]) >= 6, `${c.id}: ${i} ile ${j} üst üste`);
     }
     const seen = new Set();
     for (const [a, b] of c.e){
-      ok(Number.isInteger(a) && Number.isInteger(b) && a >= 0 && b >= 0 && a < 7 && b < 7 && a !== b, `${c.id} geçersiz çizgi ${a}-${b}`);
+      ok(Number.isInteger(a) && Number.isInteger(b) && a >= 0 && b >= 0 && a < c.p.length && b < c.p.length && a !== b, `${c.id} geçersiz çizgi ${a}-${b}`);
       const k = Math.min(a, b) + "-" + Math.max(a, b);
       ok(!seen.has(k), `${c.id} çizgi iki kez: ${k}`); seen.add(k);
     }
-    /* şekil tek parça: her yıldız bir çizgiyle bağlı */
     const reach = new Set([0]);
-    for (let r = 0; r < 7; r++) for (const [a, b] of c.e){ if (reach.has(a)) reach.add(b); if (reach.has(b)) reach.add(a); }
-    eq(reach.size, 7, c.id + " şekli kopuk");
+    for (let r = 0; r < c.p.length; r++) for (const [a, b] of c.e){ if (reach.has(a)) reach.add(b); if (reach.has(b)) reach.add(a); }
+    eq(reach.size, c.p.length, c.id + " şekli kopuk");
     ok(STARBOARD_EN[c.n], c.n + " İngilizcesi");
+    ok(c.m.length >= 3 && c.m.every(m => m >= 1 && m <= 12), c.id + " ayları");
   }
+  /* her ay akşam gökyüzünde en az iki seçenek var */
+  for (let m = 1; m <= 12; m++) ok(CONSTELLATIONS.filter(c => c.m.includes(m)).length >= 2, "ay " + m);
+  /* gerçek şekle sadakat: Orion'un kemeri üç yıldız, doğrusal; Betelgeuse üstte, Rigel altta */
+  const o = constById("orion").p, [m3, m4, m5] = [o[3], o[4], o[5]];
+  const cross = (m4[0] - m3[0]) * (m5[1] - m3[1]) - (m4[1] - m3[1]) * (m5[0] - m3[0]);
+  ok(Math.abs(cross) < 0.2 * Math.hypot(m5[0] - m3[0], m5[1] - m3[1]) * 8, "Orion kemeri doğrusal");
+  ok(o[0][1] < m4[1] && o[7][1] > m4[1], "Betelgeuse kemerin üstünde, Rigel altında");
+  /* Büyük Ayı: kepçenin dört yıldızı kapalı bir kutu, sap kutunun bir köşesinden çıkar */
+  const b = constById("buyukayi");
+  ok(b.e.some(([x, y]) => (x === 6 && y === 3) || (x === 3 && y === 6)), "kepçe kapanır");
+  /* Kassiopeia W: çizgi sırası zikzak */
+  const k = constById("kassiopeia").p, zig = [1, 2, 3].map(i => Math.sign(k[i][1] - k[i - 1][1]));
+  ok(zig[0] * zig[1] < 0 && zig[1] * zig[2] < 0, "Kassiopeia W biçiminde");
 });
 
-test("takımyıldız: parlaklık günün puanına göre; beşe yalnızca tam günler sayılır; gelecek boş", async () => {
+test("takımyıldız: mevsime göre seçilir; kazanılmamış önce, geçen tekrar etmez, aynı girdi aynı sonuç", () => {
+  for (let m = 1; m <= 12; m++){
+    const k = `2026-${String(m).padStart(2, "0")}-10`, c = pickConst(k, {}, null);
+    ok(c.m.includes(m), `${k}: ${c.id} bu ay akşam gökyüzünde değil`);
+    ok(pickConst(k, {}, c.id).id !== c.id, "geçen tekrar etmez");
+    eq(pickConst(k, {}, null).id, c.id, "aynı girdi aynı seçim");
+  }
+  eq(pickConst("2026-01-10", { orion: [1], ikizler: [1] }, null).id, "kassiopeia", "tek kazanılmamış");
+  const used = { orion: [1, 2], ikizler: [1], kassiopeia: [1] };
+  ok(["ikizler", "kassiopeia"].includes(pickConst("2026-01-10", used, null).id));
+  ok(!CONSTELLATIONS.filter(c => c.m.includes(12)).some(c => c.id === "akrep"), "Akrep Aralık akşamında yok");
+  eq(pickConst("2026-11-10", {}, null).m.includes(11), true);
+});
+
+test("takımyıldız: her tam gün sıradaki yıldızı yakar; şekil tamamlanınca sıradaki başlar; hafta sınırı yok", async () => {
   try {
-    const { full, part, cw } = await skyFx();
-    const ws = shiftDays(cw, -14), d = i => shiftDays(ws, i);
-    [0, 1, 2, 3].forEach(i => full(d(i)));
-    part(d(4));
-    let w = weekInfo(ws);
-    eq(w.lv.slice(0, 4), [1, 1, 1, 1]);
-    eq(w.lv[4], dayRatio(d(4)), "kısmi gün oranıyla parlar");
-    ok(w.lv[4] > 0 && w.lv[4] < 1);
-    eq([w.lv[5], w.lv[6]], [0, 0], "boş gün sönük");
-    eq([w.n, w.done], [4, false], "kısmi gün beşe sayılmaz");
-    state.days[d(5)] = { weight: 82, tasks: [], star: true }; calcReset();
-    w = weekInfo(ws);
-    eq([w.n, w.done, w.lv[5]], [5, true, 1], "damgalı gün tam sayılır");
-    eq(weekInfo(shiftDays(cw, 7)).lv, [null, null, null, null, null, null, null], "gelecek hafta boş");
-    /* çizim: yalnızca iki ucu yanan çizgi parlak */
-    const c = w.c, svg = skyDom(skySVG(c, w.lv));
-    const want = c.e.filter(([a, b]) => w.lv[a] === 1 && w.lv[b] === 1).length;
-    eq(svg.querySelectorAll(".sk-l.on").length, want);
-    eq(svg.querySelectorAll(".sk-l").length, c.e.length);
-    eq(svg.querySelectorAll(".sk-s.on").length, 5);
-    eq(svg.querySelectorAll(".sk-s:not(.on)").length, 1, "kısmi yıldız soluk");
-    eq(svg.querySelectorAll(".sk-d").length, 1, "boş gün sönük nokta");
-    eq(skyDom(skySVG(c, [1, 0, null, null, null, null, null])).querySelectorAll(".sk-f").length, 5, "gelecek günler boş halka");
+    const { full, part } = await skyFx();
+    const c0 = skyRuns()[0].c, N = c0.p.length;
+    eq(skyRuns().length, 1, "boş kayıtta tek, boş seri");
+    eq([skyNow().n, skyNow().done], [0, false]);
+    /* hafta sınırını aşan günler: bir hafta öncesine uzanan N-2 gün */
+    const days = skyLit(full, N - 2);
+    let R = skyNow();
+    eq([R.days, R.n, R.done, R.c.id], [days, N - 2, false, skyRuns()[0].c.id]);
+    const lv = runLv(R);
+    eq(lv.slice(0, N - 2), Array(N - 2).fill(1));
+    ok(lv[N - 2] === 0 || (lv[N - 2] > 0 && lv[N - 2] < 1), "bugünün yıldızı henüz sönük ya da kısmi");
+    eq(lv[N - 1], null, "gelmemiş yıldız halka");
+    part(today());
+    ok(runLv(skyNow())[N - 2] > 0 && runLv(skyNow())[N - 2] < 1, "kısmi gün oranıyla parlar: " + dayRatio(today()));
+    eq(runToday(skyNow()), N - 2, "bugünün yıldızı sıradaki");
+    /* iki gün daha: tamamlanır (dünden bir gün önceye sığmaz, bu yüzden bugün damgalanır) */
+    skyStamp(shiftDays(today(), -N - 5)); skyStamp(today());
+    const runs = skyRuns();
+    eq(runs.length, 2, "ikinci seri başladı");
+    eq([runs[0].done, runs[0].n, runs[0].days.length], [true, N, N]);
+    eq(runs[0].end, today());
+    eq([runs[1].n, runs[1].done], [0, false]);
+    ok(runs[1].c.id !== runs[0].c.id, "tekrar etmez");
+    eq(skyNow(), runs[0], "bugün tamamlanan, yarına kadar ekranda kalır");
+    eq(runToday(skyNow()), N - 1, "bugünün yıldızı sonuncu");
+    delete state.days[today()]; skyStamp(shiftDays(today(), -1)); calcReset();
+    ok(skyNow().n <= N, "gün silinince geri sayılır");
+    /* tam gün olmayan gün sayılmaz */
+    eq(skyRuns().flatMap(r => r.days).every(k => fullDay(k)), true);
   } finally { skyDone(); }
 });
 
-test("takımyıldız: yeni hafta önce kazanılmamışlardan seçilir ve kayda yazılır; eski haftalar eski adla kalır", async () => {
-  const ids = CONSTELLATIONS.map(c => c.id), ws = "2026-11-09";
-  const ear = o => Object.fromEntries(Object.entries(o).map(([k, n]) => [k, Array(n).fill("x")]));
-  eq(pickConst(ws, ear(Object.fromEntries(ids.filter(i => i !== "nar").map(i => [i, 1]))), null), "nar", "tek kazanılmamış");
-  for (const avoid of ids) ok(pickConst(ws, {}, avoid) !== avoid, "geçen haftanınki tekrar etmez");
-  const most = ear(Object.fromEntries(ids.map((i, n) => [i, n < 12 ? 2 : 1])));
-  ok(["kandil", "capa"].includes(pickConst(ws, most, null)), "hepsi kazanıldıysa en az kazanılan");
-  eq(pickConst(ws, {}, "lale"), pickConst(ws, {}, "lale"), "aynı girdi aynı seçim");
+test("takımyıldız: eski kayıt (state.sky, skyClosed) silinmez, okunmaya devam eder; yeni model eski haftalık adlara bağlı değil", async () => {
   try {
     const { full, cw } = await skyFx();
-    const old = shiftDays(cw, -21);
-    eq(constOf(old).id, ids[seedOf(old) % 14], "kayıt yoksa eski formül");
+    const old = shiftDays(cw, -14);
     for (let i = 0; i < 5; i++) full(shiftDays(old, i));
-    const L = constOf(old).id;
-    eq(skyEarned(), { [L]: [old] });
-    eq(ensureSkyWeek(), true);
-    const pick = state.sky[cw];
-    ok(pick && pick !== L, "kazanılmış olan yeniden seçilmez");
-    eq(pick, pickConst(cw, { [L]: [old] }, constOf(shiftDays(cw, -7)).id));
-    eq(ensureSkyWeek(), false, "ikinci açılışta değişmez");
-    eq(constOf(old).id, L, "eski hafta adını korur");
+    state.sky = { [old]: "lale", [shiftDays(old, 7)]: "kandil", [cw]: "yay" };
+    state.skyClosed = shiftDays(cw, -7);
+    const snap = () => JSON.stringify({ sky: state.sky, skyClosed: state.skyClosed, old: Object.keys(state.days).filter(k => k < today()).map(k => state.days[k]) });
+    const before = snap();
+    eq(weekInfo(old).n, 5, "hafta sayacı eski günlerden okunur");
+    eq(weekInfo(old).done, true);
+    ok(skyNow() && skyRuns().length >= 1, "eski günler yeni modelde yıldız olur");
+    eq(skyRuns()[0].days.length, Math.min(5, skyRuns()[0].c.p.length));
     tab = "today"; render();
-    ok(app.querySelector("#wk-open").getAttribute("aria-label").includes(constName(constById(pick))), "şeridin adı: " + app.querySelector("#wk-open").getAttribute("aria-label"));
-    openSkyWeek();
-    ok(document.querySelector("#sw-t").textContent.includes(constName(constById(pick))), "pencere başlığı");
-    eq(state.sky[cw], pick);
+    ok(app.querySelector("#wk-open"), "şerit eski kayıtla çizilir");
+    openSky();
+    document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+    eq(snap(), before, "eski kayıt çizimle değişmez");
+    eq(legacyConst(old).id, LEGACY_SKY_IDS[seedOf(old) % 14]);
+    eq(LEGACY_SKY_IDS.length, 14);
   } finally { skyDone(); }
 });
 
-test("takımyıldız: hafta ortası satırı; hafta penceresi ve yıldız düğmeleri", async () => {
-  eq(skyMid(5, 0), { done: true });
-  eq(skyMid(6, 1), { done: true });
-  eq(skyMid(3, 2), { need: 2 });
-  eq(skyMid(4, 1), { need: 1 });
-  eq(skyMid(0, 5), { need: 5 });
-  eq(skyMid(3, 1), null, "kalan günler yetmiyorsa satır yok");
-  eq(skyMid(0, 4), null);
+test("takımyıldız: tam şema; yanan yıldıza ve bugünün yıldızına dokunulur, kalan yıldız sayısı yazar", async () => {
   try {
-    await skyFx();
+    const { full } = await skyFx();
+    const days = skyLit(full, 3), N = skyRuns()[0].c.p.length;
     tab = "today"; render();
-    ok(!app.querySelector("section.sky, .sky-b"), "Bugün ekranında büyük kart ve yıldız düğmeleri yok");
-    const t = today(), w = weekInfo(weekStart(t)), name = constName(w.c);
-    const sw = openSkyWeek();
+    ok(!app.querySelector(".sky-b"), "Bugün ekranında yıldız düğmeleri yok (şema pencerede)");
+    const R = skyNow(), name = constName(R.c);
+    const sw = openSky();
+    eq(sw.querySelector("#sw-t").textContent, name);
     const bs = [...sw.querySelectorAll(".sky-stage .sky-b")];
-    eq(bs.length, 7);
-    bs.forEach((b, i) => {
-      eq(b.dataset.skyDay, w.days[i]);
-      ok(new RegExp(`^${WD_NAMES[i + 1]}: (yüzde \\d+|henüz gelmedi)$`).test(b.getAttribute("aria-label")), b.getAttribute("aria-label"));
-      eq(b.getAttribute("aria-disabled") === "true", w.days[i] > t, "gelecek gün etkisiz");
-    });
-    const left = w.days.filter((k, i) => k >= t && !w.lit[i]).length;
-    const m = skyMid(w.n, left), note = sw.querySelector(".sky-note");
-    if (!m) ok(!note, "satır olmamalı");
-    else ok(note && note.textContent.includes(name) && (m.done ? note.textContent === `${name} belirdi` : note.textContent.includes("belirecek")), note && note.textContent);
+    eq(bs.map(b => b.dataset.skyDay), [...days, today()], "yanan üç yıldız ve bugünün yıldızı");
+    for (const b of bs) ok(b.getAttribute("aria-label") === `${prettyDate(b.dataset.skyDay)} · ${weekdayName(b.dataset.skyDay)}`, b.getAttribute("aria-label"));
+    eq(sw.querySelector(".sky-s").textContent, `3/${N} yıldız`);
+    const note = sw.querySelector(".sky-note").textContent;
+    ok(note.includes(name) && note.includes("belirecek") && note.includes(String(N - 3)), note);
     eq(sw.querySelector(".sky-n b").textContent, String(streakNow()), "seri pencerede");
-    eq(a11yBad("takımyıldız şeridi"), []);
+    eq(sw.querySelectorAll(".atl").length, 9, "atlas pencerede");
+    eq(a11yBad("takımyıldız şeması"), []);
     for (const b of sw.querySelectorAll("button")) ok((b.getAttribute("aria-label") || b.textContent).trim(), "pencerede adsız düğme");
+    bs[1].click();
+    ok(document.querySelector("#sd-go") && document.querySelector("#sd-t").textContent.includes(prettyDate(days[1])), "yıldız günün hedeflerini açar");
   } finally { skyDone(); }
 });
 
@@ -3532,49 +3578,84 @@ test("takımyıldız: yıldıza dokununca günün hedefleri tamam/eksik; O güne
     openSkyDay(shiftDays(today(), 1));
     eq(document.querySelectorAll(".sheet-bg").length, n, "gelecek gün açılmaz");
     viewDate = null; render();
-    /* hafta penceresindeki yıldızdan: gün penceresi üstte açılır, O güne git ikisini de kapatır */
-    const sw = openSkyWeek();
+    /* tam şemadaki bugünün yıldızından: gün penceresi üstte açılır, O güne git ikisini de kapatır */
+    const sw = openSky();
     sw.querySelector(`.sky-b[data-sky-day="${today()}"]`).click();
     ok(document.querySelector(".sheet-bg #sd-go"), "bugünün yıldızı da açılır");
-    eq(document.querySelectorAll(".sheet-bg[data-sky]").length, 2, "hafta penceresi altta kalır");
+    eq(document.querySelectorAll(".sheet-bg[data-sky]").length, 2, "tam şema altta kalır");
     document.querySelector("#sd-go").click();
     await new Promise(r => setTimeout(r, 300));
     eq(document.querySelectorAll(".sheet-bg[data-sky]").length, 0, "O güne git bütün pencereleri kapatır");
   } finally { skyDone(); }
 });
 
-test("şerit: Bugün ekranının en üstü bu haftanın (Pzt-Paz) takımyıldızı; gün harfleri, bugün belirgin; dokununca hafta penceresi", async () => {
+test("takımyıldız: yıldız düğmesi basılıyken yerinden kaymaz (button:active transform'u konumu bozmaz)", async () => {
+  const css = await fetch("../starboard-site/css/components.css").then(r => r.text());
+  const rule = css.match(/\.sky-b\{[^}]*\}/)[0];
+  ok(!/transform/.test(rule), "konum transform ile verilmemeli: " + rule);
+  ok(/aspect-ratio:1/.test(rule), "düğme kare");
+  ok(/\.sky-b:active\{transform:none/.test(css), "basılı düğme kaymaz");
+  const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
   try {
-    const { full, cw } = await skyFx();
-    full(shiftDays(cw, 0));
+    const { full } = await skyFx(); skyLit(full, 4); tab = "today"; render();
+    const sw = openSky(), R = skyNow();
+    const stg = sw.querySelector(".sky-stage").getBoundingClientRect();
+    for (const b of sw.querySelectorAll(".sky-stage .sky-b")){
+      ok(!/transform/.test(b.getAttribute("style")), "satır içi transform yok");
+      const cs = getComputedStyle(b), r = b.getBoundingClientRect();
+      const i = [...b.parentNode.querySelectorAll(".sky-b")].indexOf(b), [x, y] = R.c.p[i];
+      ok(Math.abs(r.width - r.height) < 1, "düğme kare");
+      ok(r.width / stg.width * SKY_W >= 19 && r.width / stg.width * SKY_W <= 46.5, "boyut (46 birimi aşmaz): " + r.width);
+      eq(cs.transform, "none");
+      ok(Math.abs(r.left + r.width / 2 - (stg.left + stg.width * x / SKY_W)) < 1.5, "yatay merkez yıldızın üstünde");
+      ok(Math.abs(r.top + r.height / 2 - (stg.top + stg.height * y / SKY_H)) < 1.5, "dikey merkez yıldızın üstünde");
+    }
+  } finally { st.remove(); skyDone(); }
+});
+
+test("şerit: Bugün ekranının en üstü devam eden takımyıldız ve son yedi gün; şekil tam şemayı, günler hedefleri açar", async () => {
+  try {
+    const { full } = await skyFx();
+    skyLit(full, 3);
     tab = "today"; render();
-    const main = app.querySelector("main"), strip = app.querySelector("#wk-open");
-    ok(strip && main.firstElementChild === strip, "şerit sayfanın en üstünde");
-    eq(strip.tagName, "BUTTON");
-    ok(strip.getAttribute("aria-haspopup") === "dialog", "pencere açtığı bildirilir");
-    ok(!app.querySelector("[data-wk], .wk-d[data-lv], section.sky, .sky-b, .atlas"), "eski gün düğmeleri, büyük kart ve atlas yok");
-    const w = weekInfo(cw);
-    eq(strip.getAttribute("aria-label"), `Bu hafta: ${constName(w.c)}, ${w.n}/7 yıldız`);
-    eq(strip.querySelectorAll(".sk-s, .sk-d, .sk-f").length, 7, "yedi yıldızlı gerçek şekil");
-    eq(strip.querySelectorAll(".sk-l").length, w.c.e.length, "şeklin çizgileri");
-    eq([...strip.querySelectorAll(".wk-d i")].map(i => i.textContent), ["P", "S", "Ç", "P", "C", "C", "P"], "gün harfleri");
-    const now = [...strip.querySelectorAll(".wk-d i")].map((i, n) => i.classList.contains("now") ? n : -1).filter(n => n >= 0);
-    eq(now, [isoWeekday(today()) - 1], "bugün belirgin");
-    eq(strip.querySelectorAll(".wk-d i.on").length, w.n, "tam günlerin harfi yanık");
-    eq(strip.querySelectorAll(".sk-today").length, 1, "bugünün yıldızı halkalı");
+    const main = app.querySelector("main"), box = app.querySelector(".wk-sky"), fig = app.querySelector("#wk-open");
+    ok(box && main.firstElementChild === box, "şerit sayfanın en üstünde");
+    eq(fig.tagName, "BUTTON");
+    ok(fig.getAttribute("aria-haspopup") === "dialog", "pencere açtığı bildirilir");
+    ok(!app.querySelector("[data-wk], section.sky, .sky-b, .atlas"), "eski gün düğmeleri, büyük kart ve atlas yok");
+    const R = skyNow(), N = R.c.p.length;
+    eq(fig.getAttribute("aria-label"), `${constName(R.c)}, 3/${N} yıldız`);
+    eq(fig.querySelectorAll(".sk-s, .sk-d, .sk-f").length, N, "şeklin bütün yıldızları");
+    eq(fig.querySelectorAll(".sk-s.on").length, 3, "yanan yıldızlar");
+    eq(fig.querySelectorAll(".sk-l").length, R.c.e.length, "şeklin çizgileri");
+    eq(fig.querySelectorAll(".sk-today").length, 1, "bugünün yıldızı halkalı");
+    ok(fig.textContent.includes(`3/${N}`), "ilerleme yazısı");
+    /* son yedi gün: bugün sağda, her biri ayrı düğme */
+    const chips = [...box.querySelectorAll(".wk-d .wk-day")];
+    eq(chips.length, 7);
+    eq(chips.map(b => b.dataset.skyDay), Array.from({ length: 7 }, (_, i) => shiftDays(today(), i - 6)));
+    eq(chips.filter(b => b.classList.contains("now")).map(b => b.dataset.skyDay), [today()], "bugün belirgin");
+    eq(chips.filter(b => b.classList.contains("on")).length, 3, "tam günlerin harfi yanık");
+    for (const b of chips) ok(/^\S+: yüzde \d+$/.test(b.getAttribute("aria-label")), b.getAttribute("aria-label"));
+    ok(!fig.contains(chips[0]) && chips.every(b => b.tagName === "BUTTON"), "günler şeklin içinde değil, ayrı düğme");
     const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
-    ok(/\.wk-fig \.sky-svg\{height:64px/.test(css), "şekil 64 px yüksekliğinde");
-    /* geçmiş günde de aynı hafta şeridi; Bugüne dön bağlantısı kalır */
+    ok(/\.wk-fig \.sky-svg\{height:68px/.test(css), "şekil 68 px yüksekliğinde");
+    eq(a11yBad("takımyıldız şeridi"), []);
+    /* bir güne dokununca o günün hedefleri */
+    chips[4].click();
+    ok(document.querySelector("#sd-t").textContent.includes(prettyDate(chips[4].dataset.skyDay)), "gün penceresi");
+    document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+    /* geçmiş günde de aynı şerit; Bugüne dön bağlantısı kalır */
     viewDate = shiftDays(today(), -1); ensureDay(viewDate); render();
     ok(app.querySelector("#wk-open") && app.querySelector("#back-today"), "geçmiş günde şerit ve Bugüne dön");
     viewDate = null; render();
     ok(!document.querySelector(".sheet-bg"), "pencere kendiliğinden açılmaz");
     app.querySelector("#wk-open").click();
     const sw = document.querySelector('.sheet-bg[data-sky="sw"]');
-    ok(sw, "dokununca hafta penceresi açılır");
-    eq(sw.querySelector("#sw-t").textContent, "Bu hafta: " + constName(w.c));
-    eq(sw.querySelectorAll(".sky-stage .sky-b").length, 7, "büyük şekil, dokunulur yıldızlar");
-    eq(sw.querySelectorAll(".atl").length, 14, "atlas pencerede");
+    ok(sw, "şekle dokununca tam şema açılır");
+    eq(sw.querySelector("#sw-t").textContent, constName(R.c));
+    eq(sw.querySelectorAll(".sky-stage .sky-b").length, 4, "yanan üç yıldız ve bugünün yıldızı dokunulur");
+    ok(!/hafta/.test(app.querySelector("#gh-cal").textContent) && app.querySelector("#gh-cal").textContent.includes(`3/${N} yıldız`), "Bugün başlığında haftalık sayaç yok, takımyıldız ilerlemesi var: " + app.querySelector("#gh-cal").textContent);
     ok(sw.querySelector(".sky-n b"), "seri pencerede");
     ok(!app.querySelector(".sky-n, .sky-note"), "seri ve ilerleme satırı Bugün ekranında yok");
   } finally { skyDone(); }
@@ -3584,7 +3665,7 @@ test("pencere: Escape hafta penceresini kapatır", async () => {
   try {
     const { full, cw } = await skyFx();
     full(cw); tab = "today"; render();
-    const sw = openSkyWeek();
+    const sw = openSky();
     const ev = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
     document.activeElement.dispatchEvent(ev);
     ok(ev.defaultPrevented, "Escape ele alınmalı");
@@ -3648,73 +3729,76 @@ test("şerit: gün tamamlanınca bugünün yıldızı bir kez yansır ve tek tit
   } finally { haptic = realHaptic; skyDone(); }
 });
 
-test("atlas: hafta penceresinde 14 takımyıldız, kazanılanlar sayılır; dokununca kazanıldığı haftalar; Grafikler'de yok", async () => {
+test("atlas: tam şemada 9 takımyıldız, kazanılanlar sayılır; dokununca kazanıldığı tarihler; Grafikler'de yok", async () => {
   try {
-    const { full, cw } = await skyFx();
-    const weeks = [shiftDays(cw, -7), shiftDays(cw, -14), shiftDays(cw, -21)];
-    state.sky = { [weeks[0]]: "lale", [weeks[1]]: "lale", [weeks[2]]: "nar" };
-    for (const ws of weeks) for (let i = 0; i < 5; i++) full(shiftDays(ws, i));
-    state.days[shiftDays(cw, -28)] = { weight: 82, tasks: [] };   /* yarım kalan hafta sayılmaz */
+    const { full } = await skyFx();
+    const c0 = skyRuns()[0].c, N = c0.p.length;
+    const days = skyLit(full, N, 3);
     calcReset();
-    eq(skyEarned(), { nar: [weeks[2]], lale: [weeks[1], weeks[0]] });
+    const E = skyEarned();
+    eq(Object.keys(E), [c0.id]);
+    eq([E[c0.id].length, E[c0.id][0].start, E[c0.id][0].end], [1, days[0], days[N - 1]]);
     tab = "settings"; meTab = "chart"; render();
     ok(!app.querySelector(".atlas, .atl"), "Grafikler'de atlas yok");
     tab = "today"; render();
     ok(!app.querySelector(".atlas, .atl"), "Bugün ekranında atlas yok");
-    const swin = openSkyWeek();
-    eq(swin.querySelector(".sw-atlas h2 .count").textContent, "2 / 14");
-    eq(swin.querySelectorAll(".atl").length, 14);
-    eq(swin.querySelectorAll(".atl.on").length, 2);
-    const lale = swin.querySelector('.atl[data-atlas="lale"]');
-    eq(lale.querySelector("i").textContent, "2");
-    eq(lale.getAttribute("aria-label"), "Lale, 2 kez kazanıldı");
-    eq(swin.querySelector('.atl[data-atlas="kule"]').getAttribute("aria-label"), "Kule, henüz kazanılmadı");
-    lale.click();
+    const swin = openSky();
+    eq(swin.querySelector(".sw-atlas h2 .count").textContent, "1 / 9");
+    eq(swin.querySelectorAll(".atl").length, 9);
+    eq(swin.querySelectorAll(".atl.on").length, 1);
+    const card = swin.querySelector(`.atl[data-atlas="${c0.id}"]`);
+    eq(card.querySelector("i").textContent, "1");
+    eq(card.getAttribute("aria-label"), `${constName(c0)}, 1 kez kazanıldı`);
+    const other = CONSTELLATIONS.find(c => c.id !== c0.id);
+    eq(swin.querySelector(`.atl[data-atlas="${other.id}"]`).getAttribute("aria-label"), `${constName(other)}, henüz kazanılmadı`);
+    card.click();
     const sh = [...document.querySelectorAll(".sheet-bg")].pop();
-    eq(sh.querySelector("#at-t").textContent, "Lale");
-    eq(sh.querySelectorAll(".at-l li").length, 2);
-    ok(sh.querySelector(".at-l li").textContent.includes("5/7 yıldız"));
+    eq(sh.querySelector("#at-t").textContent, constName(c0));
+    eq(sh.querySelectorAll(".at-l li").length, 1);
+    ok(sh.querySelector(".at-l li").textContent.includes(`${N}/${N} yıldız`));
+    ok(sh.querySelectorAll(".sk-s.on").length === N, "kazanılan tam yanık");
     tab = "calendar"; render();
     ok(!app.querySelector(".atl, .sky-grid"), "takvimde eski galeri yok");
   } finally { skyDone(); }
 });
 
-test("hafta kapanışı: bir kez çıkar, boş haftada sessiz geçer, Neler yeni ile aynı anda açılmaz", async () => {
+test("takımyıldız tamamlanınca: bir kez çıkar, eskisi sessiz geçer, Neler yeni ile aynı anda açılmaz", async () => {
   try {
-    const { full, part, cw } = await skyFx();
-    const pw = shiftDays(cw, -7), d = i => shiftDays(pw, i);
-    full(d(0)); full(d(1)); full(d(2)); part(d(3));
-    state.days[d(4)] = { tasks: [], free: { k: "walk", min: 20, note: null } }; calcReset();
-    const S = weekSummary(pw);
-    eq([S.n, S.best, S.train, S.any, S.done], [3, d(0), 1, true, false]);
+    const { full } = await skyFx();
+    const c0 = skyRuns()[0].c, N = c0.p.length;
+    const days = skyLit(full, N, 2);
     state.seenVersion = APP_VERSION;
-    eq(weekCloseDue(), pw);
-    eq(maybeShowWeekClose(), true);
+    const r = skyCloseDue();
+    ok(r && r.done && r.end === days[N - 1], "tamamlanan seri çıkacak");
+    eq(maybeShowSkyClose(), true);
     const sh = [...document.querySelectorAll(".sheet-bg")].pop();
-    eq(sh.querySelector("#wc-t").textContent, "Geçen hafta: " + constName(S.c));
-    eq(sh.querySelector(".wc-line").textContent, "3/7 yıldız · en iyi gün Pazartesi · 1 antrenman");
+    eq(sh.querySelector("#wc-t").textContent, constName(c0) + " belirdi");
+    eq(sh.querySelector(".wc-line").textContent, `${N}/${N} yıldız · ${rangeLabel(days[0], days[N - 1])} · 0 antrenman`);
     eq(!!sh.querySelector(".sky-svg.sk-anim"), !reduceMotion(), "kendini çizer (azaltılmış harekette çizmez)");
-    eq(state.skyClosed, pw);
+    eq(state.skyClosed, days[N - 1]);
     document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
-    eq(maybeShowWeekClose(), false, "ikinci kez çıkmaz");
+    eq(maybeShowSkyClose(), false, "ikinci kez çıkmaz");
     ok(!document.querySelector(".sheet-bg"));
-    /* beş gün tamsa başlık "belirdi" */
-    full(d(3)); full(d(4)); delete state.skyClosed;
-    maybeShowWeekClose();
-    eq(document.querySelector("#wc-t").textContent, constName(S.c) + " belirdi");
+    /* eski hafta başı tarihi (eski kayıt) yeni tamamlanmayı bastırmaz */
+    state.skyClosed = shiftDays(today(), -30);
+    eq(maybeShowSkyClose(), true, "eski kayıttaki kapanış tarihinden sonraki tamamlanma gösterilir");
     document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
-    /* geçen haftaya veri girilmediyse pencere yok ama işaretlenir */
-    state.days = {}; delete state.skyClosed; calcReset();
-    eq(maybeShowWeekClose(), false);
-    eq(state.skyClosed, pw);
+    /* iki haftadan eski tamamlanma sessizce işaretlenir */
+    state.days = {}; calcReset();
+    skyLit(full, N, 40); delete state.skyClosed;
+    eq(maybeShowSkyClose(), false);
+    ok(state.skyClosed, "işaretlendi");
     ok(!document.querySelector(".sheet-bg"));
+    /* tamamlanma yokken çıkmaz */
+    state.days = {}; delete state.skyClosed; calcReset(); skyLit(full, 2);
+    eq(maybeShowSkyClose(), false);
     /* Neler yeni açıkken beklenir, kapanınca gelir */
-    full(d(0)); delete state.skyClosed;
+    state.days = {}; calcReset(); skyLit(full, N, 2); delete state.skyClosed;
     state.seenVersion = "1.10.0";
-    maybeShowWhatsNew(maybeShowWeekClose);
+    maybeShowWhatsNew(maybeShowSkyClose);
     ok(document.querySelector("#wn-t") && !document.querySelector("#wc-t"), "önce yalnızca Neler yeni");
     document.querySelector("#wn-ok").click();
-    ok(document.querySelector("#wc-t"), "kapanınca hafta kapanışı");
+    ok(document.querySelector("#wc-t"), "kapanınca takımyıldız penceresi");
   } finally { skyDone(); }
 });
 
@@ -3747,22 +3831,23 @@ test("veri sürümü: 2 -> 3 takımyıldız kaydı; eski haftalar eski adıyla, 
 test("takımyıldız: İngilizcede tam çevrilir; pencereler erişilebilir", async () => {
   try {
     await withLang("en", async () => {
-      const { full, cw } = await skyFx();
-      for (let i = 0; i < 5; i++) full(shiftDays(cw, -7 + i));
+      const { full } = await skyFx();
+      const c0 = skyRuns()[0].c, N = c0.p.length;
+      skyLit(full, N, 2);
       I18N_MISSING.clear();
       tab = "today"; render();
-      ok(/^This week: .+, \d\/7 stars$/.test(app.querySelector("#wk-open").getAttribute("aria-label")), app.querySelector("#wk-open").getAttribute("aria-label"));
+      ok(/^[A-Za-z ]+, \d+\/\d+ stars$/.test(app.querySelector("#wk-open").getAttribute("aria-label")), app.querySelector("#wk-open").getAttribute("aria-label"));
+      ok(/^\S+: \d+ percent$/.test(app.querySelector(".wk-day").getAttribute("aria-label")), app.querySelector(".wk-day").getAttribute("aria-label"));
       eq(a11yBad("en şerit"), []);
-      const sw = openSkyWeek();
-      ok(/^This week: /.test(sw.querySelector("#sw-t").textContent), sw.querySelector("#sw-t").textContent);
-      ok(/^\w+: (\d+ percent|not here yet)$/.test(sw.querySelector(".sky-b").getAttribute("aria-label")), sw.querySelector(".sky-b").getAttribute("aria-label"));
+      const sw = openSky();
+      ok(/^[A-Za-z ]+$/.test(sw.querySelector("#sw-t").textContent), sw.querySelector("#sw-t").textContent);
       ok(sw.textContent.includes("Sky atlas") && sw.textContent.includes("day streak"), "atlas ve seri İngilizce");
-      openAtlas(constOf(shiftDays(cw, -7)).id);
+      openAtlas(c0.id);
       openSkyDay(shiftDays(today(), -1));
-      maybeShowWeekClose();
+      maybeShowSkyClose();
       const wc = document.querySelector("#wc-t");
       ok(wc && / appeared$/.test(wc.textContent), wc && wc.textContent);
-      ok(/^5\/7 stars · best day \w+ · 0 workouts$/.test(document.querySelector(".wc-line").textContent), document.querySelector(".wc-line").textContent);
+      ok(new RegExp(`^${N}/${N} stars · .+ · 0 workouts$`).test(document.querySelector(".wc-line").textContent), document.querySelector(".wc-line").textContent);
       for (const sh of document.querySelectorAll(".sheet-bg .sheet")){
         ok(sh.getAttribute("aria-labelledby") && sh.querySelector("#" + sh.getAttribute("aria-labelledby")), "pencere başlığı");
         for (const b of sh.querySelectorAll("button")) ok((b.getAttribute("aria-label") || b.textContent).trim(), "adsız düğme");
@@ -3771,5 +3856,4 @@ test("takımyıldız: İngilizcede tam çevrilir; pencereler erişilebilir", asy
     });
   } finally { skyDone(); }
 });
-
 window.STARBOARD_TESTS = TESTS;

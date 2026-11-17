@@ -56,7 +56,6 @@ function render(){
   const _s1 = stampStar(t);
   const _s2 = t !== today() ? stampStar(today()) : false;   /* kısa devre olmasın: ikisi de denensin */
   if (_s1 || _s2) { calcReset(); saveState(state); }
-  if (ensureSkyWeek()) saveState(state);   /* haftanın takımyıldızı ilk açılışta kayda yazılır */
   const party = onToday() && !wasAll && allDoneNow() && render.ready;
   const noProgram = `<section class="welcome">
     <span class="brand-i">${BRAND_SVG}</span>

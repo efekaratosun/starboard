@@ -203,7 +203,7 @@ const themeClass = t => (t === "dark" || (t === "auto" && sysDark())) ? "thm-dar
 function themeMock(t){
   return `<div class="tp ${themeClass(t)}" aria-hidden="true">
     <div class="tp-h"><div><b>${tx("İyi akşamlar, Efe")}</b><i>${tx("Bugün 2 görevin kaldı.")}</i></div><span class="tp-gear"></span></div>
-    <div class="tp-sky"><b>${tx("Bu haftanın takımyıldızı")}</b><i>${tx("5/7 yıldız yandı")}</i>
+    <div class="tp-sky"><b>${tx("Takımyıldızın")}</b><i>${tx("5/8 yıldız yandı")}</i>
       <svg viewBox="0 0 120 34"><path d="M8 24 34 12 60 20 86 8 112 16" fill="none" stroke="var(--star)" stroke-width="1.2" opacity=".7"/>
         ${[[8,24],[34,12],[60,20],[86,8],[112,16]].map(([x,y],i)=>
           `<circle cx="${x}" cy="${y}" r="${i<3?2.6:1.6}" fill="${i<3?"var(--star)":"var(--star-off)"}"/>`).join("")}</svg></div>

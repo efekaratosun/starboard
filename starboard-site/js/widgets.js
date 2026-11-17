@@ -183,49 +183,34 @@ function sleepTimes(entry){
 }
 const sleepDur = (bed, wake) => ((wake - bed) % 1440 + 1440) % 1440;
 
-/* 24 saatlik kadran: 00 üstte, 06 sağda, 12 altta, 18 solda. */
-const DIAL = { c:120, r:92 };
-const dialPt = (m, r = DIAL.r) => { const a = m / 1440 * 2 * Math.PI - Math.PI / 2; return [DIAL.c + r * Math.cos(a), DIAL.c + r * Math.sin(a)]; };
-function dialArc(bed, wake){
-  const d = sleepDur(bed, wake);
-  if (d === 0) return "";
-  const [x1, y1] = dialPt(bed), [x2, y2] = dialPt(wake);
-  return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${DIAL.r} ${DIAL.r} 0 ${d > 720 ? 1 : 0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+/* Son girilen yatış ve kalkış: bugünden önceki en yakın kayıt. Tek dokunuşla aynısı girilir. */
+function lastSleepTimes(){
+  const t = today();
+  const k = Object.keys(state.days).filter(d => d < t && typeof state.days[d].bed === "number" && typeof state.days[d].wake === "number").sort().pop();
+  return k ? sleepTimes(state.days[k]) : null;
 }
+const hmVal = m => hm(m);
+const parseHm = s => { const m = /^(\d{1,2}):(\d{2})$/.exec(s || ""); return m ? (+m[1] * 60 + +m[2]) % 1440 : null; };
 function sleepHTML(entry){
   const { bed, wake } = sleepTimes(entry);
   const has = typeof entry.sleep === "number";
-  const ticks = Array.from({ length:24 }, (_, h) => {
-    const [x1, y1] = dialPt(h * 60, 74), [x2, y2] = dialPt(h * 60, h % 6 ? 70.5 : 67);
-    return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" class="dial-tick${h % 6 ? "" : " big"}"/>`;
-  }).join("");
-  const labels = [0, 6, 12, 18].map(h => { const [x, y] = dialPt(h * 60, 58); return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" class="dial-num">${String(h).padStart(2,"0")}</text>`; }).join("");
-  const handle = (id, m, icon, label) => { const [x, y] = dialPt(m); return `<g id="${id}" class="dial-h" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"
-      tabindex="0" role="slider" aria-label="${label}" aria-valuetext="${hm(m)}">
-      <circle r="17"/><text y="5.5" text-anchor="middle">${icon}</text></g>`; };
-  /* Ortada kayıttaki uyku süresi: Sağlık'tan gelen toplam uyku, yatış-kalkış aralığından kısa olabilir. */
+  const last = lastSleepTimes();
   const d = sleepDur(bed, wake);
+  /* Sağlık'tan gelen toplam uyku, yatış-kalkış aralığından kısa olabilir; kayıttaki süre gösterilir. */
   return `<div class="entry sl-entry">${iconBox("rest")}
     <div class="entry-main">
-      <div class="lbl-row"><span class="lbl">${tx("Uyku")}</span><span class="lbl-v num">${has ? durTxt(Math.round(entry.sleep*60)) : tx("henüz girilmedi")}</span></div>
-      <button class="sl-toggle" id="sl-toggle" aria-expanded="false" aria-controls="sl-more">
+      <div class="lbl-row"><span class="lbl">${tx("Uyku")}</span><span class="lbl-v num" id="sl-c1">${has ? durTxt(Math.round(entry.sleep*60)) : tx("henüz girilmedi")}</span></div>
+      <button class="sl-toggle" id="sl-toggle" aria-expanded="${has ? "false" : "true"}" aria-controls="sl-more">
         <span>${has ? `${hm(bed)} → ${hm(wake)}` : tx("Saatleri gir")}</span>
         <svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
-      <div class="sl-more" id="sl-more" hidden>
-      <div class="dial-wrap">
-        <svg id="sl-dial" class="dial" viewBox="0 0 240 240" role="group" aria-label="${tx("Uyku saati kadranı")}">
-          <defs><linearGradient id="sl-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--sleep)"/><stop offset="1" stop-color="var(--water)"/></linearGradient></defs>
-          <circle cx="120" cy="120" r="${DIAL.r}" class="dial-track"/>
-          <path id="sl-arc" class="dial-arc" d="${dialArc(bed, wake)}"/>
-          ${ticks}${labels}
-          <text x="120" y="114" class="dial-dur num" id="sl-c1">${has ? durTxt(Math.round(entry.sleep * 60)) : durTxt(d)}</text>
-          <text x="120" y="134" class="dial-sub num" id="sl-c2">${hm(bed)} → ${hm(wake)}</text>
-          ${handle("sl-h-bed", bed, "🌙", tx("Yatış saati"))}
-          ${handle("sl-h-wake", wake, "☀️", tx("Kalkış saati"))}
-        </svg>
-      </div>
-      <div class="dial-legend num"><span>${tx("🌙 Yattım")} <b id="sl-bed-v">${hm(bed)}</b></span><span>${tx("☀️ Kalktım")} <b id="sl-wake-v">${hm(wake)}</b></span></div>
-      <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Ayı ve güneşi sürükle.")}</div>
+      <div class="sl-more" id="sl-more"${has ? " hidden" : ""}>
+        ${last ? `<button class="chip sl-last" id="sl-last" type="button">${tx("Dünkü gibi")}: ${hm(last.bed)} → ${hm(last.wake)}</button>` : ""}
+        <div class="sl-times">
+          <label>${tx("🌙 Yattım")}<input type="time" id="sl-bed" step="300" value="${hm(bed)}"></label>
+          <label>${tx("☀️ Kalktım")}<input type="time" id="sl-wake" step="300" value="${hm(wake)}"></label>
+        </div>
+        <div class="sl-dur num" id="sl-dur">${tx("Süre")}: ${durTxt(d)}</div>
+        <button class="chip on" id="sl-save" type="button">${tx("Kaydet")}</button>
       </div>
     </div></div>`;
 }
@@ -236,46 +221,23 @@ function wireSleep(entry){
     tg.setAttribute("aria-expanded", String(!more.hidden));
     tg.classList.toggle("on", !more.hidden);
   };
-  const svg = document.getElementById("sl-dial");
-  if (!svg) return;
-  let { bed, wake } = sleepTimes(entry);
-  const hb = document.getElementById("sl-h-bed"), hw = document.getElementById("sl-h-wake");
-  const draw = () => {
-    const [bx, by] = dialPt(bed), [wx, wy] = dialPt(wake);
-    hb.setAttribute("transform", `translate(${bx.toFixed(1)} ${by.toFixed(1)})`);
-    hw.setAttribute("transform", `translate(${wx.toFixed(1)} ${wy.toFixed(1)})`);
-    hb.setAttribute("aria-valuetext", hm(bed)); hw.setAttribute("aria-valuetext", hm(wake));
-    document.getElementById("sl-arc").setAttribute("d", dialArc(bed, wake));
-    document.getElementById("sl-c1").textContent = durTxt(sleepDur(bed, wake));
-    document.getElementById("sl-c2").textContent = `${hm(bed)} → ${hm(wake)}`;
-    document.getElementById("sl-bed-v").textContent = hm(bed);
-    document.getElementById("sl-wake-v").textContent = hm(wake);
+  const bi = document.getElementById("sl-bed"), wi = document.getElementById("sl-wake");
+  if (!bi || !wi) return;
+  const cur = () => ({ bed: parseHm(bi.value), wake: parseHm(wi.value) });
+  const show = () => {
+    const c = cur(), el = document.getElementById("sl-dur");
+    if (el) el.textContent = c.bed === null || c.wake === null ? "" : `${tx("Süre")}: ${durTxt(sleepDur(c.bed, c.wake))}`;
   };
-  const save = async (refocus) => {
+  const save = async (bed, wake) => {
+    if (bed === null || wake === null) return;
     entry.bed = bed; entry.wake = wake;
     entry.sleep = Math.round(sleepDur(bed, wake) / 60 * 100) / 100;
     await saveState(state); render();
-    if (refocus) document.getElementById(refocus)?.focus();
   };
-  const minuteAt = ev => {
-    const r = svg.getBoundingClientRect();
-    const x = (ev.clientX - r.left) / r.width * 240 - DIAL.c, y = (ev.clientY - r.top) / r.height * 240 - DIAL.c;
-    let a = Math.atan2(y, x) + Math.PI / 2; if (a < 0) a += 2 * Math.PI;
-    return (Math.round(a / (2 * Math.PI) * 1440 / 5) * 5) % 1440;
-  };
-  let drag = null;
-  const start = (which) => ev => { drag = which; svg.setPointerCapture(ev.pointerId); ev.preventDefault(); };
-  hb.onpointerdown = start("bed"); hw.onpointerdown = start("wake");
-  svg.onpointermove = ev => { if (!drag) return; const m = minuteAt(ev); if (drag === "bed") bed = m; else wake = m; draw(); };
-  svg.onpointerup = svg.onpointercancel = () => { if (!drag) return; drag = null; save(); };
-  const key = (which, id) => ev => {
-    const d = { ArrowUp:15, ArrowRight:15, ArrowDown:-15, ArrowLeft:-15 }[ev.key];
-    if (!d) return;
-    ev.preventDefault();
-    if (which === "bed") bed = (bed + d + 1440) % 1440; else wake = (wake + d + 1440) % 1440;
-    draw(); save(id);
-  };
-  hb.onkeydown = key("bed", "sl-h-bed"); hw.onkeydown = key("wake", "sl-h-wake");
+  bi.oninput = wi.oninput = show;
+  document.getElementById("sl-save").onclick = () => { const c = cur(); save(c.bed, c.wake); };
+  const lb = document.getElementById("sl-last");
+  if (lb) lb.onclick = () => { const l = lastSleepTimes(); if (l) save(l.bed, l.wake); };
 }
 
 /* ---- kişisel rekorlar ---- */
