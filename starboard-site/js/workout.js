@@ -205,11 +205,6 @@ function liftSummary(l, ex){
 
 const LIFT_KIND = { w:tx("Ağırlık × tekrar"), r:tx("Tekrar"), t:tx("Süre"), wc:tx("Ağırlık + set"), n:tx("Tur"), sw:tx("Tekrar + süre"), sd:tx("Mesafe + süre"), c:tx("Süre + mesafe"), ok:"" };
 
-function howLink(name){
-  const ids = guidesFor(name);
-  return ids.length ? `<button class="how-link" data-howgo="${ids[0]}">${tx("Nasıl yapılır")}</button>` : "";
-}
-
 /* Hareket rehberi Program sekmesindedir; her "nasıl yapılır" bağlantısı oraya açar. */
 function goHow(id){
   tab = "plan"; planTab = "program"; howQuery = ""; howOpen = id; openFold("how");
@@ -260,7 +255,7 @@ function trainTodayView(entry, program, key){
     ${list.map(name => {
       const ex = parseEx(name, venue);
       return `<div class="lift lift-ok">
-        <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>${ex.sub ? `<div class="lift-sub">${esc(exText(ex.sub))}</div>` : ""}${howLink(name)}</div>
+        <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>${ex.sub ? `<div class="lift-sub">${esc(exText(ex.sub))}</div>` : ""}</div>
         ${liftHas(lifts[name]) ? `<svg class="ico lift-tick" role="img" aria-label="${tx("tamam")}"><use href="#i-check"/></svg>` : ""}
       </div>`;
     }).join("")}
@@ -284,7 +279,6 @@ function nextSession(program, key){
 function wireTrain(key){
   const woBtn = document.getElementById("wo-start");
   if (woBtn) woBtn.onclick = openWorkout;
-  app.querySelectorAll("[data-howgo]").forEach(b => b.onclick = () => goHow(b.dataset.howgo));
   const fo = document.getElementById("free-open");
   if (fo) fo.onclick = () => { freeOpenKey = key; render(); };
   wireFree(key);

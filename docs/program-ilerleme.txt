@@ -1,0 +1,2 @@
+ADIM 1: Bugün how-link workout.js howLink()+trainTodayView(); antrenman modu workout-mode.js woScreen()+wireWO() [data-wohow]; Program altı rehber workout-mode.js howtoView()+howList() (router.js plan sekmesi)
+ADIM 2: Program > Bugün hareket altı Nasıl yapılır bağlantısı kaldırıldı (workout.js howLink/trainTodayView/wireTrain)
