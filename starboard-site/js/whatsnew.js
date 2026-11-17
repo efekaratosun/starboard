@@ -107,5 +107,5 @@ function maybeShowWhatsNew(then){
    yenilik penceresi sırasını alır. İlk kurulumda seenVersion zaten güncel
    olduğu için hiç açılmaz. */
 function openWelcomeChain(){
-  maybeShowWhatsNew(maybeShowWeekClose);
+  maybeShowWhatsNew(maybeShowSkyClose);
 }

@@ -2,8 +2,8 @@
 
 /* ---- bugün ---- */
 /* ---- hafta şeridi ----
-   Bu haftanın (Pzt-Paz) takımyıldızı şeridin kendisidir (skyStrip, sky.js); dokununca hafta
-   penceresi açılır. Eski günlere takvimden ya da penceredeki yıldızlardan gidilir. */
+   Devam eden takımyıldız ve son yedi gün şeridin kendisidir (skyStrip, sky.js); şekle dokununca tam
+   şema açılır. Günlerin harflerine dokununca o günün hedefleri, eski günlere takvimden de gidilir. */
 function weekStrip(key){
   return `${skyStrip()}
   ${key !== today() ? `<div class="wk-back"><button class="link" id="back-today">${tx("Bugüne dön")}</button></div>` : ""}`;
