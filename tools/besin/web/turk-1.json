@@ -2558,5 +2558,45 @@
   "lif": null,
   "porsiyon_g": 300,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/b%C3%B6r%C3%BClce"
+ },
+ {
+  "ad": "Patlıcan oturtma",
+  "kcal": 122,
+  "p": 0.92,
+  "c": 7.87,
+  "f": 10.28,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/patl%C4%B1can-yeme%C4%9Fi"
+ },
+ {
+  "ad": "Kereviz yemeği",
+  "kcal": 90,
+  "p": 1.92,
+  "c": 7.14,
+  "f": 6.37,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-kereviz"
+ },
+ {
+  "ad": "İç bakla",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Nohut köftesi",
+  "kcal": 139,
+  "p": 7.76,
+  "c": 48.27,
+  "f": 6.89,
+  "lif": null,
+  "porsiyon_g": 180,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/fellah-k%C3%B6ftesi"
  }
 ]
