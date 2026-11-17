@@ -17,3 +17,5 @@ ADIM 13: Chrome headless testleri port 8770 uzerinde calistirildi: 176 gecti, 0 
 BITTI
 ADIM 14: meals.js icindeki kategori ve oneri bolumunu besleyen catChips(), catCounts() ile resultsHTML() kategori dali, CAT_LABELS, logCat durumu ve [data-cat] baglantilari kaldirilacak; quickChips(), savedChips(), barkod, Kendim tanimlayayim ve Kendi yiyeceklerim korunacak.
 ADIM 15: Besin ekleme panelinden kategori rozetleri ve kategori sonuclari kaldirildi; catChips(), catCounts(), CAT_LABELS ve logCat temizlendi. Arama, Sik yediklerin, kayitli ogun, barkod, Kendim tanimlayayim ve Kendi yiyeceklerim korundu; kullanici verisi degismedi ve testler guncellendi.
+ADIM 16: Chrome headless testleri port 8770 uzerinde calistirildi: 176 gecti, 0 kaldi; sunucu kapatildi.
+BITTI
