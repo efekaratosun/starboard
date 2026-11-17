@@ -1,0 +1,21 @@
+ADIM 1: grep ile Ayarla metni starboard-site\js altinda arandi (today.js oncelikli); today.js icinde metin yok, Ayarla dugmesi meals.js icindeki oneri tercihleri penceresini aciyor. Pencere mutfak, beslenme turu, sik yedigim besinlerle kurma ve onerilerden cikarilan besinleri degistiriyor; settings.js bu ayarlari sunmuyor.
+ADIM 2: Bugun ekranindaki Ayarla dugmesi ve prefs-open cagirisi kaldirildi; oneri tercihleri penceresi ile mealPrefs kullanici verisi korundu. Bu ayarlar baska yerden erisilemedigi icin Ayarlar sayfasina Onerileri kendine gore ayarla adli tek satir eklendi ve ilgili testler guncellendi.
+ADIM 3: Chrome headless testleri calistirildi: 174 gecti, 0 kaldi; sunucu kapatildi.
+BITTI
+ADIM 4: Mutfak secimi onboarding.js icinde ob.cuisine olarak sorulup state.mealPrefs.cuisine icinde saklaniyor; nutrition.js currentCuisine kayitli degeri kullanir, kayit yoksa su anda LANG (uygulama dili) uzerinden Turk/uluslararasi varsayiyor; ayrica meals.js oneri tercihleri penceresinden degistirilebiliyor.
+ADIM 5: Kayitli mutfak secimi state.mealPrefs.cuisine icinde oncelikli tutuldu; kayit yoksa cihaz dili tr/intl varsayilani kullaniliyor ve onboarding varsayilani da cihaz diline baglandi. Ayarlar sayfasinin Kisisellestirme bolumune Mutfak secenekleri eklendi; elle secim kaydedilip korunuyor. Testler Turk/Ingilizce cihaz varsayilanini, elle secimin korunmasini ve Ayarlar uzerinden degistirmeyi dogruluyor.
+ADIM 6: Chrome headless testleri port 8770 uzerinde calistirildi: 175 gecti, 0 kaldi; sunucu kapatildi.
+BITTI
+ADIM 7: Beslenme ust sekmeleri Bugun/Tarifler/Liste; Liste ekrani su an Oneri planindan gun secimleri, Tarifler kayitli tarif bolumu, plan+tariflerden hesaplanip reyonlara ayrilmis urun listesi, Paylas/Isaretleri kaldir ve bos liste bolumunu gosteriyor. Urun onerilerinin kaynagi beslenme recetesi planidir, gecmis kullanim degildir.
+ADIM 8: Liste ekrani Alisveris listem olarak yeniden kuruldu; yalniz Listem ve Oneriler kucuk sekmeleri var. Listem elle girilen urunler ve kayitli kendi besinleri, Oneriler gecmis kullanimdaki sik besinleri gosteriyor; plan gunu, tarif, reyon, paylasim bolumleri ve tarif-liste dugmeleri kaldirildi. Eski days/recipes/checked verileri korundu; ilgili testler guncellendi.
+ADIM 9: Chrome headless testleri port 8770 uzerinde calistirildi: 175 gecti, 0 kaldi; sunucu kapatildi.
+BITTI
+ADIM 10: Oneri ureticisi yalniz PLATES kaliplarindaki besin adaylarindan PORTION ve NO_SUGGEST kurallariyla secim yapiyor; foods-usda.js kayitlari FOODS nesnesine eklense de herhangi bir USDA anahtari PLATES aday havuzunda bulunmadigi icin yeni besinler otomatik onerilere girmiyor.
+ADIM 11: Node ile erkek ve kadin; kilo ver, koru ve al; Turk ve uluslararasi mutfak ile bir vejetaryen profilden alti bir gunluk oneri uretildi; ornekler ve alakasiz kalem bulgulari docs/oneri-ornekleri.md dosyasina yazildi.
+ADIM 12: Oneri ureticisi 105 besinlik acik onayli havuzla kisitlandi; foods-usda kayitlari, alkol, sos, baharat ve tatlilar otomatik oneride disli, galeta havuzdan cikarildi ve yeni kayit sizintisi ile alakasiz kalem regresyon testi eklendi.
+ADIM 13: Chrome headless testleri port 8770 uzerinde calistirildi: 176 gecti, 0 kaldi; sunucu kapatildi.
+BITTI
+ADIM 14: meals.js icindeki kategori ve oneri bolumunu besleyen catChips(), catCounts() ile resultsHTML() kategori dali, CAT_LABELS, logCat durumu ve [data-cat] baglantilari kaldirilacak; quickChips(), savedChips(), barkod, Kendim tanimlayayim ve Kendi yiyeceklerim korunacak.
+ADIM 15: Besin ekleme panelinden kategori rozetleri ve kategori sonuclari kaldirildi; catChips(), catCounts(), CAT_LABELS ve logCat temizlendi. Arama, Sik yediklerin, kayitli ogun, barkod, Kendim tanimlayayim ve Kendi yiyeceklerim korundu; kullanici verisi degismedi ve testler guncellendi.
+ADIM 16: Chrome headless testleri port 8770 uzerinde calistirildi: 176 gecti, 0 kaldi; sunucu kapatildi.
+BITTI

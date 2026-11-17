@@ -131,7 +131,22 @@ function searchEnglish(search,name){
  return parts.find(x=>norm(x)!==key)||parts[0]||"";
 }
 function keyFor(name){return norm(name)||"besin";}
+/* İçecekler uygulamada "meyve" simgesiyle gösterilir (base kayıtlardaki günümüz:
+   kola, meyve suyu, şalgam, boza, kahve → i:"fruit"). Bu kural ad eşleşmelerinden
+   (papatya→"ham" ile et, ton balığı→"ton" ile balık, hindistan cevizi→"ceviz"
+   ile kuruyemiş gibi) ÖNCE çalışır. Anahtarlar norm() çıktısına (Türkçe harf
+   sadeleştirilmiş küçük harf) göre yazılır. */
+const DRINK_WORD=/cay|kahve|meyve suyu|meyveli su|suyu|nektar|limonata|gazoz|kola|soda|tonik|icecek|smoothie|milkshake|ayran|boza|salgam|serbet|raki|bira|sarap|viski|votka|tekila|likor|kokteyl|espresso|amerikano|cappuccino|latte|mocha|frappe|coldbrew|ipa|stout|cidre|gluhwein|yerba mate|enerji|maden suyu|sut/i;
+const NOT_DRINK=/corba|corbasi|sulu|et suyu|ekmek|bread|borek|pide|simit|lavas|kurabiye|kek|pasta|helva|dondurma|cikolata|recel|marmelat|sucuk|incir|sutlac/i;
+const WINE_WORD=/sarap|wine|sake/;
+const BEER_WORD=/bira|beer|ipa/;
+const COCKTAIL_WORD=/kokteyl|cocktail|cosmopolitan|martini|daiquiri|gintonik|longisland|mojito|margarita|negroni|spritz|bloody|tekilasunrise|irlandakahvesi|aperol|piscosour/;
+const isDrinkText=s=>!NOT_DRINK.test(s)&&DRINK_WORD.test(s);
 function icon(name,desc,category){const s=norm([name,desc,category].join(" "));
+ /* Sıvı içecekler: FNDDS kayıtları "Beverages, ..." açıklamasıyla gelir; web
+    kayıtlarda Türkçe ad aranır. "Rom" ve "Mate" kendi başına durduğunda içecektir
+    ("Saltimbocca alla romana" ya da "domates" gibi adlar bu kurala takılmaz). */
+ if(/^beverages/i.test(String(desc||""))||isDrinkText(s)||/^\s*(rom|mate)\s*$/i.test(name))return "fruit";
  if(/domuz|pork|ham|bacon|meat|beef|lamb|kuzu|dana|et|sucuk|salam/.test(s))return "meat";
  if(/chicken|turkey|poultry|tavuk|hindi/.test(s))return "poultry";
  if(/fish|salmon|tuna|cod|balik|somon|ton|levrek|karides|squid|kalamar/.test(s))return "fish";
@@ -142,18 +157,40 @@ function icon(name,desc,category){const s=norm([name,desc,category].join(" "));
  if(/bread|ekmek/.test(s))return "bread";
  if(/potato|patates/.test(s))return "potato";
  if(/bean|lentil|pea|chickpea|tofu|fasulye|mercimek|nohut|baklagil/.test(s))return "legume";
- if(/fruit|apple|berry|banana|meyve|elma|armut|uzum/.test(s))return "fruit";
+ /* "Meyveli kek" ya da "Kuru üzümlü pilav" meyve değil tahıl ürünüdür. */
+ if(/fruit|apple|berry|banana|meyve|elma|armut|uzum/.test(s)&&!/kek|pilav|pide|borek|corbasi|corba|dondurma|recel|marmelat|helva|sutlac/i.test(s))return "fruit";
  if(/vegetable|broccoli|spinach|veget|sebze|domates|biber|kabak|havuc/.test(s))return "veg";
  if(/rice|oat|grain|cereal|wheat|pirinc|yulaf|tah|makarna/.test(s))return "grain";
  return "grain";
 }
-function portion(x){if(x.web){return Number(x.row.porsiyon_g)>0?[{n:"porsiyon",g:Number(x.row.porsiyon_g)}]:undefined;}
- if(x.origin==="FNDDS"||x.origin==="Survey (FNDDS)"){
-  if(Number(x.c.porsiyon_g)>0)return [{n:x.c.porsiyon_adi||"porsiyon",g:round1(x.c.porsiyon_g)}];
-  const p=(x.d.porsiyonlar||[]).find(p=>Number(p.g)>0&&p.aciklama!=="Quantity not specified");
-  if(p)return [{n:p.aciklama,g:round1(p.g)}];
+function portion(x){
+ let list;
+ if(x.web){ list=Number(x.row.porsiyon_g)>0?[{n:"porsiyon",g:Number(x.row.porsiyon_g)}]:undefined; }
+ else if(x.origin==="FNDDS"||x.origin==="Survey (FNDDS)"){
+  if(Number(x.c.porsiyon_g)>0) list=[{n:x.c.porsiyon_adi||"porsiyon",g:round1(x.c.porsiyon_g)}];
+  else { const p=(x.d.porsiyonlar||[]).find(p=>Number(p.g)>0&&p.aciklama!=="Quantity not specified"); if(p)list=[{n:p.aciklama,g:round1(p.g)}]; }
  }
- const g=Number(x.row.serving_g||x.c.porsiyon_g); return g>0?[{n:"porsiyon",g:round1(g)}]:undefined;
+ else { const g=Number(x.row.serving_g||x.c.porsiyon_g); list=g>0?[{n:"porsiyon",g:round1(g)}]:undefined; }
+ /* İçecek kalemleri (çay, kahve, meyve suyu vb.) sıvı ölçüsüyle (1 fl oz) ve
+    çok küçük bir ilk porsiyonla gelir; varsayılan porsiyon içecek türüne göre
+    belirlenir: sert içkiler ve likörler 1 kadeh (50 g), şarap 1 kadeh (150 g),
+    bira 1 şişe (330 g), kokteyller 1 bardak (150 g), alkolsüzler 1 bardak (200 g). */
+ const d=x.web?x.row:x.d, alk=round1(d.alcohol??d.alk??0), nm=norm(x.name);
+ const description=x.web?"":(x.c.description||d.description||"");
+ const category=x.web?(x.row.category||""):(x.row.category||x.c.category||d.kategori||"");
+ const sourceText=norm(`${x.name} ${description} ${x.web?(x.row.kaynak_url||""):""}`);
+ const wine=WINE_WORD.test(sourceText), beer=BEER_WORD.test(sourceText), cocktail=COCKTAIL_WORD.test(sourceText);
+ const drink=isDrinkText(nm)||/^beverages/i.test(description)||/beverages|alkollu|icecek|liquorandcocktails/.test(norm(category))
+  ||wine||beer||cocktail;
+ if(drink){
+  if(alk>20||(/likor/.test(nm)&&alk>0)) list=[{n:"kadeh",g:50}];
+  else if(wine) list=[{n:"kadeh",g:150}];
+  else if(beer) list=[{n:"şişe",g:330}];
+  else if(cocktail) list=[{n:"bardak",g:150}];
+  else if(alk>0&&list&&list.length) list=list.map(p=>({n:"porsiyon",g:p.g}));
+  else if(alk===0) list=[{n:"bardak",g:200}];
+ }
+ return list;
 }
 for(const x of candidates){const d=x.web?x.row:x.d;
  if([x.web?d.kcal:d.kcal,x.web?d.p:d.protein,x.web?d.c:d.carbs,x.web?d.f:d.fat].some(v=>v===null||v===""||v===undefined)){
@@ -167,11 +204,11 @@ for(const x of candidates){const d=x.web?x.row:x.d;
  if(!Number.isFinite(p+c+f+lif+alk+kcal)){rejected.push(`${x.name}: eksik/sayısal olmayan besin değeri`);continue;}
  const total=p+c+f, calc=4*p+4*c+9*f+7*alk, diff=Math.abs(kcal-calc);
  if(x.web&&total>100){rejected.push(`${x.name}: p+c+f > 100 (${round1(total)})`);continue;}
- if(x.web&&(kcal<20?diff>5:diff/Math.max(kcal,calc,1)>0.20)){rejected.push(`${x.name}: kcal ve ortak 4-4-9-7 farkı sınırı aşıyor (${round1(diff)} kcal)`);continue;}
+ if(x.web&&alk<=20&&(kcal<20?diff>5:diff/Math.max(kcal,calc,1)>0.20)){rejected.push(`${x.name}: kcal ve ortak 4-4-9-7 farkı sınırı aşıyor (${round1(diff)} kcal)`);continue;}
  if(existingKeys.has(norm(key))||existingNames.has(nameNorm)){rejected.push(`${x.name}: mevcut FOODS anahtar/ad çakışması`);continue;}
  if(out[key]){rejected.push(`${x.name}: üretilen anahtar çakışması (${key})`);continue;}
  const desc=x.web?"":x.c.description||d.description||"";
- const e={n:`tx(${JSON.stringify(x.name)})`}; const por=portion(x);if(por)e.por=por;
+ const e={n:txText(x.name)}; const por=portion(x);if(por&&Array.isArray(por))e.por=por.map(p=>({n:txText(p.n),g:p.g}));
  e.p=p;e.c=c;e.f=f;e.lif=lif;if(alk>0)e.alk=alk;e.i=icon(x.name,desc,x.row.category);
  const catMap={"Etler":"sarkuteri","Şarküteri":"sarkuteri","Kahvaltılıklar":"kahvaltilik","Çorbalar":"corba","İçecekler":"icecek","Tatlılar":"tatli","Atıştırmalıklar":"ara","Tahıllar":"tahillar"};if(catMap[x.row.category])e.cat=catMap[x.row.category];
  if(x.kind==="intl"||x.kind==="tr")e.cu=x.kind;
@@ -180,7 +217,14 @@ for(const x of candidates){const d=x.web?x.row:x.d;
  out[key]=e;
  english[x.name]=en;
 }
-function jsObj(obj){return Object.entries(obj).map(([k,v])=>`  ${k}:{${Object.entries(v).map(([a,b])=>`${a}:${a==="n"?b:JSON.stringify(b)}`).join(", ")}}`).join(",\n");}
+function txText(s){return {__tx:String(s)};}
+function jsVal(v){
+ if(v&&typeof v==="object"&&!Array.isArray(v)&&Object.prototype.hasOwnProperty.call(v,"__tx")) return `tx(${JSON.stringify(v.__tx)})`;
+ if(Array.isArray(v))return `[${v.map(jsVal).join(", ")}]`;
+ if(v&&typeof v==="object")return `{${Object.entries(v).map(([a,b])=>`${a}:${jsVal(b)}`).join(", ")}}`;
+ return JSON.stringify(v);
+}
+function jsObj(obj){return Object.entries(obj).map(([k,v])=>`  ${k}:${jsVal(v)}`).join(",\n");}
 const generated=`"use strict";\n\n/* USDA ve doğrulanmış web kaynaklarından tools/besin/uret.js ile üretilir. */\nObject.assign(FOODS, {\n${jsObj(out)}\n});\n`;
 if(Object.keys(out).length!==Object.keys(english).length)
  throw new Error(`Üretim sayısı tutarsız: ${Object.keys(out).length} besin, ${Object.keys(english).length} İngilizce ad`);

@@ -91,10 +91,11 @@ function render(){
               : `<div class="empty">${tx("Kilonu gir, hedefler hesaplansın.")}</div>`}</section>`);
   }
   else if (tab === "today") body = todayView(entry, program, t);
-  else if (tab === "plan") body = program ? `<div class="seg">${[["today",tx("Bugün")],["program",tx("Program")]].map(([k,l]) =>
+  else if (tab === "plan") body = program ? `<div class="seg">${[["today",tx("Bugün")],["program",tx("Program")],["how",tx("Nasıl yapılır")]].map(([k,l]) =>
       `<button data-plan-tab="${k}" aria-current="${planTab===k}">${l}</button>`).join("")}</div>`
       + (planTab === "today" ? trainTodayView(entry, program, t)
-       : trainingSection(program, true) + howtoView(program)) : noProgram;
+       : planTab === "how" ? howtoView(program)
+       : trainingSection(program, true)) : noProgram;
   else if (tab === "meals") body = program ? mealsView(program) : noProgram;
   else { calTab = "cal"; body = calendarView(); }
 
@@ -175,7 +176,8 @@ function render(){
       if (b.dataset.planTab === planTab) return;
       navTo(() => { planTab = b.dataset.planTab; render(); window.scrollTo(0,0); }, segDir(b), "k-seg");
     });
-    if (planTab === "program"){ wireHowto(); wireFolds(); }
+    if (planTab === "program") wireFolds();
+    if (planTab === "how") wireHowto();
     if (planTab === "today") wireTrain(t);
     const po = document.getElementById("plan-on");
     if (po) po.onclick = async () => {

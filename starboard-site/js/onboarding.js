@@ -133,7 +133,7 @@ function obDefaults(){
   return { name:"", sex:"", avatar:undefined, avColor:undefined,
     goal:"maintain", targetWeight:null, activity:"moderate", sleepMin:7,
     venue:"gym", days:null, avoid:[],
-    diet:"hepsi", mealSet:1, dislike:[], cuisine: LANG === "tr" ? "tr" : "intl",
+    diet:"hepsi", mealSet:1, dislike:[], cuisine: deviceCuisine(),
     theme:"auto", routines:[], units:detectUnits() };
 }
 const OB_DEFAULT_DAYS = a => PATTERN[(a === "sedentary" || a === "light") ? 3 : a === "moderate" ? 4 : 5].slice();

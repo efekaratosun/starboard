@@ -6,7 +6,7 @@
 Object.assign(window.STARBOARD_EN, {
   /* ---- porsiyon ölçüleri ---- */
   "adet": "pc",
-  "bardak": "glass",
+  "bardak": "cup",
   "demet": "bunch",
   "dilim": "slice",
   "fileto": "fillet",
@@ -35,6 +35,7 @@ Object.assign(window.STARBOARD_EN, {
   "küçük paket": "small bag",
   "diş": "clove",
   "şişe": "bottle",
+  "kadeh": "glass",
 
   /* ---- arama eş adları ---- */
   "yumurta akı": "egg white",
@@ -1849,6 +1850,7 @@ Object.assign(window.STARBOARD_EN, {
   "Quinoa salad": "Quinoa salad",
   "Radika yemeği": "Braised chicory (radika yemeği)",
   "Rafadan yumurta": "Soft-boiled egg (rafadan yumurta)",
+  "Rakı": "Raki",
   "Rambutan": "Rambutan",
   "Ranch sosu": "Salad dressing, ranch dressing, regular",
   "Ratatouille": "Ratatouille",

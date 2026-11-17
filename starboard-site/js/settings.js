@@ -5,6 +5,7 @@ function settingsView(){
   const p = state.profile;
   const sel = (v, k) => v === k ? " selected" : "";
   const routines = state.routines || [];
+  const cuisine = currentCuisine();
 
   return `
   <section>
@@ -38,6 +39,10 @@ function settingsView(){
     <div class="chips">${LANGS.map(([k,l]) =>
       `<button class="chip${LANG === k ? " sel" : ""}" data-slang="${k}">${l}</button>`).join("")}</div>
     <div style="height:16px"></div>
+    <label>${tx("Mutfak")}</label>
+    <div class="chips">${Object.entries(CUISINES).map(([k,l]) =>
+      `<button class="chip${cuisine === k ? " sel" : ""}" data-scuisine="${k}" aria-pressed="${cuisine === k}">${l}</button>`).join("")}</div>
+    <div style="height:16px"></div>
     <label>${tx("Birimler")}</label>
     <div class="chips">${UNIT_SYSTEMS.map(([k,l]) =>
       `<button class="chip${unitSys() === k ? " sel" : ""}" data-sunit="${k}">${l}</button>`).join("")}</div>
@@ -64,6 +69,8 @@ function settingsView(){
     <label>${tx("Uyku hedefin")}</label>
     <div class="chips">${[6,7,8,9].map(n =>
       `<button class="chip${sleepMin() === n ? " sel" : ""}" data-ssleep="${n}">${tx("{0}-{1} saat", [(n), (n+2)])}</button>`).join("")}</div>
+    <div style="height:16px"></div>
+    <div class="row"><button class="ghost" id="s-meal-prefs" aria-haspopup="dialog">${tx("Önerileri kendine göre ayarla")}</button></div>
   </section>
 
   ${remindersSection()}
@@ -113,6 +120,7 @@ function settingsView(){
 function wireSettings(){
   wireReminders();
   wireHealth();
+  document.getElementById("s-meal-prefs").onclick = () => openPrefsSheet();
   let stAvatar = state.profile.avatar, stColor = state.profile.avColor;
   wireAvatar("st", k => { stAvatar = k; });
   document.getElementById("s-sex").onchange = ev => {
@@ -143,6 +151,14 @@ function wireSettings(){
 
   const save = async () => { await saveState(state); render(); };
   app.querySelectorAll("[data-slang]").forEach(b => b.onclick = () => setLang(b.dataset.slang));
+  app.querySelectorAll("[data-scuisine]").forEach(b => b.onclick = async () => {
+    const c = b.dataset.scuisine;
+    if (!CUISINES[c]) return;
+    mealPrefs().cuisine = c;
+    recipeOffset = 0;
+    await saveState(state);
+    render();
+  });
   app.querySelectorAll("[data-sunit]").forEach(b => b.onclick = async () => {
     state.profile.units = b.dataset.sunit; await save();
   });

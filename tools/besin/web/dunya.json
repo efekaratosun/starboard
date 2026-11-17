@@ -3081,14 +3081,14 @@
   },
   {
     "ad": "Egusi soup",
-    "kcal": 200,
-    "p": 8,
-    "c": 10,
-    "f": 12,
+    "kcal": 182,
+    "p": 14.3,
+    "c": 3.1,
+    "f": 12.5,
     "lif": null,
     "alk": null,
     "porsiyon_g": 150,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/egusi-soup-421078"
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/egusi-soup"
   },
   {
     "ad": "Nyama choma",
@@ -3741,14 +3741,14 @@
   },
   {
     "ad": "Lobster bisque",
-    "kcal": 300,
-    "p": 20,
-    "c": 15,
-    "f": 15,
+    "kcal": 100,
+    "p": 8.1,
+    "c": 5.1,
+    "f": 5.2,
     "lif": null,
     "alk": null,
     "porsiyon_g": 200,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/lobster-bisque-421123"
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/lobster-bisque"
   },
   {
     "ad": "Butternut squash soup",
@@ -3763,80 +3763,80 @@
   },
   {
     "ad": "Celeriac soup",
-    "kcal": 15,
-    "p": 0.3,
-    "c": 3,
-    "f": 0,
-    "lif": 0.5,
-    "alk": 0.1,
+    "kcal": 28,
+    "p": 1,
+    "c": 5.5,
+    "f": 0.2,
+    "lif": 1,
+    "alk": null,
     "porsiyon_g": 240,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/celeriac-soup-421125"
+    "kaynak_url": "https://www.eatbetter.app/en/foods/vegetables-and-legumes/root-vegetables/radish-and-celeriac/celeriac"
   },
   {
     "ad": "Fish soup",
-    "kcal": 180,
-    "p": 20,
-    "c": 5,
-    "f": 8,
+    "kcal": 48,
+    "p": 6.7,
+    "c": 2.8,
+    "f": 0.9,
     "lif": null,
     "alk": null,
     "porsiyon_g": 250,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/fish-soup-421126"
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/fish-soup-with-potatoes-(sopa-de-pescado)"
   },
   {
     "ad": "Sopa de ajo",
-    "kcal": 150,
-    "p": 3,
-    "c": 15,
-    "f": 8,
+    "kcal": 93,
+    "p": 5.1,
+    "c": 5.6,
+    "f": 5.5,
     "lif": null,
     "alk": null,
     "porsiyon_g": 200,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/sopa-de-aho-421127"
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/garlic-egg-soup-puerto-rican-style-(sopa-de-ajo)"
   },
   {
     "ad": "Sopa de fideo",
-    "kcal": 180,
-    "p": 4,
-    "c": 30,
-    "f": 6,
+    "kcal": 80,
+    "p": 3.3,
+    "c": 8.8,
+    "f": 3.5,
     "lif": null,
     "alk": null,
     "porsiyon_g": 200,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/sopa-de-fideo-421128"
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/sopa-de-fideo-aguada-mexican-style-noodle-soup"
   },
   {
     "ad": "Mulligatawny",
-    "kcal": 250,
-    "p": 8,
-    "c": 30,
-    "f": 10,
+    "kcal": 97,
+    "p": 4,
+    "c": 7.4,
+    "f": 5.8,
     "lif": null,
     "alk": null,
     "porsiyon_g": 250,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/mulligatawny-421129"
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/mulligatawny-soup"
   },
   {
     "ad": "Chickpea soup",
-    "kcal": 350,
-    "p": 15,
-    "c": 40,
-    "f": 10,
+    "kcal": 82,
+    "p": 4.1,
+    "c": 14.1,
+    "f": 1.3,
     "lif": null,
     "alk": null,
-    "porsiyon_g": 100,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/chickpea-soup-421130"
+    "porsiyon_g": 250,
+    "kaynak_url": "https://foods.fatsecret.com/calories-nutrition/generic/garbanzo-or-chickpea-soup"
   },
   {
     "ad": "Avgolemono",
-    "kcal": 200,
-    "p": 12,
-    "c": 20,
-    "f": 8,
+    "kcal": 75,
+    "p": 4.5,
+    "c": 8,
+    "f": 2.5,
     "lif": null,
     "alk": null,
     "porsiyon_g": 200,
-    "kaynak_url": "https://www.myfitnesspal.com/food/calories/avgolemono-421131"
+    "kaynak_url": "https://menutrition.app/dishes/avgolemono-soup"
   },
   {
     "ad": "Apple crumble",

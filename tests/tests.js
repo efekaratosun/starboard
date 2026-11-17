@@ -102,11 +102,11 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
 
 /* ---- genişletilmiş besin veritabanı ---- */
 const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
-test("besin veritabanı: 1324 yeni kayıt (382 USDA, 942 web) eklendi", () => {
+test("besin veritabanı: 1325 yeni kayıt (382 USDA, 943 web) eklendi", () => {
   const added = sourcedFoods();
-  eq([added.length, Object.keys(FOODS).length], [1324, 1751]);
+  eq([added.length, Object.keys(FOODS).length], [1325, 1752]);
   eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 382);
-  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 942);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 943);
 });
 test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
   const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
@@ -177,6 +177,41 @@ test("öğünler: istenmeyen besin önerilerde çıkmaz", async () => {
   state.mealPrefs.exclude = [first[0]];
   for (let v = 0; v < 4; v++)
     ok(!keysOf(buildMeals(p, v)).includes(first[0]), `${first[0]} ${v}. seçenekte yine çıktı`);
+});
+test("öneriler: yalnızca onaylı havuz kullanılır; yeni kayıt, alkol, sos, baharat ve tatlı çıkmaz", async () => {
+  const fixture = await loadFixture();
+  const forbidden = /\b(alkol|bira|şarap|votka|viski|rom|sos|soslu|baharat|tarçın|kekre|tatlı|şeker|çikolata|pasta|kek|dessert|cake|cookie|candy|sweet|sauce|spice)\b/i;
+  const label = k => `${k} ${FOODS[k] ? FOODS[k].n : ""}`;
+  const badPool = [...SUGGEST_FOODS].filter(k => !FOODS[k] || FOODS[k].src || (FOODS[k].alk || 0) > 0
+    || !PORTION[k] || NO_SUGGEST.has(k) || forbidden.test(label(k)));
+  eq(badPool, [], "onaylı öneri havuzu uygun olmayan besin içeriyor");
+
+  const unapproved = new Set();
+  for (const group of Object.values(PLATES)) for (const plate of group) for (const eye of plate.g)
+    for (const k of eye.k.concat(eye.big || [], eye.rich || [])) if (!SUGGEST_FOODS.has(k)) unapproved.add(k);
+  eq([...unapproved], [], "tabak adayları onaylı havuzda değil");
+
+  const profiles = [
+    { sex:"male", goal:"lose", cuisine:"tr", diet:"hepsi", weight:82 },
+    { sex:"male", goal:"maintain", cuisine:"intl", diet:"hepsi", weight:82 },
+    { sex:"male", goal:"gain", cuisine:"tr", diet:"vejetaryen", weight:82 },
+    { sex:"female", goal:"lose", cuisine:"intl", diet:"hepsi", weight:60 },
+    { sex:"female", goal:"maintain", cuisine:"tr", diet:"hepsi", weight:60 },
+    { sex:"female", goal:"gain", cuisine:"intl", diet:"hepsi", weight:60 }
+  ];
+  const used = new Set();
+  for (const o of profiles) {
+    state = JSON.parse(JSON.stringify(fixture));
+    Object.assign(state.mealPrefs, { cuisine:o.cuisine, diet:o.diet });
+    const p = buildProgram(profileOf(o), o.weight, 0);
+    for (let v = 0; v < 14; v++) for (const meal of buildMeals(p, v).meals)
+      for (const item of meal.items) if (item.key && !item.fixed) used.add(item.key);
+  }
+  state = null;
+  eq([...used].filter(k => !SUGGEST_FOODS.has(k)), [], "onaylı havuz dışı besin önerildi");
+  eq([...used].filter(k => FOODS[k].src), [], "yeni kayıtlı besin önerildi");
+  eq([...used].filter(k => (FOODS[k].alk || 0) > 0), [], "alkollü besin önerildi");
+  eq([...used].filter(k => forbidden.test(label(k))), [], "alkol, sos, baharat veya tatlı önerildi");
 });
 
 test("öğünler: her öğün gerçek bir tabak gibi (tek et ya da balık, en fazla dört besin)", async () => {
@@ -417,28 +452,49 @@ test("kaynak kalorisi kullanılır, eski kayıtlar makrolardan hesaplanır", () 
 });
 
 /* ---- alışveriş listesi ---- */
-test("alışveriş listesi: plan ve tarifler toplanır, aynı besin tek satır, işaretleme çalışır", async () => {
+test("alışveriş listesi: sade iki sekme; elle ürünler ve geçmiş kullanımdan öneriler", async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
-  const program = buildProgram(state.profile, 82, 0);
-  const sumOf = (list, k) => (list.find(x => x.k === k) || { g:0 }).g;
-  const plan = buildMeals(program, 0);
-  const exp = {};
-  for (const m of plan.meals) for (const it of m.items) if (it.key) exp[it.key] = (exp[it.key] || 0) + it.g;
-  const one = shoppingList(program, { days:1, recipes:[], checked:{} }, 0);
-  for (const [k, g] of Object.entries(exp)) eq(sumOf(one, k), Math.round(g), k);
-  eq(new Set(one.map(x => x.k)).size, one.length, "aynı besin iki satırda");
-  const three = shoppingList(program, { days:3, recipes:[], checked:{} }, 0);
-  ok(three.reduce((a, x) => a + x.g, 0) > one.reduce((a, x) => a + x.g, 0) * 2, "3 günlük liste 1 günlükten büyük olmalı");
-  const r = RECIPES[0];
-  const withR = shoppingList(program, { days:0, recipes:[0], checked:{} }, 0);
-  for (const [k, g] of r.ing) ok(sumOf(withR, k) >= g, "tarif malzemesi eksik: " + k);
-  state.shopping = { days:1, recipes:[0], checked:{} };
-  tab = "meals"; mealTab = "list"; render();
-  const first = app.querySelector("[data-shop-k]");
-  ok(first, "liste çizilmedi");
-  await first.onclick();
-  ok(state.shopping.checked[first.dataset.shopK], "işaretlenmedi");
-  tab = "today"; mealTab = "log"; state = null;
+  state.shopping = { days:3, recipes:[0], checked:{ legacy:true } };
+  const slot = slotList()[0][0];
+  state.days[today()].log = [logItem("yulaf", 40, slot, 1), logItem("yulaf", 40, slot, 2), logItem("muz", 120, slot, 3)];
+  tab = "meals"; mealTab = "list"; shopTab = "mine"; render();
+
+  eq(app.querySelector("h2").textContent.trim(), "Alışveriş listem", "liste adı");
+  const tabs = [...app.querySelectorAll("[data-shop-tab]")];
+  eq(tabs.map(b => [b.dataset.shopTab, b.textContent.trim()]), [["mine", "Listem"], ["suggest", "Öneriler"]], "iki küçük sekme");
+  ok(!app.querySelector("[data-shop-days]") && !app.querySelector("[data-shop-rdel]") && !app.querySelector("#shop-share") && !app.querySelector("#shop-clear"), "eski plan, tarif ve paylaşım bölümleri kalktı");
+  ok(!app.querySelector("[data-shop-k]"), "plan ürünleri doğrudan listede gösterilmiyor");
+
+  const input = app.querySelector("#shop-item-input");
+  input.value = "Zeytinyağı";
+  await app.querySelector("#shop-item-add").onclick();
+  eq(state.shopping.items.length, 1, "kullanıcının girdiği ürün kaydedildi");
+  eq(state.shopping.items[0].n, "Zeytinyağı");
+  eq(state.shopping.days, 3, "eski gün verisi korundu");
+  eq(state.shopping.recipes, [0], "eski tarif verisi korundu");
+  ok(state.shopping.checked.legacy, "eski işaret verisi korundu");
+
+  const row = app.querySelector("[data-shop-item-check]");
+  await row.onclick();
+  ok(state.shopping.checked[row.dataset.shopItemCheck], "kendi ürünü işaretleme çalışır");
+
+  app.querySelector('[data-shop-tab="suggest"]').onclick();
+  const suggestion = app.querySelector('[data-shop-suggest="yulaf"]');
+  ok(suggestion, "geçmiş kullanımdan sık ürün önerisi var");
+  await suggestion.onclick();
+  ok(state.shopping.items.some(x => x.k === "yulaf"), "öneri kendi listesine eklendi");
+  app.querySelector('[data-shop-tab="mine"]').onclick();
+  eq(app.querySelectorAll("[data-shop-item-check]").length, 2, "kendi listesi yalnızca elle seçilen ürünleri gösterir");
+
+  mealTab = "recipes"; render();
+  ok(!app.querySelector("[data-recipe-list]"), "tarif ekranında eski liste düğmesi kalmadı");
+  mealTab = "list"; render();
+  await withLang("en", async () => {
+    render();
+    eq(app.querySelector("h2").textContent.trim(), "My shopping list", "İngilizce liste adı");
+    eq([...app.querySelectorAll("[data-shop-tab]")].map(b => b.textContent.trim()), ["My list", "Suggestions"], "İngilizce sekmeler");
+  });
+  tab = "today"; mealTab = "log"; shopTab = "mine"; state = null;
 });
 
 /* ---- dinlenme sayacı, yenilikler, hakkında ---- */
@@ -475,13 +531,14 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.15.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.15.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[2].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 3, "1.15.0: besin listesi, neler yeni penceresi, sürüm ve Escape");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.15.0"], "1.14.0'ı görmüş kullanıcıya yalnızca 1.15.0");
+  eq(APP_VERSION, "1.16.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.16.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[3].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.16.0"], "1.15.0'ı görmüş kullanıcıya yalnızca 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -694,6 +751,46 @@ test("mutfak: tarif malzemeleri ve hazır menülerin besinleri veritabanında va
     ["p", "c", "f"].forEach(x => { if (!cuisineOk(FOODS[m[x]], cu)) bad.push(`${cu}/${s.name}: ${m[x]}`); })));
   eq(bad, [], "menüde mutfağa uymayan besin");
   ok(RECIPES.filter(r => cuisineOk(r, "intl")).length >= 15, "uluslararası mutfakta yeterli tarif yok");
+});
+test("mutfak: cihaz dili varsayılanı belirler; elle seçim korunur ve Ayarlar'dan değiştirilebilir", async () => {
+  const fixture = await loadFixture();
+  const oldState = state, oldTab = tab, oldMeTab = meTab, oldLang = LANG, oldRecipeOffset = recipeOffset;
+  const savedState = localStorage.getItem(KEY);
+  const nav = Object.getOwnPropertyDescriptor(Navigator.prototype, "languages");
+  const setNav = list => Object.defineProperty(navigator, "languages", { get: () => list, configurable: true });
+  try {
+    state = JSON.parse(JSON.stringify(fixture));
+    state.mealPrefs = state.mealPrefs || {};
+    delete state.mealPrefs.cuisine;
+
+    setNav(["tr-TR"]); LANG = "en";
+    eq(currentCuisine(), "tr", "Türkçe cihazda Türk mutfağı varsayılanı");
+    eq(obDefaults().cuisine, "tr", "ilk kurulum Türkçe cihazda Türk mutfağıyla başlar");
+    setNav(["en-US"]); LANG = "tr";
+    eq(currentCuisine(), "intl", "İngilizce cihazda uluslararası mutfak varsayılanı");
+    eq(obDefaults().cuisine, "intl", "ilk kurulum İngilizce cihazda uluslararası mutfakla başlar");
+
+    state.mealPrefs.cuisine = "intl";
+    setNav(["tr-TR"]);
+    eq(currentCuisine(), "intl", "kayıtlı elle seçim cihaz dilinden bağımsız korunur");
+    eq(state.mealPrefs.cuisine, "intl", "kayıtlı seçim değiştirilmez veya silinmez");
+
+    tab = "settings"; meTab = "set"; render();
+    const btn = app.querySelector('[data-scuisine="tr"]');
+    ok(btn && btn.getAttribute("aria-pressed") === "false", "Ayarlar'da iki mutfak seçeneği var");
+    await btn.onclick();
+    eq(state.mealPrefs.cuisine, "tr", "Ayarlar'dan yapılan seçim kaydedilir");
+    eq(currentCuisine(), "tr", "yeni elle seçim geçerli olur");
+    render();
+    ok(app.querySelector('[data-scuisine="tr"]').classList.contains("sel"), "seçili mutfak Ayarlar'da işaretlidir");
+    setNav(["en-US"]);
+    eq(currentCuisine(), "tr", "cihaz dili sonradan değişse de elle seçim korunur");
+  } finally {
+    state = oldState; tab = oldTab; meTab = oldMeTab; LANG = oldLang; recipeOffset = oldRecipeOffset;
+    if (savedState === null) localStorage.removeItem(KEY); else localStorage.setItem(KEY, savedState);
+    delete navigator.languages;
+    if (nav) Object.defineProperty(Navigator.prototype, "languages", nav);
+  }
 });
 test("mutfak: öneriler seçili mutfaktan gelir; Türk mutfağında domuz eti önerilmez", async () => {
   const fixture = await loadFixture();
@@ -934,7 +1031,7 @@ test("animasyon: açık rehber kartında sahne kurulur ve Motion ile oynar", asy
   ok(window.Motion && typeof Motion.animate === "function", "Motion kütüphanesi yüklenmedi");
   state = await loadFixture();
   migrateMeals(); notice = null; viewDate = null;
-  tab = "plan"; planTab = "program"; howQuery = "squat"; howOpen = "squat";
+  tab = "plan"; planTab = "how"; howQuery = "squat"; howOpen = "squat";
   render();
   const svg = app.querySelector('.how-anim[data-anim="squat"] svg');
   ok(svg, "sahne kurulmadı");
@@ -1104,7 +1201,7 @@ test("erişilebilirlik: her alanın etiketi, her düğmenin adı var", async () 
   for (const lang of ["tr", "en"]) await withLang(lang, () => {
     state = JSON.parse(JSON.stringify(fixture)); migrateMeals(); notice = null; viewDate = null; ensureToday();
     for (const t of ["today", "plan", "meals", "calendar"]) { tab = t; render(); check(t); }
-    for (const p of ["today", "program"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
+    for (const p of ["today", "program", "how"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
     for (const m of ["log", "recipes", "list"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
     for (const m of ["body", "chart", "set"]) { tab = "settings"; meTab = m; render(); check("me:" + m); }
     for (const g of ["kcal", "protein", "water", "sleep", "weigh", "train"]) { tab = "today"; goalOpen = g; render(); check("goal:" + g); }
@@ -1337,11 +1434,11 @@ const withBarcode = async fn => {
 };
 const openAddPanel = async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
-  tab = "meals"; mealTab = "log"; addOpen = slotList()[0][0]; logQuery = ""; logPick = null; logCat = null; render();
+  tab = "meals"; mealTab = "log"; addOpen = slotList()[0][0]; logQuery = ""; logPick = null; render();
 };
 const closeAddPanel = () => {
   document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
-  addOpen = null; logPick = null; logQuery = ""; logCat = null; state = null; tab = "today";
+  addOpen = null; logPick = null; logQuery = ""; state = null; tab = "today";
 };
 const confirmBarcodeInfo = async flow => {
   const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
@@ -2232,9 +2329,9 @@ test("arama: Türkçe karakter ve büyük/küçük harf fark etmez; ad ve takma 
     ok(keys("PEYNİR").includes("beyazpeynir"), "İ harfi ve takma ad (peynir)");
     ok(keys("inek sutu").includes("sut"), "takma ad: inek sütü");
     ok(keys("ev yapimi").includes("cf_x") && keys("EV YAPIMI").includes("cf_x"), "kendi besininin takma adı");
-    /* Liste 1000'den fazla kayıtla büyüdü: sıralamada eşit puanda çok gerçek besin
-       var; kendi besinininin adıyla bulunması kendine özgü sözcükle denenir. */
-    ok(keys("annemin").includes("cf_x"), "kendi besinin adı");
+    /* Eşit puanda kendi besinler kullanım sıklığından hemen sonra öne geçer:
+       genel "kofte" sorgusunda bile ilk 30'da yerini alır. */
+    ok(keys("kofte").includes("cf_x"), "kendi besinin adı");
   } finally { state = null; }
 });
 
@@ -2342,16 +2439,37 @@ test("kolay ekleme: arama sonucunda + varsayılan porsiyonla ekler; satır mikta
   } finally { closeQuick(); }
 });
 
-test("kolay ekleme: kategori listesinde ekleyince kategori açık kalır", async () => {
-  await openAddPanel();
-  try {
-    logCat = "meyve"; render();
-    const first = app.querySelector("#food-results [data-qadd]");
-    ok(first, "kategori satırlarında + var");
-    await first.onclick();
-    eq(logCat, "meyve"); ok(app.querySelector("#food-results [data-qadd]"), "liste durur");
-    eq(state.days[today()].log.length, 1);
-  } finally { logCat = null; closeQuick(); }
+test("besin ekleme paneli: yalnız arama; sık yedikler, barkod, kayıtlı öğün ve Kendi yiyeceklerim kalır", async () => {
+  await withBarcode(async () => {
+    await openAddPanel();
+    try {
+      const custom = { cf_x:{ n:"Ev yapımı yoğurt", p:4, c:5, f:3, lif:0, i:"dairy" } };
+      const saved = [{ id:"s1", name:"Sabah kahvaltısı", items:[{ k:"yulaf", n:FOODS.yulaf.n, g:40, p:FOODS.yulaf.p, c:FOODS.yulaf.c, f:FOODS.yulaf.f, lif:FOODS.yulaf.lif, v:[], i:"grain" }] }];
+      state.customFoods = custom;
+      state.savedMeals = saved;
+      state.days[shiftDays(today(), -1)] = { tasks:[], seeded:true, log:[logItem("yulaf", 40, slotList()[0][0], 1)] };
+      render();
+
+      const panel = app.querySelector(".pick");
+      ok(panel.querySelector("#food-q"), "arama alanı var");
+      ok(!panel.querySelector("[data-cat]"), "kategori rozetleri kalmadı");
+      for (const label of ["Sarküteri", "Kahvaltılık", "Spor & protein", "Ara öğün"])
+        ok(!panel.textContent.includes(label), "kategori etiketi kalmadı: " + label);
+      eq(panel.querySelector("#food-results").children.length, 0, "sorgu olmadan kategori önerisi yok");
+      ok(panel.querySelector(".fav [data-qadd='yulaf']"), "sık yediklerin düğmeleri kaldı");
+      ok(panel.querySelector("[data-saved-add='s1']"), "kayıtlı öğün düğmesi kaldı");
+      ok(panel.querySelector("#bc-scan"), "barkod düğmesi kaldı");
+      ok(panel.querySelector("#custom-toggle"), "kendi besin tanımlama düğmesi kaldı");
+      ok(panel.querySelector("#mf-toggle"), "Kendi yiyeceklerim düğmesi kaldı");
+
+      eq(state.customFoods, custom, "kendi yiyecek verisi silinmedi");
+      eq(state.savedMeals, saved, "kayıtlı öğün verisi silinmedi");
+      ok(state.days[shiftDays(today(), -1)].log.length === 1, "geçmiş kullanım verisi silinmedi");
+
+      logQuery = "yogurt"; render();
+      ok(app.querySelector("#food-results [data-qadd='yogurt']"), "arama sonuçları çalışıyor");
+    } finally { closeQuick(); }
+  });
 });
 
 test("kolay ekleme: miktar kartı varsayılan porsiyonla açılır; +/− ve hazır düğmeler miktarı ve kaloriyi günceller; Ekle toast'la geri alınır", async () => {
@@ -2487,19 +2605,19 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.15.0");
+  eq(APP_VERSION, "1.16.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0", "1.15.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */
 const sugFixture = async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
-  delete state.days[today()].log; mealVariant = 0; addOpen = null; logQuery = ""; logPick = null; logCat = null;
+  delete state.days[today()].log; mealVariant = 0; addOpen = null; logQuery = ""; logPick = null;
   tab = "meals"; mealTab = "log"; render();
   const program = currentProgram();
   const plan = () => buildMeals(program, planDay() + mealVariant);
@@ -2527,7 +2645,7 @@ test("sade beslenme: sekmeler Bugün · Tarifler · Liste; Günlüğüm ve Öner
     ok(app.querySelector("[data-addfood]"), "Bugün ekranı çizilir");
     ok(!app.querySelector("#reroll") && !app.querySelector("[data-fixadd]"), "eski öneri ekranı kalmadı");
     mealTab = "recipes"; render(); ok(app.querySelector("#rec-q"), "tarifler");
-    mealTab = "list"; render(); ok(app.querySelector("[data-shop-days]"), "liste");
+    mealTab = "list"; render(); ok(app.querySelector('h2') && app.querySelector("h2").textContent.includes("Alışveriş listem") && app.querySelectorAll("[data-shop-tab]").length === 2, "sade liste");
   } finally { closeSug(); }
 });
 
@@ -2603,18 +2721,14 @@ test("öneri: Ekle bütün tabağı tek dokunuşla öğüne yazar, kalori günce
   } finally { closeSug(); }
 });
 
-test("öneri: Başka günün planını bir sonrakine geçirir; alışveriş listesi aynı günü kullanır; tarif bağlantısı çalışır", async () => {
-  const { program, plan, slots, keyed } = await sugFixture();
+test("öneri: Başka günün planını bir sonrakine geçirir; tarif bağlantısı çalışır", async () => {
+  const { slots, keyed } = await sugFixture();
   try {
     const text = () => [...app.querySelectorAll(".sug")].map(x => x.textContent).join("|");
     const t0 = text(), v0 = mealVariant;
     app.querySelector("[data-sug-other]").onclick();
     eq(mealVariant, v0 + 1, "mealVariant artar");
     ok(text() !== t0, "öneri değişir");
-    const exp = {};
-    for (const m of plan().meals) for (const i of keyed(m)) exp[i.key] = (exp[i.key] || 0) + i.g;
-    const list = shoppingList(program, { days: 1, recipes: [], checked: {} }, planDay() + mealVariant);
-    for (const [k, g] of Object.entries(exp)) eq((list.find(x => x.k === k) || {}).g, Math.round(g), "liste, ekrandaki öneriyle aynı gün: " + k);
     /* tarifi olan bir besin çıkana kadar günleri çevir */
     let link = null;
     for (let v = 0; v < 40 && !link; v++) { mealVariant = v; render(); link = app.querySelector(".sug [data-recipefor]"); }
@@ -2629,7 +2743,7 @@ test("öneri: Başka günün planını bir sonrakine geçirir; alışveriş list
   } finally { closeSug(); }
 });
 
-test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarla penceresinden geri alınır", async () => {
+test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarlar sayfasındaki pencereden geri alınır", async () => {
   await sugFixture();
   try {
     const x = app.querySelector(".sug [data-mex]");
@@ -2638,7 +2752,9 @@ test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarla p
     await x.onclick();
     ok(mealPrefs().exclude.includes(key), "dışlandı");
     ok(!app.querySelector(`.sug [data-mex="${key}"]`), "tabaktan çıktı");
-    app.querySelector("#prefs-open").onclick();
+    ok(!app.querySelector("#prefs-open"), "Bugün'de Ayarla düğmesi yok");
+    tab = "settings"; meTab = "set"; render();
+    app.querySelector("#s-meal-prefs").onclick();
     const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
     const chip = sheet.querySelector(`[data-munex="${key}"]`);
     ok(chip && chip.textContent.includes("geri al"), "pencerede geri al düğmesi");
@@ -2864,13 +2980,15 @@ test("öğünlerim ve kayıtlı öğünler günlüğün altında katlıdır (var
   } finally { mealAddOpen = false; closeSug(); }
 });
 
-test("Ayarla: tercihler sayfada durmaz; tek düğme pencerede açar, değişiklik kaydedilir ve öneriyi yeniler", async () => {
+test("Ayarlar: Bugün'de Ayarla düğmesi yok; tercihler Ayarlar sayfasındaki tek satırdan pencerede açılır, değişiklik kaydedilir ve öneriyi yeniler", async () => {
   await sugFixture();
   try {
-    eq(app.querySelectorAll("#prefs-open").length, 1, "tek Ayarla düğmesi");
+    eq(app.querySelectorAll("#prefs-open").length, 0, "Bugün'de Ayarla düğmesi yok");
     ok(!app.querySelector("#cuisine-sel") && !app.querySelector("#diet-sel") && !app.querySelector("#use-mine"), "tercihler sayfada yok");
-    const btn = app.querySelector("#prefs-open");
-    ok(btn.textContent.trim() === "Ayarla" && btn.getAttribute("aria-haspopup") === "dialog", "adlı düğme");
+    tab = "settings"; meTab = "set"; render();
+    eq(app.querySelectorAll("#s-meal-prefs").length, 1, "Ayarlar sayfasında tek tercih satırı");
+    const btn = app.querySelector("#s-meal-prefs");
+    ok(btn.textContent.trim() === "Önerileri kendine göre ayarla" && btn.getAttribute("aria-haspopup") === "dialog", "adlı düğme");
     btn.onclick();
     const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
     const dlg = sheet.querySelector('.sheet[role="dialog"]');
@@ -2881,6 +2999,7 @@ test("Ayarla: tercihler sayfada durmaz; tek düğme pencerede açar, değişikli
     const ds = sheet.querySelector("#diet-sel");
     ds.value = "vegan"; await ds.onchange();
     eq(mealPrefs().diet, "vegan", "beslenme türü kaydedildi");
+    tab = "meals"; mealTab = "log"; render();
     const keysOf = () => app.querySelector(".sug") ? [...app.querySelectorAll(".sug [data-mex]")].map(b => b.dataset.mex) : [];
     ok(keysOf().every(k => foodAllowed(k, "vegan")), "arkadaki öneri yeni türe uyar");
     ok(sheet.querySelector("#diet-sel").value === "vegan" && document.activeElement.id === "diet-sel", "pencere tazelenir, odak kalır");
@@ -2893,7 +3012,9 @@ test("Ayarla: tercihler sayfada durmaz; tek düğme pencerede açar, değişikli
     sheet.querySelector(".sheet-x").onclick();
     await new Promise(r => setTimeout(r, 300));
     ok(!sheet.isConnected, "kapanır");
-    ok(app.querySelector("#prefs-open"), "sayfa yerinde");
+    ok(!app.querySelector("#prefs-open"), "Bugün'de Ayarla düğmesi kalmadı");
+    tab = "settings"; meTab = "set"; render();
+    ok(app.querySelector("#s-meal-prefs"), "ayarlar satırı yerinde");
   } finally { closeSug(); }
 });
 
@@ -2906,15 +3027,18 @@ test("sade beslenme: İngilizcede de çalışır, sözlükte olmayan metin kalma
       const s = slots.find(k => sectionOf(k).querySelector(".sug"));
       const box = sectionOf(s).querySelector(".sug");
       ok(box.getAttribute("aria-label") === "Suggestion" && box.querySelector("[data-sug-add]").textContent === "Add" && box.querySelector("[data-sug-other]").textContent === "Another", "tabak İngilizce");
-      eq(app.querySelector("#prefs-open").textContent.trim(), "Tune");
+      ok(!app.querySelector("#prefs-open"), "Bugün'de Ayarla düğmesi yok");
       state.days[today()].log = [logItem("yulaf", 60, slots[0], 1)]; syncKcal(state.days[today()]); render();
       ok(app.querySelector('[data-fold="detail"]').textContent.includes("Details"), "Details");
       ok(app.querySelector('[data-fold="mymeals"]').textContent.includes("My meals"), "My meals");
-      app.querySelector("#prefs-open").onclick();
+      tab = "settings"; meTab = "set"; render();
+      const prefsBtn = app.querySelector("#s-meal-prefs");
+      ok(prefsBtn && prefsBtn.textContent.trim() === "Tune the suggestions", prefsBtn && prefsBtn.textContent);
+      prefsBtn.onclick();
       const sheet = [...document.querySelectorAll(".sheet-bg")].pop();
       ok(sheet.textContent.includes("Tune the suggestions") && sheet.querySelector("#pf-ok").textContent === "OK", sheet.textContent);
       sheet.remove();
-      delete state.days[today()].log; mealVariant = 0; render();
+      tab = "meals"; mealTab = "log"; delete state.days[today()].log; mealVariant = 0; render();
       await app.querySelector("[data-sug-add]").onclick();
       ok(document.querySelector(".toast.act").textContent.includes("added") && document.querySelector(".toast.act").textContent.includes("Undo"));
       eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
@@ -2936,15 +3060,17 @@ const trainFx = async on => {
 const trainReset = () => { freeOpenKey = null; woDone = false; viewDate = null; howOpen = null; howQuery = ""; planTab = "today"; tab = "today"; state = null; };
 const sections = () => app.querySelectorAll("main > section").length;
 
-test("antrenman: alt sekmeler yalnızca Bugün ve Program; rehber Program sekmesinde arama ile açılır", async () => {
+test("antrenman: alt sekmeler Bugün, Program ve Nasıl yapılır; rehber sekmesinde arama ile açılır", async () => {
   try {
     await trainFx(true);
     tab = "plan"; planTab = "today"; render();
-    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.dataset.planTab), ["today", "program"]);
-    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Bugün", "Program"]);
+    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.dataset.planTab), ["today", "program", "how"]);
+    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Bugün", "Program", "Nasıl yapılır"]);
     ok(!app.querySelector("#how-q"), "rehber Bugün'de değil");
     planTab = "program"; render();
-    ok(app.querySelector("#how-q") && app.querySelector('[data-fold="how"]'), "rehber Program'da");
+    ok(!app.querySelector("#how-q"), "rehber Program sekmesinde değil");
+    planTab = "how"; render();
+    ok(app.querySelector("#how-q") && !app.querySelector('[data-fold="how"]'), "rehber kendi sekmesinde, katlanır bölüm yok");
     const q = app.querySelector("#how-q");
     q.value = "squat"; q.oninput();
     ok(app.querySelectorAll("[data-how]").length > 0, "arama rehber kartı buldu");
@@ -2955,27 +3081,32 @@ test("antrenman: alt sekmeler yalnızca Bugün ve Program; rehber Program sekmes
   } finally { trainReset(); }
 });
 
-test("antrenman: eski 'nasıl' bağlantıları Program sekmesindeki rehbere yönlenir", async () => {
+test("antrenman: nasıl yapılır antrenman modunda kapalı durur, dokunuşla animasyon ve adımlar açılır", async () => {
   try {
-    const program = await trainFx(true);
+    await trainFx(true);
     tab = "plan"; planTab = "today"; render();
-    const link = app.querySelector("[data-howgo]");
-    ok(link, "hareketin yanında nasıl bağlantısı var");
-    const id = link.dataset.howgo;
-    link.onclick();
-    eq([tab, planTab, howOpen], ["plan", "program", id]);
-    ok(app.querySelector(".how.on") && app.querySelector(`[data-how="${id}"]`), "rehber kartı açık");
-    ok(!app.querySelector(".fold.shut"), "rehber bölümü açıldı");
-
-    /* antrenman modundaki bağlantı da aynı yere gider */
-    tab = "plan"; planTab = "today"; howOpen = null; render();
     openWorkout();
     const { list } = woList();
-    woIdx = list.findIndex(n => guidesFor(n).length); drawWO();
-    const wid = woEl.querySelector("[data-wohow]").dataset.wohow;
-    woEl.querySelector("[data-wohow]").onclick();
-    ok(!woEl, "antrenman modu kapandı");
-    eq([tab, planTab, howOpen], ["plan", "program", wid]);
+    woIdx = list.findIndex((n, i) => i < list.length - 1 && guidesFor(n)[0] && guidesFor(list[i + 1])[0] && exAnimFor(guidesFor(n)[0]));
+    ok(woIdx >= 0, "animasyonu olan ve ardından hareket gelen bir gün bulundu");
+    drawWO();
+    const id = guidesFor(list[woIdx])[0];
+    let btn = woEl.querySelector("#wo-how-t");
+    ok(btn, "hareketin altında nasıl yapılır düğmesi var");
+    eq(btn.getAttribute("aria-expanded"), "false", "varsayılan kapalı");
+    ok(!woEl.querySelector(".how-anim") && !woEl.querySelector(".how-b"), "kapalıyken animasyon ve adımlar yok");
+    btn.onclick();
+    btn = woEl.querySelector("#wo-how-t");
+    eq(btn.getAttribute("aria-expanded"), "true", "bir dokunuşla açılır");
+    ok(woEl.querySelector(`.how-anim[data-anim="${id}"]`), "hareketin animasyonu");
+    ok(woEl.querySelectorAll(".how-b li").length > 0, "nasıl yapıldığını anlatan yazı");
+    btn.onclick();
+    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "tekrar dokunuşla kapanır");
+    /* sonraki harekete geçince yeni rehber kapalı başlar */
+    woEl.querySelector("#wo-how-t").onclick();
+    ok(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded") === "true");
+    woEl.querySelector("#wo-next").onclick();
+    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "yeni hareket temiz başlar");
   } finally { if (woEl) closeWorkout(); trainReset(); }
 });
 
@@ -3045,7 +3176,9 @@ test("antrenman: program kapalıyken de tek kart ve küçük serbest antrenman b
     ok(app.querySelector("#plan-on") && app.querySelector("#free-open") && !app.querySelector(".prs"));
     eq(a11yBad("program kapalı"), []);
     planTab = "program"; render();
-    ok(app.querySelector("#plan-on") && app.querySelector("#how-q"), "kapalıyken de rehber aranabilir");
+    ok(app.querySelector("#plan-on") && !app.querySelector("#how-q"), "kapalıyken Program sekmesi");
+    planTab = "how"; render();
+    ok(app.querySelector("#how-q"), "kapalıyken de rehber aranabilir");
   } finally { trainReset(); }
 });
 
@@ -3227,7 +3360,7 @@ test("antrenman: yeni ekranlar İngilizcede tam çevrilir ve erişilebilir", asy
       tab = "plan"; planTab = "today"; render();
       ok(app.querySelector("main section h2").textContent.startsWith("Rest today · Next: "), app.querySelector("main section h2").textContent);
       ok(app.querySelector("#free-open").textContent.trim() === "Add a free workout");
-      eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Today", "Plan"]);
+      eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Today", "Plan", "How to"]);
       freeOpenKey = today(); render();
       eq(a11yBad("en dinlenme"), []);
       freeOpenKey = null;
@@ -3235,7 +3368,7 @@ test("antrenman: yeni ekranlar İngilizcede tam çevrilir ve erişilebilir", asy
       tab = "plan"; planTab = "today"; render();
       ok(app.querySelector("#wo-start").textContent.trim() === "Start workout");
       eq(a11yBad("en bugün"), []);
-      planTab = "program"; howOpen = "squat"; render();
+      planTab = "how"; howOpen = "squat"; render();
       eq(a11yBad("en program"), []);
       const real = shortcutPick;
       try {
