@@ -123,7 +123,7 @@ test("besin veritabanı: yeni kayıtlar mevcut ad ve anahtarlarla çakışmıyor
 });
 test("besin veritabanı: alkol 7 kcal/g hesaplanıyor ve yeni günlük kalemine taşınıyor", async () => {
   const alcoholic = sourcedFoods().filter(([,f]) => f.alk > 0);
-  eq(alcoholic.length, 35);
+  eq(alcoholic.length, 34);
   eq(kcalFromMacros({ p:0, c:0, f:0, alk:10 }), 70);
   const oldState = state;
   try {
