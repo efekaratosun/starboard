@@ -479,6 +479,33 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   ok(!document.querySelector(".sheet-bg"), "ikinci kez açılmamalı");
   state = null;
 });
+test("yenilikler: başlangıçtaki uyarı pencereyi engellemez; yükseltmede bir kez açılır, ilk kurulumda açılmaz", async () => {
+  state = await loadFixture();
+  const web = WHATS_NEW.filter(n => !n.native);
+  const seen = web.find(n => verCmp(n.v, web[0].v) < 0).v;   /* görmüş bir eski sürüm */
+  /* Başlangıçta haftalık yenileme uyarısı gibi bir notice görünüyor olsun:
+     uyarı yüzünden yenilik penceresi atlanmamalı. */
+  notice = "trend için yeterli veri yok";
+  state.seenVersion = seen;
+  openWelcomeChain();
+  let sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.querySelector("#wn-t"), "uyarı varken yenilik penceresi açılmadı");
+  sheet.querySelector("#wn-ok").click();
+  await new Promise(r => setTimeout(r, 0));
+  eq(state.seenVersion, APP_VERSION, "görülen sürüm kayda yazılmalı");
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  /* Aynı sürümü görmüş kullanıcıya (ilk kurulumda da böyle) bir daha açılmaz. */
+  openWelcomeChain();
+  ok(!document.querySelector(".sheet-bg"), "görülmüş sürüm tekrar açılmamalı");
+  /* Kullanıcı yeniden yükseltme yaptıysa (eski sürüme dönmüş kayıt) yine bir kez açılır. */
+  state.seenVersion = seen;
+  openWelcomeChain();
+  sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.querySelector("#wn-t"), "yükseltmede yeniden açılmalı");
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  notice = null;
+  state = null;
+});
 test("hakkında: sağlık uyarısı, kaynaklar ve gizlilik sayfası yerinde", async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
   tab = "settings"; meTab = "set"; render();

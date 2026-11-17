@@ -88,3 +88,11 @@ function maybeShowWhatsNew(then){
   el.querySelector("#wn-ok").onclick = close;
   el.querySelector("#wn-ok").focus();
 }
+
+/* Açılıştaki sıra: önce yenilikler, kapanınca hafta kapanışı. Başlangıçtaki
+   uyarı (notice) bu sırayı bozmaz: yükseltme bildirimi görünür durumdayken de
+   yenilik penceresi sırasını alır. İlk kurulumda seenVersion zaten güncel
+   olduğu için hiç açılmaz. */
+function openWelcomeChain(){
+  maybeShowWhatsNew(maybeShowWeekClose);
+}
