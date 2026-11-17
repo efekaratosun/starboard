@@ -8,3 +8,5 @@ ADIM 2: sw.js CACHE adi starboard-202611141200 degerinden starboard-202611171200
 ADIM 3: tests.js sabit sayimlari 1325 yeni kayit ve 35 alkollu besin olarak guncellendi; Chrome headless testleri port 8770 uzerinde calistirildi: 176 gecti, 0 kaldi; sunucu kapatildi.
 BITTI
 ADIM 1: 1.16.0 surum hazirligi tamamlandi: storage.js APP_VERSION, package.json, package-lock.json ve ROADMAP surumleri 1.16.0 yapildi; whatsnew.js ve en.js'e 8 kisa TR/EN yenilik maddesi eklendi; tests.js surum ve yenilik beklentileri guncellendi; CHANGELOG.md'ye main..HEAD degisikliklerinden 1.16.0 bolumu eklendi; SCHEMA 3 korundu. Commit: 1.16.0: surum numarasi, yenilikler (TR/EN), CHANGELOG.
+ADIM 2: Chrome headless testleri port 8770 uzerinde calistirildi: 176 gecti, 0 kaldi; sunucu kapatildi.
+BITTI
