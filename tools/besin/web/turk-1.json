@@ -1187,73 +1187,80 @@
  },
  {
   "ad": "Cızbız köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 205,
+  "p": 14.27,
+  "c": 6.53,
+  "f": 13.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-k%C3%B6fte",
+  "not": "yakin_kayit: Izgara köfte"
  },
  {
   "ad": "Tavuk köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 181,
+  "p": 30.46,
+  "c": 1.47,
+  "f": 15.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tavuk-%C5%9Fi%C5%9F",
+  "not": "yakin_kayit: Tavuk şiş"
  },
  {
   "ad": "Oruk köftesi",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 139,
+  "p": 7.76,
+  "c": 48.27,
+  "f": 6.89,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/fellah-k%C3%B6ftesi",
+  "not": "yakin_kayit: Fellah köftesi"
  },
  {
   "ad": "Şehriyeli köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 187,
+  "p": 13.32,
+  "c": 10.02,
+  "f": 10.05,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-k%C3%B6fte",
+  "not": "yakin_kayit: Fırında köfte"
  },
  {
   "ad": "Nohutlu köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 139,
+  "p": 7.76,
+  "c": 48.27,
+  "f": 6.89,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/fellah-k%C3%B6ftesi",
+  "not": "yakin_kayit: Fellah köftesi"
  },
  {
   "ad": "Yoğurtlu köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 183,
+  "p": 17.75,
+  "c": 15.79,
+  "f": 9.07,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sulu-k%C3%B6fte",
+  "not": "yakin_kayit: Sulu köfte"
  },
  {
   "ad": "Salçalı köfte",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 187,
+  "p": 13.32,
+  "c": 10.02,
+  "f": 10.05,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-k%C3%B6fte",
+  "not": "yakin_kayit: Fırında köfte"
  },
  {
   "ad": "Tavuk kavurma",
@@ -1307,53 +1314,58 @@
  },
  {
   "ad": "Tavuk ızgara",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 188,
+  "p": 28.69,
+  "c": 0,
+  "f": 7.35,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/izgara-tavuk-%28derisi-yenmeden%29",
+  "not": "yakin_kayit: Izgara tavuk (derisi yenmeden)"
  },
  {
   "ad": "Tavuk kızartması",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 237,
+  "p": 27.07,
+  "c": 0,
+  "f": 13.49,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kavrulmu%C5%9F-izgara-veya-f%C4%B1r%C4%B1nda-tavuk",
+  "not": "yakin_kayit: Kavrulmuş ızgara veya fırında tavuk"
  },
  {
   "ad": "Tavuk pane",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 237,
+  "p": 27.07,
+  "c": 0,
+  "f": 13.49,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kavrulmu%C5%9F-izgara-veya-f%C4%B1r%C4%B1nda-tavuk",
+  "not": "yakin_kayit: Kavrulmuş ızgara veya fırında tavuk"
  },
  {
   "ad": "Tavuk kiev",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 237,
+  "p": 27.07,
+  "c": 0,
+  "f": 13.49,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kavrulmu%C5%9F-izgara-veya-f%C4%B1r%C4%B1nda-tavuk",
+  "not": "yakin_kayit: Kavrulmuş ızgara veya fırında tavuk"
  },
  {
   "ad": "Tavuk kapama",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 172,
+  "p": 16.06,
+  "c": 9.72,
+  "f": 7.57,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tavuklu-patates",
+  "not": "yakin_kayit: Tavuklu patates"
  },
  {
   "ad": "Tavuk güveç",
@@ -1367,133 +1379,144 @@
  },
  {
   "ad": "Tavuklu mantar sote",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 123,
+  "p": 9.85,
+  "c": 4.84,
+  "f": 7.21,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebzeli-tavuk-yeme%C4%9Fi",
+  "not": "yakin_kayit: Tavuklu sebze yemeği"
  },
  {
   "ad": "Tavuklu bezelye",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 150,
+  "p": 5.65,
+  "c": 9.35,
+  "f": 10.37,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tavuklu-bezelye-yeme%C4%9Fi"
  },
  {
   "ad": "Tavuklu türlü",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 123,
+  "p": 9.85,
+  "c": 4.84,
+  "f": 7.21,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebzeli-tavuk-yeme%C4%9Fi",
+  "not": "yakin_kayit: Tavuklu sebze yemeği"
  },
  {
   "ad": "Tavuklu bamya",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 123,
+  "p": 9.85,
+  "c": 4.84,
+  "f": 7.21,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebzeli-tavuk-yeme%C4%9Fi",
+  "not": "yakin_kayit: Tavuklu sebze yemeği"
  },
  {
   "ad": "Tavuklu patates",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 172,
+  "p": 16.06,
+  "c": 9.72,
+  "f": 7.57,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tavuklu-patates"
  },
  {
   "ad": "Tavuk döner",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 181,
+  "p": 30.46,
+  "c": 1.47,
+  "f": 15.09,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tavuk-%C5%9Fi%C5%9F",
+  "not": "yakin_kayit: Tavuk şiş"
  },
  {
   "ad": "Tavuk burger",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 237,
+  "p": 27.07,
+  "c": 0,
+  "f": 13.49,
   "lif": null,
   "porsiyon_g": 220,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kavrulmu%C5%9F-izgara-veya-f%C4%B1r%C4%B1nda-tavuk",
+  "not": "yakin_kayit: Kavrulmuş ızgara veya fırında tavuk"
  },
  {
   "ad": "Tavuklu sandviç",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 237,
+  "p": 27.07,
+  "c": 0,
+  "f": 13.49,
   "lif": null,
   "porsiyon_g": 220,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kavrulmu%C5%9F-izgara-veya-f%C4%B1r%C4%B1nda-tavuk",
+  "not": "yakin_kayit: Kavrulmuş ızgara veya fırında tavuk"
  },
  {
   "ad": "Tavuklu makarna",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 163,
+  "p": 6.87,
+  "c": 14.52,
+  "f": 8.75,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1n-makarna",
+  "not": "yakin_kayit: Fırın makarna"
  },
  {
   "ad": "Tavuklu karnabahar",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 123,
+  "p": 9.85,
+  "c": 4.84,
+  "f": 7.21,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebzeli-tavuk-yeme%C4%9Fi",
+  "not": "yakin_kayit: Tavuklu sebze yemeği"
  },
  {
   "ad": "Tavuklu ıspanak",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 115,
+  "p": 2.11,
+  "c": 5.09,
+  "f": 10.3,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ispanak-yeme%C4%9Fi",
+  "not": "yakin_kayit: Ispanak yemeği"
  },
  {
   "ad": "Kaz kavurma",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 267,
+  "p": 21.21,
+  "c": 0.86,
+  "f": 19.33,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kuzu-%C5%9Ei%C5%9F",
+  "not": "yakin_kayit: Kuzu şiş"
  },
  {
   "ad": "Tavuklu krep",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 237,
+  "p": 27.07,
+  "c": 0,
+  "f": 13.49,
   "lif": null,
   "porsiyon_g": 180,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kavrulmu%C5%9F-izgara-veya-f%C4%B1r%C4%B1nda-tavuk",
+  "not": "yakin_kayit: Kavrulmuş ızgara veya fırında tavuk"
  },
  {
   "ad": "Palamut",
@@ -1517,23 +1540,24 @@
  },
  {
   "ad": "Çinekop",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 96,
+  "p": 21.9,
+  "c": 0,
+  "f": 1.1,
   "lif": null,
   "porsiyon_g": 150,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fitekran.com/besin-degeri/cinekop-baligi/"
  },
  {
   "ad": "Sarıkanat",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 84,
+  "p": 17.76,
+  "c": 0,
+  "f": 0.92,
   "lif": null,
   "porsiyon_g": 180,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/bal%C4%B1k",
+  "not": "yakin_kayit: Balık"
  },
  {
   "ad": "Kefal",
@@ -1707,13 +1731,14 @@
  },
  {
   "ad": "Sudak",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 84,
+  "p": 17.76,
+  "c": 0,
+  "f": 0.92,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/bal%C4%B1k",
+  "not": "yakin_kayit: Balık"
  },
  {
   "ad": "Hamsi buğulama",
@@ -1817,23 +1842,25 @@
  },
  {
   "ad": "Balık pilaki",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 223,
+  "p": 21.2,
+  "c": 5.12,
+  "f": 11.4,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fitekran.com/besin-degeri/firinda-balik/",
+  "not": "yakin_kayit: Fırında balık"
  },
  {
   "ad": "Balık güveç",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 223,
+  "p": 21.2,
+  "c": 5.12,
+  "f": 11.4,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fitekran.com/besin-degeri/firinda-balik/",
+  "not": "yakin_kayit: Fırında balık"
  },
  {
   "ad": "Deniz mahsulleri güveç",
