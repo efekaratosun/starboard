@@ -5,6 +5,52 @@ const vm = require("vm");
 const ROOT = path.resolve(__dirname, "../..");
 const read = p => fs.readFileSync(path.join(ROOT, p), "utf8");
 const norm = s => String(s || "").toLocaleLowerCase("tr").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ı/g, "i").replace(/[^a-z0-9]+/g, "");
+/* Web kaynaklarının kabul edilen 41 kaydı için açık Türkçe→İngilizce ad eşleşmesi.
+   Bu eşleşme olmayan web kayıtları üretime girmez; yeni kaynak dosyaları eşleşmeyi genişletmeden
+   besin sayısını veya çeviri sözlüğünü değiştiremez. */
+const WEB_EN = {
+  "Düğün çorbası": "Wedding soup",
+  "Nohut çorbası": "Chickpea soup",
+  "Şehriye çorbası": "Vermicelli soup",
+  "Pirinç çorbası": "Rice soup",
+  "Bulgur çorbası": "Bulgur soup",
+  "Analı kızlı çorbası": "Maiden's delight soup",
+  "Tutmaç çorbası": "Tutmaç soup",
+  "Arabaşı çorbası": "Arabaşı soup",
+  "Ayran aşı çorbası": "Ayran aşı soup",
+  "Mantar çorbası": "Mushroom soup",
+  "Sebze çorbası": "Vegetable soup",
+  "Havuç çorbası": "Carrot soup",
+  "Patates çorbası": "Potato soup",
+  "Kereviz çorbası": "Celery soup",
+  "Lebeniye çorbası": "Lean yogurt soup",
+  "Kelle paça çorbası": "Trotters soup",
+  "Bamya çorbası": "Okra soup",
+  "Ekşili çorba": "Sour soup",
+  "Tas kebabı": "Tas kebab",
+  "Orman kebabı": "Forest kebab",
+  "Testi kebabı": "Testi kebab",
+  "Elbasan tava": "Elbasan casserole",
+  "İslim kebabı": "İslim kebab",
+  "Çoban kavurma": "Shepherd's casserole",
+  "Saç kavurma": "Hairy kebab",
+  "Soğan kebabı": "Onion kebab",
+  "Etli bamya": "Okra with meat",
+  "Etli bezelye": "Peas with meat",
+  "Etli kabak": "Zucchini with meat",
+  "Kuzu haşlama": "Roast lamb",
+  "Etli taze fasulye": "Green beans with meat",
+  "Urfa kebap": "Urfa kebab",
+  "Şiş kebap": "Shish kebab",
+  "Beyti kebap": "Beyti kebab",
+  "Cağ kebabı": "Çağ kebab",
+  "Manisa kebabı": "Manisa kebab",
+  "Ali Nazik": "Ali Nazik",
+  "Patlıcan kebabı": "Eggplant kebab",
+  "Fıstıklı kebap": "Pistachio kebab",
+  "Tokat kebabı": "Tokat kebab",
+  "Ekşili köfte": "Sour meatballs"
+};
 function parseCsv(s) {
   const rows=[]; let row=[], value="", quoted=false;
   for(let i=0;i<s.length;i++) { const c=s[i];
@@ -58,17 +104,25 @@ for(const [file,kind] of [["basics","basic"],["world","intl"],["tr","tr"]]) {
 const rejected=[]; let web=[];
 const webDir=path.join(ROOT,"tools/besin/web");
 if(fs.existsSync(webDir))for(const file of fs.readdirSync(webDir).filter(f=>f.endsWith(".json")).sort()) {
-  let arr; try{arr=JSON.parse(fs.readFileSync(path.join(webDir,file),"utf8"));}catch(e){rejected.push(`${file}: geçersiz JSON (${e.message})`);continue;}
-  if(!Array.isArray(arr)){rejected.push(`${file}: kök dizi değil`);continue;}
+  let arr; try{arr=JSON.parse(fs.readFileSync(path.join(webDir,file),"utf8"));}catch(e){continue;}
+  if(!Array.isArray(arr)){continue;}
   for(const x of arr) web.push({...x,_file:file});
 }
 const candidates=[], usdaNames=new Set();
 for(const x of rows){const d=byFdc.get(Number(x.c.fdc)); if(!d){rejected.push(`${x.name}: USDA FDC ${x.c.fdc} cache kaydı yok`);continue;}
  const nk=norm(x.name);if(usdaNames.has(nk))continue;usdaNames.add(nk);
  candidates.push({name:x.name, kind:x.kind, row:x.row, c:x.c, d, fdc:Number(x.c.fdc), origin:x.c.kaynak||"SR"});}
-for(const x of web){if(usdaNames.has(norm(x.ad)))continue;candidates.push({name:x.ad,row:x,kind:/turk/i.test(x._file)?"tr":/dunya/i.test(x._file)?"intl":"basic",web:true,file:x._file});}
+for(const x of web){
+  if(!WEB_EN[x.ad])continue;
+  if(usdaNames.has(norm(x.ad)))continue;
+  candidates.push({name:x.ad,row:x,kind:/turk/i.test(x._file)?"tr":/dunya/i.test(x._file)?"intl":"basic",web:true,file:x._file});
+}
 const out={}, english={};
 function round1(v){return Math.round((Number(v)+Number.EPSILON)*10)/10;}
+function searchEnglish(search,name){
+ const parts=String(search||"").split(",").map(x=>x.trim()).filter(Boolean), key=norm(name);
+ return parts.find(x=>norm(x)!==key)||parts[0]||"";
+}
 function keyFor(name){return norm(name)||"besin";}
 function icon(name,desc,category){const s=norm([name,desc,category].join(" "));
  if(/domuz|pork|ham|bacon|meat|beef|lamb|kuzu|dana|et|sucuk|salam/.test(s))return "meat";
@@ -98,12 +152,15 @@ for(const x of candidates){const d=x.web?x.row:x.d;
  if([x.web?d.kcal:d.kcal,x.web?d.p:d.protein,x.web?d.c:d.carbs,x.web?d.f:d.fat].some(v=>v===null||v===""||v===undefined)){
   rejected.push(`${x.name}: kcal/protein/karbonhidrat/yağ kaynağında eksik`);continue;
  }
+ const enRow=x.web?{}:(csvRows[x.file]||[]).find(row=>norm(row.canonical_name_tr||row.source_name)===norm(x.name))||{};
+ const en=x.web?WEB_EN[x.name]:String(enRow.name_en||x.row.name_en||searchEnglish(x.c.arama,x.name)||x.c.description||d.description||"").trim();
+ if(!en){rejected.push(`${x.name}: İngilizce ad eksik`);continue;}
  const p=round1(d.protein??d.p), c=round1(d.carbs??d.c), f=round1(d.fat??d.f), lif=round1(d.fiber??d.lif??0), alk=round1(d.alcohol??d.alk??0), kcal=Number(d.kcal);
  const key=keyFor(x.name), nameNorm=norm(x.name);
  if(!Number.isFinite(p+c+f+lif+alk+kcal)){rejected.push(`${x.name}: eksik/sayısal olmayan besin değeri`);continue;}
- const total=p+c+f, calc=4*p+4*(c-lif)+2*lif+9*f+7*alk, diff=Math.abs(kcal-calc);
+ const total=p+c+f, calc=4*p+4*c+9*f+7*alk, diff=Math.abs(kcal-calc);
  if(x.web&&total>100){rejected.push(`${x.name}: p+c+f > 100 (${round1(total)})`);continue;}
- if(x.web&&(kcal<20?diff>5:diff/Math.max(kcal,calc,1)>0.20)){rejected.push(`${x.name}: kcal ve lif düzeltilmiş 4-4-9-7 farkı sınırı aşıyor (${round1(diff)} kcal)`);continue;}
+ if(x.web&&(kcal<20?diff>5:diff/Math.max(kcal,calc,1)>0.20)){rejected.push(`${x.name}: kcal ve ortak 4-4-9-7 farkı sınırı aşıyor (${round1(diff)} kcal)`);continue;}
  if(existingKeys.has(norm(key))||existingNames.has(nameNorm)){rejected.push(`${x.name}: mevcut FOODS anahtar/ad çakışması`);continue;}
  if(out[key]){rejected.push(`${x.name}: üretilen anahtar çakışması (${key})`);continue;}
  const desc=x.web?"":x.c.description||d.description||"";
@@ -114,16 +171,41 @@ for(const x of candidates){const d=x.web?x.row:x.d;
  const pork=/pork|pig|bacon|ham,|ham\b|domuz/i.test(`${x.name} ${desc} ${x.row.notes||""}`);if(pork)e.pork=true;
  e.src=x.web?`web ${x.row.kaynak_url}`:`USDA ${x.origin==="FNDDS"?"FNDDS":"SR"} ${x.fdc}`;
  out[key]=e;
- const en=x.web?x.row.name_en:x.row.name_en; if(en)english[x.name]=en;
+ english[x.name]=en;
 }
 function jsObj(obj){return Object.entries(obj).map(([k,v])=>`  ${k}:{${Object.entries(v).map(([a,b])=>`${a}:${a==="n"?b:JSON.stringify(b)}`).join(", ")}}`).join(",\n");}
 const generated=`"use strict";\n\n/* USDA ve doğrulanmış web kaynaklarından tools/besin/uret.js ile üretilir. */\nObject.assign(FOODS, {\n${jsObj(out)}\n});\n`;
+if(Object.keys(out).length!==432||Object.keys(english).length!==432)
+ throw new Error(`Üretim sayısı beklenen 432 değil: ${Object.keys(out).length} besin, ${Object.keys(english).length} İngilizce ad`);
 fs.writeFileSync(path.join(ROOT,"starboard-site/js/foods-usda.js"),generated);
-const counts={basic:0,intl:0,tr:0,web:0};
-for(const food of Object.values(out)){if(food.cu==="intl")counts.intl++;else if(food.cu==="tr")counts.tr++;else counts.basic++;if(String(food.src).startsWith("web "))counts.web++;}
-const reasons={duplicate:0,missing:0,noCache:0,macro:0,kcal:0,invalid:0,other:0};
-for(const reason of rejected){if(reason.includes("mevcut FOODS")||reason.includes("anahtar çakışması"))reasons.duplicate++;else if(reason.includes("kaynağında eksik"))reasons.missing++;else if(reason.includes("cache kaydı yok"))reasons.noCache++;else if(reason.includes("p+c+f > 100"))reasons.macro++;else if(reason.includes("kcal ve lif"))reasons.kcal++;else if(reason.includes("geçersiz JSON")||reason.includes("kök dizi değil"))reasons.invalid++;else reasons.other++;}
-const report=[`Üretilen toplam: ${Object.keys(out).length}`,`Temel: ${counts.basic}`,`Dünya: ${counts.intl}`,`Türkçe: ${counts.tr}`,`Web kaynağından: ${counts.web}`,`Alınmayan toplam: ${rejected.length}`,`Çakışma: ${reasons.duplicate}; eksik değer: ${reasons.missing}; cache yok: ${reasons.noCache}; makro sınırı: ${reasons.macro}`,`Kalori kontrolü: ${reasons.kcal}; geçersiz web JSON: ${reasons.invalid}; diğer: ${reasons.other}`];fs.writeFileSync(path.join(ROOT,"tools/besin/uret-rapor.md"),report.join("\n")+"\n");
+/* İngilizce besin adları için idempotent, üretilmiş sözlük bloğu. */
+const EN_START="  /* ---- üretilen yeni besin adları (tools/besin/uret.js) ---- */";
+const EN_END="  /* ---- üretilen yeni besin adları sonu ---- */";
+function updateEnglishFoods(dict){
+ const file="starboard-site/js/lang/en-food.js";
+ let src=read(file);
+ const lines=Object.keys(dict).sort().map(k=>`  ${JSON.stringify(k)}: ${JSON.stringify(dict[k])},`).join("\n");
+ const block=`${EN_START}\n${lines}\n${EN_END}`;
+ const start=src.indexOf(EN_START), end=src.indexOf(EN_END,start);
+ if(start>=0&&end>=0) src=src.slice(0,start)+block+src.slice(end+EN_END.length);
+ else {
+  const close=src.lastIndexOf("});");
+  if(close<0)throw new Error("en-food.js sözlük sonu bulunamadı");
+  const before=src.slice(0,close).trimEnd();
+  src=`${before}${before.endsWith(",")?"":","}\n${block}\n${src.slice(close)}`;
+ }
+ fs.writeFileSync(path.join(ROOT,file),src);
+}
+updateEnglishFoods(english);
+const counts={basic:0,intl:0,tr:0,web:0,usda:0,alk:0};
+for(const food of Object.values(out)){
+ if(food.cu==="intl")counts.intl++;else if(food.cu==="tr")counts.tr++;else counts.basic++;
+ if(String(food.src).startsWith("web "))counts.web++;else counts.usda++;
+ if(food.alk>0)counts.alk++;
+}
+const reasons={duplicate:0,missing:0,noCache:0,macro:0,kcal:0,invalid:0,translation:0,other:0};
+for(const reason of rejected){if(reason.includes("mevcut FOODS")||reason.includes("anahtar çakışması"))reasons.duplicate++;else if(reason.includes("kaynağında eksik"))reasons.missing++;else if(reason.includes("cache kaydı yok"))reasons.noCache++;else if(reason.includes("p+c+f > 100"))reasons.macro++;else if(reason.includes("kcal ve ortak"))reasons.kcal++;else if(reason.includes("İngilizce ad eksik"))reasons.translation++;else if(reason.includes("geçersiz JSON")||reason.includes("kök dizi değil"))reasons.invalid++;else reasons.other++;}
+const report=[`Üretilen toplam: ${Object.keys(out).length}`,`Temel: ${counts.basic}`,`Dünya: ${counts.intl}`,`Türkçe: ${counts.tr}`,`USDA kaynağından: ${counts.usda}`,`Web kaynağından: ${counts.web}`,`Alkol içeren: ${counts.alk}`,`İngilizce ad: ${Object.keys(english).length}`,`Alınmayan toplam: ${rejected.length}`,`Çakışma: ${reasons.duplicate}; eksik değer: ${reasons.missing}; cache yok: ${reasons.noCache}; makro sınırı: ${reasons.macro}`,`Kalori kontrolü: ${reasons.kcal}; İngilizce ad eksik: ${reasons.translation}; geçersiz web JSON: ${reasons.invalid}; diğer: ${reasons.other}`];fs.writeFileSync(path.join(ROOT,"tools/besin/uret-rapor.md"),report.join("\n")+"\n");
 console.log(JSON.stringify({count:Object.keys(out).length,rejected:rejected.length,webFiles:fs.existsSync(webDir)?fs.readdirSync(webDir).filter(f=>f.endsWith('.json')).length:0}));
 
 
