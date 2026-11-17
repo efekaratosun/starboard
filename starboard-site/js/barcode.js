@@ -9,7 +9,7 @@
    yoktur (teknik olarak sunucu IP adresini görür; privacy.html bunu yazar). Ürün görselleri
    indirilmez. Aynı barkod bir daha okutulursa ürün cihazdan bulunur, ağa çıkılmaz.
 
-   Kayıt: state.customFoods["bc_" + barkod] = { n, p, c, f, lif, i, bc, a, br?, src?, por? }
+   Kayıt: state.customFoods["bc_" + barkod] = { n, p, c, f, alk, lif, i, bc, a, br?, src?, por? }
    bc barkod, a arama takma adı (barkod ve marka; numarayla arama çalışsın), src:"off" verinin
    Open Food Facts'ten geldiği, por tek bir "porsiyon" ölçüsü. Open Food Facts'ten gelen hiçbir
    metin unitName'e yazılmaz (bazı ekranlar onu kaçışsız basar).
@@ -43,12 +43,12 @@ function normGtin(code){
 const offUrl = code => `${OFF_HOST}/api/v2/product/${normGtin(code)}.json?fields=${OFF_FIELDS}`;
 
 /* Open Food Facts yanıtı → { status:"ok"|"partial"|"notfound", food, flags }.
-   food: { n, br, p, c, f, lif, serving } (100 g başına gram; serving gram ya da null).
+   food: { n, br, p, c, f, alk, lif, serving } (100 g başına gram; serving gram ya da null).
    flags: { ml, fromServing, absurd, labelKcal, kcalMismatch }.
-   Kurallar: değerler sayı, 0..100 olmalı ve p+c+f en fazla 105; aksi halde o değer eksik sayılır.
+   Kurallar: değerler sayı, 0..100 olmalı ve p+c+f+alk en fazla 105; aksi halde o değer eksik sayılır.
    Yalnızca porsiyon başına verilmişse serving_quantity ile 100 g'a çevrilir. Enerji yalnızca
-   kJ ise 4,184'e bölünür; makrolardan hesaplanan kaloriyle etiket kalorisi %20'den fazla
-   (ve en az 10 kcal) ayrışırsa kcalMismatch. Ad ve marka metinleri < > ve denetim
+   kJ ise 4,184'e bölünür; ortak 4-4-9-7 formülüyle hesaplanan kaloriyle etiket kalorisi %20'den
+   fazla (ve en az 10 kcal) ayrışırsa kcalMismatch. Ad ve marka metinleri < > ve denetim
    karakterlerinden arındırılır (ekran yine de kaçışlı basar; bu ikinci savunma hattı). */
 function offToFood(json, lang){
   const P = json && typeof json === "object" ? json.product : null;
@@ -78,7 +78,9 @@ function offToFood(json, lang){
     return v;
   };
   let p = macro("proteins"), c = macro("carbohydrates"), f = macro("fat");
-  if ((p || 0) + (c || 0) + (f || 0) > 105){ absurd = true; p = c = f = null; }
+  let alk = per100("alcohol", true);
+  if (alk === null || alk < 0 || alk > 100){ if (alk !== null) absurd = true; alk = 0; }
+  if ((p || 0) + (c || 0) + (f || 0) + alk > 105){ absurd = true; p = c = f = null; }
   let lif = per100("fiber", false);
   if (lif === null || lif < 0 || lif > 100) lif = 0;
 
@@ -101,8 +103,8 @@ function offToFood(json, lang){
 
   const complete = p !== null && c !== null && f !== null;
   const food = { n: name, br, p: p === null ? null : r1(p), c: c === null ? null : r1(c),
-    f: f === null ? null : r1(f), lif: r1(lif), serving };
-  const calc = complete ? p * 4 + c * 4 + f * 9 : null;
+    f: f === null ? null : r1(f), alk: r1(alk), lif: r1(lif), serving };
+  const calc = complete ? kcalFromMacros({ p, c, f, alk }) : null;
   const kcalMismatch = complete && label !== null
     && Math.abs(calc - label) > 10 && Math.abs(calc - label) > 0.2 * Math.max(calc, label);
   return { status: complete ? "ok" : "partial", food,
@@ -137,12 +139,12 @@ function foodByBarcode(code){
   return null;
 }
 
-/* food: { n, p, c, f, lif?, br?, serving?, src? }. Aynı barkod aynı anahtara yazılır, kopya olmaz. */
+/* food: { n, p, c, f, alk?, lif?, br?, serving?, src? }. Aynı barkod aynı anahtara yazılır, kopya olmaz. */
 function saveBarcodeFood(code, food){
   const bc = normGtin(code), key = "bc_" + bc;
   const br = typeof food.br === "string" ? food.br.slice(0, 40) : "";
-  const rec = { n: String(food.n || bc).slice(0, 80), p: food.p, c: food.c, f: food.f, lif: food.lif || 0,
-    i: "grain", bc, a: bc + (br ? " " + br : "") };
+  const rec = { n: String(food.n || bc).slice(0, 80), p: food.p, c: food.c, f: food.f,
+    alk: food.alk || 0, lif: food.lif || 0, i: "grain", bc, a: bc + (br ? " " + br : "") };
   if (br) rec.br = br;
   if (food.src === "off") rec.src = "off";
   if (food.serving > 0) rec.por = [{ n: tx("porsiyon"), g: Math.round(food.serving) }];
@@ -222,7 +224,7 @@ function bcForm(code, res){
   if (fl.kcalMismatch) notes.push([tx("Etiket {0} kcal diyor, değerleri kontrol et.", [fl.labelKcal]), true]);
   if (res.status === "ok" || res.status === "partial") notes.push([tx("Kaynak: Open Food Facts"), false]);
   const pre = { title: tx("Barkod {0}", [code]), notes, bc: code, n: food.n || "", p: food.p, c: food.c, f: food.f,
-    lif: food.lif, br: food.br, serving: food.serving,
+    alk: food.alk || 0, lif: food.lif, br: food.br, serving: food.serving,
     src: res.status === "ok" || res.status === "partial" ? "off" : null,
     saveLabel: tx("Kaydet ve ekle"), requireAll: true };
   bcShow(customFoodForm(pre));

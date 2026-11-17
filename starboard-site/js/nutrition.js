@@ -1,6 +1,15 @@
 "use strict";
 
 /* ---------------- beslenme önerileri ---------------- */
+/* Bütün besin kalorileri bu ortak formülle hesaplanır: protein ve karbonhidrat 4,
+   yağ 9, alkol 7 kcal/g. Eski kayıtlarda alkol alanı olmayabilir; o zaman 0 sayılır.
+   Makrolar 100 g başına tanımlıdır; grams verilirse miktar oranı uygulanır. */
+function kcalFromMacros(macros, grams){
+  const m = macros || {}, n = v => { const x = Number(v); return Number.isFinite(x) ? x : 0; };
+  const g = grams == null ? 100 : n(grams);
+  return (4*n(m.p) + 4*n(m.c) + 9*n(m.f) + 7*n(m.alk)) * g / 100;
+}
+
 /* 100 g ham/pişmemiş ürün başına yaklaşık makrolar. */
 const FOODS = {
   /* p/c/f/lif: 100 g başına gram. v: o besinin kayda değer kaynağı olduğu mikro besinler. */
@@ -1124,19 +1133,19 @@ function buildMeals(program, variantIndex){
 
   const mealList = userMeals();
   const shares = mealShares(mealList);
-  const nutOf = f => ({ k:(f.p*4 + f.c*4 + f.f*9) / 100, p:f.p / 100, c:f.c / 100, f:f.f / 100 });
+  const nutOf = f => ({ k:kcalFromMacros(f) / 100, p:f.p / 100, c:f.c / 100, f:f.f / 100 });
 
   /* 1) Kullanıcının sabitlediği yiyecekler öğün öğün toplanır. */
   const fixed = mealList.map(mm => {
-    const acc = { items:[], keys:[], p:0, c:0, f:0, lif:0, kcal:0, micros:new Set() };
+    const acc = { items:[], keys:[], p:0, c:0, f:0, alk:0, lif:0, kcal:0, micros:new Set() };
     for (const x of fixedOf(mm.id)){
       const fo = foodOf(x.k);
       acc.items.push({ text: portion(fo, x.g).text, icon: fo.i, key:x.k, fixed:true, g:x.g });
       acc.keys.push(x.k);
-      acc.p += fo.p*x.g/100; acc.c += fo.c*x.g/100; acc.f += fo.f*x.g/100; acc.lif += (fo.lif||0)*x.g/100;
+      acc.p += fo.p*x.g/100; acc.c += fo.c*x.g/100; acc.f += fo.f*x.g/100; acc.alk += (fo.alk||0)*x.g/100; acc.lif += (fo.lif||0)*x.g/100;
       (fo.v || []).forEach(v => acc.micros.add(v));
     }
-    acc.kcal = acc.p*4 + acc.c*4 + acc.f*9;
+    acc.kcal = kcalFromMacros(acc);
     return acc;
   });
   const dayFix = fixed.reduce((a, x) => a + x.kcal, 0);
@@ -1177,24 +1186,24 @@ function buildMeals(program, variantIndex){
     comps.forEach(c => { if (!c.lock) c.g = roundTo(c.g, 5, c.lo, c.hi); });
   }
 
-  const total = { p:0, c:0, f:0, lif:0, kcal:0 };
+  const total = { p:0, c:0, f:0, alk:0, lif:0, kcal:0 };
   const micros = new Set();
   const out = mealList.map((mm, idx) => {
     const fx = fixed[idx];
     fx.micros.forEach(v => micros.add(v));
     const items = fx.items.slice();
-    const sum = { p:fx.p, c:fx.c, f:fx.f, lif:fx.lif };
+    const sum = { p:fx.p, c:fx.c, f:fx.f, alk:fx.alk, lif:fx.lif };
     for (const c of comps.filter(x => x.m === idx)){
       const food = FOODS[c.k];
       const part = portion(food, c.g);
       items.push({ text:part.text, icon:food.i, key:c.k, g:part.g });
-      sum.p += food.p*part.g/100; sum.c += food.c*part.g/100; sum.f += food.f*part.g/100; sum.lif += (food.lif||0)*part.g/100;
+      sum.p += food.p*part.g/100; sum.c += food.c*part.g/100; sum.f += food.f*part.g/100; sum.alk += (food.alk||0)*part.g/100; sum.lif += (food.lif||0)*part.g/100;
       (food.v || []).forEach(v => micros.add(v));
     }
     const placed = items.length > fx.items.length;
     if (placed && choice[idx] && choice[idx].side) items.push({ text:choice[idx].side, icon:"veg" });
-    const kcal = sum.p*4 + sum.c*4 + sum.f*9;
-    total.p += sum.p; total.c += sum.c; total.f += sum.f; total.lif += sum.lif; total.kcal += kcal;
+    const kcal = kcalFromMacros(sum);
+    total.p += sum.p; total.c += sum.c; total.f += sum.f; total.alk += sum.alk; total.lif += sum.lif; total.kcal += kcal;
     const meal = { name:mealName(mm), slot:mm.id, items, kcal:Math.round(kcal) };
     if (!placed) meal.full = fx.items.length > 0;
     return meal;
@@ -1202,7 +1211,7 @@ function buildMeals(program, variantIndex){
 
   const label = diet === "hepsi" ? tx("Sana özel kombinasyon") : DIETS[diet] + tx(" · sana özel");
   return { setName: label, meals: out, micros, generated:true,
-    total:{ p:Math.round(total.p), c:Math.round(total.c), f:Math.round(total.f),
+    total:{ p:Math.round(total.p), c:Math.round(total.c), f:Math.round(total.f), alk:Math.round(total.alk),
             lif:Math.round(total.lif), kcal:Math.round(total.kcal) } };
 }
 
