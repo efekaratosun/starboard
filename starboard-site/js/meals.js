@@ -37,7 +37,7 @@ function syncKcal(entry){
 function mealsView(program){
   const entry = ensureDay(vKey());
   const body = mealTab === "recipes" ? recipesView()
-             : mealTab === "list" ? shoppingView(program)
+             : mealTab === "list" ? shoppingView()
              : logView(program, entry);
   return `<div class="seg">
     ${[["log",tx("Bugün")],["recipes",tx("Tarifler")],["list",tx("Liste")]].map(([k,l]) =>
@@ -83,7 +83,6 @@ function recipeCard(r, idx){
       <h4>${tx("Hazırlanışı")}</h4>
       <ol>${r.steps.map(s => `<li>${s}</li>`).join("")}</ol>
       <button class="ghost" data-recipe-add="${idx}" style="margin-top:6px">${tx("Günlüğüme 1 porsiyon ekle")}</button>
-      ${recipeListBtn(idx)}
     </div>` : ""}
   </section>`;
 }
@@ -935,7 +934,7 @@ function openPrefsSheet(){
 }
 
 function wireMeals(entry){
-  wireShopping(currentProgram());
+  wireShopping();
   wireFolds();
   /* ayların gölgesi eski yerinden yenisine kayar */
   const shades = app.querySelectorAll(".mn-sh[data-to]");

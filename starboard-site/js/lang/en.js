@@ -875,6 +875,12 @@ window.STARBOARD_EN = {
   "{0} kez": "{0}×",
   /* alışveriş listesi (1.8.0) */
   "Alışveriş listesi": "Shopping list",
+  "Alışveriş listem": "My shopping list",
+  "Listem": "My list",
+  "Öneriler": "Suggestions",
+  "Ürün adı": "Product name",
+  "Listen boş.": "Your list is empty.",
+  "Öneri yok.": "No suggestions.",
   "{0} / {1} kaldı": "{0} / {1} left",
   "Öneri planından": "From the meal plan",
   "Yok": "None",

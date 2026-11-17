@@ -6,3 +6,7 @@ ADIM 4: Mutfak secimi onboarding.js icinde ob.cuisine olarak sorulup state.mealP
 ADIM 5: Kayitli mutfak secimi state.mealPrefs.cuisine icinde oncelikli tutuldu; kayit yoksa cihaz dili tr/intl varsayilani kullaniliyor ve onboarding varsayilani da cihaz diline baglandi. Ayarlar sayfasinin Kisisellestirme bolumune Mutfak secenekleri eklendi; elle secim kaydedilip korunuyor. Testler Turk/Ingilizce cihaz varsayilanini, elle secimin korunmasini ve Ayarlar uzerinden degistirmeyi dogruluyor.
 ADIM 6: Chrome headless testleri port 8770 uzerinde calistirildi: 175 gecti, 0 kaldi; sunucu kapatildi.
 BITTI
+ADIM 7: Beslenme ust sekmeleri Bugun/Tarifler/Liste; Liste ekrani su an Oneri planindan gun secimleri, Tarifler kayitli tarif bolumu, plan+tariflerden hesaplanip reyonlara ayrilmis urun listesi, Paylas/Isaretleri kaldir ve bos liste bolumunu gosteriyor. Urun onerilerinin kaynagi beslenme recetesi planidir, gecmis kullanim degildir.
+ADIM 8: Liste ekrani Alisveris listem olarak yeniden kuruldu; yalniz Listem ve Oneriler kucuk sekmeleri var. Listem elle girilen urunler ve kayitli kendi besinleri, Oneriler gecmis kullanimdaki sik besinleri gosteriyor; plan gunu, tarif, reyon, paylasim bolumleri ve tarif-liste dugmeleri kaldirildi. Eski days/recipes/checked verileri korundu; ilgili testler guncellendi.
+ADIM 9: Chrome headless testleri port 8770 uzerinde calistirildi: 175 gecti, 0 kaldi; sunucu kapatildi.
+BITTI

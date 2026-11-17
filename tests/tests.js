@@ -417,28 +417,49 @@ test("kaynak kalorisi kullanılır, eski kayıtlar makrolardan hesaplanır", () 
 });
 
 /* ---- alışveriş listesi ---- */
-test("alışveriş listesi: plan ve tarifler toplanır, aynı besin tek satır, işaretleme çalışır", async () => {
+test("alışveriş listesi: sade iki sekme; elle ürünler ve geçmiş kullanımdan öneriler", async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
-  const program = buildProgram(state.profile, 82, 0);
-  const sumOf = (list, k) => (list.find(x => x.k === k) || { g:0 }).g;
-  const plan = buildMeals(program, 0);
-  const exp = {};
-  for (const m of plan.meals) for (const it of m.items) if (it.key) exp[it.key] = (exp[it.key] || 0) + it.g;
-  const one = shoppingList(program, { days:1, recipes:[], checked:{} }, 0);
-  for (const [k, g] of Object.entries(exp)) eq(sumOf(one, k), Math.round(g), k);
-  eq(new Set(one.map(x => x.k)).size, one.length, "aynı besin iki satırda");
-  const three = shoppingList(program, { days:3, recipes:[], checked:{} }, 0);
-  ok(three.reduce((a, x) => a + x.g, 0) > one.reduce((a, x) => a + x.g, 0) * 2, "3 günlük liste 1 günlükten büyük olmalı");
-  const r = RECIPES[0];
-  const withR = shoppingList(program, { days:0, recipes:[0], checked:{} }, 0);
-  for (const [k, g] of r.ing) ok(sumOf(withR, k) >= g, "tarif malzemesi eksik: " + k);
-  state.shopping = { days:1, recipes:[0], checked:{} };
-  tab = "meals"; mealTab = "list"; render();
-  const first = app.querySelector("[data-shop-k]");
-  ok(first, "liste çizilmedi");
-  await first.onclick();
-  ok(state.shopping.checked[first.dataset.shopK], "işaretlenmedi");
-  tab = "today"; mealTab = "log"; state = null;
+  state.shopping = { days:3, recipes:[0], checked:{ legacy:true } };
+  const slot = slotList()[0][0];
+  state.days[today()].log = [logItem("yulaf", 40, slot, 1), logItem("yulaf", 40, slot, 2), logItem("muz", 120, slot, 3)];
+  tab = "meals"; mealTab = "list"; shopTab = "mine"; render();
+
+  eq(app.querySelector("h2").textContent.trim(), "Alışveriş listem", "liste adı");
+  const tabs = [...app.querySelectorAll("[data-shop-tab]")];
+  eq(tabs.map(b => [b.dataset.shopTab, b.textContent.trim()]), [["mine", "Listem"], ["suggest", "Öneriler"]], "iki küçük sekme");
+  ok(!app.querySelector("[data-shop-days]") && !app.querySelector("[data-shop-rdel]") && !app.querySelector("#shop-share") && !app.querySelector("#shop-clear"), "eski plan, tarif ve paylaşım bölümleri kalktı");
+  ok(!app.querySelector("[data-shop-k]"), "plan ürünleri doğrudan listede gösterilmiyor");
+
+  const input = app.querySelector("#shop-item-input");
+  input.value = "Zeytinyağı";
+  await app.querySelector("#shop-item-add").onclick();
+  eq(state.shopping.items.length, 1, "kullanıcının girdiği ürün kaydedildi");
+  eq(state.shopping.items[0].n, "Zeytinyağı");
+  eq(state.shopping.days, 3, "eski gün verisi korundu");
+  eq(state.shopping.recipes, [0], "eski tarif verisi korundu");
+  ok(state.shopping.checked.legacy, "eski işaret verisi korundu");
+
+  const row = app.querySelector("[data-shop-item-check]");
+  await row.onclick();
+  ok(state.shopping.checked[row.dataset.shopItemCheck], "kendi ürünü işaretleme çalışır");
+
+  app.querySelector('[data-shop-tab="suggest"]').onclick();
+  const suggestion = app.querySelector('[data-shop-suggest="yulaf"]');
+  ok(suggestion, "geçmiş kullanımdan sık ürün önerisi var");
+  await suggestion.onclick();
+  ok(state.shopping.items.some(x => x.k === "yulaf"), "öneri kendi listesine eklendi");
+  app.querySelector('[data-shop-tab="mine"]').onclick();
+  eq(app.querySelectorAll("[data-shop-item-check]").length, 2, "kendi listesi yalnızca elle seçilen ürünleri gösterir");
+
+  mealTab = "recipes"; render();
+  ok(!app.querySelector("[data-recipe-list]"), "tarif ekranında eski liste düğmesi kalmadı");
+  mealTab = "list"; render();
+  await withLang("en", async () => {
+    render();
+    eq(app.querySelector("h2").textContent.trim(), "My shopping list", "İngilizce liste adı");
+    eq([...app.querySelectorAll("[data-shop-tab]")].map(b => b.textContent.trim()), ["My list", "Suggestions"], "İngilizce sekmeler");
+  });
+  tab = "today"; mealTab = "log"; shopTab = "mine"; state = null;
 });
 
 /* ---- dinlenme sayacı, yenilikler, hakkında ---- */
@@ -974,7 +995,7 @@ test("animasyon: açık rehber kartında sahne kurulur ve Motion ile oynar", asy
   ok(window.Motion && typeof Motion.animate === "function", "Motion kütüphanesi yüklenmedi");
   state = await loadFixture();
   migrateMeals(); notice = null; viewDate = null;
-  tab = "plan"; planTab = "program"; howQuery = "squat"; howOpen = "squat";
+  tab = "plan"; planTab = "how"; howQuery = "squat"; howOpen = "squat";
   render();
   const svg = app.querySelector('.how-anim[data-anim="squat"] svg');
   ok(svg, "sahne kurulmadı");
@@ -1144,7 +1165,7 @@ test("erişilebilirlik: her alanın etiketi, her düğmenin adı var", async () 
   for (const lang of ["tr", "en"]) await withLang(lang, () => {
     state = JSON.parse(JSON.stringify(fixture)); migrateMeals(); notice = null; viewDate = null; ensureToday();
     for (const t of ["today", "plan", "meals", "calendar"]) { tab = t; render(); check(t); }
-    for (const p of ["today", "program"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
+    for (const p of ["today", "program", "how"]) { tab = "plan"; planTab = p; render(); check("plan:" + p); }
     for (const m of ["log", "recipes", "list"]) { tab = "meals"; mealTab = m; render(); check("meals:" + m); }
     for (const m of ["body", "chart", "set"]) { tab = "settings"; meTab = m; render(); check("me:" + m); }
     for (const g of ["kcal", "protein", "water", "sleep", "weigh", "train"]) { tab = "today"; goalOpen = g; render(); check("goal:" + g); }
@@ -2567,7 +2588,7 @@ test("sade beslenme: sekmeler Bugün · Tarifler · Liste; Günlüğüm ve Öner
     ok(app.querySelector("[data-addfood]"), "Bugün ekranı çizilir");
     ok(!app.querySelector("#reroll") && !app.querySelector("[data-fixadd]"), "eski öneri ekranı kalmadı");
     mealTab = "recipes"; render(); ok(app.querySelector("#rec-q"), "tarifler");
-    mealTab = "list"; render(); ok(app.querySelector("[data-shop-days]"), "liste");
+    mealTab = "list"; render(); ok(app.querySelector('h2') && app.querySelector("h2").textContent.includes("Alışveriş listem") && app.querySelectorAll("[data-shop-tab]").length === 2, "sade liste");
   } finally { closeSug(); }
 });
 
@@ -2643,18 +2664,14 @@ test("öneri: Ekle bütün tabağı tek dokunuşla öğüne yazar, kalori günce
   } finally { closeSug(); }
 });
 
-test("öneri: Başka günün planını bir sonrakine geçirir; alışveriş listesi aynı günü kullanır; tarif bağlantısı çalışır", async () => {
-  const { program, plan, slots, keyed } = await sugFixture();
+test("öneri: Başka günün planını bir sonrakine geçirir; tarif bağlantısı çalışır", async () => {
+  const { slots, keyed } = await sugFixture();
   try {
     const text = () => [...app.querySelectorAll(".sug")].map(x => x.textContent).join("|");
     const t0 = text(), v0 = mealVariant;
     app.querySelector("[data-sug-other]").onclick();
     eq(mealVariant, v0 + 1, "mealVariant artar");
     ok(text() !== t0, "öneri değişir");
-    const exp = {};
-    for (const m of plan().meals) for (const i of keyed(m)) exp[i.key] = (exp[i.key] || 0) + i.g;
-    const list = shoppingList(program, { days: 1, recipes: [], checked: {} }, planDay() + mealVariant);
-    for (const [k, g] of Object.entries(exp)) eq((list.find(x => x.k === k) || {}).g, Math.round(g), "liste, ekrandaki öneriyle aynı gün: " + k);
     /* tarifi olan bir besin çıkana kadar günleri çevir */
     let link = null;
     for (let v = 0; v < 40 && !link; v++) { mealVariant = v; render(); link = app.querySelector(".sug [data-recipefor]"); }
@@ -2986,15 +3003,17 @@ const trainFx = async on => {
 const trainReset = () => { freeOpenKey = null; woDone = false; viewDate = null; howOpen = null; howQuery = ""; planTab = "today"; tab = "today"; state = null; };
 const sections = () => app.querySelectorAll("main > section").length;
 
-test("antrenman: alt sekmeler yalnızca Bugün ve Program; rehber Program sekmesinde arama ile açılır", async () => {
+test("antrenman: alt sekmeler Bugün, Program ve Nasıl yapılır; rehber sekmesinde arama ile açılır", async () => {
   try {
     await trainFx(true);
     tab = "plan"; planTab = "today"; render();
-    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.dataset.planTab), ["today", "program"]);
-    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Bugün", "Program"]);
+    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.dataset.planTab), ["today", "program", "how"]);
+    eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Bugün", "Program", "Nasıl yapılır"]);
     ok(!app.querySelector("#how-q"), "rehber Bugün'de değil");
     planTab = "program"; render();
-    ok(app.querySelector("#how-q") && app.querySelector('[data-fold="how"]'), "rehber Program'da");
+    ok(!app.querySelector("#how-q"), "rehber Program sekmesinde değil");
+    planTab = "how"; render();
+    ok(app.querySelector("#how-q") && !app.querySelector('[data-fold="how"]'), "rehber kendi sekmesinde, katlanır bölüm yok");
     const q = app.querySelector("#how-q");
     q.value = "squat"; q.oninput();
     ok(app.querySelectorAll("[data-how]").length > 0, "arama rehber kartı buldu");
@@ -3005,27 +3024,32 @@ test("antrenman: alt sekmeler yalnızca Bugün ve Program; rehber Program sekmes
   } finally { trainReset(); }
 });
 
-test("antrenman: eski 'nasıl' bağlantıları Program sekmesindeki rehbere yönlenir", async () => {
+test("antrenman: nasıl yapılır antrenman modunda kapalı durur, dokunuşla animasyon ve adımlar açılır", async () => {
   try {
-    const program = await trainFx(true);
+    await trainFx(true);
     tab = "plan"; planTab = "today"; render();
-    const link = app.querySelector("[data-howgo]");
-    ok(link, "hareketin yanında nasıl bağlantısı var");
-    const id = link.dataset.howgo;
-    link.onclick();
-    eq([tab, planTab, howOpen], ["plan", "program", id]);
-    ok(app.querySelector(".how.on") && app.querySelector(`[data-how="${id}"]`), "rehber kartı açık");
-    ok(!app.querySelector(".fold.shut"), "rehber bölümü açıldı");
-
-    /* antrenman modundaki bağlantı da aynı yere gider */
-    tab = "plan"; planTab = "today"; howOpen = null; render();
     openWorkout();
     const { list } = woList();
-    woIdx = list.findIndex(n => guidesFor(n).length); drawWO();
-    const wid = woEl.querySelector("[data-wohow]").dataset.wohow;
-    woEl.querySelector("[data-wohow]").onclick();
-    ok(!woEl, "antrenman modu kapandı");
-    eq([tab, planTab, howOpen], ["plan", "program", wid]);
+    woIdx = list.findIndex((n, i) => i < list.length - 1 && guidesFor(n)[0] && guidesFor(list[i + 1])[0] && exAnimFor(guidesFor(n)[0]));
+    ok(woIdx >= 0, "animasyonu olan ve ardından hareket gelen bir gün bulundu");
+    drawWO();
+    const id = guidesFor(list[woIdx])[0];
+    let btn = woEl.querySelector("#wo-how-t");
+    ok(btn, "hareketin altında nasıl yapılır düğmesi var");
+    eq(btn.getAttribute("aria-expanded"), "false", "varsayılan kapalı");
+    ok(!woEl.querySelector(".how-anim") && !woEl.querySelector(".how-b"), "kapalıyken animasyon ve adımlar yok");
+    btn.onclick();
+    btn = woEl.querySelector("#wo-how-t");
+    eq(btn.getAttribute("aria-expanded"), "true", "bir dokunuşla açılır");
+    ok(woEl.querySelector(`.how-anim[data-anim="${id}"]`), "hareketin animasyonu");
+    ok(woEl.querySelectorAll(".how-b li").length > 0, "nasıl yapıldığını anlatan yazı");
+    btn.onclick();
+    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "tekrar dokunuşla kapanır");
+    /* sonraki harekete geçince yeni rehber kapalı başlar */
+    woEl.querySelector("#wo-how-t").onclick();
+    ok(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded") === "true");
+    woEl.querySelector("#wo-next").onclick();
+    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "yeni hareket temiz başlar");
   } finally { if (woEl) closeWorkout(); trainReset(); }
 });
 
@@ -3095,7 +3119,9 @@ test("antrenman: program kapalıyken de tek kart ve küçük serbest antrenman b
     ok(app.querySelector("#plan-on") && app.querySelector("#free-open") && !app.querySelector(".prs"));
     eq(a11yBad("program kapalı"), []);
     planTab = "program"; render();
-    ok(app.querySelector("#plan-on") && app.querySelector("#how-q"), "kapalıyken de rehber aranabilir");
+    ok(app.querySelector("#plan-on") && !app.querySelector("#how-q"), "kapalıyken Program sekmesi");
+    planTab = "how"; render();
+    ok(app.querySelector("#how-q"), "kapalıyken de rehber aranabilir");
   } finally { trainReset(); }
 });
 
@@ -3277,7 +3303,7 @@ test("antrenman: yeni ekranlar İngilizcede tam çevrilir ve erişilebilir", asy
       tab = "plan"; planTab = "today"; render();
       ok(app.querySelector("main section h2").textContent.startsWith("Rest today · Next: "), app.querySelector("main section h2").textContent);
       ok(app.querySelector("#free-open").textContent.trim() === "Add a free workout");
-      eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Today", "Plan"]);
+      eq([...app.querySelectorAll("[data-plan-tab]")].map(b => b.textContent.trim()), ["Today", "Plan", "How to"]);
       freeOpenKey = today(); render();
       eq(a11yBad("en dinlenme"), []);
       freeOpenKey = null;
@@ -3285,7 +3311,7 @@ test("antrenman: yeni ekranlar İngilizcede tam çevrilir ve erişilebilir", asy
       tab = "plan"; planTab = "today"; render();
       ok(app.querySelector("#wo-start").textContent.trim() === "Start workout");
       eq(a11yBad("en bugün"), []);
-      planTab = "program"; howOpen = "squat"; render();
+      planTab = "how"; howOpen = "squat"; render();
       eq(a11yBad("en program"), []);
       const real = shortcutPick;
       try {

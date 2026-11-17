@@ -1136,6 +1136,17 @@ main.page-in > *:nth-child(n+5){animation-delay:130ms}
 /* Yan yana sık dizilenlerde katman yalnızca dikeyde büyür; komşunun üstüne taşmasın. */
 :is(.cup,.avc,.chip:not(.has))::after{width:100%}
 /* ---- alışveriş listesi ---- */
+.shop-tabs{display:inline-flex;gap:2px;background:var(--shell);padding:3px;border-radius:999px;margin-bottom:14px}
+.shop-tabs button{border:0;background:none;background-image:none;box-shadow:none;padding:6px 12px;border-radius:999px;
+  color:var(--muted);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.shop-tabs button[aria-selected="true"]{background:var(--raise);color:var(--ink);box-shadow:var(--sh1)}
+.shop-add{display:flex;gap:8px;margin-bottom:12px}
+.shop-add input{flex:1;min-width:0}
+.shop-add button{flex:0 0 88px}
+.shop-entry{display:flex;align-items:center;border-bottom:1px solid var(--line)}
+.shop-entry:last-child{border-bottom:0}
+.shop-entry .shop-row{flex:1;min-width:0;border-bottom:0}
+.shop-entry .del{margin-right:0}
 .shop-row{display:flex;align-items:center;gap:12px;width:100%;background:none;background-image:none;box-shadow:none;color:var(--ink);
   padding:12px 2px;border:0;border-bottom:1px solid var(--line);border-radius:0;text-align:left;font-weight:600;font-size:15px;min-height:48px}
 .shop-row:last-child{border-bottom:0}
