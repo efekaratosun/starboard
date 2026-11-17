@@ -2628,5 +2628,25 @@
   "lif": null,
   "porsiyon_g": 300,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebzeli-makarna"
+ },
+ {
+  "ad": "Yer elması yemeği",
+  "kcal": 116,
+  "p": 1.49,
+  "c": 27.58,
+  "f": 0.14,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/yer-elmas%C4%B1-%28tuzsuz-s%C3%BCz%C3%BClm%C3%BC%C5%9F-pi%C5%9Firilmi%C5%9F-ha%C5%9Flanm%C4%B1%C5%9F-f%C4%B1r%C4%B1nda-pi%C5%9Firilmi%C5%9F%29"
+ },
+ {
+  "ad": "Kabak graten",
+  "kcal": 99,
+  "p": 3.01,
+  "c": 4.35,
+  "f": 8.17,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kabak-graten"
  }
 ]
