@@ -2341,103 +2341,103 @@
   },
   {
     "ad": "Armut tatlısı",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 160,
+    "p": 1,
+    "c": 30,
+    "f": 4,
+    "lif": 4,
     "porsiyon_g": 180,
-    "kaynak_url": null
+    "kaynak_url": "https://www.dytseydaertas.com/besin/pekmezli-armut-tatlisi"
   },
   {
     "ad": "İncir tatlısı",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 278,
+    "p": 4.3,
+    "c": 42.5,
+    "f": 12.3,
+    "lif": 2.3,
     "porsiyon_g": 180,
-    "kaynak_url": null
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kuru-incir-tatlisi"
   },
   {
     "ad": "Un helvası",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 390,
+    "p": 5,
+    "c": 50,
+    "f": 18,
+    "lif": 1,
     "porsiyon_g": 120,
-    "kaynak_url": null
+    "kaynak_url": "https://www.caloripanda.com/kac-kalori/un-helvasi/"
   },
   {
     "ad": "Süt helvası",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 280,
+    "p": 5,
+    "c": 44,
+    "f": 8,
+    "lif": 1,
     "porsiyon_g": 150,
-    "kaynak_url": null
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/sut-helvasi/"
   },
   {
     "ad": "Koz helvası",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 431,
+    "p": 6.4,
+    "c": 65.6,
+    "f": 35.8,
+    "lif": 3.9,
     "porsiyon_g": 100,
-    "kaynak_url": null
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/koska-cevizli-helva"
   },
   {
     "ad": "Cevizli helva",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 431,
+    "p": 6.4,
+    "c": 65.6,
+    "f": 35.8,
+    "lif": 3.9,
     "porsiyon_g": 100,
-    "kaynak_url": null
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/koska-cevizli-helva"
   },
   {
     "ad": "Lokma",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 330,
+    "p": 2,
+    "c": 33,
+    "f": 6,
+    "lif": 1,
     "porsiyon_g": 150,
-    "kaynak_url": null
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/lokma"
   },
   {
     "ad": "Kerebiç",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 375,
+    "p": 5,
+    "c": 55,
+    "f": 15,
+    "lif": 2,
     "porsiyon_g": 80,
-    "kaynak_url": null
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/kerebic/"
   },
   {
     "ad": "Maraş dondurması",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 210,
+    "p": 4,
+    "c": 32,
+    "f": 9,
+    "lif": 0.5,
     "porsiyon_g": 80,
-    "kaynak_url": null
+    "kaynak_url": "https://724clinic.com/araclar/yemek-kalori/dondurma-maras/"
   },
   {
     "ad": "Elmalı turta",
-    "kcal": null,
-    "p": null,
-    "c": null,
-    "f": null,
-    "lif": null,
+    "kcal": 290,
+    "p": 4,
+    "c": 42,
+    "f": 12,
+    "lif": 2,
     "porsiyon_g": 120,
-    "kaynak_url": null
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/elmalı-turta"
   },
   {
     "ad": "Erik tatlısı",
