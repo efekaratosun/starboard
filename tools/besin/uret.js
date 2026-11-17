@@ -101,9 +101,12 @@ for(const [file,kind] of [["basics","basic"],["world","intl"],["tr","tr"]]) {
     }
   }
 }
+/* Yalnız son kaynak dosyaları okunur; ara/parça dosyaları (dunya_p4, batch* gibi)
+   üretime girmez. Kaynak türü dosya adından gelir: temel→basic, dunya→intl, turk-*→tr. */
+const WEB_FILES=["temel.json","dunya.json","turk-1.json","turk-2.json"];
 const rejected=[]; let web=[];
 const webDir=path.join(ROOT,"tools/besin/web");
-if(fs.existsSync(webDir))for(const file of fs.readdirSync(webDir).filter(f=>f.endsWith(".json")).sort()) {
+for(const file of WEB_FILES) {
   let arr; try{arr=JSON.parse(fs.readFileSync(path.join(webDir,file),"utf8"));}catch(e){continue;}
   if(!Array.isArray(arr)){continue;}
   for(const x of arr) web.push({...x,_file:file});
@@ -206,7 +209,7 @@ for(const food of Object.values(out)){
 const reasons={duplicate:0,missing:0,noCache:0,macro:0,kcal:0,invalid:0,translation:0,other:0};
 for(const reason of rejected){if(reason.includes("mevcut FOODS")||reason.includes("anahtar çakışması"))reasons.duplicate++;else if(reason.includes("kaynağında eksik"))reasons.missing++;else if(reason.includes("cache kaydı yok"))reasons.noCache++;else if(reason.includes("p+c+f > 100"))reasons.macro++;else if(reason.includes("kcal ve ortak"))reasons.kcal++;else if(reason.includes("İngilizce ad eksik"))reasons.translation++;else if(reason.includes("geçersiz JSON")||reason.includes("kök dizi değil"))reasons.invalid++;else reasons.other++;}
 const report=[`Üretilen toplam: ${Object.keys(out).length}`,`Temel: ${counts.basic}`,`Dünya: ${counts.intl}`,`Türkçe: ${counts.tr}`,`USDA kaynağından: ${counts.usda}`,`Web kaynağından: ${counts.web}`,`Alkol içeren: ${counts.alk}`,`İngilizce ad: ${Object.keys(english).length}`,`Alınmayan toplam: ${rejected.length}`,`Çakışma: ${reasons.duplicate}; eksik değer: ${reasons.missing}; cache yok: ${reasons.noCache}; makro sınırı: ${reasons.macro}`,`Kalori kontrolü: ${reasons.kcal}; İngilizce ad eksik: ${reasons.translation}; geçersiz web JSON: ${reasons.invalid}; diğer: ${reasons.other}`];fs.writeFileSync(path.join(ROOT,"tools/besin/uret-rapor.md"),report.join("\n")+"\n");
-console.log(JSON.stringify({count:Object.keys(out).length,rejected:rejected.length,webFiles:fs.existsSync(webDir)?fs.readdirSync(webDir).filter(f=>f.endsWith('.json')).length:0}));
+console.log(JSON.stringify({count:Object.keys(out).length,rejected:rejected.length,webFiles:WEB_FILES.length}));
 
 
 
