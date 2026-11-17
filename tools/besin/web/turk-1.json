@@ -2648,5 +2648,45 @@
   "lif": null,
   "porsiyon_g": 250,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kabak-graten"
+ },
+ {
+  "ad": "Sirken yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Kuşkonmaz yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Maş fasulyesi yemeği",
+  "kcal": 105,
+  "p": 7.02,
+  "c": 19.15,
+  "f": 0.38,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ma%C5%9F-fasulyesi"
+ },
+ {
+  "ad": "Nohutlu ıspanak",
+  "kcal": 115,
+  "p": 2.11,
+  "c": 5.09,
+  "f": 10.3,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ispanak-yeme%C4%9Fi"
  }
 ]
