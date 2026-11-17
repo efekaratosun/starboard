@@ -68,7 +68,7 @@ function goalHero(key, sc){
   const rollFrom = String(bump && !reduceMotion() ? _ringPrev[key].done : sc.done);
   const up = bump && sc.done > _ringPrev[key].done;
   _ringPrev[key] = { off, done: sc.done };
-  const w = weekInfo(weekStart(today())), streak = streakNow();
+  const R = skyNow(), streak = streakNow();
   const title = !sc.total ? tx("Hedef yok") : full ? (now ? tx("Bugün tamam") : tx("Gün tamam")) : tx("{0} hedef kaldı", [(sc.total - sc.done)]);
   const sub = !now ? `${prettyDate(key)} · ${weekdayName(key)}`
             : full ? tx("Bugünün yıldızı yandı.") : tx("Satıra dokun, olduğu yerde gir.");
@@ -84,7 +84,7 @@ function goalHero(key, sc){
       <span class="gh-n num${bump ? " bump" : ""}" aria-label="${tx("{0} hedeften {1} tamam", [(sc.total), (sc.done)])}"><b class="roll" data-v="${rollFrom}" data-to="${sc.done}">${rollHTML(rollFrom)}</b>/${sc.total}</span>
     </div>
     <div class="gh-t"><b>${title}</b><i>${sub}</i>
-      <button class="gh-s" id="gh-cal">${icon("star4")}<span>${tx("{0} günlük seri · bu hafta {1}/7", [(streak), (w.n)])}</span></button></div>
+      <button class="gh-s" id="gh-cal">${icon("star4")}<span>${tx("{0} günlük seri · {1}/{2} yıldız", [(streak), (R.n), (R.c.p.length)])}</span></button></div>
   </div>`;
 }
 

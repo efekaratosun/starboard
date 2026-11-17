@@ -3654,6 +3654,7 @@ test("şerit: Bugün ekranının en üstü devam eden takımyıldız ve son yedi
     ok(sw, "şekle dokununca tam şema açılır");
     eq(sw.querySelector("#sw-t").textContent, constName(R.c));
     eq(sw.querySelectorAll(".sky-stage .sky-b").length, 4, "yanan üç yıldız ve bugünün yıldızı dokunulur");
+    ok(!/hafta/.test(app.querySelector("#gh-cal").textContent) && app.querySelector("#gh-cal").textContent.includes(`3/${N} yıldız`), "Bugün başlığında haftalık sayaç yok, takımyıldız ilerlemesi var: " + app.querySelector("#gh-cal").textContent);
     ok(sw.querySelector(".sky-n b"), "seri pencerede");
     ok(!app.querySelector(".sky-n, .sky-note"), "seri ve ilerleme satırı Bugün ekranında yok");
   } finally { skyDone(); }

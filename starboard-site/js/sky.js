@@ -76,7 +76,7 @@ function streakNow(){
 }
 function starTotal(){ return Object.keys(state.days).filter(fullDay).length; }
 
-/* Bir takvim haftası (Pzt-Paz): tam günler. Bugün ekranının "bu hafta n/7" satırı ve 2 -> 3 göçü kullanır. */
+/* Bir takvim haftası (Pzt-Paz): tam günler. Yalnız 2 -> 3 göçü (eski haftalık adlar) kullanır. */
 function weekInfo(ws){
   const t = today();
   const days = Array.from({ length:7 }, (_, i) => shiftDays(ws, i));
