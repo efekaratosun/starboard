@@ -2688,5 +2688,465 @@
   "lif": null,
   "porsiyon_g": 250,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ispanak-yeme%C4%9Fi"
+ },
+ {
+  "ad": "Kol böreği",
+  "kcal": 246,
+  "p": 7.51,
+  "c": 39.87,
+  "f": 5.77,
+  "lif": null,
+  "porsiyon_g": 130,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kol-b%C3%B6re%C4%9Fi"
+ },
+ {
+  "ad": "Fırında sebze",
+  "kcal": 53,
+  "p": 1.01,
+  "c": 5.9,
+  "f": 3.35,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/f%C4%B1r%C4%B1nda-sebze"
+ },
+ {
+  "ad": "Perde pilav",
+  "kcal": 264,
+  "p": 8.16,
+  "c": 22.02,
+  "f": 16.04,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/perde-pilav%C4%B1"
+ },
+ {
+  "ad": "Özbek pilavı",
+  "kcal": 169,
+  "p": 5.7,
+  "c": 18.17,
+  "f": 7.94,
+  "lif": null,
+  "porsiyon_g": 350,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/%C3%96zbek-pilav%C4%B1"
+ },
+ {
+  "ad": "Sebzeli pilav",
+  "kcal": 236,
+  "p": 4,
+  "c": 42.8,
+  "f": 3.8,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/yayla/garnit%C3%BCrl%C3%BC-pilav/100g"
+ },
+ {
+  "ad": "Ton balıklı makarna",
+  "kcal": 116,
+  "p": 7.11,
+  "c": 14.69,
+  "f": 3.22,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ton-bal%C4%B1kl%C4%B1-makarna"
+ },
+ {
+  "ad": "Karidesli makarna",
+  "kcal": 132,
+  "p": 17.68,
+  "c": 37.85,
+  "f": 12.62,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/karidesli-noodle"
+ },
+ {
+  "ad": "Tavuklu mantı",
+  "kcal": 180,
+  "p": 7.56,
+  "c": 26.51,
+  "f": 4.54,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/mant%C4%B1"
+ },
+ {
+  "ad": "Mantar güveç",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Sebze kızartması",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Ispanak kökü yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Patates graten",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Şalgam yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Alabaş yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Hardal otu yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Sucuklu kuru fasulye",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Nohut güveç",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Barbunya güveç",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Baklagil türlü",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Etli bakla",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Soya fasulyesi yemeği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Safranlı pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Zerdeçallı pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Kuru üzümlü pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 220,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Bademli pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 220,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Fıstıklı pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 220,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Havuçlu pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 220,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Bezelyeli pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 220,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Domatesli pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Patlıcanlı pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Mantarlı pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Karidesli pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Midyeli pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Kestaneli pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Kabune pilavı",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Meyhane pilavı",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Kavurmalı pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Pastırmalı pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 280,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Sucuklu pilav",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 280,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Tepsi mantısı",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Sebze mantısı",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Kayseri yağlaması",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 350,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Nohutlu erişte",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Yoğurtlu erişte",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Erişte pilavı",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 250,
+  "kaynak_url": null
+ },
+ {
+  "ad": "Gül böreği",
+  "kcal": null,
+  "p": null,
+  "c": null,
+  "f": null,
+  "lif": null,
+  "porsiyon_g": 90,
+  "kaynak_url": null
  }
 ]
