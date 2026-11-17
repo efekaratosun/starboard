@@ -102,21 +102,25 @@ for(const [file,kind] of [["basics","basic"],["world","intl"],["tr","tr"]]) {
   }
 }
 /* Yalnız son kaynak dosyaları okunur; ara/parça dosyaları (dunya_p4, batch* gibi)
-   üretime girmez. Kaynak türü dosya adından gelir: temel→basic, dunya→intl, turk-*→tr. */
+   üretime girmez. Kaynak türü dosya adından gelir: temel→basic, dunya→intl, turk-*→tr.
+   İngilizce adlar web/web-en.json sözlüğünden okunur; WEB_EN yalnızca yedek.
+   Aynı Türkçe ad farklı dosyalarda ya da aynı dosyada birden çok geçerse tek kalem alınır. */
 const WEB_FILES=["temel.json","dunya.json","turk-1.json","turk-2.json"];
 const rejected=[]; let web=[];
 const webDir=path.join(ROOT,"tools/besin/web");
+const WEB_EN_FILE=JSON.parse(read("tools/besin/web/web-en.json"));
+const webSeen=new Set();
 for(const file of WEB_FILES) {
   let arr; try{arr=JSON.parse(fs.readFileSync(path.join(webDir,file),"utf8"));}catch(e){continue;}
   if(!Array.isArray(arr)){continue;}
-  for(const x of arr) web.push({...x,_file:file});
+  for(const x of arr){const k=norm(x.ad); if(webSeen.has(k))continue; webSeen.add(k); web.push({...x,_file:file});}
 }
 const candidates=[], usdaNames=new Set();
 for(const x of rows){const d=byFdc.get(Number(x.c.fdc)); if(!d){rejected.push(`${x.name}: USDA FDC ${x.c.fdc} cache kaydı yok`);continue;}
  const nk=norm(x.name);if(usdaNames.has(nk))continue;usdaNames.add(nk);
  candidates.push({name:x.name, kind:x.kind, row:x.row, c:x.c, d, fdc:Number(x.c.fdc), origin:x.c.kaynak||"SR"});}
 for(const x of web){
-  if(!WEB_EN[x.ad])continue;
+  if(!(WEB_EN_FILE[x.ad]||WEB_EN[x.ad]))continue;
   if(usdaNames.has(norm(x.ad)))continue;
   candidates.push({name:x.ad,row:x,kind:/turk/i.test(x._file)?"tr":/dunya/i.test(x._file)?"intl":"basic",web:true,file:x._file});
 }
@@ -156,7 +160,7 @@ for(const x of candidates){const d=x.web?x.row:x.d;
   rejected.push(`${x.name}: kcal/protein/karbonhidrat/yağ kaynağında eksik`);continue;
  }
  const enRow=x.web?{}:(csvRows[x.file]||[]).find(row=>norm(row.canonical_name_tr||row.source_name)===norm(x.name))||{};
- const en=x.web?WEB_EN[x.name]:String(enRow.name_en||x.row.name_en||searchEnglish(x.c.arama,x.name)||x.c.description||d.description||"").trim();
+ const en=x.web?(WEB_EN_FILE[x.name]||WEB_EN[x.name]):String(enRow.name_en||x.row.name_en||searchEnglish(x.c.arama,x.name)||x.c.description||d.description||"").trim();
  if(!en){rejected.push(`${x.name}: İngilizce ad eksik`);continue;}
  const p=round1(d.protein??d.p), c=round1(d.carbs??d.c), f=round1(d.fat??d.f), lif=round1(d.fiber??d.lif??0), alk=round1(d.alcohol??d.alk??0), kcal=Number(d.kcal);
  const key=keyFor(x.name), nameNorm=norm(x.name);
@@ -178,8 +182,8 @@ for(const x of candidates){const d=x.web?x.row:x.d;
 }
 function jsObj(obj){return Object.entries(obj).map(([k,v])=>`  ${k}:{${Object.entries(v).map(([a,b])=>`${a}:${a==="n"?b:JSON.stringify(b)}`).join(", ")}}`).join(",\n");}
 const generated=`"use strict";\n\n/* USDA ve doğrulanmış web kaynaklarından tools/besin/uret.js ile üretilir. */\nObject.assign(FOODS, {\n${jsObj(out)}\n});\n`;
-if(Object.keys(out).length!==432||Object.keys(english).length!==432)
- throw new Error(`Üretim sayısı beklenen 432 değil: ${Object.keys(out).length} besin, ${Object.keys(english).length} İngilizce ad`);
+if(Object.keys(out).length!==Object.keys(english).length)
+ throw new Error(`Üretim sayısı tutarsız: ${Object.keys(out).length} besin, ${Object.keys(english).length} İngilizce ad`);
 fs.writeFileSync(path.join(ROOT,"starboard-site/js/foods-usda.js"),generated);
 /* İngilizce besin adları için idempotent, üretilmiş sözlük bloğu. */
 const EN_START="  /* ---- üretilen yeni besin adları (tools/besin/uret.js) ---- */";
