@@ -1113,6 +1113,14 @@ main.page-in > *:nth-child(n+5){animation-delay:130ms}
 }
 .tabbar .ico{width:23px;height:23px;flex:0 0 23px}
 
+/* ---- sürüm etiketi ----
+   Her ekranın sağ alt köşesinde küçük ve soluk yazar; alt sekme çubuğunun ve
+   hızlı giriş düğmesinin üstünde durur, dokunmaları engellemez. main.js gövdeye
+   bir kez ekler; sekme değişiminde yeniden çizilmez. */
+.ver-badge{position:fixed;right:16px;bottom:calc(136px + env(safe-area-inset-bottom));z-index:12;
+  font-size:11px;line-height:1.2;letter-spacing:.1px;color:var(--muted);
+  pointer-events:none;user-select:none;-webkit-user-select:none}
+
 /* ---- dokunma alanı ----
    Küçük görünen düğmelerin parmakla basılan alanı en az 44×44 px (Apple önerisi).
    Görünüm değişmez: görünmez bir katman düğmenin çevresine taşar. */

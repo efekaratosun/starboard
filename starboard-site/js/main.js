@@ -1,6 +1,20 @@
 "use strict";
 
 /* ---- başlat ---- */
+/* Sürüm etiketi: her ekranın sağ alt köşesinde küçük ve soluk yazar. Gövdeye
+   bir kez eklenir; sekme değişiminde #app yeniden çizilse de etiket durur,
+   dokunmaları engellemez (pointer-events none), ekran okuyucu onu atlar
+   (aria-hidden). Yeri ve rengi CSS'teki .ver-badge kuralındadır. */
+function mountVersionBadge(){
+  if (document.getElementById("ver-badge")) return;
+  const el = document.createElement("div");
+  el.id = "ver-badge";
+  el.className = "ver-badge";
+  el.setAttribute("aria-hidden", "true");
+  el.textContent = tx("Sürüm {0}", [APP_VERSION]);
+  document.body.appendChild(el);
+}
+
 (async () => {
   state = await loadState();
   if (state && state.profile) {
@@ -20,6 +34,7 @@
     }
   }
   render();
+  mountVersionBadge();
   /* Güncellemeden sonra bir kez: neler yeni. Uyarı (notice) olsun da olmasun da
      sırasını alır; hafta kapanışı ondan sonra gelir, ikisi aynı anda açılmaz. */
   openWelcomeChain();
