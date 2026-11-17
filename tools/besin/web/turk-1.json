@@ -1864,43 +1864,47 @@
  },
  {
   "ad": "Deniz mahsulleri güveç",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 223,
+  "p": 21.2,
+  "c": 5.12,
+  "f": 11.4,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fitekran.com/besin-degeri/firinda-balik/",
+  "not": "yakin_kayit: Fırında balık"
  },
  {
   "ad": "Kalamar dolma",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 92,
+  "p": 15.58,
+  "c": 3.08,
+  "f": 1.38,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/kalamar",
+  "not": "yakin_kayit: Kalamar"
  },
  {
   "ad": "Karides şiş",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 154,
+  "p": 24.47,
+  "c": 1.17,
+  "f": 5.03,
   "lif": null,
   "porsiyon_g": 150,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/pi%C5%9Fmi%C5%9F-veya-izgara-karides",
+  "not": "yakin_kayit: Pişmiş veya ızgara karides"
  },
  {
   "ad": "Balık köftesi",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 223,
+  "p": 21.2,
+  "c": 5.12,
+  "f": 11.4,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fitekran.com/besin-degeri/firinda-balik/",
+  "not": "yakin_kayit: Fırında balık"
  },
  {
   "ad": "Zeytinyağlı bakla",
@@ -1964,163 +1968,179 @@
  },
  {
   "ad": "Zeytinyağlı karnabahar",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı pazı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı yer elması",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 118,
+  "p": 1.3,
+  "c": 13.5,
+  "f": 6.2,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/tada/zeytinya%C4%9Fl%C4%B1-yer-elmal%C4%B1-havu%C3%A7/100g",
+  "not": "yakin_kayit: Zeytinyağlı yer elmalı havuç"
  },
  {
   "ad": "Zeytinyağlı havuç",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 118,
+  "p": 1.3,
+  "c": 13.5,
+  "f": 6.2,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/tada/zeytinya%C4%9Fl%C4%B1-yer-elmal%C4%B1-havu%C3%A7/100g",
+  "not": "yakin_kayit: Zeytinyağlı yer elmalı havuç"
  },
  {
   "ad": "Zeytinyağlı turp otu",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı deniz börülcesi",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 25,
+  "p": 2.74,
+  "c": 3.8,
+  "f": 0.52,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/deniz-b%C3%B6r%C3%BClcesi",
+  "not": "yakin_kayit: Deniz börülcesi"
  },
  {
   "ad": "Zeytinyağlı arapsaçı",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı şevketibostan",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı patlıcan",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 113,
+  "p": 1.05,
+  "c": 4.7,
+  "f": 10.55,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-bamya",
+  "not": "yakin_kayit: Zeytinyağlı bamya"
  },
  {
   "ad": "Zeytinyağlı mantar",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 113,
+  "p": 1.05,
+  "c": 4.7,
+  "f": 10.55,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-bamya",
+  "not": "yakin_kayit: Zeytinyağlı bamya"
  },
  {
   "ad": "Zeytinyağlı bezelye",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 147,
+  "p": 3.48,
+  "c": 11.07,
+  "f": 10.38,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/bezelye-yeme%C4%9Fi",
+  "not": "yakin_kayit: Bezelye yemeği"
  },
  {
   "ad": "Zeytinyağlı hindiba",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı ebegümeci",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı baklalı enginar",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 146,
+  "p": 4.11,
+  "c": 16.93,
+  "f": 15,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-enginar",
+  "not": "yakin_kayit: Zeytinyağlı enginar"
  },
  {
   "ad": "Zeytinyağlı ısırgan",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 52,
+  "p": 2.22,
+  "c": 6.67,
+  "f": 2.48,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-brokoli",
+  "not": "yakin_kayit: Zeytinyağlı brokoli"
  },
  {
   "ad": "Zeytinyağlı pirinçli kabak",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 32,
+  "p": 3.6,
+  "c": 10.7,
+  "f": 5.7,
   "lif": null,
   "porsiyon_g": 180,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/zeytinya%C4%9Fl%C4%B1-kabak",
+  "not": "yakin_kayit: Zeytinyağlı kabak"
  },
  {
   "ad": "Zeytinyağlı semizotu",
@@ -2464,13 +2484,14 @@
  },
  {
   "ad": "Radika yemeği",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 115,
+  "p": 2.11,
+  "c": 5.09,
+  "f": 10.3,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ispanak-yeme%C4%9Fi",
+  "not": "yakin_kayit: Ispanak yemeği"
  },
  {
   "ad": "Barbunya yemeği",
@@ -2504,13 +2525,14 @@
  },
  {
   "ad": "Taze barbunya yemeği",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 150,
+  "p": 5.8,
+  "c": 13,
+  "f": 7.6,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/yayla/barbunya-pilaki/100g",
+  "not": "yakin_kayit: Barbunya pilaki"
  },
  {
   "ad": "Şehriyeli pilav",
@@ -2614,13 +2636,14 @@
  },
  {
   "ad": "Mercimek pilaki",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 165,
+  "p": 8.39,
+  "c": 18.73,
+  "f": 6.76,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/pi%C5%9Fmi%C5%9F-mercimek",
+  "not": "yakin_kayit: Pişmiş mercimek"
  },
  {
   "ad": "Fava",
@@ -2664,13 +2687,14 @@
  },
  {
   "ad": "İç bakla",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 88,
+  "p": 7.92,
+  "c": 17.63,
+  "f": 0.73,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/bakla",
+  "not": "yakin_kayit: Bakla"
  },
  {
   "ad": "Nohut köftesi",
@@ -2734,23 +2758,25 @@
  },
  {
   "ad": "Sirken yemeği",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 115,
+  "p": 2.11,
+  "c": 5.09,
+  "f": 10.3,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ispanak-yeme%C4%9Fi",
+  "not": "yakin_kayit: Ispanak yemeği"
  },
  {
   "ad": "Kuşkonmaz yemeği",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 20,
+  "p": 2.2,
+  "c": 3.88,
+  "f": 0.12,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/ku%C5%9Fkonmaz",
+  "not": "yakin_kayit: Kuşkonmaz"
  },
  {
   "ad": "Maş fasulyesi yemeği",
@@ -2854,43 +2880,47 @@
  },
  {
   "ad": "Mantar güveç",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 118,
+  "p": 1.67,
+  "c": 5.95,
+  "f": 10.42,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/mantar-yeme%C4%9Fi",
+  "not": "yakin_kayit: Mantar yemeği"
  },
  {
   "ad": "Sebze kızartması",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 148,
+  "p": 2.4,
+  "c": 11.58,
+  "f": 10.75,
   "lif": null,
   "porsiyon_g": 200,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/patl%C4%B1can-k%C4%B1zartmas%C4%B1",
+  "not": "yakin_kayit: Patlıcan kızartması"
  },
  {
   "ad": "Ispanak kökü yemeği",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 96,
+  "p": 2.87,
+  "c": 6.82,
+  "f": 7.18,
   "lif": null,
   "porsiyon_g": 250,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/paz%C4%B1-kavurmas%C4%B1",
+  "not": "yakin_kayit: Pazı kavurması"
  },
  {
   "ad": "Patates graten",
-  "kcal": null,
-  "p": null,
-  "c": null,
-  "f": null,
+  "kcal": 70,
+  "p": 1.68,
+  "c": 15.71,
+  "f": 0.1,
   "lif": null,
   "porsiyon_g": 300,
-  "kaynak_url": null
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/patates",
+  "not": "yakin_kayit: Patates"
  },
  {
   "ad": "Şalgam yemeği",
