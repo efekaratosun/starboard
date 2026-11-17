@@ -205,14 +205,6 @@ function liftSummary(l, ex){
 
 const LIFT_KIND = { w:tx("Ağırlık × tekrar"), r:tx("Tekrar"), t:tx("Süre"), wc:tx("Ağırlık + set"), n:tx("Tur"), sw:tx("Tekrar + süre"), sd:tx("Mesafe + süre"), c:tx("Süre + mesafe"), ok:"" };
 
-/* Hareket rehberi Program sekmesindedir; her "nasıl yapılır" bağlantısı oraya açar. */
-function goHow(id){
-  tab = "plan"; planTab = "program"; howQuery = ""; howOpen = id; openFold("how");
-  render();
-  const el = app.querySelector(`[data-how="${id}"]`);
-  if (el) el.scrollIntoView({ block:"center" }); else window.scrollTo(0,0);
-}
-
 /* ---- Program › Bugün ----
    Salt okunur: bugünün antrenmanı, ilerleme ve hareket listesi. Set girişi
    yalnızca antrenman modunda yapılır. */
