@@ -558,7 +558,7 @@ window.STARBOARD_EN = {
   "Geçen hafta: {0}": "Last week: {0}",
   "en iyi gün {0}": "best day {0}",
   "{0} antrenman": "{0} workouts",
-  "Besin listesi 432 kayıtla büyüdü: Türk ve dünya mutfağından yemekler, çorbalar ve tatlılar; alkollü içeceklerin kalorisi de eklendi.": "The food list grew by 432 records: dishes, soups and desserts from Turkish and world cuisines; alcoholic drinks with their calories are included too.",
+  "Besin listesi 1352 kayıtla büyüdü: Türk ve dünya mutfağından yemekler, çorbalar ve tatlılar; alkollü içeceklerin kalorisi de eklendi.": "The food list grew by 1352 records: dishes, soups and desserts from Turkish and world cuisines; alcoholic drinks with their calories are included too.",
   "Neler yeni penceresi uygulama güncellendikten sonra artık bir kez gösteriliyor.": "The What's-new window now shows once after the app updates.",
   "Sürüm numarası her ekranın sağ alt köşesinde küçük yazıyor; açılan pencereler Escape ile de kapanıyor.": "The version number now sits small in the bottom-right corner of every screen, and pop-up windows also close with Escape.",
   "Yazı tipi Saira oldu. Beslenme özeti artık dört ay evresi: yedikçe ay hilalden dolunaya aydınlanır, hedef aşılınca kırmızı dolunay olur.": "The app now uses the Saira typeface. The nutrition summary is now four moon phases: each moon brightens from crescent to full as you eat, and turns a full red moon when you go over the target.",

@@ -6,7 +6,7 @@ Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artı
 ## 1.15.0 (yayınlanmadı)
 
 ### Eklendi
-- Besin veritabanı 432 yeni kayıtla genişletildi: 391 USDA, 41 web kaynağı; alkol içeren besinlerde 7 kcal/g ortak formülle hesaplanır.
+- Besin veritabanı 1352 yeni kayıtla genişletildi: 391 USDA, 961 web kaynağı; alkol içeren besinlerde 7 kcal/g ortak formülle hesaplanır.
 - "Neler yeni" penceresi uygulama güncellendikten sonra bir kez gösteriliyor; başlangıçtaki uyarı (haftalık yenileme mesajı gibi) artık sırayı engellemiyor.
 - Sürüm numarası her ekranın sağ alt köşesinde küçük ve soluk yazıyor (Ayarlar'ın altındaki yazının aynı değeri); alt menü ve düğmelerle çakışmıyor, dokunmaları engellemiyor, ekran okuyucu okumuyor.
 
