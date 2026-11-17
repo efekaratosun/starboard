@@ -102,11 +102,11 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
 
 /* ---- genişletilmiş besin veritabanı ---- */
 const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
-test("besin veritabanı: 1324 yeni kayıt (382 USDA, 942 web) eklendi", () => {
+test("besin veritabanı: 1325 yeni kayıt (382 USDA, 943 web) eklendi", () => {
   const added = sourcedFoods();
-  eq([added.length, Object.keys(FOODS).length], [1324, 1751]);
+  eq([added.length, Object.keys(FOODS).length], [1325, 1752]);
   eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 382);
-  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 942);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 943);
 });
 test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
   const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
@@ -123,7 +123,7 @@ test("besin veritabanı: yeni kayıtlar mevcut ad ve anahtarlarla çakışmıyor
 });
 test("besin veritabanı: alkol 7 kcal/g hesaplanıyor ve yeni günlük kalemine taşınıyor", async () => {
   const alcoholic = sourcedFoods().filter(([,f]) => f.alk > 0);
-  eq(alcoholic.length, 34);
+  eq(alcoholic.length, 35);
   eq(kcalFromMacros({ p:0, c:0, f:0, alk:10 }), 70);
   const oldState = state;
   try {
