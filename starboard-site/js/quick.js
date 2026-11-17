@@ -14,9 +14,7 @@ function openQuickSheet(){
   const k = vKey();
   const el = document.createElement("div");
   el.className = "sheet-bg";
-  /* Fonksiyon bildirimi: close, onKey'tan önce çağrılabilir. */
-  function onKey(ev){ if (ev.key === "Escape") close(); }
-  const close = () => { sheetOut(el); document.removeEventListener("keydown", onKey); };
+  const close = () => sheetOut(el);
   const past = k !== today();
 
   const draw = () => {
@@ -176,7 +174,6 @@ function openQuickSheet(){
   draw();
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
-  document.addEventListener("keydown", onKey);
 }
 
 /* ---- hedef ekle ----
@@ -185,8 +182,7 @@ function openQuickSheet(){
 function openGoalSheet(key){
   const el = document.createElement("div");
   el.className = "sheet-bg";
-  function escK(ev){ if (ev.key === "Escape") close(); }
-  const close = () => { sheetOut(el); document.removeEventListener("keydown", escK); };
+  const close = () => sheetOut(el);
   let rep = false;
   const commit = async () => { await saveState(state); render(); draw(); };
 
@@ -256,7 +252,6 @@ function openGoalSheet(key){
   draw();
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
-  document.addEventListener("keydown", escK);
 }
 
 /* ---- kendi programını yaz ----
@@ -268,8 +263,7 @@ function openProgramEditor(){
   let sel = isoWeekday(today());
   const el = document.createElement("div");
   el.className = "sheet-bg";
-  function escK(ev){ if (ev.key === "Escape") close(); }
-  const close = () => { sheetOut(el); document.removeEventListener("keydown", escK); };
+  const close = () => sheetOut(el);
   const day = () => (draft[sel] = draft[sel] || { t:"", ex:[] });
   const filled = n => !!(draft[n] && draft[n].ex && draft[n].ex.some(x => (x.n || "").trim()));
 
@@ -349,5 +343,4 @@ function openProgramEditor(){
     await saveState(state); render();
     toast(tx("Programın kaydedildi: haftada {0} gün.", [(Object.keys(days).length)]));
   };
-  document.addEventListener("keydown", escK);
 }

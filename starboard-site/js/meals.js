@@ -12,16 +12,17 @@ function allFoods(){
 }
 
 function logTotals(entry){
-  const t = { kcal:0, p:0, c:0, f:0, lif:0 };
+  const t = { kcal:0, p:0, c:0, f:0, alk:0, lif:0 };
   const micros = new Set();
   for (const it of (entry.log || [])){
     t.p += it.p * it.g/100; t.c += it.c * it.g/100; t.f += it.f * it.g/100;
+    t.alk += (it.alk || 0) * it.g/100;
     t.lif += (it.lif || 0) * it.g/100;
     t.kcal += foodEnergyPer100(it) * it.g/100;
     (it.v || []).forEach(x => micros.add(x));
   }
   return { kcal:Math.round(t.kcal), p:Math.round(t.p), c:Math.round(t.c),
-           f:Math.round(t.f), lif:Math.round(t.lif), micros };
+           f:Math.round(t.f), alk:Math.round(t.alk), lif:Math.round(t.lif), micros };
 }
 
 /* Lif için yaygın referans: 1000 kcal başına ~14 g. */
@@ -46,22 +47,22 @@ function mealsView(program){
 
 /* Tarif makroları malzemelerden hesaplanıyor, ayrıca girilmiyor. */
 function recipeMacros(r){
-  let g = 0, p = 0, c = 0, f = 0, lif = 0, kcal = 0;
+  let g = 0, p = 0, c = 0, f = 0, alk = 0, lif = 0, kcal = 0;
   const v = new Set();
   for (const [k, grams] of r.ing){
     const food = FOODS[k];
     if (!food) continue;
     g += grams;
-    p += food.p*grams/100; c += food.c*grams/100; f += food.f*grams/100; lif += (food.lif||0)*grams/100;
+    p += food.p*grams/100; c += food.c*grams/100; f += food.f*grams/100; alk += (food.alk||0)*grams/100; lif += (food.lif||0)*grams/100;
     kcal += foodEnergyPer100(food)*grams/100;
     (food.v || []).forEach(x => v.add(x));
   }
   const srv = r.srv || 1;
   return {
     gPer: Math.round(g / srv),
-    per100: { kcal:kcal/g*100, p: p/g*100, c: c/g*100, f: f/g*100, lif: lif/g*100 },
+    per100: { kcal:kcal/g*100, p: p/g*100, c: c/g*100, f: f/g*100, alk: alk/g*100, lif: lif/g*100 },
     serving: { kcal:Math.round(kcal/srv), p:Math.round(p/srv), c:Math.round(c/srv),
-               f:Math.round(f/srv), lif:Math.round(lif/srv) },
+               f:Math.round(f/srv), alk:Math.round(alk/srv), lif:Math.round(lif/srv) },
     v: [...v]
   };
 }
@@ -352,7 +353,8 @@ function copyItems(entry, items, slot){
   for (const it of items){
     const id = Date.now() + Math.random();
     ids.push(id);
-    entry.log.push(slot ? { ...it, id, slot } : { ...it, id });
+    const copy = { ...it, id, alk:it.alk || 0 };
+    entry.log.push(slot ? { ...copy, slot } : copy);
   }
   return ids;
 }
@@ -364,7 +366,7 @@ function mealCards(entry, sug){
   const known = new Set(list.map(([k]) => k));
   const fallback = list.length ? list[list.length-1][0] : "aksam";
   const slotOf = x => { const sId = x.slot || fallback; return known.has(sId) ? sId : "__other"; };
-  const kcalOf = items => Math.round(items.reduce((a,it) => a + foodEnergyPer100(it)*it.g/100, 0));
+const kcalOf = items => Math.round(items.reduce((a,it) => a + foodEnergyPer100(it)*it.g/100, 0));
 
   const cards = list.map(([k,l]) => {
     const items = log.filter(x => slotOf(x) === k);
@@ -404,7 +406,7 @@ const myFoodList = () => Object.entries(state.customFoods || {}).filter(([, f]) 
 
 function myFoodPre(key){
   const f = (state.customFoods || {})[key];
-  return { edit: key, bc: f.bc, n: f.n, p: f.p, c: f.c, f: f.f, lif: f.lif, cancel: true,
+  return { edit: key, bc: f.bc, n: f.n, p: f.p, c: f.c, f: f.f, alk: f.alk || 0, lif: f.lif, cancel: true,
     title: f.bc ? tx("Barkod {0}", [esc(f.bc)]) : null };
 }
 
@@ -414,7 +416,7 @@ function myFoodsHTML(){
     return `<div class="item mf-row">${iconBox(f.i || "grain")}
       <button class="item-main tap" data-mf-edit="${esc(k)}" aria-expanded="${open}" aria-label="${esc(f.n)}, ${tx("Düzenle")}">
         <h3>${esc(f.n)}${f.bc ? `<span class="bc-mark" role="img" aria-label="${tx("Barkodlu ürün")}">${icon("barcode")}</span>` : ""}</h3>
-        <p>${f.br ? esc(f.br) + " · " : ""}${tx("100 g: {0} kcal", [(Math.round(foodEnergyPer100(f)))])}</p></button>
+<p>${f.br ? esc(f.br) + " · " : ""}${tx("100 g: {0} kcal", [(Math.round(foodEnergyPer100(f)))])}</p></button>
       <button class="del" data-mf-del="${esc(k)}" aria-label="${esc(f.n)}, ${tx("Sil")}">×</button>
     </div>${open ? `<div id="mf-edit">${customFoodForm(myFoodPre(k))}</div>` : ""}`;
   }).join("");
@@ -475,7 +477,7 @@ function addPanel(){
 }
 
 /* "Kendi besinin" formu; barkod akışı da kullanır (barcode.js). pre (hepsi isteğe bağlı):
-   n, p, c, f, lif ile alanlar önceden dolar; notes [[html, uyarı mı]]; title ve saveLabel
+   n, p, c, f, alk, lif ile alanlar önceden dolar; notes [[html, uyarı mı]]; title ve saveLabel
    html'dir; bc barkod numarası, br marka, serving porsiyon gramı, src:"off";
    requireAll: üç makro da dolu olmalı (boş "bilinmiyor" demek, 0 yazılırsa 0'dır). */
 function customFoodForm(pre){
@@ -506,9 +508,10 @@ function wireCustomForm(box, pre){
   pre = pre || {};
   const $ = id => box.querySelector("#" + id);
   const macros = () => ["cf-p", "cf-c", "cf-f"].map(id => num($(id).value));
+  const alcohol = () => Math.max(0, Number(pre.alk) || 0);
   const showKcal = () => {
     const [p, c, f] = macros().map(v => v || 0);
-    $("cf-kcal").textContent = tx("≈ {0} kcal / 100 g", [Math.round(p * 4 + c * 4 + f * 9)]);
+    $("cf-kcal").textContent = tx("≈ {0} kcal / 100 g", [Math.round(kcalFromMacros({ p, c, f, alk:alcohol() }))]);
   };
   ["cf-p", "cf-c", "cf-f"].forEach(id => { $(id).oninput = showKcal; });
   showKcal();
@@ -544,11 +547,11 @@ function wireCustomForm(box, pre){
       if (blank) return fail(tx("Değerler eksik; tamamlayıp kaydet."), $(blank));
       if (raw.some(v => v < 0 || v > 100) || p + c + f > 105 || lif < 0 || lif > 100)
         return fail(tx("Değerler geçersiz: 100 g'da toplam 100 g'ı aşamaz."), $("cf-p"));
-      key = saveBarcodeFood(pre.bc, { n, p, c, f, lif, br: pre.br, serving: pre.serving, src: pre.src });
+      key = saveBarcodeFood(pre.bc, { n, p, c, f, alk:alcohol(), lif, br: pre.br, serving: pre.serving, src: pre.src });
     } else {
       if (!n || (p + c + f) === 0) return;
       key = "cf_" + Date.now();
-      state.customFoods[key] = { n, p, c, f, lif, i: "grain" };
+      state.customFoods[key] = { n, p, c, f, alk:0, lif, i: "grain" };
     }
     logPick = key; logQuery = n;
     await saveState(state); render();
@@ -589,7 +592,7 @@ function logBySlot(log){
   const other = log.filter(x => slotOf(x) === "__other");
   if (other.length) groups.push(["__other", tx("Diğer"), other]);
   return groups.filter(([,,items]) => items.length).map(([,l,items]) => {
-    const kc = items.reduce((a,it) => a + foodEnergyPer100(it)*it.g/100, 0);
+const kc = items.reduce((a,it) => a + foodEnergyPer100(it)*it.g/100, 0);
     return `<div class="slot-head"><span>${l}</span><span class="num">${tx("{0} kcal", [(Math.round(kc))])}</span></div>
       ${items.map(logLine).join("")}`;
   }).join("");
@@ -600,7 +603,7 @@ function logLine(it){
   return `<div class="log-line${open ? " editing" : ""}">${iconBox(it.i || "grain")}
     <button class="m log-tap" data-log-edit="${it.id}" aria-expanded="${open}" aria-label="${esc(it.n)}, ${tx("porsiyonu düzenle")}">
       <span class="lt-h">${esc(it.n)}</span><span class="lt-p">${amountText(it)} · P${Math.round(it.p*it.g/100)} K${Math.round(it.c*it.g/100)} Y${Math.round(it.f*it.g/100)}</span></button>
-    <span class="k num">${tx("{0} kcal", [(Math.round(foodEnergyPer100(it)*it.g/100))])}</span>
+<span class="k num">${tx("{0} kcal", [(Math.round(foodEnergyPer100(it)*it.g/100))])}</span>
     <button class="del" data-log-del="${it.id}" aria-label="${tx("Sil")}">×</button></div>
     ${open ? logEditor(it) : ""}`;
 }
@@ -625,7 +628,7 @@ function logEditor(it){
   const val = unit ? +(it.g / f.unit).toFixed(2) : it.g;
   return `<div class="pick log-edit">
     <div class="lbl-row"><label for="le-amt">${tx("Miktar ({0})", [(unit ? esc(f.unitName) : "g")])}</label>
-      <span class="lbl-v num" id="le-kcal">${tx("{0} kcal", [(Math.round(foodEnergyPer100(it)*it.g/100))])}</span></div>
+<span class="lbl-v num" id="le-kcal">${tx("{0} kcal", [(Math.round(foodEnergyPer100(it)*it.g/100))])}</span></div>
     <div class="le-row">
       <button class="lf-sb" data-le-step="-1" aria-label="${tx("Azalt")}">−</button>
       <input id="le-amt" type="number" inputmode="decimal" value="${val}" data-unit="${unit ? f.unit : 1}">
@@ -967,7 +970,7 @@ function bindRecipes(entry){
     entry.log = entry.log || [];
     entry.log.push({ id:Date.now()+Math.random(), n:r.n + " (1 porsiyon)", g:m.gPer,
       p:+m.per100.p.toFixed(1), c:+m.per100.c.toFixed(1), f:+m.per100.f.toFixed(1),
-      lif:+m.per100.lif.toFixed(1), kcal100:m.per100.kcal, v:m.v, i:r.i, slot: defaultSlot() });
+alk:+m.per100.alk.toFixed(1), lif:+m.per100.lif.toFixed(1), kcal100:m.per100.kcal, v:m.v, i:r.i, slot: defaultSlot() });
     syncKcal(entry);
     mealTab = "log"; recipeOpen = null; recipeQuery = "";
     await saveState(state); render(); window.scrollTo(0,0);
@@ -1150,7 +1153,7 @@ function wireMealsRest(entry){
     const u = +leAmt.dataset.unit;
     const grams = () => { const n = num(leAmt.value); return n && n > 0 ? n * u : null; };
     const showK = () => { const g = grams(); document.getElementById("le-kcal").textContent =
-      g ? `${Math.round(foodEnergyPer100(it)*g/100)} kcal` : "—"; };
+g ? `${Math.round(foodEnergyPer100(it)*g/100)} kcal` : "—"; };
     leAmt.oninput = showK;
     app.querySelectorAll("[data-le-g]").forEach(c => c.onclick = () => {
       leAmt.value = +(Number(c.dataset.leG) / u).toFixed(2); showK();
@@ -1277,7 +1280,7 @@ function addFoodDirect(entry, key, grams, slot){
   if (!f) return null;
   entry.log = entry.log || [];
   const it = { id: Date.now()+Math.random(), k:key, n:f.n, g:grams,
-    p:f.p, c:f.c, f:f.f, lif:f.lif || 0, v:f.v || [], i:f.i, slot: slot || defaultSlot() };
+p:f.p, c:f.c, f:f.f, alk:f.alk || 0, lif:f.lif || 0, v:f.v || [], i:f.i, slot: slot || defaultSlot() };
   if (Number.isFinite(f.kcal100)) it.kcal100 = f.kcal100;
   entry.log.push(it);
   syncKcal(entry);

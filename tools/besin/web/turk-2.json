@@ -1,0 +1,3142 @@
+[
+  {
+    "ad": "Tepsi böreği",
+    "kcal": 300,
+    "p": 9,
+    "c": 30,
+    "f": 14,
+    "lif": 1.8,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/tepsi-boregi/"
+  },
+  {
+    "ad": "Yufka böreği",
+    "kcal": 265,
+    "p": 7,
+    "c": 35,
+    "f": 10,
+    "lif": 1.5,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/yufka-boregi/"
+  },
+  {
+    "ad": "Talaş böreği",
+    "kcal": 281,
+    "p": 8.96,
+    "c": 30.5,
+    "f": 13.32,
+    "lif": 2.61,
+    "porsiyon_g": 130,
+    "kaynak_url": "https://www.diyetkolik.com/yemek-tarifi/talas-boregi"
+  },
+  {
+    "ad": "Muska böreği",
+    "kcal": 245,
+    "p": 6.6,
+    "c": 42.07,
+    "f": 5.5,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/muska-boregi/"
+  },
+  {
+    "ad": "Ot böreği",
+    "kcal": 205,
+    "p": 6,
+    "c": 30,
+    "f": 6,
+    "lif": 1.8,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/ispanakli-borek"
+  },
+  {
+    "ad": "Puf böreği",
+    "kcal": 338,
+    "p": 8.7,
+    "c": 36.7,
+    "f": 17,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.ktb.gov.tr/EN-99073/puff-borek.html"
+  },
+  {
+    "ad": "Milföy böreği",
+    "kcal": 302,
+    "p": 8.9,
+    "c": 27,
+    "f": 9.7,
+    "lif": null,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/peynirli-milfoy-boregi/"
+  },
+  {
+    "ad": "Kıvrım börek",
+    "kcal": 270,
+    "p": 8,
+    "c": 32,
+    "f": 12,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=B%C3%B6rek"
+  },
+  {
+    "ad": "El açması börek",
+    "kcal": 255,
+    "p": 2.4,
+    "c": 32.3,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 130,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/ispanakli-acma-borek/"
+  },
+  {
+    "ad": "Saç böreği",
+    "kcal": 300,
+    "p": 8,
+    "c": 32,
+    "f": 15,
+    "lif": null,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.ntv.com.tr/kac-kalori/ispanakli-sac-boregi"
+  },
+  {
+    "ad": "Sucuklu börek",
+    "kcal": 320,
+    "p": 11,
+    "c": 30,
+    "f": 17,
+    "lif": null,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=B%C3%B6rek"
+  },
+  {
+    "ad": "Kaşarlı börek",
+    "kcal": 260,
+    "p": 10.11,
+    "c": 33.48,
+    "f": 9.14,
+    "lif": 1.95,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/peynirli-borek"
+  },
+  {
+    "ad": "Mantarlı börek",
+    "kcal": 250,
+    "p": 8,
+    "c": 30,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=B%C3%B6rek"
+  },
+  {
+    "ad": "Kete",
+    "kcal": 335,
+    "p": 7.7,
+    "c": 54.59,
+    "f": 8.6,
+    "lif": 1.93,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.ntv.com.tr/kac-kalori/kete"
+  },
+  {
+    "ad": "Pişi",
+    "kcal": 244,
+    "p": 7.5,
+    "c": 46,
+    "f": 2.82,
+    "lif": 1.5,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/pisi"
+  },
+  {
+    "ad": "Krep",
+    "kcal": 187,
+    "p": 7,
+    "c": 27,
+    "f": 4,
+    "lif": 1.5,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/krep/"
+  },
+  {
+    "ad": "Akıtma",
+    "kcal": 197,
+    "p": 5,
+    "c": 14.3,
+    "f": 13,
+    "lif": null,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/akitma/"
+  },
+  {
+    "ad": "Cizleme",
+    "kcal": 197,
+    "p": 4,
+    "c": 22,
+    "f": 9,
+    "lif": 2.5,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/cizleme/"
+  },
+  {
+    "ad": "Katmer",
+    "kcal": 256,
+    "p": 7.68,
+    "c": 50.41,
+    "f": 2.26,
+    "lif": 3.28,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/katmer"
+  },
+  {
+    "ad": "Kuşbaşılı pide",
+    "kcal": 132,
+    "p": 7.25,
+    "c": 18.77,
+    "f": 2.96,
+    "lif": 1.6,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/kusbasili-pide"
+  },
+  {
+    "ad": "Sucuklu pide",
+    "kcal": 260,
+    "p": 10,
+    "c": 28,
+    "f": 11,
+    "lif": 1.5,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://www.neyediginibil.com/besin-degerleri/usta-pideci"
+  },
+  {
+    "ad": "Pastırmalı pide",
+    "kcal": 260,
+    "p": 13.1,
+    "c": 29.5,
+    "f": 10.2,
+    "lif": null,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/harras/past%C4%B1rmal%C4%B1-ka%C5%9Farl%C4%B1-pide/100g"
+  },
+  {
+    "ad": "Ispanaklı pide",
+    "kcal": 158,
+    "p": 4,
+    "c": 19.8,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://www.ntv.com.tr/kac-kalori/ispanakli-pide"
+  },
+  {
+    "ad": "Yumurtalı pide",
+    "kcal": 205,
+    "p": 9,
+    "c": 27,
+    "f": 6.5,
+    "lif": null,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/pratik-yumurtali-pide"
+  },
+  {
+    "ad": "Karışık pide",
+    "kcal": 250,
+    "p": 12,
+    "c": 28,
+    "f": 10,
+    "lif": null,
+    "porsiyon_g": 280,
+    "kaynak_url": "https://www.nefisyemektarifleri.com/kac-kalori/pide/"
+  },
+  {
+    "ad": "Mantarlı pide",
+    "kcal": 205,
+    "p": 8,
+    "c": 27,
+    "f": 7,
+    "lif": 1.8,
+    "porsiyon_g": 230,
+    "kaynak_url": "https://ye-mek.net/kalori/kasarli-mantarli-ev-pidesi"
+  },
+  {
+    "ad": "Tavuklu pide",
+    "kcal": 167,
+    "p": 6.4,
+    "c": 25.82,
+    "f": 4.35,
+    "lif": 0.95,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Tavuklu+Pide"
+  },
+  {
+    "ad": "Beyaz peynirli pide",
+    "kcal": 196,
+    "p": 7,
+    "c": 25.83,
+    "f": 6,
+    "lif": 2,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/peynirli-pide/"
+  },
+  {
+    "ad": "Fıstıklı lahmacun",
+    "kcal": 230,
+    "p": 11,
+    "c": 26,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=lahmacun"
+  },
+  {
+    "ad": "Etli ekmek",
+    "kcal": 210,
+    "p": 11.59,
+    "c": 23.55,
+    "f": 7.25,
+    "lif": 1.47,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/etli-ekmek"
+  },
+  {
+    "ad": "Biberli ekmek",
+    "kcal": 257,
+    "p": 6.8,
+    "c": 25,
+    "f": 14.4,
+    "lif": 3,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/hatay-usulu-biberli-ekmek"
+  },
+  {
+    "ad": "Kır pidesi",
+    "kcal": 260,
+    "p": 8,
+    "c": 52,
+    "f": 3,
+    "lif": 2.5,
+    "porsiyon_g": 240,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=pide"
+  },
+  {
+    "ad": "Antep lahmacunu",
+    "kcal": 230,
+    "p": 11,
+    "c": 26,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 140,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=lahmacun"
+  },
+  {
+    "ad": "Patlıcan dolma",
+    "kcal": 150,
+    "p": 6,
+    "c": 14,
+    "f": 8,
+    "lif": 3,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=patl%C4%B1can%20dolma"
+  },
+  {
+    "ad": "Soğan dolma",
+    "kcal": 136,
+    "p": 2,
+    "c": 19.8,
+    "f": 5.5,
+    "lif": 2,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=so%C4%9Fan%20dolma"
+  },
+  {
+    "ad": "Domates dolma",
+    "kcal": 96,
+    "p": 4.75,
+    "c": 9.9,
+    "f": 4.2,
+    "lif": 1.5,
+    "porsiyon_g": 160,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=domates%20dolma"
+  },
+  {
+    "ad": "Ayva dolma",
+    "kcal": 165,
+    "p": 4,
+    "c": 20,
+    "f": 6,
+    "lif": 2.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=ayva%20dolma"
+  },
+  {
+    "ad": "Enginar dolma",
+    "kcal": 90,
+    "p": 3,
+    "c": 13,
+    "f": 3.5,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/enginar-dolmasi/"
+  },
+  {
+    "ad": "Kuru patlıcan dolma",
+    "kcal": 161,
+    "p": 2,
+    "c": 19.4,
+    "f": 8.5,
+    "lif": 1.1,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kuru-patlican-dolmasi"
+  },
+  {
+    "ad": "Kuru biber dolma",
+    "kcal": 175,
+    "p": 2.1,
+    "c": 20.3,
+    "f": 9.7,
+    "lif": 0.9,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kuru-biber-dolmasi"
+  },
+  {
+    "ad": "Kuru kabak dolma",
+    "kcal": 146,
+    "p": 2.8,
+    "c": 17.9,
+    "f": 9.3,
+    "lif": 2,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/kuru-kabak-dolmasi-zeytinyagli"
+  },
+  {
+    "ad": "Pancar yaprağı sarma",
+    "kcal": 140,
+    "p": 4,
+    "c": 20,
+    "f": 4.5,
+    "lif": 2,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/pancar-yapragi/"
+  },
+  {
+    "ad": "Pazı sarma",
+    "kcal": 194,
+    "p": 10.03,
+    "c": 20.41,
+    "f": 7.34,
+    "lif": 2,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.haberturk.com/kac-kalori/pazi-sarmasi-besin-degeri"
+  },
+  {
+    "ad": "Zeytinyağlı lahana sarma",
+    "kcal": 106,
+    "p": 2.48,
+    "c": 20.32,
+    "f": 1.44,
+    "lif": 1.93,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/zeytinyagli-lahana-sarmasi"
+  },
+  {
+    "ad": "Ekşili dolma",
+    "kcal": 150,
+    "p": 9,
+    "c": 16,
+    "f": 6,
+    "lif": 2,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/etli-bulgurlu-dolma"
+  },
+  {
+    "ad": "Yoğurtlu dolma",
+    "kcal": 112,
+    "p": 5,
+    "c": 12,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 160,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/dolma-biber-yogurtlu/"
+  },
+  {
+    "ad": "Yalancı dolma",
+    "kcal": 135,
+    "p": 3,
+    "c": 18,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/zeytinyagli-patlican-dolmasi"
+  },
+  {
+    "ad": "Kabak çiçeği dolması",
+    "kcal": 178,
+    "p": 2.2,
+    "c": 20.4,
+    "f": 9.9,
+    "lif": 1.1,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kabak-cicegi-dolmasi"
+  },
+  {
+    "ad": "Karışık dolma",
+    "kcal": 168,
+    "p": 5,
+    "c": 22,
+    "f": 7,
+    "lif": 2,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/karisik-dolma"
+  },
+  {
+    "ad": "Etli lahana sarma",
+    "kcal": 130,
+    "p": 5,
+    "c": 16,
+    "f": 5,
+    "lif": 1.5,
+    "porsiyon_g": 50,
+    "kaynak_url": "https://antrena.app/kalori/lahana-sarmasi"
+  },
+  {
+    "ad": "Kuru lahana sarma",
+    "kcal": 135,
+    "p": 4,
+    "c": 17,
+    "f": 5,
+    "lif": 2,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/lahana-sarmasi/"
+  },
+  {
+    "ad": "Patlıcan salatası",
+    "kcal": 34,
+    "p": 1.16,
+    "c": 3.03,
+    "f": 1.82,
+    "lif": 2.29,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/patlican-salatasi"
+  },
+  {
+    "ad": "Babagannuş",
+    "kcal": 119,
+    "p": 2.2,
+    "c": 9.5,
+    "f": 9.1,
+    "lif": 2.9,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.slimfit.net/kalori/babagannus.html"
+  },
+  {
+    "ad": "Muhammara",
+    "kcal": 417,
+    "p": 8.2,
+    "c": 21.1,
+    "f": 35.7,
+    "lif": 3,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/muhammara"
+  },
+  {
+    "ad": "Atom meze",
+    "kcal": 144,
+    "p": 7.9,
+    "c": 5.1,
+    "f": 10.6,
+    "lif": 1,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.slimfit.net/kalori/atom.html"
+  },
+  {
+    "ad": "Girit ezmesi",
+    "kcal": 407,
+    "p": 11.4,
+    "c": 6.4,
+    "f": 38.9,
+    "lif": 3,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/girit-ezmesi"
+  },
+  {
+    "ad": "Tarator",
+    "kcal": 149,
+    "p": 3.86,
+    "c": 7.48,
+    "f": 12.3,
+    "lif": 1,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Tarator"
+  },
+  {
+    "ad": "Havuç tarator",
+    "kcal": 90,
+    "p": 2.2,
+    "c": 6.2,
+    "f": 7.5,
+    "lif": 1.5,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/havuc-tarator"
+  },
+  {
+    "ad": "Kabak tarator",
+    "kcal": 101,
+    "p": 3,
+    "c": 3.4,
+    "f": 8.4,
+    "lif": 1,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/kabak-tarator"
+  },
+  {
+    "ad": "Yoğurtlu semizotu",
+    "kcal": 69,
+    "p": 3,
+    "c": 3.6,
+    "f": 4.9,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/yogurtlu-semizotu"
+  },
+  {
+    "ad": "Yoğurtlu kereviz",
+    "kcal": 86,
+    "p": 2.6,
+    "c": 8.5,
+    "f": 5.1,
+    "lif": 1,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/yogurtlu-kereviz-mezesi"
+  },
+  {
+    "ad": "Rus salatası",
+    "kcal": 110,
+    "p": 2.3,
+    "c": 10,
+    "f": 6.8,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/amerikan-salatasi-rus-salatasi"
+  },
+  {
+    "ad": "Patates salatası",
+    "kcal": 143,
+    "p": 2,
+    "c": 15,
+    "f": 8,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/patates-salatasi/"
+  },
+  {
+    "ad": "Kuskus salatası",
+    "kcal": 120,
+    "p": 4.4,
+    "c": 20.5,
+    "f": 3.8,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/kuskus-salatasi"
+  },
+  {
+    "ad": "Makarna salatası",
+    "kcal": 185,
+    "p": 6,
+    "c": 24,
+    "f": 7,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/akdeniz-makarna-salatasi"
+  },
+  {
+    "ad": "Roka salatası",
+    "kcal": 93,
+    "p": 1.1,
+    "c": 11.1,
+    "f": 4.6,
+    "lif": 1.5,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/roka-salatasi"
+  },
+  {
+    "ad": "Gavurdağı salatası",
+    "kcal": 140,
+    "p": 2.1,
+    "c": 7.5,
+    "f": 11.5,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/gavurdagi"
+  },
+  {
+    "ad": "Köpoğlu salatası",
+    "kcal": 132,
+    "p": 1.75,
+    "c": 3.93,
+    "f": 12.47,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=K%C3%B6po%C4%9Flu"
+  },
+  {
+    "ad": "Cevizli biber",
+    "kcal": 300,
+    "p": 7,
+    "c": 14,
+    "f": 24,
+    "lif": 3,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.besinanaliz.com/foods/muhammara-cevizli-biber-ezmesi"
+  },
+  {
+    "ad": "Şakşuka",
+    "kcal": 111.3,
+    "p": 1.5,
+    "c": 7.8,
+    "f": 8.2,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.besinanaliz.com/foods/saksuka"
+  },
+  {
+    "ad": "Tabbule",
+    "kcal": 124,
+    "p": 1.55,
+    "c": 9.3,
+    "f": 8.8,
+    "lif": 2,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tabule"
+  },
+  {
+    "ad": "Zahter salatası",
+    "kcal": 145,
+    "p": 3.03,
+    "c": 19.04,
+    "f": 6.7,
+    "lif": 3,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.kalorivebesin.com.tr/zahter-kac-kalori"
+  },
+  {
+    "ad": "Batırık",
+    "kcal": 180,
+    "p": 5,
+    "c": 24.3,
+    "f": 8.4,
+    "lif": 4.6,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/batirik"
+  },
+  {
+    "ad": "Lakerda",
+    "kcal": 190,
+    "p": 20,
+    "c": 0,
+    "f": 12,
+    "lif": null,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.724clinic.com/en/tools/food-calories/lakerda/"
+  },
+  {
+    "ad": "Ton balıklı salata",
+    "kcal": 110,
+    "p": 12.3,
+    "c": 8.3,
+    "f": 9.5,
+    "lif": 1.4,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/ton-balikli-salata"
+  },
+  {
+    "ad": "Peynirli salata",
+    "kcal": 104,
+    "p": 7,
+    "c": 11.7,
+    "f": 3.5,
+    "lif": 1,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/lor-peynirli-salata"
+  },
+  {
+    "ad": "Mevsim salata",
+    "kcal": 67,
+    "p": 0.9,
+    "c": 4.3,
+    "f": 5.7,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/mevsim-salata"
+  },
+  {
+    "ad": "Kırmızı biber salatası",
+    "kcal": 37,
+    "p": 1.3,
+    "c": 6.4,
+    "f": 0.5,
+    "lif": 3.59,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/kirmizi-biber"
+  },
+  {
+    "ad": "Yoğurtlu közlenmiş biber",
+    "kcal": 65,
+    "p": 3,
+    "c": 9,
+    "f": 3,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/yogurtlu-koz-biber-salatasi"
+  },
+  {
+    "ad": "Kalamar salatası",
+    "kcal": 140,
+    "p": 13,
+    "c": 7,
+    "f": 6,
+    "lif": 1,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.besinanaliz.com/foods/kalamar-ege"
+  },
+  {
+    "ad": "Midye salatası",
+    "kcal": 109,
+    "p": 15.06,
+    "c": 4.67,
+    "f": 2.84,
+    "lif": null,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/26313110/midye/"
+  },
+  {
+    "ad": "Rafadan yumurta",
+    "kcal": 155,
+    "p": 14.4,
+    "c": 0.8,
+    "f": 10.9,
+    "lif": 0,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/haslanmis-yumurta"
+  },
+  {
+    "ad": "Pastırmalı yumurta",
+    "kcal": 206,
+    "p": 16.2,
+    "c": 0.7,
+    "f": 15.1,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/pastirmali-yumurta"
+  },
+  {
+    "ad": "Kavurmalı yumurta",
+    "kcal": 254,
+    "p": 20,
+    "c": 1,
+    "f": 19,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-g-kavurmali-yumurta"
+  },
+  {
+    "ad": "Sosisli yumurta",
+    "kcal": 195,
+    "p": 11,
+    "c": 3,
+    "f": 16,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/sosisli-yumurta"
+  },
+  {
+    "ad": "Peynirli omlet",
+    "kcal": 205,
+    "p": 12.46,
+    "c": 1.28,
+    "f": 16.77,
+    "lif": 0.53,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/beyaz-peynirli-omlet"
+  },
+  {
+    "ad": "Sebzeli omlet",
+    "kcal": 189,
+    "p": 4.2,
+    "c": 2.9,
+    "f": 17.8,
+    "lif": 1,
+    "porsiyon_g": 160,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/sebzeli-omlet"
+  },
+  {
+    "ad": "Mantarlı omlet",
+    "kcal": 189,
+    "p": 11.9,
+    "c": 2.3,
+    "f": 14.9,
+    "lif": 0.8,
+    "porsiyon_g": 160,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/mantarli-omlet"
+  },
+  {
+    "ad": "Kaşarlı omlet",
+    "kcal": 267,
+    "p": 17.1,
+    "c": 1.8,
+    "f": 21.5,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/kasar-peynirli-omlet"
+  },
+  {
+    "ad": "Çılbır",
+    "kcal": 136,
+    "p": 7.1,
+    "c": 3.6,
+    "f": 10.5,
+    "lif": 0.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.slimfit.net/kalori/cilbir.html"
+  },
+  {
+    "ad": "Bal kaymak",
+    "kcal": 316,
+    "p": 2,
+    "c": 54,
+    "f": 10,
+    "lif": 0,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/bal-kaymak"
+  },
+  {
+    "ad": "Tahin pekmez",
+    "kcal": 384,
+    "p": 8.6,
+    "c": 48.4,
+    "f": 19.1,
+    "lif": 4,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tahin-pekmez"
+  },
+  {
+    "ad": "Yumurtalı ekmek",
+    "kcal": 249,
+    "p": 9.13,
+    "c": 29.85,
+    "f": 10.18,
+    "lif": 1.91,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/yumurtali-ekmek"
+  },
+  {
+    "ad": "Patatesli yumurta",
+    "kcal": 180,
+    "p": 5.6,
+    "c": 13.1,
+    "f": 11.9,
+    "lif": 1.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/patatesli-yumurta"
+  },
+  {
+    "ad": "Soğanlı yumurta",
+    "kcal": 182,
+    "p": 14.2,
+    "c": 2.5,
+    "f": 16.3,
+    "lif": 0,
+    "porsiyon_g": 160,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/taze-soganli-yumurta"
+  },
+  {
+    "ad": "Domatesli yumurta",
+    "kcal": 110,
+    "p": 10,
+    "c": 4,
+    "f": 7,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/domatesli-yumurta"
+  },
+  {
+    "ad": "Biberli yumurta",
+    "kcal": 148,
+    "p": 10,
+    "c": 5,
+    "f": 10,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/biberli-omlet/"
+  },
+  {
+    "ad": "Kargı tulum peyniri",
+    "kcal": 355,
+    "p": 25,
+    "c": 1,
+    "f": 28,
+    "lif": 0,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tulum-peyniri"
+  },
+  {
+    "ad": "Van otlu peynir",
+    "kcal": 300,
+    "p": 17,
+    "c": 3,
+    "f": 24,
+    "lif": 0,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/muratbey-van-otlu-peynir"
+  },
+  {
+    "ad": "Çerkez peyniri",
+    "kcal": 300,
+    "p": 18,
+    "c": 2,
+    "f": 24,
+    "lif": 0,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/sutas-cerkez-peyniri"
+  },
+  {
+    "ad": "Köy peyniri",
+    "kcal": 270,
+    "p": 17.5,
+    "c": 2,
+    "f": 21,
+    "lif": 0,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/beyaz-koy-peyniri"
+  },
+  {
+    "ad": "Kalamata zeytin",
+    "kcal": 200,
+    "p": 3,
+    "c": 6,
+    "f": 19,
+    "lif": 3.3,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.ntv.com.tr/kac-kalori/kalamata-yesil-zeytin"
+  },
+  {
+    "ad": "Bursa siyah zeytin",
+    "kcal": 116,
+    "p": 1.8,
+    "c": 6,
+    "f": 11,
+    "lif": 3,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/siyah-zeytin"
+  },
+  {
+    "ad": "Çizik zeytin",
+    "kcal": 145,
+    "p": 1.03,
+    "c": 3.84,
+    "f": 15.3,
+    "lif": 3,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/yesil-zeytin/"
+  },
+  {
+    "ad": "Cevizli sucuk",
+    "kcal": 285,
+    "p": 4.89,
+    "c": 25.88,
+    "f": 15.34,
+    "lif": 0.16,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/cevizli-sucuk"
+  },
+  {
+    "ad": "Pestil",
+    "kcal": 290,
+    "p": 3.65,
+    "c": 68,
+    "f": 1.5,
+    "lif": 6,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://www.hurriyet.com.tr/mahmure/pestil-kac-kalori-100-gram-pestil-besin-degerleri-ve-kalorisi-41955978"
+  },
+  {
+    "ad": "Köme",
+    "kcal": 390,
+    "p": 6,
+    "c": 60,
+    "f": 13,
+    "lif": 3,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kombe"
+  },
+  {
+    "ad": "Dürüm döner",
+    "kcal": 184,
+    "p": 12.2,
+    "c": 20.2,
+    "f": 5.7,
+    "lif": 1.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/doner-durum"
+  },
+  {
+    "ad": "Islak hamburger",
+    "kcal": 260,
+    "p": 11,
+    "c": 27,
+    "f": 12,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://724clinic.com/araclar/yemek-kalori/islak-hamburger/"
+  },
+  {
+    "ad": "Hamburger",
+    "kcal": 250,
+    "p": 12,
+    "c": 24,
+    "f": 12,
+    "lif": 1.5,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/hamburger"
+  },
+  {
+    "ad": "Ayvalık tostu",
+    "kcal": 271,
+    "p": 11.2,
+    "c": 24.8,
+    "f": 14.2,
+    "lif": 1.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/ayvalik-tostu"
+  },
+  {
+    "ad": "Kumru",
+    "kcal": 288,
+    "p": 12.4,
+    "c": 26.6,
+    "f": 14.7,
+    "lif": 1.5,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kumru"
+  },
+  {
+    "ad": "Boyoz",
+    "kcal": 380,
+    "p": 14.3,
+    "c": 42.8,
+    "f": 16.9,
+    "lif": 2.5,
+    "porsiyon_g": 90,
+    "kaynak_url": "https://dilaragoze.com/besin/boyoz/"
+  },
+  {
+    "ad": "Gevrek",
+    "kcal": 295,
+    "p": 10.4,
+    "c": 57,
+    "f": 3.2,
+    "lif": 3.5,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://liforafit.com/foods/simit"
+  },
+  {
+    "ad": "Adana dürüm",
+    "kcal": 232,
+    "p": 12.5,
+    "c": 22,
+    "f": 10.5,
+    "lif": 2,
+    "porsiyon_g": 280,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/adana-kebabi-durum"
+  },
+  {
+    "ad": "Urfa dürüm",
+    "kcal": 230,
+    "p": 12.5,
+    "c": 22,
+    "f": 10.5,
+    "lif": 2,
+    "porsiyon_g": 280,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/urfa-durum"
+  },
+  {
+    "ad": "Et dürüm",
+    "kcal": 230,
+    "p": 13,
+    "c": 21,
+    "f": 8,
+    "lif": 1.5,
+    "porsiyon_g": 260,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/et-durum/"
+  },
+  {
+    "ad": "Midye ekmek",
+    "kcal": 300,
+    "p": 12,
+    "c": 30,
+    "f": 14,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/midye/"
+  },
+  {
+    "ad": "Kağıt helva",
+    "kcal": 433,
+    "p": 6,
+    "c": 64,
+    "f": 17,
+    "lif": 2,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/koska-kagit-helva"
+  },
+  {
+    "ad": "Macun",
+    "kcal": 365,
+    "p": 5,
+    "c": 82,
+    "f": 4,
+    "lif": 5,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-g-mesir-macunu"
+  },
+  {
+    "ad": "Akide şekeri",
+    "kcal": 395,
+    "p": 0,
+    "c": 98,
+    "f": 0.3,
+    "lif": 0,
+    "porsiyon_g": 10,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/akide-sekeri"
+  },
+  {
+    "ad": "Horoz şekeri",
+    "kcal": 385,
+    "p": 0,
+    "c": 98,
+    "f": 0.3,
+    "lif": 0,
+    "porsiyon_g": 25,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/seker/"
+  },
+  {
+    "ad": "Pamuk şeker",
+    "kcal": 401,
+    "p": 0,
+    "c": 99.6,
+    "f": 0.32,
+    "lif": 0,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/91745050/pamuk-sekeri/"
+  },
+  {
+    "ad": "Falafel dürüm",
+    "kcal": 300,
+    "p": 9,
+    "c": 30,
+    "f": 15,
+    "lif": 5,
+    "porsiyon_g": 260,
+    "kaynak_url": "https://www.eatthismuch.com/calories/falafel-3632"
+  },
+  {
+    "ad": "Sucuk ekmek",
+    "kcal": 300,
+    "p": 13,
+    "c": 28,
+    "f": 15,
+    "lif": 1.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/sucuk-ekmek"
+  },
+  {
+    "ad": "Köfte ekmek",
+    "kcal": 226,
+    "p": 10,
+    "c": 25,
+    "f": 9,
+    "lif": 1.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kofte-ekmek"
+  },
+  {
+    "ad": "Tavuk ekmek",
+    "kcal": 210,
+    "p": 13,
+    "c": 22,
+    "f": 7,
+    "lif": 1.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/tavuk-dünyası/ekmek/100g"
+  },
+  {
+    "ad": "Ciğer ekmek",
+    "kcal": 218,
+    "p": 13,
+    "c": 18,
+    "f": 10,
+    "lif": 1.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/ciger-ekmek/"
+  },
+  {
+    "ad": "Patso",
+    "kcal": 293,
+    "p": 11,
+    "c": 33,
+    "f": 13,
+    "lif": 2,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/patso"
+  },
+  {
+    "ad": "Döner ekmek",
+    "kcal": 230,
+    "p": 12,
+    "c": 24,
+    "f": 9,
+    "lif": 1.5,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/ekmek-arasi-doner/"
+  },
+  {
+    "ad": "Arnavut ciğeri",
+    "kcal": 321,
+    "p": 13.4,
+    "c": 11,
+    "f": 24.9,
+    "lif": 1,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/arnavut-cigeri"
+  },
+  {
+    "ad": "Ciğer tava",
+    "kcal": 241,
+    "p": 14.4,
+    "c": 9,
+    "f": 16.4,
+    "lif": 1,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tava-ciger"
+  },
+  {
+    "ad": "Ciğer sote",
+    "kcal": 175,
+    "p": 22,
+    "c": 6,
+    "f": 8,
+    "lif": 1,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/ciger-sote"
+  },
+  {
+    "ad": "Edirne ciğeri",
+    "kcal": 280,
+    "p": 20,
+    "c": 8,
+    "f": 18,
+    "lif": 1,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.besinanaliz.com/foods/dana-cigeri-edirne-usulu-yaprak"
+  },
+  {
+    "ad": "Kuzu ciğeri",
+    "kcal": 176,
+    "p": 20.3,
+    "c": 3.3,
+    "f": 8.7,
+    "lif": 0,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kuzu-ciger-sis"
+  },
+  {
+    "ad": "Tavuk ciğeri",
+    "kcal": 167,
+    "p": 24.46,
+    "c": 1,
+    "f": 6,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/tavuk-karacigeri-pismis"
+  },
+  {
+    "ad": "Yürek tava",
+    "kcal": 210,
+    "p": 26,
+    "c": 5,
+    "f": 10,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/dana-yurek-pismis/"
+  },
+  {
+    "ad": "Böbrek tava",
+    "kcal": 210,
+    "p": 22,
+    "c": 3,
+    "f": 12,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/25130000/bobrek/"
+  },
+  {
+    "ad": "Kuzu böbrek",
+    "kcal": 180,
+    "p": 20,
+    "c": 1,
+    "f": 10,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/kuzu-bobrek-pismis"
+  },
+  {
+    "ad": "Beyin tava",
+    "kcal": 227,
+    "p": 17,
+    "c": 4.1,
+    "f": 16,
+    "lif": 0,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/belen-tava"
+  },
+  {
+    "ad": "Beyin salatası",
+    "kcal": 160,
+    "p": 12,
+    "c": 3,
+    "f": 11,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/beyin"
+  },
+  {
+    "ad": "Uykuluk",
+    "kcal": 185,
+    "p": 22,
+    "c": 2,
+    "f": 10,
+    "lif": 0.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/uykuluk"
+  },
+  {
+    "ad": "Şırdan",
+    "kcal": 165,
+    "p": 7.6,
+    "c": 19.8,
+    "f": 6.1,
+    "lif": 1,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=%C5%9E%C4%B1rdan"
+  },
+  {
+    "ad": "Mumbar dolması",
+    "kcal": 270.5,
+    "p": 6.6,
+    "c": 35,
+    "f": 11.1,
+    "lif": 1.4,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/mumbar-dolmasi"
+  },
+  {
+    "ad": "Kelle tava",
+    "kcal": 260,
+    "p": 18,
+    "c": 10,
+    "f": 16,
+    "lif": 0.5,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.besinanaliz.com/blog/kelle-paca-kac-kalori-gram-ve-porsiyon-hesabi"
+  },
+  {
+    "ad": "Tandır kelle",
+    "kcal": 240,
+    "p": 18,
+    "c": 2,
+    "f": 17,
+    "lif": 0.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.besinanaliz.com/foods/tandir-ekmegi"
+  },
+  {
+    "ad": "Dil sote",
+    "kcal": 215,
+    "p": 20,
+    "c": 4,
+    "f": 13,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.besinanaliz.com/foods/tongue"
+  },
+  {
+    "ad": "İşkembe tava",
+    "kcal": 190,
+    "p": 16,
+    "c": 6,
+    "f": 11,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/25170110/iskembe/"
+  },
+  {
+    "ad": "Koç yumurtası",
+    "kcal": 143,
+    "p": 12.6,
+    "c": 0.72,
+    "f": 9.51,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/yumurta/"
+  },
+  {
+    "ad": "Sakatat güveç",
+    "kcal": 175,
+    "p": 12,
+    "c": 10,
+    "f": 9,
+    "lif": 1,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/guvec"
+  },
+  {
+    "ad": "Ciğer dürüm",
+    "kcal": 210,
+    "p": 15,
+    "c": 18,
+    "f": 10,
+    "lif": 1.5,
+    "porsiyon_g": 220,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/ciger-durum"
+  },
+  {
+    "ad": "Dalak tava",
+    "kcal": 220,
+    "p": 22,
+    "c": 8,
+    "f": 10,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/dana-dalak-pismis/"
+  },
+  {
+    "ad": "Tavuk yürek",
+    "kcal": 200,
+    "p": 18,
+    "c": 2,
+    "f": 12,
+    "lif": 0.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/tavuk-yürek"
+  },
+  {
+    "ad": "Tavuk taşlık",
+    "kcal": 154,
+    "p": 30.4,
+    "c": 0,
+    "f": 2.7,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/tavuk-taslik/"
+  },
+  {
+    "ad": "Kaz ciğeri",
+    "kcal": 230,
+    "p": 15,
+    "c": 7,
+    "f": 17,
+    "lif": 0.5,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://devinfit.app/besinler/kaz-cigeri-cig"
+  },
+  {
+    "ad": "Kelle söğüş",
+    "kcal": 150,
+    "p": 19.52,
+    "c": 0.44,
+    "f": 7.38,
+    "lif": 0,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=S%C3%B6%C4%9F%C3%BC%C5%9F"
+  },
+  {
+    "ad": "Paça haşlama",
+    "kcal": 130,
+    "p": 15,
+    "c": 1,
+    "f": 7,
+    "lif": 0.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.besinanaliz.com/foods/paca-corbasi"
+  },
+  {
+    "ad": "Kıkırdak tava",
+    "kcal": 300,
+    "p": 18,
+    "c": 12,
+    "f": 20,
+    "lif": 0.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.besinanaliz.com/foods/kilis-tava"
+  },
+  {
+    "ad": "Ciğer köftesi",
+    "kcal": 230,
+    "p": 17,
+    "c": 8,
+    "f": 14,
+    "lif": 1,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/cig-kofte"
+  },
+  {
+    "ad": "Bursa cantık",
+    "kcal": 245,
+    "p": 11.11,
+    "c": 33.85,
+    "f": 6.86,
+    "lif": 4,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Cant%C4%B1k"
+  },
+  {
+    "ad": "Balıkesir höşmerim",
+    "kcal": 340,
+    "p": 9,
+    "c": 42,
+    "f": 15,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://afiyetleyemek.com/hosmerim-kalori-peki-bu-lezzetli-tatli-gercekten-kac-kalori/"
+  },
+  {
+    "ad": "Çanakkale peynir helvası",
+    "kcal": 310,
+    "p": 6,
+    "c": 38,
+    "f": 13,
+    "lif": 1,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kolay-canakkale-peynir-helvasi"
+  },
+  {
+    "ad": "Bursa kestane şekeri",
+    "kcal": 245,
+    "p": 3.17,
+    "c": 52.96,
+    "f": 2.2,
+    "lif": 5,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/42105000/kestane/"
+  },
+  {
+    "ad": "İzmit pişmaniyesi",
+    "kcal": 443,
+    "p": 2.4,
+    "c": 80,
+    "f": 6.9,
+    "lif": 1,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/pismaniye"
+  },
+  {
+    "ad": "Tire köftesi",
+    "kcal": 263,
+    "p": 19.8,
+    "c": 10.7,
+    "f": 15.2,
+    "lif": 1,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.besinanaliz.com/foods/tire-sis-kofte"
+  },
+  {
+    "ad": "Ödemiş mercimekli mantısı",
+    "kcal": 245,
+    "p": 8.6,
+    "c": 49.7,
+    "f": 1.36,
+    "lif": 4,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/mantı-ye/mercimekli-mantı/100g"
+  },
+  {
+    "ad": "Ege ot kavurması",
+    "kcal": 110,
+    "p": 4,
+    "c": 8,
+    "f": 7,
+    "lif": 3,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://fittartim.com/en/kac-kalori/karisik-ot-kavurmasi-soyanli"
+  },
+  {
+    "ad": "Manisa tulum peyniri",
+    "kcal": 355,
+    "p": 25,
+    "c": 1,
+    "f": 28,
+    "lif": 0,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tulum-peyniri"
+  },
+  {
+    "ad": "Bodrum kurabiyesi",
+    "kcal": 470,
+    "p": 6,
+    "c": 62,
+    "f": 22,
+    "lif": 4,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kurabiye"
+  },
+  {
+    "ad": "Tarsus kebabı",
+    "kcal": 200,
+    "p": 16,
+    "c": 12,
+    "f": 10,
+    "lif": 1.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/tas-kebabi"
+  },
+  {
+    "ad": "Burdur şiş",
+    "kcal": 230,
+    "p": 18,
+    "c": 14,
+    "f": 11,
+    "lif": 1.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.lezizyemeklerim.com/yemek-tarifi/burdur-sis-kofte/730"
+  },
+  {
+    "ad": "Isparta kebabı",
+    "kcal": 200,
+    "p": 18,
+    "c": 10,
+    "f": 10,
+    "lif": 1.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.besinanaliz.com/foods/tepsi-kebabi"
+  },
+  {
+    "ad": "Adana bici bici",
+    "kcal": 110,
+    "p": 4,
+    "c": 18,
+    "f": 2,
+    "lif": 3,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.besinanaliz.com/foods/bici-bici"
+  },
+  {
+    "ad": "Mersin cezerye",
+    "kcal": 320,
+    "p": 2.5,
+    "c": 72,
+    "f": 8.3,
+    "lif": 4,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/cezerye"
+  },
+  {
+    "ad": "Ankara tava",
+    "kcal": 200,
+    "p": 15,
+    "c": 12,
+    "f": 10,
+    "lif": 1,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/ankara-tava"
+  },
+  {
+    "ad": "Ankara keşkek",
+    "kcal": 321,
+    "p": 14.7,
+    "c": 49.69,
+    "f": 7.15,
+    "lif": 7.26,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/keskek/"
+  },
+  {
+    "ad": "Nevşehir güveci",
+    "kcal": 150,
+    "p": 9,
+    "c": 12,
+    "f": 8,
+    "lif": 2,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/guvec"
+  },
+  {
+    "ad": "Sivas yarma çorbası",
+    "kcal": 65,
+    "p": 2.5,
+    "c": 10,
+    "f": 1.5,
+    "lif": 2,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/yarma-corbasi"
+  },
+  {
+    "ad": "İskilip dolması",
+    "kcal": 190,
+    "p": 9,
+    "c": 15,
+    "f": 10,
+    "lif": 2,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.besinanaliz.com/foods/etli-dolma-biber"
+  },
+  {
+    "ad": "Kuymak",
+    "kcal": 280,
+    "p": 7,
+    "c": 25,
+    "f": 18,
+    "lif": 1,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/mihlama-kuymak"
+  },
+  {
+    "ad": "Laz böreği",
+    "kcal": 300,
+    "p": 9,
+    "c": 26,
+    "f": 17,
+    "lif": 1.5,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Laz+B%C3%B6re%C4%9Fi"
+  },
+  {
+    "ad": "Karadeniz pidesi",
+    "kcal": 270,
+    "p": 11,
+    "c": 35,
+    "f": 10,
+    "lif": 1.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://ye-mek.net/kalori/kavurmali-kasarli-karadeniz-pidesi"
+  },
+  {
+    "ad": "Karalahana çorbası",
+    "kcal": 60,
+    "p": 2.04,
+    "c": 9.39,
+    "f": 2.01,
+    "lif": 1.3,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Karalahana+%C3%87orbas%C4%B1"
+  },
+  {
+    "ad": "Karalahana sarması",
+    "kcal": 135,
+    "p": 11.06,
+    "c": 12.94,
+    "f": 4.24,
+    "lif": 1.8,
+    "porsiyon_g": 50,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Karalahana+Sarmas%C4%B1"
+  },
+  {
+    "ad": "Keledoş",
+    "kcal": 103,
+    "p": 5.8,
+    "c": 4.33,
+    "f": 7.06,
+    "lif": 3,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Keledo%C5%9F"
+  },
+  {
+    "ad": "Erzurum lor dolması",
+    "kcal": 220,
+    "p": 11,
+    "c": 15,
+    "f": 13,
+    "lif": 2,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.nefisyemektarifleri.com/lor-dolmasi-tarifi-erzurum-usulu/"
+  },
+  {
+    "ad": "Bitlis büryan",
+    "kcal": 258,
+    "p": 25.6,
+    "c": 0,
+    "f": 16.5,
+    "lif": 0,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://www.slimfit.net/kalori/buryan.html"
+  },
+  {
+    "ad": "Elazığ kömbe",
+    "kcal": 300,
+    "p": 12,
+    "c": 30,
+    "f": 14,
+    "lif": 2,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=K%C3%B6mbe"
+  },
+  {
+    "ad": "Malatya kayısı tatlısı",
+    "kcal": 323,
+    "p": 3,
+    "c": 70,
+    "f": 4,
+    "lif": 4,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kayisi-tatlisi"
+  },
+  {
+    "ad": "Beyran çorbası",
+    "kcal": 166,
+    "p": 13.25,
+    "c": 7.46,
+    "f": 8.85,
+    "lif": 0.3,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/beyran-corbasi"
+  },
+  {
+    "ad": "Mardin kaburga dolması",
+    "kcal": 208,
+    "p": 17,
+    "c": 15.1,
+    "f": 8.6,
+    "lif": 0.8,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kaburga-dolmasi"
+  },
+  {
+    "ad": "Kilis tava",
+    "kcal": 180,
+    "p": 16,
+    "c": 6,
+    "f": 11,
+    "lif": 2,
+    "porsiyon_g": 300,
+    "kaynak_url": "https://ye-mek.net/tarif/kilis-tava"
+  },
+  {
+    "ad": "Nizip kebabı",
+    "kcal": 230,
+    "p": 20,
+    "c": 3,
+    "f": 15,
+    "lif": 0.5,
+    "porsiyon_g": 250,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/cag-kebabi"
+  },
+  {
+    "ad": "Fıstık sucuğu",
+    "kcal": 470,
+    "p": 8,
+    "c": 60,
+    "f": 22,
+    "lif": 3,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-g-antep-fistikli-fitil-sucuk"
+  },
+  {
+    "ad": "Muhallebi",
+    "kcal": 130,
+    "p": 3.5,
+    "c": 21,
+    "f": 3.2,
+    "lif": 0.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/muhallebi"
+  },
+  {
+    "ad": "Keşkül",
+    "kcal": 144,
+    "p": 3.3,
+    "c": 19.6,
+    "f": 6,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://antrena.app/kalori/keskul-izmir"
+  },
+  {
+    "ad": "Profiterol",
+    "kcal": 270,
+    "p": 5,
+    "c": 28,
+    "f": 16,
+    "lif": 0.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://724clinic.com/araclar/yemek-kalori/profiterol/"
+  },
+  {
+    "ad": "Supangle",
+    "kcal": 210,
+    "p": 5.3,
+    "c": 25,
+    "f": 10,
+    "lif": 1,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/supangle"
+  },
+  {
+    "ad": "Sütlü irmik tatlısı",
+    "kcal": 197,
+    "p": 4.4,
+    "c": 29.7,
+    "f": 7,
+    "lif": 0.9,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/sutlu-irmik-tatlisi"
+  },
+  {
+    "ad": "İrmik helvası",
+    "kcal": 532,
+    "p": 7.77,
+    "c": 64.89,
+    "f": 25.23,
+    "lif": 3,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/irmik-helvasi/"
+  },
+  {
+    "ad": "Puding",
+    "kcal": 128,
+    "p": 3.6,
+    "c": 20,
+    "f": 3.6,
+    "lif": 0.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Puding"
+  },
+  {
+    "ad": "Kakaolu puding",
+    "kcal": 135,
+    "p": 4,
+    "c": 23,
+    "f": 4,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/kakaolu-puding"
+  },
+  {
+    "ad": "Vanilyalı puding",
+    "kcal": 130,
+    "p": 2.3,
+    "c": 22.1,
+    "f": 3.6,
+    "lif": 0.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/vanilyalı-pudingler"
+  },
+  {
+    "ad": "Meyveli puding",
+    "kcal": 110,
+    "p": 2.1,
+    "c": 22.5,
+    "f": 2.6,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/meyveli-puding"
+  },
+  {
+    "ad": "Güllaç",
+    "kcal": 190,
+    "p": 5,
+    "c": 28,
+    "f": 7,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/gullac"
+  },
+  {
+    "ad": "Muhallebili kadayıf",
+    "kcal": 230,
+    "p": 5,
+    "c": 40,
+    "f": 6,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kadayifli-muhallebi"
+  },
+  {
+    "ad": "Sütlü kadayıf",
+    "kcal": 300,
+    "p": 6,
+    "c": 48,
+    "f": 9,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kadayif"
+  },
+  {
+    "ad": "Sakızlı muhallebi",
+    "kcal": 124,
+    "p": 3.3,
+    "c": 17.5,
+    "f": 3.8,
+    "lif": 0,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/sakizli-muhallebi/"
+  },
+  {
+    "ad": "Fıstıklı muhallebi",
+    "kcal": 180,
+    "p": 5,
+    "c": 22,
+    "f": 8,
+    "lif": 1.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/muhallebi"
+  },
+  {
+    "ad": "Karamel muhallebi",
+    "kcal": 163,
+    "p": 4.9,
+    "c": 22,
+    "f": 6.3,
+    "lif": 0.5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/krem-karamel"
+  },
+  {
+    "ad": "Pelte",
+    "kcal": 130,
+    "p": 2.6,
+    "c": 27.6,
+    "f": 1,
+    "lif": 1,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/pelte"
+  },
+  {
+    "ad": "Sıcak çikolata",
+    "kcal": 200,
+    "p": 4.32,
+    "c": 37,
+    "f": 2.16,
+    "lif": 2,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/nestle-sicak-cikolata"
+  },
+  {
+    "ad": "Şöbiyet",
+    "kcal": 420,
+    "p": 6,
+    "c": 50,
+    "f": 20,
+    "lif": 2,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/sobiyet"
+  },
+  {
+    "ad": "Burma kadayıf",
+    "kcal": 370,
+    "p": 6,
+    "c": 54,
+    "f": 14,
+    "lif": 2,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/burma-kadayif"
+  },
+  {
+    "ad": "Kadayıf dolması",
+    "kcal": 347,
+    "p": 3.4,
+    "c": 41.2,
+    "f": 20,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kadayif-dolmasi"
+  },
+  {
+    "ad": "Ekmek kadayıfı",
+    "kcal": 236,
+    "p": 2.5,
+    "c": 47.7,
+    "f": 4.4,
+    "lif": 1,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/ekmek-kadayifi"
+  },
+  {
+    "ad": "Kemalpaşa tatlısı",
+    "kcal": 185,
+    "p": 4,
+    "c": 38,
+    "f": 2.5,
+    "lif": 0.5,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kemalpasa-tatlisi"
+  },
+  {
+    "ad": "Sütlü nuriye",
+    "kcal": 330,
+    "p": 7,
+    "c": 42,
+    "f": 16,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.kaloriatlas.com/besin/sutlu-nuriye"
+  },
+  {
+    "ad": "Bülbül yuvası",
+    "kcal": 262,
+    "p": 1.56,
+    "c": 42.95,
+    "f": 9.34,
+    "lif": 0.39,
+    "porsiyon_g": 50,
+    "kaynak_url": "https://www.diyetkolik.com/yemek-tarifi/bulbul-yuvasi"
+  },
+  {
+    "ad": "Saray sarması",
+    "kcal": 190,
+    "p": 4,
+    "c": 30,
+    "f": 6,
+    "lif": 2,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/sultan-sarmasi"
+  },
+  {
+    "ad": "Dilber dudağı",
+    "kcal": 319,
+    "p": 4,
+    "c": 45,
+    "f": 14,
+    "lif": 1,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/dilber-dudagi"
+  },
+  {
+    "ad": "Hanım göbeği",
+    "kcal": 276,
+    "p": 2.31,
+    "c": 49.7,
+    "f": 8.06,
+    "lif": 0.75,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.diyetkolik.com/yemek-tarifi/hanim-gobegi"
+  },
+  {
+    "ad": "Tulumba tatlısı",
+    "kcal": 300,
+    "p": 3,
+    "c": 52,
+    "f": 10,
+    "lif": 1,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-gram-tulumba-tatlısı"
+  },
+  {
+    "ad": "Şambali",
+    "kcal": 300,
+    "p": 5,
+    "c": 55,
+    "f": 6,
+    "lif": 1,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/sambali-tatlisi"
+  },
+  {
+    "ad": "Kalburabastı",
+    "kcal": 338,
+    "p": 4.6,
+    "c": 51.8,
+    "f": 13.4,
+    "lif": 3,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kalburabasti"
+  },
+  {
+    "ad": "Sarığıburma",
+    "kcal": 340,
+    "p": 5,
+    "c": 55,
+    "f": 11,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/sari-burma"
+  },
+  {
+    "ad": "Halka tatlı",
+    "kcal": 360,
+    "p": 4,
+    "c": 55,
+    "f": 13,
+    "lif": 1,
+    "porsiyon_g": 50,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/halka-tatlisi/"
+  },
+  {
+    "ad": "Şekerpare",
+    "kcal": 340,
+    "p": 4.2,
+    "c": 61,
+    "f": 9.5,
+    "lif": 1.5,
+    "porsiyon_g": 50,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/sekerpare"
+  },
+  {
+    "ad": "Nevzine",
+    "kcal": 370,
+    "p": 5.2,
+    "c": 52,
+    "f": 18.9,
+    "lif": 2,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/nevzine-tatlisi"
+  },
+  {
+    "ad": "Midye baklava",
+    "kcal": 430,
+    "p": 6,
+    "c": 40,
+    "f": 26,
+    "lif": 2,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/baklava"
+  },
+  {
+    "ad": "Havuç dilimi baklava",
+    "kcal": 450,
+    "p": 6,
+    "c": 42,
+    "f": 30,
+    "lif": 2,
+    "porsiyon_g": 45,
+    "kaynak_url": "https://liforafit.com/foods/havuc-dilimi-baklava"
+  },
+  {
+    "ad": "Ayva tatlısı",
+    "kcal": 170,
+    "p": 1.14,
+    "c": 24.53,
+    "f": 6.08,
+    "lif": 4.19,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/ayva-tatlisi"
+  },
+  {
+    "ad": "Kabak tatlısı",
+    "kcal": 199,
+    "p": 2.3,
+    "c": 39.1,
+    "f": 5.2,
+    "lif": 1.1,
+    "porsiyon_g": 200,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kabak-tatlisi"
+  },
+  {
+    "ad": "Elma tatlısı",
+    "kcal": 150,
+    "p": 1.5,
+    "c": 32,
+    "f": 2,
+    "lif": 3,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/53410100/meyveli-firin-tatlisi-elma/"
+  },
+  {
+    "ad": "Armut tatlısı",
+    "kcal": 160,
+    "p": 1,
+    "c": 30,
+    "f": 4,
+    "lif": 4,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/pekmezli-armut-tatlisi"
+  },
+  {
+    "ad": "İncir tatlısı",
+    "kcal": 278,
+    "p": 4.3,
+    "c": 42.5,
+    "f": 12.3,
+    "lif": 2.3,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kuru-incir-tatlisi"
+  },
+  {
+    "ad": "Un helvası",
+    "kcal": 390,
+    "p": 5,
+    "c": 50,
+    "f": 18,
+    "lif": 1,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.caloripanda.com/kac-kalori/un-helvasi/"
+  },
+  {
+    "ad": "Süt helvası",
+    "kcal": 280,
+    "p": 5,
+    "c": 44,
+    "f": 8,
+    "lif": 1,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/sut-helvasi/"
+  },
+  {
+    "ad": "Koz helvası",
+    "kcal": 431,
+    "p": 6.4,
+    "c": 65.6,
+    "f": 35.8,
+    "lif": 3.9,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/koska-cevizli-helva"
+  },
+  {
+    "ad": "Cevizli helva",
+    "kcal": 431,
+    "p": 6.4,
+    "c": 65.6,
+    "f": 35.8,
+    "lif": 3.9,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/koska-cevizli-helva"
+  },
+  {
+    "ad": "Lokma",
+    "kcal": 330,
+    "p": 2,
+    "c": 33,
+    "f": 6,
+    "lif": 1,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/lokma"
+  },
+  {
+    "ad": "Kerebiç",
+    "kcal": 375,
+    "p": 5,
+    "c": 55,
+    "f": 15,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/kerebic/"
+  },
+  {
+    "ad": "Maraş dondurması",
+    "kcal": 210,
+    "p": 4,
+    "c": 32,
+    "f": 9,
+    "lif": 0.5,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://724clinic.com/araclar/yemek-kalori/dondurma-maras/"
+  },
+  {
+    "ad": "Elmalı turta",
+    "kcal": 290,
+    "p": 4,
+    "c": 42,
+    "f": 12,
+    "lif": 2,
+    "porsiyon_g": 120,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/elmalı-turta"
+  },
+  {
+    "ad": "Erik tatlısı",
+    "kcal": 110,
+    "p": 1,
+    "c": 26,
+    "f": 0.5,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/erik"
+  },
+  {
+    "ad": "Hurma tatlısı",
+    "kcal": 250,
+    "p": 2.5,
+    "c": 60,
+    "f": 0.4,
+    "lif": 4,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/bağdat/hurma-tatlısı/100g"
+  },
+  {
+    "ad": "Vişne tatlısı",
+    "kcal": 110,
+    "p": 1,
+    "c": 26,
+    "f": 0.4,
+    "lif": 2,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/visne"
+  },
+  {
+    "ad": "Kestane püresi",
+    "kcal": 200,
+    "p": 2.5,
+    "c": 44,
+    "f": 1.5,
+    "lif": 5,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kestane"
+  },
+  {
+    "ad": "Fıstıklı helva",
+    "kcal": 491,
+    "p": 8,
+    "c": 55,
+    "f": 27,
+    "lif": 3,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/koska-fistikli-helva"
+  },
+  {
+    "ad": "Susamlı helva",
+    "kcal": 490,
+    "p": 9,
+    "c": 50,
+    "f": 28,
+    "lif": 3,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.zayiflama.gen.tr/helva-sade-kac-kalori/"
+  },
+  {
+    "ad": "Yaz helvası",
+    "kcal": 470,
+    "p": 12,
+    "c": 50,
+    "f": 25,
+    "lif": 2,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/cevizli-yaz-helvasi"
+  },
+  {
+    "ad": "Kandil simidi",
+    "kcal": 477,
+    "p": 8,
+    "c": 75,
+    "f": 16,
+    "lif": 3,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://lifeetics.com/foods/kac-kalori/kandil-simidi"
+  },
+  {
+    "ad": "Peynirli simit",
+    "kcal": 330,
+    "p": 12,
+    "c": 42,
+    "f": 12,
+    "lif": 2,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/peynirli-acma-simit"
+  },
+  {
+    "ad": "Tandır ekmeği",
+    "kcal": 282,
+    "p": 9,
+    "c": 54,
+    "f": 2,
+    "lif": 3,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/tandir-ekmegi"
+  },
+  {
+    "ad": "Ramazan pidesi",
+    "kcal": 270,
+    "p": 8,
+    "c": 50,
+    "f": 4,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/ramazan-pidesi"
+  },
+  {
+    "ad": "Köy ekmeği",
+    "kcal": 235,
+    "p": 8,
+    "c": 48,
+    "f": 1.5,
+    "lif": 4,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/koy-ekmegi/"
+  },
+  {
+    "ad": "Mısır ekmeği",
+    "kcal": 260,
+    "p": 6,
+    "c": 52,
+    "f": 3,
+    "lif": 4,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://724clinic.com/araclar/yemek-kalori/misir-ekmegi/"
+  },
+  {
+    "ad": "Haşhaşlı ekmek",
+    "kcal": 305,
+    "p": 8,
+    "c": 48,
+    "f": 8,
+    "lif": 4,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/hashasli-corek"
+  },
+  {
+    "ad": "Cevizli ekmek",
+    "kcal": 320,
+    "p": 9,
+    "c": 44,
+    "f": 12,
+    "lif": 3,
+    "porsiyon_g": 70,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/cevizli-ekmek/"
+  },
+  {
+    "ad": "Zeytinli ekmek",
+    "kcal": 250,
+    "p": 7,
+    "c": 45,
+    "f": 4,
+    "lif": 3,
+    "porsiyon_g": 60,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/zeytinli-ekmek/"
+  },
+  {
+    "ad": "Pide ekmeği",
+    "kcal": 258,
+    "p": 7.58,
+    "c": 51.39,
+    "f": 1.5,
+    "lif": 4.08,
+    "porsiyon_g": 150,
+    "kaynak_url": "https://www.diyetkolik.com/kac-kalori/pide-ekmegi"
+  },
+  {
+    "ad": "Tırnak pide",
+    "kcal": 270,
+    "p": 7.9,
+    "c": 48.8,
+    "f": 4.4,
+    "lif": 2.5,
+    "porsiyon_g": 180,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tirnakli-pide"
+  },
+  {
+    "ad": "Tahinli çörek",
+    "kcal": 400,
+    "p": 9,
+    "c": 50,
+    "f": 17,
+    "lif": 4,
+    "porsiyon_g": 90,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tahinli-corek"
+  },
+  {
+    "ad": "Cevizli çörek",
+    "kcal": 430,
+    "p": 9,
+    "c": 50,
+    "f": 20,
+    "lif": 4,
+    "porsiyon_g": 90,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/tahinli-corek"
+  },
+  {
+    "ad": "Haşhaşlı çörek",
+    "kcal": 320,
+    "p": 8,
+    "c": 48,
+    "f": 10,
+    "lif": 4,
+    "porsiyon_g": 90,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/hashasli-corek"
+  },
+  {
+    "ad": "Un kurabiyesi",
+    "kcal": 428,
+    "p": 6,
+    "c": 62,
+    "f": 18,
+    "lif": 2,
+    "porsiyon_g": 25,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/un-kurabiyesi/"
+  },
+  {
+    "ad": "Acıbadem kurabiyesi",
+    "kcal": 500,
+    "p": 11,
+    "c": 58,
+    "f": 26,
+    "lif": 6,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/acibadem-kurabiyesi"
+  },
+  {
+    "ad": "Elmalı kurabiye",
+    "kcal": 380,
+    "p": 5,
+    "c": 62,
+    "f": 12,
+    "lif": 3,
+    "porsiyon_g": 40,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/elmali-kurabiye/"
+  },
+  {
+    "ad": "Cevizli kurabiye",
+    "kcal": 480,
+    "p": 9,
+    "c": 58,
+    "f": 26,
+    "lif": 2.7,
+    "porsiyon_g": 35,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/cevizli-kurabiye"
+  },
+  {
+    "ad": "Kakaolu kurabiye",
+    "kcal": 460,
+    "p": 7,
+    "c": 62,
+    "f": 20,
+    "lif": 3,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/findikli-kakaolu-kurabiye/"
+  },
+  {
+    "ad": "Vanilyalı kurabiye",
+    "kcal": 450,
+    "p": 6,
+    "c": 66,
+    "f": 18,
+    "lif": 2,
+    "porsiyon_g": 30,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kurabiye"
+  },
+  {
+    "ad": "Şeker kurabiyesi",
+    "kcal": 464,
+    "p": 6,
+    "c": 67,
+    "f": 18,
+    "lif": 2,
+    "porsiyon_g": 25,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/53241500/kurabiye-tereyagi-veya-seker/"
+  },
+  {
+    "ad": "Kakaolu kek",
+    "kcal": 370,
+    "p": 6,
+    "c": 55,
+    "f": 14,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/kakaolu-kek"
+  },
+  {
+    "ad": "Meyveli kek",
+    "kcal": 338,
+    "p": 10,
+    "c": 40,
+    "f": 14,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/meyveli-kek"
+  },
+  {
+    "ad": "Havuçlu kek",
+    "kcal": 355,
+    "p": 5,
+    "c": 50,
+    "f": 14,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/havuclu-kek"
+  },
+  {
+    "ad": "Bazlama",
+    "kcal": 236,
+    "p": 7.2,
+    "c": 48.5,
+    "f": 1,
+    "lif": 3,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/bazlama"
+  },
+  {
+    "ad": "Bebek bisküvisi",
+    "kcal": 440,
+    "p": 7,
+    "c": 72,
+    "f": 13,
+    "lif": 3,
+    "porsiyon_g": 8,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/bebek-biskuvisi"
+  },
+  {
+    "ad": "Grissini",
+    "kcal": 390,
+    "p": 13,
+    "c": 72,
+    "f": 5,
+    "lif": 3,
+    "porsiyon_g": 5,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/galeta-grissini-cesitleri/"
+  },
+  {
+    "ad": "Karışık turşu",
+    "kcal": 15,
+    "p": 1,
+    "c": 3.3,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/karisik-tursular"
+  },
+  {
+    "ad": "Kornişon turşu",
+    "kcal": 11,
+    "p": 0.5,
+    "c": 2.4,
+    "f": 0.1,
+    "lif": 1.2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://724clinic.com/araclar/yemek-kalori/gherkin-pickles/"
+  },
+  {
+    "ad": "Lahana turşusu",
+    "kcal": 19,
+    "p": 0.91,
+    "c": 4.28,
+    "f": 0.14,
+    "lif": 2.5,
+    "porsiyon_g": 100,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/lahana-tursusu/"
+  },
+  {
+    "ad": "Pancar turşusu",
+    "kcal": 43,
+    "p": 1.2,
+    "c": 9.6,
+    "f": 0.2,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.eatbetter.app/tr/besin/pancar-tursusu"
+  },
+  {
+    "ad": "Biber turşusu",
+    "kcal": 22,
+    "p": 0.8,
+    "c": 4.56,
+    "f": 0.4,
+    "lif": 1.7,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/75511040/biberler-hot-tursulanmis/"
+  },
+  {
+    "ad": "Patlıcan turşusu",
+    "kcal": 35,
+    "p": 1,
+    "c": 7,
+    "f": 0.5,
+    "lif": 2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://com.com.tr/beslenme/kalori/patlican"
+  },
+  {
+    "ad": "Havuç turşusu",
+    "kcal": 35,
+    "p": 0.8,
+    "c": 8,
+    "f": 0.2,
+    "lif": 1.5,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/havuc-tursusu/"
+  },
+  {
+    "ad": "Sarımsak turşusu",
+    "kcal": 60,
+    "p": 3,
+    "c": 12,
+    "f": 0.2,
+    "lif": 1.5,
+    "porsiyon_g": 50,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/berrak/sarımsak-turşusu/100g"
+  },
+  {
+    "ad": "Yeşil domates turşusu",
+    "kcal": 20,
+    "p": 1,
+    "c": 4.5,
+    "f": 0.2,
+    "lif": 1.2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/yesil-domates-tursusu"
+  },
+  {
+    "ad": "Çubuk turşusu",
+    "kcal": 13,
+    "p": 0.6,
+    "c": 2.8,
+    "f": 0.1,
+    "lif": 1.2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-g-cubuk-tursusu"
+  },
+  {
+    "ad": "Acılı turşu",
+    "kcal": 15,
+    "p": 0.4,
+    "c": 3.5,
+    "f": 0.1,
+    "lif": 1.2,
+    "porsiyon_g": 80,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/acur-tursusu"
+  },
+  {
+    "ad": "Vişne reçeli",
+    "kcal": 277,
+    "p": 0.4,
+    "c": 68,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/visne-receli/"
+  },
+  {
+    "ad": "Çilek reçeli",
+    "kcal": 285,
+    "p": 0.1,
+    "c": 70.3,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://antrena.app/kalori/recel-cilek"
+  },
+  {
+    "ad": "Kayısı reçeli",
+    "kcal": 250,
+    "p": 0.4,
+    "c": 62,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/kayisi-receli"
+  },
+  {
+    "ad": "İncir reçeli",
+    "kcal": 278,
+    "p": 0.5,
+    "c": 70,
+    "f": 0.1,
+    "lif": 2,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/incir-receli"
+  },
+  {
+    "ad": "Ayva reçeli",
+    "kcal": 282,
+    "p": 0.1,
+    "c": 69.5,
+    "f": 0,
+    "lif": 2,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://antrena.app/kalori/recel-ayva"
+  },
+  {
+    "ad": "Portakal reçeli",
+    "kcal": 250,
+    "p": 0.4,
+    "c": 64,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/portakal-receli"
+  },
+  {
+    "ad": "Gül reçeli",
+    "kcal": 290,
+    "p": 0.3,
+    "c": 72,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://hekimdoktor.com/tr/kac-kalori/gul-receli/"
+  },
+  {
+    "ad": "Karpuz reçeli",
+    "kcal": 260,
+    "p": 0.3,
+    "c": 66,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Karpuz+Re%C3%A7eli"
+  },
+  {
+    "ad": "Elma reçeli",
+    "kcal": 250,
+    "p": 0.3,
+    "c": 64,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/elma-receli"
+  },
+  {
+    "ad": "Erik reçeli",
+    "kcal": 273,
+    "p": 0.4,
+    "c": 67,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/erik-receli"
+  },
+  {
+    "ad": "Kiraz reçeli",
+    "kcal": 270,
+    "p": 0.4,
+    "c": 67,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Kiraz+Re%C3%A7eli"
+  },
+  {
+    "ad": "Dut reçeli",
+    "kcal": 275,
+    "p": 0.5,
+    "c": 68,
+    "f": 0.1,
+    "lif": 2,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.fitekran.com/besin-degeri/dut-receli/"
+  },
+  {
+    "ad": "Ceviz reçeli",
+    "kcal": 430,
+    "p": 6,
+    "c": 55,
+    "f": 20,
+    "lif": 3,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-gram-yenigun-ceviz-reçeli"
+  },
+  {
+    "ad": "Bal kabağı reçeli",
+    "kcal": 280,
+    "p": 0.5,
+    "c": 68,
+    "f": 0.2,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/bal-kabagi-receli"
+  },
+  {
+    "ad": "Süt reçeli",
+    "kcal": 320,
+    "p": 6,
+    "c": 66,
+    "f": 4,
+    "lif": 1,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://antrena.app/kalori/sut-receli-harras"
+  },
+  {
+    "ad": "Domates salçası",
+    "kcal": 82,
+    "p": 3.5,
+    "c": 17,
+    "f": 0.5,
+    "lif": 3,
+    "porsiyon_g": 15,
+    "kaynak_url": "https://724clinic.com/araclar/yemek-kalori/salca-domates/"
+  },
+  {
+    "ad": "Biber salçası",
+    "kcal": 130,
+    "p": 4,
+    "c": 26,
+    "f": 3,
+    "lif": 5,
+    "porsiyon_g": 15,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/tat/biber-salçası/100g"
+  },
+  {
+    "ad": "Acı biber salçası",
+    "kcal": 126,
+    "p": 4,
+    "c": 24,
+    "f": 3.5,
+    "lif": 4,
+    "porsiyon_g": 15,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/aci-biber-salcasi"
+  },
+  {
+    "ad": "Nar ekşisi",
+    "kcal": 300,
+    "p": 0,
+    "c": 75,
+    "f": 0,
+    "lif": 1,
+    "porsiyon_g": 15,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/nar-eksisi"
+  },
+  {
+    "ad": "Üzüm sirkesi",
+    "kcal": 18,
+    "p": 0.1,
+    "c": 5,
+    "f": 0,
+    "lif": 0,
+    "porsiyon_g": 15,
+    "kaynak_url": "https://www.haberturk.com/kac-kalori/uzum-sirkesi-besin-degeri"
+  },
+  {
+    "ad": "Sumak ekşisi",
+    "kcal": 340,
+    "p": 6,
+    "c": 70,
+    "f": 6,
+    "lif": 10,
+    "porsiyon_g": 15,
+    "kaynak_url": "https://www.dytseydaertas.com/besin/sumak"
+  },
+  {
+    "ad": "Çemen",
+    "kcal": 323,
+    "p": 23,
+    "c": 58,
+    "f": 6,
+    "lif": 22,
+    "porsiyon_g": 10,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-gram-çemen"
+  },
+  {
+    "ad": "Kurut",
+    "kcal": 360,
+    "p": 30,
+    "c": 30,
+    "f": 12,
+    "lif": 0,
+    "porsiyon_g": 15,
+    "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/search?q=Kurut"
+  },
+  {
+    "ad": "Marmelat",
+    "kcal": 246,
+    "p": 0.3,
+    "c": 66.3,
+    "f": 0,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://ethicwater.com.tr/besin-hesaplama/91404000/marmalade/"
+  },
+  {
+    "ad": "Vişne marmelatı",
+    "kcal": 270,
+    "p": 0.3,
+    "c": 68,
+    "f": 0.1,
+    "lif": 1.5,
+    "porsiyon_g": 20,
+    "kaynak_url": "https://www.kackalori.com.tr/KacKalori/100-g-visne-marmeladi"
+  }
+]

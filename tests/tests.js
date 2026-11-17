@@ -100,6 +100,65 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
   ok(r.g > 0, "gram eksik");
 });
 
+/* ---- genişletilmiş besin veritabanı ---- */
+const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
+test("besin veritabanı: 1324 yeni kayıt (382 USDA, 942 web) eklendi", () => {
+  const added = sourcedFoods();
+  eq([added.length, Object.keys(FOODS).length], [1324, 1751]);
+  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 382);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 942);
+});
+test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
+  const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
+    || f.p + f.c + f.f > 100.5 || (f.alk !== undefined && (!Number.isFinite(f.alk) || f.alk < 0 || f.alk > 100)));
+  eq(bad.map(([k]) => k), [], "geçersiz yeni besin makroları");
+});
+test("besin veritabanı: yeni kayıtlar mevcut ad ve anahtarlarla çakışmıyor", () => {
+  const base = Object.entries(FOODS).filter(([,f]) => !f.src);
+  const baseNames = new Set(base.map(([,f]) => norm(f.n))), baseKeys = new Set(base.map(([k]) => norm(k)));
+  const added = sourcedFoods();
+  const overlap = added.filter(([k,f]) => baseNames.has(norm(f.n)) || baseKeys.has(norm(k)));
+  eq(overlap.map(([k]) => k), [], "yeni kayıt çakışması");
+  eq(new Set(added.map(([,f]) => norm(f.n))).size, added.length, "yeni kayıt adları yineleniyor");
+});
+test("besin veritabanı: alkol 7 kcal/g hesaplanıyor ve yeni günlük kalemine taşınıyor", async () => {
+  const alcoholic = sourcedFoods().filter(([,f]) => f.alk > 0);
+  eq(alcoholic.length, 35);
+  eq(kcalFromMacros({ p:0, c:0, f:0, alk:10 }), 70);
+  const oldState = state;
+  try {
+    state = await loadFixture();
+    state.customFoods = state.customFoods || {};
+    state.customFoods.alcoholTest = { n:"Test alkolü", p:0, c:0, f:0, alk:10, lif:0, i:"grain" };
+    const entry = { log:[] }, item = addFoodDirect(entry, "alcoholTest", 50, "test");
+    eq([item.alk, entry.kcal], [10, 35]);
+  } finally { state = oldState; }
+});
+test("besin veritabanı: alkolsüz mevcut besin ve eski günlük kalorileri değişmedi", () => {
+  const changed = Object.entries(FOODS).filter(([,f]) => !f.src && !f.alk)
+    .filter(([,f]) => Math.abs(kcalFromMacros(f) - (f.p * 4 + f.c * 4 + f.f * 9)) > 1e-9);
+  eq(changed.map(([k]) => k), [], "alkolsüz besin kalorisi değişti");
+  const old = { log:[{ p:10, c:20, f:5, g:100 }] };
+  eq([logTotals(old).kcal, logTotals(old).alk], [165, 0]);
+});
+test("besin veritabanı: Türkçe adlar veritabanında korunuyor", () => {
+  /* "Düğün çorbası" gibi yemekler temel kayıtta (nutrition.js) da olabilir;
+      adın korunması bütün veritabanında aranır. */
+  const names = new Set(Object.values(FOODS).map(f => f.n));
+  ok(names.has("Ada çayı") && names.has("Düğün çorbası") && names.has("Bira"), "örnek Türkçe adlar eksik");
+  eq(FOODS.adacayi.n, "Ada çayı");
+  eq(FOODS.duguncorbasi.n, "Düğün çorbası");
+});
+test("besin veritabanı: her yeni Türkçe adın İngilizce karşılığı var", async () => {
+  const missing = sourcedFoods().map(([,f]) => f.n).filter(n => !Object.prototype.hasOwnProperty.call(I18N.en, n));
+  eq(missing, [], "İngilizce adı olmayan yeni besinler");
+  await withLang("en", () => {
+    eq(tx("Ada çayı"), "sage tea");
+    eq(tx("Düğün çorbası"), "Turkish wedding soup");
+    eq(tx("Bira"), "Beer");
+  });
+});
+
 /* ---- öğün önerileri ---- */
 test("öğünler: önerilen menünün kalorisi hedefe yakın", async () => {
   state = await loadFixture();
@@ -416,12 +475,13 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.14.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.14.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[1].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.14.0"], "1.13.0'ı görmüş kullanıcıya yalnızca 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 1, "1.14.0: yazı tipi ve aylar tek madde");
+  eq(APP_VERSION, "1.15.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.15.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[2].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 3, "1.15.0: besin listesi, neler yeni penceresi, sürüm ve Escape");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.15.0"], "1.14.0'ı görmüş kullanıcıya yalnızca 1.15.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -441,6 +501,33 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
   maybeShowWhatsNew();
   ok(!document.querySelector(".sheet-bg"), "ikinci kez açılmamalı");
+  state = null;
+});
+test("yenilikler: başlangıçtaki uyarı pencereyi engellemez; yükseltmede bir kez açılır, ilk kurulumda açılmaz", async () => {
+  state = await loadFixture();
+  const web = WHATS_NEW.filter(n => !n.native);
+  const seen = web.find(n => verCmp(n.v, web[0].v) < 0).v;   /* görmüş bir eski sürüm */
+  /* Başlangıçta haftalık yenileme uyarısı gibi bir notice görünüyor olsun:
+     uyarı yüzünden yenilik penceresi atlanmamalı. */
+  notice = "trend için yeterli veri yok";
+  state.seenVersion = seen;
+  openWelcomeChain();
+  let sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.querySelector("#wn-t"), "uyarı varken yenilik penceresi açılmadı");
+  sheet.querySelector("#wn-ok").click();
+  await new Promise(r => setTimeout(r, 0));
+  eq(state.seenVersion, APP_VERSION, "görülen sürüm kayda yazılmalı");
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  /* Aynı sürümü görmüş kullanıcıya (ilk kurulumda da böyle) bir daha açılmaz. */
+  openWelcomeChain();
+  ok(!document.querySelector(".sheet-bg"), "görülmüş sürüm tekrar açılmamalı");
+  /* Kullanıcı yeniden yükseltme yaptıysa (eski sürüme dönmüş kayıt) yine bir kez açılır. */
+  state.seenVersion = seen;
+  openWelcomeChain();
+  sheet = [...document.querySelectorAll(".sheet-bg")].pop();
+  ok(sheet && sheet.querySelector("#wn-t"), "yükseltmede yeniden açılmalı");
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  notice = null;
   state = null;
 });
 test("hakkında: sağlık uyarısı, kaynaklar ve gizlilik sayfası yerinde", async () => {
@@ -1279,7 +1366,7 @@ test("barkod: validGtin sağlama basamağını, uzunluğu ve rakam şartını de
 test("barkod: offToFood örnek yanıtları doğru duruma ve 100 g değerlerine çevirir", async () => {
   const found = offToFood(await offFx("off-found"), "tr");
   eq(found.status, "ok");
-  eq(found.food, { n: "Nutella", br: "Ferrero", p: 6.3, c: 57.5, f: 30.9, lif: 0, serving: null });
+  eq(found.food, { n: "Nutella", br: "Ferrero", p: 6.3, c: 57.5, f: 30.9, alk: 0, lif: 0, serving: null });
   eq([found.flags.ml, found.flags.fromServing, found.flags.kcalMismatch, found.flags.labelKcal], [false, false, false, 539]);
 
   const part = offToFood(await offFx("off-partial"), "tr");
@@ -1306,6 +1393,14 @@ test("barkod: offToFood saçma değerleri reddeder, birimi ve kalori farkını i
   const mod = fn => { const j = cloneJson(base); fn(j.product); return offToFood(j, "tr"); };
   const mismatch = mod(p => { p.nutriments.carbohydrates_100g = 5; p.nutriments.fat_100g = 0; p.nutriments.proteins_100g = 0; });
   eq([mismatch.status, mismatch.flags.kcalMismatch, mismatch.flags.labelKcal], ["ok", true, 539]);
+  const alcoholic = mod(p => { p.nutriments.alcohol_100g = 10; });
+  eq([alcoholic.status, alcoholic.food.alk, alcoholic.flags.kcalMismatch], ["ok", 10, false]);
+  eq(Math.round(kcalFromMacros(alcoholic.food) * 10) / 10, 603.3, "alkol 7 kcal/g katılmalı");
+  const alcoholicMismatch = mod(p => {
+    p.nutriments.proteins_100g = 0; p.nutriments.carbohydrates_100g = 0; p.nutriments.fat_100g = 0;
+    p.nutriments.alcohol_100g = 20;
+  });
+  eq([alcoholicMismatch.food.alk, alcoholicMismatch.flags.kcalMismatch], [20, true], "alkol kalorisi etiketle karşılaştırılmalı");
   eq(mod(p => { p.product_quantity_unit = "ml"; }).flags.ml, true);
   eq(mod(p => { p.serving_quantity_unit = "ml"; delete p.product_quantity_unit; }).flags.ml, true);
   const big = mod(p => { p.nutriments.carbohydrates_100g = 250; });
@@ -1386,7 +1481,7 @@ test("barkod: kayıt kopya oluşturmaz, barkodla ve adla bulunur; dışarıdan m
     const key = saveBarcodeFood("3017620422003", { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, br: "Ferrero", serving: 15, src: "off" });
     eq(key, "bc_3017620422003");
     const rec = state.customFoods[key];
-    eq(rec, { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, lif: 0, i: "grain", bc: "3017620422003", a: "3017620422003 Ferrero",
+    eq(rec, { n: "Nutella", p: 6.3, c: 57.5, f: 30.9, alk: 0, lif: 0, i: "grain", bc: "3017620422003", a: "3017620422003 Ferrero",
       br: "Ferrero", src: "off", por: [{ n: "porsiyon", g: 15 }] });
     ok(!("unit" in rec) && !("unitName" in rec), "unit/unitName yazılmamalı");
     saveBarcodeFood("3017620422003", { n: "Nutella (düzenlendi)", p: 7, c: 57, f: 30, lif: 1, br: "Ferrero", src: "off" });
@@ -1399,6 +1494,9 @@ test("barkod: kayıt kopya oluşturmaz, barkodla ve adla bulunur; dışarıdan m
     saveBarcodeFood("036000291452", { n: "Mısır gevreği", p: 7, c: 84, f: 1 });
     eq(foodByBarcode("0036000291452")[0], "bc_0036000291452", "UPC-A iki biçimde de bulunur");
     eq(foodByBarcode("036000291452")[0], "bc_0036000291452");
+    const alcoholicKey = saveBarcodeFood("4006381333931", { n: "Bira", p: 0, c: 0, f: 0, alk: 5, lif: 0 });
+    eq(state.customFoods[alcoholicKey].alk, 5, "alkol kayda taşınmalı");
+    delete state.customFoods[alcoholicKey];
     state.customFoods.bc_x = { n: "Eski kayıt", p: 1, c: 1, f: 1, lif: 0, i: "grain", bc: "96385074" };
     eq(foodByBarcode("96385074")[0], "bc_x", "anahtarı farklı ama bc alanı eşleşen kayıt");
 
@@ -2134,7 +2232,9 @@ test("arama: Türkçe karakter ve büyük/küçük harf fark etmez; ad ve takma 
     ok(keys("PEYNİR").includes("beyazpeynir"), "İ harfi ve takma ad (peynir)");
     ok(keys("inek sutu").includes("sut"), "takma ad: inek sütü");
     ok(keys("ev yapimi").includes("cf_x") && keys("EV YAPIMI").includes("cf_x"), "kendi besininin takma adı");
-    ok(keys("kofte").includes("cf_x"), "kendi besinin adı");
+    /* Liste 1000'den fazla kayıtla büyüdü: sıralamada eşit puanda çok gerçek besin
+       var; kendi besinininin adıyla bulunması kendine özgü sözcükle denenir. */
+    ok(keys("annemin").includes("cf_x"), "kendi besinin adı");
   } finally { state = null; }
 });
 
@@ -2387,13 +2487,13 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.14.0");
+  eq(APP_VERSION, "1.15.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */
@@ -3345,6 +3445,35 @@ test("şerit: Bugün ekranının en üstü bu haftanın (Pzt-Paz) takımyıldız
     ok(sw.querySelector(".sky-n b"), "seri pencerede");
     ok(!app.querySelector(".sky-n, .sky-note"), "seri ve ilerleme satırı Bugün ekranında yok");
   } finally { skyDone(); }
+});
+
+test("pencere: Escape hafta penceresini kapatır", async () => {
+  try {
+    const { full, cw } = await skyFx();
+    full(cw); tab = "today"; render();
+    const sw = openSkyWeek();
+    const ev = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    document.activeElement.dispatchEvent(ev);
+    ok(ev.defaultPrevented, "Escape ele alınmalı");
+    ok(sw.classList.contains("out") || !sw.isConnected, "pencere kapanmalı");
+    await new Promise(r => setTimeout(r, 300));
+    ok(!sw.isConnected, "pencere kaldırılmalı");
+    ok(!document.querySelector(".sheet-bg"), "açık pencere kalmamalı");
+  } finally { skyDone(); }
+});
+
+test("pencere: açık pencere yokken Escape hata vermez", () => {
+  document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  const errs = [];
+  const onErr = e => errs.push(e.message);
+  window.addEventListener("error", onErr);
+  try {
+    const ev = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    document.body.dispatchEvent(ev);
+    ok(!ev.defaultPrevented, "Escape ele alınmamalı");
+    ok(!document.querySelector(".sheet-bg"), "pencere açılmamalı");
+    eq(errs, [], "hata olmamalı");
+  } finally { window.removeEventListener("error", onErr); }
 });
 
 test("şerit: gün tamamlanınca bugünün yıldızı bir kez yansır ve tek titreşim olur; ilk çizimde ve tekrar çizimde olmaz", async () => {

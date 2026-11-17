@@ -1,0 +1,331 @@
+[
+  {
+    "key": "tarhanacorbasi",
+    "ad": "Tarhana Çorbası",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Buğday unu (tarhana hamuru için)", "fdc": 168894, "g": 120 },
+      { "ad": "Yoğurt (tarhana hamuru için)", "fdc": 171284, "g": 100 },
+      { "ad": "Domates salçası (tarhana hamuru için)", "fdc": 170459, "g": 60 },
+      { "ad": "Soğan", "fdc": 170000, "g": 80 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 30 },
+      { "ad": "Zeytinyağı", "fdc": 171413, "g": 20 },
+      { "ad": "Su", "su": true, "g": 1600 }
+    ],
+    "pismis_g": 1800,
+    "porsiyon": 6
+  },
+  {
+    "key": "adanakebap",
+    "ad": "Adana Kebap",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Kuzu kıyma (USDA, %23 yağ)", "fdc": 174370, "g": 700 },
+      { "ad": "Kuzu kuyruk yağı", "fdc": 174435, "g": 100 },
+      { "ad": "Kırmızı biber", "fdc": 170108, "g": 100 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Sarımsak", "fdc": 169230, "g": 15 }
+    ],
+    "pismis_g": 750,
+    "porsiyon": 3
+  },
+  {
+    "key": "beyti",
+    "ad": "Beyti Kebap",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Kuzu kıyma (USDA, %23 yağ)", "fdc": 174370, "g": 600 },
+      { "ad": "Lavaş/ekmek", "fdc": 174924, "g": 150 },
+      { "ad": "Yoğurt", "fdc": 171284, "g": 200 },
+      { "ad": "Domates", "fdc": 170457, "g": 150 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 40 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 30 },
+      { "ad": "Soğan", "fdc": 170000, "g": 80 },
+      { "ad": "Sarımsak", "fdc": 169230, "g": 10 }
+    ],
+    "pismis_g": 1050,
+    "porsiyon": 3
+  },
+  {
+    "key": "taskebabi",
+    "ad": "Taş Kebabı",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Kuzu kuşbaşı (yağlı, çiğ)", "fdc": 172496, "g": 700 },
+      { "ad": "Bulgur", "fdc": 170688, "g": 150 },
+      { "ad": "Nohut", "fdc": 173756, "g": 100 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 50 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 40 },
+      { "ad": "Yeşil biber", "fdc": 170427, "g": 80 },
+      { "ad": "Su", "su": true, "g": 600 }
+    ],
+    "pismis_g": 1500,
+    "porsiyon": 4
+  },
+  {
+    "key": "iclikofte",
+    "ad": "İçli Köfte",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "İnce bulgur", "fdc": 170688, "g": 250 },
+      { "ad": "İrmik", "fdc": 168933, "g": 100 },
+      { "ad": "Yumurta", "fdc": 171287, "g": 50 },
+      { "ad": "Buğday unu", "fdc": 168894, "g": 30 },
+      { "ad": "Dana kıyma (%15 yağ)", "fdc": 171796, "g": 300 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Ceviz", "fdc": 170187, "g": 40 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 30 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 30 },
+      { "ad": "Maydanoz", "fdc": 170416, "g": 15 },
+      { "ad": "Emilen ayçiçek yağı", "fdc": 171017, "g": 80 },
+      { "ad": "Su", "su": true, "g": 200 }
+    ],
+    "pismis_g": 1100,
+    "porsiyon": 4
+  },
+  {
+    "key": "kadinbudu",
+    "ad": "Kadınbudu Köfte",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Dana kıyma (%20 yağ)", "fdc": 174036, "g": 600 },
+      { "ad": "Pirinç", "fdc": 168877, "g": 100 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Yumurta", "fdc": 171287, "g": 100 },
+      { "ad": "Buğday unu", "fdc": 168894, "g": 60 },
+      { "ad": "Emilen ayçiçek yağı", "fdc": 171017, "g": 90 },
+      { "ad": "Maydanoz", "fdc": 170416, "g": 10 }
+    ],
+    "pismis_g": 850,
+    "porsiyon": 4
+  },
+  {
+    "key": "izmirkofte",
+    "ad": "İzmir Köfte",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Dana kıyma (%20 yağ)", "fdc": 174036, "g": 500 },
+      { "ad": "Galeta unu (ekmek)", "fdc": 174924, "g": 60 },
+      { "ad": "Yumurta", "fdc": 171287, "g": 50 },
+      { "ad": "Soğan", "fdc": 170000, "g": 80 },
+      { "ad": "Patates", "fdc": 170032, "g": 400 },
+      { "ad": "Domates", "fdc": 170457, "g": 200 },
+      { "ad": "Yeşil biber", "fdc": 170427, "g": 100 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 40 },
+      { "ad": "Emilen ayçiçek yağı", "fdc": 171017, "g": 80 },
+      { "ad": "Su", "su": true, "g": 300 }
+    ],
+    "pismis_g": 1450,
+    "porsiyon": 4
+  },
+  {
+    "key": "tavukdoner",
+    "ad": "Tavuk Döner",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Tavuk but eti (derili, çiğ)", "fdc": 172385, "g": 1000 },
+      { "ad": "Yoğurt", "fdc": 171284, "g": 150 },
+      { "ad": "Ayçiçek yağı", "fdc": 171017, "g": 40 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 30 },
+      { "ad": "Soğan", "fdc": 170000, "g": 80 },
+      { "ad": "Sarımsak", "fdc": 169230, "g": 15 }
+    ],
+    "pismis_g": 900,
+    "porsiyon": 4
+  },
+  {
+    "key": "levrekizgara",
+    "ad": "Levrek Izgara",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Levrek (çiğ)", "fdc": 175142, "g": 600 },
+      { "ad": "Zeytinyağı", "fdc": 171413, "g": 30 },
+      { "ad": "Limon suyu", "fdc": 167747, "g": 20 },
+      { "ad": "Sarımsak", "fdc": 169230, "g": 8 }
+    ],
+    "pismis_g": 480,
+    "porsiyon": 2
+  },
+  {
+    "key": "midyetava",
+    "ad": "Midye Tava",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Midye eti (çiğ)", "fdc": 174216, "g": 600 },
+      { "ad": "Buğday unu", "fdc": 168894, "g": 100 },
+      { "ad": "Yumurta", "fdc": 171287, "g": 100 },
+      { "ad": "Süt", "fdc": 171265, "g": 100 },
+      { "ad": "Emilen ayçiçek yağı", "fdc": 171017, "g": 120 },
+      { "ad": "Su", "su": true, "g": 100 }
+    ],
+    "pismis_g": 950,
+    "porsiyon": 4
+  },
+  {
+    "key": "zeytinyaglienginar",
+    "ad": "Zeytinyağlı Enginar",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Enginar", "fdc": 169205, "g": 800 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Havuç", "fdc": 170393, "g": 100 },
+      { "ad": "Patates", "fdc": 170032, "g": 150 },
+      { "ad": "Zeytinyağı", "fdc": 171413, "g": 80 },
+      { "ad": "Limon suyu", "fdc": 167747, "g": 30 },
+      { "ad": "Buğday unu", "fdc": 168894, "g": 15 },
+      { "ad": "Su", "su": true, "g": 400 }
+    ],
+    "pismis_g": 1300,
+    "porsiyon": 4
+  },
+  {
+    "key": "firinmakarna",
+    "ad": "Fırın Makarna",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Makarna (kuru)", "fdc": 169736, "g": 500 },
+      { "ad": "Dana kıyma (%20 yağ)", "fdc": 174036, "g": 400 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 60 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 40 },
+      { "ad": "Buğday unu", "fdc": 168894, "g": 30 },
+      { "ad": "Süt", "fdc": 171265, "g": 500 },
+      { "ad": "Kaşar peyniri (cheddar vekili)", "fdc": 173414, "g": 150 },
+      { "ad": "Zeytinyağı", "fdc": 171413, "g": 20 }
+    ],
+    "pismis_g": 1700,
+    "porsiyon": 6
+  },
+  {
+    "key": "kolboregi",
+    "ad": "Kol Böreği",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Yufka (phyllo)", "fdc": 172791, "g": 400 },
+      { "ad": "Beyaz peynir (feta vekili)", "fdc": 173420, "g": 300 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 120 },
+      { "ad": "Süt", "fdc": 171265, "g": 150 },
+      { "ad": "Yumurta", "fdc": 171287, "g": 50 },
+      { "ad": "Maydanoz", "fdc": 170416, "g": 20 }
+    ],
+    "pismis_g": 950,
+    "porsiyon": 8
+  },
+  {
+    "key": "kiymalipide",
+    "ad": "Kıymalı Pide",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Buğday unu", "fdc": 168894, "g": 400 },
+      { "ad": "Dana kıyma (%20 yağ)", "fdc": 174036, "g": 400 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Domates", "fdc": 170457, "g": 150 },
+      { "ad": "Yeşil biber", "fdc": 170427, "g": 80 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 30 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 30 },
+      { "ad": "Zeytinyağı", "fdc": 171413, "g": 20 },
+      { "ad": "Kuru maya", "fdc": 175043, "g": 5 },
+      { "ad": "Su", "su": true, "g": 250 }
+    ],
+    "pismis_g": 1250,
+    "porsiyon": 4
+  },
+  {
+    "key": "kabakdolmasi",
+    "ad": "Kabak Dolması",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Kabak", "fdc": 169291, "g": 800 },
+      { "ad": "Pirinç", "fdc": 168877, "g": 150 },
+      { "ad": "Dana kıyma (%20 yağ)", "fdc": 174036, "g": 200 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 50 },
+      { "ad": "Zeytinyağı", "fdc": 171413, "g": 60 },
+      { "ad": "Kuş üzümü", "fdc": 171724, "g": 20 },
+      { "ad": "Limon suyu", "fdc": 167747, "g": 15 },
+      { "ad": "Su", "su": true, "g": 300 }
+    ],
+    "pismis_g": 1400,
+    "porsiyon": 4
+  },
+  {
+    "key": "saksuka",
+    "ad": "Şakşuka",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Patlıcan", "fdc": 169228, "g": 500 },
+      { "ad": "Kabak", "fdc": 169291, "g": 300 },
+      { "ad": "Patates", "fdc": 170032, "g": 200 },
+      { "ad": "Yeşil biber", "fdc": 170427, "g": 100 },
+      { "ad": "Domates", "fdc": 170457, "g": 300 },
+      { "ad": "Soğan", "fdc": 170000, "g": 100 },
+      { "ad": "Sarımsak", "fdc": 169230, "g": 15 },
+      { "ad": "Domates salçası", "fdc": 170459, "g": 40 },
+      { "ad": "Emilen zeytinyağı", "fdc": 171413, "g": 100 },
+      { "ad": "Şeker", "fdc": 169655, "g": 5 }
+    ],
+    "pismis_g": 1350,
+    "porsiyon": 4
+  },
+  {
+    "key": "cilbir",
+    "ad": "Çılbır",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Yoğurt", "fdc": 171284, "g": 300 },
+      { "ad": "Yumurta", "fdc": 171287, "g": 100 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 30 },
+      { "ad": "Sarımsak", "fdc": 169230, "g": 8 },
+      { "ad": "Sirke", "fdc": 172237, "g": 10 }
+    ],
+    "pismis_g": 430,
+    "porsiyon": 2
+  },
+  {
+    "key": "kazandibi",
+    "ad": "Kazandibi",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Süt", "fdc": 171265, "g": 1000 },
+      { "ad": "Şeker", "fdc": 169655, "g": 150 },
+      { "ad": "Pirinç unu", "fdc": 169714, "g": 100 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 30 },
+      { "ad": "Tavuk göğsü", "fdc": 171077, "g": 50 }
+    ],
+    "pismis_g": 1200,
+    "porsiyon": 6
+  },
+  {
+    "key": "sekerpare",
+    "ad": "Şekerpare",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "Buğday unu", "fdc": 168894, "g": 300 },
+      { "ad": "İrmik", "fdc": 168933, "g": 100 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 150 },
+      { "ad": "Şeker (hamur)", "fdc": 169655, "g": 50 },
+      { "ad": "Şeker (şerbet)", "fdc": 169655, "g": 300 },
+      { "ad": "Yumurta", "fdc": 171287, "g": 50 },
+      { "ad": "Yoğurt", "fdc": 171284, "g": 50 },
+      { "ad": "Limon suyu", "fdc": 167747, "g": 10 },
+      { "ad": "Su", "su": true, "g": 400 }
+    ],
+    "pismis_g": 1200,
+    "porsiyon": 8
+  },
+  {
+    "key": "irmikhelvasi",
+    "ad": "İrmik Helvası",
+    "tip": "tarif",
+    "malz": [
+      { "ad": "İrmik", "fdc": 168933, "g": 300 },
+      { "ad": "Tereyağı", "fdc": 173410, "g": 120 },
+      { "ad": "Şeker", "fdc": 169655, "g": 150 },
+      { "ad": "Süt", "fdc": 171265, "g": 400 },
+      { "ad": "Çam fıstığı", "fdc": 170591, "g": 40 }
+    ],
+    "pismis_g": 900,
+    "porsiyon": 4
+  }
+]

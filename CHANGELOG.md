@@ -3,6 +3,19 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.15.0 (yayınlanmadı)
+
+### Eklendi
+- Besin veritabanı 1324 yeni kayıtla genişletildi: 382 USDA, 942 web kaynağı; alkol içeren besinlerde 7 kcal/g ortak formülle hesaplanır.
+- "Neler yeni" penceresi uygulama güncellendikten sonra bir kez gösteriliyor; başlangıçtaki uyarı (haftalık yenileme mesajı gibi) artık sırayı engellemiyor.
+- Sürüm numarası her ekranın sağ alt köşesinde küçük ve soluk yazıyor (Ayarlar'ın altındaki yazının aynı değeri); alt menü ve düğmelerle çakışmıyor, dokunmaları engellemiyor, ekran okuyucu okumuyor.
+
+### Düzeltildi
+- Onboarding'de cetvel animasyonu sürerken pencere kapanırsa oluşan `TypeError` giderildi; animasyonun bitişi artık değeri yalnızca kurulum verisi varken yazıyor.
+- Açılır pencereler (sheet ve dialog) Escape tuşuyla da kapanıyor; kapanma animasyonu ve odak davranışı Kapat düğmesiyle aynı, üst üste pencerelerde yalnızca en üstteki kapanıyor.
+
+Veri şeması aynı kalır (`SCHEMA` 3).
+
 ## 1.14.0 (yayınlanmadı)
 
 ### Değişti

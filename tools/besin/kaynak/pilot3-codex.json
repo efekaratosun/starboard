@@ -1,0 +1,118 @@
+[
+  {
+    "key": "adanakebap",
+    "ad": "Adana kebap",
+    "tip": "tarif",
+    "malz": [
+      {
+        "ad": "Kuzu kıyma, çiğ",
+        "fdc": 174370,
+        "g": 600
+      },
+      {
+        "ad": "Kapya/yeşil biber çiğ (yaklaşık; tür farkı) ",
+        "fdc": 170427,
+        "g": 120
+      }
+    ],
+    "pismis_g": 620,
+    "porsiyon": 4
+  },
+  {
+    "key": "iclikofte",
+    "ad": "İçli köfte",
+    "tip": "tarif",
+    "malz": [
+      {
+        "ad": "Köftelik bulgur, kuru",
+        "fdc": 170688,
+        "g": 280
+      },
+      {
+        "ad": "Kuzu kıyma, çiğ",
+        "fdc": 174370,
+        "g": 350
+      },
+      {
+        "ad": "Soğan, çiğ",
+        "fdc": 170000,
+        "g": 150
+      }
+    ],
+    "pismis_g": 650,
+    "porsiyon": 6
+  },
+  {
+    "key": "kadinbudu",
+    "ad": "Kadınbudu köfte",
+    "tip": "tarif",
+    "malz": [
+      {
+        "ad": "Dana kıyma %80 yağsız, çiğ",
+        "fdc": 174036,
+        "g": 400
+      },
+      {
+        "ad": "Pirinç, kuru",
+        "fdc": 169756,
+        "g": 50
+      },
+      {
+        "ad": "Soğan, çiğ",
+        "fdc": 170000,
+        "g": 100
+      },
+      {
+        "ad": "Yumurta, çiğ",
+        "fdc": 171287,
+        "g": 50
+      },
+      {
+        "ad": "Un, beyaz çok amaçlı",
+        "fdc": 169761,
+        "g": 40
+      }
+    ],
+    "pismis_g": 640,
+    "porsiyon": 4
+  },
+  {
+    "key": "sekerpare",
+    "ad": "Şekerpare",
+    "tip": "tarif",
+    "malz": [
+      {
+        "ad": "Un, beyaz çok amaçlı",
+        "fdc": 169761,
+        "g": 390
+      },
+      {
+        "ad": "Tereyağı, tuzlu",
+        "fdc": 173410,
+        "g": 125
+      },
+      {
+        "ad": "İrmik",
+        "fdc": 168933,
+        "g": 70
+      },
+      {
+        "ad": "Şeker",
+        "fdc": 169655,
+        "g": 400
+      },
+      {
+        "ad": "Yumurta, çiğ",
+        "fdc": 171287,
+        "g": 55
+      },
+      {
+        "ad": "Su",
+        "su": true,
+        "g": 590
+      }
+    ],
+    "pismis_g": 1450,
+    "porsiyon": 8
+  }
+]

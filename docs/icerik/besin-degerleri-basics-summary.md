@@ -1,0 +1,20 @@
+# besin-degerleri-basics.csv — research summary
+
+- Source rows: 384 candidate bullets parsed from eksik-icecekler-ve-temel-besinler.md (expected 384).
+- Completed rows: 90 (all five requested nutrient fields populated from a matched USDA record).
+- Unresolved rows: 294 (status=needs_review; nutrient cells left blank).
+- Duplicate source rows: 0 exact normalized-name duplicates found; all source bullets remain as rows. No rows were removed or merged.
+
+## Methods
+
+- Read candidate names, categories and serving amounts from the source inventory; source file was not modified.
+- Used USDA FoodData Central SR Legacy downloadable CSV, April 2018 release, downloaded from the official [USDA dataset page](https://fdc.nal.usda.gov/download-datasets.html). For each completed item, joined food.csv to food_nutrient.csv using FDC ID and nutrient IDs 1008 (kcal), 1003 (protein), 1005 (carbohydrate), 1004 (fat), and 1079 (dietary fiber). Values are reported per 100 g edible portion and cited using the official SR Legacy dataset download URL in source_urls and the record-specific FDC ID in nutrient_data_source.
+- Screened the 310 unresolved rows against the official USDA FNDDS 2021–2023 downloadable release ([survey food JSON archive](https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_survey_food_json_2024-10-31.zip)). Added 16 direct, preparation-compatible survey-food records; each CSV row cites its FDC ID and FNDDS food code. FNDDS nutrient IDs 1008, 1003, 1005, 1004, and 1079 were copied as published per 100 g, without recalculating recipes or adjusting calories. Ethanol (nutrient ID 1018) is noted for alcoholic records because the CSV has no alcohol column; reported kcal remains the source value.
+- Completed only direct USDA food-record matches with a clear preparation state; no LLM-generated nutrient estimates, recipe averages, or inferred serving-density conversions were used. Serving grams are copied only where the candidate inventory explicitly gives grams and have not been adjusted for edible yield.
+- Cross-check: all 380 nutrient amounts in the original 76 SR Legacy-completed records were compared numerically with the official April 2018 food_nutrient.csv release and matched exactly. Two were subsequently demoted, leaving 74 SR Legacy completions. Values retain source precision; no P/C/F rounding or calorie-based (4-4-9) adjustment was applied. Karadut (generic mulberries) and Badem ezmesi (unsalted almond butter) remain needs_review because exact name/form equivalence was unverified.
+- FNDDS's inputFoods components were inspected for candidate drinks. Ingredient components were not used to calculate new mixed-drink values: the file does not provide cooked-yield data, and many candidate recipes lack matching ingredient quantities or dilution. Cocktails, smoothies, shakes, teas, nectars, and other products remain unresolved when a direct matching prepared record was absent or the available entry differed by recipe, formulation, brand, or alcohol strength. For example, the hard-cider record is brand-specific; the flavored-carbonated-water entry maps to a low-calorie soft drink rather than the candidate's mineral water; and the named dragon-fruit survey record uses a generic fruit ingredient. The passion-fruit record specifies purple fruit while the candidate does not specify cultivar.
+- For beverage rows, preparation_basis distinguishes ready-to-drink beverages from brewed, diluted, fermented, or distilled products; concentrates are not substituted for prepared servings. Serving_g stays blank where the inventory gives a volume rather than a supported gram weight.
+- needs_review notes state the row-level evidence gap. Blank source_urls/nutrient_data_source on unresolved rows indicate no exact nutrient record is asserted.
+- Exact normalized Turkish-name duplicates were checked; semantically distinct preparation/recipe variants (for example brewed tea vs dried herb) were not collapsed.
+
+The unresolved count is intentional: this file does not claim all 384 candidates are nutritionally complete.

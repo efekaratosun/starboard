@@ -1,0 +1,4268 @@
+[
+  {
+    "ad": "Makarna al pomodoro (Pasta al pomodoro)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fettuccine Alfredo (Fettuccine Alfredo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Spaghetti carbonara (Spaghetti carbonara)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cacio e pepe (Cacio e pepe)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lasagna al forno (Lasagna al forno)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Risotto alla milanese (Milanese risotto)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Risotto ai funghi (Mushroom risotto)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Osso buco (Osso buco)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Saltimbocca alla romana (Saltimbocca)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Melanzane parmigiana (Melanzane parmigiana)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pesce spada (Italian fish fry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fritto misto (Mixed seafood fry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kalamari (Fried calamari)",
+    "fdc": 2706334,
+    "kaynak": "FNDDS",
+    "description": "Calamari, fried",
+    "porsiyon_adi": "1 item",
+    "porsiyon_g": 15,
+    "guven": "orta"
+  },
+  {
+    "ad": "Gnocchi di patate (Potato gnocchi)",
+    "fdc": 2708722,
+    "kaynak": "FNDDS",
+    "description": "Gnocchi, potato",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 188,
+    "guven": "orta"
+  },
+  {
+    "ad": "Ravioli di spinaci (Spinach ravioli)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Canelloni (Canelloni)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Polenta al forno (Baked polenta)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bruschetta al pomodoro (Tomato bruschetta)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pizza margherita (Pizza margherita)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Prosciutto e funghi pizza (Prosciutto and mushroom pizza)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Focaccia (Focaccia)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pesto genovese (Pesto Genovese)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Antipasto (Antipasto)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Croissant (Croissant)",
+    "fdc": 2707678,
+    "kaynak": "FNDDS",
+    "description": "Croissant",
+    "porsiyon_adi": "1 mini croissant",
+    "porsiyon_g": 28,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Pain au chocolat (Chocolate croissant)",
+    "fdc": 2707680,
+    "kaynak": "FNDDS",
+    "description": "Croissant, chocolate",
+    "porsiyon_adi": "Quantity not specified",
+    "porsiyon_g": 70,
+    "guven": "orta"
+  },
+  {
+    "ad": "Brioche (Brioche)",
+    "fdc": 2707682,
+    "kaynak": "FNDDS",
+    "description": "Brioche",
+    "porsiyon_adi": "1 piece",
+    "porsiyon_g": 77,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Quiche Lorraine (Quiche Lorraine)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Croque monsieur (Croque monsieur)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bouillabaisse (Bouillabaisse)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ratatouille (Ratatouille)",
+    "fdc": 2710028,
+    "kaynak": "FNDDS",
+    "description": "Ratatouille",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 215,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Coq au vin (Coq au vin)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Confit de canard (Duck confit)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Crêpe (Savory crêpe)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Crêpe Suzette (Crêpe Suzette)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soupe à l'oignon (French onion soup)",
+    "fdc": 2710108,
+    "kaynak": "FNDDS",
+    "description": "Soup, French onion",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245,
+    "guven": "orta"
+  },
+  {
+    "ad": "Cassoulet (Cassoulet)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Blanquette de veau (Veal blanquette)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Steak frites (Steak frites)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tarte Tatin (Apple tarte Tatin)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Crème brûlée (Creme brulee)",
+    "fdc": 2705684,
+    "kaynak": "FNDDS",
+    "description": "Creme brulee",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 260,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Profiteroles (Profiteroles)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Madeleines (Madeleines)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Paella valenciana (Valencian paella)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Paella de mariscos (Seafood paella)",
+    "fdc": 2706711,
+    "kaynak": "FNDDS",
+    "description": "Paella with seafood",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 240,
+    "guven": "orta"
+  },
+  {
+    "ad": "Tortilla española (Spanish omelet)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gazpacho (Gazpacho)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Salmorejo (Salmorejo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Churros con chocolate (Churros)",
+    "fdc": 2708070,
+    "kaynak": "FNDDS",
+    "description": "Churros",
+    "porsiyon_adi": "1 regular",
+    "porsiyon_g": 45,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Flan (Custard flan)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tarta de Santiago (Almond cake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pulpo a la gallega (Galician octopus)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bacalao al pil-pil (Salt cod)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Patatas bravas (Patatas bravas)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Jamón serrano (Serrano ham)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chorizo (Spanish chorizo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Croquetas de jamón (Ham croquettes)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Arroz con leche (Rice pudding)",
+    "fdc": 2705685,
+    "kaynak": "FNDDS",
+    "description": "Pudding, rice",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 260,
+    "guven": "orta"
+  },
+  {
+    "ad": "Empanada gallega (Galician empanada)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Escalivada (Catalan escalivada)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pimientos del piquillo (Piquillo peppers)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cachopo asturiano (Asturian cachopo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Albóndigas (Meatballs in tomato sauce)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Souvlaki (Greek souvlaki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Souvlaki pitis (Souvlaki pita)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Horiatiki (Greek village salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Spanakopita (Spinach pie)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tiropita (Cheese pie)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pastitsio (Greek lasagna)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fasolada (Greek bean stew)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Keftedes (Greek meatballs)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kleftiko (Lamb kleftiko)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gemista (Stuffed peppers and tomatoes)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Saganaki (Fried feta)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fava (Greek fava)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Galaktoboureko (Greek custard pastry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Loukoumades (Greek doughnuts)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Taramasalata (Taramosalata)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Feta peyniri (Feta cheese)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kalamata zeytini (Kalamata olives)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Koulouri (Sesame bread ring)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Currywurst (Currywurst)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bratwurst (Bratwurst)",
+    "fdc": 2706174,
+    "kaynak": "FNDDS",
+    "description": "Bratwurst",
+    "porsiyon_adi": "1 bun-size or griller link",
+    "porsiyon_g": 75,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Weißwurst (Weisswurst)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rouladen (Rouladen)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Wiener schnitzel (Wiener schnitzel)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Spätzle (Spätzle)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Käsespätzle (Kasespatzle)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Knödel (Knodel)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kartoffelsalat (Potato salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sauerkraut (Sauerkraut)",
+    "fdc": 2709982,
+    "kaynak": "FNDDS",
+    "description": "Sauerkraut",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 140,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Zwiebelkuchen (Onion cake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Apfelstrudel (Apple strudel)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lebkuchen (Gingerbread)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Schwarzwälder Kirschtorte (Black Forest cake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kaiserschmarrn (Kaiserschmarrn)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lángos (Lángos)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kürtőskalács (Chimney cake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Goulash (Hungarian goulash)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Paprikash (Chicken paprikash)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Full English breakfast (Full English breakfast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fish and chips (Fish and chips)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bangers and mash (Bangers and mash)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sausage roll (Sausage roll)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Shepherd's pie (Shepherd's pie)",
+    "fdc": 2706594,
+    "kaynak": "FNDDS",
+    "description": "Shepherd's pie",
+    "porsiyon_adi": "1 slice, any size",
+    "porsiyon_g": 210,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Toad in the hole (Toad in the hole)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sunday roast (Sunday roast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beans on toast (Beans on toast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Scotch egg (Scotch egg)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cornish pasty (Cornish pasty)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beef Wellington (Beef Wellington)",
+    "fdc": 2706501,
+    "kaynak": "FNDDS",
+    "description": "Beef wellington",
+    "porsiyon_adi": "1 slice",
+    "porsiyon_g": 116,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Yorkshire pudding (Yorkshire pudding)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Treacle tart (Treacle tart)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sticky toffee pudding (Sticky toffee pudding)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Eton mess (Eton mess)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Crumpet (Crumpet)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bakewell tart (Bakewell tart)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Irish stew (Irish stew)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Irish soda bread (Irish soda bread)",
+    "fdc": 2707852,
+    "kaynak": "FNDDS",
+    "description": "Bread, Irish soda",
+    "porsiyon_adi": "Quantity not specified",
+    "porsiyon_g": 74,
+    "guven": "orta"
+  },
+  {
+    "ad": "Colcannon (Colcannon)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Smørrebrød (Open-faced sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Københavner (Danish hot dog)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kartoffelsuppe (Danish potato soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Swedish meatballs (Swedish meatballs)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pannbiff (Swedish beef patty)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beef Rydberg (Beef Rydberg)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gravlax (Gravlax)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Toast Skagen (Toast Skagen)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fiskbulle (Fish balls)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Janssons frestelse (Jansson's temptation)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kåldolmar (Cabbage rolls)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Semla (Semla)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rye bread (Rye bread)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Crispbread (Crispbread)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Aquavit (Aquavit)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gløgg (Mulled wine)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Borscht (Borscht)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Shchi (Cabbage soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Okroshka (Okroshka)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kholodnik (Cold beet soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rassolnik (Pickle soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Blini (Blini)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pelmeni (Pelmeni)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pirozhki (Pirozhki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kulebyaka (Kulebyaka)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Salat Olivier (Olivier salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vinaigrette (Russian vinaigrette)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Solyanka (Solyanka)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kotlety (Kotlety)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beef Stroganoff (Beef Stroganoff)",
+    "fdc": 2706382,
+    "kaynak": "FNDDS",
+    "description": "Beef stroganoff",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 256,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Syrniki (Syrniki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kasha (Buckwheat porridge)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kvass (Kvass)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mors (Mors)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Clam chowder (New England clam chowder)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buffalo chicken wings (Buffalo wings)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Meatloaf (Meatloaf)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fried chicken (Fried chicken)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "BBQ pork ribs (BBQ ribs)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pulled pork (Pulled pork)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Louisiana gumbo (Gumbo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Jambalaya (Jambalaya)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hush puppies (Hush puppies)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken pot pie (Chicken pot pie)",
+    "fdc": 2706703,
+    "kaynak": "FNDDS",
+    "description": "Pot pie, chicken",
+    "porsiyon_adi": "1 slice, any size",
+    "porsiyon_g": 210,
+    "guven": "orta"
+  },
+  {
+    "ad": "Corned beef hash (Corned beef hash)",
+    "fdc": 2706477,
+    "kaynak": "FNDDS",
+    "description": "Corned beef hash",
+    "porsiyon_adi": "1 cup, NFS",
+    "porsiyon_g": 220,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Philly cheesesteak (Cheesesteak)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Reuben sandwich (Reuben sandwich)",
+    "fdc": 2706952,
+    "kaynak": "FNDDS",
+    "description": "Reuben sandwich",
+    "porsiyon_adi": "1 sandwich, any size",
+    "porsiyon_g": 215,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Lobster roll (Lobster roll)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tuna melt (Tuna melt)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sloppy joe (Sloppy joe)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fried catfish (Fried catfish)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Baked beans (New England baked beans)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken and waffles (Chicken and waffles)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hot brown (Hot brown)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Quesadilla (Quesadilla)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Carne asada tacos (Carne asada tacos)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Enchiladas de pollo (Chicken enchiladas)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fajitas de pollo (Chicken fajitas)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Guacamole (Guacamole)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Salsa roja (Red salsa)",
+    "fdc": 2709738,
+    "kaynak": "FNDDS",
+    "description": "Salsa, red",
+    "porsiyon_adi": "1 tablespoon",
+    "porsiyon_g": 16,
+    "guven": "orta"
+  },
+  {
+    "ad": "Salsa verde (Salsa verde)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nachos (Nachos)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chile relleno (Chile relleno)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Carnitas (Carnitas)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tamales (Tamales)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Elote (Mexican street corn)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mexican rice (Mexican rice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Refried beans (Refried beans)",
+    "fdc": 2707396,
+    "kaynak": "FNDDS",
+    "description": "Refried beans",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 260,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Pozole (Pozole)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Menudo (Menudo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fish tacos (Fish tacos)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chimichanga (Chimichanga)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chilaquiles (Chilaquiles)",
+    "fdc": 2708505,
+    "kaynak": "FNDDS",
+    "description": "Chilaquiles",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 170,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Birria tacos (Birria tacos)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Feijoada (Brazilian feijoada)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pão de queijo (Pao de queijo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Brigadeiro (Brigadeiro)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Coxinha (Coxinha)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Empanada (Argentine empanada)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Asado (Argentine asado)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Provoleta (Provoleta)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lomo saltado (Peruvian lomo saltado)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ceviche (Peruvian ceviche)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Anticuchos (Peruvian anticuchos)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ají de gallina (Peruvian aji de gallina)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pisco sour (Pisco sour)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Caipirinha (Caipirinha)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chimichurri (Chimichurri)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Farofa (Farofa)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Moqueca (Brazilian moqueca)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bandeja paisa (Colombian bandeja paisa)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Arepas (Arepas)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dim sum (Dim sum)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Char siu bao (Barbecue pork buns)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Xiaolongbao (Soup dumplings)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Peking duck (Peking duck)",
+    "fdc": 2706141,
+    "kaynak": "FNDDS",
+    "description": "Duck, Peking",
+    "porsiyon_adi": "1 oz, cooked",
+    "porsiyon_g": 28.35,
+    "guven": "orta"
+  },
+  {
+    "ad": "Chow mein (Chicken chow mein)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kung pao chicken (Kung pao chicken)",
+    "fdc": 2706796,
+    "kaynak": "FNDDS",
+    "description": "Kung pao chicken",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 162,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Sweet and sour pork (Sweet and sour pork)",
+    "fdc": 2706401,
+    "kaynak": "FNDDS",
+    "description": "Sweet and sour pork",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 226,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Mapo tofu (Mapo tofu)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dan dan noodles (Dan dan noodles)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hainan chicken rice (Hainan chicken rice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Congee (Rice porridge)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Wonton soup (Wonton soup)",
+    "fdc": 2709160,
+    "kaynak": "FNDDS",
+    "description": "Soup, wonton",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245,
+    "guven": "orta"
+  },
+  {
+    "ad": "Hot and sour soup (Hot and sour soup)",
+    "fdc": 2707136,
+    "kaynak": "FNDDS",
+    "description": "Soup, hot and sour",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245,
+    "guven": "orta"
+  },
+  {
+    "ad": "Egg fried rice (Egg fried rice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yangzhou fried rice (Yangzhou fried rice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Spring rolls (Vegetable spring rolls)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gai lan (Chinese broccoli)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beef chow fun (Beef chow fun)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kung pao shrimp (Kung pao shrimp)",
+    "fdc": 2706857,
+    "kaynak": "FNDDS",
+    "description": "Kung Pao shrimp",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 162,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Scallion pancake (Scallion pancake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mantou (Steamed bun)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buddha's delight (Buddha's delight)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Century egg (Century egg)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sesame balls (Sesame balls)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sichuan boiled fish (Sichuan boiled fish)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nigiri sushi (Nigiri sushi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Maki roll (Maki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sashimi (Sashimi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chirashi sushi (Chirashi sushi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tonkotsu ramen (Tonkotsu ramen)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Shoyu ramen (Shoyu ramen)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Udon (Udon)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soba (Soba)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yakisoba (Yakisoba)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chawanmushi (Steamed egg custard)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tempura (Tempura)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Katsu curry (Katsu curry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tonkatsu (Tonkatsu)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Saba (Grilled mackerel)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Natto (Natto)",
+    "fdc": 172443,
+    "kaynak": "SR",
+    "description": "Natto",
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Onigiri (Rice ball)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tamagoyaki (Japanese omelet)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gyoza (Gyoza)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Takoyaki (Takoyaki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Okonomiyaki (Okonomiyaki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Unagi (Grilled eel)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Miso soup (Miso soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mochi (Mochi rice cake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dango (Dango)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dorayaki (Dorayaki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bulgogi (Beef bulgogi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kimchi jjigae (Kimchi stew)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Samgyetang (Ginseng chicken soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Doenjang jjigae (Soybean paste stew)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tteokguk (Rice cake soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tteokbokki (Tteokbokki)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Japchae (Japchae)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Jajangmyeon (Black bean noodles)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Naengmyeon (Naengmyeon)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bossam (Bossam)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gimbap (Gimbap)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mandu (Mandu dumplings)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tteok (Rice cake)",
+    "fdc": 2708162,
+    "kaynak": "FNDDS",
+    "description": "Rice cake",
+    "porsiyon_adi": "1 cake",
+    "porsiyon_g": 3,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Kimchi (Kimchi)",
+    "fdc": 2710077,
+    "kaynak": "FNDDS",
+    "description": "Kimchi",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 150,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Gyeran-mari (Gyeran-mari)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yukhoe (Yukhoe)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Korean corn dog (Korean corn dog)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pad thai (Pad thai)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tom yum goong (Tom yum soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Green curry (Thai green curry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Red curry (Thai red curry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Massaman curry (Massaman curry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pad kra pao (Thai basil stir-fry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Som tam (Green papaya salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Phở bò (Pho bo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bún bò Huế (Bun bo Hue)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gỏi cuốn (Vietnamese spring rolls)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bún chả (Bun cha)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bún thịt nướng (Grilled pork vermicelli bowl)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Laksa (Laksa)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken satay (Chicken satay)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Larb (Laotian larb)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pad see ew (Pad see ew)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cao lầu (Cao lau)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bánh xèo (Vietnamese crepe)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken tikka masala (Chicken tikka masala)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Butter chicken (Butter chicken)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken curry (Indian chicken curry)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lamb rogan josh (Lamb rogan josh)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken karahi (Chicken karahi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Palak paneer (Palak paneer)",
+    "fdc": 2709631,
+    "kaynak": "FNDDS",
+    "description": "Palak Paneer",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 200,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Chana masala (Chana masala)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dal tadka (Dal tadka)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Saag aloo (Saag aloo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken biryani (Chicken biryani)",
+    "fdc": 2706538,
+    "kaynak": "FNDDS",
+    "description": "Biryani with chicken",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 196,
+    "guven": "orta"
+  },
+  {
+    "ad": "Khichdi (Khichdi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Paneer tikka (Paneer tikka)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tandoori chicken (Tandoori chicken)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Seekh kebab (Seekh kebab)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Garlic naan (Garlic naan)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chapati (Chapati)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Masala dosa (Masala dosa)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Idli (Steamed idli)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vegetable samosa (Vegetable samosa)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vegetable pakora (Vegetable pakora)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chole bhature (Chole bhature)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vada pav (Vada pav)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Falafel (Falafel)",
+    "fdc": 2707408,
+    "kaynak": "FNDDS",
+    "description": "Falafel",
+    "porsiyon_adi": "1 patty",
+    "porsiyon_g": 17,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Tabbouleh (Tabbouleh)",
+    "fdc": 2709131,
+    "kaynak": "FNDDS",
+    "description": "Tabbouleh",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 160,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Baba ghanoush (Baba ghanoush)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fattoush (Fattoush)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken shawarma (Chicken shawarma)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Za'atar manakish (Zaatar manakish)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fatayer (Fatayer)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kibbeh (Kibbeh)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Maqluba (Maqluba)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mansaf (Mansaf)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kebab koobideh (Koobideh kebab)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kebab barg (Kebab barg)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Shakshuka (Shakshuka)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Foul medames (Foul medames)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fatteh (Chicken fatteh)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Saffron rice (Saffron rice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pita (Pita bread)",
+    "fdc": 2707616,
+    "kaynak": "FNDDS",
+    "description": "Bread, pita",
+    "porsiyon_adi": "1 small pita",
+    "porsiyon_g": 28,
+    "guven": "orta"
+  },
+  {
+    "ad": "Tagine (Lamb tagine)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Couscous (Couscous with lamb)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Harira (Harira soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Brik (Brik a l'oeuf)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Merguez (Merguez sausage)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Medfouna (Medfouna)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bastilla (Bastilla)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bessara (Bessara)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Frik chorba (Moroccan chorba)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zaalouk (Zaalouk)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Taktouka (Taktouka)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Msemen (Moroccan msemen)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Loubia (Loubia khadra)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Harissa (Harissa paste)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ojja merguez (Tunisian ojja)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Jollof rice (Jollof rice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Suya (Suya)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Egusi soup (Egusi soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nyama choma (Nyama choma)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bunny chow (Durban bunny chow)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Boerewors (Boerewors)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Waakye (Waakye)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kelewele (Ghanaian fried plantain)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Puff-puff (Puff-puff)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Morogo (Morogo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Madumbo (Madumbo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Doro wat (Doro wat)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Injera (Ethiopian injera)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Malva pudding (Malva pudding)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Big Mac tarzı hamburger (Big Mac)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Double cheeseburger (Double cheeseburger)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bacon burger (Bacon burger)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken burger (Chicken burger)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fish burger (Fish burger)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Veggie burger (Veggie burger)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Slider (Slider)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken tenders (Chicken tenders)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Onion rings (Onion rings)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mozzarella sticks (Mozzarella sticks)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Corn dog (Corn dog)",
+    "fdc": 2707044,
+    "kaynak": "FNDDS",
+    "description": "Corn dog",
+    "porsiyon_adi": "1 regular",
+    "porsiyon_g": 88,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Calzone (Calzone)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Garlic bread (Garlic bread)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tater tots (Tater tots)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vanilla milkshake (Vanilla milkshake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lemonade (Lemonade)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Espresso (Espresso)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Caffe latte (Caffe latte)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cappuccino (Cappuccino)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Iced tea (Iced tea)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hot chocolate (Hot chocolate)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Donut (Doughnut)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Eggs Benedict (Eggs Benedict)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Eggs on toast (Eggs on toast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soft-boiled eggs with soldiers (Soft-boiled eggs)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Scrambled eggs (Scrambled eggs)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Huevos rancheros (Huevos rancheros)",
+    "fdc": 2707191,
+    "kaynak": "FNDDS",
+    "description": "Huevos rancheros",
+    "porsiyon_adi": "1 egg",
+    "porsiyon_g": 118,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Deviled eggs (Deviled eggs)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Breakfast burrito (Breakfast burrito)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "French toast (French toast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Waffle (Buttermilk waffle)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Brussels waffle (Brussels waffle)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Biscuits and gravy (Biscuits and gravy)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bircher muesli (Bircher muesli)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chia pudding (Chia pudding)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Avocado toast (Avocado toast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lox bagel (Lox bagel)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Peanut butter toast (Peanut butter toast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kaya toast (Kaya toast)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Club sandwich (Club sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "BLT sandwich (BLT)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Turkey sandwich (Turkey sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Monte Cristo sandwich (Monte Cristo)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cuban sandwich (Cuban sandwich)",
+    "fdc": 2706973,
+    "kaynak": "FNDDS",
+    "description": "Cuban sandwich",
+    "porsiyon_adi": "1 sandwich, any size",
+    "porsiyon_g": 190,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Torta sandwich (Italian torta sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Panini (Mozzarella panini)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Grilled halloumi sandwich (Halloumi sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Grilled vegetable sandwich (Grilled vegetable sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gyro sandwich (Gyro pita)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken kebab dürüm (Chicken kebab wrap)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mediterranean vegetable wrap (Vegetable wrap)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chicken wrap (Chicken wrap)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Falafel wrap (Falafel wrap)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Caesar wrap (Caesar wrap)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nutella sandwich (Nutella sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tea sandwich (Cucumber cream cheese sandwich)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cobb salad (Cobb salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Niçoise salad (Nicoise salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Caprese salad (Caprese)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beetroot salad (Beetroot salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Quinoa salad (Quinoa salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Couscous salad (Couscous salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lentil salad (Lentil salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bulgur salad (Bulgur salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Waldorf salad (Waldorf salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Burrata salad (Burrata salad)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Poke bowl (Poke bowl)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Harvest grain bowl (Grain bowl)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Açaí bowl (Acai bowl)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Smoothie bowl (Smoothie bowl)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Burrito bowl (Burrito bowl)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Falafel bowl (Falafel bowl)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Minestrone (Minestrone)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cream of mushroom soup (Cream of mushroom soup)",
+    "fdc": 2710107,
+    "kaynak": "FNDDS",
+    "description": "Soup, cream of mushroom",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 255,
+    "guven": "orta"
+  },
+  {
+    "ad": "Chicken noodle soup (Chicken noodle soup)",
+    "fdc": 2709149,
+    "kaynak": "FNDDS",
+    "description": "Soup, chicken noodle",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245,
+    "guven": "orta"
+  },
+  {
+    "ad": "Sweet corn soup (Sweet corn soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lobster bisque (Lobster bisque)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Butternut squash soup (Butternut squash soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pumpkin soup (Pumpkin soup)",
+    "fdc": 2709718,
+    "kaynak": "FNDDS",
+    "description": "Soup, pumpkin",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245,
+    "guven": "orta"
+  },
+  {
+    "ad": "Celeriac soup (Celeriac soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Egg drop soup (Egg drop soup)",
+    "fdc": 2707282,
+    "kaynak": "FNDDS",
+    "description": "Soup, egg drop",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245,
+    "guven": "orta"
+  },
+  {
+    "ad": "Fish soup (Fish soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sopa de ajo (Spanish garlic soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sopa de fideo (Spanish noodle soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mulligatawny (Mulligatawny soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chickpea soup (Chickpea soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Avgolemono (Greek lemon chicken soup)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tortilla soup (Tortilla soup)",
+    "fdc": 2709162,
+    "kaynak": "FNDDS",
+    "description": "Soup, tortilla",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 245,
+    "guven": "orta"
+  },
+  {
+    "ad": "New York cheesecake (New York cheesecake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Chocolate chip cookie (Chocolate chip cookie)",
+    "fdc": 2707909,
+    "kaynak": "FNDDS",
+    "description": "Cookie, chocolate chip",
+    "porsiyon_adi": "1 mini or bite size cookie",
+    "porsiyon_g": 5,
+    "guven": "orta"
+  },
+  {
+    "ad": "Brownie (Brownie)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Key lime pie (Key lime pie)",
+    "fdc": 2708001,
+    "kaynak": "FNDDS",
+    "description": "Pie, key lime",
+    "porsiyon_adi": "1 slice, any size",
+    "porsiyon_g": 150,
+    "guven": "orta"
+  },
+  {
+    "ad": "Sweet potato pie (Sweet potato pie)",
+    "fdc": 2708012,
+    "kaynak": "FNDDS",
+    "description": "Pie, sweet potato",
+    "porsiyon_adi": "1 mini/small slice",
+    "porsiyon_g": 75,
+    "guven": "orta"
+  },
+  {
+    "ad": "Pumpkin pie (Pumpkin pie)",
+    "fdc": 2708011,
+    "kaynak": "FNDDS",
+    "description": "Pie, pumpkin",
+    "porsiyon_adi": "1 mini/small slice",
+    "porsiyon_g": 75,
+    "guven": "orta"
+  },
+  {
+    "ad": "Pecan pie (Pecan pie)",
+    "fdc": 2708015,
+    "kaynak": "FNDDS",
+    "description": "Pie, pecan",
+    "porsiyon_adi": "1 mini/small slice",
+    "porsiyon_g": 75,
+    "guven": "orta"
+  },
+  {
+    "ad": "Apple pie (Apple pie)",
+    "fdc": 2707995,
+    "kaynak": "FNDDS",
+    "description": "Pie, apple",
+    "porsiyon_adi": "1 mini/small slice",
+    "porsiyon_g": 75,
+    "guven": "orta"
+  },
+  {
+    "ad": "Apple crumble (Apple crumble)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lemon meringue pie (Lemon meringue pie)",
+    "fdc": 2708014,
+    "kaynak": "FNDDS",
+    "description": "Pie, lemon meringue",
+    "porsiyon_adi": "1 slice, any size",
+    "porsiyon_g": 150,
+    "guven": "orta"
+  },
+  {
+    "ad": "Banoffee pie (Banoffee pie)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cinnamon roll (Cinnamon roll)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bread pudding (Bread pudding)",
+    "fdc": 2705680,
+    "kaynak": "FNDDS",
+    "description": "Pudding, bread",
+    "porsiyon_adi": "1 cup",
+    "porsiyon_g": 200,
+    "guven": "orta"
+  },
+  {
+    "ad": "Pavlova (Pavlova)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Éclair (Eclair)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mille-feuille (Mille-feuille)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cannoli (Cannoli)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Panna cotta (Panna cotta)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gulab jamun (Gulab jamun)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bingsu (Korean shaved ice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mango sticky rice (Mango sticky rice)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cendol (Cendol)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  }
+]

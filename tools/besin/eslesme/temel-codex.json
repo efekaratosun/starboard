@@ -1,0 +1,3458 @@
+[
+  {
+    "ad": "Ada çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ihlamur çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuşburnu çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Papatya çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rezene çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zencefil çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Melisa çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nane çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kekik çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Anason çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lavanta çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hibiskus çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zeytin yaprağı çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kiraz sapı çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yeşil çay",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beyaz çay",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Oolong çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pu-erh çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rooibos çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mate",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Matcha latte",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sütlü çay",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cascara çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Filtre kahve",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Espresso",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Amerikano",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cortado",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Espresso macchiato",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cappuccino",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Caffè latte",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Flat white",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Latte macchiato",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mocha",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sütlü kahve (sade)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Menengiç kahvesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dibek kahvesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sıcak çikolata",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sıcak baharatlı elma içeceği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Espresso con panna",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zerdeçal çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ekinezya çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tarçınlı süt",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sakız çayı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Limonata",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Frambuazlı limonata",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soğuk çay (dondurulmuş)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buzlu americano",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cold brew",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Frappe",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buzlu latte",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buzlu mocha",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çırpılmış sütlü kahve",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Affogato",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buzlu matcha",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karpuz limonatası",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fesleğenli limonata",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soda",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Aromalı maden suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Limonlu gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Portakallı gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çilekli gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ahududulu gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tonik suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zencefilli gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Şekersiz kola",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Elmalı gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Böğürtlen gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ananaslı gazoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zencefil birası (alkolsüz)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Elma suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vişne suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Üzüm suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Armut suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ananas suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Havuç suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Greyfurt suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nar suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karpuz suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Limon suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Domates suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kavun suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Guava suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karışık meyve suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Şeftali nektarı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kayısı nektarı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mango nektarı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Erik suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kızılcık suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kiraz suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ananas hindistan cevizi suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Elma armut suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Frenk üzümü nektarı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çilekli smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Muzlu smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mango smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Orman meyveli smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yeşil smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Avokadolu smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ananaslı smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Şeftalili smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kahveli smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çilekli milkshake",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çikolatalı milkshake",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Muzlu milkshake",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vanilyalı milkshake",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bisküvilı milkshake",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kivili smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karpuzlu smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kirazlı smoothie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Enerji içeceği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Şekersiz enerji içeceği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Elektrolit suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pre-workout içeceği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Amino asitli içecek",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yerba mate enerji içeceği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kafeinli maden suyu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kreatinli spor içeceği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Guarana özlü enerji içeceği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fındık sütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pirinç sütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kenevir sütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Makadamia sütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hindistan cevizi sütü (içecek)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Susam sütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kaju sütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Antep fıstığı sütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hardaliye",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Meyan kökü şerbeti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Güllü şerbet",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lohusa şerbeti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Demirhindi şerbeti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Koruk şerbeti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vişne şerbeti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nar şerbeti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soğuk komposto",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sıcak komposto",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kızılcık şerbeti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bira",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buğday birası (weissbier)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "IPA",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Stout (kara bira)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Alkolsüz bira",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kırmızı şarap",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beyaz şarap",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rosé şarap",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Köpüklü şarap",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Elma şarabı (cidre)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pirinç şarabı (sake)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rakı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Votka",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Viski",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Cin (gin)",
+    "fdc": 2710702,
+    "kaynak": "FNDDS",
+    "description": "Gin",
+    "porsiyon_adi": "1 fl oz (no ice)",
+    "porsiyon_g": 28,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Tekila",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rom",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Konyak",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vermut",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Portakal likörü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kahveli likör",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Badem likörü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Krema likörü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vişne likörü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mojito",
+    "fdc": 2710644,
+    "kaynak": "FNDDS",
+    "description": "Mojito",
+    "porsiyon_adi": "1 fl oz",
+    "porsiyon_g": 30,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Margarita",
+    "fdc": 2710638,
+    "kaynak": "FNDDS",
+    "description": "Margarita",
+    "porsiyon_adi": "1 fl oz",
+    "porsiyon_g": 30,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Piña colada",
+    "fdc": 2710662,
+    "kaynak": "FNDDS",
+    "description": "Pina Colada",
+    "porsiyon_adi": "1 fl oz",
+    "porsiyon_g": 30,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Cosmopolitan",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Martini",
+    "fdc": 2710639,
+    "kaynak": "FNDDS",
+    "description": "Martini",
+    "porsiyon_adi": "1 fl oz",
+    "porsiyon_g": 30,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Bloody Mary",
+    "fdc": 2710628,
+    "kaynak": "FNDDS",
+    "description": "Bloody Mary",
+    "porsiyon_adi": "1 fl oz",
+    "porsiyon_g": 30,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Gin tonik",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sangria",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Long Island iced tea",
+    "fdc": 2710679,
+    "kaynak": "FNDDS",
+    "description": "Long Island iced tea",
+    "porsiyon_adi": "1 fl oz",
+    "porsiyon_g": 30,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Daiquiri",
+    "fdc": 2710630,
+    "kaynak": "FNDDS",
+    "description": "Daiquiri",
+    "porsiyon_adi": "1 fl oz",
+    "porsiyon_g": 30,
+    "guven": "yuksek"
+  },
+  {
+    "ad": "Tekila sunrise",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Acı aperatif spritz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "İrlanda kahvesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sıcak şarap (glühwein)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bitter likör (digestif)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mango",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Papaya",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Guava",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Maracuya",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ejder meyvesi (pitaya)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ayva",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karadut",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yenidünya",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Litsi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rambutan",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kumquat",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pomelo",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mürdüm eriği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kızılcık",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuşburnu (taze)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Frenk üzümü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nektarin",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yıldız meyvesi (carambola)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Frenk inciri (kaktüs meyvesi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Feijoa",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Trabzon hurması",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Salak",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Turunç",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bektaşi üzümü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Taze soğan",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Acı biber (jalapeño)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Enginar (çiğ)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Acur",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Siyah turp",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Daikon turp",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Şalgam (kök)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tere",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nane (taze)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Rezene",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kenger",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hindiba",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bamya (çiğ)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pancar yaprağı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Deniz yosunu (nori)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Şitake mantarı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuzu göbeği mantarı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Trüf mantarı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mung filizi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kereviz sapı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tam buğday unu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çavdar unu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mısır unu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yulaf unu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "İrmik",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Arpa (kuru)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Buğday (bütün, kuru)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dövme",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yulaf kepeği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mısır nişastası",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soba eriştesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Udon eriştesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Basmati pirinci",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Jasmin pirinci",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Glutensiz un karışımı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Firik (kuru)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Polenta (kuru)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pirinç unu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Badem unu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Panko ekmek kırıntısı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Acı bakla (kuru)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Taze bakla",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Taze börülce",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sarı bezelye (kuru)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Azuki fasulyesi (kuru)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çam fıstığı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Brezilya fıstığı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Makadamia",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Haşhaş tohumu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çörek otu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kenevir tohumu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kavun çekirdeği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuru dut",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Fıstık ezmesi (sade)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Badem ezmesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yağlı tohum karışımı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dana kontrfile",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dana pirzola",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dana incik",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dana gerdan",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dana kaburga",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuşbaşı (dana)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuzu pirzola",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuzu kolu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuzu incik",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuzu kaburga",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tavuk kanat",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hindi but",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dana antrikot",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuzu kuşbaşı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuzu but (bacak)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hindi kanat",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tavuk karaciğeri",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tavuk yüreği",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tavuk taşlığı (mide)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Uykuluk",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beyin (koyun/dana)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Böbrek (dana)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kelle (koyun)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Paça",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Palamut",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kılıç balığı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çinekop",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sinarit",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Barbun",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "İstavrit",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kefal",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sazan",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Midye (haşlanmış)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "İstakoz",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yengeç eti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kalamar",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ahtapot",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "İstiridye",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kaviar",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lakerda",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Feta",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Brie",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Camembert",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mascarpone",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gouda",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Edam",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Provolone",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Gorgonzola",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çerkez peyniri",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Otlu peynir",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Küp peyniri",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Krema (yemeklik)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Krem şanti",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çikolatalı süt",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Çilekli süt",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Muzlu süt",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kanola yağı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mısır yağı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Susam yağı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Margarin",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yer fıstığı yağı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Avokado yağı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sadeyağ (ghee)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ketçap",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hardal",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Acı biber sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Soya sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Teriyaki sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Barbekü sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Ranch sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Salsa sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pesto sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beşamel sos",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Domates salçası",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Biber salçası",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Nar ekşisi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Balzamik sirke",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Elma sirkesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Lahana turşusu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Salatalık turşusu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karışık turşu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karabiber",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kimyon",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pul biber",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kuru nane",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kekik",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tarçın",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karanfil",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Muskat",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Yenibahar",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Safran",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zencefil (toz)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Zerdeçal",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Defne yaprağı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Reyhan (taze fesleğen)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Biberiye",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kişniş",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sumak",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Sarımsak tozu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Köri (harman)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Garam masala",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kakao (toz)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vanilya özütü",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Vanilya şekeri",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Pudra şekeri",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Esmer şeker",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Stevia",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Eritritol",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Agave şurubu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Marmelat (turunç)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Hurma ezmesi",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beyaz çikolata",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karamel (şekerleme)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karamel sosu",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mısır cipsi (tortilla cipsi)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kek (dilim)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Browni",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Donut",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Kurabiye (sade)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Karışık çerez",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Waffle",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dondurulmuş sebze karışımı",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dondurulmuş köfte",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Dondurulmuş börek",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Tavuk parmak (tender)",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Mısır konserve",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Bezelye konserve",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  },
+  {
+    "ad": "Beyaz fasulye konserve",
+    "fdc": null,
+    "kaynak": null,
+    "description": null,
+    "porsiyon_adi": null,
+    "porsiyon_g": null,
+    "guven": "dusuk"
+  }
+]

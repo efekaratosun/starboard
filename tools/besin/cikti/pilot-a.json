@@ -1,0 +1,1156 @@
+{
+  "tarhanacorbasi": {
+    "p": 1.1,
+    "c": 6.4,
+    "f": 2.7,
+    "lif": 0.4,
+    "alk": 0,
+    "kcal_usda": 54,
+    "kcal_449": 54,
+    "porsiyon_g": 300,
+    "porsiyon_kcal": 162,
+    "kaynak": [
+      {
+        "ad": "Buğday unu (tarhana hamuru için)",
+        "g": 120,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "Yoğurt (tarhana hamuru için)",
+        "g": 100,
+        "fdc": 171284,
+        "aciklama": "Yogurt, plain, whole milk"
+      },
+      {
+        "ad": "Domates salçası (tarhana hamuru için)",
+        "g": 60,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Soğan",
+        "g": 80,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 30,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Zeytinyağı",
+        "g": 20,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      },
+      {
+        "ad": "Su",
+        "g": 1600,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "adanakebap": {
+    "p": 16.4,
+    "c": 2.8,
+    "f": 32.1,
+    "lif": 0.5,
+    "alk": 0,
+    "kcal_usda": 369,
+    "kcal_449": 366,
+    "porsiyon_g": 250,
+    "porsiyon_kcal": 922,
+    "kaynak": [
+      {
+        "ad": "Kuzu kıyma (USDA, %23 yağ)",
+        "g": 700,
+        "fdc": 174370,
+        "aciklama": "Lamb, ground, raw"
+      },
+      {
+        "ad": "Kuzu kuyruk yağı",
+        "g": 100,
+        "fdc": 174435,
+        "aciklama": "Lamb, New Zealand, imported, subcutaneous fat, raw"
+      },
+      {
+        "ad": "Kırmızı biber",
+        "g": 100,
+        "fdc": 170108,
+        "aciklama": "Peppers, sweet, red, raw"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Sarımsak",
+        "g": 15,
+        "fdc": 169230,
+        "aciklama": "Garlic, raw"
+      }
+    ]
+  },
+  "beyti": {
+    "p": 11.9,
+    "c": 10.2,
+    "f": 16.8,
+    "lif": 0.9,
+    "alk": 0,
+    "kcal_usda": 241,
+    "kcal_449": 240,
+    "porsiyon_g": 350,
+    "porsiyon_kcal": 845,
+    "kaynak": [
+      {
+        "ad": "Kuzu kıyma (USDA, %23 yağ)",
+        "g": 600,
+        "fdc": 174370,
+        "aciklama": "Lamb, ground, raw"
+      },
+      {
+        "ad": "Lavaş/ekmek",
+        "g": 150,
+        "fdc": 174924,
+        "aciklama": "Bread, white, commercially prepared (includes soft bread crumbs)"
+      },
+      {
+        "ad": "Yoğurt",
+        "g": 200,
+        "fdc": 171284,
+        "aciklama": "Yogurt, plain, whole milk"
+      },
+      {
+        "ad": "Domates",
+        "g": 150,
+        "fdc": 170457,
+        "aciklama": "Tomatoes, red, ripe, raw, year round average"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 40,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 30,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Soğan",
+        "g": 80,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Sarımsak",
+        "g": 10,
+        "fdc": 169230,
+        "aciklama": "Garlic, raw"
+      }
+    ]
+  },
+  "taskebabi": {
+    "p": 10.6,
+    "c": 13.3,
+    "f": 12.7,
+    "lif": 2.4,
+    "alk": 0,
+    "kcal_usda": 208,
+    "kcal_449": 210,
+    "porsiyon_g": 375,
+    "porsiyon_kcal": 781,
+    "kaynak": [
+      {
+        "ad": "Kuzu kuşbaşı (yağlı, çiğ)",
+        "g": 700,
+        "fdc": 172496,
+        "aciklama": "Lamb, shoulder, whole (arm and blade), separable lean and fat, trimmed to 1/4\" fat, choice, raw"
+      },
+      {
+        "ad": "Bulgur",
+        "g": 150,
+        "fdc": 170688,
+        "aciklama": "Bulgur, dry"
+      },
+      {
+        "ad": "Nohut",
+        "g": 100,
+        "fdc": 173756,
+        "aciklama": "Chickpeas (garbanzo beans, bengal gram), mature seeds, raw"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 50,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 40,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Yeşil biber",
+        "g": 80,
+        "fdc": 170427,
+        "aciklama": "Peppers, sweet, green, raw"
+      },
+      {
+        "ad": "Su",
+        "g": 600,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "iclikofte": {
+    "p": 10.7,
+    "c": 27.9,
+    "f": 16.8,
+    "lif": 3.8,
+    "alk": 0,
+    "kcal_usda": 300,
+    "kcal_449": 306,
+    "porsiyon_g": 275,
+    "porsiyon_kcal": 824,
+    "kaynak": [
+      {
+        "ad": "İnce bulgur",
+        "g": 250,
+        "fdc": 170688,
+        "aciklama": "Bulgur, dry"
+      },
+      {
+        "ad": "İrmik",
+        "g": 100,
+        "fdc": 168933,
+        "aciklama": "Semolina, unenriched"
+      },
+      {
+        "ad": "Yumurta",
+        "g": 50,
+        "fdc": 171287,
+        "aciklama": "Egg, whole, raw, fresh"
+      },
+      {
+        "ad": "Buğday unu",
+        "g": 30,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "Dana kıyma (%15 yağ)",
+        "g": 300,
+        "fdc": 171796,
+        "aciklama": "Beef, ground, 85% lean meat / 15% fat, raw (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Ceviz",
+        "g": 40,
+        "fdc": 170187,
+        "aciklama": "Nuts, walnuts, english"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 30,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 30,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Maydanoz",
+        "g": 15,
+        "fdc": 170416,
+        "aciklama": "Parsley, fresh"
+      },
+      {
+        "ad": "Emilen ayçiçek yağı",
+        "g": 80,
+        "fdc": 171017,
+        "aciklama": "Oil, sunflower, linoleic (less than 60%)"
+      },
+      {
+        "ad": "Su",
+        "g": 200,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "kadinbudu": {
+    "p": 15.4,
+    "c": 16.1,
+    "f": 26,
+    "lif": 0.6,
+    "alk": 0,
+    "kcal_usda": 363,
+    "kcal_449": 360,
+    "porsiyon_g": 213,
+    "porsiyon_kcal": 772,
+    "kaynak": [
+      {
+        "ad": "Dana kıyma (%20 yağ)",
+        "g": 600,
+        "fdc": 174036,
+        "aciklama": "Beef, ground, 80% lean meat / 20% fat, raw"
+      },
+      {
+        "ad": "Pirinç",
+        "g": 100,
+        "fdc": 168877,
+        "aciklama": "Rice, white, long-grain, regular, raw, enriched"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Yumurta",
+        "g": 100,
+        "fdc": 171287,
+        "aciklama": "Egg, whole, raw, fresh"
+      },
+      {
+        "ad": "Buğday unu",
+        "g": 60,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "Emilen ayçiçek yağı",
+        "g": 90,
+        "fdc": 171017,
+        "aciklama": "Oil, sunflower, linoleic (less than 60%)"
+      },
+      {
+        "ad": "Maydanoz",
+        "g": 10,
+        "fdc": 170416,
+        "aciklama": "Parsley, fresh"
+      }
+    ]
+  },
+  "izmirkofte": {
+    "p": 7.8,
+    "c": 7.4,
+    "f": 13,
+    "lif": 1.3,
+    "alk": 0,
+    "kcal_usda": 177,
+    "kcal_449": 178,
+    "porsiyon_g": 363,
+    "porsiyon_kcal": 640,
+    "kaynak": [
+      {
+        "ad": "Dana kıyma (%20 yağ)",
+        "g": 500,
+        "fdc": 174036,
+        "aciklama": "Beef, ground, 80% lean meat / 20% fat, raw"
+      },
+      {
+        "ad": "Galeta unu (ekmek)",
+        "g": 60,
+        "fdc": 174924,
+        "aciklama": "Bread, white, commercially prepared (includes soft bread crumbs)"
+      },
+      {
+        "ad": "Yumurta",
+        "g": 50,
+        "fdc": 171287,
+        "aciklama": "Egg, whole, raw, fresh"
+      },
+      {
+        "ad": "Soğan",
+        "g": 80,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Patates",
+        "g": 400,
+        "fdc": 170032,
+        "aciklama": "Potatoes, raw, skin"
+      },
+      {
+        "ad": "Domates",
+        "g": 200,
+        "fdc": 170457,
+        "aciklama": "Tomatoes, red, ripe, raw, year round average"
+      },
+      {
+        "ad": "Yeşil biber",
+        "g": 100,
+        "fdc": 170427,
+        "aciklama": "Peppers, sweet, green, raw"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 40,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Emilen ayçiçek yağı",
+        "g": 80,
+        "fdc": 171017,
+        "aciklama": "Oil, sunflower, linoleic (less than 60%)"
+      },
+      {
+        "ad": "Su",
+        "g": 300,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "tavukdoner": {
+    "p": 19.3,
+    "c": 3.1,
+    "f": 23.5,
+    "lif": 0.3,
+    "alk": 0,
+    "kcal_usda": 304,
+    "kcal_449": 301,
+    "porsiyon_g": 225,
+    "porsiyon_kcal": 684,
+    "kaynak": [
+      {
+        "ad": "Tavuk but eti (derili, çiğ)",
+        "g": 1000,
+        "fdc": 172385,
+        "aciklama": "Chicken, broilers or fryers, thigh, meat and skin, raw"
+      },
+      {
+        "ad": "Yoğurt",
+        "g": 150,
+        "fdc": 171284,
+        "aciklama": "Yogurt, plain, whole milk"
+      },
+      {
+        "ad": "Ayçiçek yağı",
+        "g": 40,
+        "fdc": 171017,
+        "aciklama": "Oil, sunflower, linoleic (less than 60%)"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 30,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Soğan",
+        "g": 80,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Sarımsak",
+        "g": 15,
+        "fdc": 169230,
+        "aciklama": "Garlic, raw"
+      }
+    ]
+  },
+  "levrekizgara": {
+    "p": 23.1,
+    "c": 0.8,
+    "f": 8.8,
+    "lif": 0,
+    "alk": 0,
+    "kcal_usda": 180,
+    "kcal_449": 175,
+    "porsiyon_g": 240,
+    "porsiyon_kcal": 432,
+    "kaynak": [
+      {
+        "ad": "Levrek (çiğ)",
+        "g": 600,
+        "fdc": 175142,
+        "aciklama": "Fish, sea bass, mixed species, raw"
+      },
+      {
+        "ad": "Zeytinyağı",
+        "g": 30,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      },
+      {
+        "ad": "Limon suyu",
+        "g": 20,
+        "fdc": 167747,
+        "aciklama": "Lemon juice, raw"
+      },
+      {
+        "ad": "Sarımsak",
+        "g": 8,
+        "fdc": 169230,
+        "aciklama": "Garlic, raw"
+      }
+    ]
+  },
+  "midyetava": {
+    "p": 10.3,
+    "c": 10.9,
+    "f": 15.5,
+    "lif": 0.3,
+    "alk": 0,
+    "kcal_usda": 226,
+    "kcal_449": 224,
+    "porsiyon_g": 238,
+    "porsiyon_kcal": 536,
+    "kaynak": [
+      {
+        "ad": "Midye eti (çiğ)",
+        "g": 600,
+        "fdc": 174216,
+        "aciklama": "Mollusks, mussel, blue, raw"
+      },
+      {
+        "ad": "Buğday unu",
+        "g": 100,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "Yumurta",
+        "g": 100,
+        "fdc": 171287,
+        "aciklama": "Egg, whole, raw, fresh"
+      },
+      {
+        "ad": "Süt",
+        "g": 100,
+        "fdc": 171265,
+        "aciklama": "Milk, whole, 3.25% milkfat, with added vitamin D"
+      },
+      {
+        "ad": "Emilen ayçiçek yağı",
+        "g": 120,
+        "fdc": 171017,
+        "aciklama": "Oil, sunflower, linoleic (less than 60%)"
+      },
+      {
+        "ad": "Su",
+        "g": 100,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "zeytinyaglienginar": {
+    "p": 2.6,
+    "c": 10.4,
+    "f": 6.3,
+    "lif": 4,
+    "alk": 0,
+    "kcal_usda": 101,
+    "kcal_449": 109,
+    "porsiyon_g": 325,
+    "porsiyon_kcal": 328,
+    "kaynak": [
+      {
+        "ad": "Enginar",
+        "g": 800,
+        "fdc": 169205,
+        "aciklama": "Artichokes, (globe or french), raw"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Havuç",
+        "g": 100,
+        "fdc": 170393,
+        "aciklama": "Carrots, raw"
+      },
+      {
+        "ad": "Patates",
+        "g": 150,
+        "fdc": 170032,
+        "aciklama": "Potatoes, raw, skin"
+      },
+      {
+        "ad": "Zeytinyağı",
+        "g": 80,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      },
+      {
+        "ad": "Limon suyu",
+        "g": 30,
+        "fdc": 167747,
+        "aciklama": "Lemon juice, raw"
+      },
+      {
+        "ad": "Buğday unu",
+        "g": 15,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "Su",
+        "g": 400,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "firinmakarna": {
+    "p": 11.2,
+    "c": 26.2,
+    "f": 12.2,
+    "lif": 1.2,
+    "alk": 0,
+    "kcal_usda": 261,
+    "kcal_449": 259,
+    "porsiyon_g": 283,
+    "porsiyon_kcal": 740,
+    "kaynak": [
+      {
+        "ad": "Makarna (kuru)",
+        "g": 500,
+        "fdc": 169736,
+        "aciklama": "Pasta, dry, enriched"
+      },
+      {
+        "ad": "Dana kıyma (%20 yağ)",
+        "g": 400,
+        "fdc": 174036,
+        "aciklama": "Beef, ground, 80% lean meat / 20% fat, raw"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 60,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 40,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Buğday unu",
+        "g": 30,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "Süt",
+        "g": 500,
+        "fdc": 171265,
+        "aciklama": "Milk, whole, 3.25% milkfat, with added vitamin D"
+      },
+      {
+        "ad": "Kaşar peyniri (cheddar vekili)",
+        "g": 150,
+        "fdc": 173414,
+        "aciklama": "Cheese, cheddar (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Zeytinyağı",
+        "g": 20,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      }
+    ]
+  },
+  "kolboregi": {
+    "p": 8.8,
+    "c": 24.3,
+    "f": 20.6,
+    "lif": 0.9,
+    "alk": 0,
+    "kcal_usda": 318,
+    "kcal_449": 318,
+    "porsiyon_g": 119,
+    "porsiyon_kcal": 378,
+    "kaynak": [
+      {
+        "ad": "Yufka (phyllo)",
+        "g": 400,
+        "fdc": 172791,
+        "aciklama": "Phyllo dough"
+      },
+      {
+        "ad": "Beyaz peynir (feta vekili)",
+        "g": 300,
+        "fdc": 173420,
+        "aciklama": "Cheese, feta"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 120,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Süt",
+        "g": 150,
+        "fdc": 171265,
+        "aciklama": "Milk, whole, 3.25% milkfat, with added vitamin D"
+      },
+      {
+        "ad": "Yumurta",
+        "g": 50,
+        "fdc": 171287,
+        "aciklama": "Egg, whole, raw, fresh"
+      },
+      {
+        "ad": "Maydanoz",
+        "g": 20,
+        "fdc": 170416,
+        "aciklama": "Parsley, fresh"
+      }
+    ]
+  },
+  "kiymalipide": {
+    "p": 9.3,
+    "c": 26.5,
+    "f": 10.3,
+    "lif": 1.5,
+    "alk": 0,
+    "kcal_usda": 239,
+    "kcal_449": 236,
+    "porsiyon_g": 313,
+    "porsiyon_kcal": 747,
+    "kaynak": [
+      {
+        "ad": "Buğday unu",
+        "g": 400,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "Dana kıyma (%20 yağ)",
+        "g": 400,
+        "fdc": 174036,
+        "aciklama": "Beef, ground, 80% lean meat / 20% fat, raw"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Domates",
+        "g": 150,
+        "fdc": 170457,
+        "aciklama": "Tomatoes, red, ripe, raw, year round average"
+      },
+      {
+        "ad": "Yeşil biber",
+        "g": 80,
+        "fdc": 170427,
+        "aciklama": "Peppers, sweet, green, raw"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 30,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 30,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Zeytinyağı",
+        "g": 20,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      },
+      {
+        "ad": "Kuru maya",
+        "g": 5,
+        "fdc": 175043,
+        "aciklama": "Leavening agents, yeast, baker's, active dry"
+      },
+      {
+        "ad": "Su",
+        "g": 250,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "kabakdolmasi": {
+    "p": 4.2,
+    "c": 12.9,
+    "f": 7.4,
+    "lif": 1,
+    "alk": 0,
+    "kcal_usda": 133,
+    "kcal_449": 135,
+    "porsiyon_g": 350,
+    "porsiyon_kcal": 466,
+    "kaynak": [
+      {
+        "ad": "Kabak",
+        "g": 800,
+        "fdc": 169291,
+        "aciklama": "Squash, summer, zucchini, includes skin, raw"
+      },
+      {
+        "ad": "Pirinç",
+        "g": 150,
+        "fdc": 168877,
+        "aciklama": "Rice, white, long-grain, regular, raw, enriched"
+      },
+      {
+        "ad": "Dana kıyma (%20 yağ)",
+        "g": 200,
+        "fdc": 174036,
+        "aciklama": "Beef, ground, 80% lean meat / 20% fat, raw"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 50,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Zeytinyağı",
+        "g": 60,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      },
+      {
+        "ad": "Kuş üzümü",
+        "g": 20,
+        "fdc": 171724,
+        "aciklama": "Currants, zante, dried"
+      },
+      {
+        "ad": "Limon suyu",
+        "g": 15,
+        "fdc": 167747,
+        "aciklama": "Lemon juice, raw"
+      },
+      {
+        "ad": "Su",
+        "g": 300,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "saksuka": {
+    "p": 1.6,
+    "c": 7.9,
+    "f": 7.6,
+    "lif": 2.4,
+    "alk": 0,
+    "kcal_usda": 101,
+    "kcal_449": 106,
+    "porsiyon_g": 338,
+    "porsiyon_kcal": 341,
+    "kaynak": [
+      {
+        "ad": "Patlıcan",
+        "g": 500,
+        "fdc": 169228,
+        "aciklama": "Eggplant, raw"
+      },
+      {
+        "ad": "Kabak",
+        "g": 300,
+        "fdc": 169291,
+        "aciklama": "Squash, summer, zucchini, includes skin, raw"
+      },
+      {
+        "ad": "Patates",
+        "g": 200,
+        "fdc": 170032,
+        "aciklama": "Potatoes, raw, skin"
+      },
+      {
+        "ad": "Yeşil biber",
+        "g": 100,
+        "fdc": 170427,
+        "aciklama": "Peppers, sweet, green, raw"
+      },
+      {
+        "ad": "Domates",
+        "g": 300,
+        "fdc": 170457,
+        "aciklama": "Tomatoes, red, ripe, raw, year round average"
+      },
+      {
+        "ad": "Soğan",
+        "g": 100,
+        "fdc": 170000,
+        "aciklama": "Onions, raw"
+      },
+      {
+        "ad": "Sarımsak",
+        "g": 15,
+        "fdc": 169230,
+        "aciklama": "Garlic, raw"
+      },
+      {
+        "ad": "Domates salçası",
+        "g": 40,
+        "fdc": 170459,
+        "aciklama": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)"
+      },
+      {
+        "ad": "Emilen zeytinyağı",
+        "g": 100,
+        "fdc": 171413,
+        "aciklama": "Oil, olive, salad or cooking"
+      },
+      {
+        "ad": "Şeker",
+        "g": 5,
+        "fdc": 169655,
+        "aciklama": "Sugars, granulated"
+      }
+    ]
+  },
+  "cilbir": {
+    "p": 5.5,
+    "c": 4,
+    "f": 10.1,
+    "lif": 0,
+    "alk": 0,
+    "kcal_usda": 129,
+    "kcal_449": 129,
+    "porsiyon_g": 215,
+    "porsiyon_kcal": 277,
+    "kaynak": [
+      {
+        "ad": "Yoğurt",
+        "g": 300,
+        "fdc": 171284,
+        "aciklama": "Yogurt, plain, whole milk"
+      },
+      {
+        "ad": "Yumurta",
+        "g": 100,
+        "fdc": 171287,
+        "aciklama": "Egg, whole, raw, fresh"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 30,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Sarımsak",
+        "g": 8,
+        "fdc": 169230,
+        "aciklama": "Garlic, raw"
+      },
+      {
+        "ad": "Sirke",
+        "g": 10,
+        "fdc": 172237,
+        "aciklama": "Vinegar, distilled"
+      }
+    ]
+  },
+  "kazandibi": {
+    "p": 4.1,
+    "c": 23.2,
+    "f": 5,
+    "lif": 0.2,
+    "alk": 0,
+    "kcal_usda": 153,
+    "kcal_449": 154,
+    "porsiyon_g": 200,
+    "porsiyon_kcal": 305,
+    "kaynak": [
+      {
+        "ad": "Süt",
+        "g": 1000,
+        "fdc": 171265,
+        "aciklama": "Milk, whole, 3.25% milkfat, with added vitamin D"
+      },
+      {
+        "ad": "Şeker",
+        "g": 150,
+        "fdc": 169655,
+        "aciklama": "Sugars, granulated"
+      },
+      {
+        "ad": "Pirinç unu",
+        "g": 100,
+        "fdc": 169714,
+        "aciklama": "Rice flour, white, unenriched"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 30,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Tavuk göğsü",
+        "g": 50,
+        "fdc": 171077,
+        "aciklama": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw"
+      }
+    ]
+  },
+  "sekerpare": {
+    "p": 4.4,
+    "c": 54.6,
+    "f": 11,
+    "lif": 1,
+    "alk": 0,
+    "kcal_usda": 332,
+    "kcal_449": 335,
+    "porsiyon_g": 150,
+    "porsiyon_kcal": 498,
+    "kaynak": [
+      {
+        "ad": "Buğday unu",
+        "g": 300,
+        "fdc": 168894,
+        "aciklama": "Wheat flour, white, all-purpose, enriched, bleached"
+      },
+      {
+        "ad": "İrmik",
+        "g": 100,
+        "fdc": 168933,
+        "aciklama": "Semolina, unenriched"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 150,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Şeker (hamur)",
+        "g": 50,
+        "fdc": 169655,
+        "aciklama": "Sugars, granulated"
+      },
+      {
+        "ad": "Şeker (şerbet)",
+        "g": 300,
+        "fdc": 169655,
+        "aciklama": "Sugars, granulated"
+      },
+      {
+        "ad": "Yumurta",
+        "g": 50,
+        "fdc": 171287,
+        "aciklama": "Egg, whole, raw, fresh"
+      },
+      {
+        "ad": "Yoğurt",
+        "g": 50,
+        "fdc": 171284,
+        "aciklama": "Yogurt, plain, whole milk"
+      },
+      {
+        "ad": "Limon suyu",
+        "g": 10,
+        "fdc": 167747,
+        "aciklama": "Lemon juice, raw"
+      },
+      {
+        "ad": "Su",
+        "g": 400,
+        "fdc": null,
+        "aciklama": null
+      }
+    ]
+  },
+  "irmikhelvasi": {
+    "p": 6.4,
+    "c": 43.7,
+    "f": 15.6,
+    "lif": 1.5,
+    "alk": 0,
+    "kcal_usda": 337,
+    "kcal_449": 341,
+    "porsiyon_g": 225,
+    "porsiyon_kcal": 759,
+    "kaynak": [
+      {
+        "ad": "İrmik",
+        "g": 300,
+        "fdc": 168933,
+        "aciklama": "Semolina, unenriched"
+      },
+      {
+        "ad": "Tereyağı",
+        "g": 120,
+        "fdc": 173410,
+        "aciklama": "Butter, salted"
+      },
+      {
+        "ad": "Şeker",
+        "g": 150,
+        "fdc": 169655,
+        "aciklama": "Sugars, granulated"
+      },
+      {
+        "ad": "Süt",
+        "g": 400,
+        "fdc": 171265,
+        "aciklama": "Milk, whole, 3.25% milkfat, with added vitamin D"
+      },
+      {
+        "ad": "Çam fıstığı",
+        "g": 40,
+        "fdc": 170591,
+        "aciklama": "Nuts, pine nuts, dried"
+      }
+    ]
+  }
+}

@@ -35,8 +35,7 @@ function openFreeSheet(key, onDone){
   let sel = (e.free && e.free.k) || "walk";
   const el = document.createElement("div");
   el.className = "sheet-bg";
-  function esc2(ev){ if (ev.key === "Escape") close(); }
-  const close = () => { sheetOut(el); document.removeEventListener("keydown", esc2); };
+  const close = () => sheetOut(el);
 
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="fr-t">
     <div class="sheet-h"><b id="fr-t">${tx("Antrenman ekle")}</b>
@@ -56,7 +55,6 @@ function openFreeSheet(key, onDone){
       <button class="ghost" id="fr-no" style="flex:0 0 110px">${tx("Vazgeç")}</button>
     </div></div>`;
   document.body.appendChild(el);
-  document.addEventListener("keydown", esc2);
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
   el.querySelector("#fr-no").onclick = close;
