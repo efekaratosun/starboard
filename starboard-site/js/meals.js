@@ -775,9 +775,14 @@ function foodPop(k){
 
 function searchFoods(q, limit){
   const use = foodUsage();
-  /* Eşit puanda önce sık kullandığın besin, sonra temel besin (spor ürünü ya da
-     atıştırmalık değil), sonra kısa ad: "yulaf" → önce Yulaf ezmesi, sonra barı. */
+  /* Eşit puanda önce sık kullandığın besin, sonra kendi besinlerin (customFoods),
+     sonra temel besin (spor ürünü ya da atıştırmalık değil), en sonda kısa ad:
+     "yulaf" → önce Yulaf ezmesi, sonra barı. */
   const side = f => (f.cat === "spor" || f.cat === "ara") ? 1 : 0;
+  const own = k => FOODS[k] ? 0 : 1;      /* 1: kullanıcının kendi besini */
+  /* Kendi besin adını zaten bilirsin: yalnızca parça eşleşse bile tam kelime
+     eşleşmesi kadar öne geçer, yoksa binlerce kaydın arasında kaybolur. */
+  const OWN_BONUS = 2;
   const rank = fuzzy => allFoods()
     .map(([k,f]) => [k, f, foodScore(f, q, fuzzy)])
     .filter(x => x[2] > 0);
@@ -785,7 +790,8 @@ function searchFoods(q, limit){
   let rows = rank(false);
   if (!rows.length) rows = rank(true);
   return rows
-    .sort((a,b) => b[2] - a[2] || (use[b[0]]||0) - (use[a[0]]||0)
+    .sort((a,b) => (b[2] + OWN_BONUS*own(b[0])) - (a[2] + OWN_BONUS*own(a[0]))
+                 || (use[b[0]]||0) - (use[a[0]]||0)
                  || side(a[1]) - side(b[1]) || foodPop(b[0]) - foodPop(a[0])
                  || a[1].n.length - b[1].n.length)
     .slice(0, limit)

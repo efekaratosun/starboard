@@ -2232,9 +2232,9 @@ test("arama: Türkçe karakter ve büyük/küçük harf fark etmez; ad ve takma 
     ok(keys("PEYNİR").includes("beyazpeynir"), "İ harfi ve takma ad (peynir)");
     ok(keys("inek sutu").includes("sut"), "takma ad: inek sütü");
     ok(keys("ev yapimi").includes("cf_x") && keys("EV YAPIMI").includes("cf_x"), "kendi besininin takma adı");
-    /* Liste 1000'den fazla kayıtla büyüdü: sıralamada eşit puanda çok gerçek besin
-       var; kendi besinininin adıyla bulunması kendine özgü sözcükle denenir. */
-    ok(keys("annemin").includes("cf_x"), "kendi besinin adı");
+    /* Eşit puanda kendi besinler kullanım sıklığından hemen sonra öne geçer:
+       genel "kofte" sorgusunda bile ilk 30'da yerini alır. */
+    ok(keys("kofte").includes("cf_x"), "kendi besinin adı");
   } finally { state = null; }
 });
 
