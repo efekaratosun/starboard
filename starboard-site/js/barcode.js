@@ -2,8 +2,8 @@
 
 /* ---------------- barkod okuma (iOS) ----------------
    Yalnızca iPhone uygulamasında: kamera barkodu okur, besin değerleri Open Food Facts'ten
-   (açık veri, ODbL) gelir ve kullanıcının kendi yiyeceklerine kaydedilir. Web sitesinde
-   düğme çizilmez (barcodeAvailable), böylece web'deki "hiçbir yere gönderilmez" sözü doğru kalır.
+   (açık veri, ODbL) gelir ve kullanıcı ekleyince kendi yiyeceklerine kaydedilir. Barkod
+   taraması yalnızca iPhone uygulamasındadır; metinle ürün araması ayrı ve isteğe bağlıdır.
 
    Dışarı yalnızca barkod numarası gider: istekte gövde, çerez, profil ya da günlük verisi
    yoktur (teknik olarak sunucu IP adresini görür; privacy.html bunu yazar). Ürün görselleri

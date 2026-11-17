@@ -9,24 +9,23 @@
                 Etiketsiz besinler iki mutfakta da önerilir; Türk mutfağına özgü olanlar
                 nutrition.js'te cu:"tr" alır.
      pork:true  domuz eti içerir: helal ve koşer beslenmede önerilmez.
-   Değerler 100 g başınadır, USDA FoodData Central'daki karşılıklarından yuvarlanmıştır.
+   Değerler 100 g başına yaklaşık ortalamalardır; ürün ve tarif türüne göre değişebilir.
    Adlar kaynak dil kuralı gereği Türkçe yazılır; İngilizceleri lang/en-food.js'te. */
 Object.assign(FOODS, {
   /* ---- et, tavuk, balık ---- */
-  bacon:{n:tx("Bacon (domuz)"), a:tx("domuz pastırması"), por:[{n:tx("dilim"),g:8,s:[2,3,4]}], p:37, c:1.4, f:42, lif:0, i:"meat", cat:"sarkuteri", cu:"intl", pork:true, v:["B12"]},
+  bacon:{n:tx("Bacon (pişmiş, domuz)"), a:tx("domuz pastırması"), por:[{n:tx("dilim"),g:8,s:[2,3,4]}], p:37, c:1.4, f:42, lif:0, i:"meat", cat:"sarkuteri", cu:"intl", pork:true, v:["B12"]},
   domuzjambon:{n:tx("Domuz jambonu"), por:[{n:tx("dilim"),g:28}], p:17, c:2.5, f:5, lif:0, i:"meat", cat:"sarkuteri", cu:"intl", pork:true, v:["B12"]},
   domuzpirzola:{n:tx("Domuz pirzola (pişmiş)"), por:[{n:tx("adet"),g:150}], p:27, c:0, f:9, lif:0, i:"meat", cu:"intl", pork:true, v:["B6","B12","çinko"]},
   domuzbonfile:{n:tx("Domuz bonfile (pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:26, c:0, f:3.5, lif:0, i:"meat", cu:"intl", pork:true, v:["B6","B12"]},
   hindikiyma:{n:tx("Hindi kıyma (pişmiş)"), a:tx("hindi kıyması"), por:[{n:tx("porsiyon"),g:125}], p:27, c:0, f:10, lif:0, i:"poultry", v:["B6","B12","çinko"]},
   danakiyma15:{n:tx("Dana kıyma %15 yağlı (pişmiş)"), por:[{n:tx("porsiyon"),g:125}], p:26, c:0, f:15, lif:0, i:"meat", v:["demir","B12","çinko"]},
   sosisdana:{n:tx("Sosis (dana, hot dog)"), por:[{n:tx("adet"),g:45}], p:11.7, c:2.5, f:27, lif:0, i:"meat", cat:"sarkuteri", cu:"intl"},
-  jerky:{n:tx("Kurutulmuş et (jerky)"), por:[{n:tx("paket"),g:28}], p:33, c:11, f:26, lif:1.8, i:"meat", cat:"ara", cu:"intl", v:["demir","çinko"]},
+  jerky:{n:tx("Kurutulmuş et (jerky, yağsız)"), por:[{n:tx("paket"),g:28}], p:33, c:11, f:8, lif:1.8, i:"meat", cat:"ara", cu:"intl", v:["demir","çinko"]},
   morina:{n:tx("Morina (pişmiş)"), a:tx("cod"), por:[{n:tx("fileto"),g:150}], p:23, c:0, f:0.9, lif:0, i:"fish", v:["B12"]},
   tilapia:{n:tx("Tilapia (pişmiş)"), por:[{n:tx("fileto"),g:120}], p:26, c:0, f:2.7, lif:0, i:"fish", v:["B12"]},
 
   /* ---- süt ürünleri ve içecekler ---- */
   yunanyogurt:{n:tx("Yunan yoğurdu (yağsız)"), a:tx("greek yogurt"), por:[{n:tx("kase"),g:170}], p:10.3, c:3.6, f:0.4, lif:0, i:"dairy", cu:"intl", v:["kalsiyum","B12"]},
-  tamsut:{n:tx("Süt (tam yağlı)"), por:[{n:tx("bardak"),g:240}], p:3.2, c:4.8, f:3.3, lif:0, i:"dairy", v:["kalsiyum","B12","D"]},
   yagsizsut:{n:tx("Süt (yağsız)"), por:[{n:tx("bardak"),g:240}], p:3.4, c:5, f:0.1, lif:0, i:"dairy", v:["kalsiyum","B12","D"]},
   bademsutu:{n:tx("Badem sütü (şekersiz)"), por:[{n:tx("bardak"),g:240}], p:0.4, c:0.3, f:1.1, lif:0.3, i:"nuts", cat:"kahvaltilik", v:["kalsiyum","E"]},
   yulafsutu:{n:tx("Yulaf sütü"), por:[{n:tx("bardak"),g:240}], p:1, c:6.6, f:1.5, lif:0.8, i:"grain", cat:"kahvaltilik", v:["kalsiyum"]},
@@ -66,6 +65,33 @@ Object.assign(FOODS, {
 });
 
 /* Simgesinden anlaşılmayan içerikler: diyet süzgeçleri bunlara bakar. */
+/* Ek uluslararası temel besinler; değerler 100 g başına yaklaşık. */
+Object.assign(FOODS, {
+  kuzuincikpis:{n:tx("Kuzu incik (pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:27,c:0,f:12,lif:0,i:"meat",cu:"intl"},
+  ordekpis:{n:tx("Ördek göğsü (pişmiş, derisiz)"), por:[{n:tx("porsiyon"),g:140}], p:27,c:0,f:9,lif:0,i:"meat",cu:"intl"},
+  sosisitalyan:{n:tx("İtalyan sosis (pişmiş, domuz)"), por:[{n:tx("adet"),g:85}], p:18,c:2,f:25,lif:0,i:"meat",cu:"intl",pork:true},
+  somonkonserve:{n:tx("Somon (konserve, süzülmüş)"), por:[{n:tx("porsiyon"),g:100}], p:20,c:0,f:7,lif:0,i:"fish",cu:"intl"},
+  sardalyakonserve:{n:tx("Sardalya (konserve, süzülmüş)"), por:[{n:tx("kutu"),g:90}], p:24,c:0,f:11,lif:0,i:"fish",cu:"intl"},
+  mezgitpis:{n:tx("Mezgit (pişmiş)"), por:[{n:tx("fileto"),g:150}], p:23,c:0,f:1.5,lif:0,i:"fish",cu:"intl"},
+  midyepis:{n:tx("Midye (pişmiş)"), por:[{n:tx("porsiyon"),g:100}], p:24,c:7,f:4,lif:0,i:"fish",cu:"intl"},
+  brie:{n:tx("Brie peyniri"), por:[{n:tx("dilim"),g:30}], p:21,c:0.5,f:28,lif:0,i:"dairy",cu:"intl"},
+  krema:{n:tx("Krema (%30 yağlı)"), por:[{n:tx("yemek kaşığı"),g:15}], p:2.1,c:3,f:30,lif:0,i:"dairy",cu:"intl"},
+  kefiryagsiz:{n:tx("Kefir (yağsız)"), por:[{n:tx("bardak"),g:240}], p:3.8,c:4.5,f:0.5,lif:0,i:"dairy",cu:"intl"},
+  soyaicecegi:{n:tx("Soya içeceği (şekersiz)"), por:[{n:tx("bardak"),g:240}], p:3.3,c:0.7,f:1.8,lif:0.6,i:"legume",cu:"intl"},
+  kuskuspis:{n:tx("Kuskus (pişmiş)"), por:[{n:tx("kase"),g:157}], p:3.8,c:23,f:0.2,lif:1.4,i:"grain",cu:"intl"},
+  yulafkepegi:{n:tx("Yulaf kepeği (kuru)"), por:[{n:tx("porsiyon"),g:40}], p:17,c:66,f:7,lif:15,i:"grain",cu:"intl"},
+  brioche:{n:tx("Brioche ekmeği"), por:[{n:tx("dilim"),g:35}], p:9,c:49,f:12,lif:2,i:"bread",cu:"intl"},
+  pita:{n:tx("Pita ekmeği"), por:[{n:tx("adet"),g:60}], p:9,c:55,f:1.2,lif:2.2,i:"bread",cu:"intl"},
+  naan:{n:tx("Naan ekmeği"), por:[{n:tx("adet"),g:90}], p:9,c:50,f:8,lif:2.5,i:"bread",cu:"intl"},
+  pirincnudle:{n:tx("Pirinç eriştesi (kuru)"), por:[{n:tx("porsiyon"),g:75}], p:5,c:80,f:0.6,lif:1.5,i:"grain",cu:"intl"},
+  siyahfasulyepis:{n:tx("Siyah fasulye (haşlanmış)"), por:[{n:tx("kase"),g:172}], p:8.9,c:24,f:0.5,lif:8.7,i:"legume",cu:"intl"},
+  misirkoctail:{n:tx("Mısır (konserve, süzülmüş)"), por:[{n:tx("kase"),g:165}], p:3.4,c:19,f:1.5,lif:2.7,i:"veg",cu:"intl"},
+  mangokuru:{n:tx("Kuru mango"), por:[{n:tx("porsiyon"),g:30}], p:2.5,c:78,f:1,lif:5,i:"fruit",cu:"intl"},
+  enginarhaslama:{n:tx("Enginar (haşlanmış, sade)"), por:[{n:tx("adet"),g:120}], p:3.3,c:11,f:0.2,lif:5.4,i:"veg",cu:"intl"},
+  kuskonmazkonserve:{n:tx("Kuşkonmaz (konserve, süzülmüş)"), por:[{n:tx("porsiyon"),g:100}], p:2.4,c:4.1,f:0.2,lif:2,i:"veg",cu:"intl"},
+  kajuezmesi:{n:tx("Kaju ezmesi"), por:[{n:tx("yemek kasigi"),g:16}], p:18,c:30,f:49,lif:3.3,i:"nuts",cu:"intl"},
+  kakao:{n:tx("Kakao tozu (şekersiz)"), por:[{n:tx("yemek kaşığı"),g:5}], p:20,c:58,f:14,lif:33,i:"grain",cu:"intl"}
+});
 ["bolonez","burrito","chili","hindisandvic"].forEach(k => HAS_MEAT.add(k));
 ["pankek","muffin","mayonez","makpeynir","cheeseburger","sezarsalata","burrito"].forEach(k => HAS_DAIRY_EGG.add(k));
 ["pankek","muffin","makpeynir","cheeseburger","sezarsalata","burrito"].forEach(k => HAS_LACTOSE.add(k));

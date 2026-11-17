@@ -20,7 +20,7 @@ const SOURCES = [
   [tx("Yağ oranı"), tx("Amerikan Egzersiz Konseyi (ACE) yağ oranı kategorileri.")],
   [tx("Haftalık kilo değişimi"), tx("Kilo verirken hedef hız haftada vücut ağırlığının %0,35–1'i; Helms ve ark. (2014) %0,5–1 önerir.")],
   [tx("Kişisel rekorlar"), tx("Tahmini tek tekrar maksimumu: Epley formülü.")],
-  [tx("Besin değerleri"), tx("USDA FoodData Central ve yaygın besin tablolarından alınmış ortalama değerler; markaya ve tarife göre değişir.")],
+  [tx("Besin değerleri"), tx("USDA FoodData Central ve yaygın besin tablolarındaki verilere dayanan 100 g başına yaklaşık ortalamalardır. Gerçek değerler markaya, malzemelere, tarife ve hazırlama yöntemine göre değişebilir.")],
   [tx("Paketli ürünler"), tx("Open Food Facts (açık veri, ODbL lisansı); değerler gönüllülerce girilir ve hatalı olabilir.")]
 ];
 

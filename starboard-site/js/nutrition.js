@@ -10,7 +10,8 @@ function kcalFromMacros(macros, grams){
   return (4*n(m.p) + 4*n(m.c) + 9*n(m.f) + 7*n(m.alk)) * g / 100;
 }
 
-/* 100 g ham/pişmemiş ürün başına yaklaşık makrolar. */
+/* 100 g başına yaklaşık besin değerleri; çiğ/pişmiş durumu besin adında belirtilir.
+   Kaydın kendi kalorisi (kcal100) varsa o kullanılır, yoksa ortak formül. */
 const FOODS = {
   /* p/c/f/lif: 100 g başına gram. v: o besinin kayda değer kaynağı olduğu mikro besinler. */
   yumurta:{n:tx("Yumurta"), p:12.6, c:0.8, f:10, lif:0, unit:50, unitName:tx("adet"), i:"egg", v:["A","D","B12"]},
@@ -359,7 +360,57 @@ const FOODS = {
   kuflupeynir:{n:tx("Küflü peynir (rokfor)"), p:21, c:2, f:30, lif:0, i:"dairy", cat:"sarkuteri", v:["kalsiyum"], por:[{n:tx("dilim"),g:20}]},
   kozbiber:{n:tx("Közlenmiş biber (kavanoz)"), p:1, c:5, f:3, lif:1.5, i:"veg", cat:"sarkuteri", v:["C","A"], por:[{n:tx("adet"),g:40}]},
   kurudomates:{n:tx("Kurutulmuş domates (yağda)"), p:5, c:20, f:14, lif:5, i:"veg", cat:"sarkuteri", v:["C"], por:[{n:tx("adet"),g:8,s:[2,5,10]}]},
-  zeytinezmesi:{n:tx("Zeytin ezmesi"), p:1.5, c:4, f:25, lif:3, i:"oil", cat:"sarkuteri", v:["E"], por:[{n:tx("yemek kaşığı"),g:15}]}
+  zeytinezmesi:{n:tx("Zeytin ezmesi"), p:1.5, c:4, f:25, lif:3, i:"oil", cat:"sarkuteri", v:["E"], por:[{n:tx("yemek kaşığı"),g:15}]},
+
+  /* --- pişmiş temel malzemeler (100 g pişmiş ağırlık) --- */
+  haslanmisyumurta:{n:tx("Haşlanmış yumurta"), a:"yumurta", p:12.6, c:1.1, f:10.6, lif:0, kcal100:155, unit:50, unitName:tx("adet"), i:"egg", v:["A","D","B12"]},
+  mercimekpismis:{n:tx("Kırmızı mercimek (haşlanmış)"), por:[{n:tx("porsiyon"),g:150},{n:tx("yemek kaşığı"),g:20}], p:9, c:20, f:0.4, lif:8, kcal100:116, i:"legume", v:["folat","demir"]},
+  nohutpismis:{n:tx("Nohut (haşlanmış)"), por:[{n:tx("porsiyon"),g:150},{n:tx("yemek kaşığı"),g:15}], p:8.9, c:27, f:2.6, lif:7.6, kcal100:164, i:"legume", v:["folat","demir","magnezyum"]},
+  kurufasulyepismis:{n:tx("Kuru fasulye (haşlanmış)"), por:[{n:tx("porsiyon"),g:150}], p:9.7, c:25, f:0.4, lif:6.3, kcal100:139, i:"legume", v:["folat","demir"]},
+  barbunyapismis:{n:tx("Barbunya (haşlanmış)"), por:[{n:tx("porsiyon"),g:150}], p:8.7, c:23, f:0.5, lif:6.4, kcal100:127, i:"legume", v:["folat","demir"]},
+  kinoapismis:{n:tx("Kinoa (haşlanmış)"), por:[{n:tx("porsiyon"),g:150}], p:4.4, c:21, f:1.9, lif:2.8, kcal100:120, i:"grain", v:["magnezyum","folat"]},
+  yulaflapasi:{n:tx("Yulaf lapası (suyla, pişmiş)"), a:"yulaf", por:[{n:tx("kase"),g:250}], p:2.5, c:12, f:1.5, lif:1.7, kcal100:71, i:"grain", v:["magnezyum"]},
+  eriste:{n:tx("Erişte (kuru)"), por:[{n:tx("porsiyon"),g:80}], p:12, c:72, f:2, lif:3, i:"grain"},
+  tamunu:{n:tx("Tam buğday unu"), por:[{n:tx("yemek kaşığı"),g:10},{n:tx("su bardağı"),g:110}], p:13, c:72, f:2, lif:12, kcal100:340, i:"grain", v:["magnezyum","demir"]},
+  sehriyepilav:{n:tx("Şehriyeli pilav (pişmiş)"), a:"pilav", por:[{n:tx("porsiyon"),g:180},{n:tx("yemek kaşığı"),g:25}], p:3, c:26, f:4, lif:0.7, i:"grain"},
+  nohutlupilav:{n:tx("Nohutlu pilav (pişmiş)"), a:"pilav", por:[{n:tx("porsiyon"),g:200}], p:4.5, c:27, f:3.5, lif:2, i:"grain", v:["folat"]},
+  haslanmisbrokoli:{n:tx("Brokoli (haşlanmış)"), por:[{n:tx("porsiyon"),g:150}], p:2.4, c:7, f:0.4, lif:3.3, kcal100:35, i:"veg", v:["C","K","folat"]},
+  haslanmishavuc:{n:tx("Havuç (haşlanmış)"), por:[{n:tx("porsiyon"),g:100}], p:0.8, c:8, f:0.2, lif:3, kcal100:35, i:"veg", v:["A","K"]},
+  kozpatlican:{n:tx("Közlenmiş patlıcan"), por:[{n:tx("adet"),g:150}], p:1, c:6, f:0.2, lif:3, i:"veg", v:["potasyum"]},
+  izgarasomon:{n:tx("Somon (ızgara, pişmiş)"), a:"somon", por:[{n:tx("porsiyon"),g:150}], p:25, c:0, f:12, lif:0, kcal100:208, i:"fish", v:["D","B12","omega3"]},
+  izgaratavuk:{n:tx("Tavuk göğsü (ızgara, pişmiş)"), a:"tavuk", por:[{n:tx("porsiyon"),g:120},{n:tx("bütün göğüs"),g:170}], p:31, c:0, f:3.6, lif:0, kcal100:165, i:"poultry", v:["B6","B12",tx("çinko")]},
+  tavukciger:{n:tx("Tavuk ciğeri (çiğ)"), por:[{n:tx("porsiyon"),g:100}], p:17, c:1, f:5, lif:0, kcal100:119, i:"poultry", v:["A","demir","B12","folat"]},
+  arnavutciger:{n:tx("Arnavut ciğeri"), por:[{n:tx("porsiyon"),g:150}], p:20, c:7, f:14, lif:0.5, i:"meat", v:["A","demir","B12"]},
+
+  /* --- Türk mutfağı: yemekler ve mezeler --- */
+  cilbir:{n:tx("Çılbır"), por:[{n:tx("porsiyon"),g:250}], p:8, c:3, f:11, lif:0, i:"egg", v:["B12","kalsiyum"]},
+  saksuka:{n:tx("Şakşuka"), por:[{n:tx("porsiyon"),g:150}], p:1.5, c:6, f:7, lif:2.5, i:"veg", v:["C","potasyum"]},
+  mercimekkoftesi:{n:tx("Mercimek köftesi"), por:[{n:tx("adet"),g:30,s:[3,5,8]}], p:5, c:25, f:3, lif:4, i:"legume", v:["folat","demir"]},
+  zeytinyaglibarbunya:{n:tx("Zeytinyağlı barbunya"), por:[{n:tx("porsiyon"),g:200}], p:4, c:10, f:4.5, lif:4.5, i:"legume", v:["folat","demir"]},
+  zeytinyaglibakla:{n:tx("Zeytinyağlı taze bakla"), por:[{n:tx("porsiyon"),g:200}], p:3.5, c:8, f:4.5, lif:4.5, i:"legume", v:["folat","C"]},
+  zeytinyaglikereviz:{n:tx("Zeytinyağlı kereviz"), por:[{n:tx("porsiyon"),g:200}], p:1, c:8, f:4.5, lif:2.5, i:"veg", v:["K","C"]},
+  duguncorbasi:{n:tx("Düğün çorbası"), por:{n:tx("kase"),g:250}, p:4, c:6, f:4.5, lif:0.3, i:"dairy", v:["B12"]},
+  sebzecorbasi:{n:tx("Sebze çorbası"), por:{n:tx("kase"),g:250}, p:1.2, c:5, f:1.5, lif:1.2, i:"veg", v:["A","C"]},
+  bazlama:{n:tx("Bazlama"), por:{n:tx("adet"),g:100}, p:8, c:50, f:2, lif:2.5, i:"bread"},
+  ramazanpidesi:{n:tx("Ramazan pidesi"), por:[{n:tx("dilim"),g:40},{n:tx("adet"),g:250}], p:8.5, c:52, f:1.5, lif:2.5, i:"bread"},
+
+  /* --- tatlılar --- */
+  irmikhelvasi:{n:tx("İrmik helvası"), por:{n:tx("porsiyon"),g:80}, p:3, c:40, f:14, lif:0.5, i:"grain"},
+  gullac:{n:tx("Güllaç"), por:{n:tx("porsiyon"),g:150}, p:2.5, c:20, f:4, lif:0.3, i:"dairy", v:["kalsiyum"]},
+  muhallebi:{n:tx("Muhallebi"), por:{n:tx("kase"),g:150}, p:3, c:18, f:3, lif:0.1, i:"dairy", v:["kalsiyum"]},
+  keskul:{n:tx("Keşkül"), por:{n:tx("kase"),g:150}, p:4, c:20, f:6, lif:0.7, i:"dairy", v:["kalsiyum"]},
+  kabaktatlisi:{n:tx("Kabak tatlısı (cevizsiz)"), por:{n:tx("porsiyon"),g:150}, p:1, c:25, f:1, lif:1.5, i:"veg", v:["A"]},
+
+  /* --- içecekler, kuru meyve, konserve --- */
+  bitkicayi:{n:tx("Bitki çayı (şekersiz)"), a:"ıhlamur adaçayı", por:{n:tx("bardak"),g:200}, p:0, c:0.2, f:0, lif:0, kcal100:0, i:"fruit"},
+  filtrekahve:{n:tx("Filtre kahve (sade)"), por:{n:tx("fincan"),g:200}, p:0.1, c:0, f:0, lif:0, kcal100:1, i:"fruit"},
+  tamyagsut:{n:tx("Süt (tam yağlı)"), a:"inek sütü", por:{n:tx("bardak"),g:200}, p:3.3, c:4.8, f:3.3, lif:0, i:"dairy", v:["kalsiyum","B12","D"]},
+  kecisutu:{n:tx("Keçi sütü"), por:{n:tx("bardak"),g:200}, p:3.6, c:4.5, f:4.1, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  kurudut:{n:tx("Kuru dut"), por:{n:tx("avuç"),g:25}, p:12, c:70, f:3, lif:14, kcal100:325, i:"fruit", v:["demir","kalsiyum"]},
+  kuruerik:{n:tx("Kuru erik"), por:{n:tx("adet"),g:10}, p:2.2, c:64, f:0.4, lif:7.1, kcal100:240, i:"fruit", v:["K","potasyum"]},
+  domatessalcasi:{n:tx("Domates salçası"), por:[{n:tx("yemek kaşığı"),g:20},{n:tx("tatlı kaşığı"),g:7}], p:4.3, c:18, f:0.5, lif:4, kcal100:85, i:"veg", v:["C","potasyum"]},
+  bibersalcasi:{n:tx("Biber salçası"), por:[{n:tx("yemek kaşığı"),g:20},{n:tx("tatlı kaşığı"),g:7}], p:3.5, c:14, f:1, lif:3.5, kcal100:80, i:"veg", v:["C","A"]},
+  salataliktursusu:{n:tx("Salatalık turşusu"), por:{n:tx("adet"),g:30}, p:0.3, c:2, f:0.1, lif:1, kcal100:11, i:"veg"}
 };
 
 /* Mikro besin adları ve nereden alınacağına dair kısa öneriler. */
@@ -721,6 +772,7 @@ function fixedOf(slot){
 }
 
 function foodOf(k){ return FOODS[k] || (state.customFoods||{})[k]; }
+const foodEnergyPer100 = f => Number.isFinite(f.kcal100) ? f.kcal100 : kcalFromMacros(f);
 
 /* Beslenme türleri. Bir besinin uygunluğu çoğunlukla simgesinden çıkar;
    simgesi ele vermeyen yemekler (içinde kıyma olan karnıyarık gibi) elle listelenir. */
@@ -878,7 +930,7 @@ portionRule(["tofu"], 100, 250);
 portionRule(["humus"], 40, 150);
 portionRule(["yulaf","musli","granola"], 30, 80);
 portionRule(["tahilhalka"], 30, 60);
-portionRule(["sut","kefir","soyasutu","tamsut","yagsizsut"], 150, 300);
+portionRule(["sut","kefir","soyasutu","tamyagsut","yagsizsut"], 150, 300);
 portionRule(["ayran"], 200, 300);
 portionRule(["suzme","yunanyogurt","skyr","bitkiselyogurt"], 100, 300);
 portionRule(["yogurt"], 100, 250);
@@ -1133,7 +1185,7 @@ function buildMeals(program, variantIndex){
 
   const mealList = userMeals();
   const shares = mealShares(mealList);
-  const nutOf = f => ({ k:kcalFromMacros(f) / 100, p:f.p / 100, c:f.c / 100, f:f.f / 100 });
+const nutOf = f => ({ k:foodEnergyPer100(f) / 100, p:f.p / 100, c:f.c / 100, f:f.f / 100 });
 
   /* 1) Kullanıcının sabitlediği yiyecekler öğün öğün toplanır. */
   const fixed = mealList.map(mm => {
@@ -1142,10 +1194,10 @@ function buildMeals(program, variantIndex){
       const fo = foodOf(x.k);
       acc.items.push({ text: portion(fo, x.g).text, icon: fo.i, key:x.k, fixed:true, g:x.g });
       acc.keys.push(x.k);
-      acc.p += fo.p*x.g/100; acc.c += fo.c*x.g/100; acc.f += fo.f*x.g/100; acc.alk += (fo.alk||0)*x.g/100; acc.lif += (fo.lif||0)*x.g/100;
+acc.p += fo.p*x.g/100; acc.c += fo.c*x.g/100; acc.f += fo.f*x.g/100; acc.alk += (fo.alk||0)*x.g/100; acc.lif += (fo.lif||0)*x.g/100;
+      acc.kcal += foodEnergyPer100(fo)*x.g/100;
       (fo.v || []).forEach(v => acc.micros.add(v));
     }
-    acc.kcal = kcalFromMacros(acc);
     return acc;
   });
   const dayFix = fixed.reduce((a, x) => a + x.kcal, 0);
@@ -1192,17 +1244,18 @@ function buildMeals(program, variantIndex){
     const fx = fixed[idx];
     fx.micros.forEach(v => micros.add(v));
     const items = fx.items.slice();
-    const sum = { p:fx.p, c:fx.c, f:fx.f, alk:fx.alk, lif:fx.lif };
+const sum = { p:fx.p, c:fx.c, f:fx.f, alk:fx.alk, lif:fx.lif, kcal:fx.kcal };
     for (const c of comps.filter(x => x.m === idx)){
       const food = FOODS[c.k];
       const part = portion(food, c.g);
       items.push({ text:part.text, icon:food.i, key:c.k, g:part.g });
-      sum.p += food.p*part.g/100; sum.c += food.c*part.g/100; sum.f += food.f*part.g/100; sum.alk += (food.alk||0)*part.g/100; sum.lif += (food.lif||0)*part.g/100;
+sum.p += food.p*part.g/100; sum.c += food.c*part.g/100; sum.f += food.f*part.g/100; sum.alk += (food.alk||0)*part.g/100; sum.lif += (food.lif||0)*part.g/100;
+      sum.kcal += foodEnergyPer100(food)*part.g/100;
       (food.v || []).forEach(v => micros.add(v));
     }
     const placed = items.length > fx.items.length;
     if (placed && choice[idx] && choice[idx].side) items.push({ text:choice[idx].side, icon:"veg" });
-    const kcal = kcalFromMacros(sum);
+const kcal = sum.kcal;
     total.p += sum.p; total.c += sum.c; total.f += sum.f; total.alk += sum.alk; total.lif += sum.lif; total.kcal += kcal;
     const meal = { name:mealName(mm), slot:mm.id, items, kcal:Math.round(kcal) };
     if (!placed) meal.full = fx.items.length > 0;

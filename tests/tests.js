@@ -102,11 +102,11 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
 
 /* ---- genişletilmiş besin veritabanı ---- */
 const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
-test("besin veritabanı: 1352 yeni kayıt (391 USDA, 961 web) eklendi", () => {
+test("besin veritabanı: 1324 yeni kayıt (382 USDA, 942 web) eklendi", () => {
   const added = sourcedFoods();
-  eq([added.length, Object.keys(FOODS).length], [1352, 1714]);
-  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 391);
-  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 961);
+  eq([added.length, Object.keys(FOODS).length], [1324, 1751]);
+  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 382);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 942);
 });
 test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
   const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
@@ -142,7 +142,9 @@ test("besin veritabanı: alkolsüz mevcut besin ve eski günlük kalorileri değ
   eq([logTotals(old).kcal, logTotals(old).alk], [165, 0]);
 });
 test("besin veritabanı: Türkçe adlar veritabanında korunuyor", () => {
-  const names = new Set(sourcedFoods().map(([,f]) => f.n));
+  /* "Düğün çorbası" gibi yemekler temel kayıtta (nutrition.js) da olabilir;
+      adın korunması bütün veritabanında aranır. */
+  const names = new Set(Object.values(FOODS).map(f => f.n));
   ok(names.has("Ada çayı") && names.has("Düğün çorbası") && names.has("Bira"), "örnek Türkçe adlar eksik");
   eq(FOODS.adacayi.n, "Ada çayı");
   eq(FOODS.duguncorbasi.n, "Düğün çorbası");
@@ -152,7 +154,7 @@ test("besin veritabanı: her yeni Türkçe adın İngilizce karşılığı var",
   eq(missing, [], "İngilizce adı olmayan yeni besinler");
   await withLang("en", () => {
     eq(tx("Ada çayı"), "sage tea");
-    eq(tx("Düğün çorbası"), "Düğün çorbası (wedding soup)");
+    eq(tx("Düğün çorbası"), "Turkish wedding soup");
     eq(tx("Bira"), "Beer");
   });
 });
@@ -391,6 +393,27 @@ test("beslenme özeti: yalnızca günlüğü olan günler, ortalama ve en sık e
   eq(N.top[0], { k:"tavuk", n:FOODS.tavuk.n, times:2 });
   eq(N.proteinDays, [t1, t2].filter(x => x.p >= 108).length);
   eq(nutritionWeek({}, program, "2026-11-11"), null);
+});
+test("kaynak kalorisi kullanılır, eski kayıtlar makrolardan hesaplanır", () => {
+  const source = { log:[{ g:100, p:1, c:2, f:1, lif:0, kcal100:50 }] };
+  const legacy = { log:[{ g:100, p:1, c:2, f:1, lif:0 }] };
+  eq(logTotals(source).kcal, 50, "kaynak enerji değeri korunmalı");
+  eq(logTotals(legacy).kcal, 21, "kcal100 olmayan eski kayıtlar geriye uyumlu kalmalı");
+  eq(foodEnergyPer100({ p:1, c:2, f:1, kcal100:0 }), 0, "sıfır enerji kaynağı geçerli olmalı");
+  const key = Object.keys(FOODS)[0], food = FOODS[key], previous = food.kcal100;
+  food.kcal100 = 50;
+  try {
+    const recipe = recipeMacros({ ing:[[key,100]], srv:1 });
+    eq(recipe.serving.kcal, 50, "tarif kaynak enerjisini kullanmalı");
+    eq(recipe.per100.kcal, 50, "tarifin 100 g değeri kaynak enerjisini taşımalı");
+    const entry = { log:[] };
+    addFoodDirect(entry, key, 100, "kahvalti");
+    eq(entry.log[0].kcal100, 50, "günlük kaydı kaynak enerjisini korumalı");
+    eq(logTotals(entry).kcal, 50, "günlük toplam kaynak enerjisini kullanmalı");
+  } finally {
+    if (previous === undefined) delete food.kcal100;
+    else food.kcal100 = previous;
+  }
 });
 
 /* ---- alışveriş listesi ---- */
@@ -1679,6 +1702,7 @@ test("barkod: gizlilik metinleri, kaynaklar, bağımlılık ve iOS beyanları ye
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
   tab = "settings"; meTab = "set"; render();
   ok(!app.innerHTML.includes("Tek istisna"), "web'de barkod istisnası yazılmamalı");
+  ok(!app.innerHTML.includes("Tek istisna"), "web'de barkod istisnası yazılmamalı");
   ok(app.innerHTML.includes("hiçbir yere gönderilmez"), "web'deki söz aynen durmalı");
   state = null; tab = "today"; meTab = "body";
 
@@ -1905,8 +1929,8 @@ test("sağlık: eklenti, yetki, gizlilik metinleri ve iOS beyanları yerinde", a
   const priv = await get("ios/App/App/PrivacyInfo.xcprivacy");
   ok(!/NSPrivacyCollectedDataType(Health|Fitness)/.test(priv), "Sağlık verisi cihazdan çıkmadığı için beyan edilmez");
   const [tr, en] = (await get("starboard-site/privacy.html")).split('<article id="en"');
-  ok(tr.includes("Apple Sağlık (yalnızca iPhone uygulaması)") && tr.includes("Yalnızca okuma") && tr.includes("13 Kasım 2026"), "Türkçe gizlilik metni");
-  ok(en.includes("Apple Health (iPhone app only)") && en.includes("Read only") && en.includes("November 13, 2026"), "İngilizce gizlilik metni");
+  ok(tr.includes("Apple Sağlık (yalnızca iPhone uygulaması)") && tr.includes("Yalnızca okuma") && tr.includes("16 Kasım 2026"), "Türkçe gizlilik metni");
+  ok(en.includes("Apple Health (iPhone app only)") && en.includes("Read only") && en.includes("November 16, 2026"), "İngilizce gizlilik metni");
   ok(WHATS_NEW.some(n => n.native && n.items.some(s => s.includes("Apple Sağlık"))), "Neler yeni maddesi yalnızca iPhone'da");
   ok(!WHATS_NEW.some(n => !n.native && n.items.some(s => s.includes("Apple Sağlık"))), "Sağlık maddesi web'de görünmemeli");
   const scripts = [...(await get("starboard-site/index.html")).matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
