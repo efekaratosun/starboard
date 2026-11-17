@@ -13,3 +13,5 @@ BITTI
 ADIM 10: Oneri ureticisi yalniz PLATES kaliplarindaki besin adaylarindan PORTION ve NO_SUGGEST kurallariyla secim yapiyor; foods-usda.js kayitlari FOODS nesnesine eklense de herhangi bir USDA anahtari PLATES aday havuzunda bulunmadigi icin yeni besinler otomatik onerilere girmiyor.
 ADIM 11: Node ile erkek ve kadin; kilo ver, koru ve al; Turk ve uluslararasi mutfak ile bir vejetaryen profilden alti bir gunluk oneri uretildi; ornekler ve alakasiz kalem bulgulari docs/oneri-ornekleri.md dosyasina yazildi.
 ADIM 12: Oneri ureticisi 105 besinlik acik onayli havuzla kisitlandi; foods-usda kayitlari, alkol, sos, baharat ve tatlilar otomatik oneride disli, galeta havuzdan cikarildi ve yeni kayit sizintisi ile alakasiz kalem regresyon testi eklendi.
+ADIM 13: Chrome headless testleri port 8770 uzerinde calistirildi: 176 gecti, 0 kaldi; sunucu kapatildi.
+BITTI
