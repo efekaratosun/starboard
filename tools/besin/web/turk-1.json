@@ -2598,5 +2598,35 @@
   "lif": null,
   "porsiyon_g": 180,
   "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/fellah-k%C3%B6ftesi"
+ },
+ {
+  "ad": "Erişte",
+  "kcal": 133,
+  "p": 4.53,
+  "c": 24.5,
+  "f": 2.44,
+  "lif": null,
+  "porsiyon_g": 200,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/eri%C5%9Fte"
+ },
+ {
+  "ad": "Kıymalı makarna",
+  "kcal": 219,
+  "p": 11.96,
+  "c": 25.94,
+  "f": 7.26,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/k%C4%B1ymal%C4%B1-makarna"
+ },
+ {
+  "ad": "Sebzeli makarna",
+  "kcal": 125,
+  "p": 11.18,
+  "c": 57.71,
+  "f": 3.67,
+  "lif": null,
+  "porsiyon_g": 300,
+  "kaynak_url": "https://www.fatsecret.com.tr/kaloriler-beslenme/genel/sebzeli-makarna"
  }
 ]
