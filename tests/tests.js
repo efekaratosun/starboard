@@ -1970,6 +1970,35 @@ test("sağlık: okuma çağrıları (yalnızca okuma, günlük kova, uyku sını
   eq(hkWindow(new Date(2026, 9, 1).toISOString(), "2026-11-13"), 14);
 });
 
+test("uyku: Dünkü gibi seçili günden önceki en yakın kaydı kopyalar", async () => {
+  const saved = { state, viewDate, tab, goalOpen };
+  try {
+    state = await loadFixture();
+    migrateMeals();
+    const now = today(), past = shiftDays(now, -8);
+    const entry = { tasks: [], bed: 1410, wake: 450, sleep: 8 };
+    state.days = {
+      [shiftDays(now, -10)]: { tasks: [], bed: 1320, wake: 360, sleep: 8 },
+      [shiftDays(now, -9)]: { tasks: [], bed: 1350, wake: 390, sleep: 8 },
+      [past]: entry,
+      [shiftDays(now, -1)]: { tasks: [], bed: 1380, wake: 420, sleep: 8 }
+    };
+    viewDate = past; tab = "today"; goalOpen = "sleep";
+    render();
+    const copy = document.getElementById("sl-last");
+    eq(copy.textContent, "Dünkü gibi: 22:30 → 06:30");
+    copy.click();
+    await Promise.resolve();
+    eq([entry.bed, entry.wake, entry.sleep], [1350, 390, 8]);
+
+    viewDate = null;
+    render();
+    eq(document.getElementById("sl-last").textContent, "Dünkü gibi: 23:00 → 07:00");
+  } finally {
+    ({ state, viewDate, tab, goalOpen } = saved);
+  }
+});
+
 test("sağlık: web'de bölüm yok; uygulamada bölüm erişilebilir ve İngilizcesi tam; kadran toplam uykuyu gösterir", async () => {
   eq([healthAvailable(), healthSection()], [false, ""], "web'de Sağlık bölümü olmamalı");
   eq(await syncHealth(), null, "web'de eşitleme çalışmaz");

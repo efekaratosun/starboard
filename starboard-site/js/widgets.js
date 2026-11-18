@@ -183,9 +183,9 @@ function sleepTimes(entry){
 }
 const sleepDur = (bed, wake) => ((wake - bed) % 1440 + 1440) % 1440;
 
-/* Son girilen yatış ve kalkış: bugünden önceki en yakın kayıt. Tek dokunuşla aynısı girilir. */
+/* Son girilen yatış ve kalkış: seçili günden önceki en yakın kayıt. Tek dokunuşla aynısı girilir. */
 function lastSleepTimes(){
-  const t = today();
+  const t = vKey();
   const k = Object.keys(state.days).filter(d => d < t && typeof state.days[d].bed === "number" && typeof state.days[d].wake === "number").sort().pop();
   return k ? sleepTimes(state.days[k]) : null;
 }
