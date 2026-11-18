@@ -125,11 +125,6 @@ jobs:
           sleep 12
           xcrun simctl io "$DEVICE" screenshot shots/ikinci-acilis.png
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ios-simulator-ekran-goruntuleri
-          path: shots/
-
       # Görüntüler ayrı bir dala da yazılır: GitHub, Artifacts'i yalnızca oturum açanlara
       # indirtiyor; daldaki dosyalar ise herkese açık adresten görülebilir:
       # https://raw.githubusercontent.com/efekaratosun/starboard/ci-ekran-goruntuleri/latest/acilis.png
@@ -153,3 +148,9 @@ jobs:
           git add "$SHA" latest
           git commit -m "iOS ekran goruntuleri $SHA"
           git push origin ci-ekran-goruntuleri
+
+      - uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: ios-simulator-ekran-goruntuleri
+          path: shots/
