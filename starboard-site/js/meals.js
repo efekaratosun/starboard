@@ -162,10 +162,9 @@ function macroMoon(label, got, target, unit, id){
   const still = entering || reduceMotion();
   const from = still ? to : _moonPrev[id] === undefined ? 0 : _moonPrev[id];
   _moonPrev[id] = to;
-  const col = R.over ? "over" : id;
   const n = R.over ? R.extra : R.left;
   const say = R.over ? tx("{0}: {1} {2} aşıldı", [label, fmtN(n), unit]) : tx("{0}: {1} {2} kaldı", [label, fmtN(n), unit]);
-  return `<div class="moon${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${col});--cs:var(--${col}-soft)">
+  return `<div class="moon${id === "kcal" ? " moon-kcal" : ""}${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--moon-${id});--cs:var(--moon-${id}-soft)">
     <div class="mn-r">
       <svg viewBox="0 0 96 96" aria-hidden="true">
         <defs>
@@ -173,6 +172,11 @@ function macroMoon(label, got, target, unit, id){
         </defs>
         <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
         <g clip-path="url(#mn-c-${id})"><circle class="mn-sh${entering ? " fx-moon" : ""}" cx="48" cy="48" r="${MOON_R}" style="transform:translateX(${from}px)" data-to="${to}"/></g>
+        ${R.over ? `<circle class="mn-over-ring" cx="48" cy="48" r="${MOON_R - 5}" fill="none" stroke-width="5"/>
+        <g class="mn-over-mark" aria-hidden="true">
+          <rect x="43.5" y="29" width="9" height="23" rx="4.5"/>
+          <circle cx="48" cy="62.5" r="4.5"/>
+        </g>` : ""}
       </svg>
     </div>
     <div class="mn-t" aria-hidden="true"><b>${label}</b><span class="mn-v num">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span><span class="mn-u">${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><i>${fmtN(got)} / ${fmtN(target)} ${unit}</i></div>
@@ -206,7 +210,7 @@ function logView(program, entry){
   return `
   ${favBlock(entry)}
   <section>
-    <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
+    <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")}</h2>
     <div class="moons">
       ${macroMoon(tx("Kalori"), tot.kcal, program.kcal, "kcal", "kcal")}
       ${macroMoon(tx("Protein"), tot.p, program.protein, "g", "protein")}

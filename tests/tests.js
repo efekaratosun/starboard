@@ -2284,7 +2284,7 @@ test("kendi yiyeceklerim: silinen yiyeceğin geçmiş günlerdeki kayıtları bo
     eq(totBefore.kcal, 395, "150 g mercimek köftesi + 30 g Nutella");
     viewDate = past; tab = "meals"; mealTab = "log"; addOpen = null; render();
     ok(app.innerHTML.includes("Annemin mercimek köftesi") && app.innerHTML.includes("Nutella"), "geçmiş günde satırlar görünür");
-    ok(app.textContent.includes(`${kcalBefore} / `), "günün kalorisi görünür");
+    ok(app.querySelector(".moon-kcal .mn-t i").textContent.startsWith(`${fmtN(kcalBefore)} / `), "günün kalorisi kartta görünür");
     const line = [...app.querySelectorAll(".log-line")].find(l => l.textContent.includes("Annemin"));
     ok(line && line.textContent.includes("150 g") && line.textContent.includes("236"), "silinen yiyeceğin satırı gramla ve kaloriyle durur: " + (line && line.textContent));
     editLog = "101"; render();
@@ -2922,7 +2922,10 @@ test("özet: dört ay görünür; Lif ve mikro besinler tek katlanır Ayrıntıl
   const { slots } = await sugFixture();
   try {
     ok(!app.querySelector('[data-fold="detail"]'), "kayıt yokken Ayrıntılar yok");
-    eq(app.querySelectorAll(".moon").length, 4);
+    const moons = app.querySelector(".moons");
+    eq(moons.querySelectorAll(".moon").length, 4);
+    ok(moons.firstElementChild.matches(".moon-kcal"), "kalori kartı ilk sırada");
+    eq(moons.previousElementSibling.textContent.trim(), "Bugün aldığın", "başlıkta kalori sayacı yok");
     eq(app.querySelectorAll(".macro").length, 0, "çubuk kalmadı");
     state.days[today()].log = [logItem("yulaf", 60, slots[0], 1), logItem("muz", 120, slots[0], 2)]; syncKcal(state.days[today()]); render();
     const macros = [...app.querySelectorAll(".macro")];
@@ -2965,7 +2968,7 @@ test("ay: gölge kayması oran x çap; 0'da ay karanlık, 1'de dolunay, aşımda
 const moonLog = (program, slot, c) => [{ id: 1, k: "yulaf", n: "Deneme", g: 100, p: 0, c, f: 0, lif: 0, v: [], i: "grain", slot }];
 const moonOf = id => app.querySelectorAll(".moon")[["kcal", "protein", "carb", "fat"].indexOf(id)];
 
-test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölge dairesi ayın içine kırpılır; hedef aşılınca --over, dolunay ve +fazlalık", async () => {
+test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölge dairesi ayın içine kırpılır; hedef aşılınca dolunay ve +fazlalık", async () => {
   const { program, slots } = await sugFixture();
   try {
     eq([...app.querySelectorAll(".moon .mn-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
@@ -2992,17 +2995,17 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
     k = moonOf("kcal");
     eq(k.querySelector(".mn-v").textContent, fmtN(left), "altta kalan kalori");
     eq(k.querySelector(".mn-u").textContent, "kcal kaldı", "kcal kaldı biçimi");
-    eq(k.style.getPropertyValue("--c"), "var(--kcal)");
-    eq(k.style.getPropertyValue("--cs"), "var(--kcal-soft)", "gölge zemin rengi -soft jetonu");
+    eq(k.style.getPropertyValue("--c"), "var(--moon-kcal)");
+    eq(k.style.getPropertyValue("--cs"), "var(--moon-kcal-soft)", "gölge zemin rengi -soft jetonu");
     ok(!k.classList.contains("over"), "aşım yok");
     eq(moonOf("protein").querySelector(".mn-u").textContent, "g kaldı");
     eq(k.querySelector(".mn-t i").textContent, `${fmtN(4 * c)} / ${fmtN(program.kcal)} kcal`, "kaloride tüketilen / hedef");
     eq(moonOf("protein").querySelector(".mn-t i").textContent, `0 / ${fmtN(program.protein)} g`, "proteinde tüketilen / hedef");
     eq(moonOf("fat").querySelector(".mn-t i").textContent, `0 / ${fmtN(program.fat)} g`);
-    eq(moonOf("carb").style.getPropertyValue("--c"), "var(--carb)");
-    eq(moonOf("carb").style.getPropertyValue("--cs"), "var(--carb-soft)");
-    eq(moonOf("fat").style.getPropertyValue("--c"), "var(--fat)");
-    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    eq(moonOf("carb").style.getPropertyValue("--c"), "var(--moon-carb)");
+    eq(moonOf("carb").style.getPropertyValue("--cs"), "var(--moon-carb-soft)");
+    eq(moonOf("fat").style.getPropertyValue("--c"), "var(--moon-fat)");
+    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--moon-protein)");
     ok(Math.abs(+k.querySelector(".mn-sh").dataset.to - moonShift(4 * c / program.kcal)) < 0.1, "gölge kayması hedefe göre");
     ok(+k.querySelector(".mn-sh").dataset.to < 0 && +k.querySelector(".mn-sh").dataset.to > -68, "ay kısmen aydınlık");
     eq(moonOf("protein").querySelector(".mn-sh").dataset.to, "0", "boş protein karanlık kalır");
@@ -3015,25 +3018,89 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
     eq(k.querySelector(".mn-v").textContent, "+" + fmtN(4 * c2 - program.kcal), "altta +fazlalık");
     eq(k.querySelector(".mn-u").textContent, "kcal");
     eq(k.querySelector(".mn-t i").textContent, `${fmtN(4 * c2)} / ${fmtN(program.kcal)} kcal`, "aşımda da tüketilen / hedef");
-    eq(k.style.getPropertyValue("--c"), "var(--over)", "ay rengi --over");
-    eq(k.style.getPropertyValue("--cs"), "var(--over-soft)", "aşımda gölge -soft");
+    eq(k.style.getPropertyValue("--c"), "var(--moon-kcal)", "aşımda kalori rengi");
+    eq(k.style.getPropertyValue("--cs"), "var(--moon-kcal-soft)", "aşımda kalori gölgesi");
     eq(k.getAttribute("aria-label"), `Kalori: ${fmtN(4 * c2 - program.kcal)} kcal aşıldı`);
     eq(+k.querySelector(".mn-sh").dataset.to, -68, "aşan ay dolunay (gölge dışarıda)");
     ok(moonOf("carb").classList.contains("over") && moonOf("carb").querySelector(".mn-v").textContent === "+" + fmtN(c2 - program.carb), "karbonhidrat aştı");
     ok(!moonOf("protein").classList.contains("over") && !moonOf("fat").classList.contains("over"), "diğerleri aşmadı");
-    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--moon-protein)");
     ok(!app.querySelector(".metric-note .out"), "eski 'Hedefi aştın' satırı yok");
     eq(a11yBad("ay"), []);
   } finally { closeSug(); }
 });
 
-test("ay: -soft ve --over-soft jetonları üç tema bloğunda tanımlı; eski halka stilleri kalmadı", async () => {
+test("ay: aşımda makro rengi ve kart zemini korunur, halka ve ünlem yalnızca aşımda görünür", async () => {
+  const styles = document.createElement("style");
+  const css = await Promise.all(["tokens", "app"].map(name =>
+    fetch(`../starboard-site/css/${name}.css`).then(r => r.text())
+  ));
+  styles.textContent = css.join("\n");
+  const cards = document.createElement("div");
+  cards.innerHTML = ["kcal", "protein", "carb", "fat"].map(id =>
+    macroMoon(id, 101, 100, "g", id) + macroMoon(id, 100, 100, "g", id)
+  ).join("");
+  const pixel = document.createElement("canvas");
+  pixel.width = pixel.height = 1;
+  const ctx = pixel.getContext("2d", { willReadFrequently: true });
+  const luminance = color => {
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+    const channels = Array.from(ctx.getImageData(0, 0, 1, 1).data).slice(0, 3);
+    const [r, g, b] = channels.map(value => {
+      const s = value / 255;
+      return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a, b) => {
+    const [x, y] = [luminance(a), luminance(b)];
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  };
+  document.head.append(styles);
+  document.body.append(cards);
+  try {
+    for (const theme of ["light", "dark"]) {
+      cards.className = "thm-" + theme;
+      for (let i = 0; i < cards.children.length; i += 2) {
+        const over = cards.children[i], normal = cards.children[i + 1];
+        const overFill = getComputedStyle(over.querySelector(".mn-lit")).fill;
+        eq(overFill, getComputedStyle(normal.querySelector(".mn-lit")).fill);
+        eq(getComputedStyle(over).backgroundColor, getComputedStyle(normal).backgroundColor);
+        const ring = over.querySelector(".mn-over-ring");
+        ok(ring && !normal.querySelector(".mn-over-ring"), "halka yalnızca aşımda");
+        const mark = over.querySelector(".mn-over-mark");
+        ok(mark && !normal.querySelector(".mn-over-mark"), "ünlem yalnızca aşımda");
+        eq(mark.getAttribute("aria-hidden"), "true", "ünlem erişilebilirlik ağacından gizli");
+        eq(getComputedStyle(mark).fill, getComputedStyle(ring).stroke, "ünlem ve halka aynı renkte");
+        eq(getComputedStyle(ring).fill, "none");
+        const strokeWidth = parseFloat(getComputedStyle(ring).strokeWidth);
+        eq(strokeWidth, 5);
+        const radius = Number(ring.getAttribute("r"));
+        ok(radius + strokeWidth / 2 < Number(over.querySelector(".mn-lit").getAttribute("r")), "halka disk içinde");
+        eq(getComputedStyle(over.querySelector(".mn-v")).fontWeight, "800");
+        eq(getComputedStyle(normal.querySelector(".mn-v")).fontWeight, "800");
+        eq(getComputedStyle(over.querySelector(".mn-v")).fontSize, getComputedStyle(normal.querySelector(".mn-v")).fontSize);
+        eq(getComputedStyle(ring).stroke, theme === "light" ? "rgb(255, 255, 255)" : "rgb(6, 10, 25)");
+        if (theme === "light") {
+          const numberColor = getComputedStyle(over.querySelector(".mn-v")).color;
+          ok(contrast(overFill, getComputedStyle(ring).stroke) >= 3, over.className + " halka kontrastı");
+          ok(contrast(numberColor, getComputedStyle(over).backgroundColor) >= 4.5, over.className + " aşım rakamı kontrastı");
+        }
+        ok(getComputedStyle(ring).stroke !== getComputedStyle(over.querySelector(".mn-v")).color);
+        ok(overFill !== getComputedStyle(ring).stroke, "ay ve halka farklı renklerde");
+      }
+    }
+  } finally { cards.remove(); styles.remove(); }
+});
+
+test("ay: renk ve zemin jetonları üç tema bloğunda tanımlı", async () => {
   const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
   const tokens = await fetch("../starboard-site/css/tokens.css").then(r => r.text());
   const blocks = [/:root, \.thm-light\{([^}]+)\}/, /:root:not\(\[data-theme="light"\]\)\{([^}]+)\}/, /:root\[data-theme="dark"\], \.thm-dark\{([^}]+)\}/]
     .map(re => (re.exec(tokens) || [])[1]);
   ok(blocks.every(Boolean), "tema blokları bulunamadı");
-  for (const b of blocks) for (const v of ["--kcal-soft", "--protein-soft", "--carb-soft", "--fat-soft", "--over-soft"]) ok(new RegExp(v + ":").test(b), v + " eksik");
+  for (const b of blocks) for (const v of ["--moon-kcal-soft", "--moon-protein-soft", "--moon-carb-soft", "--moon-fat-soft", "--moon-over", "--moon-mark"]) ok(new RegExp(v + ":").test(b), v + " eksik");
   ok(!/\.mring|\.mrings|\.mr-(r|n|t|bg|fg)\b/.test(css), "eski özet halkası stilleri kalmış");
   ok(/\.fx-moon/.test(css) && /@keyframes fxMoon/.test(css), "ay giriş animasyonu yok");
   ok(/\.mn-sh\{[^}]*transition:transform/.test(css), "gölge kayması geçişi yok");

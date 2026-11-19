@@ -52,6 +52,12 @@
   --fat:#E8AA00; --fat-soft:#FFF3C7;
   --carb:#5A55F0; --carb-soft:#E5E4FF;
   --over:#D1142C; --over-soft:#FFE0E3;
+  /* Nutrition summary disks share OKLCH lightness and chroma within each theme. */
+  --moon-kcal:#F16B20; --moon-kcal-soft:#FDE7DB;
+  --moon-protein:#FF5088; --moon-protein-soft:#FFE3EC;
+  --moon-carb:#AC7BF9; --moon-carb-soft:#F2EAFE;
+  --moon-fat:#C58900; --moon-fat-soft:#F6ECD6;
+  --moon-over:#C73729; --moon-mark:#FFFFFF;
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#2BB84F;
   --sleep:#6E4DFF; --water:#008FF5;
 
@@ -110,6 +116,11 @@
   --fat:#FFD23F; --fat-soft:#373012;
   --carb:#8C88FF; --carb-soft:#1F2052;
   --over:#FF4D4D; --over-soft:#3D1519;
+  --moon-kcal:#FDA073; --moon-kcal-soft:#3E303D;
+  --moon-protein:#F898C6; --moon-protein-soft:#3D2E4E;
+  --moon-carb:#C7A7FF; --moon-carb-soft:#33315A;
+  --moon-fat:#DBB650; --moon-fat-soft:#373436;
+  --moon-over:#FF8B79; --moon-mark:var(--bg);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
   --sleep:#9C86FF; --water:#3DB2FF;
 
@@ -158,6 +169,11 @@
   --fat:#FFD23F; --fat-soft:#373012;
   --carb:#8C88FF; --carb-soft:#1F2052;
   --over:#FF4D4D; --over-soft:#3D1519;
+  --moon-kcal:#FDA073; --moon-kcal-soft:#3E303D;
+  --moon-protein:#F898C6; --moon-protein-soft:#3D2E4E;
+  --moon-carb:#C7A7FF; --moon-carb-soft:#33315A;
+  --moon-fat:#DBB650; --moon-fat-soft:#373436;
+  --moon-over:#FF8B79; --moon-mark:var(--bg);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
   --sleep:#9C86FF; --water:#3DB2FF;
 

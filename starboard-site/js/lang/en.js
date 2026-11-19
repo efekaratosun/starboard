@@ -317,7 +317,6 @@ window.STARBOARD_EN = {
   "Mikro besinler": "Micronutrients",
   "Bugün aldığın": "Eaten today",
   "O gün aldığın": "Eaten that day",
-  "{0} / {1} kcal": "{0} / {1} kcal",
   "Kalori": "Calories",
   "Protein": "Protein",
   "Karbonhidrat": "Carbs",
