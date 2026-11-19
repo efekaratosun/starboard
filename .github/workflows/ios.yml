@@ -13,6 +13,8 @@ on:
       - "capacitor.config.json"
       - ".github/workflows/ios.yml"
   workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
 
 permissions:
   # Ekran görüntülerini ci-ekran-goruntuleri dalına yazabilmek için.
