@@ -8,7 +8,28 @@
 
 /* Açık tema. .thm-light tema önizlemesindeki maketi de aynı jetonlarla boyar. */
 :root, .thm-light{
+  /* Her iki temada aynı kalan renkler. */
+  --sheet-backdrop:rgba(20,12,24,.42);
+  --constellation-star-stroke:#8a5a00;
+  --mask-opaque:#000;
+  --logo-ink:#FFFCFA;
+  --logo-gradient-start:#FF7A2F;
+  --logo-gradient-end:#FF3D6E;
+  --fab-shadow:rgba(255,61,110,.34);
+  --sheet-shadow-near:rgba(80,30,20,.06);
+  --sheet-shadow-far:rgba(80,30,20,.14);
+  --tabbar-floating-shadow:rgba(40,16,10,.16);
+  --tabbar-fab-shadow:rgba(255,61,110,.32);
+  --onboarding-logo-shadow:rgba(255,61,110,.28);
+  --onboarding-star-fallback:#FFB020;
+  --onboarding-glow-orange:rgba(255,122,47,.30);
+  --onboarding-glow-pink:rgba(255,61,110,.24);
+  --onboarding-progress-shine:rgba(255,255,255,.55);
+  --onboarding-button-shine:rgba(255,255,255,.34);
+  --tabbar-shadow:rgba(4,8,24,.28);
+
   /* yüzeyler: serin açık zemin, beyaz kartlar, lacivert yazı */
+  /* index.html theme-color ile aynı tutulmalı. */
   --bg:#F3F4F9; --surface:#FFFFFF; --raise:#FFFFFF;
   --ink:#0D1230; --muted:#586079; --line:#E4E7F0;
   --shell:#ECEEF6; --track:#E2E5EF; --tint:#FFE7DF;
@@ -47,6 +68,13 @@
   --dtoday:#35CBF0; --dtoday-ink:#04303D;
   --cal4-ink:var(--ink); --cal5-ink:#FFFFFF; --cal-lo-ink:var(--ink);
 
+  --chart-weight:#C9340C;
+  --chart-kcal:#D47E00;
+  --chart-sleep:#7A56F5;
+  --chart-fat:#F0325A;
+  --chart-waist:#159A57;
+  --star-tile:#E8A33C;
+
   /* takımyıldız: gece gökyüzü */
   --sky1:#141048; --sky2:#46289C; --star:#FFD36B; --star-off:rgba(255,255,255,.28);
   --sky-ink:#F6F2FF; --sky-muted:#CFC6F2;
@@ -65,6 +93,7 @@
    Aynı jetonlar iki kez yazılır: telefonun ayarı (media) ve elle seçim / önizleme. */
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
+  /* index.html theme-color ile aynı tutulmalı. */
   --bg:#060A19; --surface:#0E1430; --raise:#182042;
   --ink:#F2F4FF; --muted:#A1A9CC; --line:#1F2850;
   --shell:#121A38; --track:#222C55; --tint:#3A1630;
@@ -94,6 +123,13 @@
   --dnone:#B03225; --dnone-ink:#FFE7E3;
   --dtoday:#3BD9F5; --dtoday-ink:#062733;
   --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);
+
+  --chart-weight:#EC5A35;
+  --chart-kcal:#C97D10;
+  --chart-sleep:#8266EC;
+  --chart-fat:#E8455F;
+  --chart-waist:#1FA35E;
+  --star-tile:#FFC861;
 
   --sky1:#080A26; --sky2:#28195E; --star:#FFD36B; --star-off:rgba(255,255,255,.22);
   --sky-ink:#F3EEFF; --sky-muted:#B9B0DA;
@@ -105,6 +141,7 @@
   }
 }
 :root[data-theme="dark"], .thm-dark{
+  /* index.html theme-color ile aynı tutulmalı. */
   --bg:#060A19; --surface:#0E1430; --raise:#182042;
   --ink:#F2F4FF; --muted:#A1A9CC; --line:#1F2850;
   --shell:#121A38; --track:#222C55; --tint:#3A1630;
@@ -134,6 +171,13 @@
   --dnone:#B03225; --dnone-ink:#FFE7E3;
   --dtoday:#3BD9F5; --dtoday-ink:#062733;
   --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);
+
+  --chart-weight:#EC5A35;
+  --chart-kcal:#C97D10;
+  --chart-sleep:#8266EC;
+  --chart-fat:#E8455F;
+  --chart-waist:#1FA35E;
+  --star-tile:#FFC861;
 
   --sky1:#080A26; --sky2:#28195E; --star:#FFD36B; --star-off:rgba(255,255,255,.22);
   --sky-ink:#F3EEFF; --sky-muted:#B9B0DA;
