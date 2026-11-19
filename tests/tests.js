@@ -2284,7 +2284,7 @@ test("kendi yiyeceklerim: silinen yiyeceğin geçmiş günlerdeki kayıtları bo
     eq(totBefore.kcal, 395, "150 g mercimek köftesi + 30 g Nutella");
     viewDate = past; tab = "meals"; mealTab = "log"; addOpen = null; render();
     ok(app.innerHTML.includes("Annemin mercimek köftesi") && app.innerHTML.includes("Nutella"), "geçmiş günde satırlar görünür");
-    ok(app.textContent.includes(`${kcalBefore} / `), "günün kalorisi görünür");
+    ok(app.querySelector(".moon-kcal .mn-t i").textContent.startsWith(`${fmtN(kcalBefore)} / `), "günün kalorisi kartta görünür");
     const line = [...app.querySelectorAll(".log-line")].find(l => l.textContent.includes("Annemin"));
     ok(line && line.textContent.includes("150 g") && line.textContent.includes("236"), "silinen yiyeceğin satırı gramla ve kaloriyle durur: " + (line && line.textContent));
     editLog = "101"; render();
@@ -2922,7 +2922,10 @@ test("özet: dört ay görünür; Lif ve mikro besinler tek katlanır Ayrıntıl
   const { slots } = await sugFixture();
   try {
     ok(!app.querySelector('[data-fold="detail"]'), "kayıt yokken Ayrıntılar yok");
-    eq(app.querySelectorAll(".moon").length, 4);
+    const moons = app.querySelector(".moons");
+    eq(moons.querySelectorAll(".moon").length, 4);
+    ok(moons.firstElementChild.matches(".moon-kcal"), "kalori kartı ilk sırada");
+    eq(moons.previousElementSibling.textContent.trim(), "Bugün aldığın", "başlıkta kalori sayacı yok");
     eq(app.querySelectorAll(".macro").length, 0, "çubuk kalmadı");
     state.days[today()].log = [logItem("yulaf", 60, slots[0], 1), logItem("muz", 120, slots[0], 2)]; syncKcal(state.days[today()]); render();
     const macros = [...app.querySelectorAll(".macro")];

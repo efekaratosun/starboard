@@ -165,7 +165,7 @@ function macroMoon(label, got, target, unit, id){
   const col = R.over ? "over" : id;
   const n = R.over ? R.extra : R.left;
   const say = R.over ? tx("{0}: {1} {2} aşıldı", [label, fmtN(n), unit]) : tx("{0}: {1} {2} kaldı", [label, fmtN(n), unit]);
-  return `<div class="moon${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${col});--cs:var(--${col}-soft)">
+  return `<div class="moon${id === "kcal" ? " moon-kcal" : ""}${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${col});--cs:var(--${col}-soft)">
     <div class="mn-r">
       <svg viewBox="0 0 96 96" aria-hidden="true">
         <defs>
@@ -206,7 +206,7 @@ function logView(program, entry){
   return `
   ${favBlock(entry)}
   <section>
-    <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")} <span class="count">${tx("{0} / {1} kcal", [(tot.kcal), (program.kcal)])}</span></h2>
+    <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")}</h2>
     <div class="moons">
       ${macroMoon(tx("Kalori"), tot.kcal, program.kcal, "kcal", "kcal")}
       ${macroMoon(tx("Protein"), tot.p, program.protein, "g", "protein")}
