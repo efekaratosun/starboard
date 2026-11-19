@@ -3040,6 +3040,23 @@ test("ay: aşımda makro rengi ve kart zemini korunur, halka ve ünlem yalnızca
   cards.innerHTML = ["kcal", "protein", "carb", "fat"].map(id =>
     macroMoon(id, 101, 100, "g", id) + macroMoon(id, 100, 100, "g", id)
   ).join("");
+  const pixel = document.createElement("canvas");
+  pixel.width = pixel.height = 1;
+  const ctx = pixel.getContext("2d", { willReadFrequently: true });
+  const luminance = color => {
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+    const channels = Array.from(ctx.getImageData(0, 0, 1, 1).data).slice(0, 3);
+    const [r, g, b] = channels.map(value => {
+      const s = value / 255;
+      return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a, b) => {
+    const [x, y] = [luminance(a), luminance(b)];
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  };
   document.head.append(styles);
   document.body.append(cards);
   try {
@@ -3065,6 +3082,11 @@ test("ay: aşımda makro rengi ve kart zemini korunur, halka ve ünlem yalnızca
         eq(getComputedStyle(normal.querySelector(".mn-v")).fontWeight, "800");
         eq(getComputedStyle(over.querySelector(".mn-v")).fontSize, getComputedStyle(normal.querySelector(".mn-v")).fontSize);
         eq(getComputedStyle(ring).stroke, theme === "light" ? "rgb(255, 255, 255)" : "rgb(6, 10, 25)");
+        if (theme === "light") {
+          const numberColor = getComputedStyle(over.querySelector(".mn-v")).color;
+          ok(contrast(overFill, getComputedStyle(ring).stroke) >= 3, over.className + " halka kontrastı");
+          ok(contrast(numberColor, getComputedStyle(over).backgroundColor) >= 4.5, over.className + " aşım rakamı kontrastı");
+        }
         ok(getComputedStyle(ring).stroke !== getComputedStyle(over.querySelector(".mn-v")).color);
         ok(overFill !== getComputedStyle(ring).stroke, "ay ve halka farklı renklerde");
       }
