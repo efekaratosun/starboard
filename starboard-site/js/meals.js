@@ -184,18 +184,30 @@ function macroMoon(label, got, target, unit, id){
 }
 
 /* Lif ve mikro besinler tek katlanır bölümde: ana özet dört ayla kalır. */
+let openMicroSource = null;
+
 function detailSection(tot, program){
-  const keys = Object.keys(NUTRIENTS);
-  const missing = keys.filter(k => !tot.micros.has(k));
-  return fold("detail", tx("Ayrıntılar"), "", `
-    ${macroRow(tx("Lif"), tot.lif, fiberTarget(program), " g", "veg", "ml")}
-    <div class="metric-note" style="margin:14px 0 10px">${tx("Mikro besinler")} · ${keys.length - missing.length}/${keys.length}</div>
-    <div class="pills">${keys.map(k => tot.micros.has(k)
-      ? `<span class="pill on"><svg class="ico"><use href="#i-check"/></svg>${NUTRIENTS[k].n}</span>`
-      : `<span class="pill">${NUTRIENTS[k].n}</span>`).join("")}</div>
-    ${missing.length ? `<div class="metric-note" style="margin-top:14px">
-      ${missing.slice(0,4).map(k => tx("{0} için: {1}", [`<b>${NUTRIENTS[k].n}</b>`, NUTRIENTS[k].src])).join("<br>")}
-    </div>` : ""}`);
+  const target = fiberTarget(program);
+  const covered = Object.keys(NUTRIENTS).filter(k => tot.micros.has(k)).length;
+  const groups = [
+    [tx("Vitaminler"), ["A", "C", "D", "E", "K", "B6", "B12", "folat"]],
+    [tx("Mineraller"), ["demir", "kalsiyum", "magnezyum", "potasyum", "çinko"]],
+    [tx("Omega-3"), ["omega3"]]
+  ];
+  return fold("detail", tx("Ayrıntılar"), tx("Lif {0}/{1} g · {2}/14 mikro", [tot.lif, target, covered]), `
+    ${macroRow(tx("Lif"), tot.lif, target, " g", "veg", "ml")}
+    ${groups.map(([title, keys]) => {
+      const missing = keys.filter(k => !tot.micros.has(k));
+      const received = keys.filter(k => tot.micros.has(k));
+      return `<div class="micro-group">
+        <h3 class="micro-title${missing.length ? "" : " complete"}">${title}<span>${received.length}/${keys.length}</span></h3>
+        <div class="pills">
+          ${missing.map(k => `<button class="pill micro-missing" data-micro-source="${k}" aria-expanded="${openMicroSource === k}" aria-controls="micro-source-${k}">${NUTRIENTS[k].n}</button>`).join("")}
+          ${received.map(k => `<span class="pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>${NUTRIENTS[k].n}</span>`).join("")}
+        </div>
+        ${missing.map(k => `<div class="micro-source" id="micro-source-${k}"${openMicroSource === k ? "" : " hidden"}>${esc(tx("Şuralardan alabilirsin: {0}", [NUTRIENTS[k].src]))}</div>`).join("")}
+      </div>`;
+    }).join("")}`);
 }
 
 function logView(program, entry){
@@ -361,8 +373,7 @@ function mealCards(entry, sug){
     const yIt = items.length ? [] : ydayLog().filter(x => slotOf(x) === k);
     const sm = !items.length && sug ? sug(k) : null;
     const expanded = !!sm && openSuggestions.has(k);
-    return `<section>
-      <h2>${esc(l)}${items.length ? `<span class="count">${tx("{0} kcal", [itemsKcal(items)])}</span>` : ""}</h2>
+    return fold("meal_" + k, esc(l), items.length ? tx("{0} kcal", [itemsKcal(items)]) : `<span class="meal-empty">${tx("boş")}</span>`, `
       ${addOpen !== k ? `<div class="row meal-actions">
         <button data-addfood="${k}">${tx("Besin ekle")}</button>
         ${sm ? `<button class="ghost" data-sug-toggle="${k}" aria-expanded="${expanded}" aria-controls="meal-sug-${k}" aria-label="${esc(l)}, ${tx("Öneriler")}">${tx("Öneriler")}</button>` : ""}
@@ -376,13 +387,12 @@ function mealCards(entry, sug){
       ${addOpen === k ? addPanel()
         : yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
           ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [onToday() ? tx("Dünküyle") : tx("Bir önceki günle"), yIt.length, itemsKcal(yIt)])}</button>` : ""}
-    </section>`;
+    `, addOpen === k || saveMealOpen === k || expanded);
   });
 
   const other = log.filter(x => slotOf(x) === "__other");
-  if (other.length) cards.push(`<section>
-    <h2>${tx("Diğer")} <span class="count">${tx("{0} kcal", [itemsKcal(other)])}</span></h2>
-    ${other.map(logLine).join("")}  </section>`);
+  if (other.length) cards.push(fold("meal___other", tx("Diğer"), tx("{0} kcal", [itemsKcal(other)]),
+    other.map(logLine).join("")));
 
   return cards.join("");
 }
@@ -656,7 +666,7 @@ function favBlock(entry){
   if (!favs.length && !yLog.length) return "";
   if (!chips && !yLog.length) return "";
   /* Sık yediklerin katlanır, varsayılan kapalı; dünü kopyalama düğmesi dışarıda kalır. */
-  return `${chips ? fold("favs", tx("Sık yediklerin"), tx("dokun, eklensin"), favs.length
+  return `${chips ? fold("favs", tx("Sık yediklerin"), "", favs.length
       ? `<div class="fav">${favs.map(([k,c]) =>
         `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${esc(shortAmount(k, c.g))}</button>`).join("")}</div>`
       : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`) : ""}
@@ -958,12 +968,28 @@ alk:+m.per100.alk.toFixed(1), lif:+m.per100.lif.toFixed(1), kcal100:m.per100.kca
 }
 
 function wireMealsRest(entry){
+  app.querySelectorAll("[data-micro-source]").forEach(b => b.onclick = () => {
+    const key = b.dataset.microSource;
+    const previous = app.querySelector('[data-micro-source][aria-expanded="true"]');
+    if (previous) {
+      previous.setAttribute("aria-expanded", "false");
+      document.getElementById(previous.getAttribute("aria-controls")).hidden = true;
+    }
+    openMicroSource = openMicroSource === key ? null : key;
+    if (openMicroSource === key) {
+      b.setAttribute("aria-expanded", "true");
+      document.getElementById(b.getAttribute("aria-controls")).hidden = false;
+    }
+  });
+
   app.querySelectorAll("[data-sug-toggle]").forEach(b => b.onclick = () => {
     const slot = b.dataset.sugToggle;
     if (openSuggestions.has(slot)) openSuggestions.delete(slot);
     else openSuggestions.add(slot);
     render();
-    app.querySelector(`[data-sug-toggle="${slot}"]`)?.focus({ preventScroll: true });
+    const selector = isOpen("meal_" + slot) || openSuggestions.has(slot) ? "data-sug-toggle" : "data-fold";
+    const value = selector === "data-fold" ? "meal_" + slot : slot;
+    app.querySelector(`[${selector}="${value}"]`)?.focus({ preventScroll: true });
   });
   app.querySelectorAll("[data-sug-add]").forEach(b => b.onclick = () => addSuggested(entry, b.dataset.sugAdd));
   app.querySelectorAll("[data-sug-other]").forEach(b => b.onclick = () => { mealVariant++; render(); });

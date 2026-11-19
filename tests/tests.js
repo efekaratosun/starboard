@@ -2790,7 +2790,7 @@ test("öneri: boş öğünde soluk tabak (besinler, toplam kcal, Ekle, Başka); 
     ok(available.length >= 2 && !app.querySelector(".sug"), "öneriler başlangıçta kapalı");
     for (const s of available){
       const toggle = suggestionToggle(s), card = sectionOf(s);
-      eq(card.querySelector("button").dataset.addfood, s, "Besin ekle ilk eylem");
+      eq(card.querySelector(".fold-i button").dataset.addfood, s, "Besin ekle öğün içindeki ilk eylem");
       eq(toggle.getAttribute("aria-expanded"), "false");
       ok(document.getElementById(toggle.getAttribute("aria-controls")).hidden);
     }
@@ -2935,6 +2935,8 @@ test("özet: dört ay görünür; Lif ve mikro besinler tek katlanır Ayrıntıl
     const h = app.querySelector('[data-fold="detail"]');
     ok(h && h.textContent.includes("Ayrıntılar"), "Ayrıntılar başlığı");
     eq(h.getAttribute("aria-expanded"), "false", "kapalı başlar");
+    const totals = logTotals(state.days[today()]);
+    eq(h.querySelector(".count").textContent, `Lif ${totals.lif}/${fiberTarget(currentProgram())} g · ${totals.micros.size}/14 mikro`);
     ok(h.closest(".fold").classList.contains("shut"));
     const inside = h.closest(".fold");
     ok(inside.querySelector(".macro").textContent.includes("Lif") && inside.querySelector(".pills"), "lif ve mikro besinler içeride");
@@ -2944,6 +2946,144 @@ test("özet: dört ay görünür; Lif ve mikro besinler tek katlanır Ayrıntıl
     eq(state.ui.fold.detail, true, "durum kaydedilir");
     eq(a11yBad("özet"), []);
   } finally { closeSug(); }
+});
+
+test("öğün kartları kapalı başlar; başlıkta kalori veya boş ipucu görünür ve seçim korunur", async () => {
+  const { slots } = await sugFixture();
+  try {
+    const [slot] = slots;
+    const entry = state.days[today()];
+    entry.log = [logItem("yulaf", 40, slot, 1), logItem("muz", 80, "kayip_ogun", 2)];
+    syncKcal(entry); render();
+    const header = k => app.querySelector(`[data-fold="meal_${k}"]`);
+    for (const k of [...slots, "__other"]) eq(header(k).getAttribute("aria-expanded"), "false");
+    eq(header(slot).querySelector(".fold-t").textContent, slotLabel(slot));
+    eq(header(slot).querySelector(".count").textContent, `${itemsKcal([entry.log[0]])} kcal`);
+    ok(!header(slot).querySelector(".meal-empty"), "dolu öğünde boş ipucu yok");
+    eq(header(slots[1]).querySelector(".count .meal-empty").textContent, "boş");
+    eq(header("__other").querySelector(".fold-t").textContent, "Diğer");
+    await header(slot).onclick(); render();
+    eq(header(slot).getAttribute("aria-expanded"), "true");
+    eq(header(slots[1]).getAttribute("aria-expanded"), "false");
+    await header(slot).onclick(); render();
+    eq(state.ui.fold["meal_" + slot], false);
+    eq(header(slot).getAttribute("aria-expanded"), "false");
+  } finally { closeSug(); }
+});
+
+test("öğün kartı ekleme, kaydetme ve öneriler açıkken kayıtlı seçimi değiştirmeden açık kalır", async () => {
+  const { slots } = await sugFixture();
+  try {
+    const slot = slots.find(k => suggestionToggle(k));
+    const key = "meal_" + slot;
+    const header = () => app.querySelector(`[data-fold="${key}"]`);
+    const locked = async () => {
+      eq(header().getAttribute("aria-expanded"), "true");
+      await header().onclick();
+      eq(header().getAttribute("aria-expanded"), "true");
+      eq(isOpen(key), false);
+    };
+    suggestionToggle(slot).click();
+    await locked();
+    suggestionToggle(slot).click();
+    eq(header().getAttribute("aria-expanded"), "false");
+    addOpen = slot; render();
+    ok(app.querySelector("#food-q").closest(".fold") === header().closest(".fold"));
+    await locked();
+    addOpen = null;
+    const entry = state.days[today()];
+    entry.log = [logItem("yulaf", 40, slot, 1), logItem("muz", 80, slot, 2)];
+    saveMealOpen = slot; render();
+    ok(app.querySelector("#sm-name").closest(".fold") === header().closest(".fold"));
+    await locked();
+  } finally { closeSug(); }
+});
+
+test("tek dokunuşla besin ekleme ve geri alma, öğün kartının kayıtlı durumu açıkken de kapalıyken de çalışır", async () => {
+  const { s0 } = await quickFixture();
+  try {
+    for (const open of [false, true]) {
+      const key = "meal_" + s0;
+      const header = () => app.querySelector(`[data-fold="${key}"]`);
+      addOpen = null; render();
+      if (open) {
+        await header().onclick();
+        app.querySelector(`[data-addfood="${s0}"]`).click();
+      } else {
+        await app.querySelector('[data-fold="favs"]').onclick();
+        await app.querySelector('[data-fav="yulaf"]').onclick();
+        ok(header().closest(".fold").classList.contains("shut"));
+        ok(header().querySelector(".count").textContent.includes("kcal"));
+        await undoToast();
+        eq(header().querySelector(".count .meal-empty").textContent, "boş");
+        continue;
+      }
+      await app.querySelector('[data-qadd="yulaf"]').onclick();
+      eq(state.days[today()].log.map(it => it.slot), [s0]);
+      ok(header().querySelector(".count").textContent.includes("kcal"));
+      ok(document.querySelector(".toast.act").textContent.includes("Geri al"));
+      await undoToast();
+      eq(header().querySelector(".count .meal-empty").textContent, "boş");
+      eq(header().getAttribute("aria-expanded"), "true");
+    }
+  } finally { closeQuick(); }
+});
+
+test("Ayrıntılar: üç grup, eksikler önde, tek kaynak satırların altında açılır ve tamamlanan grup vurgulanır", async () => {
+  const { slots } = await sugFixture();
+  try {
+    const entry = state.days[today()];
+    entry.log = [{ ...logItem("yulaf", 40, slots[0], 1), v: ["A", "demir", "omega3"] }];
+    syncKcal(entry); render();
+    await app.querySelector('[data-fold="detail"]').onclick();
+    const groups = [...app.querySelectorAll(".micro-group")];
+    eq(groups.map(g => g.querySelector("h3").textContent), ["Vitaminler1/8", "Mineraller1/5", "Omega-31/1"]);
+    for (const [group, missing] of [[groups[0], 7], [groups[1], 4], [groups[2], 0]]) {
+      const pills = [...group.querySelectorAll(".pill")];
+      eq(pills.map(p => p.matches("button")), [...Array(missing).fill(true), false]);
+      ok(pills.at(-1).querySelector('use[href="#i-check"]'));
+      eq(group.querySelector("h3").classList.contains("complete"), missing === 0);
+    }
+    const sourceButton = k => app.querySelector(`[data-micro-source="${k}"]`);
+    const source = k => document.getElementById(sourceButton(k).getAttribute("aria-controls"));
+    const uiBefore = JSON.stringify(state.ui);
+    ok(source("C").hidden);
+    sourceButton("C").click();
+    eq(sourceButton("C").getAttribute("aria-expanded"), "true");
+    ok(sourceButton("C").parentElement === groups[0].querySelector(".pills"), "etiket kendi satırında kalır");
+    ok(!sourceButton("C").closest(".expanded"), "etiket tam genişlik sınıfını almaz");
+    ok(source("C").parentElement === groups[0], "not grubun doğrudan altında");
+    ok(groups[0].querySelector(".pills").compareDocumentPosition(source("C")) & Node.DOCUMENT_POSITION_FOLLOWING);
+    eq(source("C").textContent, tx("Şuralardan alabilirsin: {0}", [NUTRIENTS.C.src]));
+    ok(!source("C").hidden && source("D").hidden);
+    render();
+    ok(!source("C").hidden, "yeniden çizimde kaynak açık");
+    sourceButton("D").click();
+    ok(source("C").hidden && !source("D").hidden, "aynı grupta kaynak değişir");
+    eq(sourceButton("C").getAttribute("aria-expanded"), "false");
+    sourceButton("kalsiyum").click();
+    ok(source("D").hidden && !source("kalsiyum").hidden, "gruplar arasında kaynak değişir");
+    sourceButton("kalsiyum").click();
+    ok(!app.querySelector(".micro-source:not([hidden])"), "ikinci dokunuş kaynağı kapatır");
+    eq(JSON.stringify(state.ui), uiBefore, "kaynak durumu kayda yazılmaz");
+    entry.log[0].v = Object.keys(NUTRIENTS); render();
+    eq(app.querySelectorAll(".micro-title.complete").length, 3);
+    eq(app.querySelectorAll("[data-micro-source]").length, 0);
+  } finally { openMicroSource = null; closeSug(); }
+});
+
+test("Ayrıntılar: eksik etiket kenarlığı ve zemini marka tonunu kullanır", async () => {
+  const css = await fetch("../starboard-site/css/components.css").then(r => r.text());
+  const rules = [...css.matchAll(/\.pill\.micro-missing[^{}]*\{([^}]+)\}/g)];
+  eq(rules.length, 2);
+  for (const [, rule] of rules) {
+    const border = rule.match(/border(?:-color)?:([^;]+)/)?.[1];
+    const background = rule.match(/background:([^;}]+)/)?.[1];
+    for (const color of [border, background]) {
+      ok(color?.includes("var(--band)"), "marka tonu kullanılır");
+      ok(!/--(?:moon-)?over\b/.test(color), "aşım tonu kullanılmaz");
+    }
+  }
 });
 
 /* ---- beslenme özeti ay evreleri (1.14.0) ve katlanır Sık yediklerin (1.13.0) ---- */
@@ -3153,6 +3293,7 @@ test("Sık yediklerin: katlanır, varsayılan kapalı, dokununca açılır; dün
     addOpen = null; render();
     const h = app.querySelector('[data-fold="favs"]');
     ok(h && h.textContent.includes("Sık yediklerin"), "başlık");
+    eq(h.querySelector(".count").textContent, "", "başlıkta ekleme talimatı yok");
     eq(h.getAttribute("aria-expanded"), "false", "varsayılan kapalı");
     const box = h.closest(".fold");
     ok(box.classList.contains("shut"), "kapalı görünür");
@@ -3173,7 +3314,7 @@ test("Sık yediklerin: katlanır, varsayılan kapalı, dokununca açılır; dün
     await withLang("en", async () => {
       I18N_MISSING.clear(); render();
       const e = app.querySelector('[data-fold="favs"]');
-      ok(e.textContent.includes("Your frequent foods") && e.textContent.includes("tap to add"), e.textContent);
+      eq(e.textContent.trim(), "Your frequent foods");
       eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
     });
     addOpen = slotList()[0][0]; render();

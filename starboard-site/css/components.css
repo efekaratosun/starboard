@@ -201,6 +201,21 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .pill.on{background:var(--tint);background:color-mix(in srgb,var(--band) 12%,transparent);color:var(--band);border-color:var(--band)}
 .pill .ico{width:13px;height:13px;flex:0 0 13px;stroke-width:2.6}
 .pills{display:flex;flex-wrap:wrap;gap:7px}
+.micro-group{margin-top:14px}
+.micro-title{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 8px;
+  color:var(--ink);font-size:var(--t-cap);text-transform:uppercase}
+.micro-title.complete{color:var(--good)}
+.pill.micro-missing{width:auto;max-width:100%;overflow-wrap:anywhere;color:var(--ink);font-size:var(--t-cap);font-weight:700;min-height:36px;
+  border:1px solid color-mix(in srgb,var(--band) 24%,transparent);
+  background:color-mix(in srgb,var(--band) 5%,var(--surface))}
+.pill.micro-missing[aria-expanded="true"]{border-color:color-mix(in srgb,var(--band) 55%,transparent);
+  background:color-mix(in srgb,var(--band) 12%,var(--surface))}
+.micro-source{margin:8px 0 2px;padding:8px 10px;border-left:1px solid color-mix(in srgb,var(--band) 40%,transparent);
+  background:color-mix(in srgb,var(--band) 5%,var(--surface));color:var(--ink);font-size:var(--t-cap);overflow-wrap:anywhere}
+.fold-h .meal-empty{color:var(--muted);font-size:var(--t-cap);font-weight:500}
+.fold-h[aria-expanded="true"] .meal-empty{display:none}
+.fold-h[data-fold="detail"] .count{text-align:right}
+.fold-h[aria-disabled="true"]{cursor:default}
 
 /* ---- tarif ---- */
 .rec{cursor:pointer}
