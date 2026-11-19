@@ -88,13 +88,10 @@ function recipeCard(r, idx){
   </section>`;
 }
 
-/* Arama boşken üç tarif gösteriyoruz; "başka tarifler" listeyi kaydırıyor. */
 /* Tarifin türü de aranabilsin: "balık" yazınca hamsi ve somon tarifleri de çıksın. */
 const CAT_WORDS = { fish:tx("balık deniz ürünü"), poultry:tx("tavuk kümes beyaz et"), meat:tx("et kırmızı et kıyma"),
   legume:"baklagil bakliyat", veg:tx("sebze zeytinyağlı"), grain:tx("tahıl hamur pilav"),
   dairy:tx("süt ürünü yoğurt"), egg:tx("yumurta kahvaltı"), nuts:tx("kuruyemiş"), potato:"patates", bread:"hamur", fruit:tx("meyve tatlı") };
-
-const recipeFits = r => recipeAllowed(r, currentDiet());
 
 /* Parantezli ekleri at: "Pilav (pişmiş)" → "pilav" */
 const plainName = n => norm(n.replace(/\s*\(.*?\)/g, "").trim());
@@ -116,31 +113,20 @@ function recipeFor(key){
 
 function recipeList(){
   const q = norm(recipeQuery.trim());
-  if (q.length >= 2){
-    const hits = RECIPES.map((r,i) => [r,i]).filter(([r]) =>
-      matchScore(r.n, q) > 0
-      || norm(CAT_WORDS[r.i] || "").includes(q)
-      || r.ing.some(([k]) => FOODS[k] && norm(FOODS[k].n).includes(q)));
-    if (!hits.length) return `<section><div class="empty">${tx("\"{0}\" için tarif bulunamadı. Yemek adı ya da malzeme adıyla arayabilirsin.", [(esc(recipeQuery))])}</div></section>`;
-    return `<div class="metric-note" style="margin:0 4px 12px">${tx("{0} tarif bulundu", [(hits.length)])}</div>`
-      + hits.map(([r,i]) => recipeCard(r,i)).join("");
-  }
-  /* Arama bütün tarifleri kapsar; liste yalnızca seçili mutfağınkileri gösterir. */
-  const pool = RECIPES.map((r,i) => [r,i]).filter(([r]) => recipeFits(r) && cuisineOk(r));
-  if (!pool.length) return `<section><div class="empty">${tx("Beslenme türüne uyan hazır tarif yok.")}</div></section>`;
-  const start = recipeOffset % pool.length;
-  const idxs = [0,1,2].map(k => pool[(start + k) % pool.length]);
-  return (currentDiet() !== "hepsi"
-      ? `<div class="metric-note" style="margin:0 4px 12px">${tx("{0} beslenmeye uyan {1} tarif", [(DIETS[currentDiet()]), (pool.length)])}</div>` : "")
-    + idxs.map(([r,i]) => recipeCard(r, i)).join("")
-    + `<section><button class="ghost" id="rec-more">${tx("Başka tarifler göster")}</button></section>`;
+  if (!q) return "";
+  const hits = RECIPES.map((r,i) => [r,i]).filter(([r]) =>
+    matchScore(r.n, q) > 0
+    || norm(CAT_WORDS[r.i] || "").includes(q)
+    || r.ing.some(([k]) => FOODS[k] && norm(FOODS[k].n).includes(q)));
+  if (!hits.length) return `<section><div class="empty">${tx("\"{0}\" için tarif bulunamadı. Yemek adı ya da malzeme adıyla arayabilirsin.", [esc(recipeQuery)])}</div></section>`;
+  return hits.map(([r,i]) => recipeCard(r,i)).join("");
 }
 
 function recipesView(){
   return `
   <section>
-    <h2>${tx("Tarifler")} <span class="count">${tx("{0} tarif", [(RECIPES.length)])}</span></h2>
-    <input id="rec-q" type="text" aria-label="${tx("Tarif ara")}" placeholder="${tx("Ara: karnıyarık, mercimek, tavuk…")}" value="${esc(recipeQuery)}" autocomplete="off">  </section>
+    <input id="rec-q" type="search" aria-label="${tx("Tarif ara")}" placeholder="${tx("Ara: karnıyarık, mercimek, tavuk…")}" value="${esc(recipeQuery)}" autocomplete="off">
+  </section>
   <div id="rec-results">${recipeList()}</div>`;
 }
 
@@ -183,10 +169,8 @@ function macroMoon(label, got, target, unit, id){
     <div class="mn-r">
       <svg viewBox="0 0 96 96" aria-hidden="true">
         <defs>
-          <radialGradient id="mn-h-${id}"><stop offset=".66" style="stop-color:var(--c);stop-opacity:.5"/><stop offset="1" style="stop-color:var(--c);stop-opacity:0"/></radialGradient>
           <clipPath id="mn-c-${id}"><circle cx="48" cy="48" r="${MOON_R}"/></clipPath>
         </defs>
-        <circle class="mn-halo" cx="48" cy="48" r="48" fill="url(#mn-h-${id})" style="opacity:${(0.2 + 0.8 * R.pct).toFixed(2)}"/>
         <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
         <g clip-path="url(#mn-c-${id})"><circle class="mn-sh${entering ? " fx-moon" : ""}" cx="48" cy="48" r="${MOON_R}" style="transform:translateX(${from}px)" data-to="${to}"/></g>
       </svg>
@@ -216,7 +200,7 @@ function logView(program, entry){
   /* Öneri yalnızca bugün için; günün planı alışveriş listesiyle aynı sıradan gelir. */
   const plan = onToday() ? buildMeals(program, planDay() + mealVariant) : null;
   const sug = k => suggestedMeal(entry, plan, k);
-  const anySug = !!plan && slotList().some(([k]) => sug(k));
+  const anySug = !!plan && slotList().some(([k]) => openSuggestions.has(k) && sug(k));
   const off = plan ? plan.total.kcal - program.kcal : 0;
 
   return `
@@ -276,6 +260,7 @@ function suggestionHTML(m, label){
 
 /* Önerilen tabağın tamamını tek dokunuşla günlüğe ekler; toast'tan geri alınır. */
 let sugBusy = false;
+const openSuggestions = new Set();
 async function addSuggested(entry, slot){
   if (sugBusy || !onToday()) return null;
   sugBusy = true;
@@ -300,6 +285,7 @@ async function addSuggested(entry, slot){
 /* Gün değişince açık kalan besin ekleme paneli, arama ve düzenleme
    yanlış güne yazılıyormuş gibi görünüyordu; gün değiştiren yollar sıfırlar. */
 function resetMealUI(){
+  openSuggestions.clear();
   addOpen = null; logPick = null; logQuery = ""; editLog = null;
   mealAddOpen = false; saveMealOpen = null; myFoodsOpen = false; myFoodEdit = null;
 }
@@ -365,29 +351,33 @@ function mealCards(entry, sug){
   const known = new Set(list.map(([k]) => k));
   const fallback = list.length ? list[list.length-1][0] : "aksam";
   const slotOf = x => { const sId = x.slot || fallback; return known.has(sId) ? sId : "__other"; };
-const kcalOf = items => Math.round(items.reduce((a,it) => a + foodEnergyPer100(it)*it.g/100, 0));
 
   const cards = list.map(([k,l]) => {
     const items = log.filter(x => slotOf(x) === k);
     const yIt = items.length ? [] : ydayLog().filter(x => slotOf(x) === k);
     const sm = !items.length && sug ? sug(k) : null;
+    const expanded = !!sm && openSuggestions.has(k);
     return `<section>
-      <h2>${esc(l)}${items.length ? `<span class="count">${tx("{0} kcal", [(kcalOf(items))])}</span>` : ""}</h2>
+      <h2>${esc(l)}${items.length ? `<span class="count">${tx("{0} kcal", [itemsKcal(items)])}</span>` : ""}</h2>
+      ${addOpen !== k ? `<div class="row meal-actions">
+        <button data-addfood="${k}">${tx("Besin ekle")}</button>
+        ${sm ? `<button class="ghost" data-sug-toggle="${k}" aria-expanded="${expanded}" aria-controls="meal-sug-${k}" aria-label="${esc(l)}, ${tx("Öneriler")}">${tx("Öneriler")}</button>` : ""}
+      </div>` : ""}
       ${items.length ? items.map(logLine).join("")
-        : sm ? suggestionHTML(sm, l)
+        : expanded || addOpen === k ? ""
         : `<div class="empty">${tx("Bu öğüne henüz bir şey eklemedin.")}</div>`}
+      ${sm ? `<div id="meal-sug-${k}"${expanded ? "" : " hidden"}>${expanded ? suggestionHTML(sm, l) : ""}</div>` : ""}
       ${saveMealOpen === k && items.length ? saveMealForm(items)
         : items.length >= 2 && addOpen !== k ? `<button class="link" data-savemeal="${k}" style="margin-top:10px">${tx("Bu öğünü kaydet")}</button>` : ""}
       ${addOpen === k ? addPanel()
-        : `<button class="ghost" data-addfood="${k}" style="margin-top:12px">${tx("Besin ekle")}</button>
-           ${yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
-             ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [(onToday() ? tx("Dünküyle") : tx("Bir önceki günle")), (yIt.length), (kcalOf(yIt))])}</button>` : ""}`}
+        : yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
+          ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [onToday() ? tx("Dünküyle") : tx("Bir önceki günle"), yIt.length, itemsKcal(yIt)])}</button>` : ""}
     </section>`;
   });
 
   const other = log.filter(x => slotOf(x) === "__other");
   if (other.length) cards.push(`<section>
-    <h2>${tx("Diğer")} <span class="count">${tx("{0} kcal", [(kcalOf(other))])}</span></h2>
+    <h2>${tx("Diğer")} <span class="count">${tx("{0} kcal", [itemsKcal(other)])}</span></h2>
     ${other.map(logLine).join("")}  </section>`);
 
   return cards.join("");
@@ -892,7 +882,7 @@ function openPrefsSheet(){
   function draw(){
     box.innerHTML = prefsBody();
     const cs = box.querySelector("#cuisine-sel");
-    cs.onchange = () => { mealPrefs().cuisine = cs.value; recipeOffset = 0; return save("cuisine-sel"); };
+    cs.onchange = () => { mealPrefs().cuisine = cs.value; return save("cuisine-sel"); };
     const ds = box.querySelector("#diet-sel");
     ds.onchange = () => { mealPrefs().diet = ds.value; return save("diet-sel"); };
     box.querySelector("#use-mine").onclick = () => { const p = mealPrefs(); p.useMine = !p.useMine; return save("use-mine"); };
@@ -930,10 +920,6 @@ function wireMeals(entry){
 }
 
 function bindRecipes(entry){
-  const more = document.getElementById("rec-more");
-  if (more) more.onclick = () => { recipeOffset += 3; recipeOpen = null;
-    document.getElementById("rec-results").innerHTML = recipeList(); bindRecipes(entry); };
-
   app.querySelectorAll("[data-recipe]").forEach(b => b.onclick = () => {
     const i = Number(b.dataset.recipe);
     recipeOpen = recipeOpen === i ? null : i;
@@ -957,6 +943,13 @@ alk:+m.per100.alk.toFixed(1), lif:+m.per100.lif.toFixed(1), kcal100:m.per100.kca
 }
 
 function wireMealsRest(entry){
+  app.querySelectorAll("[data-sug-toggle]").forEach(b => b.onclick = () => {
+    const slot = b.dataset.sugToggle;
+    if (openSuggestions.has(slot)) openSuggestions.delete(slot);
+    else openSuggestions.add(slot);
+    render();
+    app.querySelector(`[data-sug-toggle="${slot}"]`)?.focus({ preventScroll: true });
+  });
   app.querySelectorAll("[data-sug-add]").forEach(b => b.onclick = () => addSuggested(entry, b.dataset.sugAdd));
   app.querySelectorAll("[data-sug-other]").forEach(b => b.onclick = () => { mealVariant++; render(); });
 
