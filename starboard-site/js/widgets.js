@@ -115,31 +115,121 @@ async function exportData(statusEl){
   say(`${filename} indirildi.`);
 }
 
-function importData(file, statusEl){
-  const rd = new FileReader();
-  rd.onload = async () => {
-    let data;
-    try { data = JSON.parse(rd.result); }
-    catch(e){ statusEl.textContent = tx("Dosya okunamadı: geçerli bir JSON değil."); return; }
-    const incoming = data && data.state ? data.state : data;
-    if (!incoming || !incoming.profile || !incoming.days){
-      statusEl.textContent = tx("Bu dosya bu uygulamanın yedeği gibi görünmüyor."); return;
+const backupObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
+
+function backupProfileIssue(p){
+  const optional = (key, valid) => p[key] == null || valid(p[key]);
+  if (!inRange(p.height, 100, 250) || p.height === 100 || p.height === 250) return "Boy";
+  if (!inRange(p.age, 10, 100)) return "Yaş";
+  if (!optional("startWeight", validStoredWeight)) return "Başlangıç kilosu";
+  if (!optional("targetWeight", n => inRange(n, 30, 300))) return "Hedef kilo";
+  if (!optional("bodyFat", n => inRange(n, 0, 100))) return "Yağ oranı";
+  const choice = (options, value) => typeof value === "string" && Object.hasOwn(options, value);
+  if (!choice(ACTIVITY, p.activity)) return "Günlük hareketin";
+  if (!choice(GOAL, p.goal)) return "Hedef";
+  if (!optional("sleepMin", n => inRange(n, 5, 10))) return "Uyku hedefin";
+  if (!optional("goals", g => backupObject(g) && (!Object.hasOwn(g, "steps") || inRange(g.steps, 500, 60000))))
+    return "Adım hedefi";
+  if (!optional("units", u => UNIT_SYSTEMS.some(([id]) => u === id))) return "Birimler";
+  if (!optional("name", n => typeof n === "string") || !optional("sex", s => ["male", "female", "none"].includes(s)))
+    return "Profil";
+  if (!optional("venue", v => choice(VENUE, v)) ||
+      !optional("programId", id => id === "custom" || choice(PROGRAMS, id)) ||
+      !optional("days", days => Array.isArray(days) && days.every(d => Number.isInteger(d) && inRange(d, 1, 7))) ||
+      !optional("avoid", zones => Array.isArray(zones) && zones.every(z => typeof z === "string")))
+    return "Antrenman";
+  if (!optional("custom", plan => backupObject(plan) && backupObject(plan.days) &&
+      Object.values(plan.days).every(d => backupObject(d) && Array.isArray(d.ex) && d.ex.every(backupObject))))
+    return "Antrenman";
+  return null;
+}
+
+function validBackupDay(date, day){
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const parsed = new Date(date + "T00:00:00Z");
+  if (!Number.isFinite(+parsed) || !parsed.toISOString().startsWith(date + "T")) return false;
+  if (!backupObject(day) || !Array.isArray(day.tasks) ||
+      !day.tasks.every(t => backupObject(t) && typeof t.title === "string" && typeof t.done === "boolean")) return false;
+  if (Object.hasOwn(day, "weight") && !validStoredWeight(day.weight)) return false;
+  if (["sleep", "water", "kcal", "steps"].some(k => Object.hasOwn(day, k) && !Number.isFinite(day[k]))) return false;
+  if (day.log != null && (!Array.isArray(day.log) || !day.log.every(it => backupObject(it) && typeof it.n === "string" &&
+      ["g", ...FOOD_MACROS].every(k => Number.isFinite(it[k])) && (it.v == null || Array.isArray(it.v)) &&
+      ["lif", "alk", "kcal100"].every(k => it[k] == null || Number.isFinite(it[k])) &&
+      (it.slot == null || typeof it.slot === "string")))) return false;
+  return ["body", "hk"].every(k => day[k] == null || backupObject(day[k])) &&
+    (day.lifts == null || (backupObject(day.lifts) && Object.values(day.lifts).every(l =>
+      backupObject(l) && (l.sets == null || Array.isArray(l.sets)))));
+}
+
+function backupValidationError(data, incoming){
+  if (!backupObject(incoming) || !backupObject(incoming.profile) || !Object.hasOwn(incoming, "days"))
+    return tx("Bu dosya bu uygulamanın yedeği gibi görünmüyor.");
+  const versions = data === incoming ? [incoming] : [data, incoming];
+  for (const source of versions){
+    if (!Object.hasOwn(source, "v")) continue;
+    if (Number.isInteger(source.v) && source.v > SCHEMA)
+      return tx("Bu yedek uygulamanın daha yeni bir sürümüyle alınmış. Önce sayfayı yenileyip güncel sürümü aç.");
+    if (!Number.isInteger(source.v) || source.v < 1 || (source.v < SCHEMA && !Object.hasOwn(MIGRATIONS, source.v)))
+      return tx("Bu yedeğin sürümü tanınmıyor. Başka bir yedek seç.");
+  }
+  const field = backupProfileIssue(incoming.profile);
+  if (field) return tx("Yedekte şu bilgiyi kontrol et: {0}.", [tx(field)]);
+  if (incoming.adjustment != null && !Number.isFinite(incoming.adjustment))
+    return tx("Yedekteki kalori ayarı okunamadı.");
+  if (!backupObject(incoming.days)) return tx("Yedekteki günlük kayıtlar okunamadı.");
+  for (const [date, day] of Object.entries(incoming.days)){
+    if (!validBackupDay(date, day)) return tx("Yedekte şu günün kaydını kontrol et: {0}.", [date]);
+  }
+  if (Object.hasOwn(incoming, "customFoods")){
+    if (!backupObject(incoming.customFoods)) return tx("Yedekteki kendi besinlerin okunamadı.");
+    for (const [key, food] of Object.entries(incoming.customFoods)){
+      if (!backupObject(food) || typeof food.n !== "string" || !food.n.trim() || Object.hasOwn(Object.prototype, key) ||
+          customFoodValueError({ lif:0, alk:0, ...food }) || (food.v != null && !Array.isArray(food.v)) ||
+          (food.por != null && (!Array.isArray(food.por) || !food.por.every(backupObject))))
+        return tx("Yedekteki kendi besinlerini kontrol et: {0}.", [typeof food?.n === "string" ? food.n : key]);
     }
-    /* Yedeğin kendi sürümü yoksa dosyadaki sürüm, o da yoksa 1 sayılır. */
-    if (!Number.isInteger(incoming.v) && Number.isInteger(data.v)) incoming.v = data.v;
-    if (Number.isInteger(incoming.v) && incoming.v > SCHEMA){
-      statusEl.textContent = tx("Bu yedek uygulamanın daha yeni bir sürümüyle alınmış. Önce sayfayı yenileyip güncel sürümü aç."); return;
-    }
-    const n = Object.keys(incoming.days).length;
-    if (!confirm(tx("{0} günlük kayıt yüklenecek ve mevcut verilerin silinecek. Devam edilsin mi?", [(n)]))) return;
-    migrateState(incoming);
-    state = incoming;
-    migrateMeals();
-    await saveState(state);
-    tab = "today"; render(); window.scrollTo(0,0);
+  }
+  if (incoming.mealPrefs != null && (!backupObject(incoming.mealPrefs) ||
+      (Array.isArray(incoming.mealPrefs.meals) && !incoming.mealPrefs.meals.every(backupObject))))
+    return tx("Yedekteki öğün ayarları okunamadı.");
+  if (incoming.sky != null && !backupObject(incoming.sky)) return tx("Yedekteki gökyüzü kaydı okunamadı.");
+  return null;
+}
+
+async function importData(file, statusEl){
+  statusEl.setAttribute("role", "status");
+  statusEl.classList.remove("cf-warn");
+  const fail = message => {
+    statusEl.classList.add("cf-warn");
+    statusEl.textContent = message;
   };
-  rd.onerror = () => { statusEl.textContent = tx("Dosya okunamadı."); };
-  rd.readAsText(file);
+  let content, data;
+  try { content = await file.text(); }
+  catch(e){ return fail(tx("Dosya okunamadı.")); }
+  try { data = JSON.parse(content); }
+  catch(e){ return fail(tx("Bu dosya okunamadı. Bir Starboard yedeği seç.")); }
+  const incoming = backupObject(data) && Object.hasOwn(data, "state") ? data.state : data;
+  const problem = backupValidationError(data, incoming);
+  if (problem) return fail(problem);
+
+  /* Sürüm alanı olmayan ilk yedekler sürüm 1 olarak açılır. */
+  incoming.v = incoming.v ?? data.v ?? 1;
+  const previous = state;
+  try {
+    migrateState(incoming);
+    state = incoming;   /* Öğün göçü, depolamaya yazmadan aday kayıt üzerinde çalışır. */
+    migrateMeals();
+  } catch(e){
+    return fail(tx("Bu yedek açılamadı. Başka bir yedek seç."));
+  } finally {
+    state = previous;
+    calcReset();
+  }
+  const n = Object.keys(incoming.days).length;
+  if (!confirm(tx("{0} günlük kayıt yüklenecek ve mevcut verilerin silinecek. Devam edilsin mi?", [n]))) return;
+  state = incoming;
+  await saveState(state);
+  tab = "today"; render(); window.scrollTo(0,0);
 }
 
 /* ---- selamlama ---- */

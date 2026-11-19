@@ -1670,10 +1670,12 @@ test("barkod: web'de düğme çizilmez, panel eskisi gibi kalır; uygulamada dü
     app.querySelector("#cf-n").value = "Deneme";
     app.querySelector("#cf-p").value = "10"; app.querySelector("#cf-p").oninput();
     ok(app.querySelector("#cf-kcal").textContent.includes("40"), "canlı kalori");
+    app.querySelector("#cf-c").value = "3";
+    app.querySelector("#cf-f").value = "0";
     app.querySelector("#cf-l").value = "3";
     await app.querySelector("#cf-save").onclick();
     const [k, f] = Object.entries(state.customFoods)[0];
-    eq([k.startsWith("cf_"), f.n, f.p, f.c, f.f, f.lif, f.i, "bc" in f], [true, "Deneme", 10, 0, 0, 3, "grain", false]);
+    eq([k.startsWith("cf_"), f.n, f.p, f.c, f.f, f.lif, f.i, "bc" in f], [true, "Deneme", 10, 3, 0, 3, "grain", false]);
     eq(logPick, k);
   } finally { closeAddPanel(); }
   await openAddPanel();
@@ -2214,9 +2216,9 @@ test("kendi yiyeceklerim: düzenleme alanları dolu gelir, barkod ve ek alanlar 
     eq(app.querySelector("#cf-n").value, "Annemin mercimek köftesi");
     ok(!app.querySelector("#mf-edit").textContent.includes("Barkod"), "barkodsuzda barkod başlığı yok");
     app.querySelector("#cf-n").value = "Mercimek köftesi";
-    app.querySelector("#cf-c").value = "";
+    app.querySelector("#cf-c").value = "3";
     await app.querySelector("#cf-save").onclick();
-    eq(state.customFoods.cf_1, { n: "Mercimek köftesi", p: 8, c: 0, f: 5, lif: 4, i: "grain" }, "boş değer 0 olur, yeni alan eklenmez");
+    eq(state.customFoods.cf_1, { n: "Mercimek köftesi", p: 8, c: 3, f: 5, lif: 4, i: "grain" }, "1 g lif farkı kabul edilir, yeni alan eklenmez");
   } finally { closeMyFoods(); }
 });
 
@@ -4303,4 +4305,129 @@ test("takımyıldız: İngilizcede tam çevrilir; pencereler erişilebilir", asy
     });
   } finally { skyDone(); }
 });
+test("C-08: günlük kilo kg ve lb olarak doğrulanır, bozuk kilo hedefleri bozmaz", async () => {
+  const previous = state;
+  const originalRender = render;
+  try {
+    state = await loadFixture();
+    render = () => {};
+    const entry = state.days["2026-11-11"];
+    for (const [units, min, max] of [["metric", 30, 200], ["imperial", 60, 440]]){
+      state.profile.units = units;
+      app.innerHTML = goalEditor("weigh", entry, null);
+      wireDailyWeight(entry);
+      const el = app.querySelector("#i-weight");
+      const err = app.querySelector("#i-weight-err");
+      const enter = async value => { el.value = value; await el.onchange(); };
+      const before = entry.weight;
+      for (const invalid of ["-80", "0", String(min - 1), String(max + 1), "10000", "80kg", "abc", "NaN"]){
+        await enter(invalid);
+        eq(entry.weight, before, invalid);
+        eq(el.getAttribute("aria-invalid"), "true");
+        ok(err.textContent.includes(String(min)) && err.textContent.includes(String(max)));
+      }
+      for (const valid of [String(min), String(max), "80,5", "81.5"]){
+        await enter(valid);
+        eq(entry.weight, wSave(Number(valid.replace(",", "."))));
+        eq(el.getAttribute("aria-invalid"), null);
+        eq(err.textContent, "");
+      }
+      await enter("");
+      ok(!Object.hasOwn(entry, "weight"), "boş alan ölçümü kaldırmalı");
+      entry.weight = 82;
+    }
+    for (const weight of [-80, 0, 10000, NaN, Infinity, "80"]){
+      entry.weight = weight;
+      const program = currentProgram();
+      for (const k of ["protein", "water", "kcal", "fat", "carb"])
+        ok(Number.isFinite(program[k]) && program[k] >= 0, k + " hedefi");
+    }
+    state.profile.startWeight = NaN;
+    eq(buildProgram(state.profile, NaN, NaN).water, 2450);
+  } finally {
+    render = originalRender; state = previous; calcReset(); app.innerHTML = "";
+  }
+});
+
+test("C-07 / D-03 / D-01: özel besin alanları doğrulanır, geçerli besin kaydedilir", async () => {
+  await openAddPanel();
+  try {
+    app.querySelector("#custom-toggle").onclick();
+    const $ = id => app.querySelector("#cf-" + id);
+    $("n").value = "Deneme";
+    const before = JSON.stringify(state.customFoods);
+    const reject = async field => {
+      await $("save").onclick();
+      ok($("err").textContent && $("err").getAttribute("role") === "alert");
+      eq($(field).getAttribute("aria-invalid"), "true");
+      eq(JSON.stringify(state.customFoods), before);
+    };
+    await reject("p");
+    ok($("err").textContent.includes("Protein, karbonhidrat ve yağı"));
+    for (const [p, c, f, l, invalid] of [
+      [-10, 30, 10, 2, "p"], [10, 30, 10, -3, "l"], [10, 30, 200, 2, "f"],
+      [40, 40, 26, 2, "f"], [10, 5, 10, 7, "l"]
+    ]){
+      for (const [k, value] of Object.entries({ p, c, f, l })) $(k).value = value;
+      await reject(invalid);
+    }
+    $("c").value = "30";
+    await $("save").onclick();
+    eq(state.customFoods[logPick], { n:"Deneme", p:10, c:30, f:10, alk:0, lif:7, i:"grain" });
+    const alcoholForm = document.createElement("div");
+    const pre = { n:"İçecek", p:0, c:20, f:0, alk:101, bc:"4006381333931" };
+    alcoholForm.innerHTML = customFoodForm(pre);
+    wireCustomForm(alcoholForm, pre);
+    await alcoholForm.querySelector("#cf-save").onclick();
+    eq(alcoholForm.querySelector("#cf-alk").getAttribute("aria-invalid"), "true");
+    ok(!state.customFoods.bc_4006381333931);
+  } finally { closeAddPanel(); }
+});
+
+test("C-01: yedek önce doğrulanır, eski sürüm yüklenirken göç eder", async () => {
+  const previous = state, previousTab = tab;
+  const originalConfirm = window.confirm, originalSave = saveState, originalRender = render;
+  const status = document.createElement("div");
+  let confirmed = 0, writes = [];
+  window.confirm = () => { confirmed++; return true; };
+  saveState = async s => { writes.push(JSON.stringify(s)); calcReset(); };
+  render = () => {};
+  try {
+    const old = await loadFixture();
+    state = await loadFixture();
+    state.profile.name = "Mevcut kayıt";
+    const original = state, before = JSON.stringify(state);
+    const load = data => importData(new Blob([JSON.stringify(data)]), status);
+    for (const [patch, message] of [
+      [{ profile:{ ...old.profile, height:"178" } }, "Boy"],
+      [{ profile:{ ...old.profile, age:0 } }, "Yaş"],
+      [{ profile:{ ...old.profile, startWeight:-80 } }, "Başlangıç kilosu"],
+      [{ profile:{ ...old.profile, targetWeight:301 } }, "Hedef kilo"],
+      [{ profile:{ ...old.profile, goal:["maintain"] } }, "Hedef"],
+      [{ days:[] }, "günlük kayıtlar"],
+      [{ days:{ "2026-11-10":{ tasks:{}, weight:82 } } }, "2026-11-10"],
+      [{ customFoods:{ cf_bad:{ n:"Hatalı besin", p:10, c:5, f:10, lif:7 } } }, "Hatalı besin"],
+      [{ v:"1" }, "sürümü tanınmıyor"], [{ v:SCHEMA + 1 }, "daha yeni"]
+    ]){
+      await load({ v:1, state:{ ...old, ...patch } });
+      ok(status.textContent.includes(message), status.textContent);
+      ok(state === original);
+      eq(JSON.stringify(state), before);
+      eq([confirmed, writes.length], [0, 0]);
+    }
+    const customFoods = { cf_test:{ n:"Kendi besinim", p:10, c:30, f:10, lif:7, i:"grain" } };
+    await load({ v:SCHEMA, state:{ ...old, v:SCHEMA, customFoods } });
+    eq([state.v, state.profile.name, confirmed, writes.length], [SCHEMA, old.profile.name, 1, 1]);
+    eq(state.customFoods, customFoods);
+    eq(writes[0], JSON.stringify(state));
+    await load({ v:1, state:old });
+    eq([state.v, confirmed, writes.length], [SCHEMA, 2, 2]);
+    ok(state.starred && state.sky && state.skyClosed, "eski sürüm göç etmeli");
+    eq(writes[1], JSON.stringify(state));
+  } finally {
+    window.confirm = originalConfirm; saveState = originalSave; render = originalRender;
+    state = previous; tab = previousTab; calcReset();
+  }
+});
+
 window.STARBOARD_TESTS = TESTS;
