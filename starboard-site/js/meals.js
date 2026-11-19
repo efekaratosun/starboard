@@ -172,7 +172,11 @@ function macroMoon(label, got, target, unit, id){
         </defs>
         <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
         <g clip-path="url(#mn-c-${id})"><circle class="mn-sh${entering ? " fx-moon" : ""}" cx="48" cy="48" r="${MOON_R}" style="transform:translateX(${from}px)" data-to="${to}"/></g>
-        ${R.over ? '<circle class="mn-over-ring" cx="48" cy="48" r="40" fill="none" stroke-width="5"/>' : ""}
+        ${R.over ? `<circle class="mn-over-ring" cx="48" cy="48" r="40" fill="none" stroke-width="5"/>
+        <g class="mn-over-mark" aria-hidden="true">
+          <rect x="43.5" y="29" width="9" height="23" rx="4.5"/>
+          <circle cx="48" cy="62.5" r="4.5"/>
+        </g>` : ""}
       </svg>
     </div>
     <div class="mn-t" aria-hidden="true"><b>${label}</b><span class="mn-v num">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span><span class="mn-u">${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><i>${fmtN(got)} / ${fmtN(target)} ${unit}</i></div>

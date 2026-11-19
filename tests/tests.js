@@ -3030,7 +3030,7 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
   } finally { closeSug(); }
 });
 
-test("ay: aşımda makro rengi ve kart zemini korunur, halka yalnızca aşımda görünür", async () => {
+test("ay: aşımda makro rengi ve kart zemini korunur, halka ve ünlem yalnızca aşımda görünür", async () => {
   const styles = document.createElement("style");
   const css = await Promise.all(["tokens", "app"].map(name =>
     fetch(`../starboard-site/css/${name}.css`).then(r => r.text())
@@ -3050,6 +3050,10 @@ test("ay: aşımda makro rengi ve kart zemini korunur, halka yalnızca aşımda 
       eq(getComputedStyle(over).backgroundColor, getComputedStyle(normal).backgroundColor);
       const ring = over.querySelector(".mn-over-ring");
       ok(ring && !normal.querySelector(".mn-over-ring"), "halka yalnızca aşımda");
+      const mark = over.querySelector(".mn-over-mark");
+      ok(mark && !normal.querySelector(".mn-over-mark"), "ünlem yalnızca aşımda");
+      eq(mark.getAttribute("aria-hidden"), "true", "ünlem erişilebilirlik ağacından gizli");
+      eq(getComputedStyle(mark).fill, getComputedStyle(ring).stroke, "ünlem ve halka aynı renkte");
       eq(getComputedStyle(ring).fill, "none");
       const strokeWidth = parseFloat(getComputedStyle(ring).strokeWidth);
       eq(strokeWidth, 5);
