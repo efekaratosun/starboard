@@ -162,10 +162,9 @@ function macroMoon(label, got, target, unit, id){
   const still = entering || reduceMotion();
   const from = still ? to : _moonPrev[id] === undefined ? 0 : _moonPrev[id];
   _moonPrev[id] = to;
-  const col = R.over ? "over" : id;
   const n = R.over ? R.extra : R.left;
   const say = R.over ? tx("{0}: {1} {2} aşıldı", [label, fmtN(n), unit]) : tx("{0}: {1} {2} kaldı", [label, fmtN(n), unit]);
-  return `<div class="moon${id === "kcal" ? " moon-kcal" : ""}${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${col});--cs:var(--${col}-soft)">
+  return `<div class="moon${id === "kcal" ? " moon-kcal" : ""}${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--${id});--cs:var(--${id}-soft)">
     <div class="mn-r">
       <svg viewBox="0 0 96 96" aria-hidden="true">
         <defs>
@@ -173,6 +172,7 @@ function macroMoon(label, got, target, unit, id){
         </defs>
         <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
         <g clip-path="url(#mn-c-${id})"><circle class="mn-sh${entering ? " fx-moon" : ""}" cx="48" cy="48" r="${MOON_R}" style="transform:translateX(${from}px)" data-to="${to}"/></g>
+        ${R.over ? '<circle class="mn-over-ring" cx="48" cy="48" r="40" fill="none" stroke-width="2.5"/>' : ""}
       </svg>
     </div>
     <div class="mn-t" aria-hidden="true"><b>${label}</b><span class="mn-v num">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span><span class="mn-u">${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><i>${fmtN(got)} / ${fmtN(target)} ${unit}</i></div>

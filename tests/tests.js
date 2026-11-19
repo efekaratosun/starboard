@@ -2968,7 +2968,7 @@ test("ay: gölge kayması oran x çap; 0'da ay karanlık, 1'de dolunay, aşımda
 const moonLog = (program, slot, c) => [{ id: 1, k: "yulaf", n: "Deneme", g: 100, p: 0, c, f: 0, lif: 0, v: [], i: "grain", slot }];
 const moonOf = id => app.querySelectorAll(".moon")[["kcal", "protein", "carb", "fat"].indexOf(id)];
 
-test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölge dairesi ayın içine kırpılır; hedef aşılınca --over, dolunay ve +fazlalık", async () => {
+test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölge dairesi ayın içine kırpılır; hedef aşılınca dolunay ve +fazlalık", async () => {
   const { program, slots } = await sugFixture();
   try {
     eq([...app.querySelectorAll(".moon .mn-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
@@ -3018,8 +3018,8 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
     eq(k.querySelector(".mn-v").textContent, "+" + fmtN(4 * c2 - program.kcal), "altta +fazlalık");
     eq(k.querySelector(".mn-u").textContent, "kcal");
     eq(k.querySelector(".mn-t i").textContent, `${fmtN(4 * c2)} / ${fmtN(program.kcal)} kcal`, "aşımda da tüketilen / hedef");
-    eq(k.style.getPropertyValue("--c"), "var(--over)", "ay rengi --over");
-    eq(k.style.getPropertyValue("--cs"), "var(--over-soft)", "aşımda gölge -soft");
+    eq(k.style.getPropertyValue("--c"), "var(--kcal)", "aşımda kalori rengi");
+    eq(k.style.getPropertyValue("--cs"), "var(--kcal-soft)", "aşımda kalori gölgesi");
     eq(k.getAttribute("aria-label"), `Kalori: ${fmtN(4 * c2 - program.kcal)} kcal aşıldı`);
     eq(+k.querySelector(".mn-sh").dataset.to, -68, "aşan ay dolunay (gölge dışarıda)");
     ok(moonOf("carb").classList.contains("over") && moonOf("carb").querySelector(".mn-v").textContent === "+" + fmtN(c2 - program.carb), "karbonhidrat aştı");
@@ -3028,6 +3028,33 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
     ok(!app.querySelector(".metric-note .out"), "eski 'Hedefi aştın' satırı yok");
     eq(a11yBad("ay"), []);
   } finally { closeSug(); }
+});
+
+test("ay: aşımda makro rengi ve kart zemini korunur, halka yalnızca aşımda görünür", async () => {
+  const styles = document.createElement("style");
+  const css = await Promise.all(["tokens", "app"].map(name =>
+    fetch(`../starboard-site/css/${name}.css`).then(r => r.text())
+  ));
+  styles.textContent = css.join("\n");
+  const cards = document.createElement("div");
+  cards.innerHTML = ["kcal", "protein", "carb", "fat"].map(id =>
+    macroMoon(id, 101, 100, "g", id) + macroMoon(id, 100, 100, "g", id)
+  ).join("");
+  document.head.append(styles);
+  document.body.append(cards);
+  try {
+    for (let i = 0; i < cards.children.length; i += 2) {
+      const over = cards.children[i], normal = cards.children[i + 1];
+      const overFill = getComputedStyle(over.querySelector(".mn-lit")).fill;
+      eq(overFill, getComputedStyle(normal.querySelector(".mn-lit")).fill);
+      eq(getComputedStyle(over).backgroundColor, getComputedStyle(normal).backgroundColor);
+      const ring = over.querySelector(".mn-over-ring");
+      ok(ring && !normal.querySelector(".mn-over-ring"), "halka yalnızca aşımda");
+      eq(getComputedStyle(ring).fill, "none");
+      eq(getComputedStyle(ring).stroke, getComputedStyle(over.querySelector(".mn-v")).color);
+      ok(overFill !== getComputedStyle(ring).stroke, "ay ve halka farklı renklerde");
+    }
+  } finally { cards.remove(); styles.remove(); }
 });
 
 test("ay: -soft ve --over-soft jetonları üç tema bloğunda tanımlı; eski halka stilleri kalmadı", async () => {
