@@ -97,7 +97,8 @@ function goalEditor(kind, entry, program, key){
   const logged = !!(entry.log && entry.log.length);
   switch (kind){
     case "weigh": return `<div class="g-f"><label for="i-weight">${tx("Kilo ({0})", [(wUnit())])}</label>
-      <input id="i-weight" type="number" inputmode="decimal" value="${typeof entry.weight === "number" ? +wOut(entry.weight).toFixed(1) : ""}" placeholder="—"></div>`;
+      <input id="i-weight" type="text" inputmode="decimal" aria-describedby="i-weight-err" value="${Number.isFinite(entry.weight) ? fmtN(+wOut(entry.weight).toFixed(1)) : ""}" placeholder="—">
+      <div id="i-weight-err" class="metric-note cf-warn" role="alert"></div></div>`;
     case "sleep": return sleepHTML(entry);
     case "water": return `
       <div class="lbl-row"><span class="lbl">${tx("Bardak bardak işaretle")}</span><span class="lbl-v num">${vOut(entry.water || 0)}${program ? ` / ${vOut(program.water)}` : ""} ${vUnit()}</span></div>
@@ -409,6 +410,46 @@ function wirePastBar(key){
   const pn = document.getElementById("pd-next"); if (pn) pn.onclick = () => go(1);
 }
 
+/* İlk kurulumun kg/lb cetvelleri ve bu cetvellerin kayıttaki kg karşılıkları. */
+const DAILY_WEIGHT_KG = [30, 200];
+const DAILY_WEIGHT_LB = [60, 440];
+const inRange = (value, min, max) => Number.isFinite(value) && value >= min && value <= max;
+const validStoredWeight = kg => inRange(kg, Math.round(DAILY_WEIGHT_LB[0] * KG_PER_LB * 1000) / 1000, DAILY_WEIGHT_KG[1]);
+
+function readDecimal(value){
+  const normalized = value.trim().replace(",", ".");
+  return /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(normalized) ? Number(normalized) : NaN;
+}
+
+/* Program hesabı tüm ekranlarda kullanılır. Eski kayıttaki hatalı kilo hedeflere taşınmasın. */
+const calculateProgram = buildProgram;
+buildProgram = function(profile, weightKg, adjustment){
+  const fallback = validStoredWeight(profile.startWeight) ? profile.startWeight : 70; // İlk kurulumun varsayılan kilosu.
+  const kg = validStoredWeight(weightKg) ? weightKg : fallback;
+  return calculateProgram(profile, kg, Number.isFinite(adjustment) ? adjustment : 0);
+};
+
+function wireDailyWeight(entry){
+  const el = document.getElementById("i-weight");
+  if (!el) return;
+  const error = document.getElementById("i-weight-err");
+  el.onchange = async () => {
+    const raw = el.value.trim();
+    const n = readDecimal(raw);
+    const bounds = isImp() ? DAILY_WEIGHT_LB : DAILY_WEIGHT_KG;
+    if (raw && !inRange(n, ...bounds)){
+      el.setAttribute("aria-invalid", "true");
+      error.textContent = tx("Kiloyu {0} ile {1} {2} arasında gir.", [...bounds, wUnit()]);
+      return;
+    }
+    el.removeAttribute("aria-invalid");
+    error.textContent = "";
+    if (raw) entry.weight = wSave(n);
+    else delete entry.weight;
+    await saveState(state); render();
+  };
+}
+
 function wireToday(entry, program, key){
   key = key || today();
   /* mark: elle girildiğini kaydeden bayrak; günlük devralmadan önce sorulur. */
@@ -423,7 +464,7 @@ function wireToday(entry, program, key){
       await saveState(state); render();
     };
   };
-  bind("i-weight","weight",false,null,wSave);
+  wireDailyWeight(entry);
   wireSleep(entry);
   app.querySelectorAll("[data-cup]").forEach(b => b.onclick = async () => {
     haptic("light");
