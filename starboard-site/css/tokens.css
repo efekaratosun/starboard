@@ -58,6 +58,9 @@
   --moon-carb:#AC7BF9; --moon-carb-soft:#F2EAFE;
   --moon-fat:#C58900; --moon-fat-soft:#F6ECD6;
   --moon-over:#C73729; --moon-mark:#FFFFFF;
+  --moon-glow:.36;
+  --moon-crater-fill:rgba(0,0,0,.24);
+  --moon-crater-rim:rgba(255,255,255,.52);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#2BB84F;
   --sleep:#6E4DFF; --water:#008FF5;
 
@@ -121,6 +124,9 @@
   --moon-carb:#C7A7FF; --moon-carb-soft:#33315A;
   --moon-fat:#DBB650; --moon-fat-soft:#373436;
   --moon-over:#FF8B79; --moon-mark:var(--bg);
+  --moon-glow:.65;
+  --moon-crater-fill:rgba(0,0,0,.16);
+  --moon-crater-rim:rgba(255,255,255,.38);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
   --sleep:#9C86FF; --water:#3DB2FF;
 
@@ -174,6 +180,9 @@
   --moon-carb:#C7A7FF; --moon-carb-soft:#33315A;
   --moon-fat:#DBB650; --moon-fat-soft:#373436;
   --moon-over:#FF8B79; --moon-mark:var(--bg);
+  --moon-glow:.65;
+  --moon-crater-fill:rgba(0,0,0,.16);
+  --moon-crater-rim:rgba(255,255,255,.38);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
   --sleep:#9C86FF; --water:#3DB2FF;
 

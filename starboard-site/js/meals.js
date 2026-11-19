@@ -150,6 +150,43 @@ function moonInfo(got, target){
 const MOON_R = 34;
 const moonShift = pct => +(-2 * MOON_R * clamp(pct, 0, 1)).toFixed(1);
 
+function moonCraters(id){
+  let seed = 0;
+  for (const letter of id) seed = Math.imul(31, seed) + letter.charCodeAt(0);
+  // Mulberry32: aynı makro her çizimde aynı yüzeyi kullanır.
+  const random = () => {
+    seed = (seed + 0x6D2B79F5) | 0;
+    let bits = Math.imul(seed ^ (seed >>> 15), seed | 1);
+    bits ^= bits + Math.imul(bits ^ (bits >>> 7), bits | 61);
+    return ((bits ^ (bits >>> 14)) >>> 0) / 4294967296;
+  };
+  const count = 6 + Math.floor(random() * 4);
+  const large = 1 + Math.floor(random() * 2);
+  const medium = Math.min(2 + Math.floor(random() * 2), count - large - 2);
+  const craters = [];
+  // Önce büyük kraterleri yerleştir, ardından boşlukları küçüklerle doldur.
+  for (let i = 0; i < count; i++){
+    const [min, max] = i < large ? [5.5, 7] : i < large + medium ? [3, 4] : [1.3, 2.2];
+    const r = +(min + random() * (max - min)).toFixed(1);
+    while (true){
+      const angle = random() * 2 * Math.PI;
+      const distance = (MOON_R - r - 1.5) * Math.sqrt(random());
+      const x = +(48 + Math.cos(angle) * distance).toFixed(1);
+      const y = +(48 + Math.sin(angle) * distance).toFixed(1);
+      if (craters.some(c => Math.hypot(x - c.x, y - c.y) < r + c.r + 2)) continue;
+      craters.push({x, y, r});
+      break;
+    }
+  }
+  return craters.map(({x, y, r}) =>
+    `<g class="mn-crater" aria-hidden="true">
+      <circle cx="${x}" cy="${y}" r="${r}"/>
+      <path d="M ${x - r} ${y} a ${r} ${r} 0 0 0 ${r} ${r}"/>
+    </g>`).join("");
+}
+
+const MOON_SPARK_CENTERS = { kcal:[74, 22], protein:[22, 22], carb:[74, 74], fat:[22, 74] };
+
 /* Özetin dört ayı: makro renginde dolu daire, üstünde zemin renginde (-soft) aynı yarıçaplı gölge dairesi;
    gölge ayın içine kırpılır ve moonShift kadar kayar. Altında ad, büyük rakamla kalan miktar (aşılınca +fazlalık)
    ve küçük yazıyla tüketilen / hedef. Sayfaya girerken gölge sıfırdan kayarak açılır (.fx-moon),
@@ -158,11 +195,14 @@ const _moonPrev = {};
 function macroMoon(label, got, target, unit, id){
   const R = moonInfo(got, target);
   const to = moonShift(R.pct);
+  const glow = R.pct.toFixed(3);
+  const blur = (R.pct * 2.8).toFixed(2);
   const entering = render.lastTab !== "meals" || !!navDir;
   const still = entering || reduceMotion();
   const from = still ? to : _moonPrev[id] === undefined ? 0 : _moonPrev[id];
   _moonPrev[id] = to;
   const n = R.over ? R.extra : R.left;
+  const [sparkX, sparkY] = MOON_SPARK_CENTERS[id];
   const say = R.over ? tx("{0}: {1} {2} aşıldı", [label, fmtN(n), unit]) : tx("{0}: {1} {2} kaldı", [label, fmtN(n), unit]);
   return `<div class="moon${id === "kcal" ? " moon-kcal" : ""}${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--moon-${id});--cs:var(--moon-${id}-soft)">
     <div class="mn-r">
@@ -170,8 +210,13 @@ function macroMoon(label, got, target, unit, id){
         <defs>
           <clipPath id="mn-c-${id}"><circle cx="48" cy="48" r="${MOON_R}"/></clipPath>
         </defs>
+        <g class="mn-halo" aria-hidden="true" style="--mn-level:${glow};--mn-blur:${blur}px">
+          <circle cx="48" cy="48" r="${MOON_R}"/>
+        </g>
         <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
+        ${moonCraters(id)}
         <g clip-path="url(#mn-c-${id})"><circle class="mn-sh${entering ? " fx-moon" : ""}" cx="48" cy="48" r="${MOON_R}" style="transform:translateX(${from}px)" data-to="${to}"/></g>
+        ${R.pct > 0.6 ? `<path class="mn-spark" aria-hidden="true" transform="translate(${sparkX} ${sparkY})" d="M0 -6 Q1 -1 6 0 Q1 1 0 6 Q-1 1 -6 0 Q-1 -1 0 -6Z"/>` : ""}
         ${R.over ? `<circle class="mn-over-ring" cx="48" cy="48" r="${MOON_R - 5}" fill="none" stroke-width="5"/>
         <g class="mn-over-mark" aria-hidden="true">
           <rect x="43.5" y="29" width="9" height="23" rx="4.5"/>
