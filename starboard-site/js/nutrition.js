@@ -49,24 +49,24 @@ const FOODS = {
   cacik:{n:tx("Cacık"), por:{n:tx("kase"),g:150}, p:2.5, c:4, f:2, lif:0.5, i:"dairy", v:["kalsiyum"]},
   haydari:{n:tx("Haydari"), por:[{n:tx("yemek kaşığı"),g:20},{n:tx("kase"),g:120}], p:6, c:4, f:12, lif:0.4, i:"dairy", v:["kalsiyum"]},
 
-  mercimek:{n:tx("Kırmızı mercimek (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:24, c:60, f:1.5, lif:11, i:"legume", v:["folat","demir","magnezyum"]},
-  yesilmercimek:{n:tx("Yeşil mercimek (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:25, c:60, f:1, lif:11, i:"legume", v:["folat","demir","magnezyum"]},
-  nohut:{n:tx("Nohut (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:19, c:61, f:6, lif:12, i:"legume", v:["folat","demir","magnezyum"]},
-  kurufasulye:{n:tx("Kuru fasulye (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:21, c:60, f:1.5, lif:15, i:"legume", v:["folat","demir","magnezyum"]},
-  barbunya:{n:tx("Barbunya (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:22, c:57, f:1.5, lif:15, i:"legume", v:["folat","demir"]},
+  mercimek:{n:tx("Kırmızı mercimek (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:24, c:60, f:1.5, lif:11, i:"legume", v:["folat","demir","magnezyum"]},
+  yesilmercimek:{n:tx("Yeşil mercimek (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:25, c:60, f:1, lif:11, i:"legume", v:["folat","demir","magnezyum"]},
+  nohut:{n:tx("Nohut (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:19, c:61, f:6, lif:12, i:"legume", v:["folat","demir","magnezyum"]},
+  kurufasulye:{n:tx("Kuru fasulye (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:21, c:60, f:1.5, lif:15, i:"legume", v:["folat","demir","magnezyum"]},
+  barbunya:{n:tx("Barbunya (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:22, c:57, f:1.5, lif:15, i:"legume", v:["folat","demir"]},
   bezelye:{n:tx("Bezelye"), por:[{n:tx("kase"),g:150},{n:tx("yemek kaşığı"),g:15}], p:5, c:14, f:0.4, lif:5, i:"legume", v:["C","folat","K"]},
   tofu:{n:tx("Tofu"), por:[{n:tx("porsiyon"),g:100},{n:tx("dilim"),g:40}], p:17, c:2, f:9, lif:1, i:"legume", v:["kalsiyum","demir"]},
-  soya:{n:tx("Soya kıyması (kuru)"), por:[{n:tx("porsiyon"),g:40},{n:tx("su bardağı"),g:90}], p:52, c:30, f:1, lif:6, i:"legume", v:["demir","folat"]},
+  soya:{n:tx("Soya kıyması (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:40},{n:tx("su bardağı"),g:90}], p:52, c:30, f:1, lif:6, i:"legume", v:["demir","folat"]},
   humus:{n:tx("Humus"), por:[{n:tx("yemek kaşığı"),g:20},{n:tx("kase"),g:100}], p:8, c:14, f:10, lif:6, i:"legume", v:["folat","demir"]},
   seitan:{n:tx("Seitan"), por:[{n:tx("porsiyon"),g:100}], p:25, c:14, f:2, lif:1, i:"legume", v:["demir"]},
   tempeh:{n:tx("Tempeh"), por:[{n:tx("porsiyon"),g:100}], p:19, c:9, f:11, lif:6, i:"legume", v:["demir","magnezyum"]},
   vegankiyma:{n:tx("Bitkisel kıyma"), por:[{n:tx("porsiyon"),g:100}], p:20, c:6, f:10, lif:4, i:"legume", v:["demir","B12"]},
-  soyafasulye:{n:tx("Soya fasulyesi (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:36, c:30, f:20, lif:9, i:"legume", v:["demir","folat","magnezyum"]},
-  borulce:{n:tx("Börülce (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:24, c:60, f:2, lif:11, i:"legume", v:["folat","demir"]},
-  masfasulye:{n:tx("Maş fasulyesi (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:24, c:63, f:1, lif:16, i:"legume", v:["folat","demir","magnezyum"]},
-  bakla:{n:tx("Bakla (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:26, c:58, f:1.5, lif:25, i:"legume", v:["folat","demir","magnezyum"]},
-  siyahfasulye:{n:tx("Siyah fasulye (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:22, c:62, f:1.4, lif:15, i:"legume", v:["folat","demir","magnezyum"]},
-  nohutunu:{n:tx("Nohut unu"), por:[{n:tx("yemek kaşığı"),g:10},{n:tx("su bardağı"),g:110}], p:22, c:58, f:6, lif:11, i:"legume", v:["folat","demir"]},
+  soyafasulye:{n:tx("Soya fasulyesi (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:36, c:30, f:20, lif:9, i:"legume", v:["demir","folat","magnezyum"]},
+  borulce:{n:tx("Börülce (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:24, c:60, f:2, lif:11, i:"legume", v:["folat","demir"]},
+  masfasulye:{n:tx("Maş fasulyesi (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:24, c:63, f:1, lif:16, i:"legume", v:["folat","demir","magnezyum"]},
+  bakla:{n:tx("Bakla (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:26, c:58, f:1.5, lif:25, i:"legume", v:["folat","demir","magnezyum"]},
+  siyahfasulye:{n:tx("Siyah fasulye (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:180}], p:22, c:62, f:1.4, lif:15, i:"legume", v:["folat","demir","magnezyum"]},
+  nohutunu:{n:tx("Nohut unu"), cigYenmez:true, por:[{n:tx("yemek kaşığı"),g:10},{n:tx("su bardağı"),g:110}], p:22, c:58, f:6, lif:11, i:"legume", v:["folat","demir"]},
   bezelyeproteini:{n:tx("Bezelye proteini tozu"), a:"protein tozu vegan", p:80, c:5, f:7, lif:3, unit:30, unitName:tx("ölçek"), i:"legume", cat:"spor", v:["demir"]},
   edamame:{n:tx("Edamame"), por:[{n:tx("kase"),g:100}], p:11, c:9, f:5, lif:5, i:"legume", v:["folat","demir","magnezyum"]},
 
@@ -80,25 +80,25 @@ const FOODS = {
   hindistancevizi:{n:tx("Hindistan cevizi (kuru)"), por:[{n:tx("yemek kaşığı"),g:6}], p:7, c:24, f:65, lif:16, i:"nuts", v:["magnezyum","demir"]},
   hindistancevizyagi:{n:tx("Hindistan cevizi yağı"), por:[{n:tx("yemek kaşığı"),g:13},{n:tx("tatlı kaşığı"),g:5}], p:0, c:0, f:100, lif:0, i:"oil"},
 
-  karabugday:{n:tx("Karabuğday (kuru)"), por:[{n:tx("porsiyon"),g:60}], p:13, c:72, f:3.4, lif:10, i:"grain", v:["magnezyum","demir"]},
-  amarant:{n:tx("Amarant (kuru)"), por:[{n:tx("porsiyon"),g:60}], p:14, c:65, f:7, lif:7, i:"grain", v:["magnezyum","demir","kalsiyum"]},
-  polenta:{n:tx("Mısır irmiği (polenta)"), por:[{n:tx("porsiyon"),g:50}], p:8, c:79, f:3.5, lif:7, i:"grain", v:["magnezyum"]},
-  pirincunu:{n:tx("Pirinç unu"), por:[{n:tx("yemek kaşığı"),g:10}], p:6, c:80, f:1.4, lif:2.4, i:"grain"},
-  glutensizmakarna:{n:tx("Glutensiz makarna (kuru)"), por:[{n:tx("porsiyon"),g:80}], p:7, c:78, f:1.5, lif:3, i:"grain"},
+  karabugday:{n:tx("Karabuğday (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60}], p:13, c:72, f:3.4, lif:10, i:"grain", v:["magnezyum","demir"]},
+  amarant:{n:tx("Amarant (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60}], p:14, c:65, f:7, lif:7, i:"grain", v:["magnezyum","demir","kalsiyum"]},
+  polenta:{n:tx("Mısır irmiği (polenta)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:50}], p:8, c:79, f:3.5, lif:7, i:"grain", v:["magnezyum"]},
+  pirincunu:{n:tx("Pirinç unu"), cigYenmez:true, por:[{n:tx("yemek kaşığı"),g:10}], p:6, c:80, f:1.4, lif:2.4, i:"grain"},
+  glutensizmakarna:{n:tx("Glutensiz makarna (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:80}], p:7, c:78, f:1.5, lif:3, i:"grain"},
   kestane:{n:tx("Kestane"), por:[{n:tx("adet"),g:10,s:[3,5,10]}], p:2, c:45, f:2, lif:8, i:"grain", v:["C","potasyum"]},
   soyasutu:{n:tx("Soya sütü (zenginleştirilmiş)"), por:{n:tx("bardak"),g:200}, p:3.3, c:1.8, f:1.8, lif:0.5, i:"legume", cat:"kahvaltilik", v:["kalsiyum","B12"]},
   bitkiselyogurt:{n:tx("Bitkisel yoğurt (soya)"), por:[{n:tx("kase"),g:150}], p:4, c:5, f:3, lif:0.8, i:"legume", cat:"kahvaltilik", v:["kalsiyum"]},
   piyaz:{n:tx("Piyaz"), por:[{n:tx("porsiyon"),g:200}], p:6, c:16, f:7, lif:5, i:"legume", v:["folat","C"]},
 
   yulaf:{n:tx("Yulaf ezmesi"), por:[{n:tx("porsiyon"),g:40},{n:tx("yemek kaşığı"),g:10}], p:13, c:60, f:7, lif:10, i:"grain", v:["magnezyum","demir"]},
-  pirinc:{n:tx("Pirinç (kuru)"), por:[{n:tx("porsiyon"),g:75},{n:tx("su bardağı"),g:180}], p:7, c:78, f:0.6, lif:1.3, i:"grain"},
+  pirinc:{n:tx("Pirinç (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:75},{n:tx("su bardağı"),g:180}], p:7, c:78, f:0.6, lif:1.3, i:"grain"},
   pilav:{n:tx("Pilav (pişmiş)"), a:tx("pirinç pilavı"), por:[{n:tx("porsiyon"),g:180},{n:tx("yemek kaşığı"),g:25}], p:2.7, c:28, f:1.5, lif:0.6, i:"grain"},
-  bulgur:{n:tx("Bulgur (kuru)"), por:[{n:tx("porsiyon"),g:75},{n:tx("su bardağı"),g:170}], p:12, c:76, f:1.5, lif:12, i:"grain", v:["magnezyum"]},
+  bulgur:{n:tx("Bulgur (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:75},{n:tx("su bardağı"),g:170}], p:12, c:76, f:1.5, lif:12, i:"grain", v:["magnezyum"]},
   bulgurpilav:{n:tx("Bulgur pilavı (pişmiş)"), a:"bulgur", por:[{n:tx("porsiyon"),g:180},{n:tx("yemek kaşığı"),g:25}], p:3, c:19, f:2, lif:4, i:"grain"},
-  makarna:{n:tx("Tam buğday makarna (kuru)"), por:[{n:tx("porsiyon"),g:80}], p:13, c:71, f:2.5, lif:8, i:"grain", v:["magnezyum"]},
+  makarna:{n:tx("Tam buğday makarna (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:80}], p:13, c:71, f:2.5, lif:8, i:"grain", v:["magnezyum"]},
   makarnapis:{n:tx("Makarna (pişmiş)"), a:"makarna", por:[{n:tx("porsiyon"),g:200}], p:5, c:25, f:1, lif:2.5, i:"grain"},
-  kinoa:{n:tx("Kinoa (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:170}], p:14, c:64, f:6, lif:7, i:"grain", v:["magnezyum","demir","folat"]},
-  kuskus:{n:tx("Kuskus (kuru)"), por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:175}], p:13, c:72, f:1, lif:5, i:"grain"},
+  kinoa:{n:tx("Kinoa (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:170}], p:14, c:64, f:6, lif:7, i:"grain", v:["magnezyum","demir","folat"]},
+  kuskus:{n:tx("Kuskus (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:60},{n:tx("su bardağı"),g:175}], p:13, c:72, f:1, lif:5, i:"grain"},
   misir:{n:tx("Mısır"), por:{n:tx("koçan"),g:90}, p:3.3, c:19, f:1.2, lif:2.7, i:"grain"},
   granola:{n:tx("Granola"), por:[{n:tx("kase"),g:50},{n:tx("yemek kaşığı"),g:10}], p:10, c:60, f:18, lif:7, i:"grain", v:["magnezyum"]},
   gevrek:{n:tx("Mısır gevreği"), por:[{n:tx("kase"),g:30}], p:7, c:84, f:1, lif:3, i:"grain"},
@@ -129,11 +129,11 @@ const FOODS = {
   sogan:{n:tx("Soğan"), por:{n:tx("adet"),g:110}, p:1.1, c:9, f:0.1, lif:1.7, i:"veg", v:["C"]},
   pirasa:{n:tx("Pırasa yemeği"), por:[{n:tx("porsiyon"),g:200}], p:1.5, c:8, f:5, lif:3, i:"veg", v:["A","K","C"]},
   turlu:{n:tx("Sebze türlü"), por:[{n:tx("porsiyon"),g:200}], p:2, c:8, f:5, lif:2.5, i:"veg", v:["A","C","potasyum"]},
-  un:{n:tx("Buğday unu"), por:[{n:tx("yemek kaşığı"),g:10},{n:tx("su bardağı"),g:110}], p:10, c:76, f:1, lif:2.7, i:"grain"},
+  un:{n:tx("Buğday unu"), cigYenmez:true, por:[{n:tx("yemek kaşığı"),g:10},{n:tx("su bardağı"),g:110}], p:10, c:76, f:1, lif:2.7, i:"grain"},
   sehriye:{n:tx("Şehriye"), por:[{n:tx("yemek kaşığı"),g:12}], p:11, c:73, f:1.5, lif:3, i:"grain"},
   seker:{n:tx("Toz şeker"), por:[{n:tx("küp"),g:3,s:[1,2,3]},{n:tx("tatlı kaşığı"),g:5}], p:0, c:100, f:0, lif:0, i:"fruit"},
-  pirasacig:{n:tx("Pırasa (çiğ)"), por:[{n:tx("adet"),g:200}], p:1.5, c:14, f:0.3, lif:1.8, i:"veg", v:["A","K","C"]},
-  tazefasulye:{n:tx("Taze fasulye (çiğ)"), por:[{n:tx("porsiyon"),g:150}], p:1.8, c:7, f:0.2, lif:3.4, i:"veg", v:["K","C","folat"]},
+  pirasacig:{n:tx("Pırasa (çiğ)"), cigYenmez:true, por:[{n:tx("adet"),g:200}], p:1.5, c:14, f:0.3, lif:1.8, i:"veg", v:["A","K","C"]},
+  tazefasulye:{n:tx("Taze fasulye (çiğ)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:150}], p:1.8, c:7, f:0.2, lif:3.4, i:"veg", v:["K","C","folat"]},
   zeytinyaglifasulye:{n:tx("Zeytinyağlı taze fasulye"), por:[{n:tx("porsiyon"),g:200}], p:2, c:7, f:6, lif:3, i:"veg", v:["K","C"]},
   cobansalata:{n:tx("Çoban salata"), por:[{n:tx("kase"),g:150}], p:1, c:4, f:3, lif:1.5, i:"veg", v:["C","A"]},
   ezme:{n:tx("Acılı ezme"), por:[{n:tx("yemek kaşığı"),g:20}], p:1.5, c:7, f:5, lif:2, i:"veg", v:["C","A"]},
@@ -370,8 +370,8 @@ const FOODS = {
   barbunyapismis:{n:tx("Barbunya (haşlanmış)"), por:[{n:tx("porsiyon"),g:150}], p:8.7, c:23, f:0.5, lif:6.4, kcal100:127, i:"legume", v:["folat","demir"]},
   kinoapismis:{n:tx("Kinoa (haşlanmış)"), por:[{n:tx("porsiyon"),g:150}], p:4.4, c:21, f:1.9, lif:2.8, kcal100:120, i:"grain", v:["magnezyum","folat"]},
   yulaflapasi:{n:tx("Yulaf lapası (suyla, pişmiş)"), a:"yulaf", por:[{n:tx("kase"),g:250}], p:2.5, c:12, f:1.5, lif:1.7, kcal100:71, i:"grain", v:["magnezyum"]},
-  eriste:{n:tx("Erişte (kuru)"), por:[{n:tx("porsiyon"),g:80}], p:12, c:72, f:2, lif:3, i:"grain"},
-  tamunu:{n:tx("Tam buğday unu"), por:[{n:tx("yemek kaşığı"),g:10},{n:tx("su bardağı"),g:110}], p:13, c:72, f:2, lif:12, kcal100:340, i:"grain", v:["magnezyum","demir"]},
+  eriste:{n:tx("Erişte (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:80}], p:12, c:72, f:2, lif:3, i:"grain"},
+  tamunu:{n:tx("Tam buğday unu"), cigYenmez:true, por:[{n:tx("yemek kaşığı"),g:10},{n:tx("su bardağı"),g:110}], p:13, c:72, f:2, lif:12, kcal100:340, i:"grain", v:["magnezyum","demir"]},
   sehriyepilav:{n:tx("Şehriyeli pilav (pişmiş)"), a:"pilav", por:[{n:tx("porsiyon"),g:180},{n:tx("yemek kaşığı"),g:25}], p:3, c:26, f:4, lif:0.7, i:"grain"},
   nohutlupilav:{n:tx("Nohutlu pilav (pişmiş)"), a:"pilav", por:[{n:tx("porsiyon"),g:200}], p:4.5, c:27, f:3.5, lif:2, i:"grain", v:["folat"]},
   haslanmisbrokoli:{n:tx("Brokoli (haşlanmış)"), por:[{n:tx("porsiyon"),g:150}], p:2.4, c:7, f:0.4, lif:3.3, kcal100:35, i:"veg", v:["C","K","folat"]},
@@ -379,7 +379,7 @@ const FOODS = {
   kozpatlican:{n:tx("Közlenmiş patlıcan"), por:[{n:tx("adet"),g:150}], p:1, c:6, f:0.2, lif:3, i:"veg", v:["potasyum"]},
   izgarasomon:{n:tx("Somon (ızgara, pişmiş)"), a:"somon", por:[{n:tx("porsiyon"),g:150}], p:25, c:0, f:12, lif:0, kcal100:208, i:"fish", v:["D","B12","omega3"]},
   izgaratavuk:{n:tx("Tavuk göğsü (ızgara, pişmiş)"), a:"tavuk", por:[{n:tx("porsiyon"),g:120},{n:tx("bütün göğüs"),g:170}], p:31, c:0, f:3.6, lif:0, kcal100:165, i:"poultry", v:["B6","B12",tx("çinko")]},
-  tavukciger:{n:tx("Tavuk ciğeri (çiğ)"), por:[{n:tx("porsiyon"),g:100}], p:17, c:1, f:5, lif:0, kcal100:119, i:"poultry", v:["A","demir","B12","folat"]},
+  tavukciger:{n:tx("Tavuk ciğeri (çiğ)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:100}], p:17, c:1, f:5, lif:0, kcal100:119, i:"poultry", v:["A","demir","B12","folat"]},
   arnavutciger:{n:tx("Arnavut ciğeri"), por:[{n:tx("porsiyon"),g:150}], p:20, c:7, f:14, lif:0.5, i:"meat", v:["A","demir","B12"]},
 
   /* --- Türk mutfağı: yemekler ve mezeler --- */
@@ -835,7 +835,7 @@ const HAS_LACTOSE = new Set(["tereyagi","tost","kasarlipide","suborek","sigarabo
   "manti","iskender","hunkarbegendi"]);
 
 const HAS_GLUTEN = new Set(["ekmek","beyazekmek","cavdarekmek","kepekliekmek","simit","yufka",
-  "tost","pogaca","acma","makarna","makarnapis","kuskus","bulgur","bulgurpilav","un","sehriye",
+  "tost","pogaca","acma","makarna","makarnapis","kuskus","kuskuspis","bulgur","bulgurpilav","un","sehriye",
   "kisir","manti","iclikofte","cigkofte","lahmacun","kiymalipide","kasarlipide","pizza",
   "suborek","sigaraboregi","kiymaliborek","gozleme","cigborek","tantuni","tavukdurum",
   "baklava","kunefe","kadayif","revani","biskuvi","kraker","gevrek","granola","musli",
@@ -907,30 +907,30 @@ const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahin
    Bu liste yalnızca PLATES içindeki adayları denetler, tek başına aday üretmez. */
 const SUGGEST_FOODS = new Set([
   "ahududu","alabalik","antepfistigi","armut","avokado","ayran","badem","bademezmesi",
-  "bagel","barbunya","beyazekmek","beyazpeynir","biftek","bitkiselyogurt","bogurtlen",
-  "bulgur","cacik","cavdarekmek","ceviz","cheddar","cilek","cipura","cokelek","cottage",
-  "ekmek","eksimaya","elma","esmerpirinc","ezine","findik","findikezmesi","fistikezmesi",
-  "granola","hamsi","hindi","hindikiyma","humus","hurma","incir","ingmuffin","kaju",
-  "karides","kasar","kecipeyniri","kefir","kepekliekmek","kinoa","kivi","kofte","kurufasulye",
-  "kuruincir","kurukayisi","kuruuzum","kuskus","leblebi","levrek","lightbeyaz","lightkasar",
-  "lor","makarna","makarnabeyaz","mandalina","menemen","mercimek","misirtortilla","morina",
-  "mozzarella","musli","muz","nohut","omlet","orgupeyniri","patates","pirinc","portakal",
-  "seftali","seitan","simit","siyahfasulye","skyr","somon","soya","soyasutu","sut","suzme",
+  "bagel","barbunyapismis","beyazekmek","beyazpeynir","biftek","bitkiselyogurt","bogurtlen",
+  "bulgurpilav","cacik","cavdarekmek","ceviz","cheddar","cilek","cipura","cokelek","cottage",
+  "ekmek","eksimaya","elma","esmerpirincpis","ezine","findik","findikezmesi","fistikezmesi",
+  "granola","hamsi","haslanmispatates","hindi","hindikiyma","humus","hurma","incir","ingmuffin","kaju",
+  "karides","kasar","kecipeyniri","kefir","kepekliekmek","kinoapismis","kivi","kofte","kurufasulyepismis",
+  "kuruincir","kurukayisi","kuruuzum","kuskuspis","leblebi","levrek","lightbeyaz","lightkasar",
+  "lor","makarnapis","mandalina","menemen","mercimekpismis","misirtortilla","morina",
+  "mozzarella","musli","muz","nohutpismis","omlet","orgupeyniri","patates","pilav","portakal",
+  "seftali","seitan","simit","siyahfasulyepis","skyr","somon","soyasutu","sut","suzme",
   "tahilhalka","tatlipatates","tavuk","tavukbut","tempeh","tilapia","tofu","ton","uskumru",
-  "vegankiyma","yabanmersini","yerfistigi","yesilmercimek","yesilzeytin","yogurt","yulaf",
+  "vegankiyma","yabanmersini","yerfistigi","yesilzeytin","yogurt","yulaf",
   "yumurta","yunanyogurt","zeytin","zeytinyagi"
 ]);
 
 /* Kahvaltı ve ara öğün hafif öğünlerdir: pişirilip yemek olarak yenen tahıllar
    ve kuru baklagiller bu öğünlere önerilmez. */
 const MEAL_GRAINS = new Set(["pirinc","pilav","bulgur","bulgurpilav","makarna","makarnapis",
-  "glutensizmakarna","kinoa","kuskus","karabugday","amarant","misir","cigkofte","kisir"]);
+  "glutensizmakarna","kinoa","kinoapismis","kuskus","kuskuspis","esmerpirincpis","karabugday","amarant","misir","cigkofte","kisir"]);
 /* Hazır yenen baklagiller: hafif öğünde olabilir. */
 const READY_LEGUMES = new Set(["tofu","tempeh","humus","edamame"]);
 /* Kahvaltıya yakışan tahıllar ana öğüne önerilmez. */
 const BREAKFAST_GRAINS = new Set(["yulaf","musli","simit","acma","granola"]);
 
-/* Bir öğünde önerilebilecek en az ve en çok miktar (gram, çiğ). Tabloda olmayan
+/* Bir öğünde önerilebilecek en az ve en çok miktar (gram). Tabloda olmayan
    besin otomatik öneriye girmez; yalnızca kullanıcı kendisi ekleyebilir. */
 const PORTION = {};
 const portionRule = (keys, lo, hi) => keys.forEach(k => { PORTION[k] = [lo, hi]; });
@@ -983,12 +983,12 @@ portionRule(["tavuk","hindi","tavukbut","kofte","biftek","hindikiyma","somon","l
   "alabalik","uskumru","morina","tilapia","karides"], 100, 250);
 portionRule(["hamsi"], 150, 250);
 portionRule(["ton"], 80, 165);
-portionRule(["pirinc","bulgur","makarna","makarnabeyaz","kinoa","kuskus","esmerpirinc"], 40, 150);
-portionRule(["patates"], 150, 450);
+/* Pişmiş tahıl su çektiğinden aynı enerji için kuru tahıldan daha ağırdır. */
+portionRule(["pilav","bulgurpilav","makarnapis","kinoapismis","kuskuspis","esmerpirincpis"], 100, 400);
+portionRule(["patates","haslanmispatates"], 150, 450);
 portionRule(["tatlipatates"], 130, 400);
-portionRule(["mercimek","yesilmercimek","nohut","kurufasulye","barbunya","siyahfasulye"], 50, 130);
+portionRule(["mercimekpismis","nohutpismis","kurufasulyepismis","barbunyapismis","siyahfasulyepis"], 100, 300);
 portionRule(["tempeh","seitan","vegankiyma"], 100, 250);
-portionRule(["soya"], 30, 80);
 portionRule(["zeytinyagi"], 5, 20);
 
 const BREADS = ["ekmek","cavdarekmek","kepekliekmek","eksimaya","ingmuffin","bagel","beyazekmek","misirtortilla"];
@@ -999,11 +999,12 @@ const SPOON = ["suzme","yogurt","yunanyogurt","skyr","kefir","sut","soyasutu","b
 /* Protein hedefi yüksekken kullanılan listeler. */
 const RICH_SPOON = ["skyr","suzme","yunanyogurt","bitkiselyogurt","soyasutu"];
 const RICH_CHEESES = ["lor","lightbeyaz","cottage","lightkasar","cokelek","beyazpeynir","mozzarella"];
-const STARCH = ["pirinc","bulgur","makarna","patates","kinoa","tatlipatates","esmerpirinc","makarnabeyaz","kuskus"];
+const STARCH = ["pilav","bulgurpilav","makarnapis","patates","kinoapismis","tatlipatates","esmerpirincpis","kuskuspis"];
 const DAIRY_SIDE = ["yogurt","cacik","ayran"];
 /* Büyük öğünde patates yerine yoğun tahıl: patatesle tabak doymadan hedefe ulaşmıyor. */
-const DENSE_STARCH = ["pirinc","bulgur","makarna","kinoa","esmerpirinc","makarnabeyaz","kuskus"];
+const DENSE_STARCH = ["pilav","bulgurpilav","makarnapis","kinoapismis","esmerpirincpis","kuskuspis"];
 const SIDE_BREADS = ["ekmek","kepekliekmek","cavdarekmek","eksimaya"];
+const GLUTEN_FREE_SIDES = ["misirtortilla","avokado","haslanmispatates"];
 const BFAST_SIDES = [tx("Domates, salatalık, yeşillik"), tx("Domates, salatalık, yeşil biber")];
 const EGG_SIDES = [tx("Ispanak, domates"), tx("Domates, maydanoz")];
 
@@ -1033,11 +1034,11 @@ const PLATES = {
     { w:3, g:[{ k:["tavuk","kofte","hindi","biftek","tavukbut","hindikiyma"] }, { k:STARCH, big:DENSE_STARCH }, { k:["zeytinyagi"] },
       { k:DAIRY_SIDE, opt:1, big:SIDE_BREADS }] },
     { w:2, g:[{ k:["somon","levrek","ton","cipura","hamsi","alabalik","uskumru","karides","morina","tilapia"] },
-      { k:["patates","pirinc","bulgur","makarna","kinoa","tatlipatates","esmerpirinc","makarnabeyaz"], big:DENSE_STARCH }, { k:["zeytinyagi"] },
+      { k:["patates","pilav","bulgurpilav","makarnapis","kinoapismis","tatlipatates","esmerpirincpis"], big:DENSE_STARCH }, { k:["zeytinyagi"] },
       { k:[], opt:1, big:SIDE_BREADS }] },
-    { w:2, lowP:2, g:[{ k:["kurufasulye","nohut","yesilmercimek","mercimek","barbunya","siyahfasulye"] }, { k:["pirinc","bulgur","esmerpirinc"] },
+    { w:2, lowP:2, g:[{ k:["kurufasulyepismis","nohutpismis","mercimekpismis","barbunyapismis","siyahfasulyepis"] }, { k:["pilav","bulgurpilav","esmerpirincpis"] },
       { k:["zeytinyagi"] }, { k:DAIRY_SIDE, opt:1, big:SIDE_BREADS }] },
-    { w:2, only:["vejetaryen","vegan","pesketaryen"], g:[{ k:["tofu","seitan","vegankiyma","tempeh","soya"] }, { k:STARCH, big:DENSE_STARCH },
+    { w:2, only:["vejetaryen","vegan","pesketaryen"], g:[{ k:["tofu","seitan","vegankiyma","tempeh"] }, { k:STARCH, big:DENSE_STARCH },
       { k:["zeytinyagi"] }, { k:["yogurt","cacik"], opt:1, big:SIDE_BREADS }] }
   ]
 };
@@ -1048,7 +1049,7 @@ const SCALE_REF = { kahvalti:700, ara:450, ana:950 };
 const SCALES = k => ["meat","poultry","fish","bread"].includes(FOODS[k].i) || MEAL_GRAINS.has(k)
   || CHEESES.includes(k) || k === "zeytinyagi" || ["badem","ceviz","findik","antepfistigi","kaju","yerfistigi"].includes(k);
 /* Ana öğünün yanındaki ekmek en çok iki dilim, çok büyük öğünde üç dilim. */
-const sideBreadMax = t => t >= 1300 ? 90 : 60;
+const sideBreadMax = t => t >= 1300 ? 120 : 90;
 /* Bitkisel süt ve yoğurt yalnızca vegan ve laktozsuz beslenmede önerilir. */
 const PLANT_DAIRY = new Set(["soyasutu","bitkiselyogurt"]);
 /* Bir porsiyon meyve: orta boy bir meyve ya da küçük bir kase (en az 120 g), kuru meyvede 30 g.
@@ -1110,7 +1111,9 @@ function choosePlates(day, mealList, ctx, fixedByMeal, big){
       const picks = [];
       let failed = false;
       for (let z = 0; z < plate.g.length; z++){
-        const goz = plate.g[z], list = big[idx] && goz.big && goz.big.some(ctx.allowed) ? goz.big
+        const goz = plate.g[z];
+        const bigOptions = ctx.diet === "glutensiz" && goz.big === SIDE_BREADS ? GLUTEN_FREE_SIDES : goz.big;
+        const list = big[idx] && bigOptions && bigOptions.some(ctx.allowed) ? bigOptions
           : (ctx.rich && goz.rich) || goz.k;
         if (list.some(k => fixed.includes(k))) continue;
         let cands = list.filter(k => ctx.allowed(k) && !(ctx.diet === "koser" && picks.some(p => meatDairy(p.k, k))));
@@ -1143,7 +1146,7 @@ function choosePlates(day, mealList, ctx, fixedByMeal, big){
 const NUT_KEYS = ["k", "p", "c", "f"];
 function solvePortions(comps, meals, T){
   /* Protein hedefin %20 üstüne, yağ %15 üstüne kadar ceza almaz; altı daha pahalı. */
-  const W = { k:20, p:5, pOver:2, c:0.5, f:0.5, fOver:1.5, m:1.5, r:0.6 };
+  const W = { k:20, p:5, pOver:3, c:0.5, f:0.5, fOver:1.5, m:1.5, r:0.6 };
   const P_HI = 1.2, F_HI = 1.15, F_LO = 0.75;
   const day = { k:0, p:0, c:0, f:0 }, mk = meals.map(m => m.base.k);
   meals.forEach(m => NUT_KEYS.forEach(x => { day[x] += m.base[x]; }));
@@ -1200,7 +1203,7 @@ function buildMeals(program, variantIndex){
   const cuisine = currentCuisine();
   const exclude = new Set(prefs.exclude);
   /* Yalnızca açıkça onaylı havuzdan seçim yapılır; yeni kayıtlar otomatik öneriye girmez. */
-  const allowed = k => SUGGEST_FOODS.has(k) && !!FOODS[k] && !!PORTION[k] && !exclude.has(k) && !NO_SUGGEST.has(k)
+  const allowed = k => SUGGEST_FOODS.has(k) && FOODS[k] && !FOODS[k].cigYenmez && !!PORTION[k] && !exclude.has(k) && !NO_SUGGEST.has(k)
     && foodAllowed(k, diet) && cuisineOk(FOODS[k], cuisine)
     && (!PLANT_DAIRY.has(k) || diet === "vegan" || diet === "laktozsuz");
   /* Protein kalorinin %18'ini geçiyorsa proteini az ara öğünler çıkar ve gözlerde proteinli listeler
@@ -1216,6 +1219,7 @@ const nutOf = f => ({ k:foodEnergyPer100(f) / 100, p:f.p / 100, c:f.c / 100, f:f
   const fixed = mealList.map(mm => {
     const acc = { items:[], keys:[], p:0, c:0, f:0, alk:0, lif:0, kcal:0, micros:new Set() };
     for (const x of fixedOf(mm.id)){
+      if (FOODS[x.k]?.cigYenmez) continue;
       const fo = foodOf(x.k);
       acc.items.push({ text: portion(fo, x.g).text, icon: fo.i, key:x.k, fixed:true, g:x.g });
       acc.keys.push(x.k);

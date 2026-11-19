@@ -275,8 +275,14 @@ const MEAL_RULES = (() => {
     if (f.i === "dairy") return 100;
     if (["meat","poultry","fish"].includes(f.i)) return 300;
     if (f.i === "bread") return 150;
-    if (f.i === "grain") return BREAKFAST_GRAINS.has(k) || k === "tahilhalka" ? 120 : 180;
-    if (f.i === "legume") return f.c >= 45 ? 130 : 250;
+    if (f.i === "grain") {
+      if (BREAKFAST_GRAINS.has(k) || k === "tahilhalka") return 120;
+      return /\((pişmiş|haşlanmış)\)/.test(f.n) ? 480 : 180;
+    }
+    if (f.i === "legume") {
+      if (f.n.endsWith("(haşlanmış)")) return 300;
+      return f.c >= 45 ? 130 : 250;
+    }
     if (["tahin","fistikezmesi","findikezmesi","bademezmesi"].includes(k)) return 32;
     if (f.i === "nuts") return 40;
     if (k === "zeytin" || k === "yesilzeytin") return 40;
@@ -2383,6 +2389,29 @@ test("arama: Türkçe karakter ve büyük/küçük harf fark etmez; ad ve takma 
        genel "kofte" sorgusunda bile ilk 30'da yerini alır. */
     ok(keys("kofte").includes("cf_x"), "kendi besinin adı");
   } finally { state = null; }
+});
+
+test("besin seçimi: çiğ yenmeyen katalog kayıtları süzülür, kişisel besinler ve günlük korunur", async () => {
+  const previous = state;
+  state = await loadFixture();
+  try {
+    state.customFoods = { cf_firik: { ...FOODS.firikkuru } };
+    const entry = { log: [] };
+    const slot = userMeals()[0].id;
+    state.days = { "2026-11-19": entry };
+    addFoodDirect(entry, "firikkuru", 60, slot);
+    addFoodDirect(entry, "cf_firik", 60, slot);
+    mealPrefs().fixed[slot] = [{ k: "firikkuru", g: 60 }, { k: "cf_firik", g: 60 }];
+    for (const k of ["tavuk","yumurta","hindi","somon","palamut","mangokuru","kurukayisi","kuruuzum"])
+      ok(searchFoods(FOODS[k].n, 30).some(([key]) => key === k), FOODS[k].n + " görünmeli");
+    eq(searchFoods("Firik (kuru)", 30).map(([k]) => k), ["cf_firik"]);
+    for (const rows of [favoriteFoods(), quickFoods(slot)]) eq(rows.map(([k]) => k), ["cf_firik"]);
+    eq(entry.log.map(it => it.k), ["firikkuru","cf_firik"]);
+    const menu = buildMeals(buildProgram(state.profile, 82, 0), 0);
+    const keys = menu.meals.flatMap(m => m.items.map(it => it.key));
+    ok(keys.includes("cf_firik"), "sabit kişisel besin korunmalı");
+    eq(keys.filter(k => FOODS[k]?.cigYenmez), []);
+  } finally { state = previous; }
 });
 
 test("arama: küçük yazım hatalarına tolerans; doğru yazımın sırası bozulmaz, kısa ya da saçma sorgu eşleşmez", async () => {
