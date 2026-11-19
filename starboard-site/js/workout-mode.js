@@ -3,7 +3,7 @@
 /* ---- antrenman modu ----
    Tek hareket tam ekran. Her set son antrenmanın değeriyle hazır gelir;
    ✓ onaylar, ± düzeltir. Klavye sadece istersen açılır. */
-let woIdx = 0, woEl = null, woDone = false, woHowOpen = null;
+let woIdx = 0, woEl = null, woDone = false, woHowOpen = false;
 
 /* ---- dinlenme sayacı ----
    Bir set onaylanınca setler arası geri sayım başlar. Süre ekranda ± ile
@@ -207,8 +207,7 @@ function woScreen(){
   const rec = (lifts[name] && lifts[name].t === ex.t) ? lifts[name] : (lifts[name] || {});
   const prev = lastLift(name, vKey());
   const ps = prev ? liftSummary(prev, ex) : "";
-  const ids = guidesFor(name), guide = ids.length ? GUIDE_BY_ID[ids[0]] : null;
-  const howOpen = !!(guide && woHowOpen === ids[0]);
+  const id = guidesFor(name)[0], guide = GUIDE_BY_ID[id];
 
   return `<div class="wo-top">
       <button class="wo-x" id="wo-x" aria-label="${tx("Antrenman modunu kapat")}">×</button>
@@ -221,13 +220,17 @@ function woScreen(){
       <div class="wo-h">${esc(exText(ex.name))}</div>
       <div class="wo-s">${esc(exText(ex.sub || ""))}${ex.sub && LIFT_KIND[ex.t] ? " · " : ""}${LIFT_KIND[ex.t] || ""}</div>
       <div class="wo-last">${ps ? tx("Geçen sefer: <b>{0}</b> · {1}", [(esc(ps)), (prettyDate(prev.k))]) : tx("Bu hareketi ilk kez kaydediyorsun.")}</div>
-      ${guide ? `<div class="how wo-how${howOpen ? " on" : ""}">
-        <button class="how-h" id="wo-how-t" aria-expanded="${howOpen}">
-          <span>${tx("Nasıl yapılır")}</span><svg class="ico fold-c" aria-hidden="true"><use href="#i-next"/></svg>
+      <div class="how wo-how${woHowOpen ? " on" : ""}">
+        <button type="button" class="how-h" id="wo-how-t" aria-expanded="${woHowOpen}" aria-controls="wo-how-b">
+          <span>${tx("Hareket önizleme")}</span><svg class="ico fold-c" aria-hidden="true"><use href="#i-next"/></svg>
         </button>
-        ${howOpen ? `<div class="how-b" id="wo-how-b">${exAnimFor(ids[0]) ? `<div class="how-anim" data-anim="${ids[0]}" role="img" aria-label="${esc(guide.n)}"></div>` : ""}<ol>${guide.s.map(x => `<li>${x}</li>`).join("")}</ol>
-          <div class="how-x"><b>${tx("Dikkat:")}</b> ${guide.x}</div></div>` : ""}
-      </div>` : ""}
+        <div class="how-b" id="wo-how-b"${woHowOpen ? "" : " hidden"}>
+          ${id && exAnimFor(id) ? `<div class="how-anim" data-anim="${id}" role="img" aria-label="${esc(guide.n)}"></div>` : ""}
+          ${guide ? `<ol>${guide.s.map(x => `<li>${x}</li>`).join("")}</ol>
+          <div class="how-x"><b>${tx("Dikkat:")}</b> ${guide.x}</div>` :
+          `<div class="how-x"><b>${esc(exText(ex.name))}</b><br>${tx("Programdaki hedefi izle ve rahat, kontrollü bir tempo seç.")}</div>`}
+        </div>
+      </div>
       ${woBody(ex, name, rec, prev)}
     </div>
     ${restBar()}
@@ -239,6 +242,7 @@ function woScreen(){
 
 function drawWO(){
   if (!woEl) return;
+  if (woHowOpen) exAnimStop();
   woEl.innerHTML = woScreen();
   wireWO();
   wireRest();
@@ -253,7 +257,7 @@ function openWorkout(){
   const first = list.findIndex(n => !liftHas(lifts[n]));
   woIdx = first < 0 ? 0 : first;
   woDone = false;
-  woHowOpen = null;
+  woHowOpen = false;
   woEl = document.createElement("div");
   woEl.className = "wo";
   woEl.setAttribute("role", "dialog");
@@ -266,7 +270,8 @@ function openWorkout(){
 function closeWorkout(){
   if (!woEl) return;
   stopRest();
-  woHowOpen = null;
+  if (woHowOpen) exAnimStop();
+  woHowOpen = false;
   woEl.remove(); woEl = null;
   document.body.style.overflow = "";
   render();
@@ -282,7 +287,6 @@ function wireWO(){
   const back = el("#wo-back");
   if (back && !back.disabled) back.onclick = () => {
     if (woDone){ woDone = false; woIdx = list.length - 1; } else woIdx--;
-    woHowOpen = null;
     drawWO();
   };
   const fin = el("#wo-finish");
@@ -290,14 +294,21 @@ function wireWO(){
   const next = el("#wo-next");
   if (next) next.onclick = () => {
     if (woIdx === list.length - 1) woDone = true; else woIdx++;
-    woHowOpen = null;
     drawWO();
   };
   const howBtn = el("#wo-how-t");
   if (howBtn) howBtn.onclick = () => {
-    const id = guidesFor(list[woIdx])[0] || null;
-    woHowOpen = woHowOpen === id ? null : id;
-    drawWO();
+    const panel = el("#wo-how-b");
+    woHowOpen = !woHowOpen;
+    howBtn.setAttribute("aria-expanded", String(woHowOpen));
+    howBtn.parentElement.classList.toggle("on", woHowOpen);
+    panel.hidden = !woHowOpen;
+    if (woHowOpen) mountExAnim(panel);
+    else {
+      exAnimStop();
+      const anim = panel.querySelector(".how-anim");
+      if (anim) anim.replaceChildren();
+    }
   };
 
   if (woDone || woIdx >= list.length) return;

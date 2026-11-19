@@ -3131,32 +3131,70 @@ test("antrenman: alt sekmeler Bugün, Program ve Nasıl yapılır; rehber sekmes
   } finally { trainReset(); }
 });
 
-test("antrenman: nasıl yapılır antrenman modunda kapalı durur, dokunuşla animasyon ve adımlar açılır", async () => {
+test("antrenman: hareket önizleme her harekette menü olarak durur, açık durumu korunur", async () => {
   try {
     await trainFx(true);
     tab = "plan"; planTab = "today"; render();
     openWorkout();
     const { list } = woList();
-    woIdx = list.findIndex((n, i) => i < list.length - 1 && guidesFor(n)[0] && guidesFor(list[i + 1])[0] && exAnimFor(guidesFor(n)[0]));
-    ok(woIdx >= 0, "animasyonu olan ve ardından hareket gelen bir gün bulundu");
+    /* İki kez "sonraki"ye basılacağı için en az üç animasyonlu hareket gerekir. */
+    woIdx = list.findIndex((n, i) => i < list.length - 2 &&
+      exAnimFor(guidesFor(n)[0]) && exAnimFor(guidesFor(list[i + 1])[0]));
+    ok(woIdx >= 0, "animasyonu olan hareketlerden oluşan bir gün bulundu");
     drawWO();
     const id = guidesFor(list[woIdx])[0];
-    let btn = woEl.querySelector("#wo-how-t");
-    ok(btn, "hareketin altında nasıl yapılır düğmesi var");
+    let btn = woEl.querySelector("#wo-how-t"), panel = woEl.querySelector("#wo-how-b");
+    ok(btn && panel, "hareketin altında hareket önizleme menüsü var");
+    eq(btn.textContent.trim(), "Hareket önizleme", "menü başlığı");
     eq(btn.getAttribute("aria-expanded"), "false", "varsayılan kapalı");
-    ok(!woEl.querySelector(".how-anim") && !woEl.querySelector(".how-b"), "kapalıyken animasyon ve adımlar yok");
+    eq(panel.hidden, true, "kapalıyken panel gizli");
+    ok(panel.hasAttribute("hidden"), "kapalıyken hidden özniteliği var");
+    ok(!panel.querySelector(".how-anim svg"), "kapalıyken animasyon çizilmemiş");
     btn.onclick();
-    btn = woEl.querySelector("#wo-how-t");
+    btn = woEl.querySelector("#wo-how-t"); panel = woEl.querySelector("#wo-how-b");
     eq(btn.getAttribute("aria-expanded"), "true", "bir dokunuşla açılır");
-    ok(woEl.querySelector(`.how-anim[data-anim="${id}"]`), "hareketin animasyonu");
-    ok(woEl.querySelectorAll(".how-b li").length > 0, "nasıl yapıldığını anlatan yazı");
+    eq(panel.hidden, false, "panel görünür");
+    ok(panel.querySelector(`.how-anim[data-anim="${id}"]`), "hareketin animasyonu");
+    ok(panel.querySelectorAll("li").length > 0, "nasıl yapıldığını anlatan yazı");
+    ok(panel.querySelector(".how-x").textContent.includes("Dikkat"), "dikkat notu");
     btn.onclick();
     eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "tekrar dokunuşla kapanır");
-    /* sonraki harekete geçince yeni rehber kapalı başlar */
+    eq(woEl.querySelector("#wo-how-b").hidden, true, "panel yeniden gizlenir");
+    ok(!woEl.querySelector("#wo-how-b .how-anim").children.length, "kapanınca animasyon temizlenir");
+    /* Kullanıcı bir kez açtıysa sonraki hareketlerde de açık kalır. */
     woEl.querySelector("#wo-how-t").onclick();
-    ok(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded") === "true");
+    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "true");
     woEl.querySelector("#wo-next").onclick();
-    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "yeni hareket temiz başlar");
+    btn = woEl.querySelector("#wo-how-t"); panel = woEl.querySelector("#wo-how-b");
+    eq(btn.getAttribute("aria-expanded"), "true", "sonraki harekette açık kalır");
+    eq(panel.hidden, false, "sonraki harekette panel görünür");
+    ok(panel.querySelectorAll("li").length > 0, "sonraki hareketin adımları");
+    ok(panel.querySelector(".how-anim[data-anim]"), "sonraki hareketin animasyonu");
+    /* Kapatıldıysa sonraki hareket de kapalı başlar. */
+    btn.onclick();
+    woEl.querySelector("#wo-next").onclick();
+    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "kapatıldıysa sonraki harekette kapalı");
+    /* Rehberi olmayan harekette de menü vardır; hareket adıyla yedek anlatım gösterir. */
+    closeWorkout();
+    state.profile.programId = "custom";
+    state.profile.custom = { days: { [isoWeekday(today())]: { t:"Test günü", ex:[{ n:"Özel hareket", s:3, r:10 }] } } };
+    calcReset();
+    openWorkout();
+    btn = woEl.querySelector("#wo-how-t");
+    ok(btn, "rehberi olmayan harekette de menü var");
+    eq(btn.textContent.trim(), "Hareket önizleme", "menü başlığı aynı");
+    eq(btn.getAttribute("aria-expanded"), "false", "yine kapalı başlar");
+    eq(woEl.querySelector("#wo-how-b").hidden, true);
+    btn.onclick();
+    panel = woEl.querySelector("#wo-how-b");
+    eq(panel.hidden, false, "yedek anlatım açılır");
+    ok(panel.querySelector(".how-x") && panel.querySelector(".how-x").textContent.includes("Özel hareket"), "hareket adı yedek metinde");
+    eq(panel.querySelectorAll("li").length, 0, "rehbersiz harekette adım yok");
+    /* Antrenman modu kapanıp yeniden açılınca menü kapalı başlar. */
+    closeWorkout();
+    openWorkout();
+    eq(woEl.querySelector("#wo-how-t").getAttribute("aria-expanded"), "false", "yeniden açılışta kapalı");
+    eq(woEl.querySelector("#wo-how-b").hidden, true, "panel gizli");
   } finally { if (woEl) closeWorkout(); trainReset(); }
 });
 

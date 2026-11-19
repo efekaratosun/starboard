@@ -364,6 +364,8 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .wo-s{font-size:13.5px;color:var(--muted);font-weight:700}
 .wo-last{margin:14px 0 12px;font-size:13px;color:var(--muted);background:var(--shell);border-radius:16px;padding:11px 14px;line-height:1.5}
 .wo-last b{color:var(--ink);font-weight:900}
+.wo-how{overflow-wrap:anywhere}
+.wo-how .how-anim svg{max-width:240px}
 .wo-copy{margin-bottom:14px}
 .wo-sets{display:flex;flex-direction:column}
 .wo-set{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
