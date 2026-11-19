@@ -3118,7 +3118,7 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
       `Karbonhidrat: ${program.carb} g kaldı`, `Yağ: ${program.fat} g kaldı`], "boş günde hedefin tamamı kalır");
     ok([...app.querySelectorAll(".moon")].every(m => m.getAttribute("role") === "img"), "ekran okuyucu etiketi (role=img)");
     let k = moonOf("kcal");
-    ok(k.querySelector(".mn-lit") && k.querySelector(".mn-sh") && !k.querySelector(".mn-halo"), "sade ay grafiği");
+    ok(k.querySelector(".mn-lit") && k.querySelector(".mn-sh") && k.querySelector(".mn-halo"), "ay grafiği");
     eq(+k.querySelector(".mn-sh").dataset.to, 0, "boş günde gölge ayı örter (ay karanlık)");
     const lit = k.querySelector(".mn-lit"), sh = k.querySelector(".mn-sh");
     eq(sh.getAttribute("r"), lit.getAttribute("r"), "gölge ayın yarıçapında");
@@ -3168,6 +3168,73 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
     ok(!app.querySelector(".metric-note .out"), "eski 'Hedefi aştın' satırı yok");
     eq(a11yBad("ay"), []);
   } finally { closeSug(); }
+});
+
+test("ay: kraterler diskte, ayrık, makroya özgü ve kararlı", () => {
+  const root = document.createElement("div");
+  const draw = id => {
+    root.innerHTML = macroMoon(id, 95, 100, "g", id);
+    return [...root.querySelectorAll(".mn-crater")].map(crater => {
+      eq(crater.getAttribute("aria-hidden"), "true");
+      ok(root.querySelector(".mn-lit").compareDocumentPosition(crater) & Node.DOCUMENT_POSITION_FOLLOWING);
+      ok(crater.compareDocumentPosition(root.querySelector(".mn-sh")) & Node.DOCUMENT_POSITION_FOLLOWING);
+      const circle = crater.querySelector("circle");
+      return ["cx", "cy", "r"].map(attr => +circle.getAttribute(attr));
+    });
+  };
+  const layouts = ["kcal", "protein", "carb", "fat"].map(id => {
+    const craters = draw(id);
+    ok(craters.length >= 6 && craters.length <= 9, "krater sayısı");
+    const radii = craters.map(([, , r]) => r);
+    ok(Math.max(...radii) / Math.min(...radii) >= 2.5, "krater boyutları belirgin farklı");
+    const large = radii.filter(r => r >= 5 && r <= 7).length;
+    const medium = radii.filter(r => r >= 3 && r <= 4).length;
+    const small = radii.filter(r => r >= 1.3 && r <= 2.5).length;
+    ok(large >= 1 && large <= 2 && medium >= 2 && medium <= 3 && small >= 2, "üç krater boyutu");
+    eq(large + medium + small, craters.length);
+    eq(draw(id), craters, "ardışık çizimde aynı yüzey");
+    craters.forEach(([x, y, r], index) => {
+      ok(Math.hypot(x - 48, y - 48) + r + 0.45 < MOON_R, "krater ve açık kenarı disk içinde");
+      for (const [otherX, otherY, otherR] of craters.slice(0, index)){
+        ok(Math.hypot(x - otherX, y - otherY) > r + otherR + 0.9, "kraterler çakışmaz");
+      }
+    });
+    return JSON.stringify(craters.map(([x, y]) => [x, y].join(",")).sort());
+  });
+  eq(new Set(layouts).size, 4, "her makronun konum kümesi farklı");
+});
+
+test("ay: ışıma dolulukla artar, yüksek dolulukta parıltı ve aşımda işaretler görünür", () => {
+  const root = document.createElement("div");
+  const corners = ["kcal", "protein", "carb", "fat"].map(id => {
+    root.innerHTML = macroMoon(id, 60, 100, "g", id);
+    eq(root.querySelector(".mn-spark"), null);
+    root.innerHTML = macroMoon(id, 61, 100, "g", id);
+    const spark = root.querySelector(".mn-spark");
+    ok(spark, "%60 üstünde parıltı var");
+    const {e: x, f: y} = spark.transform.baseVal.getItem(0).matrix;
+    return [Math.sign(x - 48), Math.sign(y - 48)].join(",");
+  });
+  ok(corners.every(corner => !corner.includes("0")), "parıltılar köşelerde");
+  eq(new Set(corners).size, 4, "her makronun parıltı köşesi farklı");
+  const levels = [0, 50, 95, 100, 110].map(got => {
+    root.innerHTML = macroMoon("Kalori", got, 100, "kcal", "kcal");
+    const halo = root.querySelector(".mn-halo");
+    const spark = root.querySelector(".mn-spark");
+    eq(halo.getAttribute("aria-hidden"), "true");
+    eq(spark?.getAttribute("aria-hidden"), got > 60 ? "true" : undefined);
+    for (const selector of [".mn-over-ring", ".mn-over-mark"]){
+      const indicator = root.querySelector(selector);
+      eq(!!indicator, got > 100);
+      if (indicator) ok(spark.compareDocumentPosition(indicator) & Node.DOCUMENT_POSITION_FOLLOWING);
+    }
+    return [+halo.style.getPropertyValue("--mn-level"), parseFloat(halo.style.getPropertyValue("--mn-blur"))];
+  });
+  eq(levels[0], [0, 0], "boş ay ışımaz");
+  eq(levels[3], levels[4], "aşım ışımanın üst sınırını değiştirmez");
+  for (let i = 1; i <= 3; i++){
+    ok(levels[i].every((value, j) => value > levels[i - 1][j]), "ışıma gücü ve yarıçapı artar");
+  }
 });
 
 test("ay: aşımda makro rengi ve kart zemini korunur, halka ve ünlem yalnızca aşımda görünür", async () => {

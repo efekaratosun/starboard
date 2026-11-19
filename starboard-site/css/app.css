@@ -561,7 +561,11 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
   .moon:not(.moon-kcal) .mn-t b{font-size:12px}
 }
 .mn-r svg{width:100%;height:100%;display:block}
+.mn-halo{fill:var(--c);filter:drop-shadow(0 0 var(--mn-blur) var(--c));opacity:calc(var(--mn-level) * var(--moon-glow))}
 .mn-lit{fill:var(--c)}
+.mn-crater circle{fill:var(--moon-crater-fill)}
+.mn-crater path{fill:none;stroke:var(--moon-crater-rim);stroke-width:.9;stroke-linecap:round}
+.mn-spark{fill:var(--c);stroke:rgba(255,255,255,.65);stroke-width:.9}
 .mn-over-ring{stroke:var(--moon-mark)}
 .mn-over-mark{fill:var(--moon-mark)}
 .mn-sh{fill:var(--cs);transition:transform .9s var(--e-out,ease)}
