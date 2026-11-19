@@ -2995,17 +2995,17 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
     k = moonOf("kcal");
     eq(k.querySelector(".mn-v").textContent, fmtN(left), "altta kalan kalori");
     eq(k.querySelector(".mn-u").textContent, "kcal kaldı", "kcal kaldı biçimi");
-    eq(k.style.getPropertyValue("--c"), "var(--kcal)");
-    eq(k.style.getPropertyValue("--cs"), "var(--kcal-soft)", "gölge zemin rengi -soft jetonu");
+    eq(k.style.getPropertyValue("--c"), "var(--moon-kcal)");
+    eq(k.style.getPropertyValue("--cs"), "var(--moon-kcal-soft)", "gölge zemin rengi -soft jetonu");
     ok(!k.classList.contains("over"), "aşım yok");
     eq(moonOf("protein").querySelector(".mn-u").textContent, "g kaldı");
     eq(k.querySelector(".mn-t i").textContent, `${fmtN(4 * c)} / ${fmtN(program.kcal)} kcal`, "kaloride tüketilen / hedef");
     eq(moonOf("protein").querySelector(".mn-t i").textContent, `0 / ${fmtN(program.protein)} g`, "proteinde tüketilen / hedef");
     eq(moonOf("fat").querySelector(".mn-t i").textContent, `0 / ${fmtN(program.fat)} g`);
-    eq(moonOf("carb").style.getPropertyValue("--c"), "var(--carb)");
-    eq(moonOf("carb").style.getPropertyValue("--cs"), "var(--carb-soft)");
-    eq(moonOf("fat").style.getPropertyValue("--c"), "var(--fat)");
-    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    eq(moonOf("carb").style.getPropertyValue("--c"), "var(--moon-carb)");
+    eq(moonOf("carb").style.getPropertyValue("--cs"), "var(--moon-carb-soft)");
+    eq(moonOf("fat").style.getPropertyValue("--c"), "var(--moon-fat)");
+    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--moon-protein)");
     ok(Math.abs(+k.querySelector(".mn-sh").dataset.to - moonShift(4 * c / program.kcal)) < 0.1, "gölge kayması hedefe göre");
     ok(+k.querySelector(".mn-sh").dataset.to < 0 && +k.querySelector(".mn-sh").dataset.to > -68, "ay kısmen aydınlık");
     eq(moonOf("protein").querySelector(".mn-sh").dataset.to, "0", "boş protein karanlık kalır");
@@ -3018,13 +3018,13 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
     eq(k.querySelector(".mn-v").textContent, "+" + fmtN(4 * c2 - program.kcal), "altta +fazlalık");
     eq(k.querySelector(".mn-u").textContent, "kcal");
     eq(k.querySelector(".mn-t i").textContent, `${fmtN(4 * c2)} / ${fmtN(program.kcal)} kcal`, "aşımda da tüketilen / hedef");
-    eq(k.style.getPropertyValue("--c"), "var(--kcal)", "aşımda kalori rengi");
-    eq(k.style.getPropertyValue("--cs"), "var(--kcal-soft)", "aşımda kalori gölgesi");
+    eq(k.style.getPropertyValue("--c"), "var(--moon-kcal)", "aşımda kalori rengi");
+    eq(k.style.getPropertyValue("--cs"), "var(--moon-kcal-soft)", "aşımda kalori gölgesi");
     eq(k.getAttribute("aria-label"), `Kalori: ${fmtN(4 * c2 - program.kcal)} kcal aşıldı`);
     eq(+k.querySelector(".mn-sh").dataset.to, -68, "aşan ay dolunay (gölge dışarıda)");
     ok(moonOf("carb").classList.contains("over") && moonOf("carb").querySelector(".mn-v").textContent === "+" + fmtN(c2 - program.carb), "karbonhidrat aştı");
     ok(!moonOf("protein").classList.contains("over") && !moonOf("fat").classList.contains("over"), "diğerleri aşmadı");
-    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--protein)");
+    eq(moonOf("protein").style.getPropertyValue("--c"), "var(--moon-protein)");
     ok(!app.querySelector(".metric-note .out"), "eski 'Hedefi aştın' satırı yok");
     eq(a11yBad("ay"), []);
   } finally { closeSug(); }
@@ -3043,39 +3043,42 @@ test("ay: aşımda makro rengi ve kart zemini korunur, halka ve ünlem yalnızca
   document.head.append(styles);
   document.body.append(cards);
   try {
-    for (let i = 0; i < cards.children.length; i += 2) {
-      const over = cards.children[i], normal = cards.children[i + 1];
-      const overFill = getComputedStyle(over.querySelector(".mn-lit")).fill;
-      eq(overFill, getComputedStyle(normal.querySelector(".mn-lit")).fill);
-      eq(getComputedStyle(over).backgroundColor, getComputedStyle(normal).backgroundColor);
-      const ring = over.querySelector(".mn-over-ring");
-      ok(ring && !normal.querySelector(".mn-over-ring"), "halka yalnızca aşımda");
-      const mark = over.querySelector(".mn-over-mark");
-      ok(mark && !normal.querySelector(".mn-over-mark"), "ünlem yalnızca aşımda");
-      eq(mark.getAttribute("aria-hidden"), "true", "ünlem erişilebilirlik ağacından gizli");
-      eq(getComputedStyle(mark).fill, getComputedStyle(ring).stroke, "ünlem ve halka aynı renkte");
-      eq(getComputedStyle(ring).fill, "none");
-      const strokeWidth = parseFloat(getComputedStyle(ring).strokeWidth);
-      eq(strokeWidth, 5);
-      const radius = Number(ring.getAttribute("r"));
-      ok(radius - strokeWidth / 2 > Number(over.querySelector(".mn-lit").getAttribute("r")), "halka ayın dışında");
-      ok(radius + strokeWidth / 2 <= ring.ownerSVGElement.viewBox.baseVal.width / 2, "halka SVG alanında");
-      eq(getComputedStyle(over.querySelector(".mn-v")).fontWeight, "800");
-      eq(getComputedStyle(normal.querySelector(".mn-v")).fontWeight, "800");
-      eq(getComputedStyle(over.querySelector(".mn-v")).fontSize, getComputedStyle(normal.querySelector(".mn-v")).fontSize);
-      eq(getComputedStyle(ring).stroke, getComputedStyle(over.querySelector(".mn-v")).color);
-      ok(overFill !== getComputedStyle(ring).stroke, "ay ve halka farklı renklerde");
+    for (const theme of ["light", "dark"]) {
+      cards.className = "thm-" + theme;
+      for (let i = 0; i < cards.children.length; i += 2) {
+        const over = cards.children[i], normal = cards.children[i + 1];
+        const overFill = getComputedStyle(over.querySelector(".mn-lit")).fill;
+        eq(overFill, getComputedStyle(normal.querySelector(".mn-lit")).fill);
+        eq(getComputedStyle(over).backgroundColor, getComputedStyle(normal).backgroundColor);
+        const ring = over.querySelector(".mn-over-ring");
+        ok(ring && !normal.querySelector(".mn-over-ring"), "halka yalnızca aşımda");
+        const mark = over.querySelector(".mn-over-mark");
+        ok(mark && !normal.querySelector(".mn-over-mark"), "ünlem yalnızca aşımda");
+        eq(mark.getAttribute("aria-hidden"), "true", "ünlem erişilebilirlik ağacından gizli");
+        eq(getComputedStyle(mark).fill, getComputedStyle(ring).stroke, "ünlem ve halka aynı renkte");
+        eq(getComputedStyle(ring).fill, "none");
+        const strokeWidth = parseFloat(getComputedStyle(ring).strokeWidth);
+        eq(strokeWidth, 5);
+        const radius = Number(ring.getAttribute("r"));
+        ok(radius + strokeWidth / 2 < Number(over.querySelector(".mn-lit").getAttribute("r")), "halka disk içinde");
+        eq(getComputedStyle(over.querySelector(".mn-v")).fontWeight, "800");
+        eq(getComputedStyle(normal.querySelector(".mn-v")).fontWeight, "800");
+        eq(getComputedStyle(over.querySelector(".mn-v")).fontSize, getComputedStyle(normal.querySelector(".mn-v")).fontSize);
+        eq(getComputedStyle(ring).stroke, theme === "light" ? "rgb(255, 255, 255)" : "rgb(6, 10, 25)");
+        ok(getComputedStyle(ring).stroke !== getComputedStyle(over.querySelector(".mn-v")).color);
+        ok(overFill !== getComputedStyle(ring).stroke, "ay ve halka farklı renklerde");
+      }
     }
   } finally { cards.remove(); styles.remove(); }
 });
 
-test("ay: -soft ve --over-soft jetonları üç tema bloğunda tanımlı; eski halka stilleri kalmadı", async () => {
+test("ay: renk ve zemin jetonları üç tema bloğunda tanımlı", async () => {
   const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
   const tokens = await fetch("../starboard-site/css/tokens.css").then(r => r.text());
   const blocks = [/:root, \.thm-light\{([^}]+)\}/, /:root:not\(\[data-theme="light"\]\)\{([^}]+)\}/, /:root\[data-theme="dark"\], \.thm-dark\{([^}]+)\}/]
     .map(re => (re.exec(tokens) || [])[1]);
   ok(blocks.every(Boolean), "tema blokları bulunamadı");
-  for (const b of blocks) for (const v of ["--kcal-soft", "--protein-soft", "--carb-soft", "--fat-soft", "--over-soft"]) ok(new RegExp(v + ":").test(b), v + " eksik");
+  for (const b of blocks) for (const v of ["--moon-kcal-soft", "--moon-protein-soft", "--moon-carb-soft", "--moon-fat-soft", "--moon-over", "--moon-mark"]) ok(new RegExp(v + ":").test(b), v + " eksik");
   ok(!/\.mring|\.mrings|\.mr-(r|n|t|bg|fg)\b/.test(css), "eski özet halkası stilleri kalmış");
   ok(/\.fx-moon/.test(css) && /@keyframes fxMoon/.test(css), "ay giriş animasyonu yok");
   ok(/\.mn-sh\{[^}]*transition:transform/.test(css), "gölge kayması geçişi yok");
