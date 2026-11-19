@@ -1108,10 +1108,10 @@ main.page-in > *:nth-child(n+5){animation-delay:130ms}
 .tabbar .ico{width:23px;height:23px;flex:0 0 23px}
 
 /* ---- sürüm etiketi ----
-   Her ekranın sağ alt köşesinde küçük ve soluk yazar; alt sekme çubuğunun ve
-   hızlı giriş düğmesinin üstünde durur, dokunmaları engellemez. main.js gövdeye
-   bir kez ekler; sekme değişiminde yeniden çizilmez. */
-.ver-badge{position:fixed;right:16px;bottom:calc(136px + env(safe-area-inset-bottom));z-index:12;
+   Sayfanın başında sağ üstte durur ve içerikle birlikte kayar.
+   main.js etiketi gövdeye bir kez ekler; sekme değişiminde yeniden çizilmez. */
+.ver-badge{position:absolute;top:calc(env(safe-area-inset-top, 0px) + 2px);
+  right:calc(env(safe-area-inset-right, 0px) + 16px);z-index:12;
   font-size:11px;line-height:1.2;letter-spacing:.1px;color:var(--muted);
   pointer-events:none;user-select:none;-webkit-user-select:none}
 

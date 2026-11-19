@@ -1,7 +1,7 @@
 "use strict";
 
 /* ---- başlat ---- */
-/* Sürüm etiketi: her ekranın sağ üst köşesinde küçük ve soluk yazar. Gövdeye
+/* Sürüm etiketi sayfanın başında sağ üstte görünür. Gövdeye
    bir kez eklenir; sekme değişiminde #app yeniden çizilse de etiket durur,
    dokunmaları engellemez (pointer-events none), ekran okuyucu onu atlar
    (aria-hidden). Görünümü CSS'teki .ver-badge kuralındadır. */
@@ -10,9 +10,6 @@ function mountVersionBadge(){
   const el = document.createElement("div");
   el.id = "ver-badge";
   el.className = "ver-badge";
-  el.style.top = "calc(env(safe-area-inset-top, 0px) + 2px)";
-  el.style.right = "calc(env(safe-area-inset-right, 0px) + 16px)";
-  el.style.bottom = "auto";
   el.setAttribute("aria-hidden", "true");
   el.textContent = tx("Sürüm {0}", [APP_VERSION]);
   document.body.appendChild(el);
