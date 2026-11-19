@@ -8,7 +8,8 @@ const norm = s => s.toLowerCase()
   .normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 
 function allFoods(){
-  return Object.entries(FOODS).concat(Object.entries(state.customFoods || {}));
+  return Object.entries(FOODS).filter(([, f]) => !f.cigYenmez)
+    .concat(Object.entries(state.customFoods || {}));
 }
 
 function logTotals(entry){
@@ -1225,7 +1226,7 @@ function favoriteFoods(){
   const counts = {};
   for (const k of Object.keys(state.days).sort())
     for (const it of (state.days[k].log || []))
-      if (it.k && (FOODS[it.k] || (state.customFoods||{})[it.k])){
+      if (it.k && foodOf(it.k) && !FOODS[it.k]?.cigYenmez){
         const c = counts[it.k] || (counts[it.k] = { n:0, g:it.g, slot:it.slot, name:it.n });
         c.n++; c.g = it.g; c.slot = it.slot;   /* en son kullanılan gramaj */
       }
@@ -1263,6 +1264,7 @@ function foodHabits(){
 function quickFoods(slot, limit){
   const h = foodHabits();
   return Object.entries(h)
+    .filter(([k]) => !FOODS[k]?.cigYenmez)
     .sort((a, b) => (b[1].slots[slot] || 0) - (a[1].slots[slot] || 0) || b[1].n - a[1].n || b[1].last - a[1].last)
     .slice(0, limit || 6)
     .map(([k, x]) => [k, x.g]);
