@@ -550,14 +550,14 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 @keyframes ghPulse{50%{opacity:.9;transform:scale(1.06)}}
 
 /* beslenme özeti: dört ay evresi (kalori, protein, karbonhidrat, yağ); renk --c, gölge --cs (-soft), aşılınca --over */
-.moons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px;padding:10px 0 4px}
+.moons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px;padding:4px 0}
 .moon{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
-.mn-r{width:96px;height:96px}
-.mn-r svg{width:100%;height:100%;display:block;overflow:visible}
+.mn-r{width:72px;height:72px}
+.mn-r svg{width:100%;height:100%;display:block}
 .mn-lit{fill:var(--c)}
 .mn-sh{fill:var(--cs);transition:transform .9s var(--e-out,ease)}
 .mn-t{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;max-width:100%}
-.mn-t b{font-family:var(--font-d);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.mn-t b{font-family:var(--font-d);font-weight:700;font-size:13px;color:var(--muted)}
 .mn-v{font-family:var(--font-d);font-weight:800;font-size:28px;line-height:1.05;font-variant-numeric:tabular-nums}
 .moon.over .mn-v{color:var(--over)}
 .mn-u{font-size:13px;font-weight:700;color:var(--ink)}

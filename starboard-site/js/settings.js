@@ -155,7 +155,6 @@ function wireSettings(){
     const c = b.dataset.scuisine;
     if (!CUISINES[c]) return;
     mealPrefs().cuisine = c;
-    recipeOffset = 0;
     await saveState(state);
     render();
   });

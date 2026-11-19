@@ -762,7 +762,7 @@ test("mutfak: tarif malzemeleri ve hazır menülerin besinleri veritabanında va
 });
 test("mutfak: cihaz dili varsayılanı belirler; elle seçim korunur ve Ayarlar'dan değiştirilebilir", async () => {
   const fixture = await loadFixture();
-  const oldState = state, oldTab = tab, oldMeTab = meTab, oldLang = LANG, oldRecipeOffset = recipeOffset;
+  const oldState = state, oldTab = tab, oldMeTab = meTab, oldLang = LANG;
   const savedState = localStorage.getItem(KEY);
   const nav = Object.getOwnPropertyDescriptor(Navigator.prototype, "languages");
   const setNav = list => Object.defineProperty(navigator, "languages", { get: () => list, configurable: true });
@@ -794,7 +794,7 @@ test("mutfak: cihaz dili varsayılanı belirler; elle seçim korunur ve Ayarlar'
     setNav(["en-US"]);
     eq(currentCuisine(), "tr", "cihaz dili sonradan değişse de elle seçim korunur");
   } finally {
-    state = oldState; tab = oldTab; meTab = oldMeTab; LANG = oldLang; recipeOffset = oldRecipeOffset;
+    state = oldState; tab = oldTab; meTab = oldMeTab; LANG = oldLang;
     if (savedState === null) localStorage.removeItem(KEY); else localStorage.setItem(KEY, savedState);
     delete navigator.languages;
     if (nav) Object.defineProperty(Navigator.prototype, "languages", nav);
@@ -2706,11 +2706,19 @@ const sugFixture = async () => {
 };
 const closeSug = () => {
   clearToasts(); document.querySelectorAll(".sheet-bg").forEach(e => e.remove());
+  resetMealUI(); recipeQuery = ""; recipeOpen = null;
   viewDate = null; mealVariant = 0; addOpen = null; editLog = null; mealTab = "log"; tab = "today"; state = null;
 };
 const sectionOf = slot => {
   const b = app.querySelector(`[data-addfood="${slot}"]`);
   return b && b.closest("section");
+};
+const suggestionToggle = slot => app.querySelector(`[data-sug-toggle="${slot}"]`);
+const showSuggestions = () => {
+  for (const [slot] of slotList()){
+    const toggle = suggestionToggle(slot);
+    if (toggle?.getAttribute("aria-expanded") === "false") toggle.click();
+  }
 };
 
 test("sade beslenme: sekmeler Bugün · Tarifler · Liste; Günlüğüm ve Öneriler sekmesi yok; eski plan sekmesi Bugün'e düşer", async () => {
@@ -2723,7 +2731,17 @@ test("sade beslenme: sekmeler Bugün · Tarifler · Liste; Günlüğüm ve Öner
     eq(tabs().filter(b => b.getAttribute("aria-current") === "true").map(b => b.dataset.mealTab), ["log"], "bilinmeyen sekme Bugün olur");
     ok(app.querySelector("[data-addfood]"), "Bugün ekranı çizilir");
     ok(!app.querySelector("#reroll") && !app.querySelector("[data-fixadd]"), "eski öneri ekranı kalmadı");
-    mealTab = "recipes"; render(); ok(app.querySelector("#rec-q"), "tarifler");
+    mealTab = "recipes"; render();
+    const search = app.querySelector("#rec-q"), results = app.querySelector("#rec-results");
+    eq(search.closest("section").children.length, 1, "başlangıçta yalnızca arama");
+    eq(results.children.length, 0, "boş sorguda sonuç yok");
+    search.value = "mercimek"; search.dispatchEvent(new Event("input"));
+    const match = results.querySelector("[data-recipe]");
+    ok(match && !results.querySelector(".metric-note"), "eşleşmeler tarif sayısı olmadan gösterilir");
+    match.click();
+    ok(results.querySelector(".rec-body"), "tarif açılır");
+    search.value = ""; search.dispatchEvent(new Event("input"));
+    eq(results.children.length, 0, "arama temizlenince liste gizlenir");
     mealTab = "list"; render(); ok(app.querySelector('h2') && app.querySelector("h2").textContent.includes("Alışveriş listem") && app.querySelectorAll("[data-shop-tab]").length === 2, "sade liste");
   } finally { closeSug(); }
 });
@@ -2731,6 +2749,23 @@ test("sade beslenme: sekmeler Bugün · Tarifler · Liste; Günlüğüm ve Öner
 test("öneri: boş öğünde soluk tabak (besinler, toplam kcal, Ekle, Başka); günün planıyla aynı", async () => {
   const { plan, slots, keyed } = await sugFixture();
   try {
+    const available = slots.filter(s => suggestionToggle(s));
+    const [first, second] = available;
+    ok(available.length >= 2 && !app.querySelector(".sug"), "öneriler başlangıçta kapalı");
+    for (const s of available){
+      const toggle = suggestionToggle(s), card = sectionOf(s);
+      eq(card.querySelector("button").dataset.addfood, s, "Besin ekle ilk eylem");
+      eq(toggle.getAttribute("aria-expanded"), "false");
+      ok(document.getElementById(toggle.getAttribute("aria-controls")).hidden);
+    }
+    suggestionToggle(first).click();
+    eq(suggestionToggle(first).getAttribute("aria-expanded"), "true");
+    eq(document.activeElement, suggestionToggle(first));
+    eq(suggestionToggle(second).getAttribute("aria-expanded"), "false");
+    suggestionToggle(second).click();
+    suggestionToggle(first).click();
+    ok(!sectionOf(first).querySelector(".sug") && sectionOf(second).querySelector(".sug"), "öğünler bağımsız açılır ve kapanır");
+    showSuggestions();
     const p = plan();
     let shown = 0;
     for (const s of slots) {
@@ -2758,6 +2793,7 @@ test("öneri: kayıt olan öğünde, besin ekle paneli açıkken ve geçmiş gü
   try {
     const [s0, s1] = slots;
     state.days[today()].log = [logItem("yulaf", 40, s0, 1)]; syncKcal(state.days[today()]); render();
+    showSuggestions();
     ok(!sectionOf(s0).querySelector(".sug"), "dolu öğünde öneri yok");
     ok(sectionOf(s1).querySelector(".sug"), "boş öğünde öneri sürer");
     addOpen = s1; render();
@@ -2779,6 +2815,7 @@ test("öneri: Ekle bütün tabağı tek dokunuşla öğüne yazar, kalori günce
     const s = slots.find(k => keyed(plan().meals.find(m => m.slot === k)).length >= 2) || slots[0];
     const items = keyed(plan().meals.find(m => m.slot === s));
     const before = JSON.stringify(state.days[today()]);
+    suggestionToggle(s).click();
     const b = app.querySelector(`[data-sug-add="${s}"]`);
     await Promise.all([b.onclick(), b.onclick()]);
     const e = state.days[today()];
@@ -2803,6 +2840,7 @@ test("öneri: Ekle bütün tabağı tek dokunuşla öğüne yazar, kalori günce
 test("öneri: Başka günün planını bir sonrakine geçirir; tarif bağlantısı çalışır", async () => {
   const { slots, keyed } = await sugFixture();
   try {
+    showSuggestions();
     const text = () => [...app.querySelectorAll(".sug")].map(x => x.textContent).join("|");
     const t0 = text(), v0 = mealVariant;
     app.querySelector("[data-sug-other]").onclick();
@@ -2825,6 +2863,7 @@ test("öneri: Başka günün planını bir sonrakine geçirir; tarif bağlantıs
 test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarlar sayfasındaki pencereden geri alınır", async () => {
   await sugFixture();
   try {
+    showSuggestions();
     const x = app.querySelector(".sug [data-mex]");
     ok(x && x.getAttribute("aria-label").includes(","), "× düğmesi besin adıyla adlı");
     const key = x.dataset.mex;
@@ -2900,7 +2939,7 @@ test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölg
       `Karbonhidrat: ${program.carb} g kaldı`, `Yağ: ${program.fat} g kaldı`], "boş günde hedefin tamamı kalır");
     ok([...app.querySelectorAll(".moon")].every(m => m.getAttribute("role") === "img"), "ekran okuyucu etiketi (role=img)");
     let k = moonOf("kcal");
-    ok(k.querySelector(".mn-lit") && k.querySelector(".mn-sh") && k.querySelector(".mn-halo"), "dolu daire, gölge dairesi ve hale");
+    ok(k.querySelector(".mn-lit") && k.querySelector(".mn-sh") && !k.querySelector(".mn-halo"), "sade ay grafiği");
     eq(+k.querySelector(".mn-sh").dataset.to, 0, "boş günde gölge ayı örter (ay karanlık)");
     const lit = k.querySelector(".mn-lit"), sh = k.querySelector(".mn-sh");
     eq(sh.getAttribute("r"), lit.getAttribute("r"), "gölge ayın yarıçapında");
@@ -3103,6 +3142,7 @@ test("sade beslenme: İngilizcede de çalışır, sözlükte olmayan metin kalma
     await withLang("en", async () => {
       I18N_MISSING.clear(); render();
       eq([...app.querySelectorAll("[data-meal-tab]")].map(b => b.textContent.trim()), ["Today", "Recipes", "List"]);
+      showSuggestions();
       const s = slots.find(k => sectionOf(k).querySelector(".sug"));
       const box = sectionOf(s).querySelector(".sug");
       ok(box.getAttribute("aria-label") === "Suggestion" && box.querySelector("[data-sug-add]").textContent === "Add" && box.querySelector("[data-sug-other]").textContent === "Another", "tabak İngilizce");
