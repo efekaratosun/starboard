@@ -3051,6 +3051,14 @@ test("ay: aşımda makro rengi ve kart zemini korunur, halka yalnızca aşımda 
       const ring = over.querySelector(".mn-over-ring");
       ok(ring && !normal.querySelector(".mn-over-ring"), "halka yalnızca aşımda");
       eq(getComputedStyle(ring).fill, "none");
+      const strokeWidth = parseFloat(getComputedStyle(ring).strokeWidth);
+      eq(strokeWidth, 5);
+      const radius = Number(ring.getAttribute("r"));
+      ok(radius - strokeWidth / 2 > Number(over.querySelector(".mn-lit").getAttribute("r")), "halka ayın dışında");
+      ok(radius + strokeWidth / 2 <= ring.ownerSVGElement.viewBox.baseVal.width / 2, "halka SVG alanında");
+      eq(getComputedStyle(over.querySelector(".mn-v")).fontWeight, "800");
+      eq(getComputedStyle(normal.querySelector(".mn-v")).fontWeight, "800");
+      eq(getComputedStyle(over.querySelector(".mn-v")).fontSize, getComputedStyle(normal.querySelector(".mn-v")).fontSize);
       eq(getComputedStyle(ring).stroke, getComputedStyle(over.querySelector(".mn-v")).color);
       ok(overFill !== getComputedStyle(ring).stroke, "ay ve halka farklı renklerde");
     }
