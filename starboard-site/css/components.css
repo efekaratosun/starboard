@@ -517,7 +517,7 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
   border:3px solid var(--surface);box-shadow:0 0 0 2px transparent}
 .avc.on{box-shadow:0 0 0 2.5px var(--c)}
 .avc:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.sheet-bg{position:fixed;inset:0;z-index:45;background:rgba(20,12,24,.42);display:flex;align-items:flex-end;justify-content:center;animation:p-fade .2s ease-out}
+.sheet-bg{position:fixed;inset:0;z-index:45;background:var(--sheet-backdrop);display:flex;align-items:flex-end;justify-content:center;animation:p-fade .2s ease-out}
 .sheet{width:100%;max-width:520px;max-height:min(88vh, calc(100dvh - env(safe-area-inset-top) - 12px));overflow:auto;background:var(--surface);color:var(--ink);border-radius:26px 26px 0 0;
   padding:16px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:var(--sh2);animation:sh-up .28s cubic-bezier(.2,.9,.3,1)}
 .sheet-h{display:flex;align-items:center;margin-bottom:6px}
@@ -540,7 +540,7 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .av:focus-visible{outline:2px solid var(--neutral);outline-offset:2px}
 .bc-fig svg{width:60px;height:80px;overflow:visible}
 .bc-base{opacity:.22}
-.bc-star{fill:var(--star);stroke:color-mix(in srgb, var(--star) 60%, #8a5a00);stroke-width:.4}
+.bc-star{fill:var(--star);stroke:color-mix(in srgb, var(--star) 60%, var(--constellation-star-stroke));stroke-width:.4}
 .bc-water{font-size:11.5px;font-weight:800;color:var(--ink);opacity:.8}
 .tag{font-style:normal;font-weight:800;font-size:11px;padding:1px 7px;border-radius:999px;margin-left:3px;white-space:nowrap;
   background:color-mix(in srgb, currentColor 13%, transparent)}
@@ -662,7 +662,7 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .tp-hero{display:flex;align-items:center;gap:11px}
 .tp-ring{width:34px;height:34px;flex:0 0 34px;border-radius:50%;
   background:conic-gradient(var(--g1) 0turn, var(--g2) .62turn, var(--track) .62turn);
-  -webkit-mask:radial-gradient(circle, transparent 10px, #000 11px);mask:radial-gradient(circle, transparent 10px, #000 11px)}
+  -webkit-mask:radial-gradient(circle, transparent 10px, var(--mask-opaque) 11px);mask:radial-gradient(circle, transparent 10px, var(--mask-opaque) 11px)}
 .tp-hero b{display:block;font-size:17px;font-weight:900;letter-spacing:-.4px}
 .tp-hero i{font-style:normal;font-size:10.5px;color:var(--muted)}
 .tp-task{display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--ink)}
@@ -709,11 +709,11 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
    Renkler ölçüme göre; tonlar açık/koyu yüzeyde >=3:1 kontrast ve
    OKLCH parlaklık bandı için doğrulandı (dataviz validator). */
 .ch-wrap{position:relative;margin:10px 0 2px;color:var(--ch)}
-.ch-wrap[data-c="weight"]{--ch:#C9340C}
-.ch-wrap[data-c="kcal"]{--ch:#D47E00}
-.ch-wrap[data-c="sleep"]{--ch:#7A56F5}
-.ch-wrap[data-c="fat"]{--ch:#F0325A}
-.ch-wrap[data-c="waist"]{--ch:#159A57}
+.ch-wrap[data-c="weight"]{--ch:var(--chart-weight)}
+.ch-wrap[data-c="kcal"]{--ch:var(--chart-kcal)}
+.ch-wrap[data-c="sleep"]{--ch:var(--chart-sleep)}
+.ch-wrap[data-c="fat"]{--ch:var(--chart-fat)}
+.ch-wrap[data-c="waist"]{--ch:var(--chart-waist)}
 .chart{width:100%;height:auto;display:block;touch-action:pan-y}
 .ch-band{fill:var(--good-vivid);opacity:.14}
 .ch-grid{stroke:var(--line);stroke-width:1}
@@ -737,19 +737,6 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .ch-tip span{display:block;font-size:11px;opacity:.7;font-weight:700}
 .ch-key{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:10px}
 .ch-key i{flex:0 0 12px;height:12px;margin-top:3px;border-radius:4px;background:var(--good-vivid);opacity:.4}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .ch-wrap[data-c="weight"]{--ch:#EC5A35}
-  :root:not([data-theme="light"]) .ch-wrap[data-c="kcal"]{--ch:#C97D10}
-  :root:not([data-theme="light"]) .ch-wrap[data-c="sleep"]{--ch:#8266EC}
-  :root:not([data-theme="light"]) .ch-wrap[data-c="fat"]{--ch:#E8455F}
-  :root:not([data-theme="light"]) .ch-wrap[data-c="waist"]{--ch:#1FA35E}
-}
-:root[data-theme="dark"] .ch-wrap[data-c="weight"]{--ch:#EC5A35}
-:root[data-theme="dark"] .ch-wrap[data-c="kcal"]{--ch:#C97D10}
-:root[data-theme="dark"] .ch-wrap[data-c="sleep"]{--ch:#8266EC}
-:root[data-theme="dark"] .ch-wrap[data-c="fat"]{--ch:#E8455F}
-:root[data-theme="dark"] .ch-wrap[data-c="waist"]{--ch:#1FA35E}
-
 /* ---- takvim ---- */
 .cal-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .cal-head .m{flex:1;text-align:center;font-size:16px;font-weight:800;letter-spacing:-.2px}
@@ -836,7 +823,7 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
   position:fixed;right:16px;z-index:20;
   bottom:calc(74px + env(safe-area-inset-bottom));
   width:56px;height:56px;border:0;border-radius:50%;cursor:pointer;
-  background:var(--grad);color:#FFFCFA;box-shadow:0 10px 26px rgba(255,61,110,.34);
+  background:var(--grad);color:var(--logo-ink);box-shadow:0 10px 26px var(--fab-shadow);
   display:flex;align-items:center;justify-content:center;
   -webkit-tap-highlight-color:transparent;transition:transform .16s ease;
 }
@@ -883,8 +870,8 @@ button.ghost.rep{border-style:dashed}
   --lt-display:-1.4px; --lt-h1:-.9px; --lt-h2:-.35px;
   /* yüzey ışığı */
   --lift:linear-gradient(180deg, color-mix(in srgb, var(--ink) 2.6%, transparent) 0%, transparent 42%);
-  --lift-d:linear-gradient(180deg, color-mix(in srgb, #FFFFFF 3.5%, transparent) 0%, transparent 46%);
-  --edge:inset 0 1px 0 color-mix(in srgb, #FFFFFF 70%, transparent);
+  --lift-d:linear-gradient(180deg, color-mix(in srgb, var(--on-brand) 3.5%, transparent) 0%, transparent 46%);
+  --edge:inset 0 1px 0 color-mix(in srgb, var(--on-brand) 70%, transparent);
 }
 /* Üst ışık degradesi koyu zeminde beyazdan gelir; jeton bloklarından sonra
    tanımlanır ki .thm-dark önizlemesinde de kazansın. */
@@ -896,7 +883,7 @@ section{
   background-image:var(--lift);
   box-shadow:var(--sh1), var(--edge);
 }
-.sheet{box-shadow:0 -2px 8px rgba(80,30,20,.06), 0 -18px 50px rgba(80,30,20,.14), var(--edge)}
+.sheet{box-shadow:0 -2px 8px var(--sheet-shadow-near), 0 -18px 50px var(--sheet-shadow-far), var(--edge)}
 
 /* ---- tipografi ---- */
 h1{font-size:var(--t-h1);letter-spacing:var(--lt-h1);font-weight:900;line-height:1.1}
@@ -1074,10 +1061,6 @@ main.page-in > *:nth-child(n+5){animation-delay:130ms}
 .bt-ring{width:22px;height:22px;flex:0 0 22px;display:block;color:var(--on-brand)}
 .bt-nm{font-size:12.5px;font-weight:800;letter-spacing:-.1px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-:root{--star-tile:#E8A33C}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --star-tile:#FFC861 } }
-:root[data-theme="dark"], .thm-dark{ --star-tile:#FFC861 }
 
 /* ---- alt sekme çubuğu ---- */
 .tabbar{

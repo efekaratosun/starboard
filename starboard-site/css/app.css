@@ -83,11 +83,11 @@ button.g-h:focus-visible{outline:2px solid var(--band);outline-offset:-2px;borde
 /* yüzen alt menü */
 .tabbar{left:50%;right:auto;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));
   width:min(430px,calc(100% - 24px));border:1px solid var(--line);border-radius:999px;padding:6px 8px;align-items:center;
-  box-shadow:0 10px 30px rgba(40,16,10,.16)}
+  box-shadow:0 10px 30px var(--tabbar-floating-shadow)}
 .tabbar button[data-tab]{padding:7px 2px 6px;gap:3px}
 .tabbar button[data-tab]::before{top:3px}
 .tabbar .fab{position:static;flex:0 0 52px;width:52px;height:52px;margin:0 4px;padding:0;border-radius:50%;
-  background:var(--grad);color:#FFFCFA;box-shadow:0 8px 20px rgba(255,61,110,.32);flex-direction:row}
+  background:var(--grad);color:var(--logo-ink);box-shadow:0 8px 20px var(--tabbar-fab-shadow);flex-direction:row}
 .tabbar .fab::before{display:none}
 
 /* kendi programın */
@@ -170,7 +170,7 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 /* karşılama ve özet */
 .on-w,.on-s{align-items:center;text-align:center}
 .on-w{padding-top:calc(56px + env(safe-area-inset-top))}
-.on-logo{width:104px;height:104px;border-radius:30px;overflow:hidden;display:block;box-shadow:0 18px 40px rgba(255,61,110,.28);animation:starPop .6s var(--e-spring,ease) backwards}
+.on-logo{width:104px;height:104px;border-radius:30px;overflow:hidden;display:block;box-shadow:0 18px 40px var(--onboarding-logo-shadow);animation:starPop .6s var(--e-spring,ease) backwards}
 .on-logo.sm{width:64px;height:64px;border-radius:19px;margin-top:8px}
 .on-logo svg{width:100%;height:100%;display:block}
 .on-w h1{font-size:40px;letter-spacing:-1.4px;margin-top:22px}
@@ -201,12 +201,12 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 /* ===== giriş: hareket ===== */
 .on-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;--p:0}
 .on-bg > i{position:absolute;width:120vmax;height:120vmax;border-radius:50%;transition:transform 1.3s var(--e-out,ease)}
-.on-bg > i:nth-child(1){top:-70vmax;right:-70vmax;background:radial-gradient(closest-side,rgba(255,122,47,.30),transparent);
+.on-bg > i:nth-child(1){top:-70vmax;right:-70vmax;background:radial-gradient(closest-side,var(--onboarding-glow-orange),transparent);
   transform:translate(calc(var(--p) * -55vw),calc(var(--p) * 40vh));animation:obBreath 9s ease-in-out infinite alternate}
-.on-bg > i:nth-child(2){bottom:-80vmax;left:-70vmax;background:radial-gradient(closest-side,rgba(255,61,110,.24),transparent);
+.on-bg > i:nth-child(2){bottom:-80vmax;left:-70vmax;background:radial-gradient(closest-side,var(--onboarding-glow-pink),transparent);
   transform:translate(calc(var(--p) * 60vw),calc(var(--p) * -30vh));animation:obBreath 11s ease-in-out -4s infinite alternate}
 @keyframes obBreath{from{scale:1}to{scale:1.18}}
-.on-bg > b{position:absolute;color:var(--star-tile,#FFB020);opacity:0;animation:obTw 4.2s ease-in-out infinite;
+.on-bg > b{position:absolute;color:var(--star-tile,var(--onboarding-star-fallback));opacity:0;animation:obTw 4.2s ease-in-out infinite;
   transition:translate 1.3s var(--e-out,ease);translate:calc(var(--p) * -60px) calc(var(--p) * 24px)}
 .on-bg > b .ico{width:100%;height:100%;display:block}
 .on-bg > b:nth-of-type(1){width:14px;height:14px;top:9%;left:12%}
@@ -222,7 +222,7 @@ main.on.bye{opacity:0;transform:scale(1.04);filter:blur(6px)}
 .on-top{transition:opacity .4s ease,transform .5s var(--e-out,ease)}
 .on-top.hide{opacity:0;transform:translateY(-14px);pointer-events:none}
 .on-bar i{position:relative;overflow:hidden;transition:width .6s var(--e-out,ease)}
-.on-bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
+.on-bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--onboarding-progress-shine),transparent);
   transform:translateX(-100%);animation:obSheen 2.2s ease-in-out infinite}
 @keyframes obSheen{60%,100%{transform:translateX(100%)}}
 
@@ -246,7 +246,7 @@ main.on.bye{opacity:0;transform:scale(1.04);filter:blur(6px)}
 .on-nav.hide{opacity:0;transform:translateY(16px);pointer-events:none}
 .on-nav #ob-next{position:relative;overflow:hidden}
 .on-nav #ob-next::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:36%;transform:skewX(-20deg);
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);animation:obBtn 3.4s ease-in-out 1.2s infinite}
+  background:linear-gradient(90deg,transparent,var(--onboarding-button-shine),transparent);animation:obBtn 3.4s ease-in-out 1.2s infinite}
 @keyframes obBtn{0%{left:-40%}38%,100%{left:120%}}
 
 /* kart seçimi */
@@ -416,7 +416,7 @@ main.page-in .gl .g:nth-child(n+7){animation-delay:.4s}
 .rl-v > span{font-size:18px;font-weight:800;color:var(--muted)}
 .rl-in{width:5ch;font-size:44px;font-weight:900;text-align:center;padding:2px 6px;border-radius:14px}
 .rl-w{position:relative;margin-top:10px;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 24%,#000 76%,transparent);mask-image:linear-gradient(90deg,transparent,#000 24%,#000 76%,transparent)}
+  -webkit-mask-image:linear-gradient(90deg,transparent,var(--mask-opaque) 24%,var(--mask-opaque) 76%,transparent);mask-image:linear-gradient(90deg,transparent,var(--mask-opaque) 24%,var(--mask-opaque) 76%,transparent)}
 .rl-w::after{content:"";position:absolute;left:50%;top:0;width:4px;height:44px;margin-left:-2px;border-radius:2px;background:var(--grad);pointer-events:none;
   box-shadow:0 0 0 3px var(--surface)}
 .rl-s{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;touch-action:pan-x;outline:none}
@@ -583,11 +583,11 @@ button:not([class]){box-shadow:0 8px 22px -8px var(--glow)}
 .bt-bar s{border-radius:2px}
 
 /* alt menü: koyu cam, seçili sekme neon hapta */
-.tabbar{box-shadow:0 12px 34px rgba(4,8,24,.28), inset 0 0 0 1px var(--line);border:0}
+.tabbar{box-shadow:0 12px 34px var(--tabbar-shadow), inset 0 0 0 1px var(--line);border:0}
 .tabbar button[data-tab]{font-family:var(--font-d);font-weight:700;font-size:11.5px;letter-spacing:0;text-transform:none}
 .tab-ind{background:var(--grad);box-shadow:0 4px 16px -2px var(--glow)}
 .tabbar button[aria-current="true"] .ico{color:var(--on-brand)}
-.tabbar .fab{background:var(--grad);box-shadow:0 8px 24px -4px var(--glow), inset 0 0 0 2px color-mix(in srgb,#FFFFFF 22%,transparent)}
+.tabbar .fab{background:var(--grad);box-shadow:0 8px 24px -4px var(--glow), inset 0 0 0 2px color-mix(in srgb,var(--on-brand) 22%,transparent)}
 
 /* kısa bildirim */
 .toast{border-radius:14px}
