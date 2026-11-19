@@ -441,6 +441,17 @@ function deleteCustomFood(key){
   return true;
 }
 
+function foodSearchPlaceholder(slot){
+  const category = userMeals().find(meal => meal.id === slot)?.cat ?? LEGACY_MEALS[slot]?.cat;
+  switch (category){
+    case "kahvalti": return tx("Ara: haşlanmış yumurta, beyaz peynir, yeşil zeytin…");
+    case "ogle": return tx("Ara: mercimek çorbası, tavuk göğsü, pirinç pilavı…");
+    case "aksam": return tx("Ara: somon, bulgur pilavı, çoban salata…");
+    case "ara": return tx("Ara: elma, yoğurt, badem…");
+    default: return tx("Ara: muz, yulaf, domates…");
+  }
+}
+
 /* Arama paneli açık olduğu öğünün kartının içinde durur; öğün zaten belli
    olduğu için ayrıca "hangi öğün" sormaya gerek kalmıyor. */
 function addPanel(){
@@ -449,7 +460,7 @@ function addPanel(){
   return `<div class="pick" style="margin-top:12px">
     ${quickChips()}
     ${savedChips()}
-    <input id="food-q" type="text" aria-label="${tx("Ara: karnıyarık, hellim, kivi…")}" placeholder="${tx("Ara: karnıyarık, hellim, kivi…")}" value="${esc(logQuery)}" autocomplete="off">
+    <input id="food-q" type="text" aria-label="${tx("Besin ara")}" placeholder="${esc(foodSearchPlaceholder(addOpen))}" value="${esc(logQuery)}" autocomplete="off">
     <div class="res" id="food-results">${resultsHTML()}</div>
     ${logPick ? pickCard() : ""}
     <div class="row" style="margin-top:12px">

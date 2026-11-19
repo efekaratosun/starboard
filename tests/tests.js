@@ -2391,6 +2391,42 @@ test("arama: Türkçe karakter ve büyük/küçük harf fark etmez; ad ve takma 
   } finally { state = null; }
 });
 
+test("besin arama ipuçları öğün türüne göre değişir ve katalogda bulunur", async () => {
+  const previous = { state, addOpen, logQuery, logPick };
+  state = await loadFixture();
+  try {
+    mealPrefs().meals = [...DEFAULT_MEALS, ...MEAL_TIMES.map(time => ({
+      ...time, id: `test_${time.key}`, name: time.label
+    }))];
+    const cases = [
+      [["kahvalti", "test_sabah"], "haşlanmış yumurta, beyaz peynir, yeşil zeytin", ["haslanmisyumurta", "beyazpeynir", "yesilzeytin"]],
+      [["ogle", "test_oglen"], "mercimek çorbası, tavuk göğsü, pirinç pilavı", ["mercimekcorba", "tavuk", "pilav"]],
+      [["aksam", "test_aksam"], "somon, bulgur pilavı, çoban salata", ["somon", "bulgurpilav", "cobansalata"]],
+      [["ara", "test_ikindi", "test_gece"], "elma, yoğurt, badem", ["elma", "yogurt", "badem"]],
+      [["bilinmeyen"], "muz, yulaf, domates", ["muz", "yulaf", "domates"]]
+    ];
+    const panel = document.createElement("div");
+    const placeholders = new Set();
+    logQuery = ""; logPick = null;
+    for (const [slots, examples, foodKeys] of cases){
+      for (const slot of slots){
+        addOpen = slot;
+        panel.innerHTML = addPanel();
+        const input = panel.querySelector("#food-q");
+        eq(input.placeholder, `Ara: ${examples}…`, slot);
+        eq(input.getAttribute("aria-label"), "Besin ara", slot);
+        placeholders.add(input.placeholder);
+      }
+      examples.split(", ").forEach((query, i) => {
+        const key = foodKeys[i];
+        ok(FOODS[key] && !FOODS[key].cigYenmez, query);
+        ok(searchFoods(query, 12).some(([k]) => k === key), `${query} → ${key}`);
+      });
+    }
+    eq(placeholders.size, cases.length);
+  } finally { ({ state, addOpen, logQuery, logPick } = previous); }
+});
+
 test("besin seçimi: çiğ yenmeyen katalog kayıtları süzülür, kişisel besinler ve günlük korunur", async () => {
   const previous = state;
   state = await loadFixture();
