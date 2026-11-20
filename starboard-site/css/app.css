@@ -211,16 +211,17 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 .sk-shoot{position:absolute;width:130px;height:2px;border-radius:2px;opacity:0;transform-origin:0 50%;
   background:linear-gradient(90deg,transparent,var(--sky-star));box-shadow:0 0 8px var(--sky-star)}
 .on-w-brand{position:relative;isolation:isolate}
-.sk-planet{position:absolute;z-index:0;top:-149px;left:-120px;width:450px;pointer-events:none;
+.sk-planet{position:absolute;z-index:0;top:-22px;left:calc(50% + 16px);translate:-50% -50%;
+  width:min(304px,calc(100vw - 24px));pointer-events:none;
   opacity:.10;animation:skDrift 12s ease-in-out infinite}
 .sk-planet-disc{fill:var(--sky-planet)}
 .sk-planet-shade{fill:var(--moon-crater-fill)}
-.sk-planet-ring{fill:none;stroke:var(--sky-planet-ring)}
-.sk-planet-ring path:nth-child(even){stroke:color-mix(in srgb,var(--sky-planet-ring) 60%,var(--sky-planet))}
-.sk-planet-ring path:first-child{stroke:var(--sky-planet)}
+.sk-planet-ring{fill:var(--sky-planet-ring)}
+.sk-planet-ring path:nth-child(even){fill:color-mix(in srgb,var(--sky-planet-ring) 60%,var(--sky-planet))}
+.sk-planet-ring path:first-child{fill:var(--sky-planet)}
 @keyframes skDrift{50%{transform:translate(2px,-4px)}}
 @media (max-height:640px){
-  .sk-planet{top:-125px;left:-100px;width:384px}
+  .sk-planet{top:-14px;width:min(254px,calc(100vw - 24px))}
 }
 
 /* karşılama yerleşimi: logo + slogan + düğme üstte tek blok, bayraklar ve gizlilik altta */

@@ -37,22 +37,25 @@ function sceneTwinkles(n, seed){
 
 function scenePlanet(){
   const edge = 48 - MOON_R;
-  const bands = [[54, 16, 3.2], [61.5, 22, 4], [69, 28, 4.5], [76.5, 34, 5],
-    [84, 40, 5.5], [91.5, 46, 4.8], [99, 52, 4.2]];
-  const ring = front => `<g class="sk-planet-ring" transform="translate(70 73) rotate(-21)">
-    ${bands.map(([rx, ry, width]) => {
-      const offset = front ? rx : -rx;
-      return `<path stroke-width="${width}" d="M${offset} 0a${rx} ${ry} 0 0 1 ${-2 * offset} 0"/>`;
+  const bands = [[54, 61], [64, 71], [74, 81], [84, 91]];
+  const flatten = radius => (radius * .29).toFixed(2);
+  const ring = front => `<g class="sk-planet-ring">
+    ${bands.map(([inner, outer]) => {
+      const side = front ? 1 : -1;
+      return `<path d="M${side * outer} 0 A${outer} ${flatten(outer)} 0 0 1 ${-side * outer} 0
+        H${-side * inner} A${inner} ${flatten(inner)} 0 0 0 ${side * inner} 0 Z"/>`;
     }).join("")}
   </g>`;
-  return `<svg class="sk-planet" viewBox="-33 -18 240 156" aria-hidden="true">
-    ${ring(false)}
-    <g class="sk-planet-disc" transform="translate(88 56) scale(1.885) translate(-48 -48)">
-      <circle cx="48" cy="48" r="${MOON_R}"/>
-      ${moonCraters("carb", 4)}
-      <path class="sk-planet-shade" d="M48 ${edge}a${MOON_R} ${MOON_R} 0 0 1 0 ${2 * MOON_R}A44 44 0 0 0 48 ${edge}Z"/>
+  return `<svg class="sk-planet" viewBox="-96 -48 192 96" aria-hidden="true">
+    <g class="sk-planet-system" transform="rotate(-15)">
+      ${ring(false)}
+      <g class="sk-planet-disc" transform="scale(1.3) translate(-48 -48)">
+        <circle cx="48" cy="48" r="${MOON_R}"/>
+        ${moonCraters("carb", 3)}
+        <path class="sk-planet-shade" d="M48 ${edge}a${MOON_R} ${MOON_R} 0 0 1 0 ${2 * MOON_R}A44 44 0 0 0 48 ${edge}Z"/>
+      </g>
+      ${ring(true)}
     </g>
-    ${ring(true)}
   </svg>`;
 }
 

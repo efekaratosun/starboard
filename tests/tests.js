@@ -4611,12 +4611,11 @@ test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve h
     eq(planet.getAttribute("aria-hidden"), "true");
     ok(planet.matches(".on-w-brand > .sk-planet"));
     ok(planet.nextElementSibling.matches(".on-logo"));
-    eq([...planet.children].map(part => part.getAttribute("class")), ["sk-planet-ring", "sk-planet-disc", "sk-planet-ring"]);
+    const system = planet.querySelector(".sk-planet-system");
+    eq([...system.children].map(part => part.getAttribute("class")), ["sk-planet-ring", "sk-planet-disc", "sk-planet-ring"]);
     const rings = [...planet.querySelectorAll(".sk-planet-ring")];
-    eq(rings.map(ring => ring.children.length), [7, 7]);
-    eq([...rings[0].children].map(band => band.getAttribute("stroke-width")),
-      [...rings[1].children].map(band => band.getAttribute("stroke-width")));
-    eq(planet.querySelectorAll(".sk-planet-disc .mn-crater").length, 4);
+    eq(rings.map(ring => ring.children.length), [4, 4]);
+    eq(planet.querySelectorAll(".sk-planet-disc .mn-crater").length, 3);
     ok(planet.querySelector(".sk-planet-shade"));
     /* Sürüm etiketi: 'v' + numara, 'Sürüm' kelimesi yok */
     const main = await (await fetch("../starboard-site/js/main.js")).text();
