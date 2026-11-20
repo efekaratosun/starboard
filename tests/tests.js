@@ -4530,6 +4530,40 @@ test("ölçü cetveli: sahneden ayrılan kaydırma olayı ölçüyü değiştirm
   } finally { ({ ob, state } = prev); }
 });
 
+test("avatarlar: seçim tepkileri yalnızca seçicide oynar ve yeniden tetiklenir", () => {
+  const box = document.createElement("div");
+  box.innerHTML = avatarPicker("mascot-4", "reaction");
+  const parts = {
+    "mascot-1": [".as-ear-l", ".as-ear-r"],
+    "mascot-6": [".as-eyes > .as-eye-l", ".as-eyes > .as-eye-r"],
+    "mascot-2": [".as-ear-l", ".as-ear-r", ".as-tongue"],
+    "mascot-5": [".as-mouth"],
+    "mascot-4": [".as-head"],
+    "mascot-3": [".as-head .as-ear-l", ".as-head .as-ear-r"]
+  };
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let chosen;
+  wireAvatar("reaction", key => { chosen = key; }, box);
+  for (const [key, selectors] of Object.entries(parts)){
+    const button = box.querySelector(`[data-av="${key}"]`);
+    for (const selector of selectors) ok(button.querySelector(selector), key + " " + selector);
+    const fig = document.createElement("button");
+    fig.className = "bc-fig";
+    fig.innerHTML = avatarSVG(key, 1, .5, { happy:true }, "reaction-card");
+    box.append(fig);
+    button.click();
+    eq(chosen, key);
+    eq(button.classList.contains("is-picking"), !reduced);
+    eq(box.querySelectorAll(".is-picking").length, reduced ? 0 : 1);
+    fig.click();
+    ok(!fig.matches(".is-picking") && !fig.querySelector(".is-picking"));
+    button.dispatchEvent(new AnimationEvent("animationend", { animationName:"asPick" }));
+    ok(!button.classList.contains("is-picking"));
+    button.click();
+    eq(button.classList.contains("is-picking"), !reduced);
+  }
+});
+
 test("avatarlar: altı kasklı astronot hayvan, eski seçimler ve renkler korunur, cam su ile dolar", () => {
   /* eski uzaylı anahtarları aynı kalır; sıra kedi, tilki, panda, köpek, maymun, koala */
   eq(AVATARS.map(a => a[0]), ["mascot-1", "mascot-6", "mascot-4", "mascot-2", "mascot-5", "mascot-3"]);
