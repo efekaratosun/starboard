@@ -209,6 +209,64 @@ const obChips = (attr, rows) => `<div class="chips on-chips">${rows.map(([v, l, 
 const og = (title, inner, opt, id) => `<div class="og"${id ? ` id="${id}"` : ""}>
   <div class="og-t">${title}${opt ? ` <span>${tx("isteğe bağlı")}</span>` : ""}</div>${inner}</div>`;
 
+function birthFields(prefix, parts){
+  return `<div class="ob-birth" role="group" aria-label="${tx("Doğum tarihi")}">
+    ${["Gün", "Ay", "Yıl"].map((label, i) => `<label>${tx(label)}
+      <input id="${prefix}-${i}" type="text" inputmode="numeric"
+        autocomplete="bday-${["day", "month", "year"][i]}" value="${esc(parts[i] || "")}" required></label>`).join("")}
+    </div>`;
+}
+const birthInputs = prefix => [0, 1, 2].map(i => document.getElementById(prefix + "-" + i));
+function validateProfileBirthDate([day, month, year]){
+  const ageError = () => tx("10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir.");
+  if (!day || !month || year.length < 4) return { date:null, error:ageError() };
+  const date = birthDateFromParts(year, month, day);
+  if (!date) return { date:null, error:tx("Bu tarih takvimde yok.") };
+  if (date > today()) return { date:null, error:tx("Doğum tarihi gelecekte olamaz.") };
+  const age = ageFromBirthDate(date);
+  return age >= 10 && age <= 100 ? { date, error:"" } : { date:null, error:ageError() };
+}
+function wireBirthFields(fields, showError){
+  const max = [31, 12];
+  const previousValues = fields.map(input => input.value);
+  const clean = (value, i) => {
+    const digits = value.replace(/\D/g, "");
+    if (i === 2) return digits.slice(0, 4);
+    return digits.length > 2 || +digits > max[i] || digits === "00" ? null : digits;
+  };
+  const check = (pasted = false) => {
+    const parts = fields.map(input => input.value);
+    const complete = parts[0] && parts[1] && parts[2].length === 4;
+    showError(pasted || complete ? validateProfileBirthDate(parts).error : "");
+  };
+  fields.forEach((input, i) => {
+    input.addEventListener("input", ev => {
+      const value = clean(input.value, i) ?? previousValues[i];
+      if (input.value !== value) input.value = value;
+      previousValues[i] = value;
+      if (i < 2 && !ev.inputType?.startsWith("delete") &&
+          (value.length === 2 || +value > Math.floor(max[i] / 10))) fields[i + 1].focus();
+      check();
+    });
+    input.addEventListener("keydown", ev => {
+      if (ev.key === "Backspace" && !input.value && i > 0){
+        ev.preventDefault();
+        fields[i - 1].focus();
+      }
+    });
+    input.addEventListener("paste", ev => {
+      const paste = ev.clipboardData?.getData("text").trim();
+      const date = paste?.match(/^(\d{2})([./]?)(\d{2})\2(\d{4})$/);
+      if (!date) return;
+      ev.preventDefault();
+      const parts = [date[1], date[3], date[4]];
+      fields.forEach((field, j) => { previousValues[j] = field.value = clean(parts[j], j) ?? ""; });
+      (fields.find(field => !field.value) || fields[2]).focus();
+      check(true);
+    });
+  });
+}
+
 /* ---- dönen rakamlar ---- */
 const ROLL_COL = "0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9";
 function rollHTML(str){
@@ -399,23 +457,17 @@ const OB_STEPS = [
               { to: v => v / KG_PER_LB, from: v => Math.round(v * KG_PER_LB * 1000) / 1000 }))
         : og(tx("Boy"), obRuler("height", 120, 220, 1, 12, 10, 5, "cm", false))
           + og(tx("Kilo"), obRuler("weight", 30, 200, 0.5, 10, 10, 2, "kg", true));
-      return rulers + og(tx("Doğum tarihi"), `<div class="ob-birth" role="group" aria-label="${tx("Doğum tarihi")}">
-        ${["Gün", "Doğum ayı", "Yıl"].map((label, i) => `<label>${tx(label)}
-          <input id="ob-birth-${i}" type="text" inputmode="numeric" maxlength="${i === 2 ? 4 : 2}"
-            autocomplete="bday-${["day", "month", "year"][i]}" value="${esc(ob.birthParts[i])}" required></label>`).join("")}
-        </div>`)
+      return rulers + og(tx("Doğum tarihi"), birthFields("ob-birth", ob.birthParts))
         + og(tx("Yağ oranı (%)"), `<input id="ob-bf" aria-label="${tx("Yağ oranı (%)")}" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("Opsiyonel")}">`);
     },
-    wire: wireRulers,
+    wire: () => { wireRulers(); wireBirthFields(birthInputs("ob-birth"), obErr); },
     read: () => {
-      ob.birthParts = [0, 1, 2].map(i => obVal("ob-birth-" + i).trim());
-      const [day, month, year] = ob.birthParts;
-      ob.birthDate = birthDateFromParts(year, month, day);
+      ob.birthParts = birthInputs("ob-birth").map(input => input.value);
+      ob.birthDate = validateProfileBirthDate(ob.birthParts).date;
       ob.bodyFat = num(obVal("ob-bf"));
     },
     valid: () => {
-      const age = ageFromBirthDate(ob.birthDate);
-      if (age === null || age < 10 || age > 100) return [tx("10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir."), "ob-birth-0"];
+      if (!ob.birthDate) return [validateProfileBirthDate(ob.birthParts).error, "ob-birth-0"];
       return ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "";
     } },
   { id:"goal", t:tx("Hedefin"),
@@ -680,7 +732,7 @@ function wireOb(st){
   document.getElementById("ob-next").onclick = next;
   document.getElementById("ob-back").onclick = () => { if (obBusy) return; if (st.read) st.read(); go(-1); };
   if (st.wire) st.wire();
-  app.querySelectorAll(".on-q input").forEach(i => i.addEventListener("input", () => obErr("")));
+  app.querySelectorAll(".on-q input:not([id^='ob-birth-'])").forEach(i => i.addEventListener("input", () => obErr("")));
 
   /* seçim kartları: yalnızca işaretler, ekranı değiştirmez */
   app.querySelectorAll(".ocs [data-oc]").forEach(b => b.onclick = () => {
