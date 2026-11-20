@@ -212,8 +212,8 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
   background:linear-gradient(90deg,transparent,var(--sky-star));box-shadow:0 0 8px var(--sky-star)}
 .on-w-brand{position:relative;isolation:isolate}
 .sk-planet{position:absolute;z-index:0;top:-22px;left:calc(50% + 16px);translate:-50% -50%;
-  width:min(304px,calc(100vw - 24px));pointer-events:none;
-  opacity:.10;animation:skDrift 12s ease-in-out infinite}
+  width:min(326px,calc(100vw - 12px));pointer-events:none;
+  opacity:.075;animation:skDrift 12s ease-in-out infinite}
 .sk-planet-disc{fill:var(--sky-planet)}
 .sk-planet-shade{fill:var(--moon-crater-fill)}
 .sk-planet-ring{fill:var(--sky-planet-ring)}
@@ -221,7 +221,7 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 .sk-planet-ring path:first-child{fill:var(--sky-planet)}
 @keyframes skDrift{50%{transform:translate(2px,-4px)}}
 @media (max-height:640px){
-  .sk-planet{top:-14px;width:min(254px,calc(100vw - 24px))}
+  .sk-planet{top:-14px;width:min(270px,calc(100vw - 12px))}
 }
 
 /* karşılama yerleşimi: logo + slogan + düğme üstte tek blok, bayraklar ve gizlilik altta */
