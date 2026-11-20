@@ -209,7 +209,6 @@ const obChips = (attr, rows) => `<div class="chips on-chips">${rows.map(([v, l, 
 const og = (title, inner, opt, id) => `<div class="og"${id ? ` id="${id}"` : ""}>
   <div class="og-t">${title}${opt ? ` <span>${tx("isteğe bağlı")}</span>` : ""}</div>${inner}</div>`;
 
-const birthDateError = () => tx("10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir.");
 function birthFields(prefix, parts){
   return `<div class="ob-birth" role="group" aria-label="${tx("Doğum tarihi")}">
     ${["Gün", "Ay", "Yıl"].map((label, i) => `<label>${tx(label)}
@@ -218,31 +217,36 @@ function birthFields(prefix, parts){
     </div>`;
 }
 const birthInputs = prefix => [0, 1, 2].map(i => document.getElementById(prefix + "-" + i));
-function validProfileBirthDate([day, month, year]){
+function validateProfileBirthDate([day, month, year]){
+  const ageError = () => tx("10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir.");
+  if (!day || !month || year.length < 4) return { date:null, error:ageError() };
   const date = birthDateFromParts(year, month, day);
+  if (!date) return { date:null, error:tx("Bu tarih takvimde yok.") };
+  if (date > today()) return { date:null, error:tx("Doğum tarihi gelecekte olamaz.") };
   const age = ageFromBirthDate(date);
-  return age !== null && age >= 10 && age <= 100 ? date : null;
+  return age >= 10 && age <= 100 ? { date, error:"" } : { date:null, error:ageError() };
 }
 function wireBirthFields(fields, showError){
   const max = [31, 12];
+  const previousValues = fields.map(input => input.value);
   const clean = (value, i) => {
     const digits = value.replace(/\D/g, "");
     if (i === 2) return digits.slice(0, 4);
-    return digits.length > 2 || +digits > max[i] || digits === "00" ? "" : digits;
+    return digits.length > 2 || +digits > max[i] || digits === "00" ? null : digits;
   };
-  const check = () => {
+  const check = (pasted = false) => {
     const parts = fields.map(input => input.value);
-    showError(parts[0] && parts[1] && parts[2].length === 4 && !validProfileBirthDate(parts) ? birthDateError() : "");
+    const complete = parts[0] && parts[1] && parts[2].length === 4;
+    showError(pasted || complete ? validateProfileBirthDate(parts).error : "");
   };
   fields.forEach((input, i) => {
     input.addEventListener("input", ev => {
-      const value = clean(input.value, i);
-      const invalid = !value && /\d/.test(input.value);
+      const value = clean(input.value, i) ?? previousValues[i];
       if (input.value !== value) input.value = value;
+      previousValues[i] = value;
       if (i < 2 && !ev.inputType?.startsWith("delete") &&
           (value.length === 2 || +value > Math.floor(max[i] / 10))) fields[i + 1].focus();
-      if (invalid) showError(birthDateError());
-      else check();
+      check();
     });
     input.addEventListener("keydown", ev => {
       if (ev.key === "Backspace" && !input.value && i > 0){
@@ -256,10 +260,9 @@ function wireBirthFields(fields, showError){
       if (!date) return;
       ev.preventDefault();
       const parts = [date[1], date[3], date[4]];
-      fields.forEach((field, j) => { field.value = clean(parts[j], j); });
+      fields.forEach((field, j) => { previousValues[j] = field.value = clean(parts[j], j) ?? ""; });
       (fields.find(field => !field.value) || fields[2]).focus();
-      if (fields.some(field => !field.value)) showError(birthDateError());
-      else check();
+      check(true);
     });
   });
 }
@@ -460,11 +463,11 @@ const OB_STEPS = [
     wire: () => { wireRulers(); wireBirthFields(birthInputs("ob-birth"), obErr); },
     read: () => {
       ob.birthParts = birthInputs("ob-birth").map(input => input.value);
-      ob.birthDate = validProfileBirthDate(ob.birthParts);
+      ob.birthDate = validateProfileBirthDate(ob.birthParts).date;
       ob.bodyFat = num(obVal("ob-bf"));
     },
     valid: () => {
-      if (!ob.birthDate) return [birthDateError(), "ob-birth-0"];
+      if (!ob.birthDate) return [validateProfileBirthDate(ob.birthParts).error, "ob-birth-0"];
       return ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "";
     } },
   { id:"goal", t:tx("Hedefin"),

@@ -134,9 +134,9 @@ function wireSettings(){
       ? heightFromFtIn(num(document.getElementById("s-hft").value), num(document.getElementById("s-hin").value))
       : num(document.getElementById("s-h").value);
     if (dateInputs){
-      const date = validProfileBirthDate(dateInputs.map(input => input.value));
-      if (!date){
-        showBirthError(birthDateError());
+      const { date, error } = validateProfileBirthDate(dateInputs.map(input => input.value));
+      if (error){
+        showBirthError(error);
         dateInputs[0].focus();
         return;
       }

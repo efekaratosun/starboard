@@ -13,6 +13,8 @@ window.STARBOARD_EN = {
   "Ay": "Month",
   "Yıl": "Year",
   "10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir.": "Enter a valid date of birth for an age between 10 and 100.",
+  "Bu tarih takvimde yok.": "This date doesn't exist.",
+  "Doğum tarihi gelecekte olamaz.": "Date of birth can't be in the future.",
   "Opsiyonel": "Optional",
   "Profil oluşturma ilerlemesi": "Profile setup progress",
   "Ağrı veya mevcut bir rahatsızlık durumunda antrenmana başlamadan önce hekiminize danışın.": "If you have pain or an existing condition, consult your doctor before starting training.",

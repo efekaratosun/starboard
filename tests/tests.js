@@ -4473,22 +4473,33 @@ test("Ölçülerin: doğum tarihi girişi, odak, yapıştırma ve doğrulama", (
     eq(document.activeElement.id, month.id);
     input(month, "9");
     eq(document.activeElement.id, year.id);
+    input(day, "3");
+    input(day, day.value + "5");
+    eq(day.value, "3");
+    eq(document.activeElement.id, day.id);
+    input(month, "1");
+    input(month, month.value + "3");
+    eq(month.value, "1");
+    eq(document.activeElement.id, month.id);
     for (const [i, date] of ["15.04.1995", "15/04/1995", "15041995"].entries()){
       paste([day, month, year][i], date);
       eq([day.value, month.value, year.value], ["15", "04", "1995"]);
     }
-    for (const date of ["31.04.2000", "29.02.2001", "45.04.2000", "15.13.2000", "00.04.2000", "01.01." + (new Date().getFullYear() + 1)]){
+    for (const [date, expected] of [
+      ["31.04.2000", "Bu tarih takvimde yok."],
+      ["29.02.2001", "Bu tarih takvimde yok."],
+      ["01.01." + (new Date().getFullYear() + 1), "Doğum tarihi gelecekte olamaz."],
+      ["15.04.1900", message],
+      ["45.04.2000", message], ["15.13.2000", message], ["00.04.2000", message]
+    ]){
       paste(day, date);
-      eq(error.textContent, message);
+      eq(error.textContent, expected, date);
       const step = obStep;
       document.getElementById("ob-next").click();
+      eq(error.textContent, expected, date + " İleri");
       eq(obStep, step);
       eq(ob.birthDate, null);
     }
-    input(day, "45");
-    eq(day.value, "");
-    input(month, "13");
-    eq(month.value, "");
     paste(year, "29.02.2000");
     eq(error.textContent, "");
     const step = obList()[obStep];
@@ -4512,13 +4523,23 @@ test("ayarlar: kayıtlı doğum tarihi açılır, geçersiz tarih kaydedilmez", 
     const fields = birthInputs("s-birth");
     eq(fields.map(field => field.value), ["15", "04", "1995"]);
     eq(fields[1].labels[0].textContent.trim(), "Ay");
-    fields[0].value = "31";
-    fields[0].dispatchEvent(new Event("input", { bubbles:true }));
-    ok(document.getElementById("s-birth-error").textContent);
-    await document.getElementById("s-save").onclick();
-    eq(state.profile.birthDate, "1995-04-15");
-    fields[0].value = "30";
-    fields[0].dispatchEvent(new Event("input", { bubbles:true }));
+    const enter = parts => fields.forEach((field, i) => {
+      field.value = parts[i];
+      field.dispatchEvent(new Event("input", { bubbles:true }));
+    });
+    for (const [parts, expected] of [
+      [["31", "04", "2000"], "Bu tarih takvimde yok."],
+      [["29", "02", "2001"], "Bu tarih takvimde yok."],
+      [["01", "01", String(new Date().getFullYear() + 1)], "Doğum tarihi gelecekte olamaz."],
+      [["15", "04", "1900"], "10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir."]
+    ]){
+      enter(parts);
+      eq(document.getElementById("s-birth-error").textContent, expected);
+      await document.getElementById("s-save").onclick();
+      eq(document.getElementById("s-birth-error").textContent, expected);
+      eq(state.profile.birthDate, "1995-04-15");
+    }
+    enter(["30", "04", "1995"]);
     eq(document.getElementById("s-birth-error").textContent, "");
     await document.getElementById("s-save").onclick();
     eq(state.profile.birthDate, "1995-04-30");
