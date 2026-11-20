@@ -35,11 +35,22 @@ function sceneTwinkles(n, seed){
   return h;
 }
 
+function sceneMoon(id){
+  const edge = 48 - MOON_R;
+  return `<svg class="sk-moon sk-moon-${id}" viewBox="0 0 96 96" aria-hidden="true" style="--c:var(--moon-${id})">
+    <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
+    ${moonCraters(id)}
+    <path class="sk-moon-shade" d="M48 ${edge}a${MOON_R} ${MOON_R} 0 0 1 0 ${2 * MOON_R}A44 44 0 0 0 48 ${edge}Z"/>
+    <path class="mn-spark" d="M84 10Q85 16 91 17Q85 18 84 24Q83 18 77 17Q83 16 84 10Z"/>
+  </svg>`;
+}
+
 function sceneHTML(){
   return `<div class="sk-sky"></div>
   <div class="sk-par sk-par1">${sceneStarLayer("a", 110, 0.6, 7)}${sceneStarLayer("deep", 90, 0.6, 31)}</div>
   <div class="sk-par sk-par2">${sceneStarLayer("b", 46, 1.0, 13)}${sceneStarLayer("deep b", 36, 1.0, 41)}</div>
   <div class="sk-par sk-par3">${sceneStarLayer("c", 16, 1.5, 19)}<div class="sk-tws">${sceneTwinkles(30, 5)}</div></div>
+  ${["kcal", "carb", "protein"].map(sceneMoon).join("")}
   <i class="sk-shoot"></i>`;
 }
 
@@ -109,12 +120,12 @@ function sceneActive(on){
   };
 }
 
-/* ---- bayraklar (emoji bayraklar Windows'ta harf görünür; SVG çizilir, yuvarlak kırpmayı CSS yapar) ---- */
+/* ---- bayraklar (emoji bayraklar Windows'ta harf görünür) ---- */
 const sceneStar = (cx, cy, R, r, rot) => Array.from({ length:10 }, (_, i) => {
   const a = rot + i * Math.PI / 5, q = i % 2 ? r : R;
   return (cx + q * Math.cos(a)).toFixed(2) + "," + (cy + q * Math.sin(a)).toFixed(2);
 }).join(" ");
 const FLAG_SVG = {
-  tr: `<svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="#E30A17"/><circle cx="20" cy="24" r="10.5" fill="#fff"/><circle cx="23.4" cy="24" r="8.4" fill="#E30A17"/><polygon fill="#fff" points="${sceneStar(31.5, 24, 4.9, 2.0, Math.PI)}"/></svg>`,
-  en: `<svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="#012169"/><path d="M0 0L48 48M48 0L0 48" stroke="#fff" stroke-width="9"/><path d="M0 0L48 48M48 0L0 48" stroke="#C8102E" stroke-width="3.4"/><path d="M24 0V48M0 24H48" stroke="#fff" stroke-width="15"/><path d="M24 0V48M0 24H48" stroke="#C8102E" stroke-width="9"/></svg>`
+  tr: `<svg viewBox="0 0 66 45" aria-hidden="true"><rect width="66" height="45" fill="#E30A17"/><circle cx="27" cy="22.5" r="11" fill="#fff"/><circle cx="30.6" cy="22.5" r="8.8" fill="#E30A17"/><polygon fill="#fff" points="${sceneStar(39, 22.5, 5, 2, Math.PI)}"/></svg>`,
+  en: `<svg viewBox="0 0 66 45" aria-hidden="true"><rect width="66" height="45" fill="#012169"/><path d="M0 0L66 45M66 0L0 45" stroke="#fff" stroke-width="9"/><path d="M0 0L66 45M66 0L0 45" stroke="#C8102E" stroke-width="3.4"/><path d="M33 0V45M0 22.5H66" stroke="#fff" stroke-width="15"/><path d="M33 0V45M0 22.5H66" stroke="#C8102E" stroke-width="9"/></svg>`
 };

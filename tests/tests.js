@@ -4557,7 +4557,7 @@ test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot"
   }
 });
 
-test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, yıldızlı sahne (gezegen yok)", async () => {
+test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve kraterli aylar", async () => {
   const keep = { st:state, ob, set:window.setLang, sess:sessionStorage.getItem("starboard-onb-units") };
   let asked = null;
   window.setLang = l => { asked = l; };
@@ -4579,6 +4579,10 @@ test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, yıld
     const flags = [...w.querySelectorAll("[data-flag]")];
     eq(flags.map(f => f.dataset.flag), ["tr", "en"]);
     ok(flags.every(f => f.querySelector("svg") && f.getAttribute("aria-label") && !f.textContent.trim()), "bayrak düğmesi simge + etiket olmalı");
+    for (const flag of flags){
+      const { width, height } = flag.querySelector("svg").viewBox.baseVal;
+      eq(width / height, 44 / 30);
+    }
     /* İngiltere bayrağı menüyü açar; seçim birim ayarına yazılır ve İngilizceye geçer */
     const menu = document.getElementById("fl-menu");
     ok(menu.hidden, "menü kapalı başlamalı");
@@ -4595,13 +4599,18 @@ test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, yıld
     w.querySelector("[data-flag=tr]").click();
     eq(ob.units, "metric");
     eq(asked, null, "zaten Türkçe: sayfa yenilenmemeli");
-    /* Sahne: yıldız katmanları ve kayan yıldız; gezegen, nebula ve ay yok */
+    /* Sahne: yıldız katmanları, kayan yıldız ve Beslenme ile aynı krater çizimi */
     const bg = document.getElementById("on-bg");
     ok(bg.classList.contains("welcome"));
     ok(bg.querySelectorAll(".sk-t").length >= 20, "yanıp sönen yıldız az");
     ok(bg.querySelector(".sk-shoot"), "kayan yıldız yok");
     ok(!bg.querySelector("canvas,[class*=planet],[class^=pl-]"), "gezegen olmamalı");
-    ok(!/nebula|moon|planet/i.test(bg.innerHTML), "nebula / ay / gezegen olmamalı");
+    const moons = [...bg.querySelectorAll("svg.sk-moon")];
+    eq(moons.length, 3);
+    for (const moon of moons){
+      eq(moon.getAttribute("aria-hidden"), "true");
+      ok(moon.querySelector(".mn-crater") && moon.querySelector(".sk-moon-shade") && moon.querySelector(".mn-spark"));
+    }
     /* Sürüm etiketi: 'v' + numara, 'Sürüm' kelimesi yok */
     const main = await (await fetch("../starboard-site/js/main.js")).text();
     ok(main.includes('"v" + APP_VERSION') && !main.includes('tx("Sürüm {0}", [APP_VERSION]);\n  document'), "sürüm etiketi v + numara olmalı");
