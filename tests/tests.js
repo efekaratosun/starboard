@@ -4622,12 +4622,15 @@ test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve h
     ok(surf && surf.parentElement.getAttribute("clip-path") === "url(#sk-planet-clip)", "krater yüzeyi diske kırpılmalı");
     eq(surf.querySelectorAll(".mn-crater").length, 6);
     ok(planet.querySelector(".sk-planet-shade"));
-    /* alt nebula: dört düz akış bandı (dıştan çekirdeğe) ve duman kıvrımları, temadan renk */
+    /* alt nebula (uzay tozu): yumuşak bulutlar, koyu toz şeritleri, toz ve parlayan yıldızlar; filtre yok */
     const neb = bg.querySelector("svg.sk-neb");
     ok(neb, "nebula yok");
     eq(neb.getAttribute("aria-hidden"), "true");
-    eq(neb.querySelectorAll(".sk-neb-l").length, 4);
-    ok(neb.querySelectorAll(".sk-neb-w > path").length >= 2, "duman kıvrımı yok");
+    eq(neb.querySelectorAll(".sk-neb-clouds > ellipse").length, 3);
+    eq(neb.querySelectorAll(".sk-neb-lanes > ellipse").length, 3);
+    ok(neb.querySelectorAll(".sk-neb-dust > circle").length >= 200, "toz az");
+    ok(neb.querySelectorAll(".sk-neb-sp").length >= 2, "parlayan yıldız yok");
+    ok(!neb.querySelector("filter"), "nebulada pil yiyen filtre olmamalı");
     /* Sürüm etiketi: 'v' + numara, 'Sürüm' kelimesi yok */
     const main = await (await fetch("../starboard-site/js/main.js")).text();
     ok(main.includes('"v" + APP_VERSION') && !main.includes('tx("Sürüm {0}", [APP_VERSION]);\n  document'), "sürüm etiketi v + numara olmalı");
@@ -4636,7 +4639,7 @@ test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve h
     ok(sw.includes('"js/welcome-scene.js"'), "welcome-scene.js sw.js SHELL listesinde değil");
     const css = await (await fetch("../starboard-site/css/tokens.css")).text();
     for (const v of ["--sky-top", "--sky-bot", "--sky-star", "--sky-deep-op"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
-    for (const v of ["--sky-planet", "--sky-planet-ring", "--sky-planet-dust", "--neb-1", "--neb-2", "--neb-3", "--neb-4", "--neb-op", "--neb-wisp-op"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
+    for (const v of ["--sky-planet", "--sky-planet-ring", "--sky-planet-dust", "--neb-1", "--neb-2", "--neb-3", "--neb-op", "--neb-dust", "--neb-dust-op"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
   } finally {
     sceneActive(false); sceneState = null;
     window.setLang = keep.set; state = keep.st; ob = keep.ob; app.innerHTML = "";

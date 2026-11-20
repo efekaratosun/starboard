@@ -75,46 +75,40 @@ function scenePlanet(){
   </svg>`;
 }
 
-/* Alt nebula: uygulamanın düz diliyle üst üste binen yumuşak bulut katmanları (her katman
-   aynı renkte dairelerin birleşimi; opaklık grupta, böylece iç içe daireler tek düz renk görünür).
+/* Alt nebula (uzay tozu): kenarı kaybolan yumuşak renk bulutları, içlerinden geçen koyu toz
+   şeritleri, şeritler boyunca yoğunlaşan toz parçacıkları ve birkaç hafif parlayan yıldız.
+   Sert kenar yok: bulutlar ve şeritler radyal gradyan elipsler (filtre/blur yok, pil dostu).
    Renkler tema değişkenlerinden: açık temada pembe / turuncu / kırmızı, koyu temada mor / mavi.
-   Üst kenar maske ile yumuşar; katmanlar farklı hızlarda çok yavaş yana kayar. */
+   Bulutlar, şeritler ve toz farklı hızlarda çok yavaş süzülür; hareket azaltmada durur. */
 const SK_NEB_H = 340;
-/* Noktalardan geçen yumuşak eğri (Catmull-Rom → kübik Bézier). */
-function sceneCurve(p){
-  let d = `M${p[0][0]} ${p[0][1]}`;
-  for (let i = 0; i < p.length - 1; i++){
-    const a = p[i - 1] || p[i], b = p[i], c = p[i + 1], e = p[i + 2] || c;
-    const f = n => n.toFixed(1);
-    d += `C${f(b[0] + (c[0] - a[0]) / 6)} ${f(b[1] + (c[1] - a[1]) / 6)} ${f(c[0] - (e[0] - b[0]) / 6)} ${f(c[1] - (e[1] - b[1]) / 6)} ${c[0]} ${c[1]}`;
-  }
-  return d;
-}
 function sceneNebula(){
-  /* Düz illüstrasyon nebulası: soldan sağa yükselen dalgalı akış bantları. Dıştan içe 4 ton basamağı
-     (dış kenar koyu ve geniş, çekirdek açık ve dar); üstünde ucu kıvrılan duman kıvrımları. */
-  const bands = [
-    [[-30, 176], [40, 146], [104, 156], [168, 116], [236, 128], [298, 88], [356, 100], [430, 62]],
-    [[-30, 220], [50, 194], [122, 204], [192, 168], [262, 180], [330, 144], [430, 130]],
-    [[-30, 262], [70, 238], [150, 248], [222, 216], [300, 228], [372, 198], [430, 202]],
-    [[-30, 302], [80, 284], [170, 292], [252, 264], [332, 274], [430, 252]]
-  ];
-  const band = pts => sceneCurve(pts) + `L430 ${SK_NEB_H + 10}L-30 ${SK_NEB_H + 10}Z`;
-  /* duman kıvrımları: bant boyunca akıp ucunda helezon gibi kıvrılan kalın yuvarlak çizgiler */
-  const wisps = [
-    "M28 214C78 186 128 200 168 170C188 155 186 136 170 136C158 136 156 150 166 154",
-    "M196 250C240 226 280 236 320 204C338 190 334 172 318 174C306 176 308 190 318 190",
-    "M90 290C130 272 170 280 214 258"
-  ];
-  const sparks = [[70, 168, 4.2], [300, 150, 3.4], [352, 236, 2.8], [150, 252, 2.4], [250, 112, 3]];
-  const spark = ([x, y, r], i) => {
-    const q = r * .32;
-    return `<path class="sk-neb-sp" style="animation-delay:${-i * 1.3}s" d="M${x} ${y - r}Q${x + q} ${y - q} ${x + r} ${y}Q${x + q} ${y + q} ${x} ${y + r}Q${x - q} ${y + q} ${x - r} ${y}Q${x - q} ${y - q} ${x} ${y - r}Z"/>`;
-  };
+  const f = n => n.toFixed(1);
+  /* [cx, cy, rx, ry, renk değişkeni, merkez opaklığı, açı] */
+  const clouds = [[120, 270, 230, 90, "--neb-3", .5, -12], [300, 240, 200, 80, "--neb-2", .45, -18], [220, 310, 260, 70, "--neb-1", .4, -8]];
+  /* koyu toz şeritleri: gökyüzü renginde, uzun ve ince yumuşak elipsler bulutu yer yer siler */
+  const lanes = [[110, 280, 150, 13, -16], [280, 238, 120, 10, -14], [170, 318, 120, 8, -9]];
+  const grad = (id, color, a) => `<radialGradient id="${id}"><stop offset="0" style="stop-color:var(${color});stop-opacity:${a}"/>`
+    + `<stop offset=".55" style="stop-color:var(${color});stop-opacity:${(a * .45).toFixed(3)}"/><stop offset="1" style="stop-color:var(${color});stop-opacity:0"/></radialGradient>`;
+  const ell = ([cx, cy, rx, ry], rot, fill) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#${fill})" transform="rotate(${rot} ${cx} ${cy})"/>`;
+  /* toz: hafif eğik bir kuşak boyunca yoğun, yukarı çıktıkça seyrek (sabit tohum → her açılışta aynı) */
+  const r = sceneRng(21);
+  let dust = "";
+  for (let k = 0, guard = 0; k < 300 && guard < 12000; guard++){
+    const x = r() * 400, y = r() * SK_NEB_H, d = y - (300 - .3 * x);
+    const p = .05 + .95 * Math.exp(-(d * d) / 2312) * Math.min(1, Math.max(0, (y - 60) / 200));
+    if (r() > p) continue;
+    const big = r() < .08;
+    dust += `<circle cx="${f(x)}" cy="${f(y)}" r="${(big ? 1.1 + r() * 1.1 : .35 + r() * .6).toFixed(2)}" opacity="${(big ? .7 + r() * .3 : .25 + r() * .5).toFixed(2)}"/>`;
+    k++;
+  }
+  const glints = [[150, 262, 6], [300, 222, 5], [64, 300, 5]];
   return `<svg class="sk-neb" viewBox="0 0 400 ${SK_NEB_H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    ${bands.map((b, i) => `<path class="sk-neb-l sk-neb-l${i + 1}" d="${band(b)}"/>`).join("")}
-    <g class="sk-neb-w">${wisps.map(d => `<path d="${d}"/>`).join("")}</g>
-    ${sparks.map(spark).join("")}
+    <defs>${clouds.map(([, , , , c, a], i) => grad("sk-nc" + i, c, a)).join("")}${grad("sk-nl", "--sky-bot", .9)}
+      <radialGradient id="sk-ng"><stop offset="0" style="stop-color:var(--neb-dust);stop-opacity:.9"/><stop offset=".25" style="stop-color:var(--neb-dust);stop-opacity:.35"/><stop offset="1" style="stop-color:var(--neb-dust);stop-opacity:0"/></radialGradient></defs>
+    <g class="sk-neb-clouds">${clouds.map((c, i) => ell(c, c[6], "sk-nc" + i)).join("")}</g>
+    <g class="sk-neb-lanes">${lanes.map(l => ell(l, l[4], "sk-nl")).join("")}</g>
+    <g class="sk-neb-dust">${dust}</g>
+    ${glints.map(([x, y, rad], i) => `<circle class="sk-neb-sp" style="animation-delay:${-i * 1.4}s" cx="${x}" cy="${y}" r="${rad}"/>`).join("")}
   </svg>`;
 }
 
