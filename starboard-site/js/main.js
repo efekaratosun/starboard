@@ -11,7 +11,7 @@ function mountVersionBadge(){
   el.id = "ver-badge";
   el.className = "ver-badge";
   el.setAttribute("aria-hidden", "true");
-  el.textContent = tx("Sürüm {0}", [APP_VERSION]);
+  el.textContent = "v" + APP_VERSION;
   document.body.appendChild(el);
 }
 

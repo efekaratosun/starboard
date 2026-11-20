@@ -6,3 +6,5 @@ ios/App/build/
 ios/DerivedData/
 *.xcuserstate
 xcuserdata/
+
+.onizleme/
