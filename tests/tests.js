@@ -52,7 +52,7 @@ const GOLDEN = [
   [{ sex:"female", height:163, age:27 }, 60, 0, { bmr:1323, tdee:2050, kcal:2050, protein:96, fat:57, carb:288, water:2100, floored:false }],
   [{ sex:"female", height:163, age:27, goal:"lose" }, 60, 0, { bmr:1323, tdee:2050, kcal:1681, protein:115, fat:47, carb:200, water:2100, floored:false }],
   [{ sex:"none", height:170, age:45 }, 70, 0, { bmr:1460, tdee:2262, kcal:2262, protein:112, fat:63, carb:312, water:2450, floored:false }],
-  [{ bodyFat:20 }, 82, 0, { bmr:1788, tdee:2771, kcal:2771, protein:131, fat:77, carb:389, water:2870, floored:false }],
+  [{ bodyFat:20 }, 82, 0, { bmr:1787, tdee:2770, kcal:2770, protein:131, fat:77, carb:388, water:2870, floored:false }],
   [{ activity:"sedentary" }, 82, 0, { bmr:1788, tdee:2145, kcal:2145, protein:131, fat:60, carb:270, water:2870, floored:false }],
   [{ activity:"veryActive", goal:"gain" }, 95, 0, { bmr:1918, tdee:3643, kcal:4080, protein:167, fat:113, carb:599, water:3325, floored:false }],
   [{ goal:"lose" }, 82, -150, { bmr:1788, tdee:2771, kcal:2122, protein:157, fat:59, carb:241, water:2870, floored:false }],
@@ -4448,15 +4448,15 @@ test("profil: doğum tarihi, eski yaş, nötr katsayı ve ölçülmüş yağ ora
   eq(ageFromBirthDate("2090-01-01", new Date(2025, 2, 1)), null);
   eq(profileAge({ age:41 }), 41);
   const birthDate = shiftDays(today(), -365 * 30);
-  const base = profileOf({ sex:"none", birthDate, age:15, bodyFat:20 });
+  const base = profileOf({ sex:"none", birthDate, age:15 });
   const age = ageFromBirthDate(birthDate);
   const neutral = buildProgram(base, 82, 0);
-  eq(neutral.bmr, buildProgram(profileOf({ sex:"none", age }), 82, 0).bmr);
+  eq(neutral.bmr, Math.round(10 * 82 + 6.25 * base.height - 5 * age - 78));
   eq(neutral.lbm, null);
-  const measured = { ...base, bodyFatReferenceWeight:82 };
-  eq(buildProgram(measured, 82, 0).bmr, Math.round(500 + 22 * 82 * .8));
-  eq(buildProgram(measured, 86, 0).lbm, null);
-  eq(buildProgram({ ...measured, birthDate:null, age:36 }, 82, 0).lbm, null);
+  const measured = { ...base, bodyFat:20 };
+  eq(buildProgram(measured, 82, 0).bmr, Math.round(370 + 21.6 * 82 * .8));
+  eq(buildProgram({ ...measured, bodyFatReferenceWeight:82 }, 86, 0).lbm, 86 * .8);
+  eq(buildProgram({ ...measured, birthDate:null, age:36 }, 82, 0).lbm, 82 * .8);
 });
 test("antrenman: yedi gün ve eski manuel günler planlanır", () => {
   eq(OB_DEFAULT_DAYS("moderate"), [1,3,5,7]);
@@ -4468,15 +4468,18 @@ test("antrenman: yedi gün ve eski manuel günler planlanır", () => {
   }
 });
 test("bildirim: doğum günü yılda bir, ilaç yalnız seçilen saatte", () => {
-  const now = new Date(2026, 10, 20, 8);
+  const now = new Date(2026, 10, 19, 8);
   const st = { profile:{ birthDate:"2000-11-20", reminders:{} }, days:{} };
   eq(reminderPlan(st, null, now), []);
   st.profile.reminders = { birthday:true, medicationAt:"08:00" };
   const plan = reminderPlan(st, null, now);
   eq(plan.map(n => n.kind), ["birthday", "medication"]);
-  eq(plan[0].calendar, { month:11, day:20, hour:9, minute:0, second:0 });
-  eq(dayKey(plan[1].at), "2026-11-21");
-  eq(dayKey(reminderPlan(st, null, new Date(2026, 10, 20, 10)).find(n => n.kind === "birthday").at), "2027-11-20");
+  eq(plan[0].calendar, { month:11, day:20, hour:0, minute:0, second:0 });
+  eq(plan[0].at.getHours(), 0);
+  eq(dayKey(plan[1].at), "2026-11-20");
+  eq(dayKey(reminderPlan(st, null, new Date(2026, 10, 20, 0)).find(n => n.kind === "birthday").at), "2027-11-20");
+  eq(birthdayCelebrationKey(st.profile, now), null);
+  eq(birthdayCelebrationKey(st.profile, plan[0].at), "2026-11-20");
   st.profile.birthDate = "2000-02-29";
   eq(reminderPlan(st, null, now).filter(n => n.kind === "birthday").map(n => dayKey(n.at)),
     ["2027-03-01", "2028-02-29", "2029-03-01", "2030-03-01"]);
@@ -4525,4 +4528,31 @@ test("ölçü cetveli: sahneden ayrılan kaydırma olayı ölçüyü değiştirm
     slider.dispatchEvent(new Event("scroll"));
     eq(ob.weight, 70);
   } finally { ({ ob, state } = prev); }
+});
+
+test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot", () => {
+  const prev = ob;
+  try {
+    const step = OB_STEPS.find(s => s.id === "you");
+    ob = { ...obDefaults(), sex:"none" };
+    app.innerHTML = step.body();
+    step.wire();
+    eq(app.querySelectorAll("[data-field=sex] button").length, 3);
+    eq(app.querySelectorAll("[data-field=sex] svg").length, 0);
+    eq(app.querySelectorAll("[data-av]").length, 6);
+    eq(avKey({ avatar:"alien", sex:"female" }), AVATARS[0][0]);
+    eq(avKey({ avatar:"m", sex:"male" }), AVATARS[0][0]);
+    app.querySelector('[data-av="mascot-6"]').click();
+    eq(avKey(ob), "mascot-6");
+    app.querySelector("#ob-name").value = "  ";
+    step.read();
+    eq(step.valid()[1], "ob-name");
+    app.querySelector("#ob-name").value = "  Deniz  ";
+    step.read();
+    eq(ob.name, "Deniz");
+    eq(step.valid(), "");
+  } finally {
+    ob = prev;
+    app.replaceChildren();
+  }
 });

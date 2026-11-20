@@ -465,7 +465,7 @@ function avatarSVG(key, sx, wp, mood, uid){
       <g transform="translate(24 0) scale(${sx.toFixed(3)} 1) translate(-24 0)">
         ${alienShape(key, "bc-base")}
         <g clip-path="url(#${uid}-clip)">${alienShape(key)}</g>
-        ${alienFace(m)}
+        ${alienFace(key, m)}
       </g>
       ${m.trained ? spark(4, 18, .55) + spark(44, 30, .45) + spark(7, 44, .4) : ""}
       ${m.star ? `<path class="bc-star" transform="translate(40 8)" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2Z"/>` : ""}
@@ -476,30 +476,26 @@ function avatarSVG(key, sx, wp, mood, uid){
 /* Avatar galerisi: figüre dokununca açılır */
 function openAvatarSheet(){
   const p = state.profile;
-  let key = avKey(p), col = avColor(p);
+  let key = avKey(p);
   const e = state.days[today()] || {}, program = currentProgram();
   const wp = program ? clamp((e.water || 0) / program.water, 0, 1) : 0;
   const el = document.createElement("div");
   el.className = "sheet-bg";
-  const preview = () => `<div class="bc-fig big" style="--av:${col}">${avatarSVG(key, 1, Math.max(wp, .55), { happy:true, star:false }, "pv")}</div>`;
+  const preview = () => `<div class="bc-fig big" style="--av:${avColor({ avatar:key })}">${avatarSVG(key, 1, Math.max(wp, .55), { happy:true, star:false }, "pv")}</div>`;
   el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
     <div class="sheet-h"><b id="sh-t">${tx("Avatarın")}</b><button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
     <div id="sh-pv" class="sh-pv">${preview()}</div>
     <div class="sh-l">${tx("Şekil")}</div>${avatarPicker(key, "sh")}
-    <div class="sh-l">${tx("Renk")}</div>${colorPicker(col, "sh")}    <div class="row" style="margin-top:16px"><button id="sh-save">${tx("Kaydet")}</button><button class="ghost" id="sh-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button></div>
+    <div class="row" style="margin-top:16px"><button id="sh-save">${tx("Kaydet")}</button><button class="ghost" id="sh-cancel" style="flex:0 0 100px">${tx("Vazgeç")}</button></div>
   </div>`;
   document.body.appendChild(el);
-  const sheet = el.querySelector(".sheet");
-  sheet.style.setProperty("--av", col);
-  const upd = () => { el.querySelector("#sh-pv").innerHTML = preview(); sheet.style.setProperty("--av", col); };
-  wireAvatar("sh", k => { key = k; upd(); }, el);
-  wireColor("sh", c => { col = c; upd(); }, el);
+  wireAvatar("sh", k => { key = k; el.querySelector("#sh-pv").innerHTML = preview(); }, el);
   const close = () => sheetOut(el);
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
   el.querySelector("#sh-cancel").onclick = close;
   el.querySelector("#sh-save").onclick = async () => {
-    p.avatar = key; p.avColor = col;
+    p.avatar = key;
     await saveState(state); close(); render(); toast(tx("Avatarın güncellendi."));
   };
   el.querySelector("#sh-save").focus();

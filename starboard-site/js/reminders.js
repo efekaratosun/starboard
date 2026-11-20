@@ -56,7 +56,7 @@ function reminderPlan(st, program, now){
   const birthDate = st.profile.birthDate;
   if (R.birthday && ageFromBirthDate(birthDate, now) !== null){
     const year = now.getFullYear();
-    const anniversary = y => new Date(birthdayInYear(birthDate, y) + "T09:00:00");
+    const anniversary = y => new Date(birthdayInYear(birthDate, y) + "T00:00:00");
     const thisYear = anniversary(year);
     const nextYear = thisYear > now ? year : year + 1;
     const addBirthday = (id, at, calendar) => out.push({ id, at, calendar, kind:"birthday",
@@ -65,7 +65,7 @@ function reminderPlan(st, program, now){
       /* Artık yıl koşulu takvim tekrarına yazılamaz. Dört yıl ayrı kurulur. */
       [90, 92, 93, 94].forEach((id, i) => addBirthday(id, anniversary(nextYear + i)));
     } else {
-      addBirthday(90, anniversary(nextYear), { month:thisYear.getMonth() + 1, day:thisYear.getDate(), hour:9, minute:0, second:0 });
+      addBirthday(90, anniversary(nextYear), { month:thisYear.getMonth() + 1, day:thisYear.getDate(), hour:0, minute:0, second:0 });
     }
   }
   const med = hmToMin(R.medicationAt);
@@ -103,6 +103,30 @@ function reminderPlan(st, program, now){
   return out.sort((a, b) => a.at - b.at);
 }
 const sleepMinOf = p => (p && p.sleepMin) || 7;
+
+function birthdayCelebrationKey(profile, now = new Date()){
+  const birthDate = profile?.birthDate;
+  if (ageFromBirthDate(birthDate, now) === null) return null;
+  const day = dayKey(now);
+  return day === birthdayInYear(birthDate, now.getFullYear()) ? day : null;
+}
+
+let celebratedBirthday;
+function celebrateBirthday(){
+  const key = birthdayCelebrationKey(state?.profile);
+  if (!key || key === celebratedBirthday) return;
+  celebratedBirthday = key;
+  try {
+    const storageKey = "starboard-birthday-celebration";
+    if (localStorage.getItem(storageKey) === key) return;
+    localStorage.setItem(storageKey, key);
+  } catch(e){ /* Oturum içindeki tekrarlar yine engellenir. */ }
+  toast(tx("Doğum günün kutlu olsun!"));
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) celebrateBirthday();
+});
 
 /* ---- zamanlama (yalnızca iPhone) ---- */
 let remindTimer = null;

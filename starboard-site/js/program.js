@@ -38,18 +38,10 @@ const profileAge = (p, now) => ageFromBirthDate(p.birthDate, now) ?? p.age;
 /* Cinsiyete bağlı sabitler. Belirtilmemişse iki değerin ortalaması kullanılır. */
 const sexK = (sex, m, f) => sex === "male" ? m : sex === "female" ? f : (m + f) / 2;
 
-/* Eski avatar anahtarları yeni yüzlerde de aynı seçimleri temsil eder. */
-const AV_CATS = ["human", "nature", "sport", "space"].map((k, i) => [k, tx("Seri {0}", [i + 1])]);
-const AVATARS = [
-  ["m", "f", "n"],
-  ["star", "drop", "leaf", "fire", "bolt", "mountain", "moon", "heart", "sun"],
-  ["run", "lift", "yoga", "swim", "bike", "box", "ball", "hoop", "tennis", "climb", "ski", "dance"],
-  ["rocket", "planet", "astro", "alien", "ufo", "comet"]
-].flatMap((keys, category) => keys.map((key, i) => [key, tx("Uzaylı {0}", [i + 1]), AV_CATS[category][0]]));
-const AV_COLORS = [["#FF5A3C",tx("Mercan")],["#FF9500",tx("Turuncu")],["#E8B400",tx("Sarı")],["#16B86A",tx("Yeşil")],
-  ["#00AFA0",tx("Turkuaz")],["#2F7BEA",tx("Mavi")],["#7C4DFF",tx("Mor")],["#E84A93",tx("Pembe")]];
-const avKey = p => AVATARS.some(a => a[0] === p.avatar) ? p.avatar : p.sex === "female" ? "f" : p.sex === "male" ? "m" : "n";
-const avColor = p => p.avColor || (p.sex === "female" ? "#E84A93" : p.sex === "male" ? "#2F7BEA" : "#7C4DFF");
+const AVATARS = ["carb", "water", "protein", "good-vivid", "fat", "kcal"]
+  .map((tone, i) => ["mascot-" + (i + 1), tx("Uzaylı {0}", [i + 1]), tone]);
+const avKey = p => AVATARS.find(a => a[0] === p.avatar)?.[0] || AVATARS[0][0];
+const avColor = p => "var(--" + AVATARS.find(a => a[0] === avKey(p))[2] + ")";
 const sexClass = () => "custom";
 
 const ALIEN_HEADS = [
@@ -65,67 +57,50 @@ const ALIEN_ANTENNAS = [
   ["M17 26 L12 13 M31 26 L36 13", [[12,13],[36,13]]],
   ["M17 25 Q16 14 8 15 M31 25 Q32 14 40 15", [[8,15],[40,15]]],
   ["M20 25 Q21 18 15 11 M29 25 Q29 18 33 16", [[15,11],[33,16]]],
+  ["M24 24 Q15 18 21 10", [[21,10]]],
   ["M14 27 Q7 22 8 16 M24 24 V10 M34 27 Q41 22 40 16", [[8,16],[24,10],[40,16]]]
 ];
 function alienShape(k, cls = ""){
   const i = Math.max(0, AVATARS.findIndex(a => a[0] === k));
-  const [stem, tips] = ALIEN_ANTENNAS[Math.floor(i / ALIEN_HEADS.length) % ALIEN_ANTENNAS.length];
+  const [stem, tips] = ALIEN_ANTENNAS[i];
   return `<g class="${cls}" fill="currentColor"><path d="${stem}" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
     ${tips.map(([x,y]) => `<circle cx="${x}" cy="${y}" r="3.2"/>`).join("")}
-    <path d="${ALIEN_HEADS[i % ALIEN_HEADS.length]}"/></g>`;
+    <path d="${ALIEN_HEADS[i]}"/></g>`;
 }
-function alienFace(mood = {}){
+const ALIEN_MOUTHS = ["M19 43q5 7 10 0", "M21 44q3 3 6 0", "M20 43q4 7 9 -1",
+  "M22 43a2 2 0 1 0 4 0a2 2 0 1 0 -4 0", "M20 45q4 -3 8 0", "M18 43q6 5 12 0"];
+function alienFace(key, mood = {}){
+  const i = Math.max(0, AVATARS.findIndex(a => a[0] === key));
   const eyes = mood.sleepy && !mood.happy
     ? '<path d="M13 36h6m10 0h6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'
-    : '<ellipse cx="16" cy="36" rx="2.8" ry="3.6"/><ellipse cx="32" cy="36" rx="2.8" ry="3.6"/>';
+    : `<ellipse cx="15.5" cy="35" rx="5.2" ry="6.5"/><ellipse cx="32.5" cy="35" rx="5.2" ry="6.5"/>
+       <circle cx="14" cy="33" r="1.7" fill="var(--mascot-eye-glint)"/><circle cx="31" cy="33" r="1.7" fill="var(--mascot-eye-glint)"/>`;
   return `<g class="alien-face" fill="currentColor">${eyes}
-    <path d="${mood.happy ? "M19 43q5 8 10 0" : "M20 44q4 4 8 0"}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>`;
+    <path d="${mood.happy ? ALIEN_MOUTHS[0] : ALIEN_MOUTHS[i]}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>`;
 }
-const alienIcon = k => `${alienShape(k)}${alienFace()}`;
+const alienIcon = key => `${alienShape(key)}${alienFace(key)}`;
 
 function avatarPicker(cur, idp){
-  const curCat = (AVATARS.find(a => a[0] === cur) || AVATARS[0])[2];
-  return `<div class="av-cats" role="tablist" aria-label="${tx("Avatar sınıfları")}">${AV_CATS.map(([c,l]) =>
-      `<button type="button" class="chip${c === curCat ? " sel" : ""}" role="tab" aria-selected="${c === curCat}" data-avcat="${c}" data-avp="${idp}">${l}</button>`).join("")}</div>
-    ${AV_CATS.map(([c,l]) => `<div class="av-pick" role="radiogroup" aria-label="${tx("{0} avatarları", [(l)])}" data-avgrid="${c}" data-avp="${idp}"${c === curCat ? "" : " hidden"}>
-      ${AVATARS.filter(a => a[2] === c).map(([k,n]) =>
-        `<button type="button" class="av${cur === k ? " on" : ""}" data-av="${k}" data-avp="${idp}" role="radio" aria-checked="${cur === k}" aria-label="${n}" title="${n}">
-          <svg viewBox="0 0 48 64" aria-hidden="true">${alienIcon(k)}</svg></button>`).join("")}</div>`).join("")}`;
-}
-function colorPicker(cur, idp){
-  return `<div class="av-cols" role="radiogroup" aria-label="${tx("Avatar rengi")}">${AV_COLORS.map(([c,l]) =>
-    `<button type="button" class="avc${cur === c ? " on" : ""}" data-avc="${c}" data-avp="${idp}" role="radio" aria-checked="${cur === c}"
-      aria-label="${l}" style="--c:${c}"></button>`).join("")}</div>`;
+  return `<div class="av-pick" role="radiogroup" aria-label="${tx("Avatarın")}">${AVATARS.map(([k,n,tone]) =>
+    `<button type="button" class="av${cur === k ? " on" : ""}" data-av="${k}" data-avp="${idp}" role="radio"
+      aria-checked="${cur === k}" aria-label="${n}" style="--mascot:var(--${tone})">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><g transform="translate(8 0)">${alienIcon(k)}</g></svg>
+    </button>`).join("")}</div>`;
 }
 function wireAvatar(idp, onPick, root){
-  const r = root || app;
-  r.querySelectorAll(`[data-avcat][data-avp="${idp}"]`).forEach(b => b.onclick = () => {
-    r.querySelectorAll(`[data-avcat][data-avp="${idp}"]`).forEach(x => { x.classList.toggle("sel", x === b); x.setAttribute("aria-selected", x === b); });
-    r.querySelectorAll(`[data-avgrid][data-avp="${idp}"]`).forEach(g => { g.hidden = g.dataset.avgrid !== b.dataset.avcat; });
-  });
-  r.querySelectorAll(`[data-av][data-avp="${idp}"]`).forEach(b => b.onclick = () => {
-    r.querySelectorAll(`[data-av][data-avp="${idp}"]`).forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-checked", x === b); });
+  const picks = (root || app).querySelectorAll(`[data-av][data-avp="${idp}"]`);
+  picks.forEach(b => b.onclick = () => {
+    picks.forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-checked", x === b); });
     onPick(b.dataset.av);
-  });
-}
-function wireColor(idp, onPick, root){
-  const r = root || app;
-  r.querySelectorAll(`[data-avc][data-avp="${idp}"]`).forEach(b => b.onclick = () => {
-    r.querySelectorAll(`[data-avc][data-avp="${idp}"]`).forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-checked", x === b); });
-    onPick(b.dataset.avc);
   });
 }
 
 function buildProgram(profile, weightKg, adjustment){
   const age = profileAge(profile);
   const bf = profile.bodyFat;
-  const measuredAt = profile.bodyFatReferenceWeight;
-  /* Cunningham: ten Haaf & Weijs (2014), 18–35 yaş, BOD POD ile ölçülmüş sporcular. */
-  const lbm = age >= 18 && age <= 35 && Number.isFinite(bf) && bf >= 3 && bf <= 60
-    && measuredAt > 0 && Math.abs(weightKg - measuredAt) <= measuredAt * .02
-    ? measuredAt * (1 - bf/100) : null;
+  const lbm = Number.isFinite(bf) && bf >= 3 && bf <= 60 ? weightKg * (1 - bf / 100) : null;
   const bmr = lbm !== null
-    ? 500 + 22 * lbm
+    ? 370 + 21.6 * lbm
     : 10*weightKg + 6.25*profile.height - 5*age + sexK(profile.sex, 5, -161);
 
   const tdee = bmr * ACTIVITY[profile.activity].m;

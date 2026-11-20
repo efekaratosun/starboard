@@ -1,4 +1,5 @@
 node_modules/
+.onizleme/
 .DS_Store
 tools/usda/cache/
 # iOS derleme çıktıları
