@@ -104,7 +104,7 @@ function render(){
       <div class="htext"><h1>${titles[tab]}</h1>${subs[tab]?`<div class="sub">${subs[tab]}</div>`:""}</div>
       <button class="gear${tab==="settings"?"":" me"}" id="gear" aria-label="${tab==="settings"?tx("Kapat"):tx("Ben: vücudun, grafikler ve ayarlar")}"
         ${tab==="settings"?"":`style="--av:${avColor(state.profile)}"`}>
-        ${tab === "settings" ? icon("close") : `<svg class="ico" viewBox="0 0 48 64" aria-hidden="true">${alienIcon(avKey(state.profile))}</svg>`}</button>
+        ${tab === "settings" ? icon("close") : `<svg class="ico" viewBox="0 0 64 64" aria-hidden="true">${astroIcon(avKey(state.profile))}</svg>`}</button>
     </header>
     <main>${pastBar}${body}</main>
     <nav class="tabbar" aria-label="${tx("Sayfalar")}"><i class="tab-ind" aria-hidden="true"></i>

@@ -38,53 +38,106 @@ const profileAge = (p, now) => ageFromBirthDate(p.birthDate, now) ?? p.age;
 /* Cinsiyete bağlı sabitler. Belirtilmemişse iki değerin ortalaması kullanılır. */
 const sexK = (sex, m, f) => sex === "male" ? m : sex === "female" ? f : (m + f) / 2;
 
-const AVATARS = ["carb", "water", "protein", "good-vivid", "fat", "kcal"]
-  .map((tone, i) => ["mascot-" + (i + 1), tx("Uzaylı {0}", [i + 1]), tone]);
+/* Avatarlar: kasklı astronot hayvanlar. Anahtarlar eski uzaylılarla aynı (kayıtlı seçimler korunur);
+   her anahtar rengini de korur, böylece Bugün ekranındaki renkler değişmez. Sıra = seçicideki sıra. */
+const AVATARS = [["mascot-1", "Kedi", "carb"], ["mascot-6", "Tilki", "kcal"], ["mascot-4", "Panda", "good-vivid"],
+  ["mascot-2", "Köpek", "water"], ["mascot-5", "Maymun", "fat"], ["mascot-3", "Koala", "protein"]]
+  .map(([k, n, tone]) => [k, tx(n), tone]);
 const avKey = p => AVATARS.find(a => a[0] === p.avatar)?.[0] || AVATARS[0][0];
 const avColor = p => "var(--" + AVATARS.find(a => a[0] === avKey(p))[2] + ")";
 const sexClass = () => "custom";
 
-const ALIEN_HEADS = [
-  "M5 36 C5 16 43 16 43 36 C43 59 5 59 5 36Z",
-  "M8 28 Q24 12 40 28 Q48 51 24 57 Q0 51 8 28Z",
-  "M4 37 Q5 20 24 21 Q43 20 44 37 Q40 54 24 54 Q8 54 4 37Z",
-  "M8 25 Q24 16 40 25 L43 43 Q40 57 24 56 Q8 57 5 43Z",
-  "M5 32 Q9 19 24 23 Q39 19 43 32 Q47 54 24 56 Q1 54 5 32Z",
-  "M6 28 Q24 17 42 28 Q47 44 31 54 Q24 62 17 54 Q1 44 6 28Z"
-];
-const ALIEN_ANTENNAS = [
-  ["M24 25 Q28 16 24 9", [[24,9]]],
-  ["M17 26 L12 13 M31 26 L36 13", [[12,13],[36,13]]],
-  ["M17 25 Q16 14 8 15 M31 25 Q32 14 40 15", [[8,15],[40,15]]],
-  ["M20 25 Q21 18 15 11 M29 25 Q29 18 33 16", [[15,11],[33,16]]],
-  ["M24 24 Q15 18 21 10", [[21,10]]],
-  ["M14 27 Q7 22 8 16 M24 24 V10 M34 27 Q41 22 40 16", [[8,16],[24,10],[40,16]]]
-];
-function alienShape(k, cls = ""){
-  const i = Math.max(0, AVATARS.findIndex(a => a[0] === k));
-  const [stem, tips] = ALIEN_ANTENNAS[i];
-  return `<g class="${cls}" fill="currentColor"><path d="${stem}" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    ${tips.map(([x,y]) => `<circle cx="${x}" cy="${y}" r="3.2"/>`).join("")}
-    <path d="${ALIEN_HEADS[i]}"/></g>`;
+/* Yüz parçaları (64×64 çizim alanı, vizör merkezi 32,34). mood: { happy, sleepy } */
+const astroEyes = (lx, rx, y, m, col = "#1B1F33") => `<g class="as-eyes">${m.sleepy && !m.happy
+  ? `<path d="M${lx - 3} ${y}h6M${rx - 3} ${y}h6" stroke="${col}" stroke-width="2" stroke-linecap="round"/>`
+  : m.happy
+    ? `<path d="M${lx - 3} ${y + 1}q3 -4 6 0M${rx - 3} ${y + 1}q3 -4 6 0" stroke="${col}" stroke-width="2" fill="none" stroke-linecap="round"/>`
+    : `<ellipse cx="${lx}" cy="${y + .4}" rx="3.4" ry="4" fill="${col}"/><ellipse cx="${rx}" cy="${y + .4}" rx="3.4" ry="4" fill="${col}"/>
+       <circle cx="${lx - 1.1}" cy="${y - 1}" r="1.35" fill="#fff"/><circle cx="${rx - 1.1}" cy="${y - 1}" r="1.35" fill="#fff"/>
+       <circle cx="${lx + 1.2}" cy="${y + 1.9}" r=".6" fill="#fff" opacity=".85"/><circle cx="${rx + 1.2}" cy="${y + 1.9}" r=".6" fill="#fff" opacity=".85"/>`}</g>`;
+const astroBlush = (y, c = "#FF8FA8") => `<ellipse cx="22.5" cy="${y}" rx="2.6" ry="1.5" fill="${c}" opacity=".55"/><ellipse cx="41.5" cy="${y}" rx="2.6" ry="1.5" fill="${c}" opacity=".55"/>`;
+const ASTRO_FACES = {
+  "mascot-1": m => `<path d="M18 31 L20 17 L28 24Z M46 31 L44 17 L36 24Z" fill="#A7AEC2"/>
+    <path d="M20.5 27 L21.5 20 L25.5 24Z M43.5 27 L42.5 20 L38.5 24Z" fill="#F4A6BC"/>
+    <ellipse cx="32" cy="36" rx="14" ry="12.5" fill="#B9C0D3"/>
+    <path d="M24 30 q2 -3 4 0 M36 30 q2 -3 4 0" stroke="#949CB2" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    ${astroEyes(26.5, 37.5, 35, m)}${astroBlush(40)}
+    <path d="M30.5 39.5h3l-1.5 1.8z" fill="#F07A9B"/>
+    <path d="M32 41.3q-1.6 2.2 -3.4 1 M32 41.3q1.6 2.2 3.4 1" stroke="#5B6178" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <path d="M17 38.5h6M17.5 41.5l5.5 -1M47 38.5h-6M46.5 41.5l-5.5 -1" stroke="#7C8399" stroke-width=".8" stroke-linecap="round"/>`,
+  "mascot-6": m => `<path d="M17 30 L18 15 L28 23Z M47 30 L46 15 L36 23Z" fill="#E8742C"/>
+    <path d="M18.6 21 L18 15 L22.5 19Z M45.4 21 L46 15 L41.5 19Z" fill="#3A2A2A"/>
+    <path d="M32 49.5 C23.5 49.5 17 43.5 17 34 C17.5 26 25 22 32 22 C39 22 46.5 26 47 34 C47 43.5 40.5 49.5 32 49.5Z" fill="#F08A3C"/>
+    <path d="M32 49.5 C25.5 49.5 20.5 45.5 19.2 39.5 C23.5 41 28 41 32 44.2 C36 41 40.5 41 44.8 39.5 C43.5 45.5 38.5 49.5 32 49.5Z" fill="#FFF3E6"/>
+    ${astroEyes(26, 38, 34, m)}${astroBlush(39.5)}
+    <ellipse cx="32" cy="44.6" rx="2.3" ry="1.6" fill="#2A2230"/>
+    <path d="M32 46v1.2 M32 47.2q-1.9 2.1 -3.8 .7 M32 47.2q1.9 2.1 3.8 .7" stroke="#2A2230" stroke-width="1.1" fill="none" stroke-linecap="round"/>`,
+  "mascot-4": m => `<circle cx="20.5" cy="23.5" r="5.2" fill="#2B2D3A"/><circle cx="43.5" cy="23.5" r="5.2" fill="#2B2D3A"/>
+    <ellipse cx="32" cy="36" rx="14.5" ry="13" fill="#F7F7FA"/>
+    <ellipse cx="25.8" cy="35.3" rx="4.2" ry="5.2" fill="#2B2D3A" transform="rotate(25 25.8 35.3)"/>
+    <ellipse cx="38.2" cy="35.3" rx="4.2" ry="5.2" fill="#2B2D3A" transform="rotate(-25 38.2 35.3)"/>
+    ${m.happy || m.sleepy ? astroEyes(26.2, 37.8, 35, m, "#F7F7FA") : `<g class="as-eyes"><ellipse cx="26.2" cy="35.4" rx="3.4" ry="4" fill="#fff"/><ellipse cx="37.8" cy="35.4" rx="3.4" ry="4" fill="#fff"/>
+      <circle cx="26.2" cy="35.6" r="2.2" fill="#2B2D3A"/><circle cx="37.8" cy="35.6" r="2.2" fill="#2B2D3A"/><circle cx="25.6" cy="34.8" r=".8" fill="#fff"/><circle cx="37.2" cy="34.8" r=".8" fill="#fff"/></g>`}
+    ${astroBlush(41.5)}
+    <ellipse cx="32" cy="41.2" rx="2.4" ry="1.6" fill="#2B2D3A"/>
+    <path d="M32 42.6q-1.5 2 -3.2 .9 M32 42.6q1.5 2 3.2 .9" stroke="#2B2D3A" stroke-width="1.1" fill="none" stroke-linecap="round"/>`,
+  "mascot-2": m => `<ellipse cx="32" cy="35.5" rx="13.5" ry="13" fill="#E3B57A"/>
+    <path d="M19 27 C13 29 13 40 17 44 C20 42 21 34 22 29Z M45 27 C51 29 51 40 47 44 C44 42 43 34 42 29Z" fill="#9A6239"/>
+    <ellipse cx="38.5" cy="31" rx="4" ry="3.6" fill="#C9935A"/>
+    ${astroEyes(26.5, 37.5, 34.5, m)}${astroBlush(40)}
+    <ellipse cx="32" cy="42" rx="6.5" ry="5" fill="#F6E1C1"/>
+    <ellipse cx="32" cy="39.6" rx="2.8" ry="2" fill="#2A2230"/>
+    <path d="M32 41.6v1.6 M32 43.2q-2 1.6 -3.6 .4 M32 43.2q2 1.6 3.6 .4" stroke="#2A2230" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    ${m.happy ? `<path d="M30.4 44.4h3.2v2.2a1.6 1.6 0 0 1 -3.2 0z" fill="#F07A9B"/>` : ""}`,
+  "mascot-5": m => `<circle cx="16.5" cy="35" r="4.6" fill="#8B5A3C"/><circle cx="47.5" cy="35" r="4.6" fill="#8B5A3C"/>
+    <circle cx="16.5" cy="35" r="2.5" fill="#F2C9A5"/><circle cx="47.5" cy="35" r="2.5" fill="#F2C9A5"/>
+    <ellipse cx="32" cy="35" rx="13.5" ry="13.5" fill="#8B5A3C"/>
+    <path d="M32 47.5 C24 47.5 20.5 43 21 38.5 C21.4 34.5 24 31 27.5 31.5 C29.5 31.8 30.8 33 32 33 C33.2 33 34.5 31.8 36.5 31.5 C40 31 42.6 34.5 43 38.5 C43.5 43 40 47.5 32 47.5Z" fill="#F2C9A5"/>
+    <path d="M27 25 q5 -4 10 0" stroke="#6E4630" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    ${astroEyes(27.2, 36.8, 36, m)}${astroBlush(41, "#E8836F")}
+    <path d="M30.6 40.5h2.8" stroke="#6E4630" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M28 43q4 3.2 8 0" stroke="#6E4630" stroke-width="1.3" fill="none" stroke-linecap="round"/>`,
+  "mascot-3": m => `<circle cx="18.5" cy="27" r="7" fill="#A3ABBE"/><circle cx="45.5" cy="27" r="7" fill="#A3ABBE"/>
+    <circle cx="18.5" cy="27" r="4" fill="#EEF0F6"/><circle cx="45.5" cy="27" r="4" fill="#EEF0F6"/>
+    <ellipse cx="32" cy="37" rx="14" ry="12.5" fill="#B4BCCD"/>
+    ${astroEyes(25.5, 38.5, 35, m)}${astroBlush(41)}
+    <ellipse cx="32" cy="39.5" rx="3.6" ry="4.6" fill="#3A3F52"/>
+    <ellipse cx="31" cy="37.6" rx="1" ry="1.4" fill="#fff" opacity=".35"/>
+    <path d="M29.5 45.5q2.5 1.8 5 0" stroke="#3A3F52" stroke-width="1.1" fill="none" stroke-linecap="round"/>`
+};
+
+/* Kasklı astronot (64×64): beyaz kask, karakter renginde vizör halkası, yaka ve anten ışığı; koyu cam,
+   sol üstte parlama ve küçük yıldız yansıması. water (0-1) verilirse kaskın beyaz gövdesi alttan suyla
+   dolar (yüz her zaman görünür kalır). */
+let astroSeq = 0;
+function astroArt(key, mood = {}, water = null){
+  const k = avKey({ avatar:key }), tone = AVATARS.find(a => a[0] === k)[2], id = "as" + (++astroSeq);
+  const wy = water == null ? null : (58.5 - 50 * clamp(water, 0, 1)).toFixed(1);
+  return `<g class="astro" style="--as-tone:var(--${tone})">
+    <defs><clipPath id="${id}"><circle cx="32" cy="34" r="20.5"/></clipPath>
+      ${wy == null ? "" : `<clipPath id="${id}w"><rect x="0" y="${wy}" width="64" height="64"/></clipPath>`}</defs>
+    <path d="M32 4.5v4" stroke="var(--helm-line)" stroke-width="1.8" stroke-linecap="round"/>
+    <circle class="as-ant" cx="32" cy="4" r="2.6" fill="var(--as-tone)"/>
+    <path d="M14 56 Q32 63 50 56 L48 61 Q32 66 16 61Z" fill="var(--as-tone)"/>
+    <circle cx="32" cy="33.5" r="25" fill="var(--helm)"/>
+    <path d="M10 40 A25 25 0 0 0 54 40 A23 23 0 0 1 10 40Z" fill="var(--helm-shade)"/>
+    <circle cx="9.5" cy="34" r="3.3" fill="var(--helm-shade)"/><circle cx="54.5" cy="34" r="3.3" fill="var(--helm-shade)"/>
+    ${wy == null ? "" : `<g class="as-water" clip-path="url(#${id}w)"><circle cx="32" cy="33.5" r="25"/><circle cx="9.5" cy="34" r="3.3"/><circle cx="54.5" cy="34" r="3.3"/></g>`}
+    <circle cx="32" cy="34" r="22.6" fill="var(--as-tone)"/>
+    <circle cx="32" cy="34" r="20.5" fill="var(--visor)"/>
+    <g clip-path="url(#${id})"><g transform="translate(32 35) scale(1.12) translate(-32 -35)">${ASTRO_FACES[k](mood)}</g>
+      <path d="M15.5 25 A19 19 0 0 1 29.5 14.8" stroke="#fff" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"/>
+      <path d="M42.5 17.2l.7 1.9 1.9.7 -1.9.7 -.7 1.9 -.7 -1.9 -1.9 -.7 1.9 -.7z" fill="#fff" opacity=".75"/>
+      <circle cx="46.4" cy="22.6" r=".7" fill="#fff" opacity=".6"/><circle cx="35.5" cy="16.6" r="1" fill="#fff" opacity=".45"/></g>
+  </g>`;
 }
-const ALIEN_MOUTHS = ["M19 43q5 7 10 0", "M21 44q3 3 6 0", "M20 43q4 7 9 -1",
-  "M22 43a2 2 0 1 0 4 0a2 2 0 1 0 -4 0", "M20 45q4 -3 8 0", "M18 43q6 5 12 0"];
-function alienFace(key, mood = {}){
-  const i = Math.max(0, AVATARS.findIndex(a => a[0] === key));
-  const eyes = mood.sleepy && !mood.happy
-    ? '<path d="M13 36h6m10 0h6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'
-    : `<ellipse cx="15.5" cy="35" rx="5.2" ry="6.5"/><ellipse cx="32.5" cy="35" rx="5.2" ry="6.5"/>
-       <circle cx="14" cy="33" r="1.7" fill="var(--mascot-eye-glint)"/><circle cx="31" cy="33" r="1.7" fill="var(--mascot-eye-glint)"/>`;
-  return `<g class="alien-face" fill="currentColor">${eyes}
-    <path d="${mood.happy ? ALIEN_MOUTHS[0] : ALIEN_MOUTHS[i]}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>`;
-}
-const alienIcon = key => `${alienShape(key)}${alienFace(key)}`;
+const astroIcon = key => astroArt(key);
 
 function avatarPicker(cur, idp){
   return `<div class="av-pick" role="radiogroup" aria-label="${tx("Avatarın")}">${AVATARS.map(([k,n,tone]) =>
     `<button type="button" class="av${cur === k ? " on" : ""}" data-av="${k}" data-avp="${idp}" role="radio"
       aria-checked="${cur === k}" aria-label="${n}" style="--mascot:var(--${tone})">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><g transform="translate(8 0)">${alienIcon(k)}</g></svg>
+      <svg viewBox="0 0 64 64" aria-hidden="true">${astroIcon(k)}</svg>
     </button>`).join("")}</div>`;
 }
 function wireAvatar(idp, onPick, root){

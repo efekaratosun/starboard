@@ -11,8 +11,8 @@
   /* Her iki temada aynı kalan renkler. */
   --sheet-backdrop:rgba(20,12,24,.42);
   --constellation-star-stroke:#8a5a00;
-  --mascot-eye-glint:#FFFFFF;
-  --mascot-eye-ink:#14152C;
+  /* astronot avatar kaskı (koyu temada yeniden tanımlanır) */
+  --helm:#FFFFFF; --helm-shade:#E3E7F1; --helm-line:#B9C0D3; --visor:#2B3156;
   --mask-opaque:#000;
   --logo-ink:#FFFCFA;
   --logo-gradient-start:#FF7A2F;
@@ -116,6 +116,7 @@
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
   --sky-planet:#4D5C7B; --sky-planet-ring:#536585; --sky-planet-dust:#DCE4FF;
+  --helm:#E9ECF5; --helm-shade:#C3C9DA; --helm-line:#8E96B0; --visor:#1A1F3D;
   /* alt nebula: koyu tema = mor / mavi */
   --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-op:.45;
   --neb-dust:#E4DCFF; --neb-dust-op:.5; --neb-spark-op:.7;
@@ -179,6 +180,7 @@
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
   --sky-planet:#4D5C7B; --sky-planet-ring:#536585; --sky-planet-dust:#DCE4FF;
+  --helm:#E9ECF5; --helm-shade:#C3C9DA; --helm-line:#8E96B0; --visor:#1A1F3D;
   /* alt nebula: koyu tema = mor / mavi */
   --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-op:.45;
   --neb-dust:#E4DCFF; --neb-dust-op:.5; --neb-spark-op:.7;

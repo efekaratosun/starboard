@@ -457,19 +457,14 @@ function avatarMood(e, program){
   return { sleepy, trained, happy, star: fullDay(today()), line };
 }
 function avatarSVG(key, sx, wp, mood, uid){
-  const yTop = (58 - 55 * wp).toFixed(1);
   const m = mood || {};
   const spark = (x, y, r) => `<path class="spark" transform="translate(${x} ${y}) scale(${r})" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2Z"/>`;
-  return `<svg viewBox="0 0 48 64" role="img" aria-label="${tx("Avatar, bugünkü su hedefinin yüzde {0}'i dolu", [(Math.round(wp*100))])}"${m.trained ? ` class="glow"` : ""}>
-      <defs><clipPath id="${uid}-clip"><rect x="0" y="${yTop}" width="48" height="64"/></clipPath></defs>
-      <g transform="translate(24 0) scale(${sx.toFixed(3)} 1) translate(-24 0)">
-        ${alienShape(key, "bc-base")}
-        <g clip-path="url(#${uid}-clip)">${alienShape(key)}</g>
-        ${alienFace(key, m)}
-      </g>
-      ${m.trained ? spark(4, 18, .55) + spark(44, 30, .45) + spark(7, 44, .4) : ""}
-      ${m.star ? `<path class="bc-star" transform="translate(40 8)" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2Z"/>` : ""}
-      ${m.sleepy ? `<text x="2" y="12" class="zz">z<tspan dx="1" dy="-4" font-size="8">Z</tspan></text>` : ""}
+  /* kasklı astronot; kaskın camı bugünkü su oranında alttan dolar */
+  return `<svg viewBox="0 0 64 64" role="img" aria-label="${tx("Avatar, bugünkü su hedefinin yüzde {0}'i dolu", [(Math.round(wp*100))])}"${m.trained ? ` class="glow"` : ""}>
+      <g class="as-float"><g transform="translate(32 0) scale(${sx.toFixed(3)} 1) translate(-32 0)">${astroArt(key, m, wp)}</g></g>
+      ${m.trained ? spark(5, 22, .55) + spark(59, 30, .45) + spark(6, 48, .4) : ""}
+      ${m.star ? `<path class="bc-star" transform="translate(55 10)" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2Z"/>` : ""}
+      ${m.sleepy ? `<text x="2" y="13" class="zz">z<tspan dx="1" dy="-4" font-size="8">Z</tspan></text>` : ""}
     </svg>`;
 }
 

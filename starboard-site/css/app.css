@@ -583,7 +583,6 @@ h2 .count{font-family:var(--font);text-transform:none}
 .ob-example li{display:grid;gap:4px;padding:8px 0;border-bottom:1px solid var(--line)}
 .ob-example li span{color:var(--muted)}
 .ob-art svg{width:24px;height:24px}
-.alien-face{color:var(--mascot-eye-ink)}
 .on-num input{font-size:54px}
 
 /* kartlar: ince çizgili panel */
