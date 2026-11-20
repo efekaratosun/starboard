@@ -10,14 +10,14 @@
    Bildirimler cihazda zamanlanır, sunucu yoktur. Uygulama her açıldığında ve kayıt
    değiştiğinde önümüzdeki 7 günün bildirimleri baştan kurulur: o gün su hedefine
    ulaştıysan su, tartıldıysan tartı hatırlatması atlanır. iOS en fazla 64 bekleyen
-   bildirim tutar; burada en fazla 7 × 8 = 56 olur.
+   bildirim tutar; en fazla 56 haftalık bildirim ve 5 uzun süreli kayıt kurulur.
 
    Hesap (reminderPlan) metin dışında kayıttan bağımsızdır ve web'de test edilir;
    zamanlama (scheduleReminders) yalnızca yerelde çalışır. */
 const REMINDER_KINDS = ["water", "train", "sleep", "weigh", "eve"];
 const REMIND_DEFAULTS = { waterAt:["10:00", "13:00", "16:00", "19:00"], trainAt:"18:00", weighAt:"08:00", eveAt:"21:00" };
 const remindersOf = p => (p && p.reminders) || {};
-const anyReminder = p => REMINDER_KINDS.some(k => remindersOf(p)[k]);
+const anyReminder = p => REMINDER_KINDS.some(k => remindersOf(p)[k]) || !!remindersOf(p).birthday || hmToMin(remindersOf(p).medicationAt) !== null;
 
 /* "18:00" -> 1080 dakika */
 const hmToMin = s => { const m = /^(\d{1,2}):(\d{2})$/.exec(s || ""); return m ? (+m[1] % 24) * 60 + (+m[2] % 60) : null; };
@@ -53,6 +53,30 @@ function reminderPlan(st, program, now){
   const R = remindersOf(st.profile);
   if (!anyReminder(st.profile)) return [];
   const out = [];
+  const birthDate = st.profile.birthDate;
+  if (R.birthday && ageFromBirthDate(birthDate, now) !== null){
+    const year = now.getFullYear();
+    const anniversary = y => new Date(birthdayInYear(birthDate, y) + "T09:00:00");
+    const thisYear = anniversary(year);
+    const nextYear = thisYear > now ? year : year + 1;
+    const addBirthday = (id, at, calendar) => out.push({ id, at, calendar, kind:"birthday",
+      title:tx("Doğum günün kutlu olsun!"), body:tx("Starboard yeni yaşında sana sağlıklı ve mutlu bir yıl diler.") });
+    if (birthDate.endsWith("-02-29")){
+      /* Artık yıl koşulu takvim tekrarına yazılamaz. Dört yıl ayrı kurulur. */
+      [90, 92, 93, 94].forEach((id, i) => addBirthday(id, anniversary(nextYear + i)));
+    } else {
+      addBirthday(90, anniversary(nextYear), { month:thisYear.getMonth() + 1, day:thisYear.getDate(), hour:9, minute:0, second:0 });
+    }
+  }
+  const med = hmToMin(R.medicationAt);
+  if (med !== null){
+    const hour = Math.floor(med / 60), minute = med % 60;
+    const at = new Date(now);
+    at.setHours(hour, minute, 0, 0);
+    if (at <= now) at.setDate(at.getDate() + 1);
+    out.push({ id:91, at, calendar:{ hour, minute, second:0 }, kind:"medication",
+      title:tx("İlaç hatırlatması"), body:tx("Ayarladığın hatırlatma zamanı geldi.") });
+  }
   const t0 = dayKey(now);
   const T = remindTimes(R);
   const sleepAt = T.sleep ?? autoSleepAt(st);
@@ -86,12 +110,16 @@ async function scheduleReminders(){
   const LN = nativePlugin("LocalNotifications");
   if (!LN || !state || !state.profile) return;
   try {
+    const permission = await LN.checkPermissions();
+    if (permission.display !== "granted") return;
     const pending = await LN.getPending();
     if (pending && pending.notifications && pending.notifications.length)
       await LN.cancel({ notifications: pending.notifications.map(n => ({ id: n.id })) });
     const plan = reminderPlan(state, currentProgram(), new Date());
     if (plan.length)
-      await LN.schedule({ notifications: plan.map(n => ({ id: n.id, title: n.title, body: n.body, schedule: { at: n.at } })) });
+      await LN.schedule({ notifications: plan.map(n => ({
+        id:n.id, title:n.title, body:n.body, schedule:n.calendar ? { on:n.calendar } : { at:n.at }
+      })) });
   } catch(e){ /* izin yoksa ya da eklenti hata verirse sessizce geç */ }
 }
 /* Kayıt değişince ve uygulama öne gelince yeniden kur; art arda değişikliklerde bir kez. */
@@ -115,7 +143,7 @@ async function askNotifyPermission(){
 /* ---- ayarlar bölümü ---- */
 const REMINDER_LABELS = () => ({
   water: tx("Su"), train: tx("Antrenman günleri"), sleep: tx("Yatma vakti"),
-  weigh: tx("Sabah tartısı"), eve: tx("Günü kapat")
+  weigh: tx("Sabah tartısı"), eve: tx("Günü kapat"), birthday: tx("Doğum günü")
 });
 /* Açık olan her hatırlatmanın altında saati: su için dört kutu (boş bırakılan kullanılmaz),
    uyku için otomatik ya da elle seçilen saat. */
@@ -137,9 +165,10 @@ function remindersSection(){
   if (R.eve) rows.push(time("rm-eve", tx("Günü kapatma saati"), minToHm(T.eve)));
   return `<section>
     <h2>${tx("Hatırlatmalar")}</h2>
-    <div class="chips">${REMINDER_KINDS.map(k =>
+    <div class="chips">${[...REMINDER_KINDS, ...(state.profile.birthDate ? ["birthday"] : [])].map(k =>
       `<button class="chip${R[k] ? " sel" : ""}" data-remind="${k}" aria-pressed="${!!R[k]}">${L[k]}</button>`).join("")}</div>
     ${rows.length ? `<div style="margin-top:16px">${rows.join("")}</div>` : ""}
+    ${time("rm-medication", tx("İlaç hatırlatma saati"), R.medicationAt || "")}
   </section>`;
 }
 function wireReminders(){
@@ -162,6 +191,15 @@ function wireReminders(){
     if (el) el.onchange = () => { if (hmToMin(el.value) !== null) setR({ [key]: el.value }); };
   };
   bind("rm-train", "trainAt"); bind("rm-sleep", "sleepAt"); bind("rm-weigh", "weighAt"); bind("rm-eve", "eveAt");
+  document.getElementById("rm-medication")?.addEventListener("change", async ev => {
+    const el = ev.currentTarget, value = el.value;
+    if (value && !(await askNotifyPermission())){
+      el.value = remindersOf(state.profile).medicationAt || "";
+      toast(tx("Bildirim izni verilmedi. iPhone Ayarlar › Starboard › Bildirimler'den açabilirsin."));
+      return;
+    }
+    await setR({ medicationAt:value || undefined });
+  });
   const auto = document.getElementById("rm-sleep-auto");
   if (auto) auto.onclick = () => setR({ sleepAt: undefined }, true);
   app.querySelectorAll("[data-rm-water]").forEach(el => el.onchange = () => {

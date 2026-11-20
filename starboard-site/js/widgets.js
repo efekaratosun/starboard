@@ -85,7 +85,9 @@ function weeklySummary(){
 
 /* ---- dışa / içe aktarma ---- */
 async function exportData(statusEl){
-  const payload = JSON.stringify({ app:"starboard", v:SCHEMA, appVersion:APP_VERSION, exportedAt:new Date().toISOString(), state }, null, 2);
+  const age = ageFromBirthDate(state.profile?.birthDate);
+  const backup = age === null ? state : { ...state, profile:{ ...state.profile, age } };
+  const payload = JSON.stringify({ app:"starboard", v:SCHEMA, appVersion:APP_VERSION, exportedAt:new Date().toISOString(), state:backup }, null, 2);
   const filename = `starboard-${today()}.json`;
   const say = m => { if (statusEl) statusEl.textContent = m; };
 
@@ -365,27 +367,15 @@ function avatarMood(e, program){
   return { sleepy, trained, happy, star: fullDay(today()), line };
 }
 function avatarSVG(key, sx, wp, mood, uid){
-  const sym = "#" + avSym(key);
-  const [fx, fy, fs] = (AVATARS.find(a => a[0] === key) || AVATARS[2])[2];
   const yTop = (58 - 55 * wp).toFixed(1);
   const m = mood || {};
-  let face = "";
-  if (m.happy || m.sleepy){
-    const ex = 3.2 * fs, er = 1.15 * fs, ey = fy - 1.2 * fs;
-    const eyes = m.sleepy && !m.happy
-      ? `<path d="M${fx-ex-er} ${ey} h${er*2} M${fx+ex-er} ${ey} h${er*2}" class="face-l"/>`
-      : `<circle cx="${fx-ex}" cy="${ey}" r="${er}" class="face-d"/><circle cx="${fx+ex}" cy="${ey}" r="${er}" class="face-d"/>`;
-    const mouth = m.happy ? `<path d="M${fx-2.6*fs} ${fy+1.6*fs} Q${fx} ${fy+4.6*fs} ${fx+2.6*fs} ${fy+1.6*fs}" class="face-l"/>`
-                          : `<circle cx="${fx}" cy="${fy+2.6*fs}" r="${.9*fs}" class="face-d" opacity=".7"/>`;
-    face = `<g class="face" style="stroke-width:${Math.max(.6, 1.1*fs)}px">${eyes}${mouth}</g>`;
-  }
   const spark = (x, y, r) => `<path class="spark" transform="translate(${x} ${y}) scale(${r})" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2Z"/>`;
   return `<svg viewBox="0 0 48 64" role="img" aria-label="${tx("Avatar, bugünkü su hedefinin yüzde {0}'i dolu", [(Math.round(wp*100))])}"${m.trained ? ` class="glow"` : ""}>
       <defs><clipPath id="${uid}-clip"><rect x="0" y="${yTop}" width="48" height="64"/></clipPath></defs>
       <g transform="translate(24 0) scale(${sx.toFixed(3)} 1) translate(-24 0)">
-        <use href="${sym}" class="bc-base"/>
-        <g clip-path="url(#${uid}-clip)"><use href="${sym}"/></g>
-        ${face}
+        ${alienShape(key, "bc-base")}
+        <g clip-path="url(#${uid}-clip)">${alienShape(key)}</g>
+        ${alienFace(m)}
       </g>
       ${m.trained ? spark(4, 18, .55) + spark(44, 30, .45) + spark(7, 44, .4) : ""}
       ${m.star ? `<path class="bc-star" transform="translate(40 8)" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2Z"/>` : ""}
@@ -534,7 +524,9 @@ function wireHome(){
   const save = async () => {
     const n = num(i.value);
     if (!n || wIn(n) < 30 || wIn(n) > 300){ toast(tx("{0} ile {1} arasında bir hedef gir.", [(fmtW0(30)), (fmtW0(300))])); return; }
-    state.profile.targetWeight = wSave(n);
+    const target = wSave(n);
+    if (target !== state.profile.targetWeight) delete state.profile.targetWeeks;
+    state.profile.targetWeight = target;
     await saveState(state); render();
   };
   b.onclick = save;

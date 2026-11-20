@@ -489,7 +489,7 @@ Object.assign(FOODS, {
   canelloni:{n:tx("Canelloni"), p:11.2, c:9.7, f:12, lif:0.5, i:"grain", cu:"intl", src:"web https://diet.es/alimento/canelones/"},
   polentaalforno:{n:tx("Polenta al forno"), por:[{n:tx("porsiyon"), g:160}], p:2, c:18.1, f:0.4, lif:0, i:"grain", cu:"intl", src:"web https://www.fatsecret.it/calorie-nutrizione/generico/polenta-al-forno-o-bollita"},
   pizzamargherita:{n:tx("Pizza margherita"), p:13, c:50.8, f:13.5, lif:0.5, i:"grain", cu:"intl", src:"web https://www.dica33.it/guida-alimenti/115318/pizza-margherita.asp"},
-  prosciuttoefunghipizza:{n:tx("Prosciutto e funghi pizza"), por:[{n:tx("porsiyon"), g:80}], p:10.9, c:26.9, f:7.8, lif:2.3, i:"grain", cu:"intl", src:"web https://myboone.app/kids-nutrition/sainsbury-s-prosciutto-mushroom-mascarpone-pizza-taste-the-difference-nutrition"},
+  prosciuttoefunghipizza:{n:tx("Prosciutto e funghi pizza"), por:[{n:tx("porsiyon"), g:80}], p:10.9, c:26.9, f:7.8, lif:2.3, i:"grain", cu:"intl", pork:true, src:"web https://myboone.app/kids-nutrition/sainsbury-s-prosciutto-mushroom-mascarpone-pizza-taste-the-difference-nutrition"},
   antipasto:{n:tx("Antipasto"), por:[{n:tx("şişe"), g:330}], p:24, c:0.9, f:29, lif:0, i:"fruit", cu:"intl", src:"web https://restincal.com/foods/antipasto-misto-charcuterie-fumagalli"},
   painauchocolat:{n:tx("Pain au chocolat"), por:[{n:tx("porsiyon"), g:60}], p:7.5, c:45.4, f:22.5, lif:3, i:"grain", cu:"intl", src:"web https://leblognutrition.fr/calories-pain-au-chocolat"},
   quichelorraine:{n:tx("Quiche Lorraine"), p:10.5, c:22.2, f:18.7, lif:1, i:"grain", cu:"intl", src:"web https://sante.journaldesfemmes.fr/calories/quiche-lorraine/aliment-25405"},

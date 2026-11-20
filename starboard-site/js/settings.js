@@ -16,7 +16,7 @@ function settingsView(){
         ? `<div class="field"><label for="s-hft">${tx("Boy ({0})", ["ft"])}</label><input id="s-hft" type="number" inputmode="numeric" value="${heightFtIn(p.height)[0]}"></div>
       <div class="field"><label for="s-hin">in</label><input id="s-hin" type="number" inputmode="numeric" value="${heightFtIn(p.height)[1]}"></div>`
         : `<div class="field"><label for="s-h">${tx("Boy ({0})", ["cm"])}</label><input id="s-h" type="number" inputmode="decimal" value="${p.height}"></div>`}
-      <div class="field"><label for="s-age">${tx("Yaş")}</label><input id="s-age" type="number" inputmode="numeric" value="${p.age}"></div>
+      <div class="field"><label for="s-age">${tx(p.birthDate ? "Doğum tarihi" : "Yaş")}</label><input id="s-age" ${p.birthDate ? 'type="date"' : 'type="number" inputmode="numeric"'} value="${esc(String(p.birthDate || p.age || ""))}"></div>
     </div>
     <div class="field"><label for="s-tw">${tx("Hedef kilo ({0})", [(wUnit())])}</label>
       <input id="s-tw" type="number" inputmode="decimal" value="${typeof p.targetWeight === "number" ? +wOut(p.targetWeight).toFixed(1) : ""}" placeholder="${tx("isteğe bağlı")}"></div>
@@ -60,8 +60,8 @@ function settingsView(){
     ${p.noPlan ? "" : `
     <label>${tx("Antrenman günlerin")}</label>
     <div class="chips">${[1,2,3,4,5,6,7].map(n =>
-      `<button class="chip${(p.days || []).includes(n) ? " sel" : ""}" data-sday="${n}">${WD_SHORT[n]}</button>`).join("")}</div>
-    <div class="metric-note" style="margin:8px 0 16px">${(p.days || []).length >= 3 ? dayNote(p.venue || "gym", p.activity, p.days) : tx("Gün seçilmemiş.")}</div>`}
+      `<button class="chip${(p.days || OB_DEFAULT_DAYS(p.activity)).includes(n) ? " sel" : ""}" data-sday="${n}">${WD_SHORT[n]}</button>`).join("")}</div>
+    <div class="metric-note" style="margin:8px 0 16px">${p.days?.length === 0 ? tx("Gün seçilmemiş.") : ""}</div>`}
     <label>${tx("Kaçındığın yerler")}</label>
     <div class="chips">${AVOID_ZONES.map(([k,l]) =>
       `<button class="chip${(p.avoid || []).includes(k) ? " sel" : ""}" data-savoid="${k}">${l}</button>`).join("")}</div>
@@ -133,18 +133,30 @@ function wireSettings(){
     const h = isImp()
       ? heightFromFtIn(num(document.getElementById("s-hft").value), num(document.getElementById("s-hin").value))
       : num(document.getElementById("s-h").value);
-    const a = num(document.getElementById("s-age").value);
+    const ageInput = document.getElementById("s-age");
+    const a = p.birthDate ? ageFromBirthDate(ageInput.value) : num(ageInput.value);
+    if (p.birthDate){
+      if (a === null || a < 10 || a > 100){
+        toast(tx("10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir."));
+        ageInput.focus();
+        return;
+      }
+      p.birthDate = ageInput.value;
+    } else if (a >= 10 && a <= 100) p.age = a;
     if (h && h > 100 && h < 250) p.height = h;
-    if (a && a > 10 && a < 100) p.age = a;
-    p.bodyFat = num(document.getElementById("s-bf").value);
+    const bf = num(document.getElementById("s-bf").value);
+    if (bf !== p.bodyFat) delete p.bodyFatReferenceWeight;
+    p.bodyFat = bf;
     p.name = document.getElementById("s-nm").value.trim().slice(0, 30) || undefined;
     const tw = num(document.getElementById("s-tw").value);
+    if (tw !== (p.targetWeight ? +wOut(p.targetWeight).toFixed(1) : null)) delete p.targetWeeks;
     if (tw && wIn(tw) >= 30 && wIn(tw) <= 300) p.targetWeight = wSave(tw); else delete p.targetWeight;
     p.sex = document.getElementById("s-sex").value;
     if (stAvatar) p.avatar = stAvatar;
     if (stColor) p.avColor = stColor;
     p.activity = document.getElementById("s-act").value;
     p.goal = document.getElementById("s-goal").value;
+    if (p.goal !== "lose") delete p.targetWeeks;
     await saveState(state);
     tab = "today"; render(); window.scrollTo(0,0);
   };
@@ -174,7 +186,7 @@ function wireSettings(){
     if (off) state.profile.noPlan = true;
     else {
       delete state.profile.noPlan;
-      if (!state.profile.days || !state.profile.days.length)
+      if (!Array.isArray(state.profile.days))
         state.profile.days = OB_DEFAULT_DAYS(state.profile.activity);
       state.profile.programId = defaultProgramId(state.profile.venue || "gym",
         state.profile.activity, state.profile.days);
@@ -190,15 +202,9 @@ function wireSettings(){
   });
   app.querySelectorAll("[data-sday]").forEach(b => b.onclick = async () => {
     const p2 = state.profile, n = Number(b.dataset.sday);
-    p2.days = (p2.days || []).slice();
+    p2.days = (p2.days || OB_DEFAULT_DAYS(p2.activity)).slice();
     const i = p2.days.indexOf(n);
-    if (i >= 0){
-      if (p2.days.length <= 3){ toast(tx("En az 3 antrenman günü gerekli.")); return; }
-      p2.days.splice(i, 1);
-    } else {
-      if (p2.days.length >= 5){ toast(tx("En fazla 5 gün seçebilirsin.")); return; }
-      p2.days.push(n);
-    }
+    if (i >= 0) p2.days.splice(i, 1); else p2.days.push(n);
     p2.days.sort((a, b2) => a - b2);
     /* Gün sayısı değiştiyse aynı ortamda uygun frekanslı programa geç. */
     const cur = PROGRAMS[p2.programId];
