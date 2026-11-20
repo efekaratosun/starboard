@@ -42,7 +42,7 @@ window.STARBOARD_EN = {
   "Önerilen alt sınırdan başlayarak 104 haftayı aşmayan bir aralık gir.": "Enter a range starting at or above the suggested minimum and ending by week 104.",
   "Yağ oranı hangi durumda kullanılır?": "When is body fat used?",
   "18–35 yaşındayım, kilom sabit ve haftada en az iki kez, toplam en az üç saat spor yapıyorum. Bu oran güncel BOD POD ölçümümden. Metabolizmamı etkileyen bir rahatsızlığım, ilacım veya durumum yok.": "I’m 18–35, my weight is stable, and I exercise at least twice a week for at least three hours in total. This percentage is from a recent BOD POD measurement. I have no condition or medication that affects my metabolism.",
-  "Ölçülen yağ oranı kalori tahminine katıldı.": "Measured body fat was included in your calorie estimate.",
+  "Yağ oranı kalori tahminine katıldı.": "Body fat was included in your calorie estimate.",
   "Starboard yeni yaşında sana sağlıklı ve mutlu bir yıl diler.": "Starboard wishes you a happy and healthy year ahead.",
   /* ---- genel ---- */
   "Starboard": "Starboard",

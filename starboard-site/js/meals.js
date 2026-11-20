@@ -276,7 +276,7 @@ function logView(program, entry){
       ${macroMoon(tx("Karbonhidrat"), tot.c, program.carb, "g", "carb")}
       ${macroMoon(tx("Yağ"), tot.f, program.fat, "g", "fat")}
     </div>
-    ${program.lbm != null ? `<p class="metric-note">${tx("Ölçülen yağ oranı kalori tahminine katıldı.")}</p>` : ""}
+    ${program.lbm != null ? `<p class="metric-note">${tx("Yağ oranı kalori tahminine katıldı.")}</p>` : ""}
   </section>
 
   ${log.length ? detailSection(tot, program) : ""}

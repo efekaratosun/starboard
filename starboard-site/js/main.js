@@ -38,6 +38,7 @@ function mountVersionBadge(){
   /* Güncellemeden sonra bir kez: neler yeni. Uyarı (notice) olsun da olmasun da
      sırasını alır; hafta kapanışı ondan sonra gelir, ikisi aynı anda açılmaz. */
   openWelcomeChain();
+  celebrateBirthday();
   rescheduleSoon();
   healthSoon();
 })();

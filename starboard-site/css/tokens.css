@@ -11,6 +11,8 @@
   /* Her iki temada aynı kalan renkler. */
   --sheet-backdrop:rgba(20,12,24,.42);
   --constellation-star-stroke:#8a5a00;
+  --mascot-eye-glint:#FFFFFF;
+  --mascot-eye-ink:#14152C;
   --mask-opaque:#000;
   --logo-ink:#FFFCFA;
   --logo-gradient-start:#FF7A2F;

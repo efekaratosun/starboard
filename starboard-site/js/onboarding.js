@@ -140,7 +140,7 @@ const ROUTINE_IDEAS = ["D vitamini", tx("Multivitamin"), tx("Omega-3"), tx("Magn
 let obStep = 0, ob = null;
 
 function obDefaults(){
-  return { name:"", sex:"", avatar:undefined, avColor:undefined,
+  return { name:"", sex:"", avatar:undefined,
     goal:"maintain", targetWeight:null, activity:"moderate", sleepMin:7,
     venue:"gym", days:null, avoid:[],
     diet:"hepsi", mealSet:1, cuisine:LANG === "tr" ? "tr" : "intl", exclude:[], birthParts:["", "", ""],
@@ -241,13 +241,13 @@ function obRuler(field, min, max, step, tw, majorEvery, midEvery, unit, dec, cv)
   const name = field === "height" ? tx("Boy") : tx("Kilo");
   return `<div class="rl" data-rl="${field}" data-min="${min}" data-max="${max}" data-step="${step}" data-tw="${tw}" style="--tw:${tw}px">
     <button type="button" class="rl-v" aria-label="${tx("{0} değerini elle yaz", [(name)])}">
-      <b class="num rl-n" data-v="${txt}" aria-hidden="true">${rollHTML(txt)}</b>${unit ? `<span>${unit}</span>` : ""}</button>
+      <b class="num rl-n" aria-hidden="true">${txt}</b>${unit ? `<span>${unit}</span>` : ""}</button>
     <div class="rl-w">
       <div class="rl-s" tabindex="0" role="slider" aria-label="${name}" aria-valuemin="${min}" aria-valuemax="${max}" aria-valuenow="${val}" aria-valuetext="${txt} ${unit}"><div class="rl-t">${ticks}</div></div>
     </div>
   </div>`;
 }
-function wireRulers(animate){
+function wireRulers(){
   app.querySelectorAll(".rl").forEach(rl => {
     const f = rl.dataset.rl, min = +rl.dataset.min, max = +rl.dataset.max, step = +rl.dataset.step, tw = +rl.dataset.tw;
     const sc = rl.querySelector(".rl-s"), out = rl.querySelector(".rl-n");
@@ -258,29 +258,16 @@ function wireRulers(animate){
       v = clamp(+(Math.round(v / step) * step).toFixed(2), min, max);
       if (disp() === v) return;
       ob[f] = cv.from(v);
-      rollSet(out, fmt(v));
+      out.textContent = fmt(v);
       sc.setAttribute("aria-valuenow", v);
       sc.setAttribute("aria-valuetext", fmt(v) + " " + (rl.querySelector(".rl-v span")?.textContent || ""));
-      rl.classList.add("live"); clearTimeout(rl._t); rl._t = setTimeout(() => rl.classList.remove("live"), 260);
     };
-    /* Açılışta cetvel değerine doğru kayarak gelir; bu sırada değer değişmez. */
-    const target = disp();
-    let intro = false;
-    const endIntro = () => { if (!intro) return; intro = false; if (ob) rollSet(out, fmt(disp())); };
-    if (animate && !reduceMotion()){
-      intro = true;
-      sc.scrollLeft = Math.max(toX(target) - 14 * tw, 0);
-      setTimeout(() => { if (intro) sc.scrollTo({ left: toX(target), behavior:"smooth" }); }, 420);
-      setTimeout(() => { if (intro){ endIntro(); sc.scrollLeft = toX(target); } }, 1400);
-      sc.addEventListener("touchstart", endIntro, { passive:true });
-      sc.addEventListener("pointerdown", endIntro);
-      sc.addEventListener("keydown", endIntro);
-    } else sc.scrollLeft = toX(target);
-    sc.onscroll = () => {
+    sc.scrollLeft = toX(disp());
+    const readPosition = () => {
       if (!sc.isConnected || !ob) return;
-      const v = min + Math.round(sc.scrollLeft / tw) * step;
-      if (intro) rollSet(out, fmt(clamp(+v.toFixed(2), min, max))); else set(v);
+      set(min + Math.round(sc.scrollLeft / tw) * step);
     };
+    sc.onscroll = readPosition;
 
     /* fareyle sürükleme (dokunmatikte kaydırma zaten yerel) */
     let drag = null;
@@ -292,6 +279,7 @@ function wireRulers(animate){
     sc.onpointermove = ev => { if (drag) sc.scrollLeft = drag.left - (ev.clientX - drag.x); };
     const end = () => {
       if (!drag) return;
+      readPosition();
       drag = null; sc.classList.remove("drag");
       sc.scrollTo({ left: toX(disp()), behavior: reduceMotion() ? "auto" : "smooth" });
     };
@@ -329,13 +317,11 @@ function obProfile(){
     height: ob.height, birthDate: ob.birthDate, age: ageFromBirthDate(ob.birthDate), startWeight: ob.weight,
     name: ob.name || undefined,
     bodyFat: ob.bodyFat,
-    sex: ob.sex, avatar: ob.avatar, avColor: ob.avColor,
+    sex: ob.sex, avatar: avKey(ob),
     activity: ob.activity, goal: ob.goal, noPlan: !!ob.noPlan,
     venue: ob.venue, days: ob.days || OB_DEFAULT_DAYS(ob.activity),
     avoid: ob.avoid.slice(), sleepMin: ob.sleepMin, theme: ob.theme, units: ob.units
   };
-  if (ob.bodyFatEligible && Number.isFinite(ob.bodyFat) && profile.age >= 18 && profile.age <= 35)
-    profile.bodyFatReferenceWeight = ob.weight;
   if (ob.targetWeight) profile.targetWeight = Math.round(ob.targetWeight * 10) / 10;
   if (obWeightRange() && ob.targetWeeks) profile.targetWeeks = ob.targetWeeks.slice();
   profile.programId = defaultProgramId(profile.venue, profile.activity, profile.days);
@@ -376,7 +362,7 @@ function obWeightPreview(){
   const meals = buildMeals(p, 0, { meals:mealsFromPreset(ob.mealSet), diet:ob.diet, cuisine:ob.cuisine, exclude:ob.exclude });
   return `<p>${tx("Hedef kilo ({0})", [wUnit()])} · <b>${fmtW(ob.targetWeight)}</b></p>
     <p>${p.kcal} ${tx("kcal / gün")} · ${p.protein} g ${tx("protein")} · ${p.carb} g ${tx("Karbonhidrat")} · ${p.fat} g ${tx("Yağ")} · ${fmtV(p.water)} ${tx("su")}</p>
-    ${p.lbm !== null ? `<p class="metric-note">${tx("Ölçülen yağ oranı kalori tahminine katıldı.")}</p>` : ""}
+    ${p.lbm !== null ? `<p class="metric-note">${tx("Yağ oranı kalori tahminine katıldı.")}</p>` : ""}
     ${og(tx("Önerilen süre aralığı (hafta)"), `<div class="ob-birth">
       <label>${tx("En kısa")}<input id="ob-week-min" type="number" inputmode="numeric" min="${obWeightRange()[0]}" max="104" value="${range[0] ?? ""}"></label>
       <label>${tx("En uzun")}<input id="ob-week-max" type="number" inputmode="numeric" min="${obWeightRange()[0]}" max="104" value="${range[1] ?? ""}"></label></div>
@@ -387,25 +373,11 @@ function obWeightPreview(){
 const OB_STEPS = [
   { id:"welcome" },
   { id:"you", t:tx("Seni tanıyalım"),
-    body: () => {
-      let av = "";
-      if (ob.sex){
-        if (!ob.avatar) ob.avatar = ob.sex === "female" ? "f" : ob.sex === "male" ? "m" : "n";
-        if (!ob.avColor) ob.avColor = avColor({ sex: ob.sex });
-        av = og(tx("Avatarın"), `<div class="av-field" id="av-field" style="--av:${ob.avColor}">${avatarPicker(ob.avatar, "on")}
-          <div class="sh-l">${tx("Renk")}</div>${colorPicker(ob.avColor, "on")}</div>`, false, "og-av");
-      }
-      return og(tx("İsmin nedir?"), `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" autocomplete="given-name" maxlength="30" aria-label="${tx("İsmin nedir?")}" required>`)
-        + og(tx("Cinsiyet"), obCards("sex", [["male", "", tx("Erkek")], ["female", "", tx("Kadın")], ["none", "", tx("Belirtmek İstemiyorum")]], "tri")
-            + `<div class="metric-note" style="margin-top:8px">${tx("Kalori hesabında kullanılır.")}</div>`)
-        + av;
-    },
+    body: () => og(tx("İsmin nedir?"), `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" autocomplete="given-name" maxlength="30" aria-label="${tx("İsmin nedir?")}" required>`)
+      + og(tx("Cinsiyet"), obCards("sex", [["male", "", tx("Erkek")], ["female", "", tx("Kadın")], ["none", "", tx("Belirtmek İstemiyorum")]], "tri"))
+      + og(tx("Avatarın"), avatarPicker(avKey(ob), "on")),
     read: () => { const v = obVal("ob-name"); if (v !== null) ob.name = v.trim().slice(0, 30); },
-    wire: () => {
-      if (!document.getElementById("av-field")) return;
-      wireAvatar("on", k => { ob.avatar = k; });
-      wireColor("on", c => { ob.avColor = c; document.getElementById("av-field").style.setProperty("--av", c); });
-    },
+    wire: () => wireAvatar("on", k => { ob.avatar = k; }),
     valid: () => !ob.name ? [tx("İsmini gir."), "ob-name"]
       : ob.sex ? "" : tx("Bir cinsiyet seçeneği işaretle.") },
   { id:"body", t:tx("Ölçülerin"),
@@ -426,18 +398,14 @@ const OB_STEPS = [
           <input id="ob-birth-${i}" type="text" inputmode="numeric" maxlength="${i === 2 ? 4 : 2}"
             autocomplete="bday-${["day", "month", "year"][i]}" value="${esc(ob.birthParts[i])}" required></label>`).join("")}
         </div>`)
-        + og(tx("Yağ oranı (%)"), `<input id="ob-bf" aria-label="${tx("Yağ oranı (%)")}" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("Opsiyonel")}">
-          <details class="ob-personal" ${ob.bodyFatEligible ? "open" : ""}><summary>${tx("Yağ oranı hangi durumda kullanılır?")}</summary>
-            <label class="ob-check"><input id="ob-bf-eligible" type="checkbox"${ob.bodyFatEligible ? " checked" : ""}>
-            ${tx("18–35 yaşındayım, kilom sabit ve haftada en az iki kez, toplam en az üç saat spor yapıyorum. Bu oran güncel BOD POD ölçümümden. Metabolizmamı etkileyen bir rahatsızlığım, ilacım veya durumum yok.")}</label>
-          </details>`);
+        + og(tx("Yağ oranı (%)"), `<input id="ob-bf" aria-label="${tx("Yağ oranı (%)")}" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("Opsiyonel")}">`);
     },
+    wire: wireRulers,
     read: () => {
       ob.birthParts = [0, 1, 2].map(i => obVal("ob-birth-" + i).trim());
       const [day, month, year] = ob.birthParts;
       ob.birthDate = birthDateFromParts(year, month, day);
       ob.bodyFat = num(obVal("ob-bf"));
-      ob.bodyFatEligible = document.getElementById("ob-bf-eligible").checked;
     },
     valid: () => {
       const age = ageFromBirthDate(ob.birthDate);
@@ -537,7 +505,7 @@ function obSummary(){
     <h1>${ob.name ? tx("{0}, planın hazır", [(esc(ob.name))]) : tx("Planın hazır")}</h1>
     <p class="on-tag">${tx("{0} hedefine göre günlük hedeflerin:", [(GOAL[ob.goal].label)])}</p>
     <div class="os-k"><b class="num" id="os-kn" data-to="${p.kcal}">${p.kcal}</b><span>${tx("kcal / gün")}</span></div>
-    ${p.lbm !== null ? `<p class="metric-note">${tx("Ölçülen yağ oranı kalori tahminine katıldı.")}</p>` : ""}
+    ${p.lbm !== null ? `<p class="metric-note">${tx("Yağ oranı kalori tahminine katıldı.")}</p>` : ""}
     <div class="os-g">
       ${tile("poultry", p.protein, " g", tx("protein"))}
       ${isImp() ? tile("dairy", vOut(p.water), " fl oz", tx("su")) : tile("dairy", fmtFix(p.water / 1000, 1), " L", tx("su"))}
@@ -639,7 +607,7 @@ function obRefresh(revealSel){
   if (st.read) st.read();
   const y = window.scrollY;
   stage.innerHTML = obQuestion(st);
-  wireOb(st, false);
+  wireOb(st);
   window.scrollTo(0, y);
   const el = revealSel && stage.querySelector(revealSel);
   if (el && !reduceMotion()) el.classList.add("reveal");
@@ -671,7 +639,7 @@ function obErr(msg){
   if (msg) box.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block:"nearest" });
 }
 
-function wireOb(st, animate){
+function wireOb(st){
   const go = d => {
     if (obBusy) return;
     const list = obList();
@@ -697,17 +665,12 @@ function wireOb(st, animate){
   document.getElementById("ob-next").onclick = next;
   document.getElementById("ob-back").onclick = () => { if (obBusy) return; if (st.read) st.read(); go(-1); };
   if (st.wire) st.wire();
-  wireRulers(animate);
   app.querySelectorAll(".on-q input").forEach(i => i.addEventListener("input", () => obErr("")));
 
   /* seçim kartları: yalnızca işaretler, ekranı değiştirmez */
   app.querySelectorAll(".ocs [data-oc]").forEach(b => b.onclick = () => {
     const box = b.closest(".ocs"), f = box.dataset.field, v = b.dataset.oc;
     if (f === "plan"){ const was = !!ob.noPlan; ob.noPlan = v === "off"; ob.planTouched = true; if (was !== ob.noPlan){ obRefresh("#og-plan"); return; } }
-    else if (f === "sex"){
-      const was = ob.sex; ob.sex = v;
-      if (was !== v){ ob.avatar = undefined; ob.avColor = undefined; obRefresh(was ? null : "#og-av"); return; }
-    }
     else ob[f] = box.dataset.num ? Number(v) : v;
     if (f === "goal") document.getElementById("ob-planning-label").hidden = v !== "lose";
     if (f === "activity"){

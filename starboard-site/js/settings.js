@@ -24,8 +24,7 @@ function settingsView(){
       <input id="s-bf" type="number" inputmode="decimal" value="${p.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}"></div>
     <div class="field"><label for="s-sex">${tx("Cinsiyet")}</label>
       <select id="s-sex"><option value="male"${sel(p.sex,"male")}>${tx("Erkek")}</option><option value="female"${sel(p.sex,"female")}>${tx("Kadın")}</option><option value="none"${sel(p.sex,"none")}>${tx("Belirtmek istemiyorum")}</option></select></div>
-    <div class="field" id="s-av-field" style="--av:${avColor(p)}"><label>${tx("Avatarın")}</label>${avatarPicker(avKey(p),"st")}
-      <div style="margin-top:10px">${colorPicker(avColor(p),"st")}</div></div>
+    <div class="field"><label>${tx("Avatarın")}</label>${avatarPicker(avKey(p),"st")}</div>
     <div class="field"><label for="s-act">${tx("Aktivite seviyesi")}</label>
       <select id="s-act">${Object.entries(ACTIVITY).map(([k,v])=>`<option value="${k}"${sel(p.activity,k)}>${v.label} (${v.d})</option>`).join("")}</select></div>
     <div class="field"><label for="s-goal">${tx("Hedef")}</label>
@@ -121,13 +120,8 @@ function wireSettings(){
   wireReminders();
   wireHealth();
   document.getElementById("s-meal-prefs").onclick = () => openPrefsSheet();
-  let stAvatar = state.profile.avatar, stColor = state.profile.avColor;
+  let stAvatar = avKey(state.profile);
   wireAvatar("st", k => { stAvatar = k; });
-  document.getElementById("s-sex").onchange = ev => {
-    /* avatar seçilmemişse cinsiyete göre varsayılan renge geç */
-    if (!state.profile.avColor && !stColor) document.getElementById("s-av-field").style.setProperty("--av", avColor({ sex: ev.target.value }));
-  };
-  wireColor("st", c => { stColor = c; document.getElementById("s-av-field").style.setProperty("--av", c); });
   document.getElementById("s-save").onclick = async () => {
     const p = state.profile;
     const h = isImp()
@@ -145,15 +139,13 @@ function wireSettings(){
     } else if (a >= 10 && a <= 100) p.age = a;
     if (h && h > 100 && h < 250) p.height = h;
     const bf = num(document.getElementById("s-bf").value);
-    if (bf !== p.bodyFat) delete p.bodyFatReferenceWeight;
     p.bodyFat = bf;
     p.name = document.getElementById("s-nm").value.trim().slice(0, 30) || undefined;
     const tw = num(document.getElementById("s-tw").value);
     if (tw !== (p.targetWeight ? +wOut(p.targetWeight).toFixed(1) : null)) delete p.targetWeeks;
     if (tw && wIn(tw) >= 30 && wIn(tw) <= 300) p.targetWeight = wSave(tw); else delete p.targetWeight;
     p.sex = document.getElementById("s-sex").value;
-    if (stAvatar) p.avatar = stAvatar;
-    if (stColor) p.avColor = stColor;
+    p.avatar = stAvatar;
     p.activity = document.getElementById("s-act").value;
     p.goal = document.getElementById("s-goal").value;
     if (p.goal !== "lose") delete p.targetWeeks;
