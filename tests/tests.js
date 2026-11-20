@@ -4526,7 +4526,7 @@ test("ölçü cetveli: sahneden ayrılan kaydırma olayı ölçüyü değiştirm
     eq(ob.weight, 70);
   } finally { ({ ob, state } = prev); }
 });
-test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, gezegen sahnesi", async () => {
+test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, yıldızlı sahne (gezegen yok)", async () => {
   const keep = { st:state, ob, set:window.setLang, sess:sessionStorage.getItem("starboard-onb-units") };
   let asked = null;
   window.setLang = l => { asked = l; };
@@ -4564,14 +4564,13 @@ test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, gezeg
     w.querySelector("[data-flag=tr]").click();
     eq(ob.units, "metric");
     eq(asked, null, "zaten Türkçe: sayfa yenilenmemeli");
-    /* Sahne: yıldız katmanları, kayan yıldız, halkalı gezegen (iki halka kopyası, yüzey); nebula ve ay yok */
+    /* Sahne: yıldız katmanları ve kayan yıldız; gezegen, nebula ve ay yok */
     const bg = document.getElementById("on-bg");
     ok(bg.classList.contains("welcome"));
     ok(bg.querySelectorAll(".sk-t").length >= 20, "yanıp sönen yıldız az");
     ok(bg.querySelector(".sk-shoot"), "kayan yıldız yok");
-    eq(bg.querySelectorAll(".pl-rc").length, 2);
-    ok(bg.querySelector(".pl-ball .pl-tex.a") && bg.querySelector(".pl-night"), "gezegen yüzeyi eksik");
-    ok(!/nebula|moon/i.test(bg.innerHTML), "nebula / ay olmamalı");
+    ok(!bg.querySelector("canvas,[class*=planet],[class^=pl-]"), "gezegen olmamalı");
+    ok(!/nebula|moon|planet/i.test(bg.innerHTML), "nebula / ay / gezegen olmamalı");
     /* Sürüm etiketi: 'v' + numara, 'Sürüm' kelimesi yok */
     const main = await (await fetch("../starboard-site/js/main.js")).text();
     ok(main.includes('"v" + APP_VERSION') && !main.includes('tx("Sürüm {0}", [APP_VERSION]);\n  document'), "sürüm etiketi v + numara olmalı");
@@ -4579,7 +4578,8 @@ test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, gezeg
     const sw = await (await fetch("../starboard-site/sw.js")).text();
     ok(sw.includes('"js/welcome-scene.js"'), "welcome-scene.js sw.js SHELL listesinde değil");
     const css = await (await fetch("../starboard-site/css/tokens.css")).text();
-    for (const v of ["--sky-top", "--sky-bot", "--sky-star", "--planet-1", "--planet-ring-1", "--sky-deep-op"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
+    for (const v of ["--sky-top", "--sky-bot", "--sky-star", "--sky-deep-op"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
+    ok(!/--planet-/.test(css), "gezegen renk jetonları kalmamalı");
   } finally {
     sceneActive(false); sceneState = null;
     window.setLang = keep.set; state = keep.st; ob = keep.ob; app.innerHTML = "";

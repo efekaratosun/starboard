@@ -21,10 +21,6 @@
   --tabbar-floating-shadow:rgba(40,16,10,.16);
   --tabbar-fab-shadow:rgba(255,61,110,.32);
   --onboarding-logo-shadow:rgba(255,61,110,.28);
-  /* gezegen (iki temada aynı): bantlar açıktan koyuya, halka, kenar parıltısı */
-  --planet-1:#F6E2BC; --planet-2:#E3B573; --planet-3:#C98A52; --planet-4:#9C5B3A; --planet-5:#6E3F36; --planet-storm:#D96B5A;
-  --planet-ring-1:#F4E6CB; --planet-ring-2:#C9A57A; --planet-ring-3:#8D6E52;
-  --planet-rim:rgba(255,230,192,.85); --planet-halo:rgba(255,176,120,.26);
   --onboarding-progress-shine:rgba(255,255,255,.55);
   --onboarding-button-shine:rgba(255,255,255,.34);
   --tabbar-shadow:rgba(4,8,24,.28);
@@ -36,7 +32,7 @@
   --shell:#ECEEF6; --track:#E2E5EF; --tint:#FFE7DF;
   /* karşılama sahnesi: açık tema = soluk gündüz gökyüzü */
   --sky-top:#D9E4F7; --sky-bot:#F3F4F9; --sky-star:#6B76B8; --sky-star-warm:#C8892E; --sky-star-cool:#5A7BD6;
-  --sky-star-op:.5; --sky-deep-op:0; --sky-scene-op:.86; --sky-night-op:.55; --onboarding-logo-glow:rgba(255,61,110,0);
+  --sky-star-op:.5; --sky-deep-op:0; --onboarding-logo-glow:rgba(255,61,110,0);
 
   /* marka: doygun turuncu-pembe. --band yazı ve ince çizgiler (beyazda AA),
      --band-vivid grafik ve dolgu, --grad hero öğeleri, --grad-btn beyaz yazılı butonlar,
@@ -112,7 +108,7 @@
   --shell:#121A38; --track:#222C55; --tint:#3A1630;
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
-  --sky-star-op:1; --sky-deep-op:1; --sky-scene-op:1; --sky-night-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
+  --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
@@ -171,7 +167,7 @@
   --shell:#121A38; --track:#222C55; --tint:#3A1630;
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
-  --sky-star-op:1; --sky-deep-op:1; --sky-scene-op:1; --sky-night-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
+  --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
