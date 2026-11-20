@@ -674,6 +674,7 @@ function wireOb(st){
       return;
     }
     if (st.id === "summary"){ await obFinish(); return; }
+    if (st.id === "welcome"){ sceneWarp(() => go(1)); return; }   /* ışık hızı geçişi; hareket azaltmada doğrudan geçer */
     go(1);
   };
   document.getElementById("ob-next").onclick = next;
