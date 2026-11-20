@@ -35,23 +35,39 @@ function sceneTwinkles(n, seed){
   return h;
 }
 
+/* Halkalı gezegen. Dönüş düz ikon diliyle anlatılır:
+   - Gezegen: kraterler disk içinde soldan sağa kayar (iki kopya, diske kırpılı); sağdaki gölge
+     (gece tarafı) sabit kalır, böylece küre kendi ekseninde dönüyormuş gibi görünür.
+   - Halkalar: her bandın ortasında küçük toz noktaları elips boyunca akar (önde soldan sağa,
+     arkada sağdan sola); iç bantlar biraz daha hızlı, halkalar gezegenden yaklaşık iki kat hızlı döner. */
+const SK_SPIN_SHIFT = 80;                       /* krater kopyaları arası (diskin çapı 68 + boşluk) */
 function scenePlanet(){
   const edge = 48 - MOON_R;
   const bands = [[54, 61], [64, 71], [74, 81], [84, 91]];
   const flatten = radius => (radius * .29).toFixed(2);
+  const dust = front => `<g class="sk-planet-dust">${bands.map(([inner, outer], i) => {
+    const mid = (inner + outer) / 2, from = front ? -mid : mid;
+    return `<path pathLength="100" style="--d:${8 + i}s;--gap:${[5, 6, 7.5, 10][i]}"
+      d="M${from} 0 A${mid} ${flatten(mid)} 0 0 0 ${-from} 0"/>`;
+  }).join("")}</g>`;
   const ring = front => `<g class="sk-planet-ring">
     ${bands.map(([inner, outer]) => {
       const side = front ? 1 : -1;
       return `<path d="M${side * outer} 0 A${outer} ${flatten(outer)} 0 0 1 ${-side * outer} 0
         H${-side * inner} A${inner} ${flatten(inner)} 0 0 0 ${side * inner} 0 Z"/>`;
     }).join("")}
+    ${dust(front)}
   </g>`;
+  const craters = moonCraters("carb", 3);
   return `<svg class="sk-planet" viewBox="-96 -48 192 96" aria-hidden="true">
+    <defs><clipPath id="sk-planet-clip"><circle cx="48" cy="48" r="${MOON_R}"/></clipPath></defs>
     <g class="sk-planet-system" transform="rotate(-15)">
       ${ring(false)}
       <g class="sk-planet-disc" transform="scale(1.3) translate(-48 -48)">
         <circle cx="48" cy="48" r="${MOON_R}"/>
-        ${moonCraters("carb", 3)}
+        <g clip-path="url(#sk-planet-clip)"><g class="sk-planet-surf">
+          ${craters}<g transform="translate(${-SK_SPIN_SHIFT} 0)">${craters}</g>
+        </g></g>
         <path class="sk-planet-shade" d="M48 ${edge}a${MOON_R} ${MOON_R} 0 0 1 0 ${2 * MOON_R}A44 44 0 0 0 48 ${edge}Z"/>
       </g>
       ${ring(true)}
@@ -59,8 +75,46 @@ function scenePlanet(){
   </svg>`;
 }
 
+/* Alt nebula (uzay tozu): kenarı kaybolan yumuşak renk bulutları, içlerinden geçen koyu toz
+   şeritleri, şeritler boyunca yoğunlaşan toz parçacıkları ve birkaç hafif parlayan yıldız.
+   Sert kenar yok: bulutlar ve şeritler radyal gradyan elipsler (filtre/blur yok, pil dostu).
+   Renkler tema değişkenlerinden: açık temada pembe / turuncu / kırmızı, koyu temada mor / mavi.
+   Bulutlar, şeritler ve toz farklı hızlarda çok yavaş süzülür; hareket azaltmada durur. */
+const SK_NEB_H = 340;
+function sceneNebula(){
+  const f = n => n.toFixed(1);
+  /* [cx, cy, rx, ry, renk değişkeni, merkez opaklığı, açı] */
+  const clouds = [[120, 270, 230, 90, "--neb-3", .5, -12], [300, 240, 200, 80, "--neb-2", .45, -18], [220, 310, 260, 70, "--neb-1", .4, -8]];
+  /* koyu toz şeritleri: gökyüzü renginde, uzun ve ince yumuşak elipsler bulutu yer yer siler */
+  const lanes = [[110, 280, 150, 13, -16], [280, 238, 120, 10, -14], [170, 318, 120, 8, -9]];
+  const grad = (id, color, a) => `<radialGradient id="${id}"><stop offset="0" style="stop-color:var(${color});stop-opacity:${a}"/>`
+    + `<stop offset=".55" style="stop-color:var(${color});stop-opacity:${(a * .45).toFixed(3)}"/><stop offset="1" style="stop-color:var(${color});stop-opacity:0"/></radialGradient>`;
+  const ell = ([cx, cy, rx, ry], rot, fill) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#${fill})" transform="rotate(${rot} ${cx} ${cy})"/>`;
+  /* toz: hafif eğik bir kuşak boyunca yoğun, yukarı çıktıkça seyrek (sabit tohum → her açılışta aynı) */
+  const r = sceneRng(21);
+  let dust = "";
+  for (let k = 0, guard = 0; k < 300 && guard < 12000; guard++){
+    const x = r() * 400, y = r() * SK_NEB_H, d = y - (300 - .3 * x);
+    const p = .05 + .95 * Math.exp(-(d * d) / 2312) * Math.min(1, Math.max(0, (y - 60) / 200));
+    if (r() > p) continue;
+    const big = r() < .08;
+    dust += `<circle cx="${f(x)}" cy="${f(y)}" r="${(big ? 1.1 + r() * 1.1 : .35 + r() * .6).toFixed(2)}" opacity="${(big ? .7 + r() * .3 : .25 + r() * .5).toFixed(2)}"/>`;
+    k++;
+  }
+  const glints = [[150, 262, 6], [300, 222, 5], [64, 300, 5]];
+  return `<svg class="sk-neb" viewBox="0 0 400 ${SK_NEB_H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>${clouds.map(([, , , , c, a], i) => grad("sk-nc" + i, c, a)).join("")}${grad("sk-nl", "--sky-bot", .9)}
+      <radialGradient id="sk-ng"><stop offset="0" style="stop-color:var(--neb-dust);stop-opacity:.9"/><stop offset=".25" style="stop-color:var(--neb-dust);stop-opacity:.35"/><stop offset="1" style="stop-color:var(--neb-dust);stop-opacity:0"/></radialGradient></defs>
+    <g class="sk-neb-clouds">${clouds.map((c, i) => ell(c, c[6], "sk-nc" + i)).join("")}</g>
+    <g class="sk-neb-lanes">${lanes.map(l => ell(l, l[4], "sk-nl")).join("")}</g>
+    <g class="sk-neb-dust">${dust}</g>
+    ${glints.map(([x, y, rad], i) => `<circle class="sk-neb-sp" style="animation-delay:${-i * 1.4}s" cx="${x}" cy="${y}" r="${rad}"/>`).join("")}
+  </svg>`;
+}
+
 function sceneHTML(){
   return `<div class="sk-sky"></div>
+  ${sceneNebula()}
   <div class="sk-par sk-par1">${sceneStarLayer("a", 110, 0.6, 7)}${sceneStarLayer("deep", 90, 0.6, 31)}</div>
   <div class="sk-par sk-par2">${sceneStarLayer("b", 46, 1.0, 13)}${sceneStarLayer("deep b", 36, 1.0, 41)}</div>
   <div class="sk-par sk-par3">${sceneStarLayer("c", 16, 1.5, 19)}<div class="sk-tws">${sceneTwinkles(30, 5)}</div></div>

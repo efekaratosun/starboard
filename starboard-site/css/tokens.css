@@ -35,7 +35,10 @@
   /* karşılama sahnesi: açık tema = soluk gündüz gökyüzü */
   --sky-top:#D9E4F7; --sky-bot:#F3F4F9; --sky-star:#6B76B8; --sky-star-warm:#C8892E; --sky-star-cool:#5A7BD6;
   --sky-star-op:.5; --sky-deep-op:0; --onboarding-logo-glow:rgba(255,61,110,0);
-  --sky-planet:#879CB9; --sky-planet-ring:#7E94B1;
+  --sky-planet:#879CB9; --sky-planet-ring:#7E94B1; --sky-planet-dust:#2A3654;
+  /* alt nebula: açık tema = pembe / turuncu / kırmızı */
+  --neb-1:#E0303F; --neb-2:#F16B20; --neb-3:#FF5088; --neb-op:.38;
+  --neb-dust:#C2477A; --neb-dust-op:.4; --neb-spark-op:.5;
 
   /* marka: doygun turuncu-pembe. --band yazı ve ince çizgiler (beyazda AA),
      --band-vivid grafik ve dolgu, --grad hero öğeleri, --grad-btn beyaz yazılı butonlar,
@@ -112,7 +115,10 @@
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
-  --sky-planet:#4D5C7B; --sky-planet-ring:#536585;
+  --sky-planet:#4D5C7B; --sky-planet-ring:#536585; --sky-planet-dust:#DCE4FF;
+  /* alt nebula: koyu tema = mor / mavi */
+  --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-op:.45;
+  --neb-dust:#E4DCFF; --neb-dust-op:.5; --neb-spark-op:.7;
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
@@ -172,7 +178,10 @@
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
-  --sky-planet:#4D5C7B; --sky-planet-ring:#536585;
+  --sky-planet:#4D5C7B; --sky-planet-ring:#536585; --sky-planet-dust:#DCE4FF;
+  /* alt nebula: koyu tema = mor / mavi */
+  --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-op:.45;
+  --neb-dust:#E4DCFF; --neb-dust-op:.5; --neb-spark-op:.7;
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
