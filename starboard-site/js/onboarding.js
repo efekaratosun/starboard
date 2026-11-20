@@ -98,7 +98,7 @@ if (window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListen
 /* Öğün düzeni kalıpları: [ad, saat, kategori, ağırlık] */
 const MEAL_PRESETS = [
   [tx("3 öğün"), [[tx("Kahvaltı"),8,"kahvalti",30],[tx("Öğle"),13,"ogle",40],[tx("Akşam"),20,"aksam",40]]],
-  [tx("3 öğün + ara"), [[tx("Kahvaltı"),8,"kahvalti",30],[tx("Öğle"),13,"ogle",35],[tx("Ara öğün"),16,"ara",15],[tx("Akşam"),20,"aksam",35]]],
+  [tx("3 öğün + ara öğün"), [[tx("Kahvaltı"),8,"kahvalti",30],[tx("Öğle"),13,"ogle",35],[tx("Ara öğün"),16,"ara",15],[tx("Akşam"),20,"aksam",35]]],
   [tx("2 öğün"), [[tx("Öğle"),13,"ogle",45],[tx("Akşam"),20,"aksam",45]]],
   [tx("5 öğün"), [[tx("Kahvaltı"),8,"kahvalti",25],[tx("Kuşluk"),11,"ara",12],[tx("Öğle"),14,"ogle",30],[tx("İkindi"),17,"ara",12],[tx("Akşam"),20,"aksam",30]]]
 ];
@@ -108,19 +108,29 @@ function mealsFromPreset(i){
   return set.map(([name, h, cat, w], j) => ({ id:`m${j}${stamp}`, name, h, cat, w }));
 }
 
-/* Sık elenen besinler: rozet başına bir veya daha çok kalem */
-const DISLIKE = [
-  [tx("Karaciğer / sakatat"), ["karaciger","kokorec","iskembe"]],
-  [tx("Balık ve deniz ürünleri"), ["morina","tilapia","kaliforniyaroll","somon","ton","hamsi","uskumru","alabalik","levrek","cipura","karides","izgarabalik","balikekmek","fumesomon","tonyagli","uskumrukonserve","sardalya","midyedolma"]],
-  [tx("Kırmızı et"), ["danakiyma15","jerky","sosisdana","cheeseburger","bolonez","chili","bacon","domuzjambon","domuzpirzola","domuzbonfile","kofte","biftek","kuzu","doner","sucuk","pastirma","kavurma","salam","macarsalam","danafume","danarosto","danajambon","iskender","adanakebap","izgarakofte","guvec"]],
-  [tx("Mantar"), ["mantar"]],
-  [tx("Zeytin"), ["zeytin","yesilzeytin","zeytinezmesi"]],
-  [tx("Patlıcan"), ["patlican","karniyarik","imambayildi","musakka","hunkarbegendi"]],
-  [tx("Baklagil"), ["mercimek","yesilmercimek","nohut","kurufasulye","barbunya","bakla","borulce","masfasulye","siyahfasulye","soyafasulye","piyaz"]],
-  [tx("Süt"), ["sut","tamsut","yagsizsut","kefir","salep"]],
-  /* Üçüncü alan: yalnızca uluslararası mutfakta gösterilir. */
-  [tx("Domuz eti"), ["bacon","domuzjambon","domuzpirzola","domuzbonfile"], true]
-];
+/* İlk ekranda birkaç besin, aramada kataloğun tamamı. */
+function wireObFoods(){
+  const input = document.getElementById("ob-exclude");
+  const results = document.getElementById("ob-exclude-results");
+  const draw = () => {
+    const query = input.value.trim();
+    const hits = query.length >= 2 ? searchFoods(query, 10).map(([k]) => k)
+      : ["mantar", "sut", "patlican", "zeytin"];
+    const automatic = query.length >= 2 ? hits : hits.filter(k => automaticFoodAllowed(k, []));
+    const keys = [...new Set([...ob.exclude, ...automatic])];
+    results.innerHTML = obChips("obfood", keys.map(k => [esc(k), esc(foodOf(k).n), ob.exclude.includes(k)]));
+  };
+  input.oninput = draw;
+  results.onclick = ev => {
+    const b = ev.target.closest("[data-obfood]");
+    if (!b) return;
+    const k = b.dataset.obfood, i = ob.exclude.indexOf(k);
+    if (i >= 0) ob.exclude.splice(i, 1); else ob.exclude.push(k);
+    b.classList.toggle("sel", i < 0);
+    b.setAttribute("aria-pressed", String(i < 0));
+  };
+  draw();
+}
 
 /* Hazır günlük hatırlatmalar */
 const ROUTINE_IDEAS = ["D vitamini", tx("Multivitamin"), tx("Omega-3"), tx("Magnezyum"),
@@ -133,20 +143,10 @@ function obDefaults(){
   return { name:"", sex:"", avatar:undefined, avColor:undefined,
     goal:"maintain", targetWeight:null, activity:"moderate", sleepMin:7,
     venue:"gym", days:null, avoid:[],
-    diet:"hepsi", mealSet:1, dislike:[], cuisine: deviceCuisine(),
+    diet:"hepsi", mealSet:1, cuisine:LANG === "tr" ? "tr" : "intl", exclude:[], birthParts:["", "", ""],
     theme:"auto", routines:[], units:detectUnits() };
 }
-const OB_DEFAULT_DAYS = a => PATTERN[(a === "sedentary" || a === "light") ? 3 : a === "moderate" ? 4 : 5].slice();
-
-/* Seçilen günlerin kaçı gerçekten kullanılacak? Ortamda o frekansta program
-   yoksa en yakını seçilir ve fazla günler antrenmansız kalır. */
-function dayNote(venue, activity, days){
-  const d = days.slice().sort((a,b) => a-b);
-  const prog = PROGRAMS[defaultProgramId(venue, activity, d)];
-  const used = planDays({ days: d }, prog.freq);
-  if (used.length === d.length) return "";
-  return tx("En fazla {0} gün kullanılır.", [(prog.freq)]);
-}
+const OB_DEFAULT_DAYS = a => PATTERN[(a === "sedentary" || a === "light") ? 3 : a === "moderate" ? 4 : a === "veryActive" ? 7 : 5].slice();
 
 /* Marka işareti: ikonun aynısı, ilk adımda gösterilir. */
 const BRAND_SVG = `<svg viewBox="0 0 180 180" aria-hidden="true"><defs><linearGradient id="sbi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--logo-gradient-start)"/><stop offset="1" stop-color="var(--logo-gradient-end)"/></linearGradient></defs><rect width="180" height="180" rx="40" fill="url(#sbi)"/><g fill="var(--logo-ink)"><rect x="39.0" y="125.2" width="17.6" height="16.9" rx="6.0"/><rect x="63.6" y="107.6" width="17.6" height="34.5" rx="6.0"/><rect x="88.2" y="90.7" width="17.6" height="51.3" rx="6.0"/><rect x="112.9" y="73.1" width="17.6" height="68.9" rx="6.0"/><path d="M121.6 26.7 L125.5 41.1 L139.9 45.0 L125.5 48.9 L121.6 63.3 L117.8 48.9 L103.4 45.0 L117.8 41.1Z"/></g></svg>`;
@@ -154,21 +154,50 @@ const BRAND_SVG = `<svg viewBox="0 0 180 180" aria-hidden="true"><defs><linearGr
 /* ---- ilk giriş: konuya göre beş ekran ----
    Seçimler yalnızca işaretlenir; sonraki ekrana hep "İleri" ile geçilir. */
 const OB_ICON = {
-  sex:{ male:"body", female:"body-f", none:"av-n" },
-  goal:{ lose:"run", maintain:"yoga", gain:"push" },
-  activity:{ sedentary:"rest", light:"walk", moderate:"run", active:"fullbody", veryActive:"skill" },
-  venue:{ gym:"push", home:"core", outdoor:"run", calisthenics:"pull", kettlebell:"fullbody", mobility:"yoga", swim:"swim" },
-  diet:{ hepsi:"meat", vejetaryen:"egg", vegan:"veg", pesketaryen:"fish", glutensiz:"potato", laktozsuz:"nuts", helal:"poultry", koser:"meat" },
-  cuisine:{ tr:"bread", intl:"avocado" }
+  diet:{ hepsi:"meat", vejetaryen:"egg", vegan:"veg", pesketaryen:"fish", glutensiz:"potato", laktozsuz:"nuts", helal:"poultry", koser:"meat" }
 };
 
-function obCard(on, val, ic, label, desc){
+const OB_MOVES = {
+  sedentary:"M12 10v6h6v5M7 13v6h6m-4 0v3m3-10 4 2",
+  light:"M12 9v6l-4 6m4-6 5 6M8 14l4-4 5 3",
+  moderate:"M13 9l-2 6-6 5m6-5 6 5M7 13l6-3 5 2",
+  active:"M14 9l-3 6-6 2m6-2 7 5M8 11l5 1 6-4",
+  veryActive:"M15 8l-4 7-6 4m6-4 7 1 3 4M9 12l5-1 6-5M3 9h4m-5 4h3",
+  gym:"M12 11v5l-4 6m4-6 4 6M4 5v5m16-5v5M3 7.5h18M7 8l2 5 3-2 3 2 2-5",
+  home:"M3 19h18M5 11l4 6h7l4 2m-9-2 3-4 4 1",
+  outdoor:"M14 10l-3 6-6 4m6-4 6 1 3 4M8 14l5-3 6-3",
+  calisthenics:"M3 3h18M8 3v6l4 3 4-3V3m-4 9v5l-3 5m3-5 3 5",
+  kettlebell:"M12 11v5l-5 6m5-6 5 6m-9-9 4 2 4-2m-6 5h4m-3-2v2m2-2v2",
+  mobility:"M12 10v6l-6 4h12l-6-4M4 12l4 3 4-4 4 4 4-3",
+  swim:"M2 17q2-2 4 0t4 0t4 0t4 0t4 0m-19 4q2-2 4 0t4 0t4 0t4 0l3 1M14 11l-4 3-4 1m7-3-2-6-5-1"
+};
+function obArt(kind, k){
+  let art;
+  if (kind === "goal"){
+    const planet = { lose:[3,15,-25], maintain:[3.8,17,0], gain:[4.6,19,27] }[k];
+    const [size, x, angle] = planet;
+    art = `<circle cx="12" cy="12" r="${size}"/><ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(${angle} 12 12)"/>
+      <circle cx="${x}" cy="${k === "maintain" ? 17 : 6}" r="2" fill="currentColor"/>`;
+  } else if (kind === "meal"){
+    const food = ["M8 12h3m4-3v6", "M8 9l2 2m4 0 2 2m-7 3h3", "M9 9v5h6V9z", "M8 15l3-6 4 6z"][k];
+    art = `<ellipse cx="12" cy="12" rx="9.5" ry="8"/><ellipse cx="12" cy="12" rx="7.5" ry="6"/><path d="${food}"/>`;
+  } else {
+    const [x,y] = (kind === "venue"
+      ? { gym:[12,7], home:[5,8], outdoor:[14,6], calisthenics:[12,8], kettlebell:[12,7], mobility:[12,7], swim:[17,11] }
+      : { sedentary:[12,6], light:[12,5], moderate:[13,5], active:[14,5], veryActive:[16,5] })[k];
+    const antenna = kind === "venue" ? `<path d="M${x-1.6} ${y-2}l-1-2m4 2 1-3"/><circle cx="${x-1}" cy="${y}" r=".35"/><circle cx="${x+1}" cy="${y}" r=".35"/>` : "";
+    art = `<path d="${OB_MOVES[k]}"/><circle cx="${x}" cy="${y}" r="${kind === "venue" ? 2.7 : 2.1}"/>${antenna}`;
+  }
+  return `<span class="ico-wrap ob-art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">${art}</svg></span>`;
+}
+
+function obCard(on, val, ic, label, desc, showCheck = true){
   return `<button type="button" class="oc${on ? " on" : ""}" data-oc="${val}" aria-pressed="${on}">
-    ${ic ? iconBox(ic) : ""}<span class="oc-m"><b>${label}</b>${desc ? `<i>${desc}</i>` : ""}</span>
-    <span class="oc-c" aria-hidden="true">${icon("check")}</span></button>`;
+    ${Array.isArray(ic) ? obArt(...ic) : ic ? iconBox(ic) : ""}<span class="oc-m"><b>${label}</b>${desc ? `<i>${desc}</i>` : ""}</span>
+    ${showCheck ? `<span class="oc-c" aria-hidden="true">${icon("check")}</span>` : ""}</button>`;
 }
 const obCards = (field, rows, cls, isNum) => `<div class="ocs${cls ? " " + cls : ""}" data-field="${field}"${isNum ? ' data-num="1"' : ""}>${rows.map(([v, ic, l, d]) =>
-  obCard(String(ob[field]) === String(v), v, ic, l, d)).join("")}</div>`;
+  obCard(String(ob[field]) === String(v), v, ic, l, d, field !== "sex")).join("")}</div>`;
 const obChips = (attr, rows) => `<div class="chips on-chips">${rows.map(([v, l, on]) =>
   `<button type="button" class="chip${on ? " sel" : ""}" data-${attr}="${v}" aria-pressed="${!!on}">${l}</button>`).join("")}</div>`;
 const og = (title, inner, opt, id) => `<div class="og"${id ? ` id="${id}"` : ""}>
@@ -209,7 +238,7 @@ function obRuler(field, min, max, step, tw, majorEvery, midEvery, unit, dec, cv)
   }
   const val = rulerVal(field, min, max, step);
   const txt = cv.fmt(val);
-  const name = unit || tx("Boy");
+  const name = field === "height" ? tx("Boy") : tx("Kilo");
   return `<div class="rl" data-rl="${field}" data-min="${min}" data-max="${max}" data-step="${step}" data-tw="${tw}" style="--tw:${tw}px">
     <button type="button" class="rl-v" aria-label="${tx("{0} değerini elle yaz", [(name)])}">
       <b class="num rl-n" data-v="${txt}" aria-hidden="true">${rollHTML(txt)}</b>${unit ? `<span>${unit}</span>` : ""}</button>
@@ -248,6 +277,7 @@ function wireRulers(animate){
       sc.addEventListener("keydown", endIntro);
     } else sc.scrollLeft = toX(target);
     sc.onscroll = () => {
+      if (!sc.isConnected || !ob) return;
       const v = min + Math.round(sc.scrollLeft / tw) * step;
       if (intro) rollSet(out, fmt(clamp(+v.toFixed(2), min, max))); else set(v);
     };
@@ -265,13 +295,13 @@ function wireRulers(animate){
       drag = null; sc.classList.remove("drag");
       sc.scrollTo({ left: toX(disp()), behavior: reduceMotion() ? "auto" : "smooth" });
     };
-    sc.onpointerup = end; sc.onpointercancel = end;
+    sc.onpointerup = end; sc.onpointercancel = end; sc.onlostpointercapture = end;
     sc.onkeydown = ev => {
       const d = { ArrowRight:1, ArrowUp:1, ArrowLeft:-1, ArrowDown:-1, PageUp:10, PageDown:-10 }[ev.key];
-      if (!d) return;
+      if (!d && ev.key !== "Home" && ev.key !== "End") return;
       ev.preventDefault();
-      const v = clamp(disp() + d * step, min, max);
-      sc.scrollTo({ left: toX(v), behavior:"auto" });
+      set(ev.key === "Home" ? min : ev.key === "End" ? max : disp() + d * step);
+      sc.scrollLeft = toX(disp());
     };
 
     /* rakama dokun: elle yaz */
@@ -285,7 +315,7 @@ function wireRulers(animate){
       const done = () => {
         const n = num(inp.value);
         inp.remove(); out.hidden = false;
-        if (n !== null){ const v = clamp(n, min, max); sc.scrollTo({ left: toX(v), behavior: reduceMotion() ? "auto" : "smooth" }); set(v); }
+        if (n !== null){ set(n); sc.scrollLeft = toX(disp()); }
       };
       inp.onblur = done;
       inp.onkeydown = ev => { if (ev.key === "Enter"){ ev.preventDefault(); inp.blur(); } };
@@ -296,7 +326,7 @@ function wireRulers(animate){
 
 function obProfile(){
   const profile = {
-    height: ob.height, age: ob.age, startWeight: ob.weight,
+    height: ob.height, birthDate: ob.birthDate, age: ageFromBirthDate(ob.birthDate), startWeight: ob.weight,
     name: ob.name || undefined,
     bodyFat: ob.bodyFat,
     sex: ob.sex, avatar: ob.avatar, avColor: ob.avColor,
@@ -304,12 +334,56 @@ function obProfile(){
     venue: ob.venue, days: ob.days || OB_DEFAULT_DAYS(ob.activity),
     avoid: ob.avoid.slice(), sleepMin: ob.sleepMin, theme: ob.theme, units: ob.units
   };
+  if (ob.bodyFatEligible && Number.isFinite(ob.bodyFat) && profile.age >= 18 && profile.age <= 35)
+    profile.bodyFatReferenceWeight = ob.weight;
   if (ob.targetWeight) profile.targetWeight = Math.round(ob.targetWeight * 10) / 10;
+  if (obWeightRange() && ob.targetWeeks) profile.targetWeeks = ob.targetWeeks.slice();
   profile.programId = defaultProgramId(profile.venue, profile.activity, profile.days);
   return profile;
 }
 
 const obVal = id => { const e = document.getElementById(id); return e ? e.value : null; };
+
+function obPersonalGoals(){
+  const goals = [
+    ["sleep", tx("Daha düzenli yatmak")],
+    ["water", tx("Daha düzenli su içmek")]
+  ];
+  return `<details class="og ob-personal" ${ob.personalOpen ? "open" : ""}>
+    <summary>${tx("Kişisel hedeflerim")}</summary>
+    ${goals.map(([k, label]) => `<label class="ob-check"><input id="ob-personal-${k}" type="checkbox"${ob[k + "Goal"] ? " checked" : ""}>${label}</label>`).join("")}
+    ${IS_NATIVE ? `<label class="ob-check"><input id="ob-sleep-notify" type="checkbox"${ob.sleepNotify ? " checked" : ""}>${tx("Yatma vakti hatırlatması")}</label>
+      <label class="ob-check"><input id="ob-water-notify" type="checkbox"${ob.waterNotify ? " checked" : ""}>${tx("Su hatırlatması")}</label>
+      <label for="ob-med-time">${tx("İlaç hatırlatma saati")}</label><input id="ob-med-time" type="time" value="${ob.medicationAt || ""}">` : ""}
+    <label for="ob-personal-custom">${tx("Kişisel hedef ekle")}</label><input id="ob-personal-custom" maxlength="80" value="${esc(ob.customGoal || "")}">
+  </details>`;
+}
+
+/* İhtiyatlı bir planlama aralığı. Günlük kalori hedefi bu aralığa göre değiştirilmez. */
+function obWeightRange(){
+  const age = ageFromBirthDate(ob.birthDate);
+  const loss = ob.weight - ob.targetWeight;
+  const height2 = (ob.height / 100) ** 2;
+  if (!ob.weightPlanning || ob.goal !== "lose" || age === null || age < 18
+      || !ob.targetWeight || loss <= 0 || loss > ob.weight * .10
+      || ob.weight / height2 < 25 || ob.targetWeight / height2 < 20) return null;
+  return [Math.max(4, Math.ceil(loss / .5)), Math.max(8, Math.ceil(loss / .25))];
+}
+
+function obWeightPreview(){
+  const range = ob.targetWeeks || obWeightRange();
+  const p = buildProgram(obProfile(), ob.weight, 0);
+  const meals = buildMeals(p, 0, { meals:mealsFromPreset(ob.mealSet), diet:ob.diet, cuisine:ob.cuisine, exclude:ob.exclude });
+  return `<p>${tx("Hedef kilo ({0})", [wUnit()])} · <b>${fmtW(ob.targetWeight)}</b></p>
+    <p>${p.kcal} ${tx("kcal / gün")} · ${p.protein} g ${tx("protein")} · ${p.carb} g ${tx("Karbonhidrat")} · ${p.fat} g ${tx("Yağ")} · ${fmtV(p.water)} ${tx("su")}</p>
+    ${p.lbm !== null ? `<p class="metric-note">${tx("Ölçülen yağ oranı kalori tahminine katıldı.")}</p>` : ""}
+    ${og(tx("Önerilen süre aralığı (hafta)"), `<div class="ob-birth">
+      <label>${tx("En kısa")}<input id="ob-week-min" type="number" inputmode="numeric" min="${obWeightRange()[0]}" max="104" value="${range[0] ?? ""}"></label>
+      <label>${tx("En uzun")}<input id="ob-week-max" type="number" inputmode="numeric" min="${obWeightRange()[0]}" max="104" value="${range[1] ?? ""}"></label></div>
+      <p class="metric-note">${tx("Bu aralığı planlama için kullan. Sonuç ve süre kişiden kişiye değişir.")}</p>`)}
+    ${og(tx("Örnek öğünler"), `<ul class="ob-example">${meals.meals.filter(m => m.items.some(it => it.key)).map(m =>
+      `<li><b>${esc(m.name)}</b><span>${m.items.filter(it => it.key).map(it => esc(it.text)).join(" · ")}</span></li>`).join("")}</ul>`)}`;
+}
 const OB_STEPS = [
   { id:"welcome" },
   { id:"you", t:tx("Seni tanıyalım"),
@@ -321,8 +395,8 @@ const OB_STEPS = [
         av = og(tx("Avatarın"), `<div class="av-field" id="av-field" style="--av:${ob.avColor}">${avatarPicker(ob.avatar, "on")}
           <div class="sh-l">${tx("Renk")}</div>${colorPicker(ob.avColor, "on")}</div>`, false, "og-av");
       }
-      return og(tx("Adın"), `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" placeholder="${tx("Adın")}" autocomplete="given-name" maxlength="30" aria-label="${tx("Adın")}">`, true)
-        + og(tx("Cinsiyet"), obCards("sex", [["male", OB_ICON.sex.male, tx("Erkek")], ["female", OB_ICON.sex.female, tx("Kadın")], ["none", OB_ICON.sex.none, tx("Belirtmem")]], "tri")
+      return og(tx("İsmin nedir?"), `<input id="ob-name" class="on-text" type="text" value="${esc(ob.name || "")}" autocomplete="given-name" maxlength="30" aria-label="${tx("İsmin nedir?")}" required>`)
+        + og(tx("Cinsiyet"), obCards("sex", [["male", "", tx("Erkek")], ["female", "", tx("Kadın")], ["none", "", tx("Belirtmek İstemiyorum")]], "tri")
             + `<div class="metric-note" style="margin-top:8px">${tx("Kalori hesabında kullanılır.")}</div>`)
         + av;
     },
@@ -332,8 +406,9 @@ const OB_STEPS = [
       wireAvatar("on", k => { ob.avatar = k; });
       wireColor("on", c => { ob.avColor = c; document.getElementById("av-field").style.setProperty("--av", c); });
     },
-    valid: () => ob.sex ? "" : tx("Cinsiyet seç; istemiyorsan “Belirtmem” de.") },
-  { id:"body", t:tx("Ölçülerin"), s:tx("Cetveli sürükle ya da rakama dokun."),
+    valid: () => !ob.name ? [tx("İsmini gir."), "ob-name"]
+      : ob.sex ? "" : tx("Bir cinsiyet seçeneği işaretle.") },
+  { id:"body", t:tx("Ölçülerin"),
     body: () => {
       if (ob.height == null) ob.height = ob.sex === "female" ? 163 : ob.sex === "male" ? 176 : 170;
       if (ob.weight == null) ob.weight = ob.sex === "female" ? 60 : ob.sex === "male" ? 78 : 70;
@@ -346,49 +421,80 @@ const OB_STEPS = [
               { to: v => v / KG_PER_LB, from: v => Math.round(v * KG_PER_LB * 1000) / 1000 }))
         : og(tx("Boy"), obRuler("height", 120, 220, 1, 12, 10, 5, "cm", false))
           + og(tx("Kilo"), obRuler("weight", 30, 200, 0.5, 10, 10, 2, "kg", true));
-      return og(tx("Birimler"), obChips("obunit", UNIT_SYSTEMS.map(([k, l]) => [k, l, ob.units === k])))
-        + rulers
-        + `<div class="og-row">`
-        + og(tx("Yaş"), `<input id="ob-age" aria-label="${tx("Yaş")}" type="number" inputmode="numeric" value="${ob.age ?? ""}" placeholder="30">`)
-        + og(tx("Yağ oranı (%)"), `<input id="ob-bf" aria-label="${tx("Yağ oranı (%)")}" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("bilmiyorsan boş")}">`, true)
-        + `</div>`;
+      return rulers + og(tx("Doğum tarihi"), `<div class="ob-birth" role="group" aria-label="${tx("Doğum tarihi")}">
+        ${["Gün", "Doğum ayı", "Yıl"].map((label, i) => `<label>${tx(label)}
+          <input id="ob-birth-${i}" type="text" inputmode="numeric" maxlength="${i === 2 ? 4 : 2}"
+            autocomplete="bday-${["day", "month", "year"][i]}" value="${esc(ob.birthParts[i])}" required></label>`).join("")}
+        </div>`)
+        + og(tx("Yağ oranı (%)"), `<input id="ob-bf" aria-label="${tx("Yağ oranı (%)")}" type="number" inputmode="decimal" value="${ob.bodyFat ?? ""}" placeholder="${tx("Opsiyonel")}">
+          <details class="ob-personal" ${ob.bodyFatEligible ? "open" : ""}><summary>${tx("Yağ oranı hangi durumda kullanılır?")}</summary>
+            <label class="ob-check"><input id="ob-bf-eligible" type="checkbox"${ob.bodyFatEligible ? " checked" : ""}>
+            ${tx("18–35 yaşındayım, kilom sabit ve haftada en az iki kez, toplam en az üç saat spor yapıyorum. Bu oran güncel BOD POD ölçümümden. Metabolizmamı etkileyen bir rahatsızlığım, ilacım veya durumum yok.")}</label>
+          </details>`);
     },
-    read: () => { ob.age = num(obVal("ob-age")); ob.bodyFat = num(obVal("ob-bf")); },
-    valid: () => !(ob.age >= 10 && ob.age <= 100) ? [tx("Yaşını 10 ile 100 arasında gir."), "ob-age"]
-      : ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "" },
+    read: () => {
+      ob.birthParts = [0, 1, 2].map(i => obVal("ob-birth-" + i).trim());
+      const [day, month, year] = ob.birthParts;
+      ob.birthDate = birthDateFromParts(year, month, day);
+      ob.bodyFat = num(obVal("ob-bf"));
+      ob.bodyFatEligible = document.getElementById("ob-bf-eligible").checked;
+    },
+    valid: () => {
+      const age = ageFromBirthDate(ob.birthDate);
+      if (age === null || age < 10 || age > 100) return [tx("10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir."), "ob-birth-0"];
+      return ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "";
+    } },
   { id:"goal", t:tx("Hedefin"),
-    body: () => og(tx("Ne istiyorsun?"), obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, OB_ICON.goal[k], v.label])))
+    body: () => obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, ["goal", k], v.label]))
       + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" aria-label="${tx("Hedef kilon ({0})", [(wUnit())])}" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${Math.round(wOut(ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
-      + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, OB_ICON.activity[k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
-      + og(tx("Uyku hedefin"), obChips("obsleep", [6,7,8,9].map(n => [n, tx("{0}-{1} saat", [(n), (n+2)]), ob.sleepMin === n]))),
-    read: () => { const n = num(obVal("ob-tw")); ob.targetWeight = n === null ? null : wSave(n); },
+      + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, ["activity", k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
+      + `<label class="ob-check" id="ob-planning-label" ${ob.goal === "lose" ? "" : "hidden"}><input id="ob-planning" type="checkbox"${ob.weightPlanning ? " checked" : ""}>
+        ${tx("Kilo hedefim için süre aralığı göster. Hamile veya emziriyor değilim ve kilo kaybı için tıbbi gözetim gerektiren bir durumum yok.")}</label>`
+      + obPersonalGoals(),
+    read: () => {
+      const n = num(obVal("ob-tw")), target = n === null ? null : wSave(n);
+      if (target !== ob.targetWeight) ob.targetWeeks = null;
+      ob.targetWeight = target;
+      ob.weightPlanning = document.getElementById("ob-planning").checked;
+      ob.personalOpen = app.querySelector(".ob-personal").open;
+      for (const [id, k] of [["personal-sleep","sleepGoal"],["personal-water","waterGoal"],["sleep-notify","sleepNotify"],["water-notify","waterNotify"]])
+        ob[k] = !!document.getElementById("ob-" + id)?.checked;
+      ob.customGoal = obVal("ob-personal-custom").trim().slice(0, 80);
+      ob.medicationAt = obVal("ob-med-time");
+    },
     valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : [tx("Hedef kiloyu {0} ile {1} arasında gir ya da boş bırak.", [(fmtW0(30)), (fmtW0(300))]), "ob-tw"] },
   { id:"train", t:tx("Antrenman"),
     body: () => {
       if (!ob.days) ob.days = OB_DEFAULT_DAYS(ob.activity);
       const more = ob.noPlan ? "" : `<div id="og-plan">`
-        + og(tx("Nerede?"), obCards("venue", Object.entries(VENUE).map(([k, v]) => [k, OB_ICON.venue[k] || "fullbody", v.label]), "duo"))
-        + og(tx("Hangi günler?"), obChips("obday", [1,2,3,4,5,6,7].map(n => [n, WD_SHORT[n], ob.days.includes(n)]))
-            + `<div class="metric-note" id="day-note" style="margin-top:10px">${dayNote(ob.venue, ob.activity, ob.days)}</div>`)
+        + og(tx("Nerede?"), obCards("venue", Object.entries(VENUE).map(([k, v]) => [k, ["venue", k], v.label]), "duo"))
+        + og(tx("Hangi günler?"), obChips("obday", [1,2,3,4,5,6,7].map(n => [n, WD_SHORT[n], ob.days.includes(n)])))
         + og(tx("Kaçınman gereken bölge"), obChips("obavoid", AVOID_ZONES.map(([k, l]) => [k, l, ob.avoid.includes(k)]))
-            + `<div class="metric-note" style="margin-top:10px">${tx("Ağrın varsa önce bir hekime görün.")}</div>`, true)
+            + `<div class="metric-note" style="margin-top:10px">${tx("Ağrı veya mevcut bir rahatsızlık durumunda antrenmana başlamadan önce hekiminize danışın.")}</div>`, true)
         + `</div>`;
       return og(tx("Spor programı"), `<div class="ocs" data-field="plan">
           ${obCard(!ob.noPlan, "on", "plan", tx("Program kur"))}
           ${obCard(!!ob.noPlan, "off", "rest", tx("Şimdilik istemiyorum"))}</div>`) + more;
     } },
   { id:"food", t:tx("Beslenme"),
-    body: () => og(tx("Hangi mutfak?"), obCards("cuisine", Object.entries(CUISINES).map(([k, l]) => [k, OB_ICON.cuisine[k], l]), "duo"))
-      + og(tx("Nasıl besleniyorsun?"), obCards("diet", dietOptions(ob.diet).map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
-      + og(tx("Günde kaç öğün?"), obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, "", l, set.map(m => m[0]).join(" · ")]), "", true))
-      + og(tx("Yemediklerin"), obChips("obdis", DISLIKE.map(([l, , intl], i) => [i, l, ob.dislike.includes(i), intl])
-          .filter(([, , , intl]) => !intl || ob.cuisine === "intl")), true) },
+    body: () => og(tx("Nasıl besleniyorsun?"), obCards("diet", dietOptions().map(([k, l]) => [k, OB_ICON.diet[k] || "grain", l]), "duo"))
+      + og(tx("Günde kaç öğün besleniyorsun?"), obCards("mealSet", MEAL_PRESETS.map(([l, set], i) => [i, ["meal", i], l, set.map(m => m[0]).join(" · ")]), "", true))
+      + og(tx("Yemediklerin"), `<input id="ob-exclude" type="search" aria-label="${tx("Besin ara")}" placeholder="${tx("Besin ara")}" autocomplete="off" aria-controls="ob-exclude-results">
+        <div id="ob-exclude-results"></div>`, true),
+    wire: wireObFoods },
+  { id:"weight-plan", t:tx("Hedef kilo planın"), body:obWeightPreview,
+    read: () => { ob.targetWeeks = [num(obVal("ob-week-min")), num(obVal("ob-week-max"))]; },
+    valid: () => {
+      const [lo, hi] = ob.targetWeeks;
+      return Number.isInteger(lo) && Number.isInteger(hi) && lo >= obWeightRange()[0] && hi >= lo && hi <= 104
+        ? "" : [tx("Önerilen alt sınırdan başlayarak 104 haftayı aşmayan bir aralık gir."), "ob-week-min"];
+    } },
   /* Yalnızca iPhone uygulamasında: hatırlatmalar kapalı gelir, burada açılabilir. */
-  { id:"remind", t:tx("Hatırlatmalar"), s:tx("Su, antrenman ve uyku için bildirim. Sonradan Ayarlar'dan değiştirebilirsin."),
+  { id:"remind", t:tx("Hatırlatmalar"), s:tx("Su, antrenman, uyku ve doğum günü bildirimleri. Sonradan Ayarlar’dan değiştirebilirsin."),
     body: () => `<div class="ocs" data-field="remind">${obCard(ob.remind === "on", "on", "day", tx("Hatırlatmaları aç"))}${obCard(ob.remind !== "on", "off", "rest", tx("Şimdilik istemiyorum"))}</div>` },
   { id:"summary" }
 ];
-const obList = () => IS_NATIVE ? OB_STEPS : OB_STEPS.filter(s => s.id !== "remind");
+const obList = () => OB_STEPS.filter(s => (s.id !== "remind" || IS_NATIVE) && (s.id !== "weight-plan" || obWeightRange()));
 
 /* Girişte logo canlıdır: çubuklar yükselir, yıldız parlar. */
 const OB_LOGO = BRAND_SVG.replace(/<rect x=/g, '<rect class="lg-b" x=').replace('<path d=', '<path class="lg-s" d=');
@@ -404,19 +510,20 @@ function obWelcome(){
       <li>${iconBox("plan")}<span><b>${tx("Sana göre kurulur")}</b></span></li>
       <li>${iconBox("star4")}<span><b>${tx("Her tamamlanan gün bir yıldız")}</b></span></li>
     </ul>
+    <div class="on-foot">${LANGS.map(([k, l]) =>
+      `<button type="button" class="link" aria-pressed="${LANG === k}" onclick="setLang('${k}')"><span aria-hidden="true">${k === "tr" ? "🇹🇷" : "🇬🇧"}</span> ${l}</button>`).join(" ")}</div>
+    ${og(tx("Birimler"), obChips("obunit", UNIT_SYSTEMS.map(([k, l]) => [k, l, ob.units === k])))}
     <div class="on-foot">${tx("Veriler yalnızca bu cihazda saklanır.")}</div>
-    <div class="on-foot">${LANGS.filter(([k]) => k !== LANG).map(([k, l]) =>
-      `<button type="button" class="link" onclick="setLang('${k}')">${l}</button>`).join("")}</div>
   </div>`;
 }
 
 /* Sorular bitince kısa bir ara sahne: plan kurulurken logo çalışır. */
-const OB_BUILD = [tx("Kalori ihtiyacın hesaplanıyor"), tx("Protein ve su hedefin ayarlanıyor"), tx("Programın kuruluyor")];
+const OB_BUILD = ["mamba mentality", "starboard era"];
 function obBuild(){
   return `<div class="on-q on-w on-build">
     <span class="on-lw"><span class="on-orbit" aria-hidden="true"><i></i><i></i><i></i></span><span class="on-logo">${OB_LOGO}</span></span>
-    <h1>${tx("Planın hazırlanıyor")}</h1>
-    <p class="on-tag" id="ob-bl" role="status">${OB_BUILD[0]}</p>
+    <h1 tabindex="-1" id="ob-build-title">${tx("Planın hazırlanıyor")}</h1>
+    <p class="on-tag" id="ob-bl">${OB_BUILD[0]}</p>
   </div>`;
 }
 
@@ -430,6 +537,7 @@ function obSummary(){
     <h1>${ob.name ? tx("{0}, planın hazır", [(esc(ob.name))]) : tx("Planın hazır")}</h1>
     <p class="on-tag">${tx("{0} hedefine göre günlük hedeflerin:", [(GOAL[ob.goal].label)])}</p>
     <div class="os-k"><b class="num" id="os-kn" data-to="${p.kcal}">${p.kcal}</b><span>${tx("kcal / gün")}</span></div>
+    ${p.lbm !== null ? `<p class="metric-note">${tx("Ölçülen yağ oranı kalori tahminine katıldı.")}</p>` : ""}
     <div class="os-g">
       ${tile("poultry", p.protein, " g", tx("protein"))}
       ${isImp() ? tile("dairy", vOut(p.water), " fl oz", tx("su")) : tile("dairy", fmtFix(p.water / 1000, 1), " L", tx("su"))}
@@ -439,7 +547,7 @@ function obSummary(){
       <i>${tr.none ? tx("İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin.")
         : tx("Haftada {0} gün · {1}", [(tr.freq), (tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", "))])}</i></span></div>
     <div class="metric-note" style="text-align:center;margin-top:14px">${tx("Hepsini sonradan değiştirebilirsin.")}</div>
-    <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Starboard tıbbi tavsiye vermez; sağlık sorunun varsa hekimine danış.")}</div>
+    <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Starboard tıbbi danışmanlık sunmaz. Sağlıkla ilgili sorularınız için hekiminize danışın.")}</div>
   </div>`;
 }
 
@@ -500,7 +608,6 @@ function renderOnboarding(dir){
       <div class="on-top hide" id="on-top">
         <button class="on-back" id="ob-back" aria-label="${tx("Geri")}">${icon("prev")}</button>
         <div class="on-bar" id="on-bar" role="progressbar" aria-valuemin="1"><i></i></div>
-        <span class="on-cnt num" id="on-cnt"></span>
       </div>
       <div class="on-stage" id="on-stage"></div>
       <div class="on-nav" id="on-nav"><button id="ob-next">${tx("İleri")}</button></div>
@@ -513,15 +620,14 @@ function renderOnboarding(dir){
   const bar = document.getElementById("on-bar");
   bar.firstElementChild.style.width = (sum ? 100 : obStep / n * 100).toFixed(1) + "%";
   bar.setAttribute("aria-valuemax", n); bar.setAttribute("aria-valuenow", Math.min(obStep, n));
-  bar.setAttribute("aria-label", sum ? tx("Sorular tamam") : tx("Adım {0} / {1}", [(obStep), (n)]));
-  document.getElementById("on-cnt").textContent = first || sum ? "" : `${obStep}/${n}`;
+  bar.setAttribute("aria-label", sum ? tx("Sorular tamam") : tx("Profil oluşturma ilerlemesi"));
   document.getElementById("on-bg").style.setProperty("--p", (obStep / (list.length - 1)).toFixed(3));
   document.getElementById("on-nav").classList.remove("hide");
   document.getElementById("ob-next").textContent = first ? tx("Başlayalım") : sum ? tx("Başla") : tx("İleri");
 
   obSwap(stage, dir, () => {
     obMount(stage, first ? obWelcome() : sum ? obSummary() : obQuestion(st), dir);
-    wireOb(st, list, true);
+    wireOb(st, true);
     if (sum) obCountUp();
   });
 }
@@ -533,7 +639,7 @@ function obRefresh(revealSel){
   if (st.read) st.read();
   const y = window.scrollY;
   stage.innerHTML = obQuestion(st);
-  wireOb(st, obList(), false);
+  wireOb(st, false);
   window.scrollTo(0, y);
   const el = revealSel && stage.querySelector(revealSel);
   if (el && !reduceMotion()) el.classList.add("reveal");
@@ -544,19 +650,16 @@ function obPlayBuild(){
   const stage = document.getElementById("on-stage");
   document.getElementById("on-nav").classList.add("hide");
   document.getElementById("on-bar").firstElementChild.style.width = "100%";
-  document.getElementById("on-cnt").textContent = "";
   obSwap(stage, 1, () => {
     obMount(stage, obBuild(), 1);
     obBusy = true;
-    let i = 0;
+    document.getElementById("ob-build-title").focus({ preventScroll:true });
     const line = document.getElementById("ob-bl");
-    const tick = setInterval(() => {
-      i++;
-      if (i >= OB_BUILD.length || !line.isConnected){ clearInterval(tick); return; }
-      line.classList.remove("flip"); void line.offsetWidth;
-      line.textContent = OB_BUILD[i]; line.classList.add("flip");
-    }, 620);
-    setTimeout(() => { clearInterval(tick); obBusy = false; renderOnboarding(1); window.scrollTo(0, 0); }, 1950);
+    setTimeout(() => {
+      line.textContent = OB_BUILD[1];
+      if (!reduceMotion()) line.classList.add("flip");
+    }, 1500);
+    setTimeout(() => { obBusy = false; renderOnboarding(1); window.scrollTo(0, 0); }, 3100);
   });
 }
 
@@ -568,12 +671,13 @@ function obErr(msg){
   if (msg) box.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block:"nearest" });
 }
 
-function wireOb(st, list, animate){
+function wireOb(st, animate){
   const go = d => {
     if (obBusy) return;
+    const list = obList();
     const nxt = list[obStep + d];
     obStep += d;
-    if (d > 0 && nxt && nxt.id === "summary" && !reduceMotion()){ obPlayBuild(); return; }
+    if (d > 0 && nxt && nxt.id === "summary"){ obPlayBuild(); return; }
     renderOnboarding(d); window.scrollTo(0, 0);
   };
   const next = async () => {
@@ -600,30 +704,28 @@ function wireOb(st, list, animate){
   app.querySelectorAll(".ocs [data-oc]").forEach(b => b.onclick = () => {
     const box = b.closest(".ocs"), f = box.dataset.field, v = b.dataset.oc;
     if (f === "plan"){ const was = !!ob.noPlan; ob.noPlan = v === "off"; ob.planTouched = true; if (was !== ob.noPlan){ obRefresh("#og-plan"); return; } }
-    else if (f === "cuisine"){ ob.cuisine = v; obRefresh(); return; }
     else if (f === "sex"){
       const was = ob.sex; ob.sex = v;
       if (was !== v){ ob.avatar = undefined; ob.avColor = undefined; obRefresh(was ? null : "#og-av"); return; }
     }
     else ob[f] = box.dataset.num ? Number(v) : v;
-    if (f === "activity" && ob.planTouched !== true){ ob.noPlan = v === "sedentary"; ob.days = null; }
+    if (f === "goal") document.getElementById("ob-planning-label").hidden = v !== "lose";
+    if (f === "activity"){
+      if (!ob.planTouched) ob.noPlan = v === "sedentary";
+      if (!ob.daysTouched) ob.days = null;
+    }
     box.querySelectorAll("[data-oc]").forEach(x => {
       x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", String(x === b));
     });
-    if (f === "venue"){ const note = document.getElementById("day-note"); if (note) note.textContent = dayNote(ob.venue, ob.activity, ob.days); }
     obErr("");
   });
 
-  /* birimler: cetveller yeni birimle yeniden çizilir */
+  /* Karşılama ekranında ölçü birimi seçimi. */
   app.querySelectorAll("[data-obunit]").forEach(b => b.onclick = () => {
-    if (ob.units === b.dataset.obunit) return;
-    ob.units = b.dataset.obunit; obRefresh();
-  });
-
-  /* uyku: tek seçimli rozet */
-  app.querySelectorAll("[data-obsleep]").forEach(b => b.onclick = () => {
-    ob.sleepMin = Number(b.dataset.obsleep);
-    app.querySelectorAll("[data-obsleep]").forEach(x => { x.classList.toggle("sel", x === b); x.setAttribute("aria-pressed", String(x === b)); });
+    ob.units = b.dataset.obunit;
+    app.querySelectorAll("[data-obunit]").forEach(x => {
+      x.classList.toggle("sel", x === b); x.setAttribute("aria-pressed", String(x === b));
+    });
   });
 
   /* çok seçimli rozetler */
@@ -634,36 +736,30 @@ function wireOb(st, list, animate){
     b.classList.toggle("sel", i < 0); b.setAttribute("aria-pressed", String(i < 0));
   });
   toggle("obavoid", "avoid", String);
-  toggle("obdis", "dislike", Number);
 
-  /* antrenman günleri: 3-5 arası */
+  /* Antrenman günleri */
   app.querySelectorAll("[data-obday]").forEach(b => b.onclick = () => {
     const n = Number(b.dataset.obday);
     ob.days = (ob.days || OB_DEFAULT_DAYS(ob.activity)).slice();
     const i = ob.days.indexOf(n);
-    if (i >= 0){
-      if (ob.days.length <= 3){ toast(tx("En az 3 antrenman günü gerekli.")); return; }
-      ob.days.splice(i, 1);
-    } else {
-      if (ob.days.length >= 5){ toast(tx("En fazla 5 gün seçebilirsin.")); return; }
-      ob.days.push(n);
-    }
+    ob.daysTouched = true;
+    if (i >= 0) ob.days.splice(i, 1); else ob.days.push(n);
     ob.days.sort((a, b2) => a - b2);
     b.classList.toggle("sel", i < 0); b.setAttribute("aria-pressed", String(i < 0));
-    const note = document.getElementById("day-note");
-    if (note) note.textContent = dayNote(ob.venue, ob.activity, ob.days);
   });
 }
 
 async function obFinish(){
   const profile = obProfile();
-  if (ob.remind === "on" && await askNotifyPermission()) profile.reminders = { water:true, train:true, sleep:true };
+  const reminders = ob.remind === "on" ? { water:true, train:true, sleep:true, birthday:true } : {};
+  if (ob.sleepNotify) reminders.sleep = true;
+  if (ob.waterNotify) reminders.water = true;
+  if (hmToMin(ob.medicationAt) !== null) reminders.medicationAt = ob.medicationAt;
+  if (Object.keys(reminders).length && await askNotifyPermission()) profile.reminders = reminders;
   state = { v:SCHEMA, starred:1, profile, adjustment:0, lastRefreshAt:null, days:{}, seenVersion:APP_VERSION };
-  state.mealPrefs = { exclude:[], useMine:false, fixed:{}, diet: ob.diet, cuisine: ob.cuisine, meals: mealsFromPreset(ob.mealSet) };
-  const ex = new Set();
-  for (const i of ob.dislike) for (const k of (DISLIKE[i] || [])[1] || []) if (FOODS[k]) ex.add(k);
-  state.mealPrefs.exclude = [...ex];
-  state.routines = [];
+  state.mealPrefs = { exclude:ob.exclude.slice(), useMine:false, fixed:{}, diet:ob.diet, cuisine:ob.cuisine, meals:mealsFromPreset(ob.mealSet) };
+  state.routines = [ob.sleepGoal && tx("Daha düzenli yatmak"), ob.waterGoal && tx("Daha düzenli su içmek"), ob.customGoal]
+    .filter(Boolean).map(title => ({ id:Date.now() + Math.random(), title, days:[1,2,3,4,5,6,7] }));
 
   state.days[today()] = { weight: ob.weight, tasks:[] };
   ensureToday();

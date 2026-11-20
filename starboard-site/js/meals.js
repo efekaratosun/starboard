@@ -9,7 +9,7 @@ const norm = s => s.toLowerCase()
 
 function allFoods(){
   return Object.entries(FOODS).filter(([, f]) => !f.cigYenmez)
-    .concat(Object.entries(state.customFoods || {}));
+    .concat(Object.entries(state?.customFoods || {}));
 }
 
 function logTotals(entry){
@@ -98,6 +98,8 @@ const plainName = n => norm(n.replace(/\s*\(.*?\)/g, "").trim());
 
 /* Bir besin için tarif bağlantısı: kendisi bir yemekse o tarif,
    değilse onu malzeme olarak kullanan tarifler. */
+const visibleRecipe = r => r.ing.every(([k]) => automaticFoodAllowed(k));
+
 function recipeFor(key){
   const f = foodOf(key);
   if (!f) return null;
@@ -105,8 +107,8 @@ function recipeFor(key){
   if (n.length < 3) return null;
   /* Sadece tam ad eşleşmesi "bu besinin tarifi" sayılır. Alt dize eşleşmesi
      "Yumurta" → "Yumurtalı ıspanak" gibi yanıltıcı bağlantılar üretiyordu. */
-  const idx = RECIPES.findIndex(r => plainName(r.n) === n);
-  const uses = RECIPES.filter(r => r.ing.some(([k]) => k === key)).length;
+  const idx = RECIPES.findIndex(r => visibleRecipe(r) && plainName(r.n) === n);
+  const uses = RECIPES.filter(r => visibleRecipe(r) && r.ing.some(([k]) => k === key)).length;
   if (idx < 0 && !uses) return null;
   return { idx, uses, q: f.n.replace(/\s*\(.*?\)/g, "").trim() };
 }
@@ -114,10 +116,10 @@ function recipeFor(key){
 function recipeList(){
   const q = norm(recipeQuery.trim());
   if (!q) return "";
-  const hits = RECIPES.map((r,i) => [r,i]).filter(([r]) =>
+  const hits = RECIPES.map((r,i) => [r,i]).filter(([r]) => visibleRecipe(r) && (
     matchScore(r.n, q) > 0
     || norm(CAT_WORDS[r.i] || "").includes(q)
-    || r.ing.some(([k]) => FOODS[k] && norm(FOODS[k].n).includes(q)));
+    || r.ing.some(([k]) => FOODS[k] && norm(FOODS[k].n).includes(q))));
   if (!hits.length) return `<section><div class="empty">${tx("\"{0}\" için tarif bulunamadı. Yemek adı ya da malzeme adıyla arayabilirsin.", [esc(recipeQuery)])}</div></section>`;
   return hits.map(([r,i]) => recipeCard(r,i)).join("");
 }
@@ -274,6 +276,7 @@ function logView(program, entry){
       ${macroMoon(tx("Karbonhidrat"), tot.c, program.carb, "g", "carb")}
       ${macroMoon(tx("Yağ"), tot.f, program.fat, "g", "fat")}
     </div>
+    ${program.lbm != null ? `<p class="metric-note">${tx("Ölçülen yağ oranı kalori tahminine katıldı.")}</p>` : ""}
   </section>
 
   ${log.length ? detailSection(tot, program) : ""}
@@ -1000,7 +1003,7 @@ function bindRecipes(entry){
   app.querySelectorAll("[data-recipe-add]").forEach(b => b.onclick = async (ev) => {
     ev.stopPropagation();
     const r = RECIPES[Number(b.dataset.recipeAdd)];
-    if (!(await guardKcal(entry))) return;
+    if (!r || !visibleRecipe(r) || !(await guardKcal(entry))) return;
     const m = recipeMacros(r);
     entry.log = entry.log || [];
     entry.log.push({ id:Date.now()+Math.random(), n:r.n + " (1 porsiyon)", g:m.gPer,
@@ -1305,7 +1308,7 @@ function favoriteFoods(){
   const counts = {};
   for (const k of Object.keys(state.days).sort())
     for (const it of (state.days[k].log || []))
-      if (it.k && foodOf(it.k) && !FOODS[it.k]?.cigYenmez){
+      if (it.k && automaticFoodAllowed(it.k) && !FOODS[it.k]?.cigYenmez){
         const c = counts[it.k] || (counts[it.k] = { n:0, g:it.g, slot:it.slot, name:it.n });
         c.n++; c.g = it.g; c.slot = it.slot;   /* en son kullanılan gramaj */
       }
@@ -1343,7 +1346,7 @@ function foodHabits(){
 function quickFoods(slot, limit){
   const h = foodHabits();
   return Object.entries(h)
-    .filter(([k]) => !FOODS[k]?.cigYenmez)
+    .filter(([k]) => automaticFoodAllowed(k) && !FOODS[k]?.cigYenmez)
     .sort((a, b) => (b[1].slots[slot] || 0) - (a[1].slots[slot] || 0) || b[1].n - a[1].n || b[1].last - a[1].last)
     .slice(0, limit || 6)
     .map(([k, x]) => [k, x.g]);

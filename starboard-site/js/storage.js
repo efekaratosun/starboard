@@ -84,6 +84,9 @@ function migrateState(s){
 
 async function saveState(s){
   calcReset();                 /* veri değişti: gün puanları yeniden hesaplansın */
+  /* 1.17.0 doğum tarihini tanımaz. Yaş alanını geri dönüş için güncel tut. */
+  const age = ageFromBirthDate(s.profile?.birthDate);
+  if (age !== null) s.profile.age = age;
   const v = JSON.stringify(s);
   if (window.storage) { try { await window.storage.set(KEY, v); } catch(e){} }
   /* iPhone'da hatırlatmalar güncel veriye göre yeniden kurulsun (reminders.js). */

@@ -14,39 +14,83 @@ const GOAL = {
   gain:{label:tx("Kas kazanımı"), m:1.12, protein:2.2, range:[0.15,0.50]}
 };
 
+/* Doğum tarihi yerel takvim günü olarak saklanır. Eski profillerde kayıtlı yaş kullanılır. */
+function birthDateFromParts(year, month, day){
+  if (!/^\d{4}$/.test(year) || !/^\d{1,2}$/.test(month) || !/^\d{1,2}$/.test(day)) return null;
+  const key = [year, String(month).padStart(2, "0"), String(day).padStart(2, "0")].join("-");
+  const date = new Date(key + "T00:00:00");
+  return !isNaN(date) && dayKey(date) === key ? key : null;
+}
+function ageFromBirthDate(key, now = new Date()){
+  if (typeof key !== "string" || birthDateFromParts(...key.split("-")) !== key) return null;
+  const date = dayKey(now);
+  const year = now.getFullYear();
+  const age = year - Number(key.slice(0, 4)) - (date < birthdayInYear(key, year) ? 1 : 0);
+  return age >= 0 ? age : null;
+}
+/* 29 Şubat doğumları artık olmayan yıllarda 1 Mart’ta yaş alır. */
+function birthdayInYear(key, year){
+  const [month, day] = key.slice(5).split("-");
+  return birthDateFromParts(String(year), month, day) || year + "-03-01";
+}
+const profileAge = (p, now) => ageFromBirthDate(p.birthDate, now) ?? p.age;
+
 /* Cinsiyete bağlı sabitler. Belirtilmemişse iki değerin ortalaması kullanılır. */
 const sexK = (sex, m, f) => sex === "male" ? m : sex === "female" ? f : (m + f) / 2;
 
-/* Avatarlar: herkes seçebilir. f = yüz konumu [x, y, ölçek] (tepki ifadeleri için). */
+/* Eski avatar anahtarları yeni yüzlerde de aynı seçimleri temsil eder. */
+const AV_CATS = ["human", "nature", "sport", "space"].map((k, i) => [k, tx("Seri {0}", [i + 1])]);
 const AVATARS = [
-  ["m",tx("Erkek"),[24,7.8,.42],"human"], ["f",tx("Kadın"),[24,8,.42],"human"], ["n",tx("Figür"),[24,8.5,.46],"human"],
-  ["star",tx("Yıldız"),[24,27,.95],"nature"], ["drop",tx("Damla"),[24,34,1.05],"nature"], ["leaf",tx("Yaprak"),[24,31,.95],"nature"],
-  ["fire",tx("Ateş"),[24,34,.9],"nature"], ["bolt",tx("Şimşek"),[23,27,.7],"nature"], ["mountain",tx("Dağ"),[25,37,.8],"nature"],
-  ["moon",tx("Ay"),[18,25,.85],"nature"], ["heart",tx("Kalp"),[24,24,.95],"nature"], ["sun",tx("Güneş"),[24,28,.85],"nature"],
-  ["run",tx("Koşucu"),[29,9,.42],"sport"], ["lift",tx("Halterci"),[24,15,.42],"sport"], ["yoga",tx("Yogi"),[24,9,.42],"sport"],
-  ["swim",tx("Yüzücü"),[10,29,.42],"sport"], ["bike",tx("Bisikletçi"),[27,11,.42],"sport"], ["box",tx("Boksör"),[21,11,.42],"sport"],
-  ["ball",tx("Futbolcu"),[20,9,.42],"sport"], ["hoop",tx("Basketbolcu"),[22,12,.42],"sport"], ["tennis",tx("Tenisçi"),[19,10,.42],"sport"],
-  ["climb",tx("Tırmanıcı"),[26,10,.42],"sport"], ["ski",tx("Kayakçı"),[22,14,.42],"sport"], ["dance",tx("Dansçı"),[24,8,.42],"sport"],
-  ["rocket",tx("Roket"),[24,31,.6],"space"], ["planet",tx("Gezegen"),[24,30,.95],"space"], ["astro",tx("Astronot"),[24,16,.62],"space"],
-  ["alien",tx("Uzaylı"),[24,24,.95],"space"], ["ufo","UFO",[24,23,.55],"space"], ["comet",tx("Kuyruklu yıldız"),[31,21,.7],"space"]
-];
-const AV_CATS = [["human",tx("İnsan")],["sport",tx("Sporcu")],["nature",tx("Doğa")],["space",tx("Uzay")]];
+  ["m", "f", "n"],
+  ["star", "drop", "leaf", "fire", "bolt", "mountain", "moon", "heart", "sun"],
+  ["run", "lift", "yoga", "swim", "bike", "box", "ball", "hoop", "tennis", "climb", "ski", "dance"],
+  ["rocket", "planet", "astro", "alien", "ufo", "comet"]
+].flatMap((keys, category) => keys.map((key, i) => [key, tx("Uzaylı {0}", [i + 1]), AV_CATS[category][0]]));
 const AV_COLORS = [["#FF5A3C",tx("Mercan")],["#FF9500",tx("Turuncu")],["#E8B400",tx("Sarı")],["#16B86A",tx("Yeşil")],
   ["#00AFA0",tx("Turkuaz")],["#2F7BEA",tx("Mavi")],["#7C4DFF",tx("Mor")],["#E84A93",tx("Pembe")]];
 const avKey = p => AVATARS.some(a => a[0] === p.avatar) ? p.avatar : p.sex === "female" ? "f" : p.sex === "male" ? "m" : "n";
-const avSym = k => k === "m" ? "i-body" : k === "f" ? "i-body-f" : "i-av-" + k;
 const avColor = p => p.avColor || (p.sex === "female" ? "#E84A93" : p.sex === "male" ? "#2F7BEA" : "#7C4DFF");
-function bodyIcon(p){ return avSym(avKey(p)); }
 const sexClass = () => "custom";
 
+const ALIEN_HEADS = [
+  "M5 36 C5 16 43 16 43 36 C43 59 5 59 5 36Z",
+  "M8 28 Q24 12 40 28 Q48 51 24 57 Q0 51 8 28Z",
+  "M4 37 Q5 20 24 21 Q43 20 44 37 Q40 54 24 54 Q8 54 4 37Z",
+  "M8 25 Q24 16 40 25 L43 43 Q40 57 24 56 Q8 57 5 43Z",
+  "M5 32 Q9 19 24 23 Q39 19 43 32 Q47 54 24 56 Q1 54 5 32Z",
+  "M6 28 Q24 17 42 28 Q47 44 31 54 Q24 62 17 54 Q1 44 6 28Z"
+];
+const ALIEN_ANTENNAS = [
+  ["M24 25 Q28 16 24 9", [[24,9]]],
+  ["M17 26 L12 13 M31 26 L36 13", [[12,13],[36,13]]],
+  ["M17 25 Q16 14 8 15 M31 25 Q32 14 40 15", [[8,15],[40,15]]],
+  ["M20 25 Q21 18 15 11 M29 25 Q29 18 33 16", [[15,11],[33,16]]],
+  ["M14 27 Q7 22 8 16 M24 24 V10 M34 27 Q41 22 40 16", [[8,16],[24,10],[40,16]]]
+];
+function alienShape(k, cls = ""){
+  const i = Math.max(0, AVATARS.findIndex(a => a[0] === k));
+  const [stem, tips] = ALIEN_ANTENNAS[Math.floor(i / ALIEN_HEADS.length) % ALIEN_ANTENNAS.length];
+  return `<g class="${cls}" fill="currentColor"><path d="${stem}" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    ${tips.map(([x,y]) => `<circle cx="${x}" cy="${y}" r="3.2"/>`).join("")}
+    <path d="${ALIEN_HEADS[i % ALIEN_HEADS.length]}"/></g>`;
+}
+function alienFace(mood = {}){
+  const eyes = mood.sleepy && !mood.happy
+    ? '<path d="M13 36h6m10 0h6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'
+    : '<ellipse cx="16" cy="36" rx="2.8" ry="3.6"/><ellipse cx="32" cy="36" rx="2.8" ry="3.6"/>';
+  return `<g class="alien-face" fill="currentColor">${eyes}
+    <path d="${mood.happy ? "M19 43q5 8 10 0" : "M20 44q4 4 8 0"}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>`;
+}
+const alienIcon = k => `${alienShape(k)}${alienFace()}`;
+
 function avatarPicker(cur, idp){
-  const curCat = (AVATARS.find(a => a[0] === cur) || AVATARS[0])[3];
+  const curCat = (AVATARS.find(a => a[0] === cur) || AVATARS[0])[2];
   return `<div class="av-cats" role="tablist" aria-label="${tx("Avatar sınıfları")}">${AV_CATS.map(([c,l]) =>
       `<button type="button" class="chip${c === curCat ? " sel" : ""}" role="tab" aria-selected="${c === curCat}" data-avcat="${c}" data-avp="${idp}">${l}</button>`).join("")}</div>
     ${AV_CATS.map(([c,l]) => `<div class="av-pick" role="radiogroup" aria-label="${tx("{0} avatarları", [(l)])}" data-avgrid="${c}" data-avp="${idp}"${c === curCat ? "" : " hidden"}>
-      ${AVATARS.filter(a => a[3] === c).map(([k,n]) =>
+      ${AVATARS.filter(a => a[2] === c).map(([k,n]) =>
         `<button type="button" class="av${cur === k ? " on" : ""}" data-av="${k}" data-avp="${idp}" role="radio" aria-checked="${cur === k}" aria-label="${n}" title="${n}">
-          <svg viewBox="0 0 48 64" aria-hidden="true"><use href="#${avSym(k)}"/></svg></button>`).join("")}</div>`).join("")}`;
+          <svg viewBox="0 0 48 64" aria-hidden="true">${alienIcon(k)}</svg></button>`).join("")}</div>`).join("")}`;
 }
 function colorPicker(cur, idp){
   return `<div class="av-cols" role="radiogroup" aria-label="${tx("Avatar rengi")}">${AV_COLORS.map(([c,l]) =>
@@ -73,11 +117,16 @@ function wireColor(idp, onPick, root){
 }
 
 function buildProgram(profile, weightKg, adjustment){
+  const age = profileAge(profile);
   const bf = profile.bodyFat;
-  const lbm = (bf > 0 && bf < 70) ? weightKg * (1 - bf/100) : null;
+  const measuredAt = profile.bodyFatReferenceWeight;
+  /* Cunningham: ten Haaf & Weijs (2014), 18–35 yaş, BOD POD ile ölçülmüş sporcular. */
+  const lbm = age >= 18 && age <= 35 && Number.isFinite(bf) && bf >= 3 && bf <= 60
+    && measuredAt > 0 && Math.abs(weightKg - measuredAt) <= measuredAt * .02
+    ? measuredAt * (1 - bf/100) : null;
   const bmr = lbm !== null
-    ? 370 + 21.6 * lbm
-    : 10*weightKg + 6.25*profile.height - 5*profile.age + sexK(profile.sex, 5, -161);
+    ? 500 + 22 * lbm
+    : 10*weightKg + 6.25*profile.height - 5*age + sexK(profile.sex, 5, -161);
 
   const tdee = bmr * ACTIVITY[profile.activity].m;
   const goal = GOAL[profile.goal];
@@ -234,13 +283,11 @@ const PROGRAMS = {
        {t:tx("Aralıklı"),b:tx("200 m ısınma · 10×50 m hızlı (30 sn ara) · 8×25 m sprint · 200 m soğuma")}]}
 };
 
-const PATTERN = { 3:[1,3,5], 4:[1,2,4,5], 5:[1,2,3,5,6] };
+const PATTERN = { 3:[1,3,5], 4:[1,3,5,7], 5:[1,2,3,5,7], 7:[1,2,3,4,5,6,7] };
 
 /* Antrenman günleri: kullanıcı seçtiyse onunkiler, yoksa varsayılan desen. */
 function planDays(profile, freq){
-  const d = ((profile && profile.days) || []).slice().sort((a,b) => a-b);
-  if (d.length === freq) return d;
-  if (d.length > freq) return d.slice(0, freq);
+  if (Array.isArray(profile?.days)) return profile.days.slice().sort((a,b) => a-b);
   return PATTERN[freq] || PATTERN[3];
 }
 
@@ -265,7 +312,7 @@ function sessionIcon(title, venue){
 /* Varsayılan program: kategori içinde aktivite seviyesine en yakın gün sayısı. */
 function defaultProgramId(venue, activity, days){
   /* Gün seçtiyse program frekansı oradan; yoksa aktivite seviyesinden tahmin. */
-  const want = (days && days.length >= 3) ? Math.max(3, Math.min(5, days.length))
+  const want = Array.isArray(days) ? days.length
              : (activity === "sedentary" || activity === "light") ? 3
              : activity === "moderate" ? 4 : 5;
   const inVenue = Object.entries(PROGRAMS).filter(([,p]) => p.venue === venue);
@@ -320,14 +367,17 @@ function trainingPlan(profile){
   for (let d = 1; d <= 7; d++){
     const i = wds.indexOf(d);
     let day;
-    if (i >= 0) day = { wd:d, t:prog.s[i].t, b:applyAvoid(prog.s[i].b, profile.avoid) };
-    else if (prog.freq < 5 && d === 6) day = { wd:d, t:tx("Aktif dinlenme"), b:applyAvoid(cat.active, profile.avoid) };
+    if (i >= 0){
+      const session = prog.s[i % prog.s.length];
+      day = { wd:d, t:session.t, b:applyAvoid(session.b, profile.avoid) };
+    }
+    else if (!Array.isArray(profile.days) && wds.length < 5 && d === 6) day = { wd:d, t:tx("Aktif dinlenme"), b:applyAvoid(cat.active, profile.avoid) };
     else day = { wd:d, t:tx("Dinlenme"), b:"" };
     day.icon = sessionIcon(day.t, prog.venue);
     days.push(day);
   }
 
-  return { id, title:`${cat.label} · ${prog.label}`, freq:prog.freq,
+  return { id, title:`${cat.label} · ${prog.label}`, freq:wds.length,
            desc:prog.desc, note:prog.note, cardio, days };
 }
 

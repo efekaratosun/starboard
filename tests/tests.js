@@ -52,7 +52,7 @@ const GOLDEN = [
   [{ sex:"female", height:163, age:27 }, 60, 0, { bmr:1323, tdee:2050, kcal:2050, protein:96, fat:57, carb:288, water:2100, floored:false }],
   [{ sex:"female", height:163, age:27, goal:"lose" }, 60, 0, { bmr:1323, tdee:2050, kcal:1681, protein:115, fat:47, carb:200, water:2100, floored:false }],
   [{ sex:"none", height:170, age:45 }, 70, 0, { bmr:1460, tdee:2262, kcal:2262, protein:112, fat:63, carb:312, water:2450, floored:false }],
-  [{ bodyFat:20 }, 82, 0, { bmr:1787, tdee:2770, kcal:2770, protein:131, fat:77, carb:388, water:2870, floored:false }],
+  [{ bodyFat:20 }, 82, 0, { bmr:1788, tdee:2771, kcal:2771, protein:131, fat:77, carb:389, water:2870, floored:false }],
   [{ activity:"sedentary" }, 82, 0, { bmr:1788, tdee:2145, kcal:2145, protein:131, fat:60, carb:270, water:2870, floored:false }],
   [{ activity:"veryActive", goal:"gain" }, 95, 0, { bmr:1918, tdee:3643, kcal:4080, protein:167, fat:113, carb:599, water:3325, floored:false }],
   [{ goal:"lose" }, 82, -150, { bmr:1788, tdee:2771, kcal:2122, protein:157, fat:59, carb:241, water:2870, floored:false }],
@@ -773,10 +773,10 @@ test("mutfak: cihaz dili varsayılanı belirler; elle seçim korunur ve Ayarlar'
 
     setNav(["tr-TR"]); LANG = "en";
     eq(currentCuisine(), "tr", "Türkçe cihazda Türk mutfağı varsayılanı");
-    eq(obDefaults().cuisine, "tr", "ilk kurulum Türkçe cihazda Türk mutfağıyla başlar");
+    eq(obDefaults().cuisine, "intl", "ilk kurulum İngilizce seçimiyle uluslararası mutfakla başlar");
     setNav(["en-US"]); LANG = "tr";
     eq(currentCuisine(), "intl", "İngilizce cihazda uluslararası mutfak varsayılanı");
-    eq(obDefaults().cuisine, "intl", "ilk kurulum İngilizce cihazda uluslararası mutfakla başlar");
+    eq(obDefaults().cuisine, "tr", "ilk kurulum Türkçe seçimiyle Türk mutfağıyla başlar");
 
     state.mealPrefs.cuisine = "intl";
     setNav(["tr-TR"]);
@@ -2270,7 +2270,7 @@ test("kendi yiyeceklerim: silinen yiyeceğin geçmiş günlerdeki kayıtları bo
     const pastBefore = JSON.stringify(state.days[past]), todayBefore = JSON.stringify(state.days[today()]);
     const totBefore = logTotals(state.days[past]);
     const kcalBefore = state.days[past].kcal;
-    ok(favoriteFoods().some(([k]) => k === "cf_1"), "silmeden önce sık yediklerde");
+    ok(!favoriteFoods().some(([k]) => k === "cf_1"), "hariç tutulan ürün sık yediklerde görünmez");
 
     app.querySelector("#mf-toggle").onclick();
     await clickYes(app.querySelector('[data-mf-del="cf_1"]'), true);
@@ -4304,3 +4304,91 @@ test("takımyıldız: İngilizcede tam çevrilir; pencereler erişilebilir", asy
   } finally { skyDone(); }
 });
 window.STARBOARD_TESTS = TESTS;
+
+test("profil: doğum tarihi, eski yaş, nötr katsayı ve ölçülmüş yağ oranı", () => {
+  eq(birthDateFromParts("2000", "2", "29"), "2000-02-29");
+  for (const [month, day] of [["2", "30"], ["13", "1"], ["5", "0"], ["1", "x"]])
+    eq(birthDateFromParts("2000", month, day), null);
+  eq(ageFromBirthDate("2000-02-29", new Date(2025, 1, 28)), 24);
+  eq(ageFromBirthDate("2000-02-29", new Date(2025, 2, 1)), 25);
+  eq(ageFromBirthDate("2090-01-01", new Date(2025, 2, 1)), null);
+  eq(profileAge({ age:41 }), 41);
+  const birthDate = shiftDays(today(), -365 * 30);
+  const base = profileOf({ sex:"none", birthDate, age:15, bodyFat:20 });
+  const age = ageFromBirthDate(birthDate);
+  const neutral = buildProgram(base, 82, 0);
+  eq(neutral.bmr, buildProgram(profileOf({ sex:"none", age }), 82, 0).bmr);
+  eq(neutral.lbm, null);
+  const measured = { ...base, bodyFatReferenceWeight:82 };
+  eq(buildProgram(measured, 82, 0).bmr, Math.round(500 + 22 * 82 * .8));
+  eq(buildProgram(measured, 86, 0).lbm, null);
+  eq(buildProgram({ ...measured, birthDate:null, age:36 }, 82, 0).lbm, null);
+});
+test("antrenman: yedi gün ve eski manuel günler planlanır", () => {
+  eq(OB_DEFAULT_DAYS("moderate"), [1,3,5,7]);
+  eq(OB_DEFAULT_DAYS("veryActive"), [1,2,3,4,5,6,7]);
+  for (const days of [[], [2,6], [1,2,4,5], OB_DEFAULT_DAYS("veryActive")]){
+    const p = trainingPlan(profileOf({ days }));
+    eq(p.freq, days.length);
+    eq(p.days.filter(d => d.b).map(d => d.wd), days);
+  }
+});
+test("bildirim: doğum günü yılda bir, ilaç yalnız seçilen saatte", () => {
+  const now = new Date(2026, 10, 20, 8);
+  const st = { profile:{ birthDate:"2000-11-20", reminders:{} }, days:{} };
+  eq(reminderPlan(st, null, now), []);
+  st.profile.reminders = { birthday:true, medicationAt:"08:00" };
+  const plan = reminderPlan(st, null, now);
+  eq(plan.map(n => n.kind), ["birthday", "medication"]);
+  eq(plan[0].calendar, { month:11, day:20, hour:9, minute:0, second:0 });
+  eq(dayKey(plan[1].at), "2026-11-21");
+  eq(dayKey(reminderPlan(st, null, new Date(2026, 10, 20, 10)).find(n => n.kind === "birthday").at), "2027-11-20");
+  st.profile.birthDate = "2000-02-29";
+  eq(reminderPlan(st, null, now).filter(n => n.kind === "birthday").map(n => dayKey(n.at)),
+    ["2027-03-01", "2028-02-29", "2029-03-01", "2030-03-01"]);
+  delete st.profile.birthDate;
+  eq(reminderPlan(st, null, now).map(n => n.kind), ["medication"]);
+});
+test("besin filtresi: tarif, hızlı liste ve sabit plan süzülür, açık arama ve geçmiş korunur", async () => {
+  const old = { state, LANG };
+  state = await loadFixture();
+  LANG = "tr";
+  try {
+    const slot = userMeals()[0].id, k = today(), entry = { log:[], tasks:[] };
+    state.days[k] = entry;
+    mealPrefs().cuisine = "intl";
+    mealPrefs().exclude = ["domates"];
+    mealPrefs().fixed[slot] = [{ k:"bacon", g:30 }, { k:"domates", g:120 }];
+    for (const key of ["bacon", "domates", "yulaf"]) addFoodDirect(entry, key, 100, slot);
+    const before = JSON.stringify(entry);
+    for (const list of [quickFoods(slot), favoriteFoods(), shoppingSuggestions().map(x => [x.k])])
+      ok(!list.some(([key]) => ["bacon", "domates"].includes(key)));
+    for (const key of ["bacon", "domates"]) ok(searchFoods(FOODS[key].n, 15).some(([k]) => k === key));
+    const recipe = RECIPES.find(r => r.ing.some(([k]) => k === "domates"));
+    ok(recipe && !visibleRecipe(recipe));
+    ok(!visibleRecipe({ ing:[["bacon", 30]] }));
+    ok(!automaticFoodAllowed("prosciuttoefunghipizza"));
+    for (let i = 0; i < 6; i++){
+      const meals = buildMeals(buildProgram(state.profile, 82, 0), i).meals;
+      ok(meals.every(m => m.items.every(it => !["bacon", "domates"].includes(it.key) && (it.key || !it.text.includes("domates")))));
+    }
+    eq(JSON.stringify(entry), before);
+    LANG = "en";
+    ok(visibleRecipe({ ing:[["bacon", 30]] }));
+    ok(!visibleRecipe(recipe));
+  } finally { ({ state, LANG } = old); }
+});
+
+test("ölçü cetveli: sahneden ayrılan kaydırma olayı ölçüyü değiştirmez", () => {
+  const prev = { ob, state };
+  try {
+    state = null;
+    ob = { weight:70 };
+    app.innerHTML = obRuler("weight", 30, 200, .5, 10, 10, 2, "kg", true);
+    wireRulers(false);
+    const slider = app.querySelector("[role=slider]");
+    app.replaceChildren();
+    slider.dispatchEvent(new Event("scroll"));
+    eq(ob.weight, 70);
+  } finally { ({ ob, state } = prev); }
+});

@@ -23,7 +23,7 @@ function shopOwnItems(){
   const manual = shopItems();
   const names = new Set(manual.map(x => shopNorm(shopItemName(x))));
   const custom = Object.entries(state.customFoods || {}).filter(([, f]) => f && typeof f.n === "string")
-    .filter(([, f]) => !names.has(shopNorm(f.n)))
+    .filter(([k, f]) => automaticFoodAllowed(k) && !names.has(shopNorm(f.n)))
     .map(([k, f]) => ({ id:k, n:f.n, k, custom:true }));
   return custom.concat(manual);
 }
