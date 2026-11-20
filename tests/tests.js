@@ -4727,6 +4727,68 @@ test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot"
   }
 });
 
+test("giriş ikonları: basınca ayrı süre ve hareketle büyür, hızlı tıklamada yeniden oynar", () => {
+  const keep = { ob, step:obStep };
+  const timings = new Set();
+  const reduced = reduceMotion();
+  const press = (target, icon, replay = false) => {
+    const motion = () => icon.getAnimations().find(a => a.effect.getKeyframes().some(k => k.scale));
+    target.click();
+    const animation = motion();
+    if (reduced){ eq(animation, undefined); return; }
+    ok(animation && animation.effect.target === icon);
+    const frames = animation.effect.getKeyframes();
+    ok(+frames[1].scale >= 1.15 && +frames[1].scale <= 1.25);
+    ok(+frames[2].scale < 1 && +frames[3].scale > 1);
+    eq(+frames.at(-1).scale, 1);
+    const signature = JSON.stringify([animation.effect.getTiming().duration, frames[1].scale, frames[1].rotate]);
+    ok(!timings.has(signature), "tekrarlanan ikon hareketi: " + signature);
+    timings.add(signature);
+    if (replay){
+      target.click();
+      eq(animation.playState, "idle");
+      ok(motion() && motion() !== animation);
+    }
+  };
+  try {
+    ob = { ...obDefaults(), sex:"none", noPlan:false };
+    obStep = 0;
+    app.replaceChildren();
+    renderOnboarding();
+    for (const flag of app.querySelectorAll("[data-flag]")) press(flag, flag.querySelector("svg"), true);
+    const stage = document.getElementById("on-stage");
+    for (const html of [obWelcome(), obBuild(), obSummary()]){
+      const logo = obMount(stage, html).querySelector("[data-logo]");
+      press(logo, logo.firstElementChild);
+    }
+    for (const id of ["you", "goal", "train", "food", "remind"]){
+      const step = OB_STEPS.find(item => item.id === id);
+      obStep = obList().indexOf(step);
+      obMount(stage, obQuestion(step));
+      wireOb(step);
+      for (const avatar of app.querySelectorAll("[data-av]")) press(avatar, avatar.querySelector("svg"), true);
+      for (const button of app.querySelectorAll('.ocs:not([data-field="plan"]) [data-oc]')){
+        const icon = button.querySelector(".ico-wrap > svg");
+        if (icon) press(button, icon);
+      }
+      if (id === "train"){
+        const enabled = app.querySelector('[data-field="plan"] [data-oc="on"]');
+        press(enabled, enabled.querySelector(".ico-wrap > svg"));
+        app.querySelector('[data-field="plan"] [data-oc="off"]').click();
+        const selected = app.querySelector('[data-field="plan"] [data-oc="off"]');
+        eq(selected.getAttribute("aria-pressed"), "true");
+        const icon = selected.querySelector(".ico-wrap > svg");
+        eq(icon.getAnimations().length, reduced ? 0 : 1);
+        press(selected, icon);
+      }
+    }
+  } finally {
+    sceneActive(false); sceneState = null;
+    ob = keep.ob; obStep = keep.step;
+    app.replaceChildren();
+  }
+});
+
 test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve halkalı gezegen", async () => {
   const keep = { st:state, ob, set:window.setLang, sess:sessionStorage.getItem("starboard-onb-units") };
   let asked = null;
@@ -4780,7 +4842,7 @@ test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve h
     const [planet] = planets;
     eq(planet.getAttribute("aria-hidden"), "true");
     ok(planet.matches(".on-w-brand > .sk-planet"));
-    ok(planet.nextElementSibling.matches(".on-logo"));
+    ok(planet.nextElementSibling.matches(".on-logo-hit") && planet.nextElementSibling.querySelector(".on-logo"));
     const system = planet.querySelector(".sk-planet-system");
     eq([...system.children].map(part => part.getAttribute("class")), ["sk-planet-ring", "sk-planet-disc", "sk-planet-ring"]);
     const rings = [...planet.querySelectorAll(".sk-planet-ring")];

@@ -524,6 +524,44 @@ const obList = () => OB_STEPS.filter(s => (s.id !== "remind" || IS_NATIVE) && (s
 
 /* Girişte logo canlıdır: çubuklar yükselir, yıldız parlar. */
 const OB_LOGO = BRAND_SVG.replace(/<rect x=/g, '<rect class="lg-b" x=').replace('<path d=', '<path class="lg-s" d=');
+const obLogo = (kind, attrs = "") => `<span class="on-logo-hit" data-logo="${kind}"><span class="on-logo${kind === "summary" ? " sm" : ""}"${attrs}>${OB_LOGO}</span></span>`;
+const OB_LOGO_MOTION = { welcome:[460, 1.23, -5], build:[410, 1.18, 7], summary:[440, 1.21, 0] };
+const OB_FLAG_MOTION = { tr:[300, 1.19, -7], en:[360, 1.22, 6] };
+const OB_AVATAR_MOTION = {
+  "mascot-1":[330, 1.20, -5], "mascot-6":[375, 1.19, 6], "mascot-4":[490, 1.23, 3],
+  "mascot-2":[400, 1.22, -7], "mascot-5":[350, 1.21, 8], "mascot-3":[455, 1.18, -3]
+};
+const OB_CARD_MOTION = {
+  goal:[345, 1.22, [-9, 0, 9]],
+  activity:[280, 1.18, [-2, -5, 4, 7, 10]],
+  plan:[365, 1.20, [-6, 8]],
+  venue:[400, 1.21, [0, -7, 6, -4, 9, 3, -10]],
+  diet:[305, 1.19, [-8, 4, -3, 7, 0, 9, -5, 5]],
+  mealSet:[470, 1.23, [-6, 0, 5, -9]],
+  remind:[525, 1.20, [7, -5]]
+};
+const obIconAnimations = new WeakMap();
+function obIconPress(icon, [duration, peak, turn]){
+  if (!icon?.animate || reduceMotion()) return;
+  obIconAnimations.get(icon)?.cancel();
+  obIconAnimations.set(icon, icon.animate([
+    { offset:0, scale:"1", rotate:"0deg", easing:"ease-out" },
+    { offset:.24, scale:String(peak), rotate:`${turn}deg`, easing:"ease-in-out" },
+    { offset:.64, scale:".98", rotate:`${-turn / 3}deg`, easing:"ease-out" },
+    { offset:.82, scale:"1.025", rotate:"0deg" },
+    { offset:1, scale:"1", rotate:"0deg" }
+  ], { duration }));
+}
+
+function obCardPress(box, choice){
+  const motion = OB_CARD_MOTION[box.dataset.field];
+  if (!motion) return;
+  const [duration, peak, turns] = motion;
+  const cards = [...box.querySelectorAll("[data-oc]")];
+  const index = cards.findIndex(card => card.dataset.oc === choice);
+  obIconPress(cards[index]?.querySelector(".ico-wrap > svg"),
+    [duration + index * 13, peak, turns[index] ?? 0]);
+}
 let obBusy = false;
 
 /* Karşılama: logo + slogan + düğme tek blok; altta iki bayrak ve gizlilik satırı.
@@ -535,7 +573,7 @@ function obWelcome(){
   return `<div class="on-q on-w">
     <div class="on-w-brand">
       ${scenePlanet()}
-      <span class="on-logo" role="img" aria-label="Starboard">${OB_LOGO}</span>
+      ${obLogo("welcome", ' role="img" aria-label="Starboard"')}
     </div>
     <h1 class="sr-only">Starboard</h1>
     <p class="on-tag on-slogan">${tx("Her gün, bir önceki günden daha parlak.")}</p>
@@ -552,7 +590,7 @@ function obWelcome(){
 const OB_BUILD = ["mamba mentality", "starboard era"];
 function obBuild(){
   return `<div class="on-q on-w on-build">
-    <span class="on-lw"><span class="on-orbit" aria-hidden="true"><i></i><i></i><i></i></span><span class="on-logo">${OB_LOGO}</span></span>
+    <span class="on-lw"><span class="on-orbit" aria-hidden="true"><i></i><i></i><i></i></span>${obLogo("build")}</span>
     <h1 tabindex="-1" id="ob-build-title">${tx("Planın hazırlanıyor")}</h1>
     <p class="on-tag" id="ob-bl">${OB_BUILD[0]}</p>
   </div>`;
@@ -564,7 +602,7 @@ function obSummary(){
   const tr = p.training;
   const tile = (ic, v, u, l) => `<div class="os-t">${iconBox(ic)}<b class="num">${v}<small>${u}</small></b><i>${l}</i></div>`;
   return `<div class="on-q on-s">
-    <span class="on-logo sm">${OB_LOGO}</span>
+    ${obLogo("summary")}
     <h1>${ob.name ? tx("{0}, planın hazır", [(esc(ob.name))]) : tx("Planın hazır")}</h1>
     <p class="on-tag">${tx("{0} hedefine göre günlük hedeflerin:", [(GOAL[ob.goal].label)])}</p>
     <div class="os-k"><b class="num" id="os-kn" data-to="${p.kcal}">${p.kcal}</b><span>${tx("kcal / gün")}</span></div>
@@ -596,6 +634,8 @@ const OB_PARTS = "h1,.on-sub,.on-tag,.og,.on-feat li,.os-k,.os-t,.os-p,.on-s .me
 function obMount(stage, html, dir){
   stage.innerHTML = html;
   const q = stage.firstElementChild;
+  const logo = q.querySelector("[data-logo]");
+  if (logo) logo.onclick = () => obIconPress(logo.firstElementChild, OB_LOGO_MOTION[logo.dataset.logo]);
   q.querySelectorAll(OB_PARTS).forEach((el, i) => el.style.setProperty("--i", Math.min(i, 12)));
   q.classList.add("in");
   if (dir === -1) q.classList.add("rev");
@@ -730,14 +770,32 @@ function wireOb(st){
     go(1);
   };
   document.getElementById("ob-next").onclick = next;
-  document.getElementById("ob-back").onclick = () => { if (obBusy) return; if (st.read) st.read(); go(-1); };
+  const back = document.getElementById("ob-back");
+  back.onclick = () => {
+    if (obBusy) return;
+    obIconPress(back.querySelector("svg"), [320, 1.17, -8]);
+    if (st.read) st.read();
+    go(-1);
+  };
   if (st.wire) st.wire();
+  app.querySelectorAll('.av[data-avp="on"]').forEach(b => b.addEventListener("click", () => {
+    obIconPress(b.firstElementChild, OB_AVATAR_MOTION[b.dataset.av]);
+  }));
   app.querySelectorAll(".on-q input:not([id^='ob-birth-'])").forEach(i => i.addEventListener("input", () => obErr("")));
 
   /* seçim kartları: yalnızca işaretler, ekranı değiştirmez */
   app.querySelectorAll(".ocs [data-oc]").forEach(b => b.onclick = () => {
     const box = b.closest(".ocs"), f = box.dataset.field, v = b.dataset.oc;
-    if (f === "plan"){ const was = !!ob.noPlan; ob.noPlan = v === "off"; ob.planTouched = true; if (was !== ob.noPlan){ obRefresh("#og-plan"); return; } }
+    if (f === "plan"){
+      const was = !!ob.noPlan;
+      ob.noPlan = v === "off";
+      ob.planTouched = true;
+      if (was !== ob.noPlan){
+        obRefresh("#og-plan");
+        obCardPress(app.querySelector('.ocs[data-field="plan"]'), v);
+        return;
+      }
+    }
     else ob[f] = box.dataset.num ? Number(v) : v;
     if (f === "goal") document.getElementById("ob-planning-label").hidden = v !== "lose";
     if (f === "activity"){
@@ -747,12 +805,16 @@ function wireOb(st){
     box.querySelectorAll("[data-oc]").forEach(x => {
       x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", String(x === b));
     });
+    obCardPress(box, v);
     obErr("");
   });
 
   /* Karşılama: bayraklar. Türkiye = Türkçe + metrik. İngiltere = menü; seçilen birimle İngilizce. */
   const menu = document.getElementById("fl-menu"), enBtn = app.querySelector("[data-flag=en]");
   if (menu){
+    app.querySelectorAll("[data-flag]").forEach(b => b.addEventListener("click", () => {
+      obIconPress(b.firstElementChild, OB_FLAG_MOTION[b.dataset.flag]);
+    }));
     const setOpen = o => { menu.hidden = !o; enBtn.setAttribute("aria-expanded", String(o)); };
     const pickLang = (l, units) => {
       ob.units = units;

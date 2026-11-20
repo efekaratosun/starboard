@@ -557,9 +557,18 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 /* hafif hareket: seçili avatar ve Bugün'deki figür yavaşça süzülür, ara sıra göz kırpar, anten ışığı yanıp söner */
 .av.on svg{animation:asPickerFloat 5s ease-in-out infinite}
 @keyframes asPickerFloat{
-  0%,100%{transform:translateY(0) rotate(-3deg)}
-  50%{transform:translateY(-6px) rotate(3deg)}
+  0%,100%{transform:rotate(var(--as-float-start,-3deg))}
+  50%{transform:translateY(var(--as-float-lift,-6px)) rotate(var(--as-float-end,3deg))}
 }
+/* Her hayvanın giriş seçicisindeki süzülüşü ve dokunma tepkisi ayrı ilerler. */
+.av[data-avp=on]{--as-pick-grow:none;--as-pick-rebound:none}
+.av[data-avp=on][data-av=mascot-1]{--as-float-time:4.2s;--as-float-lift:-3px;--as-float-end:-1deg}
+.av[data-avp=on][data-av=mascot-2]{--as-float-time:3.8s;--as-float-lift:-5px;--as-float-end:2deg}
+.av[data-avp=on][data-av=mascot-3]{--as-float-time:6.4s;--as-float-lift:-2px;--as-float-start:1deg;--as-float-end:0deg}
+.av[data-avp=on][data-av=mascot-4]{--as-float-time:5.7s;--as-float-lift:-2px;--as-float-end:4deg}
+.av[data-avp=on][data-av=mascot-5]{--as-float-time:3.4s;--as-float-lift:-4px;--as-float-end:5deg}
+.av[data-avp=on][data-av=mascot-6]{--as-float-time:4.8s;--as-float-lift:-4px;--as-float-start:3deg;--as-float-end:-4deg}
+.av.on[data-avp=on] svg{animation-duration:var(--as-float-time)}
 .bc-fig .as-float{animation:asFloat 4.5s ease-in-out infinite}
 @keyframes asFloat{50%{transform:translateY(-2px)}}
 .av.on .as-eyes,.bc-fig .as-eyes{transform-box:fill-box;transform-origin:center;animation:asBlink 5.5s ease-in-out infinite}
@@ -586,12 +595,13 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
   .av.is-picking .as-tongue{transform-origin:center top;animation:asTongue .8s ease-in-out}
   .av.is-picking .as-mouth{animation:asGrin .8s ease-in-out}
   .av.is-picking .as-head{animation:asTilt .8s ease-in-out}
+  .av.is-picking[data-avp=on][data-av=mascot-3] .as-head{animation:none}
   .av.is-picking[data-av="mascot-3"] :is(.as-ear-l,.as-ear-r){animation:asEarGrow .8s ease-in-out}
 }
 @keyframes asPick{
   0%,100%{transform:scale(1)}
-  25%{transform:scale(1.12)}
-  55%{transform:scale(.96)}
+  25%{transform:var(--as-pick-grow,scale(1.12))}
+  55%{transform:var(--as-pick-rebound,scale(.96))}
 }
 @keyframes asEarTwitch{
   20%,70%{transform:none}
