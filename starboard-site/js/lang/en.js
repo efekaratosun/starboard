@@ -22,7 +22,7 @@ window.STARBOARD_EN = {
   "Doğum günü": "Birthday",
   "Doğum günün kutlu olsun!": "Happy birthday!",
   "Seri {0}": "Set {0}",
-  "Uzaylı {0}": "Alien {0}",
+  "Kedi": "Cat", "Tilki": "Fox", "Panda": "Panda", "Köpek": "Dog", "Maymun": "Monkey", "Koala": "Koala",
   "Daha düzenli yatmak": "Keep a regular bedtime",
   "Daha düzenli su içmek": "Drink water more regularly",
   "Kişisel hedeflerim": "My personal goals",

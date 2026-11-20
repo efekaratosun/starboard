@@ -4530,6 +4530,32 @@ test("ölçü cetveli: sahneden ayrılan kaydırma olayı ölçüyü değiştirm
   } finally { ({ ob, state } = prev); }
 });
 
+test("avatarlar: altı kasklı astronot hayvan, eski seçimler ve renkler korunur, cam su ile dolar", () => {
+  /* eski uzaylı anahtarları aynı kalır; sıra kedi, tilki, panda, köpek, maymun, koala */
+  eq(AVATARS.map(a => a[0]), ["mascot-1", "mascot-6", "mascot-4", "mascot-2", "mascot-5", "mascot-3"]);
+  eq(AVATARS.map(a => a[2]), ["carb", "kcal", "good-vivid", "water", "fat", "protein"]);
+  eq(avKey({ avatar:"mascot-3" }), "mascot-3");
+  eq(avColor({ avatar:"mascot-2" }), "var(--water)");
+  const box = document.createElement("div");
+  box.innerHTML = avatarPicker("mascot-4", "t");
+  const btns = [...box.querySelectorAll("[data-av]")];
+  eq(btns.length, 6);
+  ok(btns.every(b => b.querySelector(".astro clipPath circle") && b.querySelector(".as-eyes") && b.querySelector(".as-ant")), "her avatar kask + göz + anten içermeli");
+  const ids = btns.map(b => b.querySelector("clipPath").id);
+  eq(new Set(ids).size, 6, "kırpma kimlikleri benzersiz olmalı");
+  ok(btns.every(b => !/Uzaylı|Alien/.test(b.getAttribute("aria-label"))), "uzaylı adı kalmamalı");
+  /* Bugün figürü: su oranı camı alttan doldurur; uykulu ve mutlu hâller */
+  box.innerHTML = avatarSVG("mascot-1", 1, .5, { sleepy:true }, "t1");
+  const w = box.querySelector(".as-water");
+  ok(w, "su dolumu yok");
+  const lvl = () => +box.querySelector("clipPath[id$='w'] rect").getAttribute("y");
+  eq(lvl(), 33.5);                                           /* %50: kask gövdesinin yarısı */
+  ok(box.querySelector(".zz"), "uykulu hâlde Z yok");
+  box.innerHTML = avatarSVG("mascot-6", 1, 0, { happy:true, star:true }, "t2");
+  eq(lvl(), 58.5);
+  ok(box.querySelector(".bc-star"));
+});
+
 test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot", () => {
   const prev = ob;
   try {
