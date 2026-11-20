@@ -223,6 +223,25 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 @media (max-height:640px){
   .sk-planet{top:-14px;width:min(300px,calc(100vw + 8px))}
 }
+/* gezegen dönüşü: kraterler 60 sn'de bir tur soldan sağa kayar (kopyalar arası 80 birim) */
+.sk-planet-surf{animation:skSpin 60s linear infinite}
+@keyframes skSpin{to{transform:translateX(80px)}}
+/* halka tozu: bant ortasında noktalar elips boyunca akar; tam tur ≈ 3.3 × --d (≈27-37 sn) */
+.sk-planet-ring .sk-planet-dust path{fill:none;stroke:var(--sky-planet-dust);stroke-width:2.2;stroke-linecap:round;
+  stroke-dasharray:.01 calc(var(--gap) - .01);animation:skDust var(--d) linear infinite}
+@keyframes skDust{to{stroke-dashoffset:-60}}
+
+/* alt nebula: Başlayalım hizasına kadar yükselen düz bulut katmanları, yalnızca karşılamada */
+.sk-neb{position:absolute;left:0;bottom:0;width:100%;height:48vh;opacity:0;transition:opacity 1.2s ease;
+  -webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent)}
+.on-bg.welcome .sk-neb{opacity:1}
+.sk-neb-l{opacity:var(--neb-op)}
+.sk-neb-l1{fill:var(--neb-1);animation:skNeb 26s ease-in-out infinite alternate}
+.sk-neb-l2{fill:var(--neb-2);animation:skNeb 20s ease-in-out -7s infinite alternate-reverse}
+.sk-neb-l3{fill:var(--neb-3);animation:skNeb 32s ease-in-out -12s infinite alternate}
+@keyframes skNeb{from{transform:translateX(-12px)}to{transform:translateX(12px)}}
+.sk-neb-sp{fill:var(--neb-spark);opacity:0;animation:skNebSp 5.2s ease-in-out infinite}
+@keyframes skNebSp{0%,100%{opacity:0}50%{opacity:var(--neb-spark-op)}}
 
 /* karşılama yerleşimi: logo + slogan + düğme üstte tek blok, bayraklar ve gizlilik altta */
 main.on.is-w{justify-content:center}

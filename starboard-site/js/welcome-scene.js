@@ -35,23 +35,39 @@ function sceneTwinkles(n, seed){
   return h;
 }
 
+/* Halkalı gezegen. Dönüş düz ikon diliyle anlatılır:
+   - Gezegen: kraterler disk içinde soldan sağa kayar (iki kopya, diske kırpılı); sağdaki gölge
+     (gece tarafı) sabit kalır, böylece küre kendi ekseninde dönüyormuş gibi görünür.
+   - Halkalar: her bandın ortasında küçük toz noktaları elips boyunca akar (önde soldan sağa,
+     arkada sağdan sola); iç bantlar biraz daha hızlı, halkalar gezegenden yaklaşık iki kat hızlı döner. */
+const SK_SPIN_SHIFT = 80;                       /* krater kopyaları arası (diskin çapı 68 + boşluk) */
 function scenePlanet(){
   const edge = 48 - MOON_R;
   const bands = [[54, 61], [64, 71], [74, 81], [84, 91]];
   const flatten = radius => (radius * .29).toFixed(2);
+  const dust = front => `<g class="sk-planet-dust">${bands.map(([inner, outer], i) => {
+    const mid = (inner + outer) / 2, from = front ? -mid : mid;
+    return `<path pathLength="100" style="--d:${8 + i}s;--gap:${[5, 6, 7.5, 10][i]}"
+      d="M${from} 0 A${mid} ${flatten(mid)} 0 0 0 ${-from} 0"/>`;
+  }).join("")}</g>`;
   const ring = front => `<g class="sk-planet-ring">
     ${bands.map(([inner, outer]) => {
       const side = front ? 1 : -1;
       return `<path d="M${side * outer} 0 A${outer} ${flatten(outer)} 0 0 1 ${-side * outer} 0
         H${-side * inner} A${inner} ${flatten(inner)} 0 0 0 ${side * inner} 0 Z"/>`;
     }).join("")}
+    ${dust(front)}
   </g>`;
+  const craters = moonCraters("carb", 3);
   return `<svg class="sk-planet" viewBox="-96 -48 192 96" aria-hidden="true">
+    <defs><clipPath id="sk-planet-clip"><circle cx="48" cy="48" r="${MOON_R}"/></clipPath></defs>
     <g class="sk-planet-system" transform="rotate(-15)">
       ${ring(false)}
       <g class="sk-planet-disc" transform="scale(1.3) translate(-48 -48)">
         <circle cx="48" cy="48" r="${MOON_R}"/>
-        ${moonCraters("carb", 3)}
+        <g clip-path="url(#sk-planet-clip)"><g class="sk-planet-surf">
+          ${craters}<g transform="translate(${-SK_SPIN_SHIFT} 0)">${craters}</g>
+        </g></g>
         <path class="sk-planet-shade" d="M48 ${edge}a${MOON_R} ${MOON_R} 0 0 1 0 ${2 * MOON_R}A44 44 0 0 0 48 ${edge}Z"/>
       </g>
       ${ring(true)}
@@ -59,8 +75,38 @@ function scenePlanet(){
   </svg>`;
 }
 
+/* Alt nebula: uygulamanın düz diliyle üst üste binen yumuşak bulut katmanları (her katman
+   aynı renkte dairelerin birleşimi; opaklık grupta, böylece iç içe daireler tek düz renk görünür).
+   Renkler tema değişkenlerinden: açık temada pembe / turuncu / kırmızı, koyu temada mor / mavi.
+   Üst kenar maske ile yumuşar; katmanlar farklı hızlarda çok yavaş yana kayar. */
+const SK_NEB_H = 340;
+function sceneNebula(){
+  /* [taban y, en küçük r, en büyük r, daire sayısı, tohum]: arkadaki katman en yükseğe çıkar */
+  const layers = [[210, 30, 58, 10, 3], [262, 24, 46, 12, 11], [306, 18, 36, 13, 23]];
+  const puffs = ([base, rMin, rMax, n, seed]) => {
+    const r = sceneRng(seed);
+    return Array.from({ length:n }, (_, k) => {
+      const rad = rMin + r() * (rMax - rMin);
+      const x = -24 + 448 * (k + .2 + r() * .6) / n;
+      const y = base - rad * (.25 + r() * .75);
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad.toFixed(1)}"/>`;
+    }).join("");
+  };
+  const sparks = [[70, 168, 4.2], [300, 150, 3.4], [352, 236, 2.8], [150, 252, 2.4]];
+  const spark = ([x, y, r], i) => {
+    const q = r * .32;
+    return `<path class="sk-neb-sp" style="animation-delay:${-i * 1.3}s" d="M${x} ${y - r}Q${x + q} ${y - q} ${x + r} ${y}Q${x + q} ${y + q} ${x} ${y + r}Q${x - q} ${y + q} ${x - r} ${y}Q${x - q} ${y - q} ${x} ${y - r}Z"/>`;
+  };
+  return `<svg class="sk-neb" viewBox="0 0 400 ${SK_NEB_H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    ${layers.map((l, i) => `<g class="sk-neb-l sk-neb-l${i + 1}">${puffs(l)}
+      <rect x="-60" y="${l[0]}" width="520" height="${SK_NEB_H - l[0] + 10}"/></g>`).join("")}
+    ${sparks.map(spark).join("")}
+  </svg>`;
+}
+
 function sceneHTML(){
   return `<div class="sk-sky"></div>
+  ${sceneNebula()}
   <div class="sk-par sk-par1">${sceneStarLayer("a", 110, 0.6, 7)}${sceneStarLayer("deep", 90, 0.6, 31)}</div>
   <div class="sk-par sk-par2">${sceneStarLayer("b", 46, 1.0, 13)}${sceneStarLayer("deep b", 36, 1.0, 41)}</div>
   <div class="sk-par sk-par3">${sceneStarLayer("c", 16, 1.5, 19)}<div class="sk-tws">${sceneTwinkles(30, 5)}</div></div>
