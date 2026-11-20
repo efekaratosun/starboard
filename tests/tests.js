@@ -1153,7 +1153,7 @@ test("çeviri: İngilizce modda bütün sekmeler ve giriş ekranları çizilir",
     tab = "settings"; render();
     ok(app.innerHTML.includes("My body") && app.innerHTML.includes("Settings"), "Ben sekmesi İngilizce çizilmedi");
     state = null; tab = "today"; render();
-    ok(app.innerHTML.includes("One board for your health."), "karşılama ekranı İngilizce çizilmedi");
+    ok(app.innerHTML.includes("Every day, brighter than the last."), "karşılama ekranı İngilizce çizilmedi");
   });
 });
 
@@ -4554,5 +4554,66 @@ test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot"
   } finally {
     ob = prev;
     app.replaceChildren();
+  }
+});
+
+test("karşılama: logo + tek slogan, yazısız bayraklar, birim menüsü, yıldızlı sahne (gezegen yok)", async () => {
+  const keep = { st:state, ob, set:window.setLang, sess:sessionStorage.getItem("starboard-onb-units") };
+  let asked = null;
+  window.setLang = l => { asked = l; };
+  try {
+    state = null; ob = null; obStep = 0; app.innerHTML = "";
+    renderOnboarding();
+    const w = app.querySelector(".on-w");
+    ok(w, "karşılama çizilmedi");
+    /* Görünen yazı yalnızca slogan ve gizlilik satırı: eski özellik listesi, dil yazısı, 'Sürüm' yok. */
+    const c = w.cloneNode(true);
+    c.querySelectorAll(".sr-only,.fl-menu").forEach(e => e.remove());
+    const txt = c.textContent.replace(/\s+/g, " ").trim();
+    eq(txt, tx("Her gün, bir önceki günden daha parlak.") + " " + tx("Veriler yalnızca bu cihazda saklanır"));
+    eq(tx("Her gün, bir önceki günden daha parlak."), "Her gün, bir önceki günden daha parlak.");
+    eq(STARBOARD_EN["Her gün, bir önceki günden daha parlak."], "Every day, brighter than the last.");
+    eq(STARBOARD_EN["Veriler yalnızca bu cihazda saklanır"], "Your data stays on this device only");
+    ok(!/Sürüm|Türkçe|English|Sağlığın için/.test(txt), "eski yazılar kalmış: " + txt);
+    /* iki bayrak simgesi, ikisi de adlı düğme; emoji yok */
+    const flags = [...w.querySelectorAll("[data-flag]")];
+    eq(flags.map(f => f.dataset.flag), ["tr", "en"]);
+    ok(flags.every(f => f.querySelector("svg") && f.getAttribute("aria-label") && !f.textContent.trim()), "bayrak düğmesi simge + etiket olmalı");
+    /* İngiltere bayrağı menüyü açar; seçim birim ayarına yazılır ve İngilizceye geçer */
+    const menu = document.getElementById("fl-menu");
+    ok(menu.hidden, "menü kapalı başlamalı");
+    eq([...menu.querySelectorAll("button")].map(b => b.textContent.trim()), ["kg / cm", "lb / ft-in"]);
+    w.querySelector("[data-flag=en]").click();
+    ok(!menu.hidden, "bayrağa dokununca menü açılmalı");
+    menu.querySelector("[data-obunit=imperial]").click();
+    eq(ob.units, "imperial");
+    eq(asked, "en");
+    eq(sessionStorage.getItem("starboard-onb-units"), "imperial", "dil değişince birim geri gelmeli");
+    ok(menu.hidden, "seçimden sonra menü kapanmalı");
+    /* Türkiye bayrağı: Türkçe = metrik */
+    asked = null;
+    w.querySelector("[data-flag=tr]").click();
+    eq(ob.units, "metric");
+    eq(asked, null, "zaten Türkçe: sayfa yenilenmemeli");
+    /* Sahne: yıldız katmanları ve kayan yıldız; gezegen, nebula ve ay yok */
+    const bg = document.getElementById("on-bg");
+    ok(bg.classList.contains("welcome"));
+    ok(bg.querySelectorAll(".sk-t").length >= 20, "yanıp sönen yıldız az");
+    ok(bg.querySelector(".sk-shoot"), "kayan yıldız yok");
+    ok(!bg.querySelector("canvas,[class*=planet],[class^=pl-]"), "gezegen olmamalı");
+    ok(!/nebula|moon|planet/i.test(bg.innerHTML), "nebula / ay / gezegen olmamalı");
+    /* Sürüm etiketi: 'v' + numara, 'Sürüm' kelimesi yok */
+    const main = await (await fetch("../starboard-site/js/main.js")).text();
+    ok(main.includes('"v" + APP_VERSION') && !main.includes('tx("Sürüm {0}", [APP_VERSION]);\n  document'), "sürüm etiketi v + numara olmalı");
+    /* Sahne dosyası önbellekte ve sayfada */
+    const sw = await (await fetch("../starboard-site/sw.js")).text();
+    ok(sw.includes('"js/welcome-scene.js"'), "welcome-scene.js sw.js SHELL listesinde değil");
+    const css = await (await fetch("../starboard-site/css/tokens.css")).text();
+    for (const v of ["--sky-top", "--sky-bot", "--sky-star", "--sky-deep-op"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
+    ok(!/--planet-/.test(css), "gezegen renk jetonları kalmamalı");
+  } finally {
+    sceneActive(false); sceneState = null;
+    window.setLang = keep.set; state = keep.st; ob = keep.ob; app.innerHTML = "";
+    if (keep.sess === null) sessionStorage.removeItem("starboard-onb-units"); else sessionStorage.setItem("starboard-onb-units", keep.sess);
   }
 });

@@ -164,11 +164,8 @@ window.STARBOARD_EN = {
   "Dinlenme günü — 20 dk esneme": "Rest day — 20 min stretching",
 
   /* ---- ilk giriş ---- */
-  "Sağlığın için tek bir pano.": "One board for your health.",
-  "Günün hedefleri tek listede": "Today's goals in one list",
-  "Sana göre kurulur": "Built around you",
-  "Her tamamlanan gün bir yıldız": "A star for every completed day",
-  "Veriler yalnızca bu cihazda saklanır.": "Your data stays on this device.",
+  "Her gün, bir önceki günden daha parlak.": "Every day, brighter than the last.",
+  "Veriler yalnızca bu cihazda saklanır": "Your data stays on this device only",
   "Seni tanıyalım": "About you",
   "Avatarın": "Your avatar",
   "Renk": "Color",
