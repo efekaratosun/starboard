@@ -52,13 +52,16 @@ const astroEyes = (lx, rx, y, m, col = "#1B1F33") => `<g class="as-eyes">${m.sle
   ? `<path d="M${lx - 3} ${y}h6M${rx - 3} ${y}h6" stroke="${col}" stroke-width="2" stroke-linecap="round"/>`
   : m.happy
     ? `<path d="M${lx - 3} ${y + 1}q3 -4 6 0M${rx - 3} ${y + 1}q3 -4 6 0" stroke="${col}" stroke-width="2" fill="none" stroke-linecap="round"/>`
-    : `<ellipse cx="${lx}" cy="${y + .4}" rx="3.4" ry="4" fill="${col}"/><ellipse cx="${rx}" cy="${y + .4}" rx="3.4" ry="4" fill="${col}"/>
-       <circle cx="${lx - 1.1}" cy="${y - 1}" r="1.35" fill="#fff"/><circle cx="${rx - 1.1}" cy="${y - 1}" r="1.35" fill="#fff"/>
-       <circle cx="${lx + 1.2}" cy="${y + 1.9}" r=".6" fill="#fff" opacity=".85"/><circle cx="${rx + 1.2}" cy="${y + 1.9}" r=".6" fill="#fff" opacity=".85"/>`}</g>`;
+    : [[lx, "l"], [rx, "r"]].map(([x, side]) => `<g class="as-eye-${side}">
+       <ellipse cx="${x}" cy="${y + .4}" rx="3.4" ry="4" fill="${col}"/>
+       <circle cx="${x - 1.1}" cy="${y - 1}" r="1.35" fill="#fff"/>
+       <circle cx="${x + 1.2}" cy="${y + 1.9}" r=".6" fill="#fff" opacity=".85"/></g>`).join("")}</g>`;
 const astroBlush = (y, c = "#FF8FA8") => `<ellipse cx="22.5" cy="${y}" rx="2.6" ry="1.5" fill="${c}" opacity=".55"/><ellipse cx="41.5" cy="${y}" rx="2.6" ry="1.5" fill="${c}" opacity=".55"/>`;
 const ASTRO_FACES = {
-  "mascot-1": m => `<path d="M18 31 L20 17 L28 24Z M46 31 L44 17 L36 24Z" fill="#A7AEC2"/>
-    <path d="M20.5 27 L21.5 20 L25.5 24Z M43.5 27 L42.5 20 L38.5 24Z" fill="#F4A6BC"/>
+  "mascot-1": m => `<g class="as-ear-l"><path d="M18 31 L20 17 L28 24Z" fill="#A7AEC2"/>
+    <path d="M20.5 27 L21.5 20 L25.5 24Z" fill="#F4A6BC"/></g>
+    <g class="as-ear-r"><path d="M46 31 L44 17 L36 24Z" fill="#A7AEC2"/>
+    <path d="M43.5 27 L42.5 20 L38.5 24Z" fill="#F4A6BC"/></g>
     <ellipse cx="32" cy="36" rx="14" ry="12.5" fill="#B9C0D3"/>
     <path d="M24 30 q2 -3 4 0 M36 30 q2 -3 4 0" stroke="#949CB2" stroke-width="1.4" fill="none" stroke-linecap="round"/>
     ${astroEyes(26.5, 37.5, 35, m)}${astroBlush(40)}
@@ -72,7 +75,7 @@ const ASTRO_FACES = {
     ${astroEyes(26, 38, 34, m)}${astroBlush(39.5)}
     <ellipse cx="32" cy="44.6" rx="2.3" ry="1.6" fill="#2A2230"/>
     <path d="M32 46v1.2 M32 47.2q-1.9 2.1 -3.8 .7 M32 47.2q1.9 2.1 3.8 .7" stroke="#2A2230" stroke-width="1.1" fill="none" stroke-linecap="round"/>`,
-  "mascot-4": m => `<circle cx="20.5" cy="23.5" r="5.2" fill="#2B2D3A"/><circle cx="43.5" cy="23.5" r="5.2" fill="#2B2D3A"/>
+  "mascot-4": m => `<g class="as-head"><circle cx="20.5" cy="23.5" r="5.2" fill="#2B2D3A"/><circle cx="43.5" cy="23.5" r="5.2" fill="#2B2D3A"/>
     <ellipse cx="32" cy="36" rx="14.5" ry="13" fill="#F7F7FA"/>
     <ellipse cx="25.8" cy="35.3" rx="4.2" ry="5.2" fill="#2B2D3A" transform="rotate(25 25.8 35.3)"/>
     <ellipse cx="38.2" cy="35.3" rx="4.2" ry="5.2" fill="#2B2D3A" transform="rotate(-25 38.2 35.3)"/>
@@ -80,15 +83,16 @@ const ASTRO_FACES = {
       <circle cx="26.2" cy="35.6" r="2.2" fill="#2B2D3A"/><circle cx="37.8" cy="35.6" r="2.2" fill="#2B2D3A"/><circle cx="25.6" cy="34.8" r=".8" fill="#fff"/><circle cx="37.2" cy="34.8" r=".8" fill="#fff"/></g>`}
     ${astroBlush(41.5)}
     <ellipse cx="32" cy="41.2" rx="2.4" ry="1.6" fill="#2B2D3A"/>
-    <path d="M32 42.6q-1.5 2 -3.2 .9 M32 42.6q1.5 2 3.2 .9" stroke="#2B2D3A" stroke-width="1.1" fill="none" stroke-linecap="round"/>`,
+    <path d="M32 42.6q-1.5 2 -3.2 .9 M32 42.6q1.5 2 3.2 .9" stroke="#2B2D3A" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>`,
   "mascot-2": m => `<ellipse cx="32" cy="35.5" rx="13.5" ry="13" fill="#E3B57A"/>
-    <path d="M19 27 C13 29 13 40 17 44 C20 42 21 34 22 29Z M45 27 C51 29 51 40 47 44 C44 42 43 34 42 29Z" fill="#9A6239"/>
+    <path class="as-ear-l" d="M19 27 C13 29 13 40 17 44 C20 42 21 34 22 29Z" fill="#9A6239"/>
+    <path class="as-ear-r" d="M45 27 C51 29 51 40 47 44 C44 42 43 34 42 29Z" fill="#9A6239"/>
     <ellipse cx="38.5" cy="31" rx="4" ry="3.6" fill="#C9935A"/>
     ${astroEyes(26.5, 37.5, 34.5, m)}${astroBlush(40)}
     <ellipse cx="32" cy="42" rx="6.5" ry="5" fill="#F6E1C1"/>
     <ellipse cx="32" cy="39.6" rx="2.8" ry="2" fill="#2A2230"/>
     <path d="M32 41.6v1.6 M32 43.2q-2 1.6 -3.6 .4 M32 43.2q2 1.6 3.6 .4" stroke="#2A2230" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-    ${m.happy ? `<path d="M30.4 44.4h3.2v2.2a1.6 1.6 0 0 1 -3.2 0z" fill="#F07A9B"/>` : ""}`,
+    <path class="as-tongue" d="M30.4 44.4h3.2v2.2a1.6 1.6 0 0 1 -3.2 0z" fill="#F07A9B" opacity="${m.happy ? 1 : 0}"/>`,
   "mascot-5": m => `<circle cx="16.5" cy="35" r="4.6" fill="#8B5A3C"/><circle cx="47.5" cy="35" r="4.6" fill="#8B5A3C"/>
     <circle cx="16.5" cy="35" r="2.5" fill="#F2C9A5"/><circle cx="47.5" cy="35" r="2.5" fill="#F2C9A5"/>
     <ellipse cx="32" cy="35" rx="13.5" ry="13.5" fill="#8B5A3C"/>
@@ -96,14 +100,15 @@ const ASTRO_FACES = {
     <path d="M27 25 q5 -4 10 0" stroke="#6E4630" stroke-width="1.6" fill="none" stroke-linecap="round"/>
     ${astroEyes(27.2, 36.8, 36, m)}${astroBlush(41, "#E8836F")}
     <path d="M30.6 40.5h2.8" stroke="#6E4630" stroke-width="1.2" stroke-linecap="round"/>
-    <path d="M28 43q4 3.2 8 0" stroke="#6E4630" stroke-width="1.3" fill="none" stroke-linecap="round"/>`,
-  "mascot-3": m => `<circle cx="18.5" cy="27" r="7" fill="#A3ABBE"/><circle cx="45.5" cy="27" r="7" fill="#A3ABBE"/>
-    <circle cx="18.5" cy="27" r="4" fill="#EEF0F6"/><circle cx="45.5" cy="27" r="4" fill="#EEF0F6"/>
+    <path class="as-mouth" d="M28 43q4 3.2 8 0" stroke="#6E4630" stroke-width="1.3" fill="none" stroke-linecap="round"/>`,
+  "mascot-3": m => `<g class="as-head">
+    <g class="as-ear-l"><circle cx="18.5" cy="27" r="7" fill="#A3ABBE"/><circle cx="18.5" cy="27" r="4" fill="#EEF0F6"/></g>
+    <g class="as-ear-r"><circle cx="45.5" cy="27" r="7" fill="#A3ABBE"/><circle cx="45.5" cy="27" r="4" fill="#EEF0F6"/></g>
     <ellipse cx="32" cy="37" rx="14" ry="12.5" fill="#B4BCCD"/>
     ${astroEyes(25.5, 38.5, 35, m)}${astroBlush(41)}
     <ellipse cx="32" cy="39.5" rx="3.6" ry="4.6" fill="#3A3F52"/>
     <ellipse cx="31" cy="37.6" rx="1" ry="1.4" fill="#fff" opacity=".35"/>
-    <path d="M29.5 45.5q2.5 1.8 5 0" stroke="#3A3F52" stroke-width="1.1" fill="none" stroke-linecap="round"/>`
+    <path d="M29.5 45.5q2.5 1.8 5 0" stroke="#3A3F52" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>`
 };
 
 /* Kasklı astronot (64×64): beyaz kask, karakter renginde vizör halkası, yaka ve anten ışığı; koyu cam,
@@ -142,9 +147,23 @@ function avatarPicker(cur, idp){
 }
 function wireAvatar(idp, onPick, root){
   const picks = (root || app).querySelectorAll(`[data-av][data-avp="${idp}"]`);
-  picks.forEach(b => b.onclick = () => {
-    picks.forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-checked", x === b); });
-    onPick(b.dataset.av);
+  picks.forEach(b => {
+    b.onanimationend = event => {
+      if (event.target === b && event.animationName === "asPick") b.classList.remove("is-picking");
+    };
+    b.onclick = () => {
+      const replay = b.classList.contains("is-picking");
+      picks.forEach(x => {
+        x.classList.remove("is-picking");
+        x.classList.toggle("on", x === b);
+        x.setAttribute("aria-checked", x === b);
+      });
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches){
+        if (replay) void getComputedStyle(b).animationName;
+        b.classList.add("is-picking");
+      }
+      onPick(b.dataset.av);
+    };
   });
 }
 

@@ -555,13 +555,74 @@ input[type=file]{padding:11px;font-size:14px;background:var(--shell)}
 .astro{stroke:none}
 .as-water{fill:var(--water);opacity:.75}
 /* hafif hareket: seçili avatar ve Bugün'deki figür yavaşça süzülür, ara sıra göz kırpar, anten ışığı yanıp söner */
-.av.on svg{animation:asFloat 4.5s ease-in-out infinite}
+.av.on svg{animation:asPickerFloat 5s ease-in-out infinite}
+@keyframes asPickerFloat{
+  0%,100%{transform:translateY(0) rotate(-3deg)}
+  50%{transform:translateY(-6px) rotate(3deg)}
+}
 .bc-fig .as-float{animation:asFloat 4.5s ease-in-out infinite}
 @keyframes asFloat{50%{transform:translateY(-2px)}}
 .av.on .as-eyes,.bc-fig .as-eyes{transform-box:fill-box;transform-origin:center;animation:asBlink 5.5s ease-in-out infinite}
+.av.on .as-eyes{animation-duration:3.5s}
 @keyframes asBlink{0%,92%,100%{transform:none}95%{transform:scaleY(.12)}}
 .av.on .as-ant,.bc-fig .as-ant{animation:asAnt 2.4s ease-in-out infinite}
 @keyframes asAnt{50%{opacity:.35}}
+
+@media (prefers-reduced-motion: no-preference){
+  .av.is-picking{animation:asPick .8s ease-in-out}
+  .av.is-picking :is(.as-ear-l,.as-ear-r,.as-eye-l,.as-tongue,.as-mouth,.as-head){
+    transform-box:fill-box;transform-origin:center
+  }
+  .av.is-picking[data-av="mascot-1"] :is(.as-ear-l,.as-ear-r){
+    transform-origin:center bottom;animation:asEarTwitch .8s ease-in-out
+  }
+  .av.is-picking[data-av="mascot-6"] .as-eyes{animation:none}
+  .av.is-picking[data-av="mascot-6"] .as-eye-l{animation:asWink .8s ease-in-out}
+  .av.is-picking[data-av="mascot-2"] :is(.as-ear-l,.as-ear-r){
+    transform-origin:center top;animation:asEarSwing .8s ease-in-out
+  }
+  .av.is-picking :is(.as-ear-l,.as-head){--as-direction:1}
+  .av.is-picking .as-ear-r,.av.is-picking[data-av="mascot-3"] .as-head{--as-direction:-1}
+  .av.is-picking .as-tongue{transform-origin:center top;animation:asTongue .8s ease-in-out}
+  .av.is-picking .as-mouth{animation:asGrin .8s ease-in-out}
+  .av.is-picking .as-head{animation:asTilt .8s ease-in-out}
+  .av.is-picking[data-av="mascot-3"] :is(.as-ear-l,.as-ear-r){animation:asEarGrow .8s ease-in-out}
+}
+@keyframes asPick{
+  0%,100%{transform:scale(1)}
+  25%{transform:scale(1.12)}
+  55%{transform:scale(.96)}
+}
+@keyframes asEarTwitch{
+  20%,70%{transform:none}
+  32%,56%{transform:rotate(calc(11deg * var(--as-direction)))}
+  44%{transform:rotate(calc(-7deg * var(--as-direction)))}
+}
+@keyframes asEarSwing{
+  20%,85%{transform:none}
+  38%{transform:rotate(calc(14deg * var(--as-direction)))}
+  62%{transform:rotate(calc(-8deg * var(--as-direction)))}
+}
+@keyframes asWink{
+  23%,68%{transform:none}
+  37%,49%{transform:scaleY(.12)}
+}
+@keyframes asTongue{
+  20%,86%{opacity:0;transform:scaleY(.4)}
+  38%,65%{opacity:1;transform:scaleY(1)}
+}
+@keyframes asGrin{
+  20%,88%{transform:none}
+  42%,64%{transform:scale(1.55,1.35)}
+}
+@keyframes asTilt{
+  18%,94%{transform:none}
+  46%,64%{transform:rotate(calc(12deg * var(--as-direction)))}
+}
+@keyframes asEarGrow{
+  22%,92%{transform:none}
+  46%,64%{transform:scale(1.12)}
+}
 .bc-star{fill:var(--star);stroke:color-mix(in srgb, var(--star) 60%, var(--constellation-star-stroke));stroke-width:.4}
 .bc-water{font-size:11.5px;font-weight:800;color:var(--ink);opacity:.8}
 .tag{font-style:normal;font-weight:800;font-size:11px;padding:1px 7px;border-radius:999px;margin-left:3px;white-space:nowrap;
