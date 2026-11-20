@@ -80,26 +80,40 @@ function scenePlanet(){
    Renkler tema değişkenlerinden: açık temada pembe / turuncu / kırmızı, koyu temada mor / mavi.
    Üst kenar maske ile yumuşar; katmanlar farklı hızlarda çok yavaş yana kayar. */
 const SK_NEB_H = 340;
+/* Noktalardan geçen yumuşak eğri (Catmull-Rom → kübik Bézier). */
+function sceneCurve(p){
+  let d = `M${p[0][0]} ${p[0][1]}`;
+  for (let i = 0; i < p.length - 1; i++){
+    const a = p[i - 1] || p[i], b = p[i], c = p[i + 1], e = p[i + 2] || c;
+    const f = n => n.toFixed(1);
+    d += `C${f(b[0] + (c[0] - a[0]) / 6)} ${f(b[1] + (c[1] - a[1]) / 6)} ${f(c[0] - (e[0] - b[0]) / 6)} ${f(c[1] - (e[1] - b[1]) / 6)} ${c[0]} ${c[1]}`;
+  }
+  return d;
+}
 function sceneNebula(){
-  /* [taban y, en küçük r, en büyük r, daire sayısı, tohum]: arkadaki katman en yükseğe çıkar */
-  const layers = [[210, 30, 58, 10, 3], [262, 24, 46, 12, 11], [306, 18, 36, 13, 23]];
-  const puffs = ([base, rMin, rMax, n, seed]) => {
-    const r = sceneRng(seed);
-    return Array.from({ length:n }, (_, k) => {
-      const rad = rMin + r() * (rMax - rMin);
-      const x = -24 + 448 * (k + .2 + r() * .6) / n;
-      const y = base - rad * (.25 + r() * .75);
-      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad.toFixed(1)}"/>`;
-    }).join("");
-  };
-  const sparks = [[70, 168, 4.2], [300, 150, 3.4], [352, 236, 2.8], [150, 252, 2.4]];
+  /* Düz illüstrasyon nebulası: soldan sağa yükselen dalgalı akış bantları. Dıştan içe 4 ton basamağı
+     (dış kenar koyu ve geniş, çekirdek açık ve dar); üstünde ucu kıvrılan duman kıvrımları. */
+  const bands = [
+    [[-30, 176], [40, 146], [104, 156], [168, 116], [236, 128], [298, 88], [356, 100], [430, 62]],
+    [[-30, 220], [50, 194], [122, 204], [192, 168], [262, 180], [330, 144], [430, 130]],
+    [[-30, 262], [70, 238], [150, 248], [222, 216], [300, 228], [372, 198], [430, 202]],
+    [[-30, 302], [80, 284], [170, 292], [252, 264], [332, 274], [430, 252]]
+  ];
+  const band = pts => sceneCurve(pts) + `L430 ${SK_NEB_H + 10}L-30 ${SK_NEB_H + 10}Z`;
+  /* duman kıvrımları: bant boyunca akıp ucunda helezon gibi kıvrılan kalın yuvarlak çizgiler */
+  const wisps = [
+    "M28 214C78 186 128 200 168 170C188 155 186 136 170 136C158 136 156 150 166 154",
+    "M196 250C240 226 280 236 320 204C338 190 334 172 318 174C306 176 308 190 318 190",
+    "M90 290C130 272 170 280 214 258"
+  ];
+  const sparks = [[70, 168, 4.2], [300, 150, 3.4], [352, 236, 2.8], [150, 252, 2.4], [250, 112, 3]];
   const spark = ([x, y, r], i) => {
     const q = r * .32;
     return `<path class="sk-neb-sp" style="animation-delay:${-i * 1.3}s" d="M${x} ${y - r}Q${x + q} ${y - q} ${x + r} ${y}Q${x + q} ${y + q} ${x} ${y + r}Q${x - q} ${y + q} ${x - r} ${y}Q${x - q} ${y - q} ${x} ${y - r}Z"/>`;
   };
   return `<svg class="sk-neb" viewBox="0 0 400 ${SK_NEB_H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    ${layers.map((l, i) => `<g class="sk-neb-l sk-neb-l${i + 1}">${puffs(l)}
-      <rect x="-60" y="${l[0]}" width="520" height="${SK_NEB_H - l[0] + 10}"/></g>`).join("")}
+    ${bands.map((b, i) => `<path class="sk-neb-l sk-neb-l${i + 1}" d="${band(b)}"/>`).join("")}
+    <g class="sk-neb-w">${wisps.map(d => `<path d="${d}"/>`).join("")}</g>
     ${sparks.map(spark).join("")}
   </svg>`;
 }

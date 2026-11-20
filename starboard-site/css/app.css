@@ -231,7 +231,7 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
   stroke-dasharray:.01 calc(var(--gap) - .01);animation:skDust var(--d) linear infinite}
 @keyframes skDust{to{stroke-dashoffset:-60}}
 
-/* alt nebula: Başlayalım hizasına kadar yükselen düz bulut katmanları, yalnızca karşılamada */
+/* alt nebula: Başlayalım hizasına kadar yükselen düz akış bantları ve duman kıvrımları, yalnızca karşılamada */
 .sk-neb{position:absolute;left:0;bottom:0;width:100%;height:48vh;opacity:0;transition:opacity 1.2s ease;
   -webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent)}
 .on-bg.welcome .sk-neb{opacity:1}
@@ -239,7 +239,11 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 .sk-neb-l1{fill:var(--neb-1);animation:skNeb 26s ease-in-out infinite alternate}
 .sk-neb-l2{fill:var(--neb-2);animation:skNeb 20s ease-in-out -7s infinite alternate-reverse}
 .sk-neb-l3{fill:var(--neb-3);animation:skNeb 32s ease-in-out -12s infinite alternate}
+.sk-neb-l4{fill:var(--neb-4);animation:skNeb 24s ease-in-out -4s infinite alternate-reverse}
 @keyframes skNeb{from{transform:translateX(-12px)}to{transform:translateX(12px)}}
+.sk-neb-w{fill:none;stroke:var(--neb-4);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;opacity:var(--neb-wisp-op);
+  animation:skNebW 18s ease-in-out infinite alternate}
+@keyframes skNebW{from{transform:translate(-6px,3px)}to{transform:translate(8px,-3px)}}
 .sk-neb-sp{fill:var(--neb-spark);opacity:0;animation:skNebSp 5.2s ease-in-out infinite}
 @keyframes skNebSp{0%,100%{opacity:0}50%{opacity:var(--neb-spark-op)}}
 

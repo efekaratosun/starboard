@@ -37,7 +37,8 @@
   --sky-star-op:.5; --sky-deep-op:0; --onboarding-logo-glow:rgba(255,61,110,0);
   --sky-planet:#879CB9; --sky-planet-ring:#7E94B1; --sky-planet-dust:#2A3654;
   /* alt nebula: açık tema = pembe / turuncu / kırmızı */
-  --neb-1:#FF5088; --neb-2:#F16B20; --neb-3:#E0303F; --neb-op:.08; --neb-spark:#F16B20; --neb-spark-op:.55;
+  --neb-1:#E0303F; --neb-2:#F16B20; --neb-3:#FF5088; --neb-4:#FF9FB8; --neb-op:.075; --neb-wisp-op:.24;
+  --neb-spark:#F16B20; --neb-spark-op:.55;
 
   /* marka: doygun turuncu-pembe. --band yazı ve ince çizgiler (beyazda AA),
      --band-vivid grafik ve dolgu, --grad hero öğeleri, --grad-btn beyaz yazılı butonlar,
@@ -116,7 +117,8 @@
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
   --sky-planet:#4D5C7B; --sky-planet-ring:#536585; --sky-planet-dust:#DCE4FF;
   /* alt nebula: koyu tema = mor / mavi */
-  --neb-1:#6E4BD8; --neb-2:#3C66D9; --neb-3:#8A5CF5; --neb-op:.15; --neb-spark:#C7A7FF; --neb-spark-op:.7;
+  --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-4:#B49BFF; --neb-op:.13; --neb-wisp-op:.3;
+  --neb-spark:#C7A7FF; --neb-spark-op:.7;
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
@@ -178,7 +180,8 @@
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
   --sky-planet:#4D5C7B; --sky-planet-ring:#536585; --sky-planet-dust:#DCE4FF;
   /* alt nebula: koyu tema = mor / mavi */
-  --neb-1:#6E4BD8; --neb-2:#3C66D9; --neb-3:#8A5CF5; --neb-op:.15; --neb-spark:#C7A7FF; --neb-spark-op:.7;
+  --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-4:#B49BFF; --neb-op:.13; --neb-wisp-op:.3;
+  --neb-spark:#C7A7FF; --neb-spark-op:.7;
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
