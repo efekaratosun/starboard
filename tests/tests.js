@@ -4397,7 +4397,14 @@ test("C-01: yedek önce doğrulanır, eski sürüm yüklenirken göç eder", asy
     state = await loadFixture();
     state.profile.name = "Mevcut kayıt";
     const original = state, before = JSON.stringify(state);
-    const load = data => importData(new Blob([JSON.stringify(data)]), status);
+    // Dosya okumasını bellekten tamamla; test doğrulama ve göçü denetler.
+    const loadText = text => importData({ text: async () => text }, status);
+    const load = data => loadText(JSON.stringify(data));
+    await loadText("{");
+    ok(status.textContent.includes("Bu dosya okunamadı"), status.textContent);
+    ok(state === original);
+    eq(JSON.stringify(state), before);
+    eq([confirmed, writes.length], [0, 0]);
     for (const [patch, message] of [
       [{ profile:{ ...old.profile, height:"178" } }, "Boy"],
       [{ profile:{ ...old.profile, age:0 } }, "Yaş"],
