@@ -211,12 +211,17 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 .sk-shoot{position:absolute;width:130px;height:2px;border-radius:2px;opacity:0;transform-origin:0 50%;
   background:linear-gradient(90deg,transparent,var(--sky-star));box-shadow:0 0 8px var(--sky-star)}
 .on-w-brand{position:relative;isolation:isolate}
-.sk-planet{position:absolute;z-index:0;top:-78px;right:-78px;width:210px;pointer-events:none;
+.sk-planet{position:absolute;z-index:0;top:-150px;left:-58px;width:330px;pointer-events:none;
   opacity:.22;animation:skDrift 12s ease-in-out infinite}
 .sk-planet-disc{fill:var(--sky-planet)}
 .sk-planet-shade{fill:var(--moon-crater-fill)}
-.sk-planet-ring{fill:none;stroke:var(--sky-planet-ring);stroke-width:2.5}
+.sk-planet-ring{fill:none;stroke:var(--sky-planet-ring)}
+.sk-planet-ring path:nth-child(even){stroke:color-mix(in srgb,var(--sky-planet-ring) 60%,var(--sky-planet))}
+.sk-planet-ring path:first-child{stroke:var(--sky-planet)}
 @keyframes skDrift{50%{transform:translate(2px,-4px)}}
+@media (max-height:640px){
+  .sk-planet{top:-112px;left:-42px;width:276px}
+}
 
 /* karşılama yerleşimi: logo + slogan + düğme üstte tek blok, bayraklar ve gizlilik altta */
 main.on.is-w{justify-content:center}
