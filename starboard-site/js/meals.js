@@ -152,7 +152,7 @@ function moonInfo(got, target){
 const MOON_R = 34;
 const moonShift = pct => +(-2 * MOON_R * clamp(pct, 0, 1)).toFixed(1);
 
-function moonCraters(id){
+function moonCraters(id, limit = Infinity){
   let seed = 0;
   for (const letter of id) seed = Math.imul(31, seed) + letter.charCodeAt(0);
   // Mulberry32: aynı makro her çizimde aynı yüzeyi kullanır.
@@ -167,7 +167,7 @@ function moonCraters(id){
   const medium = Math.min(2 + Math.floor(random() * 2), count - large - 2);
   const craters = [];
   // Önce büyük kraterleri yerleştir, ardından boşlukları küçüklerle doldur.
-  for (let i = 0; i < count; i++){
+  for (let i = 0; i < Math.min(count, limit); i++){
     const [min, max] = i < large ? [5.5, 7] : i < large + medium ? [3, 4] : [1.3, 2.2];
     const r = +(min + random() * (max - min)).toFixed(1);
     while (true){

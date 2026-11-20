@@ -139,12 +139,18 @@ const ROUTINE_IDEAS = ["D vitamini", tx("Multivitamin"), tx("Omega-3"), tx("Magn
 /* ---- ilk giriş: adım adım ---- */
 let obStep = 0, ob = null;
 
+/* Birim başlangıcı: bayrak menüsünden yapılan seçim (dil değişince sayfa yenilenir) > Türkçe = metrik > bölge tahmini. */
+function obUnitsStart(){
+  if (window.STARBOARD_UNITS === "metric" || window.STARBOARD_UNITS === "imperial") return window.STARBOARD_UNITS;
+  try { const u = sessionStorage.getItem(OB_UNIT_KEY); if (UNIT_SYSTEMS.some(x => x[0] === u)) return u; } catch(e){}
+  return LANG === "tr" ? "metric" : detectUnits();
+}
 function obDefaults(){
   return { name:"", sex:"", avatar:undefined,
     goal:"maintain", targetWeight:null, activity:"moderate", sleepMin:7,
     venue:"gym", days:null, avoid:[],
     diet:"hepsi", mealSet:1, cuisine:LANG === "tr" ? "tr" : "intl", exclude:[], birthParts:["", "", ""],
-    theme:"auto", routines:[], units:detectUnits() };
+    theme:"auto", routines:[], units:obUnitsStart() };
 }
 const OB_DEFAULT_DAYS = a => PATTERN[(a === "sedentary" || a === "light") ? 3 : a === "moderate" ? 4 : a === "veryActive" ? 7 : 5].slice();
 
@@ -468,20 +474,25 @@ const obList = () => OB_STEPS.filter(s => (s.id !== "remind" || IS_NATIVE) && (s
 const OB_LOGO = BRAND_SVG.replace(/<rect x=/g, '<rect class="lg-b" x=').replace('<path d=', '<path class="lg-s" d=');
 let obBusy = false;
 
+/* Karşılama: logo + slogan + düğme tek blok; altta iki bayrak ve gizlilik satırı.
+   Dil yazısı yok: bayraklar simge. İngiltere bayrağı birim menüsünü açar. */
+const OB_UNIT_KEY = "starboard-onb-units";
+const OB_UNIT_OPTS = [["metric", "kg / cm"], ["imperial", "lb / ft-in"]];
 function obWelcome(){
+  const flag = k => `<button type="button" class="fl${LANG === k ? " on" : ""}" data-flag="${k}" aria-label="${LANGS.find(l => l[0] === k)[1]}" aria-pressed="${LANG === k}"${k === "en" ? ' aria-haspopup="menu" aria-expanded="false"' : ""}>${FLAG_SVG[k]}</button>`;
   return `<div class="on-q on-w">
-    <span class="on-logo">${OB_LOGO}</span>
-    <h1>${tx("Starboard")}</h1>
-    <p class="on-tag">${tx("Sağlığın için tek bir pano.")}</p>
-    <ul class="on-feat">
-      <li>${iconBox("day")}<span><b>${tx("Günün hedefleri tek listede")}</b></span></li>
-      <li>${iconBox("plan")}<span><b>${tx("Sana göre kurulur")}</b></span></li>
-      <li>${iconBox("star4")}<span><b>${tx("Her tamamlanan gün bir yıldız")}</b></span></li>
-    </ul>
-    <div class="on-foot">${LANGS.map(([k, l]) =>
-      `<button type="button" class="link" aria-pressed="${LANG === k}" onclick="setLang('${k}')"><span aria-hidden="true">${k === "tr" ? "🇹🇷" : "🇬🇧"}</span> ${l}</button>`).join(" ")}</div>
-    ${og(tx("Birimler"), obChips("obunit", UNIT_SYSTEMS.map(([k, l]) => [k, l, ob.units === k])))}
-    <div class="on-foot">${tx("Veriler yalnızca bu cihazda saklanır.")}</div>
+    <div class="on-w-brand">
+      ${scenePlanet()}
+      <span class="on-logo" role="img" aria-label="Starboard">${OB_LOGO}</span>
+    </div>
+    <h1 class="sr-only">Starboard</h1>
+    <p class="on-tag on-slogan">${tx("Her gün, bir önceki günden daha parlak.")}</p>
+    <div class="on-w-foot">
+      <div class="fl-row">${flag("tr")}<span class="fl-w">${flag("en")}
+        <div class="fl-menu" id="fl-menu" role="menu" hidden>${OB_UNIT_OPTS.map(([k, l]) =>
+          `<button type="button" role="menuitemradio" aria-checked="${ob.units === k}" data-obunit="${k}"><span>${l}</span><i aria-hidden="true">${icon("check")}</i></button>`).join("")}</div></span></div>
+      <p class="on-privacy">${tx("Veriler yalnızca bu cihazda saklanır")}</p>
+    </div>
   </div>`;
 }
 
@@ -571,7 +582,7 @@ function renderOnboarding(dir){
   const st = list[obStep];
   let stage = document.getElementById("on-stage");
   if (!stage){
-    app.innerHTML = `<div class="on-bg" id="on-bg" aria-hidden="true"><i></i><i></i>${[0,1,2,3,4,5].map(() => `<b>${icon("star4")}</b>`).join("")}</div>
+    app.innerHTML = `<div class="on-bg" id="on-bg" aria-hidden="true"></div>
     <main class="on">
       <div class="on-top hide" id="on-top">
         <button class="on-back" id="ob-back" aria-label="${tx("Geri")}">${icon("prev")}</button>
@@ -581,15 +592,18 @@ function renderOnboarding(dir){
       <div class="on-nav" id="on-nav"><button id="ob-next">${tx("İleri")}</button></div>
     </main>`;
     stage = document.getElementById("on-stage");
+    sceneMount(document.getElementById("on-bg"));
   }
   const n = list.length - 2;                         /* karşılama ve özet sayılmaz */
   const first = st.id === "welcome", sum = st.id === "summary";
   document.getElementById("on-top").classList.toggle("hide", first);
+  document.getElementById("on-bg").classList.toggle("welcome", first);
+  document.querySelector("main.on").classList.toggle("is-w", first);
+  sceneActive(first);
   const bar = document.getElementById("on-bar");
   bar.firstElementChild.style.width = (sum ? 100 : obStep / n * 100).toFixed(1) + "%";
   bar.setAttribute("aria-valuemax", n); bar.setAttribute("aria-valuenow", Math.min(obStep, n));
   bar.setAttribute("aria-label", sum ? tx("Sorular tamam") : tx("Profil oluşturma ilerlemesi"));
-  document.getElementById("on-bg").style.setProperty("--p", (obStep / (list.length - 1)).toFixed(3));
   document.getElementById("on-nav").classList.remove("hide");
   document.getElementById("ob-next").textContent = first ? tx("Başlayalım") : sum ? tx("Başla") : tx("İleri");
 
@@ -683,13 +697,30 @@ function wireOb(st){
     obErr("");
   });
 
-  /* Karşılama ekranında ölçü birimi seçimi. */
-  app.querySelectorAll("[data-obunit]").forEach(b => b.onclick = () => {
-    ob.units = b.dataset.obunit;
-    app.querySelectorAll("[data-obunit]").forEach(x => {
-      x.classList.toggle("sel", x === b); x.setAttribute("aria-pressed", String(x === b));
+  /* Karşılama: bayraklar. Türkiye = Türkçe + metrik. İngiltere = menü; seçilen birimle İngilizce. */
+  const menu = document.getElementById("fl-menu"), enBtn = app.querySelector("[data-flag=en]");
+  if (menu){
+    const setOpen = o => { menu.hidden = !o; enBtn.setAttribute("aria-expanded", String(o)); };
+    const pickLang = (l, units) => {
+      ob.units = units;
+      try { sessionStorage.setItem(OB_UNIT_KEY, units); } catch(e){}
+      if (l !== LANG) setLang(l);          /* sayfa yenilenir; birim sessionStorage ile geri gelir */
+    };
+    app.querySelector("[data-flag=tr]").onclick = () => { setOpen(false); pickLang("tr", "metric"); };
+    enBtn.onclick = e => { e.stopPropagation(); setOpen(menu.hidden); };
+    menu.querySelectorAll("[data-obunit]").forEach(b => b.onclick = e => {
+      e.stopPropagation();
+      menu.querySelectorAll("[data-obunit]").forEach(x => x.setAttribute("aria-checked", String(x === b)));
+      pickLang("en", b.dataset.obunit);
+      setOpen(false);
     });
-  });
+    const away = e => {
+      if (!document.body.contains(menu)){ document.removeEventListener("pointerdown", away); document.removeEventListener("keydown", esc); return; }
+      if (!menu.hidden && !menu.parentElement.contains(e.target)) setOpen(false);
+    };
+    const esc = e => { if (e.key === "Escape" && !menu.hidden){ setOpen(false); enBtn.focus(); } };
+    document.addEventListener("pointerdown", away); document.addEventListener("keydown", esc);
+  }
 
   /* çok seçimli rozetler */
   const toggle = (attr, field, cast) => app.querySelectorAll(`[data-${attr}]`).forEach(b => b.onclick = () => {
