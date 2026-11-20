@@ -189,7 +189,7 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 .on-s .on-nav{margin-top:auto;padding-top:22px}
 
 /* ===== giriş: hareket ===== */
-/* ===== karşılama sahnesi: gökyüzü, yıldızlar, aylar (js/welcome-scene.js) ===== */
+/* ===== karşılama sahnesi: gökyüzü, yıldızlar ve halkalı gezegen ===== */
 .on-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;--px:0;--py:0}
 .sk-sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky-top),var(--sky-bot));opacity:0;transition:opacity 1s ease}
 .on-bg.welcome .sk-sky{opacity:1}
@@ -210,27 +210,20 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 @keyframes skTw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:var(--sky-star-op);transform:scale(1)}}
 .sk-shoot{position:absolute;width:130px;height:2px;border-radius:2px;opacity:0;transform-origin:0 50%;
   background:linear-gradient(90deg,transparent,var(--sky-star));box-shadow:0 0 8px var(--sky-star)}
-.sk-moon{display:none;position:absolute;opacity:var(--sky-moon-op);animation:skDrift 12s ease-in-out infinite}
-.on-bg.welcome .sk-moon{display:block}
-.sk-moon-kcal{width:78px;left:6%;top:calc(env(safe-area-inset-top) + 7%)}
-.sk-moon-carb{width:56px;right:5%;top:calc(env(safe-area-inset-top) + 17%);animation-duration:14s;animation-delay:-5s}
-.sk-moon-protein{width:40px;left:5%;bottom:calc(env(safe-area-inset-bottom) + 105px);animation-duration:10s;animation-delay:-3s}
-.sk-moon-shade{fill:var(--moon-crater-fill)}
+.on-w-brand{position:relative;isolation:isolate}
+.sk-planet{position:absolute;z-index:0;top:-78px;right:-78px;width:210px;pointer-events:none;
+  opacity:.22;animation:skDrift 12s ease-in-out infinite}
+.sk-planet-disc{fill:var(--sky-planet)}
+.sk-planet-shade{fill:var(--moon-crater-fill)}
+.sk-planet-ring{fill:none;stroke:var(--sky-planet-ring);stroke-width:2.5}
 @keyframes skDrift{50%{transform:translate(2px,-4px)}}
-@media (max-height:640px){
-  .sk-moon-kcal,.sk-moon-carb{top:calc(env(safe-area-inset-top) + 24px)}
-  .on-bg.welcome .sk-moon-protein{display:none}
-}
-@media (max-height:500px){
-  .on-bg.welcome .sk-moon{display:none}
-}
 
 /* karşılama yerleşimi: logo + slogan + düğme üstte tek blok, bayraklar ve gizlilik altta */
 main.on.is-w{justify-content:center}
 .is-w .on-top{display:none}
 .is-w .on-stage{flex:0 0 auto}
 .is-w .on-nav{position:static;margin-top:28px;width:min(100%,320px);align-self:center}
-.on-w .on-logo{width:150px;height:150px;border-radius:34px;box-shadow:0 22px 50px var(--onboarding-logo-shadow);filter:drop-shadow(0 0 28px var(--onboarding-logo-glow))}
+.on-w .on-logo{position:relative;z-index:1;width:150px;height:150px;border-radius:34px;box-shadow:0 22px 50px var(--onboarding-logo-shadow);filter:drop-shadow(0 0 28px var(--onboarding-logo-glow))}
 .on-slogan{margin:26px auto 0;max-width:15em;font-size:19px;font-weight:600;line-height:1.38;color:var(--ink);text-wrap:balance;letter-spacing:.1px}
 .on-w-foot{position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom));z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;
   animation:obFade .9s ease .5s backwards}

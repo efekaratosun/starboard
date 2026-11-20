@@ -4557,7 +4557,7 @@ test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot"
   }
 });
 
-test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve kraterli aylar", async () => {
+test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve halkalı gezegen", async () => {
   const keep = { st:state, ob, set:window.setLang, sess:sessionStorage.getItem("starboard-onb-units") };
   let asked = null;
   window.setLang = l => { asked = l; };
@@ -4599,18 +4599,20 @@ test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve k
     w.querySelector("[data-flag=tr]").click();
     eq(ob.units, "metric");
     eq(asked, null, "zaten Türkçe: sayfa yenilenmemeli");
-    /* Sahne: yıldız katmanları, kayan yıldız ve Beslenme ile aynı krater çizimi */
+    /* Yıldızlar arka planda; gezegen logoya sabit, halka diskin iki yanında. */
     const bg = document.getElementById("on-bg");
     ok(bg.classList.contains("welcome"));
     ok(bg.querySelectorAll(".sk-t").length >= 20, "yanıp sönen yıldız az");
     ok(bg.querySelector(".sk-shoot"), "kayan yıldız yok");
-    ok(!bg.querySelector("canvas,[class*=planet],[class^=pl-]"), "gezegen olmamalı");
-    const moons = [...bg.querySelectorAll("svg.sk-moon")];
-    eq(moons.length, 3);
-    for (const moon of moons){
-      eq(moon.getAttribute("aria-hidden"), "true");
-      ok(moon.querySelector(".mn-crater") && moon.querySelector(".sk-moon-shade") && moon.querySelector(".mn-spark"));
-    }
+    ok(!bg.querySelector("canvas"));
+    const planets = [...app.querySelectorAll("svg.sk-planet")];
+    eq(planets.length, 1);
+    const [planet] = planets;
+    eq(planet.getAttribute("aria-hidden"), "true");
+    ok(planet.matches(".on-w-brand > .sk-planet"));
+    ok(planet.nextElementSibling.matches(".on-logo"));
+    eq([...planet.children].map(part => part.getAttribute("class")), ["sk-planet-ring", "sk-planet-disc", "sk-planet-ring"]);
+    ok(planet.querySelector(".sk-planet-disc .mn-crater") && planet.querySelector(".sk-planet-shade"));
     /* Sürüm etiketi: 'v' + numara, 'Sürüm' kelimesi yok */
     const main = await (await fetch("../starboard-site/js/main.js")).text();
     ok(main.includes('"v" + APP_VERSION') && !main.includes('tx("Sürüm {0}", [APP_VERSION]);\n  document'), "sürüm etiketi v + numara olmalı");
@@ -4619,7 +4621,7 @@ test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve k
     ok(sw.includes('"js/welcome-scene.js"'), "welcome-scene.js sw.js SHELL listesinde değil");
     const css = await (await fetch("../starboard-site/css/tokens.css")).text();
     for (const v of ["--sky-top", "--sky-bot", "--sky-star", "--sky-deep-op"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
-    ok(!/--planet-/.test(css), "gezegen renk jetonları kalmamalı");
+    for (const v of ["--sky-planet", "--sky-planet-ring"]) ok(css.includes(v + ":"), v + " tokens.css'te yok");
   } finally {
     sceneActive(false); sceneState = null;
     window.setLang = keep.set; state = keep.st; ob = keep.ob; app.innerHTML = "";

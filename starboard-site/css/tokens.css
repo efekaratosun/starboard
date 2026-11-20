@@ -34,7 +34,8 @@
   --shell:#ECEEF6; --track:#E2E5EF; --tint:#FFE7DF;
   /* karşılama sahnesi: açık tema = soluk gündüz gökyüzü */
   --sky-top:#D9E4F7; --sky-bot:#F3F4F9; --sky-star:#6B76B8; --sky-star-warm:#C8892E; --sky-star-cool:#5A7BD6;
-  --sky-star-op:.5; --sky-deep-op:0; --sky-moon-op:.48; --onboarding-logo-glow:rgba(255,61,110,0);
+  --sky-star-op:.5; --sky-deep-op:0; --onboarding-logo-glow:rgba(255,61,110,0);
+  --sky-planet:#667A97; --sky-planet-ring:#7B8DA8;
 
   /* marka: doygun turuncu-pembe. --band yazı ve ince çizgiler (beyazda AA),
      --band-vivid grafik ve dolgu, --grad hero öğeleri, --grad-btn beyaz yazılı butonlar,
@@ -110,7 +111,8 @@
   --shell:#121A38; --track:#222C55; --tint:#3A1630;
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
-  --sky-star-op:1; --sky-deep-op:1; --sky-moon-op:.76; --onboarding-logo-glow:rgba(255,90,150,.55);
+  --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
+  --sky-planet:#7786A5; --sky-planet-ring:#98A7C4;
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
@@ -169,7 +171,8 @@
   --shell:#121A38; --track:#222C55; --tint:#3A1630;
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
-  --sky-star-op:1; --sky-deep-op:1; --sky-moon-op:.76; --onboarding-logo-glow:rgba(255,90,150,.55);
+  --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
+  --sky-planet:#7786A5; --sky-planet-ring:#98A7C4;
 
   --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
   --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);

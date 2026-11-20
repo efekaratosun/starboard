@@ -481,7 +481,10 @@ const OB_UNIT_OPTS = [["metric", "kg / cm"], ["imperial", "lb / ft-in"]];
 function obWelcome(){
   const flag = k => `<button type="button" class="fl${LANG === k ? " on" : ""}" data-flag="${k}" aria-label="${LANGS.find(l => l[0] === k)[1]}" aria-pressed="${LANG === k}"${k === "en" ? ' aria-haspopup="menu" aria-expanded="false"' : ""}>${FLAG_SVG[k]}</button>`;
   return `<div class="on-q on-w">
-    <span class="on-logo" role="img" aria-label="Starboard">${OB_LOGO}</span>
+    <div class="on-w-brand">
+      ${scenePlanet()}
+      <span class="on-logo" role="img" aria-label="Starboard">${OB_LOGO}</span>
+    </div>
     <h1 class="sr-only">Starboard</h1>
     <p class="on-tag on-slogan">${tx("Her gün, bir önceki günden daha parlak.")}</p>
     <div class="on-w-foot">

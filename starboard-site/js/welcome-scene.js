@@ -35,13 +35,16 @@ function sceneTwinkles(n, seed){
   return h;
 }
 
-function sceneMoon(id){
+function scenePlanet(){
   const edge = 48 - MOON_R;
-  return `<svg class="sk-moon sk-moon-${id}" viewBox="0 0 96 96" aria-hidden="true" style="--c:var(--moon-${id})">
-    <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
-    ${moonCraters(id)}
-    <path class="sk-moon-shade" d="M48 ${edge}a${MOON_R} ${MOON_R} 0 0 1 0 ${2 * MOON_R}A44 44 0 0 0 48 ${edge}Z"/>
-    <path class="mn-spark" d="M84 10Q85 16 91 17Q85 18 84 24Q83 18 77 17Q83 16 84 10Z"/>
+  return `<svg class="sk-planet" viewBox="0 0 112 86" aria-hidden="true">
+    <path class="sk-planet-ring" transform="rotate(-22 56 42)" d="M3 42a53 14 0 0 1 106 0"/>
+    <g class="sk-planet-disc" transform="translate(8 -6)">
+      <circle cx="48" cy="48" r="${MOON_R}"/>
+      ${moonCraters("carb")}
+      <path class="sk-planet-shade" d="M48 ${edge}a${MOON_R} ${MOON_R} 0 0 1 0 ${2 * MOON_R}A44 44 0 0 0 48 ${edge}Z"/>
+    </g>
+    <path class="sk-planet-ring" transform="rotate(-22 56 42)" d="M109 42a53 14 0 0 1 -106 0"/>
   </svg>`;
 }
 
@@ -50,7 +53,6 @@ function sceneHTML(){
   <div class="sk-par sk-par1">${sceneStarLayer("a", 110, 0.6, 7)}${sceneStarLayer("deep", 90, 0.6, 31)}</div>
   <div class="sk-par sk-par2">${sceneStarLayer("b", 46, 1.0, 13)}${sceneStarLayer("deep b", 36, 1.0, 41)}</div>
   <div class="sk-par sk-par3">${sceneStarLayer("c", 16, 1.5, 19)}<div class="sk-tws">${sceneTwinkles(30, 5)}</div></div>
-  ${["kcal", "carb", "protein"].map(sceneMoon).join("")}
   <i class="sk-shoot"></i>`;
 }
 
