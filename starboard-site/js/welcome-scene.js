@@ -153,6 +153,76 @@ function sceneShoot(){
   s.timer = setTimeout(sceneShoot, 6000 + Math.random() * 9000);
 }
 
+/* ---- ışık hızı geçişi ----
+   Başlayalım'a basınca: logonun merkezinden dışarı doğru uzayan yıldız çizgileri hızlanarak ekrandan çıkar,
+   yıldız katmanları odaktan büyüyerek söner, gezegen yanımızdan geçer gibi büyüyüp kaybolur, nebula aşağı
+   kayar, yazı ve düğme öne doğru açılarak söner; sonunda merkezde kısa bir ışık parlar ve sonraki ekran gelir.
+   Yalnızca transform / opacity (Web Animations); hareket azaltmada atlanır. */
+const SK_WARP_MS = 760;
+function sceneWarp(done){
+  const s = sceneState, bg = s && s.bg;
+  if (!bg || !bg.animate || sceneReduced() || !document.body.contains(bg)){ done(); return; }
+  if (s.warping) return;
+  s.warping = true;
+  if (s.timer){ clearTimeout(s.timer); s.timer = 0; }
+  const D = SK_WARP_MS, rnd = Math.random, accel = "cubic-bezier(.4,0,.75,.55)";
+  const logo = document.querySelector(".on-w .on-logo"), lr = logo && logo.getBoundingClientRect();
+  const cx = lr ? lr.left + lr.width / 2 : innerWidth / 2, cy = lr ? lr.top + lr.height / 2 : innerHeight * .4;
+  const far = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 60;
+  const box = document.createElement("div");
+  box.className = "sk-warp";
+  box.style.left = cx + "px"; box.style.top = cy + "px";
+  for (let i = 0; i < 110; i++){
+    const el = document.createElement("i"), a = rnd() * 360, r0 = 20 + rnd() * far * .35, len = 60 + rnd() * 200, delay = rnd() * D * .6;
+    el.className = i % 5 === 0 ? "w" : i % 3 === 0 ? "c" : "";
+    el.style.width = len.toFixed(0) + "px";
+    box.appendChild(el);
+    el.animate([
+      { transform:`rotate(${a.toFixed(1)}deg) translateX(${r0.toFixed(0)}px) scaleX(.05)`, opacity:0 },
+      { opacity:1, offset:.15 },
+      { transform:`rotate(${a.toFixed(1)}deg) translateX(${(far + len).toFixed(0)}px) scaleX(1)`, opacity:.9 }
+    ], { duration:D - delay, delay, easing:accel, fill:"forwards" });
+  }
+  const flash = document.createElement("i");
+  flash.className = "sk-flash";
+  box.appendChild(flash);
+  flash.animate([{ opacity:0, transform:"scale(.3)" }, { opacity:0, offset:.5 }, { opacity:.85, transform:"scale(1.4)", offset:.8 }, { opacity:0, transform:"scale(2.6)" }],
+    { duration:D + 120, easing:"ease-out", fill:"forwards" });
+  bg.appendChild(box);
+
+  const anims = [];
+  const run = (el, frames, opt) => { if (el) anims.push([el, el.animate(frames, { duration:D, easing:accel, fill:"forwards", ...opt })]); };
+  const origin = `${cx}px ${cy}px`;
+  bg.querySelectorAll(".sk-par").forEach((p, i) => {
+    p.style.transformOrigin = origin;
+    run(p, [{ transform:"scale(1)", opacity:1 }, { transform:`scale(${(1.5 + i * .35).toFixed(2)})`, opacity:0 }]);
+  });
+  run(bg.querySelector(".sk-neb"), [{ transform:"none", opacity:1 }, { transform:"translateY(22%)", opacity:0 }], { duration:D * .8, easing:"ease-in" });
+  const w = document.querySelector(".on-w"), planet = w && w.querySelector(".sk-planet");
+  /* gezegen kendi soluk opaklığından başlar (filigran parlamasın) */
+  const pOp = planet ? getComputedStyle(planet).opacity : 1;
+  run(planet, [{ transform:"scale(1)", opacity:pOp }, { transform:"scale(2.8) rotate(-6deg)", opacity:0 }]);
+  run(logo, [{ transform:"scale(1)", opacity:1 }, { transform:"scale(1.16)", opacity:1, offset:.35 }, { transform:"scale(.55)", opacity:0 }]);
+  run(w && w.querySelector(".on-slogan"), [{ transform:"none", opacity:1 }, { transform:"translateY(14px) scale(1.06)", opacity:0 }], { duration:D * .55, easing:"ease-in" });
+  run(w && w.querySelector(".on-w-foot"), [{ transform:"none", opacity:1 }, { transform:"translateY(26px)", opacity:0 }], { duration:D * .5, easing:"ease-in" });
+  const nav = document.getElementById("on-nav");
+  run(nav, [{ transform:"none", opacity:1 }, { transform:"translateY(18px) scale(.96)", opacity:0 }], { duration:D * .5, easing:"ease-in" });
+
+  setTimeout(() => {
+    s.warping = false;
+    done();
+    /* sonraki ekran gelirken: yıldızlar yeniden belirir, kalıcı öğeler normale döner, çizgiler kalkar */
+    for (const [el, a] of anims){
+      if (!el.isConnected) continue;
+      if (el === nav || el.classList.contains("sk-par")){
+        a.cancel();
+        el.animate([{ opacity:0 }, { opacity:1 }], { duration:600, easing:"ease-out" });
+      } else if (el.classList.contains("sk-neb")) setTimeout(() => a.cancel(), 1300);   /* soluk geçiş bitince bırak */
+    }
+    setTimeout(() => box.remove(), 260);
+  }, D - 60);
+}
+
 /* Karşılama görünürken: kayan yıldız zamanlayıcısı ve fare / eğim dinleyicisi açık. */
 function sceneActive(on){
   const s = sceneState;

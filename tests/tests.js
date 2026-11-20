@@ -4646,3 +4646,31 @@ test("karşılama: logo + tek slogan, dikdörtgen bayraklar, birim menüsü ve h
     if (keep.sess === null) sessionStorage.removeItem("starboard-onb-units"); else sessionStorage.setItem("starboard-onb-units", keep.sess);
   }
 });
+
+test("karşılama: Başlayalım ışık hızı geçişiyle ilk soruya geçer, çizgiler sonra temizlenir", async () => {
+  const keep = { st:state, ob, step:obStep };
+  try {
+    state = null; ob = null; obStep = 0; app.innerHTML = "";
+    renderOnboarding();
+    const bg = document.getElementById("on-bg");
+    document.getElementById("ob-next").click();
+    if (reduceMotion()){
+      ok(!bg.querySelector(".sk-warp"), "hareket azaltmada geçiş oynamamalı");
+    } else {
+      const warp = bg.querySelector(".sk-warp");
+      ok(warp, "ışık hızı çizgileri yok");
+      ok(warp.querySelectorAll("i").length >= 60, "çizgi az");
+      eq(obStep, 0, "geçiş bitmeden adım değişmemeli");
+      document.getElementById("ob-next").click();                 /* çift dokunuş ikinci geçiş başlatmaz */
+      eq(bg.querySelectorAll(".sk-warp").length, 1);
+      await new Promise(r => setTimeout(r, SK_WARP_MS + 450));
+      ok(!bg.querySelector(".sk-warp"), "geçişten sonra çizgiler kalkmalı");
+    }
+    await new Promise(r => setTimeout(r, 300));
+    eq(obStep, 1, "ilk soruya geçmeli");
+    ok(!bg.classList.contains("welcome"));
+  } finally {
+    sceneActive(false); sceneState = null;
+    state = keep.st; ob = keep.ob; obStep = keep.step; app.innerHTML = "";
+  }
+});

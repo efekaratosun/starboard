@@ -210,6 +210,14 @@ main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px +
 @keyframes skTw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:var(--sky-star-op);transform:scale(1)}}
 .sk-shoot{position:absolute;width:130px;height:2px;border-radius:2px;opacity:0;transform-origin:0 50%;
   background:linear-gradient(90deg,transparent,var(--sky-star));box-shadow:0 0 8px var(--sky-star)}
+/* ışık hızı geçişi: odaktan dışarı uzayan yıldız çizgileri ve sondaki kısa parlama */
+.sk-warp{position:absolute;width:0;height:0;pointer-events:none;z-index:1}
+.sk-warp i{position:absolute;left:0;top:-1px;height:2px;border-radius:2px;opacity:0;transform-origin:0 50%;
+  background:linear-gradient(90deg,transparent,var(--sky-star));box-shadow:0 0 6px var(--sky-star)}
+.sk-warp i.w{background:linear-gradient(90deg,transparent,var(--sky-star-warm));box-shadow:0 0 6px var(--sky-star-warm)}
+.sk-warp i.c{background:linear-gradient(90deg,transparent,var(--sky-star-cool));box-shadow:0 0 6px var(--sky-star-cool)}
+.sk-warp .sk-flash{width:260px;height:260px;left:-130px;top:-130px;border-radius:50%;box-shadow:none;transform-origin:center;
+  background:radial-gradient(circle,var(--sky-star) 0,color-mix(in srgb,var(--sky-star) 35%,transparent) 30%,transparent 68%)}
 .on-w-brand{position:relative;isolation:isolate}
 .sk-planet{position:absolute;z-index:0;top:-22px;left:calc(50% + 4px);translate:-50% -50%;
   width:min(398px,calc(100vw + 8px));pointer-events:none;
