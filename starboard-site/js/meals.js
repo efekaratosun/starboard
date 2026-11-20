@@ -457,7 +457,7 @@ const myFoodList = () => Object.entries(state.customFoods || {}).filter(([, f]) 
 
 function myFoodPre(key){
   const f = (state.customFoods || {})[key];
-  return { edit: key, bc: f.bc, n: f.n, p: f.p, c: f.c, f: f.f, alk: f.alk || 0, lif: f.lif, cancel: true,
+  return { edit: key, bc: f.bc, n: f.n, p: f.p, c: f.c, f: f.f, alk: f.alk, lif: f.lif, cancel: true,
     title: f.bc ? tx("Barkod {0}", [esc(f.bc)]) : null };
 }
 
@@ -541,6 +541,21 @@ function addPanel(){
    n, p, c, f, alk, lif ile alanlar önceden dolar; notes [[html, uyarı mı]]; title ve saveLabel
    html'dir; bc barkod numarası, br marka, serving porsiyon gramı, src:"off";
    requireAll: üç makro da dolu olmalı (boş "bilinmiyor" demek, 0 yazılırsa 0'dır). */
+const FOOD_MACROS = ["p", "c", "f"];
+const FOOD_VALUES = [...FOOD_MACROS, "lif", "alk"];
+const FOOD_FIELDS = { p:"cf-p", c:"cf-c", f:"cf-f", lif:"cf-l", alk:"cf-alk" };
+
+function customFoodValueError(food){
+  const outside = FOOD_VALUES.find(k => !inRange(food[k], 0, 100));
+  if (outside) return { fields:[outside], message:"100 gram için 0 ile 100 arasında bir sayı gir." };
+  const combined = food.alk ? [...FOOD_MACROS, "alk"] : FOOD_MACROS;
+  if (combined.reduce((total, k) => total + food[k], 0) > 105)
+    return { fields:combined, message:"Protein, karbonhidrat, yağ ve varsa alkolün toplamı 105 gramı geçmesin." };
+  if (food.lif > food.c + 1)
+    return { fields:["lif", "c"], message:"Lif, karbonhidrattan en fazla 1 gram fazla olabilir." };
+  return null;
+}
+
 function customFoodForm(pre){
   pre = pre || {};
   const val = v => v == null ? "" : esc(String(v));
@@ -555,6 +570,7 @@ function customFoodForm(pre){
     </div>
     <div class="row">
       <div class="field"><label for="cf-l">${tx("Lif")}</label><input id="cf-l" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.lif)}"></div>
+      ${pre.alk != null && pre.alk !== 0 ? `<div class="field"><label for="cf-alk">${tx("Alkol")}</label><input id="cf-alk" type="number" inputmode="decimal" placeholder="g/100g" value="${val(pre.alk)}"></div>` : ""}
       <div class="metric-note" id="cf-kcal" style="align-self:center"></div>
     </div>
     <div class="metric-note cf-warn" id="cf-err" role="alert"></div>
@@ -568,32 +584,55 @@ function customFoodForm(pre){
 function wireCustomForm(box, pre){
   pre = pre || {};
   const $ = id => box.querySelector("#" + id);
-  const macros = () => ["cf-p", "cf-c", "cf-f"].map(id => num($(id).value));
-  const alcohol = () => Math.max(0, Number(pre.alk) || 0);
-  const showKcal = () => {
-    const [p, c, f] = macros().map(v => v || 0);
-    $("cf-kcal").textContent = tx("≈ {0} kcal / 100 g", [Math.round(kcalFromMacros({ p, c, f, alk:alcohol() }))]);
+  const field = k => $(FOOD_FIELDS[k]);
+  const read = k => {
+    const input = field(k);
+    if (!input) return 0;
+    if (input.validity.badInput) return NaN;
+    return input.value === "" ? null : input.valueAsNumber;
   };
-  ["cf-p", "cf-c", "cf-f"].forEach(id => { $(id).oninput = showKcal; });
+  const showKcal = () => {
+    const values = Object.fromEntries([...FOOD_MACROS, "alk"].map(k => {
+      const n = read(k);
+      return [k, inRange(n, 0, 100) ? n : 0];
+    }));
+    $("cf-kcal").textContent = tx("≈ {0} kcal / 100 g", [Math.round(kcalFromMacros(values))]);
+  };
+  const inputs = [$("cf-n"), ...FOOD_VALUES.map(field).filter(Boolean)];
+  const clearError = () => {
+    $("cf-err").textContent = "";
+    inputs.forEach(el => el.removeAttribute("aria-invalid"));
+  };
+  inputs.forEach(el => {
+    el.setAttribute("aria-describedby", "cf-err");
+    el.oninput = () => { clearError(); showKcal(); };
+  });
   showKcal();
-  const fail = (msg, el) => { $("cf-err").textContent = msg; if (el) el.focus(); };
+  const fail = (message, fields) => {
+    $("cf-err").textContent = tx(message);
+    fields.forEach(el => el.setAttribute("aria-invalid", "true"));
+    fields[0]?.focus();
+  };
   const cancel = $("cf-cancel");
   if (cancel) cancel.onclick = () => { myFoodEdit = null; render(); };
   $("cf-save").onclick = async () => {
+    clearError();
     const n = $("cf-n").value.trim();
-    const [p, c, f] = macros().map(v => v || 0);
-    const lif = num($("cf-l").value) || 0;
+    if (!n) return fail("Bir ad yaz.", [$("cf-n")]);
+    const values = Object.fromEntries(FOOD_VALUES.map(k => [k, read(k)]));
+    const missing = FOOD_MACROS.filter(k => values[k] === null);
+    if (missing.length) return fail("Protein, karbonhidrat ve yağı 100 gram için gir.", missing.map(field));
+    values.lif ??= 0;
+    values.alk ??= 0;
+    const problem = customFoodValueError(values);
+    if (problem) return fail(problem.message, problem.fields.map(field).filter(Boolean));
+    const { p, c, f, lif, alk } = values;
     /* Düzenleme: yalnızca ad ve değerler değişir; barkod, marka, porsiyon, kaynak ve anahtar kalır. */
     if (pre.edit){
       const rec = (state.customFoods || {})[pre.edit];
-      if (!rec){ myFoodEdit = null; render(); return; }
-      if (!n) return fail(tx("Bir ad yaz."), $("cf-n"));
-      const raw = macros();
-      const blank = rec.bc && ["cf-p", "cf-c", "cf-f"].find((id, i) => raw[i] === null);
-      if (blank) return fail(tx("Değerler eksik; tamamlayıp kaydet."), $(blank));
-      if (raw.some(v => v !== null && (v < 0 || v > 100)) || p + c + f > 105 || lif < 0 || lif > 100)
-        return fail(tx("Değerler geçersiz: 100 g'da toplam 100 g'ı aşamaz."), $("cf-p"));
+      if (!rec) return fail("Bu besin artık listede yok.", []);
       Object.assign(rec, { n: n.slice(0, 80), p, c, f, lif });
+      if (field("alk")) rec.alk = alk;
       myFoodEdit = null;
       await saveState(state); render();
       toast(tx("{0} kaydedildi.", [`“${rec.n}”`]));
@@ -602,16 +641,10 @@ function wireCustomForm(box, pre){
     state.customFoods = state.customFoods || {};
     let key;
     if (pre.bc){
-      if (!n) return fail(tx("Bir ad yaz."), $("cf-n"));
-      const raw = macros();
-      const blank = ["cf-p", "cf-c", "cf-f"].find((id, i) => raw[i] === null);
-      if (blank) return fail(tx("Değerler eksik; tamamlayıp kaydet."), $(blank));
-      if (raw.some(v => v < 0 || v > 100) || p + c + f > 105 || lif < 0 || lif > 100)
-        return fail(tx("Değerler geçersiz: 100 g'da toplam 100 g'ı aşamaz."), $("cf-p"));
-      key = saveBarcodeFood(pre.bc, { n, p, c, f, alk:alcohol(), lif, br: pre.br, serving: pre.serving, src: pre.src });
+      key = saveBarcodeFood(pre.bc, { n, p, c, f, alk, lif, br: pre.br, serving: pre.serving, src: pre.src });
     } else {
-      if (!n || (p + c + f) === 0) return;
       key = "cf_" + Date.now();
+      while (Object.hasOwn(state.customFoods, key)) key += "_";
       state.customFoods[key] = { n, p, c, f, alk:0, lif, i: "grain" };
     }
     logPick = key; logQuery = n;
