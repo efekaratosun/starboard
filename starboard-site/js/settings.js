@@ -16,7 +16,10 @@ function settingsView(){
         ? `<div class="field"><label for="s-hft">${tx("Boy ({0})", ["ft"])}</label><input id="s-hft" type="number" inputmode="numeric" value="${heightFtIn(p.height)[0]}"></div>
       <div class="field"><label for="s-hin">in</label><input id="s-hin" type="number" inputmode="numeric" value="${heightFtIn(p.height)[1]}"></div>`
         : `<div class="field"><label for="s-h">${tx("Boy ({0})", ["cm"])}</label><input id="s-h" type="number" inputmode="decimal" value="${p.height}"></div>`}
-      <div class="field"><label for="s-age">${tx(p.birthDate ? "Doğum tarihi" : "Yaş")}</label><input id="s-age" ${p.birthDate ? 'type="date"' : 'type="number" inputmode="numeric"'} value="${esc(String(p.birthDate || p.age || ""))}"></div>
+      <div class="field">${p.birthDate
+        ? `<label for="s-birth-0">${tx("Doğum tarihi")}</label>${birthFields("s-birth", p.birthDate.split("-").reverse())}
+          <div id="s-birth-error" class="metric-note" aria-live="polite"></div>`
+        : `<label for="s-age">${tx("Yaş")}</label><input id="s-age" type="number" inputmode="numeric" value="${esc(String(p.age || ""))}">`}</div>
     </div>
     <div class="field"><label for="s-tw">${tx("Hedef kilo ({0})", [(wUnit())])}</label>
       <input id="s-tw" type="number" inputmode="decimal" value="${typeof p.targetWeight === "number" ? +wOut(p.targetWeight).toFixed(1) : ""}" placeholder="${tx("isteğe bağlı")}"></div>
@@ -122,21 +125,26 @@ function wireSettings(){
   document.getElementById("s-meal-prefs").onclick = () => openPrefsSheet();
   let stAvatar = avKey(state.profile);
   wireAvatar("st", k => { stAvatar = k; });
+  const dateInputs = state.profile.birthDate ? birthInputs("s-birth") : null;
+  const showBirthError = msg => { document.getElementById("s-birth-error").textContent = msg; };
+  if (dateInputs) wireBirthFields(dateInputs, showBirthError);
   document.getElementById("s-save").onclick = async () => {
     const p = state.profile;
     const h = isImp()
       ? heightFromFtIn(num(document.getElementById("s-hft").value), num(document.getElementById("s-hin").value))
       : num(document.getElementById("s-h").value);
-    const ageInput = document.getElementById("s-age");
-    const a = p.birthDate ? ageFromBirthDate(ageInput.value) : num(ageInput.value);
-    if (p.birthDate){
-      if (a === null || a < 10 || a > 100){
-        toast(tx("10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir."));
-        ageInput.focus();
+    if (dateInputs){
+      const date = validProfileBirthDate(dateInputs.map(input => input.value));
+      if (!date){
+        showBirthError(birthDateError());
+        dateInputs[0].focus();
         return;
       }
-      p.birthDate = ageInput.value;
-    } else if (a >= 10 && a <= 100) p.age = a;
+      p.birthDate = date;
+    } else {
+      const age = num(document.getElementById("s-age").value);
+      if (age >= 10 && age <= 100) p.age = age;
+    }
     if (h && h > 100 && h < 250) p.height = h;
     const bf = num(document.getElementById("s-bf").value);
     p.bodyFat = bf;

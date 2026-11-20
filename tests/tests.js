@@ -4439,6 +4439,95 @@ test("C-01: yedek önce doğrulanır, eski sürüm yüklenirken göç eder", asy
 
 window.STARBOARD_TESTS = TESTS;
 
+test("Ölçülerin: doğum tarihi girişi, odak, yapıştırma ve doğrulama", () => {
+  const keep = { ob, step:obStep, display:app.style.display };
+  try {
+    ob = obDefaults();
+    obStep = obList().findIndex(step => step.id === "body");
+    app.innerHTML = "";
+    app.style.display = "block";
+    renderOnboarding();
+    const [day, month, year] = ["ob-birth-0", "ob-birth-1", "ob-birth-2"].map(id => document.getElementById(id));
+    const input = (field, value) => {
+      field.focus();
+      field.value = value;
+      field.dispatchEvent(new Event("input", { bubbles:true }));
+    };
+    const paste = (field, value) => {
+      const data = new DataTransfer();
+      data.setData("text/plain", value);
+      field.dispatchEvent(new ClipboardEvent("paste", { clipboardData:data, bubbles:true, cancelable:true }));
+    };
+    const error = document.getElementById("ob-err");
+    const message = "10 ile 100 yaş aralığına uyan geçerli bir doğum tarihi gir.";
+    eq(month.labels[0].textContent.trim(), "Ay");
+    input(day, "a-1.");
+    eq(day.value, "1");
+    input(day, "15");
+    eq(document.activeElement.id, month.id);
+    input(month, "04");
+    eq(document.activeElement.id, year.id);
+    year.dispatchEvent(new KeyboardEvent("keydown", { key:"Backspace", cancelable:true }));
+    eq(document.activeElement.id, month.id);
+    input(day, "5");
+    eq(document.activeElement.id, month.id);
+    input(month, "9");
+    eq(document.activeElement.id, year.id);
+    for (const [i, date] of ["15.04.1995", "15/04/1995", "15041995"].entries()){
+      paste([day, month, year][i], date);
+      eq([day.value, month.value, year.value], ["15", "04", "1995"]);
+    }
+    for (const date of ["31.04.2000", "29.02.2001", "45.04.2000", "15.13.2000", "00.04.2000", "01.01." + (new Date().getFullYear() + 1)]){
+      paste(day, date);
+      eq(error.textContent, message);
+      const step = obStep;
+      document.getElementById("ob-next").click();
+      eq(obStep, step);
+      eq(ob.birthDate, null);
+    }
+    input(day, "45");
+    eq(day.value, "");
+    input(month, "13");
+    eq(month.value, "");
+    paste(year, "29.02.2000");
+    eq(error.textContent, "");
+    const step = obList()[obStep];
+    step.read();
+    eq(step.valid(), "");
+    eq(ob.birthParts, ["29", "02", "2000"]);
+    eq(ob.birthDate, "2000-02-29");
+  } finally {
+    sceneActive(false); sceneState = null;
+    ob = keep.ob; obStep = keep.step; app.style.display = keep.display; app.innerHTML = "";
+  }
+});
+
+test("ayarlar: kayıtlı doğum tarihi açılır, geçersiz tarih kaydedilmez", async () => {
+  const keep = { state, tab, meTab, notice, viewDate };
+  try {
+    state = await loadFixture();
+    state.profile.birthDate = "1995-04-15";
+    migrateMeals(); notice = null; viewDate = null; ensureToday();
+    tab = "settings"; meTab = "set"; render();
+    const fields = birthInputs("s-birth");
+    eq(fields.map(field => field.value), ["15", "04", "1995"]);
+    eq(fields[1].labels[0].textContent.trim(), "Ay");
+    fields[0].value = "31";
+    fields[0].dispatchEvent(new Event("input", { bubbles:true }));
+    ok(document.getElementById("s-birth-error").textContent);
+    await document.getElementById("s-save").onclick();
+    eq(state.profile.birthDate, "1995-04-15");
+    fields[0].value = "30";
+    fields[0].dispatchEvent(new Event("input", { bubbles:true }));
+    eq(document.getElementById("s-birth-error").textContent, "");
+    await document.getElementById("s-save").onclick();
+    eq(state.profile.birthDate, "1995-04-30");
+  } finally {
+    ({ state, tab, meTab, notice, viewDate } = keep);
+    calcReset(); app.innerHTML = "";
+  }
+});
+
 test("profil: doğum tarihi, eski yaş, nötr katsayı ve ölçülmüş yağ oranı", () => {
   eq(birthDateFromParts("2000", "2", "29"), "2000-02-29");
   for (const [month, day] of [["2", "30"], ["13", "1"], ["5", "0"], ["1", "x"]])
