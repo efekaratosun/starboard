@@ -283,7 +283,11 @@ function logView(program, entry){
   const anySug = !!plan && slotList().some(([k]) => openSuggestions.has(k) && sug(k));
   const off = plan ? plan.total.kcal - program.kcal : 0;
 
+  const left = program.kcal - tot.kcal;
   return `
+  <div class="mt-sum"><div class="mt-sum-r"><span><b class="num">${fmtN(Math.abs(Math.round(left)))}</b> <i>${left < 0 ? tx("kcal aşıldı") : tx("kcal kaldı")}</i></span>
+    <span class="num">${tx("{0} / {1} kcal", [fmtN(Math.round(tot.kcal)), fmtN(program.kcal)])}</span></div>
+    <div class="mt-bar${left < 0 ? " over" : ""}"><i style="width:${clamp(tot.kcal / program.kcal * 100, 0, 100).toFixed(0)}%"></i></div></div>
   ${favBlock(entry)}
   ${log.length ? detailSection(tot, program) : ""}
 
@@ -414,6 +418,17 @@ function copyItems(entry, items, slot){
   return ids;
 }
 
+/* Sıradaki öğünün önerisi, açılır bölümün dışında görünür: tek dokunuşla eklenir ya da kullanıcı kendi seçer. */
+function nowCardHTML(m, k, label){
+  const added = m.items.filter(i => i.key && i.g && foodOf(i.key));
+  const kcal = added.reduce((a, i) => a + foodKcal(foodOf(i.key), i.g), 0);
+  const names = m.items.map(i => { const f = i.key ? foodOf(i.key) : null; return esc(f ? f.n : i.text); }).join(" · ");
+  return `<div class="mt-card"><div class="mt-sug"><div class="mt-sug-h"><span>${tx("Öneri")}</span>${added.length ? `<span class="num">${tx("{0} kcal", [kcal])}</span>` : ""}</div>
+    <div class="mt-sug-t">${names}</div></div>
+    <div class="row">${added.length ? `<button data-mt-sug="${k}" aria-label="${esc(label)}, ${tx("Öneriyi ekle")}">${tx("Öneriyi ekle")}</button>` : ""}
+      <button class="ghost" data-mt-add="${k}" aria-label="${esc(label)}, ${tx("Kendim seç")}">${tx("Kendim seç")}</button></div></div>`;
+}
+
 /* Her öğün kendi kartı: o öğünün kayıtları ve besin eklemesi bir arada. */
 function mealCards(entry, sug){
   const log = entry.log || [];
@@ -422,12 +437,26 @@ function mealCards(entry, sug){
   const fallback = list.length ? list[list.length-1][0] : "aksam";
   const slotOf = x => { const sId = x.slot || fallback; return known.has(sId) ? sId : "__other"; };
 
+  /* Gün akışı: sıradaki öğün = bugün, son dolu öğünden sonraki ilk boş öğün (hiç dolu yoksa ilk boş). */
+  let nowSlot = null;
+  if (onToday()){
+    const filled = list.map(([k]) => log.some(x => slotOf(x) === k));
+    const last = filled.lastIndexOf(true);
+    const i = filled.findIndex((f, ix) => !f && ix > last);
+    nowSlot = i >= 0 ? list[i][0] : null;
+  }
+  const foodNames = it => it.map(x => esc(x.n.replace(/\s*\(.*?\)/g, ""))).slice(0, 3).join(", ") + (it.length > 3 ? "…" : "");
+  const nodeSvg = st => `<span class="mt-n" aria-hidden="true"><svg viewBox="-14 -14 28 28">${st === "done" ? '<circle class="h" r="13"/><path class="a" transform="scale(1.7)" d="M0-6.5 1.6-1.6 6.5 0 1.6 1.6 0 6.5-1.6 1.6-6.5 0-1.6-1.6Z"/>' : st === "now" ? '<circle class="d" r="11"/><circle class="r" r="4.5"/>' : '<circle class="r" r="5"/>'}</svg></span>`;
+
   const cards = list.map(([k,l]) => {
     const items = log.filter(x => slotOf(x) === k);
     const yIt = items.length ? [] : ydayLog().filter(x => slotOf(x) === k);
     const sm = !items.length && sug ? sug(k) : null;
     const expanded = !!sm && openSuggestions.has(k);
-    return fold("meal_" + k, esc(l), items.length ? tx("{0} kcal", [itemsKcal(items)]) : `<span class="meal-empty">${tx("boş")}</span>`, `
+    const isNow = nowSlot === k, st = items.length ? "done" : isNow ? "now" : "empty";
+    const nowSug = isNow && !items.length && sug ? sug(k) : null;
+    const showNow = !!nowSug && !openSuggestions.has(k) && addOpen !== k;
+    return `<div class="mt-i mt-${st}">${nodeSvg(st)}` + fold("meal_" + k, esc(l), items.length ? tx("{0} kcal", [itemsKcal(items)]) : `<span class="meal-empty">${tx("boş")}</span>`, `
       ${addOpen !== k ? `<div class="row meal-actions">
         <button data-addfood="${k}">${tx("Besin ekle")}</button>
         ${sm ? `<button class="ghost" data-sug-toggle="${k}" aria-expanded="${expanded}" aria-controls="meal-sug-${k}" aria-label="${esc(l)}, ${tx("Öneriler")}">${tx("Öneriler")}</button>` : ""}
@@ -441,14 +470,16 @@ function mealCards(entry, sug){
       ${addOpen === k ? addPanel()
         : yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
           ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [onToday() ? tx("Dünküyle") : tx("Bir önceki günle"), yIt.length, itemsKcal(yIt)])}</button>` : ""}
-    `, addOpen === k || saveMealOpen === k || expanded);
+    `, addOpen === k || saveMealOpen === k || expanded, items.length ? foodNames(items) : isNow ? tx("Sıradaki öğün") : "")
+      + `<button class="mt-plus" data-mt-add="${k}" aria-label="${esc(l)}, ${tx("Besin ekle")}">+</button>`
+      + (showNow ? nowCardHTML(nowSug, k, l) : "") + `</div>`;
   });
 
   const other = log.filter(x => slotOf(x) === "__other");
-  if (other.length) cards.push(fold("meal___other", tx("Diğer"), tx("{0} kcal", [itemsKcal(other)]),
-    other.map(logLine).join("")));
+  if (other.length) cards.push(`<div class="mt-i mt-done">${nodeSvg("done")}` + fold("meal___other", tx("Diğer"), tx("{0} kcal", [itemsKcal(other)]),
+    other.map(logLine).join(""), false, foodNames(other)) + `</div>`);
 
-  return cards.join("");
+  return `<div class="mt">${cards.join("")}</div>`;
 }
 
 /* ---- kendi yiyeceklerim ----
@@ -1078,7 +1109,7 @@ function wireMealsRest(entry){
     const value = selector === "data-fold" ? "meal_" + slot : slot;
     app.querySelector(`[${selector}="${value}"]`)?.focus({ preventScroll: true });
   });
-  app.querySelectorAll("[data-sug-add]").forEach(b => b.onclick = () => addSuggested(entry, b.dataset.sugAdd));
+  app.querySelectorAll("[data-sug-add],[data-mt-sug]").forEach(b => b.onclick = () => addSuggested(entry, b.dataset.sugAdd || b.dataset.mtSug));
   app.querySelectorAll("[data-sug-other]").forEach(b => b.onclick = () => { mealVariant++; render(); });
 
   app.querySelectorAll("[data-mex]").forEach(b => b.onclick = async () => {
@@ -1163,8 +1194,8 @@ function wireMealsRest(entry){
     toastUndo(tx("{0} kalem kopyalandı.", [(items.length)]), day, ids, snap);
   });
 
-  app.querySelectorAll("[data-addfood]").forEach(b => b.onclick = () => {
-    addOpen = b.dataset.addfood;
+  app.querySelectorAll("[data-addfood],[data-mt-add]").forEach(b => b.onclick = () => {
+    addOpen = b.dataset.addfood || b.dataset.mtAdd;
     logQuery = ""; logPick = null; myFoodsOpen = false; myFoodEdit = null;
     render();
     const el = document.getElementById("food-q");

@@ -53,7 +53,7 @@ function cachedProgram(){
    Protein yalnızca beslenme günlüğünden bilinir: günlüğü olmayan geçmiş bir
    gün kalori, su, uyku, kilo ve antrenmandan değerlendirilir. */
 function skipTask(kind, k, d){
-  return kind === "protein" && k !== today() && !(d && d.log && d.log.length);
+  return kind === "protein";   /* protein artık günlük hedef değil: Beslenme ekranında izlenir, listede ve puanda yok */
 }
 
 /* Puana giren öneriler: görünen listeyle sayacın aynı şeyi söylemesi için. */

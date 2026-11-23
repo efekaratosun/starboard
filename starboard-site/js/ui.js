@@ -127,11 +127,11 @@ function isOpen(key){
   const f = state.ui && state.ui.fold;
   return f && key in f ? f[key] : (FOLD_DEFAULT[key] ?? !key.startsWith("meal_"));
 }
-function fold(key, title, count, body, keepOpen = false){
+function fold(key, title, count, body, keepOpen = false, sub = ""){
   const open = keepOpen || isOpen(key);
   return `<section class="fold${open ? "" : " shut"}">
     <button class="fold-h" data-fold="${key}" aria-expanded="${open}"${keepOpen ? ' aria-disabled="true"' : ""}>
-      <span class="fold-t">${title}</span>${count ? `<span class="count">${count}</span>` : `<span class="count"></span>`}
+      <span class="fold-t">${title}</span>${sub ? `<span class="fold-sub">${sub}</span>` : ""}${count ? `<span class="count">${count}</span>` : `<span class="count"></span>`}
       <svg class="ico fold-c" aria-hidden="true"><use href="#i-next"/></svg>
     </button>
     <div class="fold-b"><div class="fold-i">${body}</div></div>
