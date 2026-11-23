@@ -8,6 +8,10 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.18.0", items:[
+    tx("Avatarlar artık kasklı astronot hayvanlar; seçince hayvana özel tepki veriyorlar."),
+    tx("Beslenme ekranı sadeleşti; öğünler açılır-kapanır."),
+    tx("Çiğ yenmeyen besinler öneri ve aramalarda gizlendi.")] },
   { v:"1.17.0", items:[
     tx("Takımyıldızlar artık gerçek: Büyük Ayı, Orion, Kuğu ve daha fazlası; mevsimine göre seçiliyor."),
     tx("Takımyıldız haftalara bölünmüyor; ana ekranda son 7 gün görünüyor, şekle dokununca tam şema açılıyor."),
