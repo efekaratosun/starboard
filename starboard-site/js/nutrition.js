@@ -203,7 +203,7 @@ const FOODS = {
      kaynakta olmayan makrolar kalori ile uyumlu tahmindir. */
   danabiftekizgara:{n:tx("Dana biftek (ızgara, pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:29.7, c:0, f:7.3, lif:0, kcal100:184, i:"meat", v:["demir","B12",tx("çinko")], src:"web nutrola.app sırt bifteği, sığır, pişmiş, ızgara (USDA tabanlı), 100 g"},
   levrekizgara:{n:tx("Levrek (ızgara, pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:23.6, c:0, f:2.6, lif:0, kcal100:124, i:"fish", v:["B12","D"], src:"USDA SR deniz levreği, pişmiş kuru ısı (FatSecret/Foodstruct), 100 g"},
-  hamsitava:{n:tx("Hamsi tava"), por:[{n:tx("porsiyon"),g:150},{n:tx("adet"),g:25,s:[3,5,8]}], p:18, c:2, f:10.4, lif:0, kcal100:176, i:"fish", cu:"tr", v:["D","B12","omega3","kalsiyum"], src:"web fatsecret hamsi-tava: 176 kcal, yağ 10,4 g / 100 g (protein ve karbonhidrat tahmini)"},
+  hamsitava:{n:tx("Hamsi tava"), b:"hamsi", por:[{n:tx("porsiyon"),g:250},{n:tx("adet"),g:25,s:[3,5,8]}], p:19.6, c:4.8, f:9.6, lif:0, kcal100:179, i:"fish", cu:"tr", v:["D","B12","omega3","kalsiyum"], src:"web fitekran.com, diyetkolik.com, hurriyet.com.tr: 179 kcal, protein 19,6 g, karbonhidrat 4,8 g, yağ 9,6 g / 100 g (unlu, yağda kızarmış); porsiyon 250 g tahmin (kaynaklarda 380 g)"},
   tavuksote:{n:tx("Tavuk sote"), a:"tavuk", por:[{n:tx("porsiyon"),g:250}], p:20, c:5, f:7, lif:1, i:"poultry", v:["B6","C","B12"]},
   tavukdurum:{n:tx("Tavuk dürüm"), por:[{n:tx("adet"),g:300}], p:14, c:25, f:10, lif:2, i:"bread", v:["B6","C"]},
   balikekmek:{n:tx("Balık ekmek"), por:[{n:tx("adet"),g:300}], p:14, c:22, f:8, lif:1.5, i:"fish", v:["D","B12","omega3"]},

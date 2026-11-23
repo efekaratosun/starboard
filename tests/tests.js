@@ -5224,7 +5224,7 @@ test("sesli giriş: et, ciğer, balık sorulur ve yalnız pişmiş yemekler öne
     ok(f && !f.cigYenmez && f.i !== "oil" && !NO_STANDALONE.has(k), "uygun öneri: " + k);
   }
   /* kalori değerleri kaynaktan (100 g) */
-  eq(Math.round(foodEnergyPer100(FOODS.hamsitava)), 176, "hamsi tava");
+  eq(Math.round(foodEnergyPer100(FOODS.hamsitava)), 179, "hamsi tava");
   eq(Math.round(foodEnergyPer100(FOODS.levrekizgara)), 124, "levrek ızgara");
   eq(Math.round(foodEnergyPer100(FOODS.danabiftekizgara)), 184, "dana biftek ızgara");
   /* alışkanlık: daha önce yenen önce gelir */
@@ -5242,4 +5242,27 @@ test("sesli giriş: pişirme biçimi eş anlamlıdır, pişirme yağı ayrı bes
   /* belirsiz sözcüklerin adayları arasında yağ ya da un yok */
   for (const w of ["tatlı", "çorba", "salata", "sos", "kızartma"])
     for (const a of say(w)[0].alts) ok(FOODS[a.key] ? FOODS[a.key].i !== "oil" : true, w + ": yağ aday değil");
+});
+
+test("sesli giriş: yalın 'hamsi' hamsi tavadır; sofrada eklenen yağ yazılır, pişirme yağı yazılmaz, 'bol yağlı' yalnız eklenebilir", async () => {
+  state = await loadFixture();
+  eq([say("hamsi")[0].key, say("hamsi")[0].conf], ["hamsitava", "high"], "hamsi → hamsi tava");
+  eq(say("hamsi tava")[0].g, 250, "bir porsiyon 250 g");
+  /* sofrada eklenen yağ: salata ve ekmek */
+  const sal = say("zeytinyağlı limonlu salata")[0];
+  eq(sal.extras.map(e => [e.key, e.g, e.auto]), [["zeytinyagi", 13, true]], "salataya zeytinyağı eklenir");
+  const ek = say("tereyağlı ekmek")[0];
+  eq([ek.key, ek.extras[0].key, ek.extras[0].auto], ["beyazekmek", "tereyagi", true], "ekmeğe tereyağı");
+  /* yağı yemeğin içinde olanlara ayrıca yağ yazılmaz */
+  eq(say("zeytinyağlı fasulye")[0].extras, undefined, "zeytinyağlı taze fasulye zaten yağlı");
+  eq(say("iskender")[0].extras, undefined, "iskender: tereyağı pişirmede");
+  eq(say("yağda kızarmış tavuk")[0].extras, undefined, "yağda kızarmış");
+  eq(say("zeytinyağlı ıspanak")[0].extras, undefined, "pişen yemekte yağ dahil");
+  /* bol yağlı: yalnız eklenebilir (otomatik değil) */
+  const bol = say("bol zeytinyağlı salata")[0];
+  eq(bol.extras.map(e => [e.key, e.g, e.auto]), [["zeytinyagi", 26, false]], "bol → 2 yemek kaşığı, otomatik değil");
+  const pk = say("bol yağlı patates kızartması")[0];
+  eq([pk.key, pk.extras[0].key, pk.extras[0].auto], ["patateskizartma", "aycicekyagi", false], "kızartmada ayçiçek yağı, eklenebilir");
+  /* yağ yalnız söylenince aynen bulunur */
+  eq(say("iki yumurta bol tereyağlı")[0].extras[0].key, "tereyagi");
 });

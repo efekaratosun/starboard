@@ -94,7 +94,7 @@ function vpWords(f){
 function vpScore(toks, f){
   const w = vpWords(f);
   const said = p => p.length === toks.length && toks.every(t => p.some(x => vpWordMatch(t, x)));
-  if ((w.bare.length && said(w.bare)) || (w.kind && said(w.kind))) return 100;
+  if ((w.bare.length && said(w.bare)) || (w.kind && said(w.kind))) return 105;
   const name = [...w.req, ...w.opt];
   const all = toks.every(t => name.some(x => vpWordMatch(t, x)));
   if (all){
@@ -213,12 +213,27 @@ function vpSide(k, f){
     || VP_YARDIMCI_AD.test(vpFold(String(f.n || "").split("(")[0]).trim());
 }
 
+/* Sofrada eklenen yağ: "zeytinyağlı limonlu salata" → salata + zeytinyağı. Yemeğin kendi pişirme yağı
+   (iskender tereyağı, "yağda kızarmış") ayrıca yazılmaz. "Bol yağlı" yalnız eklenebilir (otomatik değil). */
+const VP_YAG = { zeytinyagli: "zeytinyagi", sizma: "zeytinyagi", tereyagli: "tereyagi" };
+const VP_SOS_SIFAT = new Set(["limonlu", "sirkeli"]);
+const VP_BOL = new Set(["bol", "cok", "ekstra"]);
+
 function parseMeal(text, foods, opts){
   const o = opts || {};
   const usage = o.usage || (() => 0), pop = o.pop || (() => 0);
   const parts = vpFold(text).split(VP_SPLIT).map(s => s.trim()).filter(Boolean);
   const items = [];
   let last = null;
+  const fmap = new Map(foods);
+  const oilExtra = (key, bol, auto) => {
+    const f = fmap.get(key);
+    if (!f) return null;
+    const por = !f.por ? [] : Array.isArray(f.por) ? f.por : [f.por];
+    const yk = por.find(p => vpFold(p.n) === "yemek kasigi"), tk = por.find(p => vpFold(p.n) === "tatli kasigi");
+    const g = bol ? (yk ? yk.g * 2 : 26) : (key === "tereyagi" && tk ? tk.g : yk ? yk.g : 13);
+    return { key, name: f.n, g, auto, kind: bol ? "bol" : "sofra" };
+  };
   const resolve = (raw, qty, unit, words) => {
     /* Hiçbir besinde karşılığı olmayan sözcük ("haşladım") gürültüdür, atılır. */
     const known = words.filter(t => foods.some(([, f]) => vpScore([t], f) > 0));
@@ -277,18 +292,41 @@ function parseMeal(text, foods, opts){
     const toks = part.split(/[^a-z0-9.,]+/).filter(t => t && !VP_STOP.has(t)).map(vpCanon);
     for (const seg of vpSplitNumbers(toks)){
       const { qty, unit, rest } = vpQuantity(seg);
-      const words = rest.map(t => t.replace(/[.,]+$/, "")).filter(Boolean);
+      let words = rest.map(t => t.replace(/[.,]+$/, "")).filter(Boolean);
+      if (words.length > 1) words = words.filter(t => !VP_SOS_SIFAT.has(t));
       /* "yumurtayı yedim iki tane": miktar besinden sonra geldi, öncekine eklenir. */
       if (!words.length){
         if (qty != null && last && last.qty == null){ items[items.length - 1] = resolve(last.raw, qty, unit, last.words); last = null; }
         continue;
       }
       const raw = seg.join(" ");
-      vpSplitFoods(words, foods)
-        .forEach((w, n) => {
-          items.push(resolve(n ? w.join(" ") : raw, n ? null : qty, n ? null : unit, w));
-          last = { raw: n ? w.join(" ") : raw, qty: n ? null : qty, words: w };
-        });
+      const make = ws => vpSplitFoods(ws, foods).map((w, n) => resolve(n ? w.join(" ") : raw, n ? null : qty, n ? null : unit, w));
+      let list, extras = [], usedWords = words;
+      const oilKey = words.map(t => VP_YAG[t]).find(Boolean) || null;
+      const yagli = words.includes("yagli") || words.includes("yag");
+      const bolYag = words.some(t => VP_BOL.has(t)) && (yagli || !!oilKey);
+      if (oilKey || bolYag){
+        const core = words.filter(t => !(t in VP_YAG) && t !== "yagli" && t !== "yag" && !VP_BOL.has(t));
+        /* Önce niteleyiciyle dene: "Zeytinyağlı taze fasulye" gibi yağı kendi içinde olan yemek var mı? */
+        const tried = oilKey ? make(words.filter(t => !VP_BOL.has(t) && t !== "yagli" && t !== "yag")) : null;
+        const hasOil = tried && tried.length === 1 && tried[0].key && vpFold(tried[0].name).includes(oilKey === "tereyagi" ? "tereyagli" : "zeytinyagli");
+        usedWords = core;
+        if (hasOil) list = tried;
+        else if (core.length){
+          list = make(core);
+          const tail = list[list.length - 1], tf = tail && tail.key ? fmap.get(tail.key) : null;
+          /* Sofrada yağ eklenen yiyecekler: salata ve ekmek. Öteki yemeklerde yağ pişirmeye dahildir. */
+          if (oilKey && !bolYag && tf && (/salata/.test(vpFold(tail.name)) || tf.i === "bread")) extras.push(oilExtra(oilKey, false, true));
+        } else list = [];
+        if (bolYag && list.length){
+          const tn = vpFold(list[list.length - 1].name || "");
+          extras.push(oilExtra(oilKey || (/kizartma/.test(tn) ? "aycicekyagi" : "zeytinyagi"), true, false));
+        }
+      } else list = make(words);
+      extras = extras.filter(Boolean);
+      if (extras.length && list.length) list[list.length - 1].extras = extras;
+      list.forEach(it => items.push(it));
+      if (list.length) last = { raw, qty, words: usedWords };
     }
   }
   return { items };
