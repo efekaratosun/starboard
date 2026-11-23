@@ -17,7 +17,8 @@ let package = Package(
         .package(name: "CapacitorHaptics", path: "../../../node_modules/@capacitor/haptics"),
         .package(name: "CapacitorLocalNotifications", path: "../../../node_modules/@capacitor/local-notifications"),
         .package(name: "CapacitorStatusBar", path: "../../../node_modules/@capacitor/status-bar"),
-        .package(name: "CapgoCapacitorHealth", path: "../../../node_modules/@capgo/capacitor-health")
+        .package(name: "CapgoCapacitorHealth", path: "../../../node_modules/@capgo/capacitor-health"),
+        .package(name: "StarboardSpeech", path: "../../../plugins/starboard-speech")
     ],
     targets: [
         .target(
@@ -30,7 +31,8 @@ let package = Package(
                 .product(name: "CapacitorHaptics", package: "CapacitorHaptics"),
                 .product(name: "CapacitorLocalNotifications", package: "CapacitorLocalNotifications"),
                 .product(name: "CapacitorStatusBar", package: "CapacitorStatusBar"),
-                .product(name: "CapgoCapacitorHealth", package: "CapgoCapacitorHealth")
+                .product(name: "CapgoCapacitorHealth", package: "CapgoCapacitorHealth"),
+                .product(name: "StarboardSpeech", package: "StarboardSpeech")
             ]
         )
     ]
