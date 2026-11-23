@@ -830,3 +830,39 @@ main.on .on-perm{margin-top:14px;padding:12px 14px;border-radius:14px;box-shadow
 main.on .on-perm[hidden]{display:none}
 main.on .on-perm b{color:var(--on-error);font-size:15px}
 main.on .on-perm span{color:var(--on-muted)}
+
+/* ===== Hedefin ekranı düzeltmeleri (23 Kasım 2026) ===== */
+/* 1) Onay kutuları: 24 pt kare, işaretliyken dolgu + tik; satırın tamamı ≥ 44 pt */
+main.on .ob-check{display:flex;align-items:flex-start;gap:12px;min-height:44px;padding:10px 0;margin:0;cursor:pointer;font-size:14px;font-weight:500;line-height:1.45;color:var(--on-muted);-webkit-tap-highlight-color:transparent}
+main.on .ob-check[hidden]{display:none}
+main.on .ob-check input[type=checkbox]{-webkit-appearance:none;appearance:none;flex:0 0 24px;width:24px;min-width:24px;height:24px;min-height:0;margin:0;padding:0;
+  border:1.5px solid var(--on-edge);border-radius:7px;background:transparent;box-shadow:none;display:grid;place-content:center;cursor:pointer}
+main.on .ob-check input[type=checkbox]:checked{background:var(--on-accent);border-color:var(--on-accent)}
+main.on .ob-check input[type=checkbox]:checked::after{content:"";width:12px;height:7px;margin-top:-2px;border-left:2.5px solid var(--on-brand);border-bottom:2.5px solid var(--on-brand);transform:rotate(-45deg)}
+main.on .ob-check input[type=checkbox]:focus-visible{outline:2px solid var(--on-accent);outline-offset:3px}
+main.on .ob-check-t{flex:1;min-width:0}
+main.on .ob-check-t b{display:block;font-size:16px;font-weight:600;color:var(--on-ink);line-height:1.3}
+main.on .ob-check-t i{display:block;font-style:normal;font-size:13px;color:var(--on-muted);margin-top:2px}
+#ob-planning-label{margin-top:14px}
+#ob-planning-label .ob-check-t{font-size:14px;color:var(--on-ink)}
+/* 2) Kişisel hedeflerim: açılır olduğu okla belli; bölüm üstte ince çizgiyle ayrılır */
+main.on .ob-personal{margin-top:22px;padding-top:4px;border-top:1px solid var(--on-edge)}
+main.on .ob-personal summary{list-style:none;font-size:16px;font-weight:700;justify-content:space-between}
+main.on .ob-personal summary::-webkit-details-marker{display:none}
+main.on .ob-personal summary::after{content:"";width:9px;height:9px;margin-right:6px;border-right:2px solid var(--on-ink);border-bottom:2px solid var(--on-ink);transform:rotate(-45deg);transition:transform .2s var(--e-out,ease)}
+main.on .ob-personal[open] summary::after{transform:rotate(45deg)}
+main.on .ob-personal summary:focus-visible{outline:2px solid var(--on-accent);outline-offset:2px;border-radius:8px}
+/* 6) etiket ile alan arasında boşluk */
+main.on .ob-personal > label[for]{display:block;font-size:13px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--on-muted);margin:18px 0 0}
+/* 4) hedef kilo önerisi yazıyla verilir */
+main.on .ob-hint{margin:6px 0 0;font-size:13px;color:var(--on-muted)}
+/* 5) dar ekranda hedef seçenekleri alt alta */
+@media (max-width:380px){
+  main.on .ocs[data-field="goal"]{flex-direction:column}
+  main.on .ocs[data-field="goal"] .oc{justify-content:flex-start;text-align:left;padding:8px 14px}
+}
+/* 7) alt düğme ile içerik arasında nefes payı */
+main.on:not(.is-w) .on-nav{padding-top:34px}
+main.on .on-body{padding-bottom:12px}
+/* alt düğmenin altındaki dar şerit de zemin renginde: kaydırırken yazı görünmesin */
+main.on:not(.is-w) .on-nav::after{content:"";position:absolute;left:0;right:0;top:100%;height:calc(14px + env(safe-area-inset-bottom));background:var(--on-bg)}

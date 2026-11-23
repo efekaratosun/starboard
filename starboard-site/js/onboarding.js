@@ -403,6 +403,9 @@ function obProfile(){
 
 const obVal = id => { const e = document.getElementById(id); return e ? e.value : null; };
 
+/* Hedef kilo önerisi: hedefe göre (kas kazanımı ×1,05, yağ kaybı ×0,9, koruma ×1); hedef değişince güncellenir. */
+const obTwHint = () => Math.round(wOut(ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1));
+
 function obPersonalGoals(){
   const goals = [
     ["sleep", tx("Daha düzenli yatmak")],
@@ -410,7 +413,7 @@ function obPersonalGoals(){
   ];
   return `<details class="og ob-personal" ${ob.personalOpen ? "open" : ""}>
     <summary>${tx("Kişisel hedeflerim")}</summary>
-    ${goals.map(([k, label]) => `<label class="ob-check"><input id="ob-personal-${k}" type="checkbox"${ob[k + "Goal"] ? " checked" : ""}>${label}</label>`).join("")}
+    ${goals.map(([k, label]) => `<label class="ob-check"><input id="ob-personal-${k}" type="checkbox"${ob[k + "Goal"] ? " checked" : ""}><span class="ob-check-t"><b>${label}</b><i>${tx("Günlük rutinlerine eklenir")}</i></span></label>`).join("")}
     ${IS_NATIVE ? `<label class="ob-check"><input id="ob-sleep-notify" type="checkbox"${ob.sleepNotify ? " checked" : ""}>${tx("Yatma vakti hatırlatması")}</label>
       <label class="ob-check"><input id="ob-water-notify" type="checkbox"${ob.waterNotify ? " checked" : ""}>${tx("Su hatırlatması")}</label>
       <label for="ob-med-time">${tx("İlaç hatırlatma saati")}</label><input id="ob-med-time" type="time" value="${ob.medicationAt || ""}">` : ""}
@@ -481,10 +484,11 @@ const OB_STEPS = [
     } },
   { id:"goal", t:tx("Hedefin"),
     body: () => obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, ["goal", k], v.label]))
-      + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" aria-label="${tx("Hedef kilon ({0})", [(wUnit())])}" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${Math.round(wOut(ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1))}">`, true)
+      + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" aria-label="${tx("Hedef kilon ({0})", [(wUnit())])}" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${obTwHint()}">
+        <p class="ob-hint" id="ob-tw-hint">${tx("Önerilen: {0} {1}", [obTwHint(), wUnit()])}</p>`, true)
       + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, ["activity", k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
       + `<label class="ob-check" id="ob-planning-label" ${ob.goal === "lose" ? "" : "hidden"}><input id="ob-planning" type="checkbox"${ob.weightPlanning ? " checked" : ""}>
-        ${tx("Kilo hedefim için süre aralığı göster. Hamile veya emziriyor değilim ve kilo kaybı için tıbbi gözetim gerektiren bir durumum yok.")}</label>`
+        <span class="ob-check-t">${tx("Kilo hedefim için süre aralığı göster. Hamile veya emziriyor değilim ve kilo kaybı için tıbbi gözetim gerektiren bir durumum yok.")}</span></label>`
       + obPersonalGoals(),
     read: () => {
       const n = num(obVal("ob-tw")), target = n === null ? null : wSave(n);
@@ -842,7 +846,12 @@ function wireOb(st){
       }
     }
     else ob[f] = box.dataset.num ? Number(v) : v;
-    if (f === "goal") document.getElementById("ob-planning-label").hidden = v !== "lose";
+    if (f === "goal"){
+      document.getElementById("ob-planning-label").hidden = v !== "lose";
+      const tw = document.getElementById("ob-tw"), hint = document.getElementById("ob-tw-hint");
+      if (tw) tw.placeholder = obTwHint();
+      if (hint) hint.textContent = tx("Önerilen: {0} {1}", [obTwHint(), wUnit()]);
+    }
     if (f === "activity"){
       if (!ob.planTouched) ob.noPlan = v === "sedentary";
       if (!ob.daysTouched) ob.days = null;
