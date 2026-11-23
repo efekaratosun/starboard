@@ -243,9 +243,10 @@ function calendarView(){
       <i data-lv="e"></i><span>${tx("veri yok")}</span>
       ${[1,2,3,4,5].map(n => `<i data-lv="${n}"></i>`).join("")}
       <span>${tx("görevler tamam")}</span>
-      <i data-lv="t"></i><span>${tx("bugün tamam")}</span>
     </div>
-    <div class="cal-key">
+    <button class="ghost cal-help" id="cal-help" aria-expanded="false" aria-controls="cal-key"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg>${tx("Simgeler")}</button>
+    <div class="cal-key" id="cal-key" hidden>
+      <span><i data-lv="t"></i>${tx("bugün tamam")}</span>
       <span><i class="m-w"></i>${tx("kilo")}</span>
       <span><i class="m-k"></i>${tx("kalori hedefte")}</span>
       <span><i class="m-k out"></i>${tx("hedef dışında")}</span>
@@ -289,8 +290,10 @@ function dayMarks(k, program){
   const kc = kcalMark(k, program);
   const lf = liftMark(k);
   if (!w && !kc && !lf) return "";
+  /* Hücrede en çok iki işaret sığar (12 pt); üçü de varsa kilo hücreden çıkar, gün özetinde yine görünür. */
+  const showW = w && !(kc && lf);
   return `<span class="cal-marks" aria-hidden="true">
-    ${w ? `<i class="m-w"></i>` : ""}
+    ${showW ? `<i class="m-w"></i>` : ""}
     ${kc ? `<i class="m-k${kc === "out" ? " out" : ""}"></i>` : ""}
     ${lf ? `<svg class="ico cal-lift" aria-hidden="true"><use href="#i-plan"/></svg>` : ""}
   </span>`;
@@ -357,6 +360,8 @@ function wireCalendar(){
     render();
   };
   document.getElementById("cal-prev").onclick = () => step(-1);
+  const help = document.getElementById("cal-help"), key = document.getElementById("cal-key");
+  if (help && key) help.onclick = () => { const open = key.hidden; key.hidden = !open; help.setAttribute("aria-expanded", String(open)); };
   const next = document.getElementById("cal-next");
   if (!next.disabled) next.onclick = () => step(1);
 

@@ -194,28 +194,31 @@ const MOON_SPARK_CENTERS = { kcal:[74, 22], protein:[22, 22], carb:[74, 74], fat
    ve küçük yazıyla tüketilen / hedef. Sayfaya girerken gölge sıfırdan kayarak açılır (.fx-moon),
    sayfa içinde eski değerinden yenisine geçer; hareket azaltmada doğrudan son değerde durur. */
 const _moonPrev = {};
+let moonTab = "meals";   /* ayların gösterildiği sekme: girişte gölge sıfırdan açılsın diye */
 function macroMoon(label, got, target, unit, id){
   const R = moonInfo(got, target);
   const to = moonShift(R.pct);
   const glow = R.pct.toFixed(3);
   const blur = (R.pct * 2.8).toFixed(2);
-  const entering = render.lastTab !== "meals" || !!navDir;
+  const entering = render.lastTab !== moonTab || !!navDir;
   const still = entering || reduceMotion();
   const from = still ? to : _moonPrev[id] === undefined ? 0 : _moonPrev[id];
   _moonPrev[id] = to;
   const n = R.over ? R.extra : R.left;
   const [sparkX, sparkY] = MOON_SPARK_CENTERS[id];
   const say = R.over ? tx("{0}: {1} {2} aşıldı", [label, fmtN(n), unit]) : tx("{0}: {1} {2} kaldı", [label, fmtN(n), unit]);
-  return `<div class="moon${id === "kcal" ? " moon-kcal" : ""}${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--moon-${id});--cs:var(--moon-${id}-soft)">
+  return `<div class="moon${id === "kcal" ? " moon-kcal" : ""}${R.over ? " over" : ""}" role="img" aria-label="${say}" style="--c:var(--moon-${id});--cs:var(--moon-${id}-soft);--mk:var(--moon-mark-${id})">
     <div class="mn-r">
       <svg viewBox="0 0 96 96" aria-hidden="true">
         <defs>
           <clipPath id="mn-c-${id}"><circle cx="48" cy="48" r="${MOON_R}"/></clipPath>
+          <radialGradient id="mn-g-${id}" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".55" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
         </defs>
         <g class="mn-halo" aria-hidden="true" style="--mn-level:${glow};--mn-blur:${blur}px">
           <circle cx="48" cy="48" r="${MOON_R}"/>
         </g>
         <circle class="mn-lit" cx="48" cy="48" r="${MOON_R}"/>
+        <circle cx="48" cy="48" r="${MOON_R}" fill="url(#mn-g-${id})"/>
         ${moonCraters(id)}
         <g clip-path="url(#mn-c-${id})"><circle class="mn-sh${entering ? " fx-moon" : ""}" cx="48" cy="48" r="${MOON_R}" style="transform:translateX(${from}px)" data-to="${to}"/></g>
         ${R.pct > 0.6 ? `<path class="mn-spark" aria-hidden="true" transform="translate(${sparkX} ${sparkY})" d="M0 -6 Q1 -1 6 0 Q1 1 0 6 Q-1 1 -6 0 Q-1 -1 0 -6Z"/>` : ""}
@@ -228,6 +231,20 @@ function macroMoon(label, got, target, unit, id){
     </div>
     <div class="mn-t" aria-hidden="true"><b>${label}</b><span class="mn-v num">${R.over ? "+" : ""}<span data-count="m-${id}-${R.over ? "x" : "l"}" data-v="${n}">${fmtN(n)}</span></span><span class="mn-u">${R.over ? unit : unit === "kcal" ? tx("kcal kaldı") : tx("g kaldı")}</span><i>${fmtN(got)} / ${fmtN(target)} ${unit}</i></div>
   </div>`;
+}
+
+/* Dört ay + yağ oranı notu. Bugün sayfasının üstünde durur (Beslenme'den buraya taşındı).
+   tabName: ayların hangi sekmede çizildiği (girişte gölgenin sıfırdan açılması için). */
+function moonsBlock(entry, program, tabName){
+  moonTab = tabName || "meals";
+  const tot = logTotals(entry);
+  return `<div class="moons">
+      ${macroMoon(tx("Kalori"), tot.kcal, program.kcal, "kcal", "kcal")}
+      ${macroMoon(tx("Protein"), tot.p, program.protein, "g", "protein")}
+      ${macroMoon(tx("Karbonhidrat"), tot.c, program.carb, "g", "carb")}
+      ${macroMoon(tx("Yağ"), tot.f, program.fat, "g", "fat")}
+    </div>
+    ${program.lbm != null ? `<p class="metric-note">${tx("Yağ oranı kalori tahminine katıldı.")}</p>` : ""}`;
 }
 
 /* Lif ve mikro besinler tek katlanır bölümde: ana özet dört ayla kalır. */
@@ -268,17 +285,6 @@ function logView(program, entry){
 
   return `
   ${favBlock(entry)}
-  <section>
-    <h2>${onToday() ? tx("Bugün aldığın") : tx("O gün aldığın")}</h2>
-    <div class="moons">
-      ${macroMoon(tx("Kalori"), tot.kcal, program.kcal, "kcal", "kcal")}
-      ${macroMoon(tx("Protein"), tot.p, program.protein, "g", "protein")}
-      ${macroMoon(tx("Karbonhidrat"), tot.c, program.carb, "g", "carb")}
-      ${macroMoon(tx("Yağ"), tot.f, program.fat, "g", "fat")}
-    </div>
-    ${program.lbm != null ? `<p class="metric-note">${tx("Yağ oranı kalori tahminine katıldı.")}</p>` : ""}
-  </section>
-
   ${log.length ? detailSection(tot, program) : ""}
 
   ${onToday() && anySug && Math.abs(off) > program.kcal * 0.08
