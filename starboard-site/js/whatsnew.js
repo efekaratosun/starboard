@@ -8,6 +8,9 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.26.0", items:[
+    tx("+ düğmesi artık yemek ekler: ne yediğini söyle ya da yaz, uygulama kendi besin listenle eşleştirsin, sen onayla. Ses telefondan çıkmaz."),
+    tx("Hızlı giriş kalktı: su, kilo, uyku, adım ve görev girişleri Bugün ekranındaki satırlarında.")] },
   { v:"1.25.0", items:[
     tx("Programın > Bugün ekranının en üstünde haftanın yedi günü var: tamamlanan gün yıldız olur, dinlenme günleri ayrı görünür."),
     tx("Her hareketin altında geçen seferki kaydın yazar; antrenmanı başlat düğmesi altta sabit kalır.")] },

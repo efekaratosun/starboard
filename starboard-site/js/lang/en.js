@@ -230,6 +230,8 @@ window.STARBOARD_EN = {
   "Ben: vücudun, grafikler ve ayarlar": "Me: body, charts and settings",
   "Sayfalar": "Pages",
   "Hızlı giriş": "Quick entry",
+  "+ düğmesi artık yemek ekler: ne yediğini söyle ya da yaz, uygulama kendi besin listenle eşleştirsin, sen onayla. Ses telefondan çıkmaz.": "The + button now adds food: say or type what you ate, the app matches it to your own food list, and you confirm. Your voice never leaves the phone.",
+  "Hızlı giriş kalktı: su, kilo, uyku, adım ve görev girişleri Bugün ekranındaki satırlarında.": "Quick entry is gone: water, weight, sleep, steps and tasks are entered from their rows on Today.",
   "Konuş, ben dinliyorum": "Speak, I'm listening",
   "Sustuğunda kendiliğinden biter": "It stops by itself when you go quiet",
   "Bitti": "Done",

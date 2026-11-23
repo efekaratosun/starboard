@@ -3,6 +3,17 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.0 (yayınlanmadı)
+
+### Eklendi
+- Yemek ekle: + düğmesi artık yemek ekler. iPhone'da tek dokunuşla doğrudan dinler ("iki yumurta, beş zeytin, bir dilim beyaz peynir"); ses cihazda yazıya çevrilir (yeni StarboardSpeech eklentisi, tr-TR, cihaz içi), sunucuya gitmez. Dinleme yoksa (web, Türkçeyi cihazda çevirmeyen iPhone, izin yok) aynı ekran yazı kutusuyla açılır.
+- Onay listesi: cümle kendi besin listenle eşleşir; belirsiz sözcükte "Hangisi?" sorar (örn. peynir, ekmek, et, ciğer, balık), gramı düzeltebilir, kalemi silebilir, sofrada eklenen yağı (salata, ekmek) onaylayabilirsin. "Bol yağlı" yalnız eklenebilir. Su cümlede geçerse su takibine yazılır. Eklemeden sonra Geri al var.
+- Yeni besinler: Dana biftek (ızgara), Levrek (ızgara), Hamsi tava (kaynaklı kaloriler); "hamsi" tek başına Hamsi tava, "köfte" Izgara köfte, "ekmek" Beyaz ekmek, "süt" tam yağlı süt, "tavuk" Tavuk göğsü.
+- Mikrofon ve konuşma tanıma izin metinleri (Türkçe ve İngilizce). Ses kaydedilmez, saklanmaz, gönderilmez.
+
+### Değişti
+- Hızlı giriş sayfası kalktı. Su, kilo, uyku, adım ve görev girişleri Bugün ekranındaki satırlarındadır; program yokken "Kilonu gir" küçük bir kilo penceresi açar.
+
 ## 1.25.0 (yayınlanmadı)
 
 ### Eklendi
