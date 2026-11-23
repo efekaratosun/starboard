@@ -208,6 +208,28 @@ const LIFT_KIND = { w:tx("Ağırlık × tekrar"), r:tx("Tekrar"), t:tx("Süre"),
 /* ---- Program › Bugün ----
    Salt okunur: bugünün antrenmanı, ilerleme ve hareket listesi. Set girişi
    yalnızca antrenman modunda yapılır. */
+/* Program › Bugün: bu haftanın yedi günü (pazartesiden). Tamamlanan gün yıldız, antrenman günü halter, dinlenme kesikli çizgi; bakılan gün vurgulu. */
+const WK_DUMB = '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg>';
+function trainWeek(program, key){
+  const mon = shiftDays(key, 1 - isoWeekday(key));
+  const cells = [1, 2, 3, 4, 5, 6, 7].map(wd => {
+    const k = shiftDays(mon, wd - 1);
+    const ses = program.training.days.find(d => d.wd === wd);
+    const planned = !!(ses && ses.b);
+    const e = state.days[k];
+    const lf = (e && e.lifts) || {};
+    /* Antrenman gününde tüm hareketler bitince yıldız; kısmen yapılmış gün yıldız olmaz. */
+    const did = planned ? exercisesOf(ses).every(n => liftHas(lf[n])) : Object.values(lf).some(liftHas);
+    const st = did ? "done" : planned ? "plan" : "rest";
+    const what = did ? tx("antrenman tamam") : planned ? tx("antrenman günü") : tx("dinlenme günü");
+    return `<div class="wk7-d ${st}${k === key ? " now" : ""}" role="listitem" aria-label="${WD_NAMES[wd]}: ${what}${k === key ? ", " + tx("Bugün") : ""}">
+      <b aria-hidden="true">${WD_SHORT[wd]}</b>
+      <span class="wk7-c" aria-hidden="true">${did ? '<svg class="ico"><use href="#i-star4"/></svg>' : planned ? WK_DUMB : "–"}</span>
+    </div>`;
+  }).join("");
+  return `<div class="wk7" role="list" aria-label="${tx("Bu hafta")}">${cells}</div>`;
+}
+
 function trainTodayView(entry, program, key){
   key = key || today();
   const none = program.training.none;
@@ -228,7 +250,7 @@ function trainTodayView(entry, program, key){
     const nx = now ? nextSession(program, key) : null;
     const head = !now ? tx("O gün dinlenme günüydü")
       : nx ? tx("Bugün dinlenme · Sıradaki: {0}, {1}", [WD_NAMES[nx.wd], esc(nx.t)]) : tx("Bugün dinlenme");
-    return `
+    return `${trainWeek(program, key)}
     <section>
       <h2>${head}</h2>
       ${freeLink}
@@ -241,17 +263,20 @@ function trainTodayView(entry, program, key){
   const lifts = entry.lifts || {};
   const doneN = list.filter(n => liftHas(lifts[n])).length;
 
-  return `
+  return `${trainWeek(program, key)}
   <section>
     <h2>${esc(session.t)} <span class="count">${tx("{0}/{1} hareket", [(doneN), (list.length)])}</span></h2>
     ${list.map(name => {
       const ex = parseEx(name, venue);
+      const prev = liftHas(lifts[name]) ? null : lastLift(name, key);
+      const ps = prev ? liftSummary(prev, ex) : "";
       return `<div class="lift lift-ok">
-        <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>${ex.sub ? `<div class="lift-sub">${esc(exText(ex.sub))}</div>` : ""}</div>
+        <div class="lift-main"><div class="lift-name">${esc(exText(ex.name))}</div>${ps ? `<div class="lift-sub">${tx("Geçen sefer: {0}", [esc(ps)])}</div>` : ""}</div>
+        ${ex.sub ? `<span class="lift-chip">${esc(exText(ex.sub))}</span>` : ""}
         ${liftHas(lifts[name]) ? `<svg class="ico lift-tick" role="img" aria-label="${tx("tamam")}"><use href="#i-check"/></svg>` : ""}
       </div>`;
     }).join("")}
-    <button id="wo-start" style="margin-top:14px;padding:18px 16px;font-size:17px">${doneN ? tx("Antrenman moduna dön") : tx("Antrenmanı başlat")}</button>
+    <div class="wo-go"><button id="wo-start" style="padding:18px 16px;font-size:17px">${doneN ? tx("Antrenman moduna dön") : tx("Antrenmanı başlat")}</button></div>
   </section>
   ${hasFree(entry) ? freeCard(entry, key) : ""}`;
 }

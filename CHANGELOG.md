@@ -3,6 +3,12 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.25.0 (yayınlanmadı)
+
+### Eklendi
+- Programın > Bugün ekranına hafta şeridi: haftanın yedi günü, tamamlanan gün yıldız, antrenman günü halter, dinlenme günü kesikli daire.
+- Her hareketin altında "Geçen sefer" kaydı; set × tekrar sağda çip; "Antrenmanı başlat" düğmesi sekme çubuğunun üstünde sabit.
+
 ## 1.24.1 (yayınlanmadı)
 
 ### Değişti
