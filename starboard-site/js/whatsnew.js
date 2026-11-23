@@ -8,6 +8,10 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.19.0", items:[
+    tx("Ana sayfalar yeni tasarıma geçti: sıcak Mercan renkleri, açık ve koyu temada."),
+    tx("Bugün ekranının üstünde dört ay göstergesi ve altında takımyıldız şeridi var; Beslenme ekranı sadeleşti."),
+    tx("Takvimde işaretler büyüdü ve tek bir Simgeler düğmesinde açıklanıyor; dokunma alanları ve yazılar büyüdü.")] },
   { v:"1.18.0", items:[
     tx("Avatarlar artık kasklı astronot hayvanlar; seçince hayvana özel tepki veriyorlar."),
     tx("Beslenme ekranı sadeleşti; öğünler açılır-kapanır."),

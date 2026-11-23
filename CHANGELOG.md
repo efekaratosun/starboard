@@ -3,6 +3,16 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.19.0 (yayınlanmadı)
+
+### Değişti
+- Ana sayfalar (Bugün, Program, Beslenme, Takvim, Ben) onboarding ile aynı Mercan paletine ve Takımyıldız diline geçti, açık ve koyu temada. Renkler tokens.css'te: zemin, kart, yazı, tek vurgu (açık: mor, koyu: mercan), dolgu rengi ve dokunulan kutuların kenarı.
+- Dört ay göstergesi (kalori, protein, karbonhidrat, yağ) Beslenme'den Bugün ekranının en üstüne taşındı; ay mekaniği aynı (kraterler, aşım ünlemi), yalnızca renkler yeni palete geçti ve dolu kısım biraz parlıyor. Beslenme'nin başlığı günün kalorisini tek satırda söylüyor.
+- Takımyıldız şeridi: şekil solda, adı yanında, gün düğmeleri 44 pt.
+- Takvim: işaretler 12 pt, hücrede en çok iki işaret, renk basamağı tek tonlu, veri olmayan gün kesik çizgili, açıklamalar tek satır ve "Simgeler" düğmesinin altında.
+- Ben: yağ oranı ve BMI etiketi sayının altında; su göstergesinde emoji yerine çizgi damla.
+- Bütün yazılar en az 13 px.
+
 ## 1.18.0 (yayınlanmadı)
 
 1.17.0'dan bu yana biriken tüm değişiklikler (PR #2 - #30) bu sürümde toplandı; 1.17.0 etiketi bu birikimden önceki durumu korur.
