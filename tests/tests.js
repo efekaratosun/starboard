@@ -4700,6 +4700,44 @@ test("avatarlar: altı kasklı astronot hayvan, eski seçimler ve renkler korunu
   ok(box.querySelector(".bc-star"));
 });
 
+test("ilk giriş ilerleme: soru sayısı kadar yıldız, yanan yıldızlar sürekli çizgiyle bağlanır", () => {
+  const bar = document.createElement("div");
+  obStars(bar, 5, 3);
+  eq(bar.querySelectorAll(".s").length, 5);
+  eq(bar.querySelectorAll(".s.lit").length, 3);
+  eq(bar.querySelectorAll(".l").length, 4);
+  eq(bar.querySelectorAll(".l.lit").length, 2);
+  obStars(bar, 5, 5);
+  eq(bar.querySelectorAll(".s.lit").length, 5);
+  eq(bar.querySelectorAll(".on-stars").length, 1);
+});
+
+test("hatırlatmalar: izin reddedilirse seçim 'şimdilik istemiyorum'a döner ve neden yazılır; izin verilirse kalır", async () => {
+  const prev = ob, prevAsk = askNotifyPermission;
+  try {
+    const step = OB_STEPS.find(s => s.id === "remind");
+    ob = { ...obDefaults(), remind:"off" };
+    app.innerHTML = step.body();
+    const box = app.querySelector('[data-field="remind"]'), note = app.querySelector("#ob-perm");
+    ok(note && note.hidden);
+    askNotifyPermission = async () => false;
+    await obAskNotify(box);
+    ob.remind = "on";
+    await obAskNotify(box);
+    eq(ob.remind, "off");
+    ok(!note.hidden);
+    eq(box.querySelector('[data-oc="off"]').getAttribute("aria-pressed"), "true");
+    askNotifyPermission = async () => true;
+    ob.remind = "on";
+    await obAskNotify(box);
+    eq(ob.remind, "on");
+    ok(note.hidden);
+  } finally {
+    askNotifyPermission = prevAsk; ob = prev;
+    app.replaceChildren();
+  }
+});
+
 test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot", () => {
   const prev = ob;
   try {

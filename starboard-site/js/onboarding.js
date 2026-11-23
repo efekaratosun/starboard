@@ -304,8 +304,12 @@ function obRuler(field, min, max, step, tw, majorEvery, midEvery, unit, dec, cv)
   const txt = cv.fmt(val);
   const name = field === "height" ? tx("Boy") : tx("Kilo");
   return `<div class="rl" data-rl="${field}" data-min="${min}" data-max="${max}" data-step="${step}" data-tw="${tw}" style="--tw:${tw}px">
-    <button type="button" class="rl-v" aria-label="${tx("{0} değerini elle yaz", [(name)])}">
-      <b class="num rl-n" aria-hidden="true">${txt}</b>${unit ? `<span>${unit}</span>` : ""}</button>
+    <div class="rl-top">
+      <button type="button" class="rl-b" data-rd="-1" aria-label="${tx("{0} azalt", [(name)])}">−</button>
+      <button type="button" class="rl-v" aria-label="${tx("{0} değerini elle yaz", [(name)])}">
+        <b class="num rl-n" aria-hidden="true">${txt}</b>${unit ? `<span>${unit}</span>` : ""}</button>
+      <button type="button" class="rl-b" data-rd="1" aria-label="${tx("{0} arttır", [(name)])}">+</button>
+    </div>
     <div class="rl-w">
       <div class="rl-s" tabindex="0" role="slider" aria-label="${name}" aria-valuemin="${min}" aria-valuemax="${max}" aria-valuenow="${val}" aria-valuetext="${txt} ${unit}"><div class="rl-t">${ticks}</div></div>
     </div>
@@ -355,6 +359,11 @@ function wireRulers(){
       set(ev.key === "Home" ? min : ev.key === "End" ? max : disp() + d * step);
       sc.scrollLeft = toX(disp());
     };
+
+    /* − / + düğmeleri: sürüklemeden bir adım (VoiceOver ve Voice Control için de) */
+    rl.querySelectorAll(".rl-b").forEach(b => {
+      b.onclick = () => { set(disp() + (+b.dataset.rd) * step); sc.scrollLeft = toX(disp()); };
+    });
 
     /* rakama dokun: elle yaz */
     const vb = rl.querySelector(".rl-v");
@@ -517,7 +526,8 @@ const OB_STEPS = [
     } },
   /* Yalnızca iPhone uygulamasında: hatırlatmalar kapalı gelir, burada açılabilir. */
   { id:"remind", t:tx("Hatırlatmalar"), s:tx("Su, antrenman, uyku ve doğum günü bildirimleri. Sonradan Ayarlar’dan değiştirebilirsin."),
-    body: () => `<div class="ocs" data-field="remind">${obCard(ob.remind === "on", "on", "day", tx("Hatırlatmaları aç"))}${obCard(ob.remind !== "on", "off", "rest", tx("Şimdilik istemiyorum"))}</div>` },
+    body: () => `<div class="ocs" data-field="remind">${obCard(ob.remind === "on", "on", "day", tx("Hatırlatmaları aç"))}${obCard(ob.remind !== "on", "off", "rest", tx("Şimdilik istemiyorum"))}</div>
+      <div class="on-perm" id="ob-perm" role="status" hidden><b>${tx("Bildirimler kapalı")}</b><span>${tx("Hatırlatmaları almak için iPhone Ayarlar › Starboard › Bildirimler'den izin ver. İstersen şimdilik geçebilirsin.")}</span></div>` },
   { id:"summary" }
 ];
 const obList = () => OB_STEPS.filter(s => (s.id !== "remind" || IS_NATIVE) && (s.id !== "weight-plan" || obWeightRange()));
@@ -617,11 +627,14 @@ function obSummary(){
         : tx("Haftada {0} gün · {1}", [(tr.freq), (tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", "))])}</i></span></div>
     <div class="metric-note" style="text-align:center;margin-top:14px">${tx("Hepsini sonradan değiştirebilirsin.")}</div>
     <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Starboard tıbbi danışmanlık sunmaz. Sağlıkla ilgili sorularınız için hekiminize danışın.")}</div>
+    <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Veriler yalnızca bu cihazda saklanır")}</div>
   </div>`;
 }
 
 function obQuestion(st){
+  const n = obList().length - 2;
   return `<div class="on-q">
+    <div class="on-count" aria-hidden="true">${Math.min(obStep, n)} / ${n}</div>
     <h1>${st.t}</h1>
     ${st.s ? `<p class="on-sub">${st.s}</p>` : ""}
     <div class="on-body">${st.body()}</div>
@@ -666,6 +679,22 @@ function obCountUp(){
   setTimeout(() => requestAnimationFrame(step), 260);
 }
 
+/* İlerleme: soru sayısı kadar yıldız; yanan yıldızlar sürekli çizgiyle bağlanır, geri kalanlar kesik çizgiyle. */
+const OB_WY = [26, 12, 30, 16, 28, 10, 24];
+function obStars(bar, n, lit){
+  const pt = i => [8 + i * (284 / Math.max(1, n - 1)), OB_WY[i % OB_WY.length]];
+  const star = (x, y, r) => `M${x} ${y - r}L${x + r * .25} ${y - r * .25}L${x + r} ${y}L${x + r * .25} ${y + r * .25}L${x} ${y + r}L${x - r * .25} ${y + r * .25}L${x - r} ${y}L${x - r * .25} ${y - r * .25}Z`;
+  let lines = "", stars = "";
+  for (let i = 0; i < n; i++){
+    const [x, y] = pt(i), on = i < lit, cur = i === lit - 1;
+    if (i < n - 1){ const [x2, y2] = pt(i + 1); lines += `<line class="l${i < lit - 1 ? " lit" : ""}" x1="${x}" y1="${y}" x2="${x2}" y2="${y2}"/>`; }
+    stars += `<circle class="h${on ? " lit" : ""}" cx="${x}" cy="${y}" r="${cur ? 14 : 10}"/><path class="s${on ? " lit" : ""}" d="${star(x, y, cur ? 8 : 5.5)}"/>`;
+  }
+  let svg = bar.querySelector(".on-stars");
+  if (!svg){ bar.insertAdjacentHTML("beforeend", '<svg class="on-stars" viewBox="0 0 300 44" aria-hidden="true"></svg>'); svg = bar.querySelector(".on-stars"); }
+  svg.innerHTML = lines + stars;
+}
+
 function renderOnboarding(dir){
   if (!ob) { ob = obDefaults(); obStep = 0; }
   applyTheme(ob.theme);
@@ -693,7 +722,8 @@ function renderOnboarding(dir){
   document.querySelector("main.on").classList.toggle("is-w", first);
   sceneActive(first);
   const bar = document.getElementById("on-bar");
-  bar.firstElementChild.style.width = (sum ? 100 : obStep / n * 100).toFixed(1) + "%";
+  bar.firstElementChild.style.width = (sum ? 100 : obStep / n * 100).toFixed(1) + "%";   /* gizli çubuk; testler ve eski okuyucular için korunur */
+  obStars(bar, n, sum ? n : Math.min(obStep, n));
   bar.setAttribute("aria-valuemax", n); bar.setAttribute("aria-valuenow", Math.min(obStep, n));
   bar.setAttribute("aria-label", sum ? tx("Sorular tamam") : tx("Profil oluşturma ilerlemesi"));
   document.getElementById("on-nav").classList.remove("hide");
@@ -743,6 +773,21 @@ function obErr(msg){
   box.textContent = msg || "";
   box.classList.toggle("show", !!msg);
   if (msg) box.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block:"nearest" });
+}
+
+/* Hatırlatmalar: "aç" seçilir seçilmez iOS izni sorulur (bağlam net). Reddedilirse seçim
+   "şimdilik istemiyorum"a döner ve nedeni aynı ekranda yazılır. İzin verilmişse sorulmaz. */
+async function obAskNotify(box){
+  const note = document.getElementById("ob-perm");
+  if (note) note.hidden = true;
+  const ok = await askNotifyPermission();
+  if (ok || !box.isConnected || !ob || ob.remind !== "on") return;
+  ob.remind = "off";
+  box.querySelectorAll("[data-oc]").forEach(x => {
+    const on = x.dataset.oc === "off";
+    x.classList.toggle("on", on); x.setAttribute("aria-pressed", String(on));
+  });
+  if (note) note.hidden = false;
 }
 
 function wireOb(st){
@@ -807,6 +852,7 @@ function wireOb(st){
     });
     obCardPress(box, v);
     obErr("");
+    if (f === "remind" && v === "on") obAskNotify(box);
   });
 
   /* Karşılama: bayraklar. Türkiye = Türkçe + metrik. İngiltere = menü; seçilen birimle İngilizce. */
