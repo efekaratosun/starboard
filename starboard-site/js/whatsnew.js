@@ -8,6 +8,10 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.21.0", items:[
+    tx("Yeni hedef: Kilo alma. Hedef kilonu ve kaç haftada varacağını seçiyorsun; kalorin, proteinin ve antrenman önerin buna göre ayarlanıyor."),
+    tx("Hedefin ekranında hedef kilo ve süre tek kartta; süre kaydırıcısı artık yağ kaybı, kas kazanımı ve kilo almada çalışıyor. Sağlık tiki kalktı."),
+    tx("Ben ekranındaki hedefe yolculuk, planladığın hıza göre önde mi geride mi olduğunu söylüyor.")] },
   { v:"1.20.0", items:[
     tx("Hedefin ekranında artık kaç haftada hedef kiloya ineceğini kaydırıcıyla seçiyorsun; günlük kalorin seçtiğin süreye göre ayarlanıyor."),
     tx("Hedefin ekranındaki seçeneklerin çizgileri daha belirgin.")] },
