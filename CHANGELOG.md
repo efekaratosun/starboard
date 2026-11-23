@@ -3,6 +3,24 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.18.0 (yayınlanmadı)
+
+1.17.0'dan bu yana biriken tüm değişiklikler (PR #2 - #30) bu sürümde toplandı; 1.17.0 etiketi bu birikimden önceki durumu korur.
+
+### Değişti
+- İlk giriş (onboarding) baştan yenilendi: karşılama sahnesi (halkalı gezegen, yıldızlar, nebula, ışık hızı geçişi), "Seni tanıyalım" ve "Ölçülerin" ekranları, takımyıldız ilerleme, Mercan paleti (açık ve koyu), 44 pt dokunma alanları, cetvelde − / +, doğum tarihi girişi (Ay etiketi, otomatik geçiş, yalnız gerçek tarihler).
+- Bildirim izni artık "Hatırlatmaları aç"a dokunulunca soruluyor; reddedilirse nedeni aynı ekranda yazıyor.
+- Hedefin ekranı: görünür onay kutuları, hedefe göre güncellenen hedef kilo önerisi, dar ekranda alt alta hedefler.
+- Avatarlar kasklı astronot hayvanlar; seçimde hayvana özel tepki ve süzülme.
+- Beslenme ekranı sadeleşti, öğünler açılır-kapanır (kapalı başlar); Bugün ekranındaki "aldığın" bölümü yenilendi (kalori üstte, makro sütunları, sakin aşım göstergesi).
+- Dağınık renkler `tokens.css` değişkenlerine bağlandı; marka kimliği dosyası eklendi (`docs/MARKA_KIMLIGI.md`).
+
+### Düzeltildi
+- Giriş doğrulaması ve içe aktarma güvenliği (Paket 1a).
+- Çiğ yenmeyen besinler öneri ve aramalardan gizlendi; yaklaşık 70 besinin kategorisi düzeltildi.
+
+Veri şeması aynı kalır (`SCHEMA` 3). Doğum tarihi eklendi; yaş alanı geri dönüş için güncel tutulur, bu yüzden 1.17.0'a dönmek veriyi bozmaz.
+
 ## 1.17.0 (yayınlanmadı)
 
 ### Değişti
