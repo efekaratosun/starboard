@@ -537,22 +537,23 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.24.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[11].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[1].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[2].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[3].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[4].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[5].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[6].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[7].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[8].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
+  eq(APP_VERSION, "1.24.1");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[12].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 1, "1.24.1: tek kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[2].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[3].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[4].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[5].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[6].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[7].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[8].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[9].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -2702,7 +2703,7 @@ test("kolay ekleme: miktar kartı varsayılan porsiyonla açılır; +/− ve haz
   } finally { closeQuick(); }
 });
 
-test("kolay ekleme: dünkü öğünü ve dünün tamamını kopyalamak toast'tan geri alınır; sık yedikler tek dokunuşla eklenir", async () => {
+test("kolay ekleme: dünkü öğünü ve dünün tamamını kopyalamak toast'tan geri alınır", async () => {
   const { s0 } = await quickFixture();
   try {
     addOpen = null; render();
@@ -2722,13 +2723,7 @@ test("kolay ekleme: dünkü öğünü ve dünün tamamını kopyalamak toast'tan
     await undoToast();
     eq(state.days[today()].log, undefined);
 
-    /* sayfanın başındaki sık yedikler: toast'lı ve geri alınır */
-    const fav = app.querySelector('[data-fav="yulaf"]');
-    ok(fav && fav.textContent.includes("2 porsiyon"), "sık yediklerde miktar");
-    await fav.onclick();
-    eq(state.days[today()].log.map(x => [x.k, x.g, x.slot]), [["yulaf", 80, s0]]);
-    await undoToast();
-    eq(state.days[today()].log, undefined);
+    ok(!app.querySelector('[data-fold="favs"]'), "sık yediklerin kartı ana sayfada yok");
   } finally { closeQuick(); }
 });
 
@@ -2796,13 +2791,13 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.24.0");
+  eq(APP_VERSION, "1.24.1");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0", "1.22.0", "1.23.0", "1.24.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0", "1.22.0", "1.23.0", "1.24.0", "1.24.1"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */
@@ -3081,22 +3076,12 @@ test("öğün kartı ekleme, kaydetme ve öneriler açıkken kayıtlı seçimi d
 test("tek dokunuşla besin ekleme ve geri alma, öğün kartının kayıtlı durumu açıkken de kapalıyken de çalışır", async () => {
   const { s0 } = await quickFixture();
   try {
-    for (const open of [false, true]) {
+    for (const _ of [true]) {
       const key = "meal_" + s0;
       const header = () => app.querySelector(`[data-fold="${key}"]`);
       addOpen = null; render();
-      if (open) {
-        await header().onclick();
-        app.querySelector(`[data-addfood="${s0}"]`).click();
-      } else {
-        await app.querySelector('[data-fold="favs"]').onclick();
-        await app.querySelector('[data-fav="yulaf"]').onclick();
-        ok(header().closest(".fold").classList.contains("shut"));
-        ok(header().querySelector(".count").textContent.includes("kcal"));
-        await undoToast();
-        eq(header().querySelector(".count .meal-empty").textContent, "boş");
-        continue;
-      }
+      await header().onclick();
+      app.querySelector(`[data-addfood="${s0}"]`).click();
       await app.querySelector('[data-qadd="yulaf"]').onclick();
       eq(state.days[today()].log.map(it => it.slot), [s0]);
       ok(header().querySelector(".count").textContent.includes("kcal"));
@@ -3435,39 +3420,29 @@ test("ay: İngilizcede de çalışır (kcal left, g left, +fazlalık), eksik çe
   } finally { closeSug(); }
 });
 
-test("Sık yediklerin: katlanır, varsayılan kapalı, dokununca açılır; dünü kopyala düğmesi dışarıda kalır; İngilizcesi var", async () => {
+test("ana sayfada Sık yediklerin kartı yok; dünü kopyala küçük bağlantı olarak durur", async () => {
   await quickFixture();
   try {
     addOpen = null; render();
-    const h = app.querySelector('[data-fold="favs"]');
-    ok(h && h.textContent.includes("Sık yediklerin"), "başlık");
-    eq(h.querySelector(".count").textContent, "", "başlıkta ekleme talimatı yok");
-    eq(h.getAttribute("aria-expanded"), "false", "varsayılan kapalı");
-    const box = h.closest(".fold");
-    ok(box.classList.contains("shut"), "kapalı görünür");
-    ok(box.querySelector('[data-fav="yulaf"]'), "besin düğmeleri katlı bölümün içinde");
+    ok(!app.querySelector('[data-fold="favs"]'), "Sık yediklerin kartı yok");
     const cy = app.querySelector("#copy-y");
-    ok(cy && !cy.closest(".fold"), "dünü kopyala katlı bölümün dışında");
-    ok(!app.querySelector('[data-fold="favs"]').closest(".favs"), "ayrı bölüm");
-    await h.onclick();
-    eq(h.getAttribute("aria-expanded"), "true", "dokununca açılır");
-    ok(!box.classList.contains("shut"));
-    eq(state.ui.fold.favs, true, "durum kaydedilir");
-    render();
-    eq(app.querySelector('[data-fold="favs"]').getAttribute("aria-expanded"), "true", "yeniden çizimde açık kalır");
-    await app.querySelector('[data-fold="favs"]').onclick();
-    eq(state.ui.fold.favs, false, "yeniden dokununca kapanır");
-    render();
-    ok(app.querySelector('[data-fold="favs"]').closest(".fold").classList.contains("shut"));
-    await withLang("en", async () => {
-      I18N_MISSING.clear(); render();
-      const e = app.querySelector('[data-fold="favs"]');
-      eq(e.textContent.trim(), "Your frequent foods");
-      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
-    });
+    ok(cy && cy.classList.contains("link") && !cy.closest(".fold"), "dünü kopyala küçük bağlantı");
     addOpen = slotList()[0][0]; render();
-    ok(!app.querySelector('[data-fold="favs"]'), "besin ekle paneli açıkken liste panelde, katlı bölüm çizilmez");
-    eq(a11yBad("favs"), []);
+    ok(app.textContent.includes("Sık yediklerin"), "besin ekle panelinde sık yedikler duruyor");
+  } finally { closeQuick(); }
+});
+
+test("beslenme: tek özet kartı; Ayrıntılar kartın içinde, başlık altında kalori yazısı yok", async () => {
+  const { slots } = await sugFixture();
+  try {
+    const entry = state.days[today()];
+    entry.log = [logItem("yulaf", 40, slots[0], 1)];
+    syncKcal(entry); render();
+    const card = app.querySelector(".mt-sum");
+    ok(card && card.querySelector('[data-fold="detail"]'), "Ayrıntılar özet kartının içinde");
+    eq(app.querySelectorAll(".mt-sum").length, 1, "tek özet kartı");
+    ok(!document.querySelector(".htext .sub"), "başlık altında kalori yazısı yok");
+    eq(a11yBad("detail"), []);
   } finally { closeQuick(); }
 });
 

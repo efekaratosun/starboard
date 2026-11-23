@@ -287,9 +287,9 @@ function logView(program, entry){
   return `
   <div class="mt-sum"><div class="mt-sum-r"><span><b class="num">${fmtN(Math.abs(Math.round(left)))}</b> <i>${left < 0 ? tx("kcal aşıldı") : tx("kcal kaldı")}</i></span>
     <span class="num">${tx("{0} / {1} kcal", [fmtN(Math.round(tot.kcal)), fmtN(program.kcal)])}</span></div>
-    <div class="mt-bar${left < 0 ? " over" : ""}"><i style="width:${clamp(tot.kcal / program.kcal * 100, 0, 100).toFixed(0)}%"></i></div></div>
+    <div class="mt-bar${left < 0 ? " over" : ""}"><i style="width:${clamp(tot.kcal / program.kcal * 100, 0, 100).toFixed(0)}%"></i></div>
+    ${log.length ? detailSection(tot, program) : ""}</div>
   ${favBlock(entry)}
-  ${log.length ? detailSection(tot, program) : ""}
 
   ${onToday() && anySug && Math.abs(off) > program.kcal * 0.08
     ? `<div class="metric-note" style="margin:0 4px 10px"><b class="out">${tx("Öneri hedeften {0} kcal {1}.", [Math.abs(off), off > 0 ? tx("yüksek") : tx("düşük")])}</b></div>` : ""}
@@ -782,19 +782,11 @@ function logEditor(it){
 }
 
 function favBlock(entry){
-  const favs = favoriteFoods();
+  /* Sık yediklerin artık yalnızca öğün sayfasında; ana sayfada yalnızca dünü kopyalama bağlantısı kalır. */
   const y = shiftDays(vKey(), -1);
   const yLog = (state.days[y] && state.days[y].log) || [];
-  /* Besin ekleme paneli açıkken aynı besinler panelin başında, o öğüne göre sıralı durur. */
-  const chips = !addOpen;
-  if (!favs.length && !yLog.length) return "";
-  if (!chips && !yLog.length) return "";
-  /* Sık yediklerin katlanır, varsayılan kapalı; dünü kopyalama düğmesi dışarıda kalır. */
-  return `${chips ? fold("favs", tx("Sık yediklerin"), "", favs.length
-      ? `<div class="fav">${favs.map(([k,c]) =>
-        `<button data-fav="${k}" data-fav-g="${c.g}" data-fav-slot="${c.slot||""}"><b>${esc(c.name)}</b> · ${esc(shortAmount(k, c.g))}</button>`).join("")}</div>`
-      : `<div class="empty">${tx("Besin ekledikçe sık kullandıkların burada birikecek.")}</div>`) : ""}
-  ${yLog.length ? `<section class="favs"><button class="ghost rep" id="copy-y">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? tx("Dünün") : tx("Bir önceki günün")), (yLog.length)])}</button></section>` : ""}`;
+  if (!yLog.length) return "";
+  return `<section class="favs"><button class="link" id="copy-y">${tx("↺ {0} tamamını kopyala ({1} kalem)", [(onToday() ? tx("Dünün") : tx("Bir önceki günün")), (yLog.length)])}</button></section>`;
 }
 
 function amountText(it){
