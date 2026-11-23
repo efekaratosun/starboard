@@ -10,6 +10,7 @@ on:
       - "ios/**"
       - "package.json"
       - "package-lock.json"
+      - "plugins/starboard-speech/**"
       - "capacitor.config.json"
       - ".github/workflows/ios.yml"
   workflow_dispatch:
@@ -65,6 +66,12 @@ jobs:
           plutil -extract NSCameraUsageDescription raw ios/App/App/Info.plist >/dev/null
           test "$(plutil -extract NSPrivacyCollectedDataTypes.0.NSPrivacyCollectedDataType raw ios/App/App/PrivacyInfo.xcprivacy)" = "NSPrivacyCollectedDataTypeSearchHistory"
 
+      - name: Konusma eklentisi ve mikrofon beyanlari denetle
+        run: |
+          grep -q StarboardSpeech ios/App/CapApp-SPM/Package.swift
+          plutil -extract NSMicrophoneUsageDescription raw ios/App/App/Info.plist >/dev/null
+          plutil -extract NSSpeechRecognitionUsageDescription raw ios/App/App/Info.plist >/dev/null
+
       # Apple Sağlık: yetki dosyasında HealthKit, projede yetenek, pakette eklenti olmalı.
       # Anahtarlarda nokta olduğu için plutil değil PlistBuddy (yol ayırıcısı ":").
       # İmzalı derleme (hesap) olmadan yetki uygulamaya gömülmez; gerçek deneme TestFlight'ta.
@@ -97,7 +104,7 @@ jobs:
             test -f "$APP/$L.lproj/InfoPlist.strings"
             plutil -p "$APP/$L.lproj/InfoPlist.strings"
           done
-          for K in NSCameraUsageDescription NSHealthShareUsageDescription NSHealthUpdateUsageDescription; do
+          for K in NSCameraUsageDescription NSHealthShareUsageDescription NSHealthUpdateUsageDescription NSMicrophoneUsageDescription NSSpeechRecognitionUsageDescription; do
             /usr/libexec/PlistBuddy -c "Print :$K" "$APP/Info.plist"
             plutil -extract "$K" raw "$APP/tr.lproj/InfoPlist.strings" >/dev/null
           done
