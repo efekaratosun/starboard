@@ -983,7 +983,7 @@ main.on .ob-journey #ob-tw{width:118px;min-height:44px;margin-top:2px;padding:0 
 .gh-dots circle{fill:none;stroke:var(--tap-edge);stroke-width:1.5}
 .gh-dots .lit{fill:var(--band)}
 .gh-r.flash .gh-dots .lit:last-of-type{animation:obBump .45s var(--e-spring,ease)}
-main section.gl{background:none;border:0;box-shadow:none;padding:4px 4px 16px}
+main section.gl{background:none!important;border:0!important;box-shadow:none!important;padding:4px 4px 16px}
 .fc{margin:2px 0 4px;border:0;border-radius:26px;background:var(--fill);color:var(--on-fill);padding:16px 18px 18px}
 .fc.g{border-bottom:0}
 .fc-h{display:flex;align-items:center;gap:12px}
