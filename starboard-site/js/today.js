@@ -251,7 +251,7 @@ function kcalBand(program){
     okMsg: v => v < G ? tx("açığın {0} kcal, güvenli aralıkta", [(T - v)]) : tx("hedefte"),
     overMsg: v => v > T ? tx("bakım kalorinin üstündesin, bugün açık oluşmadı") : tx("hedefin {0} kcal üstündesin, açık küçüldü", [(v - G)]),
     underMsg: v => tx("açık {0} kcal; bu kadar düşük kalori kas kaybı ve yorgunluk riskini artırır, {1} kcal altına inme", [(T - v), (lo)]) };
-  if (R.goal === "gain") return { ...R,
+  if (isGainGoal(R.goal)) return { ...R,
     okMsg: v => tx("fazlalığın {0} kcal", [(v - T)]),
     overMsg: v => tx("fazlalık {0} kcal; bu kadarı kas yerine çoğunlukla yağ olarak depolanır", [(v - T)]),
     underMsg: v => v < T ? tx("bakım kalorinin altındasın, kas kazanımı için fazlalık gerekli") : tx("fazlalık kas kazanımı için yetersiz kaldı") };

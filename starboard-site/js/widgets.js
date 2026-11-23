@@ -553,9 +553,11 @@ function bodyCard(){
     const rate = cur.length && prev.length ? mean(cur) - mean(prev) : null;
     const right = rate !== null && (down ? rate < -0.05 : rate > 0.05);
     const reached = down ? w <= target : w >= target;
-    const eta = reached ? tx("Hedefe ulaştın 🎉")
+    const plan = p.paceWeeks > 0 ? Math.abs(start - target) / p.paceWeeks : null;   /* planlanan kg/hafta (Hedefin ekranındaki süre) */
+    const vs = plan && right && !reached ? (Math.abs(rate) >= plan * 1.2 ? tx(" · plandan önde") : Math.abs(rate) <= plan * 0.8 ? tx(" · plandan geride") : tx(" · planda")) : "";
+    const eta = (reached ? tx("Hedefe ulaştın 🎉")
       : right ? tx("bu tempoyla ~{0} hafta", [(Math.max(1, Math.ceil(left / Math.abs(rate))))])
-      : rate === null ? tx("tempo için iki haftalık tartı gerekli") : tx("son hafta hedefin tersine gitti");
+      : rate === null ? tx("tempo için iki haftalık tartı gerekli") : tx("son hafta hedefin tersine gitti")) + vs;
     journey = `<div class="bc-sec">
       <div class="bc-h"><span>${tx("Hedefe yolculuk")}</span><b class="num">%${Math.round(pct * 100)}</b></div>
       <div class="jr"><div class="jr-fill" style="width:${(pct*100).toFixed(1)}%"></div><span class="jr-now" style="left:${(pct*100).toFixed(1)}%"></span></div>

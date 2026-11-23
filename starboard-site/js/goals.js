@@ -40,7 +40,7 @@ function kcalRange(program, profile){
     const floor = Math.round(Math.max(program.bmr * 0.95, sexK(profile.sex, 1500, 1200)));
     return { goal, G, T, lo: Math.round(Math.max(floor, G - 500, T - 1000)), hi: Math.round(G * 1.05) };
   }
-  if (goal === "gain") return { goal, G, T, lo: Math.round(T * 1.05), hi: Math.round(T * 1.20) };
+  if (isGainGoal(goal)) return { goal, G, T, lo: Math.round(T * 1.05), hi: Math.round(T * 1.20) };
   return { goal: "maintain", G, T, lo: Math.round(G * 0.9), hi: Math.round(G * 1.1) };
 }
 

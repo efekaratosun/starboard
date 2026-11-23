@@ -156,7 +156,7 @@ function wireSettings(){
     p.avatar = stAvatar;
     p.activity = document.getElementById("s-act").value;
     p.goal = document.getElementById("s-goal").value;
-    if (p.goal !== "lose"){ delete p.targetWeeks; delete p.paceWeeks; }
+    if (!PACE[p.goal]){ delete p.targetWeeks; delete p.paceWeeks; }
     await saveState(state);
     tab = "today"; render(); window.scrollTo(0,0);
   };

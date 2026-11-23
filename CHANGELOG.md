@@ -3,6 +3,13 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.21.0 (yayınlanmadı)
+
+### Değişti
+- Yeni hedef "Kilo alma" (GOAL.mass): bakımın üstünde kalori, protein 2,0 g/kg, güç programları öne alınır (haftada en az 3 gün), kilo alma ve kas kazanımı aynı yönde çalışır (isGainGoal). Hedef kilo önerisi BMI 22 (en çok +%10). Süre seçilince açık/fazla = haftalık hız × 1100 kcal (PACE: yağ kaybı 0,25-0,5, kas kazanımı 0,15-0,35, kilo alma 0,25-0,5 kg/hafta).
+- Hedefin ekranı: dört hedef 2×2; hedef kilo ve "Kaç haftada?" kaydırıcısı tek Yolculuk kartında; sağlık tiki kalktı, yerine tek uyarı satırı. Panel hep açık (18+); BMI ve büyük kayıp uyarıları panelde yazılır, engellemez; kalori alt sınırı her durumda geçerli.
+- Ben: hedefe yolculuk notu planlanan hıza göre önde/geride/planda diyor.
+
 ## 1.20.0 (yayınlanmadı)
 
 ### Değişti
