@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.22.0 (yayınlanmadı)
+
+### Değişti
+- Bugün: hedef paneli yenilendi. Başlıkta "N hedef kaldı", "biten/toplam" ve biten hedef kadar yanan yıldız dizisi (halka kalktı; seri düğmesi başlıkta kaldı). Bugünün en öncelikli açık hedefi (antrenman, sonra veriyle işaretlenenler) "Sıradaki" kartında; tek düğme: Antrenmana başla, + Bardak, Öğün ekle ya da olduğu yerde Gir. Kalan açık hedefler SONRA altında, biten hedefler tek satırlık Tamamlanan özetinde (açılınca satırlar). Geçmiş günde Sıradaki kartı yok. Sıradaki kartı antrenmansa üstteki kısa yol düğmesi tekrarlanmaz.
+
 ## 1.21.0 (yayınlanmadı)
 
 ### Değişti

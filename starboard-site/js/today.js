@@ -57,34 +57,30 @@ function eveningLine(entry, program, key){
 /* ---- bugün ---- */
 function goalHero(key, sc){
   const now = key === today();
-  const pct = sc.total ? clamp(sc.done / sc.total, 0, 1) : 0;
   const full = !!sc.total && sc.done >= sc.total;
-  const C = 2 * Math.PI * 34;
-  const off = +(C * (1 - pct)).toFixed(1);
   const entering = render.lastTab !== "today" || !!navDir;
-  /* Sayfaya girerken halka CSS ile sıfırdan dolar (.fx-ring); sayfa içinde eski değerden geçer. */
-  const prevOff = entering || reduceMotion() ? off : _ringPrev[key] === undefined ? +C.toFixed(1) : _ringPrev[key].off;
   const bump = !entering && _ringPrev[key] && _ringPrev[key].done !== sc.done;
   const rollFrom = String(bump && !reduceMotion() ? _ringPrev[key].done : sc.done);
   const up = bump && sc.done > _ringPrev[key].done;
-  _ringPrev[key] = { off, done: sc.done };
+  _ringPrev[key] = { done: sc.done };
   const R = skyNow(), streak = streakNow();
   const title = !sc.total ? tx("Hedef yok") : full ? (now ? tx("Bugün tamam") : tx("Gün tamam")) : tx("{0} hedef kaldı", [(sc.total - sc.done)]);
-  const sub = !now ? `${prettyDate(key)} · ${weekdayName(key)}`
-            : full ? tx("Bugünün yıldızı yandı.") : tx("Satıra dokun, olduğu yerde gir.");
+  const sub = !now ? `${prettyDate(key)} · ${weekdayName(key)}` : full ? tx("Bugünün yıldızı yandı.") : "";
+  /* Yıldız dizisi: biten hedef kadar yıldız yanar, çizgi onları birleştirir. */
+  const n = Math.max(sc.total, 1), W = 104, st = n > 1 ? W / (n - 1) : 0;
+  const dots = Array.from({ length: n }, (_, i) => {
+    const x = (i * st).toFixed(1);
+    const seg = i < n - 1 ? `<line x1="${x}" y1="0" x2="${((i + 1) * st).toFixed(1)}" y2="0" class="${i < sc.done - 1 ? "on" : ""}"/>` : "";
+    const dot = i < sc.done ? `<path class="lit" transform="translate(${x} 0)" d="M0-7 1.8-1.8 7 0 1.8 1.8 0 7-1.8 1.8-7 0-1.8-1.8Z"/>` : `<circle cx="${x}" cy="0" r="3.4"/>`;
+    return seg + dot;
+  }).join("");
   return `<div class="gh${full ? " full" : ""}${now ? "" : " past"}">
-    <div class="gh-ring${up ? " flash" : ""}">
-      <svg viewBox="0 0 84 84" aria-hidden="true">
-        <defs><linearGradient id="gh-gr" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" style="stop-color:var(--g1)"/><stop offset="1" style="stop-color:var(--neon)"/></linearGradient></defs>
-        <circle class="gh-bg" cx="42" cy="42" r="34"/>
-        <circle class="gh-fg${entering ? " fx-ring" : ""}" cx="42" cy="42" r="34" transform="rotate(-90 42 42)" style="--fx-len:${C.toFixed(1)}px"
-          stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${prevOff}" data-to="${off}"/>
-      </svg>
-      <span class="gh-n num${bump ? " bump" : ""}" aria-label="${tx("{0} hedeften {1} tamam", [(sc.total), (sc.done)])}"><b class="roll" data-v="${rollFrom}" data-to="${sc.done}">${rollHTML(rollFrom)}</b>/${sc.total}</span>
-    </div>
-    <div class="gh-t"><b>${title}</b><i>${sub}</i>
+    <div class="gh-t"><b>${title}</b>${sub ? `<i>${sub}</i>` : ""}
       <button class="gh-s" id="gh-cal">${icon("star4")}<span>${tx("{0} günlük seri · {1}/{2} yıldız", [(streak), (R.n), (R.c.p.length)])}</span></button></div>
+    <div class="gh-r${up ? " flash" : ""}">
+      <span class="gh-n num${bump ? " bump" : ""}" aria-label="${tx("{0} hedeften {1} tamam", [(sc.total), (sc.done)])}"><b class="roll" data-v="${rollFrom}" data-to="${sc.done}">${rollHTML(rollFrom)}</b>/${sc.total}</span>
+      <svg class="gh-dots" viewBox="-9 -9 ${W + 18} 18" aria-hidden="true">${dots}</svg>
+    </div>
   </div>`;
 }
 
@@ -121,6 +117,32 @@ function goalEditor(kind, entry, program, key){
     }
   }
   return "";
+}
+
+const goalIconOf = (kind, program, key) => {
+  if (kind !== "train") return GOAL_ICON[kind];
+  const ses = program.training.days.find(d => d.wd === isoWeekday(key));
+  return (ses && ses.icon) || "fullbody";
+};
+let doneOpen = false;
+
+/* Sıradaki hedef: bugünün en öncelikli açık hedefi büyük kartta, tek düğmeyle. */
+function focusCard(t, info, entry, program, key){
+  const kind = taskKind(t), open = goalOpen === kind;
+  const editKind = kind === "weigh" || kind === "sleep" || kind === "steps";
+  let go;
+  if (kind === "train") go = `<button class="fc-go" id="fc-train">${tx("Antrenmana başla")}</button>`;
+  else if (kind === "water") go = `<button class="fc-go" data-add-water="${cupMl()}">${tx("+ Bardak")}</button>`;
+  else if (kind === "kcal" || kind === "protein") go = `<button class="fc-go" data-goto="${kind}">${tx("Öğün ekle")}</button>`;
+  else go = `<button class="fc-go" data-goal="${kind}" aria-expanded="${open}">${open ? tx("Kapat") : tx("Gir")}</button>`;
+  return `<div class="fc g${open ? " open" : ""}" data-kind="${kind}">
+    <div class="fc-h"><span class="fc-ic">${icon(goalIconOf(kind, program, key))}</span>
+      <div><div class="fc-eb">${tx("SIRADAKİ")}</div><div class="fc-t">${esc(info.label || info.title)}</div></div></div>
+    <div class="fc-s">${esc(info.txt)}</div>
+    <div class="fc-bar"><i style="width:${clamp(info.pct * 100, 0, 100).toFixed(0)}%"></i></div>
+    ${open && editKind ? `<div class="fc-ed"><div class="g-bi">${goalEditor(kind, entry, program, key)}</div></div>` : ""}
+    ${go}
+  </div>`;
 }
 
 function goalRow(t, entry, program, key){
@@ -208,7 +230,18 @@ function todayView(entry, program, key){
   const auto = t => !!(t.suggested && autoInfo(t, entry, program, key));
   const shown = vis.filter(auto).concat(vis.filter(t => !auto(t)));
   const sc = dayScore(key);
-  const rows = shown.map(t => goalRow(t, entry, program, key)).join("");
+  /* açık / tamamlanan ayrımı; odak yalnızca bugünde */
+  const isDone = t => { const i = t.suggested ? autoInfo(t, entry, program, key) : null; return i ? i.ok : !!t.done; };
+  const openT = shown.filter(t => !isDone(t)), doneT = shown.filter(isDone);
+  const focusT = now && program ? (openT.find(t => t.suggested && taskKind(t) === "train" && autoInfo(t, entry, program, key))
+    || openT.find(t => t.suggested && autoInfo(t, entry, program, key))) : null;
+  const focusInfo = focusT ? autoInfo(focusT, entry, program, key) : null;
+  const restT = openT.filter(t => t !== focusT);
+  const rows = restT.map(t => goalRow(t, entry, program, key)).join("");
+  const doneRows = doneT.map(t => goalRow(t, entry, program, key)).join("");
+  const doneNames = doneT.map(t => { const i = t.suggested ? autoInfo(t, entry, program, key) : null; return esc((i && (i.label || i.title)) || (t.suggested ? tx(t.title) : t.title)); });
+  const doneOn = doneOpen || doneT.some(t => t.suggested && goalOpen === taskKind(t));
+  const doneBlock = doneT.length ? `<details class="gd"${doneOn ? " open" : ""}><summary><span>${tx("Tamamlanan")}</span>${doneNames.map(n => `<em>${icon("star4")}${n}</em>`).join("")}</summary>${doneRows}</details>` : "";
   _doneSeen[key] = new Set(shown.filter(t => t.suggested).map(t => [taskKind(t), autoInfo(t, entry, program, key)])
     .filter(([, a]) => a && a.ok).map(([k2]) => k2));
 
@@ -223,10 +256,13 @@ function todayView(entry, program, key){
     <button id="np-go">${tx("Kilonu gir")}</button>
   </section>`}
 
-  ${shortcutButton(entry, program, key)}
+  ${(() => { const b = shortcutButton(entry, program, key); return focusT && taskKind(focusT) === "train" && /data-sc="train"/.test(b) ? "" : b; })()}
 
   <section class="gl" id="goal-list">
+    ${focusT ? focusCard(focusT, focusInfo, entry, program, key) : ""}
+    ${focusT && rows ? `<div class="gl-lbl">${tx("SONRA")}</div>` : ""}
     ${rows}
+    ${doneBlock}
     <button class="ghost" id="goal-add">${tx("＋ Hedef ekle")}</button>
   </section>
 
@@ -498,8 +534,10 @@ function wireToday(entry, program, key){
   });
   goalJust = null;
   /* halka eski değerinden yenisine dolar; yeni biten hedef parıldar */
-  const fg = app.querySelector(".gh-fg[data-to]");
-  if (fg) requestAnimationFrame(() => requestAnimationFrame(() => { fg.style.strokeDashoffset = fg.dataset.to; }));
+  const gd = app.querySelector("details.gd");
+  if (gd) gd.ontoggle = () => { doneOpen = gd.open; };
+  const fct = document.getElementById("fc-train");
+  if (fct) fct.onclick = () => runShortcut("train");
   app.querySelectorAll(".g.just .g-ok").forEach(el => setTimeout(() => sparkle(el), 200));
   /* yeni tamamlanan hedef: kısa parlama (CSS .g.just) ve dokunsal onay */
   /* gün tamamlandıysa tek titreşim: yıldızın yansıması hedefin kendi titreşiminin yerini alır */
