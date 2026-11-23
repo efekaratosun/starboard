@@ -5175,3 +5175,13 @@ test("sesli giriş: besinden sonra gelen miktar öncekine eklenir; bilinmeyen ke
   const x = say("xyzzy blabla")[0];
   eq(x.key, null); eq(x.g, 0);
 });
+
+test("sesli giriş: 'köfte' pişmiş ızgara köftedir, çiğ köfte yalnız 'çiğ' denince; 'iki köfte' iki parçadır", async () => {
+  state = await loadFixture();
+  const k = say("köfte yedim")[0];
+  eq([k.key, k.conf, k.g], ["izgarakofte", "high", 150], "köfte → ızgara köfte, 1 porsiyon");
+  const iki = say("iki köfte")[0];
+  eq([iki.key, iki.g], ["izgarakofte", 60], "iki köfte = 2 x 30 g");
+  eq(say("çiğ köfte yedim")[0].key, "cigkofte", "çiğ denince çiğ köfte");
+  eq(say("bir dilim peynir")[0].key, "beyazpeynir", "peynir → beyaz peynir önerilir (yine sorulur)");
+});

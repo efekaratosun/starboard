@@ -54,8 +54,10 @@ function vpWords(f){
   if (c) return c;
   const req = vpFold(String(f.n || "").replace(/\(.*?\)/g, " ")).split(/[^a-z0-9]+/).filter(Boolean);
   const opt = vpFold((String(f.n || "").match(/\((.*?)\)/g) || []).join(" ")).split(/[^a-z0-9]+/).filter(Boolean);
-  const alias = vpFold(f.a || "").split(/[^a-z0-9]+/).filter(Boolean);
-  c = { req, opt, alias };
+  /* Takma ad virgülle birden çok ifade olabilir: "peynir, peynir inek". */
+  const phrases = vpFold(f.a || "").split(/[,;]/).map(p => p.split(/[^a-z0-9]+/).filter(Boolean)).filter(p => p.length);
+  const alias = phrases.flat();
+  c = { req, opt, alias, phrases };
   VP_CACHE.set(f, c);
   return c;
 }
@@ -69,12 +71,15 @@ function vpScore(toks, f){
     const covered = w.req.filter(x => toks.some(t => vpWordMatch(t, x))).length;
     const extra = w.req.length - covered;
     const optLeft = w.opt.filter(x => !toks.some(t => vpWordMatch(t, x))).length;
-    return extra === 0 ? 100 - 2 * Math.min(optLeft, 3) : Math.max(10, 60 - 6 * extra);
+    const byName = extra === 0 ? 100 - 2 * Math.min(optLeft, 3) : Math.max(10, 60 - 6 * extra);
+    /* Takma ad tam tutuyorsa ("köfte" → Izgara köfte) adın kısmi eşleşmesinden güçlüdür. */
+    const aliasEq = w.phrases.some(p => p.length === toks.length && toks.every(t => p.some(x => vpWordMatch(t, x))));
+    return aliasEq && byName < 90 ? 75 : byName;
   }
   const viaAlias = toks.every(t => name.some(x => vpWordMatch(t, x)) || w.alias.some(x => vpWordMatch(t, x)));
   if (viaAlias && w.alias.length){
-    const eq = w.alias.length === toks.length && toks.every(t => w.alias.some(x => vpWordMatch(t, x)));
-    return eq ? 70 : 65;
+    const eq = w.phrases.some(p => p.length === toks.length && toks.every(t => p.some(x => vpWordMatch(t, x))));
+    return eq ? 75 : 65;
   }
   return 0;
 }
@@ -111,7 +116,11 @@ function vpGrams(f, qty, unit){
   if (unit === "kg" || unit === "l") return { g: q * 1000, approx: false };
   const por = !f || !f.por ? [] : Array.isArray(f.por) ? f.por : [f.por];
   const base = f && f.unit ? f.unit : por.length ? por[0].g : 100;
-  if (!unit) return { g: Math.round(q * base * 10) / 10, approx: false };
+  if (!unit){
+    /* "iki köfte": sayı varsa porsiyon değil tek parça (adet) kastedilir. */
+    const piece = qty != null && !(f && f.unit) ? por.find(p => vpFold(p.n) === "adet") : null;
+    return { g: Math.round(q * (piece ? piece.g : base) * 10) / 10, approx: false };
+  }
   const has = w => por.find(p => vpFold(p.n).includes(w));
   let g = null;
   if (unit === "adet"){
@@ -190,7 +199,9 @@ function parseMeal(text, foods, opts){
       .sort((a, b) => (usage(b[0]) - usage(a[0])) || (fit(b) - fit(a)) || (Math.floor(b[2] / 6) - Math.floor(a[2] / 6)) || (pop(b[0]) - pop(a[0])) || (b[2] - a[2]) || a[1].n.length - b[1].n.length);
     const used = pool.filter(r => usage(r[0]) > 0);
     /* Bir aday açık ara öndeyse (tam ad eşleşmesi) ya da yalnız biri daha önce yenmişse emin. */
-    const lead = top >= 90 && rows.filter(r => r[2] > top - 2).length === 1;
+    const lead = (top >= 90 && rows.filter(r => r[2] > top - 2).length === 1)
+      /* Takma adı tam tutan ve ötekilerden belirgin öndeki aday ("köfte" → Izgara köfte). */
+      || (top >= 70 && rows.filter(r => r[2] > top - 12).length === 1);
     const one = (pool.length === 1 && top >= 90) || lead || used.length === 1;
     const pick = lead && !used.length ? rows.find(r => r[2] === top) : pool[0];
     const mk = r => ({ key: r[0], name: r[1].n, ...vpGrams(r[1], qty, unit) });
