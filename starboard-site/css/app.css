@@ -1041,3 +1041,29 @@ main .mt-i > section.fold{background:none!important;box-shadow:none!important;bo
 .mt-sug-h{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
 .mt-sug-t{font-size:15px;font-weight:700;margin-top:3px;line-height:1.3}
 .mt-card .row{margin-top:10px}
+
+/* 1.24.0 Beslenme: öğünün alt sayfası (açık öğün ekranın altından açılır; hepsi aynı mantıkta) */
+.mt-i > section.fold:not(.shut){position:fixed!important;left:0;right:0;bottom:0;z-index:80;max-height:88vh;overflow-y:auto;overscroll-behavior:contain;
+  background:var(--bg)!important;border-radius:30px 30px 0 0!important;margin:0!important;
+  padding:16px 20px calc(24px + env(safe-area-inset-bottom))!important;box-shadow:0 -1px 0 var(--tap-edge),0 -24px 60px rgba(0,0,0,.35)!important;
+  animation:mtUp .28s var(--e-out,ease)}
+.mt-i:has(> section.fold:not(.shut)){min-height:56px}
+.mt-i:has(> section.fold:not(.shut))::after{content:"";position:fixed;inset:0;z-index:79;background:rgba(20,8,4,.42);animation:mtFade .2s ease}
+body:has(.mt-i > section.fold:not(.shut)){overflow:hidden}
+.mt-i > section.fold:not(.shut) .fold-h{padding-right:0;min-height:48px}
+.mt-i > section.fold:not(.shut) .fold-t{font-size:26px}
+.mt-i > section.fold:not(.shut) .fold-c{display:none}
+.mt-i > section.fold:not(.shut) .fold-h::after{content:"×";grid-area:ch;font-size:30px;font-weight:400;line-height:1;color:var(--muted);width:44px;text-align:center}
+.mt-i > section.fold:not(.shut)::before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--tap-edge);margin:-6px auto 10px;position:static}
+.mt-i:has(> section.fold:not(.shut)) > .mt-plus{visibility:hidden}
+.mt-sheet-sug{margin:0 0 12px}
+.mt-sheet-sug .mt-sug{margin-bottom:10px}
+.mt-sug-go{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;border-radius:25px;background:var(--fill);color:var(--on-fill);font-size:16px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mt-sug-go:focus-visible{outline:2px solid var(--band);outline-offset:3px}
+.mt-sug-other{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin-top:2px}
+@keyframes mtUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes mtFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.mt-i > section.fold:not(.shut),.mt-i:has(> section.fold:not(.shut))::after{animation:none}}
+body:has(.mt-i > section.fold:not(.shut)) .tabbar{display:none}
+.mt-i > section.fold .fold-b,.mt-i > section.fold .fold-i{transition:none!important}
+button.link.mt-sug-other{display:flex;align-items:center;justify-content:center;width:100%;text-align:center}
