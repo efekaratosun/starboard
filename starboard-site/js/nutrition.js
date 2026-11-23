@@ -16,7 +16,7 @@ const FOODS = {
   /* p/c/f/lif: 100 g başına gram. v: o besinin kayda değer kaynağı olduğu mikro besinler. */
   yumurta:{n:tx("Yumurta"), p:12.6, c:0.8, f:10, lif:0, unit:50, unitName:tx("adet"), i:"egg", v:["A","D","B12"]},
   yumurtabeyaz:{n:tx("Yumurta beyazı"), a:tx("yumurta akı"), p:11, c:0.7, f:0.2, lif:0, unit:33, unitName:tx("adet"), i:"egg"},
-  tavuk:{n:tx("Tavuk göğsü"), por:[{n:tx("porsiyon"),g:150},{n:tx("bütün göğüs"),g:220}], p:22.5, c:0, f:2.6, lif:0, i:"poultry", v:["B6","B12",tx("çinko")]},
+  tavuk:{n:tx("Tavuk göğsü"), b:"tavuk", por:[{n:tx("porsiyon"),g:150},{n:tx("bütün göğüs"),g:220}], p:22.5, c:0, f:2.6, lif:0, i:"poultry", v:["B6","B12",tx("çinko")]},
   tavukbut:{n:tx("Tavuk but (derisiz)"), por:[{n:tx("adet"),g:110},{n:tx("porsiyon"),g:150}], p:20, c:0, f:4, lif:0, i:"poultry", v:["B12",tx("çinko")]},
   hindi:{n:tx("Hindi göğsü"), por:[{n:tx("porsiyon"),g:150}], p:24, c:0, f:1.5, lif:0, i:"poultry", v:["B6","B12"]},
   ton:{n:tx("Ton balığı (suda)"), a:"konserve ton", por:[{n:tx("kutu"),g:110},{n:tx("porsiyon"),g:100}], p:26, c:0, f:1, lif:0, i:"fish", v:["D","B12"]},
@@ -40,8 +40,8 @@ const FOODS = {
   suzme:{n:tx("Süzme yoğurt"), a:tx("yoğurt"), por:[{n:tx("kase"),g:150},{n:tx("yemek kaşığı"),g:20}], p:10, c:4, f:5, lif:0, i:"dairy", v:["kalsiyum","B12"]},
   yogurt:{n:tx("Yoğurt (tam yağlı)"), por:[{n:tx("kase"),g:150},{n:tx("yemek kaşığı"),g:20}], p:3.5, c:4.7, f:3.3, lif:0, i:"dairy", v:["kalsiyum","B12"]},
   lor:{n:tx("Lor peyniri"), por:[{n:tx("yemek kaşığı"),g:25},{n:tx("kase"),g:150}], p:18, c:3, f:5, lif:0, i:"dairy", v:["kalsiyum","B12"]},
-  beyazpeynir:{n:tx("Beyaz peynir"), a:"peynir inek", por:[{n:tx("dilim"),g:30},{n:tx("kibrit kutusu"),g:30}], p:17, c:2, f:22, lif:0, i:"dairy", v:["kalsiyum","B12"]},
-  kasar:{n:tx("Kaşar peyniri"), a:"peynir", por:[{n:tx("dilim"),g:20}], p:25, c:2, f:27, lif:0, i:"dairy", v:["kalsiyum","B12","A"]},
+  beyazpeynir:{n:tx("Beyaz peynir"), a:"peynir, peynir inek", por:[{n:tx("dilim"),g:30},{n:tx("kibrit kutusu"),g:30}], p:17, c:2, f:22, lif:0, i:"dairy", v:["kalsiyum","B12"]},
+  kasar:{n:tx("Kaşar peyniri"), por:[{n:tx("dilim"),g:20}], p:25, c:2, f:27, lif:0, i:"dairy", v:["kalsiyum","B12","A"]},
   ayran:{n:tx("Ayran"), por:{n:tx("bardak"),g:200}, p:2, c:3, f:1.5, lif:0, i:"dairy", v:["kalsiyum"]},
   sut:{n:tx("Süt (yarım yağlı)"), a:tx("inek sütü"), por:{n:tx("bardak"),g:200}, p:3.4, c:4.8, f:1.8, lif:0, i:"dairy", v:["kalsiyum","B12","D"]},
   kefir:{n:tx("Kefir"), por:{n:tx("bardak"),g:200}, p:3.3, c:4, f:1, lif:0, i:"dairy", v:["kalsiyum","B12"]},
@@ -90,7 +90,7 @@ const FOODS = {
   bitkiselyogurt:{n:tx("Bitkisel yoğurt (soya)"), por:[{n:tx("kase"),g:150}], p:4, c:5, f:3, lif:0.8, i:"legume", cat:"kahvaltilik", v:["kalsiyum"]},
   piyaz:{n:tx("Piyaz"), por:[{n:tx("porsiyon"),g:200}], p:6, c:16, f:7, lif:5, i:"legume", v:["folat","C"]},
 
-  yulaf:{n:tx("Yulaf ezmesi"), por:[{n:tx("porsiyon"),g:40},{n:tx("yemek kaşığı"),g:10}], p:13, c:60, f:7, lif:10, i:"grain", v:["magnezyum","demir"]},
+  yulaf:{n:tx("Yulaf ezmesi"), b:"yulaf", por:[{n:tx("porsiyon"),g:40},{n:tx("yemek kaşığı"),g:10}], p:13, c:60, f:7, lif:10, i:"grain", v:["magnezyum","demir"]},
   pirinc:{n:tx("Pirinç (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:75},{n:tx("su bardağı"),g:180}], p:7, c:78, f:0.6, lif:1.3, i:"grain"},
   pilav:{n:tx("Pilav (pişmiş)"), a:tx("pirinç pilavı"), por:[{n:tx("porsiyon"),g:180},{n:tx("yemek kaşığı"),g:25}], p:2.7, c:28, f:1.5, lif:0.6, i:"grain"},
   bulgur:{n:tx("Bulgur (kuru)"), cigYenmez:true, por:[{n:tx("porsiyon"),g:75},{n:tx("su bardağı"),g:170}], p:12, c:76, f:1.5, lif:12, i:"grain", v:["magnezyum"]},
@@ -103,7 +103,7 @@ const FOODS = {
   granola:{n:tx("Granola"), por:[{n:tx("kase"),g:50},{n:tx("yemek kaşığı"),g:10}], p:10, c:60, f:18, lif:7, i:"grain", v:["magnezyum"]},
   gevrek:{n:tx("Mısır gevreği"), por:[{n:tx("kase"),g:30}], p:7, c:84, f:1, lif:3, i:"grain"},
   ekmek:{n:tx("Tam buğday ekmeği"), por:[{n:tx("dilim"),g:30},{n:tx("çeyrek ekmek"),g:60}], p:9, c:43, f:3, lif:7, i:"bread", v:["magnezyum"]},
-  beyazekmek:{n:tx("Beyaz ekmek"), por:[{n:tx("dilim"),g:25},{n:tx("çeyrek ekmek"),g:60}], p:8, c:49, f:1.5, lif:2.7, i:"bread"},
+  beyazekmek:{n:tx("Beyaz ekmek"), b:"ekmek", por:[{n:tx("dilim"),g:25},{n:tx("çeyrek ekmek"),g:60}], p:8, c:49, f:1.5, lif:2.7, i:"bread"},
   simit:{n:tx("Simit"), p:9, c:55, f:4, lif:3, unit:100, unitName:tx("adet"), i:"bread"},
   yufka:{n:tx("Lavaş / yufka"), por:{n:tx("adet"),g:60}, p:8, c:53, f:2, lif:2, i:"bread"},
   tost:{n:tx("Kaşarlı tost"), a:"peynirli tost", por:{n:tx("adet"),g:150}, p:13, c:30, f:13, lif:2, i:"bread", v:["kalsiyum"]},
@@ -198,7 +198,12 @@ const FOODS = {
   iskender:{n:tx("İskender"), por:[{n:tx("porsiyon"),g:350}], p:15, c:20, f:17, lif:1.5, i:"meat", v:["demir","B12","kalsiyum"]},
   adanakebap:{n:tx("Adana kebap"), por:[{n:tx("şiş"),g:100},{n:tx("porsiyon"),g:200}], p:18, c:2, f:22, lif:0.5, i:"meat", v:["demir","B12",tx("çinko")]},
   tavuksis:{n:tx("Tavuk şiş"), por:[{n:tx("şiş"),g:100},{n:tx("porsiyon"),g:200}], p:26, c:1, f:8, lif:0.3, i:"poultry", v:["B6","B12"]},
-  izgarakofte:{n:tx("Izgara köfte"), por:[{n:tx("porsiyon"),g:150},{n:tx("adet"),g:30}], p:18, c:4, f:16, lif:0.6, i:"meat", v:["demir","B12",tx("çinko")]},
+  izgarakofte:{n:tx("Izgara köfte"), b:"köfte", por:[{n:tx("porsiyon"),g:150},{n:tx("adet"),g:30}], p:18, c:4, f:16, lif:0.6, i:"meat", v:["demir","B12",tx("çinko")]},
+  /* Sesli girişte "et" ve "balık" önerileri için eklenen pişmiş yemekler. kcal100 kaynaktaki değerdir;
+     kaynakta olmayan makrolar kalori ile uyumlu tahmindir. */
+  danabiftekizgara:{n:tx("Dana biftek (ızgara, pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:29.7, c:0, f:7.3, lif:0, kcal100:184, i:"meat", v:["demir","B12",tx("çinko")], src:"web nutrola.app sırt bifteği, sığır, pişmiş, ızgara (USDA tabanlı), 100 g"},
+  levrekizgara:{n:tx("Levrek (ızgara, pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:23.6, c:0, f:2.6, lif:0, kcal100:124, i:"fish", v:["B12","D"], src:"USDA SR deniz levreği, pişmiş kuru ısı (FatSecret/Foodstruct), 100 g"},
+  hamsitava:{n:tx("Hamsi tava"), b:"hamsi", por:[{n:tx("porsiyon"),g:250},{n:tx("adet"),g:25,s:[3,5,8]}], p:19.6, c:4.8, f:9.6, lif:0, kcal100:179, i:"fish", cu:"tr", v:["D","B12","omega3","kalsiyum"], src:"web fitekran.com, diyetkolik.com, hurriyet.com.tr: 179 kcal, protein 19,6 g, karbonhidrat 4,8 g, yağ 9,6 g / 100 g (unlu, yağda kızarmış); porsiyon 250 g tahmin (kaynaklarda 380 g)"},
   tavuksote:{n:tx("Tavuk sote"), a:"tavuk", por:[{n:tx("porsiyon"),g:250}], p:20, c:5, f:7, lif:1, i:"poultry", v:["B6","C","B12"]},
   tavukdurum:{n:tx("Tavuk dürüm"), por:[{n:tx("adet"),g:300}], p:14, c:25, f:10, lif:2, i:"bread", v:["B6","C"]},
   balikekmek:{n:tx("Balık ekmek"), por:[{n:tx("adet"),g:300}], p:14, c:22, f:8, lif:1.5, i:"fish", v:["D","B12","omega3"]},
@@ -404,7 +409,7 @@ const FOODS = {
   /* --- içecekler, kuru meyve, konserve --- */
   bitkicayi:{n:tx("Bitki çayı (şekersiz)"), a:"ıhlamur adaçayı", por:{n:tx("bardak"),g:200}, p:0, c:0.2, f:0, lif:0, kcal100:0, i:"fruit"},
   filtrekahve:{n:tx("Filtre kahve (sade)"), por:{n:tx("fincan"),g:200}, p:0.1, c:0, f:0, lif:0, kcal100:1, i:"fruit"},
-  tamyagsut:{n:tx("Süt (tam yağlı)"), a:"inek sütü", por:{n:tx("bardak"),g:200}, p:3.3, c:4.8, f:3.3, lif:0, i:"dairy", v:["kalsiyum","B12","D"]},
+  tamyagsut:{n:tx("Süt (tam yağlı)"), a:"inek sütü", b:"süt", por:{n:tx("bardak"),g:200}, p:3.3, c:4.8, f:3.3, lif:0, i:"dairy", v:["kalsiyum","B12","D"]},
   kecisutu:{n:tx("Keçi sütü"), por:{n:tx("bardak"),g:200}, p:3.6, c:4.5, f:4.1, lif:0, i:"dairy", v:["kalsiyum","B12"]},
   kurudut:{n:tx("Kuru dut"), por:{n:tx("avuç"),g:25}, p:12, c:70, f:3, lif:14, kcal100:325, i:"fruit", v:["demir","kalsiyum"]},
   kuruerik:{n:tx("Kuru erik"), por:{n:tx("adet"),g:10}, p:2.2, c:64, f:0.4, lif:7.1, kcal100:240, i:"fruit", v:["K","potasyum"]},
@@ -908,6 +913,18 @@ const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahin
   "pirincunu","nohutunu","sehriye","polenta","yufka","sarimsak","kestane",
   /* öğünün yağını tek başına taşıyamayacak tohumlar ve yağlar */
   "susam","ketentohumu","hindistancevizi","hindistancevizyagi"]);
+
+/* Tek başına yenmeyen malzemeler (un, şehriye, sarımsak...). Yağlar simgesinden (i:"oil") tanınır.
+   Sesli girişte kullanıcı bunları açıkça söylemedikçe öneri ya da aday olarak çıkmazlar. */
+const NO_STANDALONE = new Set(["pirincunu","nohutunu","sehriye","polenta","yufka","sarimsak"]);
+
+/* Sesli girişte kategori sözcükleri ("et", "ciğer", "balık") tek bir besine bağlanmaz;
+   bu listedeki pişmiş yemekler sorulur. Sıra: önerilme sırası (kullanıcının alıştığı önce gelir). */
+const VOICE_GROUPS = {
+  et:["danabiftekizgara","antrikotizgara","bonfilesis","etsote","kuzutandir"],
+  ciger:["arnavutciger","edirnecigeri","cigertava","cigersote","kuzucigeri","tavukcigeri"],
+  balik:["levrekizgara","izgarasomon","palamutizgara","hamsitava","hamsibugulama","barbun","izgarabalik"]
+};
 
 /* Otomatik önerilerde kullanılabilecek gözden geçirilmiş besinler.
    foods-usda.js veya foods-intl.js ile eklenen kayıtlar otomatik olarak

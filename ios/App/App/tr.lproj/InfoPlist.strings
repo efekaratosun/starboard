@@ -5,3 +5,7 @@
 "NSHealthShareUsageDescription" = "Starboard, günlük hedeflerinin yanında göstermek için Apple Sağlık'tan adım, uyku ve kilo verilerini okur. Starboard bu verileri hiçbir yere göndermez.";
 
 "NSHealthUpdateUsageDescription" = "Starboard Apple Sağlık'a veri yazmaz; yalnızca adım, uyku ve kilonu okur.";
+
+"NSMicrophoneUsageDescription" = "Starboard, konuşmayı yalnızca cihazında yazıya çevirmek için mikrofonu kullanır. Ses kaydedilmez, saklanmaz ve hiçbir yere gönderilmez.";
+
+"NSSpeechRecognitionUsageDescription" = "Starboard konuşmayı tamamen cihazında yazıya çevirir. Konuşma kaydedilmez ve hiçbir yere gönderilmez.";

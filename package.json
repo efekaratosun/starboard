@@ -1,7 +1,7 @@
 {
   "name": "starboard",
   "private": true,
-  "version": "1.25.0",
+  "version": "1.26.0",
   "description": "Starboard: beslenme, antrenman, uyku ve su takibi. Web sitesi starboard-site/, iOS kabuğu ios/ (Capacitor).",
   "scripts": {
     "ios:sync": "cap sync ios"
@@ -14,7 +14,8 @@
     "@capacitor/ios": "8.6.0",
     "@capacitor/local-notifications": "8.3.1",
     "@capacitor/status-bar": "8.0.4",
-    "@capgo/capacitor-health": "8.12.3"
+    "@capgo/capacitor-health": "8.12.3",
+    "starboard-speech": "file:plugins/starboard-speech"
   },
   "devDependencies": {
     "@capacitor/cli": "8.6.0"

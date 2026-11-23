@@ -1,179 +1,36 @@
 "use strict";
 
-/* ---- hızlı giriş ----
-   Sabit + düğmesi: hangi sekmede olursan ol günün verisi tek yerden girilir.
-   Yazılan gün her zaman görüntülenen gündür, geçmiş bir gün de olabilir. */
-
-/* Bir önceki günün değeri; "dünün aynısı" düğmeleri bunu kullanır. */
-function prevVal(k, field){
-  const p = state.days[shiftDays(k, -1)];
-  return p && typeof p[field] === "number" && p[field] > 0 ? p[field] : null;
-}
-
-function openQuickSheet(){
+/* ---- kilo gir ----
+   Program henüz yokken Bugün sayfasındaki "Kilonu gir" bu pencereyi açar: kilo girilince program ve hedefler oluşur.
+   Hızlı giriş sayfası kalktı: su, uyku, adım ve görev Bugün sayfasındaki satırlarından girilir. */
+function openWeightSheet(){
   const k = vKey();
   const el = document.createElement("div");
   el.className = "sheet-bg";
   const close = () => sheetOut(el);
-  const past = k !== today();
-
-  const draw = () => {
-    const e = ensureDay(k), program = currentProgram();
-    const lw = lastWeight(), rw = prevVal(k, "water"), rk = prevVal(k, "kcal");
-    const { bed, wake } = sleepTimes(e);
-    const logged = !!(e.log && e.log.length);
-    const session = program ? program.training.days.find(d => d.wd === isoWeekday(k)) : null;
-
-    el.querySelector("#qs-b").innerHTML = `
-      <div class="qs-row">
-        <div class="qs-h">${iconBox("dairy")}<div><b>${tx("Su")}</b>
-          <i>${vOut(e.water || 0)}${program ? ` / ${vOut(program.water)}` : ""} ${vUnit()}</i></div></div>
-        <div class="chips">
-          ${[1, 2, 4].map(c => `<button class="chip" data-qw="${c}">+${vOut(c * cupMl())}</button>`).join("")}
-          ${rw ? `<button class="chip rep" data-qwset="${rw}">${tx("↺ önceki gün {0}", [(fmtV(rw))])}</button>` : ""}
-          ${e.water ? `<button class="chip" data-qwset="0">${tx("Sıfırla")}</button>` : ""}
-        </div>
-      </div>
-
-      <div class="qs-row">
-        <div class="qs-h">${iconBox("legs")}<div><b>${tx("Kilo")}</b>
-          <i>${typeof e.weight === "number" ? tx("{0} {1} girildi", [(past ? tx("o gün") : tx("bugün")), (fmtW(e.weight))])
-              : lw !== null ? tx("son ölçüm {0}", [(fmtW(lw))]) : tx("henüz ölçüm yok")}</i></div></div>
-        <div class="row">
-          <input id="qs-w" aria-label="${tx("Kilo ({0})", [(wUnit())])}" type="text" inputmode="decimal" placeholder="${lw !== null ? wNum(lw) : wUnit()}"
-            value="${typeof e.weight === "number" ? wNum(e.weight) : ""}" style="flex:2">
-          <button id="qs-w-ok" style="flex:0 0 92px">${tx("Kaydet")}</button>
-        </div>
-      </div>
-
-      ${stepGoal() ? `<div class="qs-row">
-        <div class="qs-h">${iconBox("walk")}<div><b>${tx("Adım")}</b>
-          <i>${tx("{0} / {1} adım", [(e.steps || 0), (stepGoal())])}</i></div></div>
-        <div class="row">
-          <input id="qs-st" type="text" inputmode="numeric" placeholder="${tx("adım sayısı")}"
-            value="${typeof e.steps === "number" ? e.steps : ""}" style="flex:2">
-          <button id="qs-st-ok" style="flex:0 0 92px">${tx("Kaydet")}</button>
-        </div>
-      </div>` : ""}
-
-      <div class="qs-row">
-        <div class="qs-h">${iconBox("rest")}<div><b>${tx("Uyku")}</b>
-          <i>${typeof e.sleep === "number" ? durTxt(Math.round(e.sleep * 60)) : tx("henüz girilmedi")}</i></div></div>
-        <div class="qs-times">
-          <input id="qs-bed" type="time" value="${hm(bed)}" aria-label="${tx("Yattığın saat")}">
-          <span aria-hidden="true">→</span>
-          <input id="qs-wake" type="time" value="${hm(wake)}" aria-label="${tx("Kalktığın saat")}">
-        </div>
-        <button id="qs-s-ok" style="margin-top:9px">${tx("Uykuyu kaydet")}</button>
-      </div>
-
-      <div class="qs-row">
-        <div class="qs-h">${iconBox("grain")}<div><b>${tx("Kalori")}</b>
-          <i>${logged ? tx("günlükteki {0} kalemden {1} kcal", [(e.log.length), (e.kcal || 0)])
-              : `${e.kcal || 0}${program ? ` / ${program.kcal}` : ""} kcal`}</i></div></div>
-        ${logged ? "" : `<div class="chips">
-          <button class="chip" data-qk="200">+200</button>
-          <button class="chip" data-qk="400">+400</button>
-          <button class="chip" data-qk="600">+600</button>
-          ${rk ? `<button class="chip rep" data-qkset="${rk}">${tx("↺ önceki gün {0} kcal", [(rk)])}</button>` : ""}
-        </div>`}
-        <button class="qs-go" id="qs-meals" style="margin-top:10px">
-          ${logged ? tx("Beslenme günlüğünü aç") : tx("Yediklerini tek tek gir")}
-          <svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
-      </div>
-
-      ${session && session.b ? `<div class="qs-row">
-        <div class="qs-h">${iconBox(session.icon)}<div><b>${tx("Antrenman")}</b><i>${esc(session.t)}</i></div></div>
-        <button class="qs-go" id="qs-train">${tx("Antrenmanı kaydet")}
-          <svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
-      </div>` : ""}
-
-      <div class="qs-row">
-        <div class="qs-h">${iconBox("day")}<div><b>${tx("Görev")}</b>
-          <i>${tx("{0} kendi görevin var", [(e.tasks.filter(t => !t.suggested).length)])}</i></div></div>
-        <div class="row">
-          <input id="qs-t" aria-label="${tx("Yeni görev")}" type="text" placeholder="${tx("Yeni görev")}" style="flex:2">
-          <button id="qs-t-ok" style="flex:0 0 92px">${tx("Ekle")}</button>
-        </div>
-      </div>`;
-    wire();
-  };
-
-  /* Sayfa arkada da tazelensin: sayfayı yeniden çizip sayfayı üstte tutar. */
-  const commit = async () => { await saveState(state); render(); draw(); };
-
-  const wire = () => {
-    const e = ensureDay(k);
-    el.querySelectorAll("[data-qw]").forEach(b => b.onclick = async () => {
-      e.water = Math.round((e.water || 0) + +b.dataset.qw * cupMl()); await commit();
-    });
-    el.querySelectorAll("[data-qwset]").forEach(b => b.onclick = async () => {
-      const v = +b.dataset.qwset;
-      if (v) e.water = v; else delete e.water;
-      await commit();
-    });
-    el.querySelectorAll("[data-qk]").forEach(b => b.onclick = async () => {
-      e.kcal = (e.kcal || 0) + +b.dataset.qk; e.kcalManual = true; await commit();
-    });
-    el.querySelectorAll("[data-qkset]").forEach(b => b.onclick = async () => {
-      e.kcal = +b.dataset.qkset; e.kcalManual = true; await commit();
-    });
-
-    const wi = el.querySelector("#qs-w");
-    const saveW = async () => {
-      const n = num(wi.value);
-      if (n === null){ delete e.weight; await commit(); return; }
-      if (wIn(n) < 25 || wIn(n) > 400){ toast(tx("{0} ile {1} arasında bir değer gir.", [(fmtW0(25)), (fmtW0(400))])); return; }
-      e.weight = wSave(n);
-      await commit(); toast(tx("{0} kaydedildi.", [(fmtW(e.weight))]));
-    };
-    el.querySelector("#qs-w-ok").onclick = saveW;
-    wi.onkeydown = ev => { if (ev.key === "Enter") saveW(); };
-
-    el.querySelector("#qs-s-ok").onclick = async () => {
-      const toMin = v => { const m = /^(\d{1,2}):(\d{2})$/.exec(v || ""); return m ? (+m[1] % 24) * 60 + (+m[2] % 60) : null; };
-      const b = toMin(el.querySelector("#qs-bed").value), w = toMin(el.querySelector("#qs-wake").value);
-      if (b === null || w === null){ toast(tx("Yatış ve kalkış saatini gir.")); return; }
-      e.bed = b; e.wake = w; e.sleep = Math.round(sleepDur(b, w) / 60 * 100) / 100;
-      await commit(); toast(`${durTxt(Math.round(e.sleep * 60))} uyku kaydedildi.`);
-    };
-
-    const so = el.querySelector("#qs-st-ok");
-    if (so) so.onclick = async () => {
-      const n = num(el.querySelector("#qs-st").value);
-      if (n === null || n < 0) delete e.steps; else e.steps = Math.round(n);
-      await commit();
-      if (typeof e.steps === "number") toast(tx("{0} adım kaydedildi.", [(e.steps)]));
-    };
-
-    const ti = el.querySelector("#qs-t");
-    const addT = async () => {
-      const title = ti.value.trim();
-      if (!title) return;
-      e.tasks.push({ id: Date.now() + Math.random(), title, done:false, suggested:false });
-      ti.value = ""; await commit();
-      el.querySelector("#qs-t").focus();
-    };
-    el.querySelector("#qs-t-ok").onclick = addT;
-    ti.onkeydown = ev => { if (ev.key === "Enter") addT(); };
-
-    const gm = el.querySelector("#qs-meals");
-    if (gm) gm.onclick = () => { close(); tab = "meals"; mealTab = "log"; render(); window.scrollTo(0,0); };
-    const gt = el.querySelector("#qs-train");
-    if (gt) gt.onclick = () => { close(); goToTask("train", k); };
-  };
-
-  el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="qs-t-h">
-    <div class="sheet-h"><span class="qs-logo">${BRAND_SVG}</span>
-      <b id="qs-t-h">${tx("Hızlı giriş")}</b>
+  const lw = lastWeight(), e = ensureDay(k);
+  el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ws-h">
+    <div class="sheet-h"><span class="qs-logo">${BRAND_SVG}</span><b id="ws-h">${tx("Kilonu gir")}</b>
       <button class="sheet-x" aria-label="${tx("Kapat")}">×</button></div>
-    ${past ? `<div class="metric-note" style="margin:-2px 0 4px">${tx("{0} gününe yazılıyor.", [(prettyDate(k))])}</div>` : ""}
-    <div id="qs-b"></div>
-  </div>`;
+    <div class="row">
+      <input id="qs-w" aria-label="${tx("Kilo ({0})", [(wUnit())])}" type="text" inputmode="decimal" placeholder="${lw !== null ? wNum(lw) : wUnit()}"
+        value="${typeof e.weight === "number" ? wNum(e.weight) : ""}" style="flex:2">
+      <button id="qs-w-ok" style="flex:0 0 92px">${tx("Kaydet")}</button>
+    </div></div>`;
   document.body.appendChild(el);
-  draw();
+  const wi = el.querySelector("#qs-w");
+  const save = async () => {
+    const n = num(wi.value);
+    if (n === null){ toast(tx("Kilonu yaz.")); return; }
+    if (wIn(n) < 25 || wIn(n) > 400){ toast(tx("{0} ile {1} arasında bir değer gir.", [(fmtW0(25)), (fmtW0(400))])); return; }
+    e.weight = wSave(n);
+    await saveState(state); close(); render(); toast(tx("{0} kaydedildi.", [(fmtW(e.weight))]));
+  };
+  el.querySelector("#qs-w-ok").onclick = save;
+  wi.onkeydown = ev => { if (ev.key === "Enter") save(); };
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
+  wi.focus({ preventScroll: true });
 }
 
 /* ---- hedef ekle ----

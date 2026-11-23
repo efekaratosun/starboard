@@ -842,6 +842,8 @@ Object.assign(window.STARBOARD_EN, {
   "Havuç (haşlanmış)": "Carrots (boiled)",
   "Közlenmiş patlıcan": "Roasted eggplant",
   "Somon (ızgara, pişmiş)": "Salmon (grilled, cooked)",
+  "Dana biftek (ızgara, pişmiş)": "Beef steak (grilled, cooked)",
+  "Levrek (ızgara, pişmiş)": "Sea bass (grilled, cooked)",
   "Tavuk göğsü (ızgara, pişmiş)": "Chicken breast (grilled, cooked)",
   "Tavuk ciğeri (çiğ)": "Chicken liver (raw)",
   "Arnavut ciğeri": "Turkish fried liver",

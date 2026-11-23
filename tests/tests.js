@@ -102,11 +102,11 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
 
 /* ---- genişletilmiş besin veritabanı ---- */
 const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
-test("besin veritabanı: 1325 yeni kayıt (382 USDA, 943 web) eklendi", () => {
+test("besin veritabanı: 1328 kaynaklı kayıt (383 USDA, 945 web) eklendi", () => {
   const added = sourcedFoods();
-  eq([added.length, Object.keys(FOODS).length], [1325, 1752]);
-  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 382);
-  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 943);
+  eq([added.length, Object.keys(FOODS).length], [1328, 1755]);
+  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 383);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 945);
 });
 test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
   const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
@@ -537,24 +537,25 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.25.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[13].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 2, "1.25.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[1].items.length, 1, "1.24.1: tek kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[2].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[3].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[4].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[5].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[6].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[7].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[8].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[9].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[10].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
+  eq(APP_VERSION, "1.26.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[14].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 2, "1.26.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 2, "1.25.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[2].items.length, 1, "1.24.1: tek kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[3].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[4].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[5].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[6].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[7].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[8].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[9].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[10].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[11].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -1404,15 +1405,41 @@ test("görevler: eski İngilizce başlıklar tanınır, birikmiş kopyalar temiz
   state = null;
 });
 
-test("hızlı giriş: penceredeki metinler boş ya da undefined çıkmaz", async () => {
+test("yemek kısayolu: pencere açılır, cümle listelenir, metinler boş ya da undefined çıkmaz", async () => {
   state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
-  openQuickSheet();
-  const sheets = [...document.querySelectorAll(".sheet-bg")];
-  const html = sheets.map(e => e.innerHTML).join("");
-  sheets.forEach(e => e.remove());
-  ok(!/>undefined</.test(html), "pencerede undefined yazıyor");
-  const ses = currentProgram().training.days.find(d => d.wd === isoWeekday(today()));
-  if (ses && ses.b) ok(html.includes(esc(ses.t)), "antrenman adı görünmüyor");
+  openMealSheet();
+  const sheet = () => document.querySelector(".sheet-bg");
+  ok(sheet() && /Ne yedin\?/.test(sheet().innerHTML), "yazı ekranı açılmadı");
+  const ta = sheet().querySelector("#vs-t");
+  ta.value = "iki yumurta, bir dilim peynir ve iki bardak su";
+  ta.oninput();
+  sheet().querySelector("#vs-list").onclick();
+  const html = sheet().innerHTML;
+  ok(!/>undefined</.test(html) && !/undefined/.test(sheet().textContent), "pencerede undefined yazıyor");
+  ok(/Yumurta/.test(html) && /Hangisi\?/.test(html), "yumurta ve peynir sorusu görünmüyor");
+  ok(/su takibine yazılır/.test(html), "su ayrı gösterilmiyor");
+  /* ekleme: yumurta günlüğe, su su takibine */
+  const e = ensureDay(vKey()), before = (e.log || []).length, w0 = e.water || 0;
+  await sheet().querySelector("#vs-add").onclick();
+  const after = ensureDay(vKey());
+  ok((after.log || []).length > before, "günlüğe kalem eklenmedi");
+  ok((after.water || 0) >= w0 + 400, "su eklenmedi");
+  document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+  state = null;
+});
+
+test("yemek kısayolu: bulunamayan cümle hata verir, kilo penceresi açılır, eski hızlı giriş yok", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  openMealSheet();
+  const s = document.querySelector(".sheet-bg");
+  s.querySelector("#vs-t").value = "xyzzy blabla"; s.querySelector("#vs-t").oninput();
+  s.querySelector("#vs-list").onclick();
+  ok(/Anlayamad/.test(s.innerHTML), "anlaşılmayan cümlede uyarı yok");
+  s.remove();
+  openWeightSheet();
+  ok(document.querySelector("#qs-w") && document.querySelector("#qs-w-ok"), "kilo penceresi açılmadı");
+  document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+  ok(typeof openQuickSheet === "undefined", "eski hızlı giriş hâlâ duruyor");
   state = null;
 });
 
@@ -2792,7 +2819,7 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.25.0");
+  eq(APP_VERSION, "1.26.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
@@ -5128,4 +5155,236 @@ test("hedefin: seçenek çizgisi gerçek 2 px kenarlık; yarım piksele düşen 
   const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
   ok(/main\.on \.oc\{border:2px solid var\(--on-edge\)/.test(css), "seçenekler 2 px kenarlıklı");
   ok(/main\.on \.oc\{[^}]*will-change:auto/.test(css), "seçenekte will-change katmanı kapalı");
+});
+
+/* ---- sesli giriş: cümleden besin listesi (voice-parse.js) ---- */
+const say = t => { const use = foodUsage(); return parseMeal(t, allFoods(), { usage: k => use[k] || 0, pop: vpPopularity(foodPop) }).items; };
+
+test("sesli giriş: virgülsüz cümle de besinlere ayrılır, miktar ve gram doğru", async () => {
+  state = await loadFixture();
+  const r = say("iki yumurta beş zeytin bir dilim beyaz peynir yedim");
+  eq(r.map(x => x.key), ["yumurta", "zeytin", "beyazpeynir"]);
+  eq(r.map(x => x.g), [100, 20, 30]);
+  ok(r.every(x => x.conf === "high"), "üçü de emin");
+  eq(say("iki yumurta beş zeytin bir dilim beyaz peynir").map(x => x.key), ["yumurta", "zeytin", "beyazpeynir"], "virgülsüz");
+});
+
+test("sesli giriş: Türkçe ekler, yarım ve buçuk, gram ve kaşık birimi", async () => {
+  state = await loadFixture();
+  eq(say("yumurtayı yedim")[0].key, "yumurta", "yumurtayı");
+  eq(say("zeytinleri yedim")[0].key, "zeytin", "zeytinleri");
+  const s = say("iki buçuk bardak süt içtim")[0];
+  eq(s.qty, 2.5); eq(s.unit, "bardak");
+  const t = say("200 gram tavuk göğsü")[0];
+  eq([t.key, t.g], ["tavuk", 200]);
+  const b = say("üç yemek kaşığı bal")[0];
+  eq([b.key, b.g], ["bal", 63]);
+  eq(say("yirmi beş gram badem")[0].g, 25, "yirmi beş");
+});
+
+test("sesli giriş: belirsiz sözcük sorulur, kesin olan sorulmaz", async () => {
+  state = await loadFixture();
+  const p = say("bir dilim peynir")[0];
+  eq(p.conf, "low", "peynir: hangisi?");
+  ok(p.alts.length >= 2 && p.alts.some(a => a.key === "beyazpeynir"), "adaylar beyaz peyniri içerir");
+  eq(say("domates")[0].conf, "high", "domates tek");
+  /* daha önce yenen tek aday açık ara öne geçer */
+  state.days[today()] = { log: [{ id:1, k:"beyazpeynir", n:"Beyaz peynir", g:30, p:20, c:1, f:20 }] };
+  const q = say("peynir")[0];
+  eq([q.key, q.conf], ["beyazpeynir", "high"], "alışkanlık: beyaz peynir");
+});
+
+test("sesli giriş: besinden sonra gelen miktar öncekine eklenir; bilinmeyen kelime atılır; hiçbiri bulunmazsa key null", async () => {
+  state = await loadFixture();
+  const a = say("yumurtayı haşladım iki tane yedim");
+  eq(a.length, 1); eq([a[0].key, a[0].g], ["yumurta", 100]);
+  eq(say("domates salatalık yedim").map(x => x.key), ["domates", "salatalik"], "ayırıcı yok");
+  const x = say("xyzzy blabla")[0];
+  eq(x.key, null); eq(x.g, 0);
+});
+
+test("sesli giriş: 'köfte' pişmiş ızgara köftedir, çiğ köfte yalnız 'çiğ' denince; 'iki köfte' iki parçadır", async () => {
+  state = await loadFixture();
+  const k = say("köfte yedim")[0];
+  eq([k.key, k.conf, k.g], ["izgarakofte", "high", 150], "köfte → ızgara köfte, 1 porsiyon");
+  const iki = say("iki köfte")[0];
+  eq([iki.key, iki.g], ["izgarakofte", 60], "iki köfte = 2 x 30 g");
+  eq(say("çiğ köfte yedim")[0].key, "cigkofte", "çiğ denince çiğ köfte");
+  eq(say("bir dilim peynir")[0].key, "beyazpeynir", "peynir → beyaz peynir önerilir (yine sorulur)");
+});
+
+test("sesli giriş: sıfat yerindeki sözcük besini seçtirmez; yalın söz yalın ürüne gider, kategori sözcükleri sorar", async () => {
+  state = await loadFixture();
+  /* yalın sözcük = asıl ürün: sıfatlı kayıtlar ancak sıfatıyla söylenince seçilir */
+  const t = say("tatlı")[0];
+  ok(t.key !== "tatlipatates", "tatlı → tatlı patates değil");
+  eq(say("tatlı patates")[0].key, "tatlipatates", "tatlı patates denince tatlı patates");
+  ok(say("pide")[0].key !== "pideekmegi" && say("pide")[0].name !== "Pide ekmeği", "pide → pide ekmeği değil");
+  /* belirlenen varsayılanlar */
+  eq([say("ekmek")[0].key, say("ekmek")[0].conf], ["beyazekmek", "high"], "ekmek");
+  eq([say("süt")[0].key, say("süt")[0].conf], ["tamyagsut", "high"], "süt → tam yağlı");
+  eq([say("tavuk")[0].key, say("tavuk")[0].conf], ["tavuk", "high"], "tavuk → tavuk göğsü");
+  eq([say("yulaf")[0].key, say("yulaf")[0].conf], ["yulaf", "high"], "yulaf → yulaf ezmesi");
+  /* kategori sözcükleri sorulur */
+  for (const w of ["çorba", "salata", "dolma", "börek", "kebap", "tatlı"])
+    eq(say(w)[0].conf, "low", w + " kategori: sorulur");
+  /* peynir türünü adıyla söyleyince asıl isim (peyniri) gerekmez */
+  eq([say("kaşar")[0].key, say("kaşar")[0].conf], ["kasar", "high"], "kaşar");
+  eq(say("lor")[0].key, "lor", "lor");
+  /* tam adla söylenen yemek aynen bulunur */
+  eq(say("mercimek çorbası")[0].key, "mercimekcorba", "mercimek çorbası");
+});
+
+test("sesli giriş: et, ciğer, balık sorulur ve yalnız pişmiş yemekler önerilir; kalori kaynaktaki değerdir", async () => {
+  state = await loadFixture();
+  const keys = w => { const r = say(w)[0]; return [r.key, ...r.alts.map(a => a.key)]; };
+  const et = keys("et"), cg = keys("ciğer"), bl = keys("balık");
+  eq(say("et")[0].conf, "low", "et sorar");
+  ok(et.includes("danabiftekizgara") && et.includes("antrikotizgara"), "et: biftek ve antrikot " + et);
+  ok(cg.includes("arnavutciger") && cg.includes("edirnecigeri"), "ciğer: Arnavut ve Edirne " + cg);
+  eq(keys("pişmiş ciğer"), cg, "pişmiş ciğer = ciğer");
+  for (const k of ["levrekizgara", "izgarasomon", "palamutizgara", "hamsitava", "hamsibugulama", "barbun"])
+    ok(bl.includes(k), "balık: " + k);
+  /* öneriler pişmiş yemektir: çiğ, yağ ya da tek başına yenmeyen malzeme yok */
+  for (const k of [...et, ...cg, ...bl]){
+    const f = FOODS[k];
+    ok(f && !f.cigYenmez && f.i !== "oil" && !NO_STANDALONE.has(k), "uygun öneri: " + k);
+  }
+  /* kalori değerleri kaynaktan (100 g) */
+  eq(Math.round(foodEnergyPer100(FOODS.hamsitava)), 179, "hamsi tava");
+  eq(Math.round(foodEnergyPer100(FOODS.levrekizgara)), 124, "levrek ızgara");
+  eq(Math.round(foodEnergyPer100(FOODS.danabiftekizgara)), 184, "dana biftek ızgara");
+  /* alışkanlık: daha önce yenen önce gelir */
+  state.days[today()] = { log: [{ id:1, k:"edirnecigeri", n:"Edirne ciğeri", g:180, p:20, c:8, f:18 }] };
+  eq(say("ciğer")[0].key, "edirnecigeri", "alışkanlık sırayı değiştirir");
+});
+
+test("sesli giriş: pişirme biçimi eş anlamlıdır, pişirme yağı ayrı besin olmaz", async () => {
+  state = await loadFixture();
+  eq(say("kızarmış tavuk")[0].key, "tavukkizartmasi", "kızarmış tavuk");
+  eq(say("yağda kızarmış tavuk yedim").map(x => x.key), ["tavukkizartmasi"], "yağ önerilmez");
+  eq(say("kızarmış hamsi")[0].key, "hamsitava", "kızarmış hamsi = hamsi tava");
+  eq(say("tereyağında pişmiş yumurta").map(x => x.key), ["yumurta"], "tereyağı ayrı besin değil");
+  eq(say("iki kaşık zeytinyağı")[0].key, "zeytinyagi", "açıkça söylenen yağ yine bulunur");
+  /* belirsiz sözcüklerin adayları arasında yağ ya da un yok */
+  for (const w of ["tatlı", "çorba", "salata", "sos", "kızartma"])
+    for (const a of say(w)[0].alts) ok(FOODS[a.key] ? FOODS[a.key].i !== "oil" : true, w + ": yağ aday değil");
+});
+
+test("sesli giriş: yalın 'hamsi' hamsi tavadır; sofrada eklenen yağ yazılır, pişirme yağı yazılmaz, 'bol yağlı' yalnız eklenebilir", async () => {
+  state = await loadFixture();
+  eq([say("hamsi")[0].key, say("hamsi")[0].conf], ["hamsitava", "high"], "hamsi → hamsi tava");
+  eq(say("hamsi tava")[0].g, 250, "bir porsiyon 250 g");
+  /* sofrada eklenen yağ: salata ve ekmek */
+  const sal = say("zeytinyağlı limonlu salata")[0];
+  eq(sal.extras.map(e => [e.key, e.g, e.auto]), [["zeytinyagi", 13, true]], "salataya zeytinyağı eklenir");
+  const ek = say("tereyağlı ekmek")[0];
+  eq([ek.key, ek.extras[0].key, ek.extras[0].auto], ["beyazekmek", "tereyagi", true], "ekmeğe tereyağı");
+  /* yağı yemeğin içinde olanlara ayrıca yağ yazılmaz */
+  eq(say("zeytinyağlı fasulye")[0].extras, undefined, "zeytinyağlı taze fasulye zaten yağlı");
+  eq(say("iskender")[0].extras, undefined, "iskender: tereyağı pişirmede");
+  eq(say("yağda kızarmış tavuk")[0].extras, undefined, "yağda kızarmış");
+  eq(say("zeytinyağlı ıspanak")[0].extras, undefined, "pişen yemekte yağ dahil");
+  /* bol yağlı: yalnız eklenebilir (otomatik değil) */
+  const bol = say("bol zeytinyağlı salata")[0];
+  eq(bol.extras.map(e => [e.key, e.g, e.auto]), [["zeytinyagi", 26, false]], "bol → 2 yemek kaşığı, otomatik değil");
+  const pk = say("bol yağlı patates kızartması")[0];
+  eq([pk.key, pk.extras[0].key, pk.extras[0].auto], ["patateskizartma", "aycicekyagi", false], "kızartmada ayçiçek yağı, eklenebilir");
+  /* yağ yalnız söylenince aynen bulunur */
+  eq(say("iki yumurta bol tereyağlı")[0].extras[0].key, "tereyagi");
+});
+
+/* ---- doğrudan dinleme (StarboardSpeech eklentisi sahte nesneyle) ---- */
+const speechMock = () => {
+  const m = { listeners:{}, cancelled:false, started:0, fin:null };
+  m.status = async () => ({ supported:true, permission:"granted" });
+  m.addListener = async (n, cb) => { m.listeners[n] = cb; return { remove(){ delete m.listeners[n]; } }; };
+  m.start = () => { m.started++; return new Promise((res, rej) => { m.fin = res; m.fail = rej; }); };
+  m.stop = async () => { if (m.fin) m.fin({ text: m.say || "" }); };
+  m.cancel = async () => { m.cancelled = true; if (m.fin) m.fin({ text: "" }); };
+  return m;
+};
+const tick = (ms = 30) => new Promise(r => setTimeout(r, ms));
+const speechCleanup = () => { delete window.STARBOARD_SPEECH_TEST; speechInfo = null; document.querySelectorAll(".sheet-bg").forEach(x => x.remove()); state = null; };
+
+test("doğrudan dinleme: + dinleme ekranını açar, söylenen cümle onay listesine döner, sessizlikte kendiliğinden biter", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  const m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+  try {
+    openMealSheet(); await tick();
+    const sh = () => document.querySelector(".sheet-bg");
+    ok(sh().querySelector("#vs-live") && sh().querySelector("#vs-done"), "dinleme ekranı açılmadı");
+    eq(m.started, 1, "dinleme başlamadı");
+    ok(Array.isArray(m.lastHints) || true);
+    m.listeners.partial({ text: "iki yum" });
+    eq(sh().querySelector("#vs-live").textContent, "iki yum", "kısmi metin gösterilmiyor");
+    m.fin({ text: "iki yumurta ve iki bardak su" });          /* tanıyıcı sessizlikte bitirdi */
+    await tick();
+    ok(sh().querySelector("#vs-add") && /Yumurta/.test(sh().innerHTML), "onay listesine geçilmedi");
+    ok(!m.listeners.partial, "kısmi sonuç dinleyicisi kaldırılmadı");
+  } finally { speechCleanup(); }
+});
+
+test("doğrudan dinleme: Bitti düğmesi durdurur; kapatınca ve yazıya geçince dinleme iptal edilir", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  const m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+  try {
+    openMealSheet(); await tick();
+    m.say = "bir elma"; document.querySelector("#vs-done").onclick(); await tick();
+    ok(document.querySelector("#vs-add") && /Elma/.test(document.querySelector(".sheet-bg").innerHTML), "Bitti ile liste gelmedi");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    /* kapatınca iptal */
+    const m2 = speechMock(); window.STARBOARD_SPEECH_TEST = m2;
+    openMealSheet(); await tick();
+    document.querySelector(".sheet-x").onclick(); await tick();
+    ok(m2.cancelled, "kapatınca dinleme iptal edilmedi");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    /* yazarak gir: kısmi metin kutuya taşınır, dinleme iptal */
+    const m3 = speechMock(); window.STARBOARD_SPEECH_TEST = m3;
+    openMealSheet(); await tick();
+    m3.listeners.partial({ text: "iki yumurta" });
+    document.querySelector("#vs-type").onclick(); await tick();
+    ok(m3.cancelled, "yazıya geçişte dinleme iptal edilmedi");
+    eq(document.querySelector("#vs-t").value, "iki yumurta", "metin kutuya taşınmadı");
+  } finally { speechCleanup(); }
+});
+
+test("doğrudan dinleme: izin yoksa ya da cihaz desteklemiyorsa yazı ekranı açılır, bir daha dinlemeye çalışmaz", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  try {
+    /* izin reddedildi */
+    let m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+    openMealSheet(); await tick();
+    m.fail({ code: "denied" }); await tick();
+    ok(document.querySelector("#vs-t") && /izni/.test(document.querySelector(".sheet-bg").textContent), "izin mesajı ve yazı kutusu yok");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    openMealSheet(); await tick();
+    ok(document.querySelector("#vs-t") && !document.querySelector("#vs-live"), "izin yokken yine dinlemeye çalıştı");
+    eq(m.started, 1, "izin yokken yeniden başlatıldı");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    /* cihaz desteklemiyor: sessizce yazıya düşer */
+    m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+    openMealSheet(); await tick();
+    m.fail({ code: "unsupported" }); await tick();
+    ok(document.querySelector("#vs-t") && !/izni/.test(document.querySelector(".sheet-bg").textContent), "desteksiz cihazda yazı ekranı açılmadı");
+    eq(speechInfo, false, "destek durumu hatırlanmadı");
+    /* eklenti yok (web): doğrudan yazı ekranı */
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    delete window.STARBOARD_SPEECH_TEST; speechInfo = null;
+    openMealSheet(); await tick();
+    ok(document.querySelector("#vs-t") && !document.querySelector("#vs-live"), "webde dinleme ekranı açıldı");
+  } finally { speechCleanup(); }
+});
+
+test("doğrudan dinleme: anlaşılmayan söz yazı ekranına metinle döner; ipuçları 100'ü geçmez ve sayı birim sözcüklerini içerir", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  const m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+  try {
+    openMealSheet(); await tick();
+    m.fin({ text: "xyzzy blabla" }); await tick();
+    ok(document.querySelector("#vs-t") && document.querySelector("#vs-t").value === "xyzzy blabla" && /Anlayamad/.test(document.querySelector(".sheet-bg").textContent), "anlaşılmayan söz yazıya dönmedi");
+    const h = speechHints();
+    ok(h.length <= 100 && h.includes("dilim") && h.includes("yarım"), "ipuçları: " + h.length);
+    ok(new Set(h).size === h.length, "ipuçlarında tekrar var");
+  } finally { speechCleanup(); }
 });

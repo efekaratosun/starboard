@@ -5,3 +5,7 @@
 "NSHealthShareUsageDescription" = "Starboard reads your steps, sleep and weight from Apple Health to show them with your daily goals. Starboard does not send this data anywhere.";
 
 "NSHealthUpdateUsageDescription" = "Starboard does not write any data to Apple Health. It only reads your steps, sleep and weight.";
+
+"NSMicrophoneUsageDescription" = "Starboard uses the microphone to convert speech to text on your device only. Audio is not recorded, saved, or sent anywhere.";
+
+"NSSpeechRecognitionUsageDescription" = "Starboard converts speech to text entirely on your device. Speech is not saved or sent anywhere.";

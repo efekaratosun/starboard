@@ -112,15 +112,15 @@ function render(){
       ${(() => { const tb = ([k,ic,l]) => `<button data-tab="${k}" aria-current="${tab===k}">
           <svg class="ico" aria-hidden="true"><use href="#${ic}"/></svg>${l}</button>`;
         return tb(["today","i-day",tx("Bugün")]) + tb(["plan","i-plan",tx("Program")])
-          + `<button class="fab" id="fab" aria-label="${tx("Hızlı giriş")}">
+          + `<button class="fab" id="fab" aria-label="${tx("Yemek ekle")}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>`
           + tb(["meals","i-grain",tx("Beslenme")]) + tb(["calendar","i-today",tx("Takvim")]); })()}
     </nav>`;
 
-  document.getElementById("fab").onclick = openQuickSheet;
+  document.getElementById("fab").onclick = openMealSheet;
   wirePastBar(t);
   const np = document.getElementById("np-go");
-  if (np) np.onclick = openQuickSheet;
+  if (np) np.onclick = openWeightSheet;
 
   app.querySelectorAll(".tabbar button[data-tab]").forEach(b =>
     b.onclick = () => {

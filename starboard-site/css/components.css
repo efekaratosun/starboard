@@ -1269,3 +1269,56 @@ details.about[open] summary::after{content:"−"}
 .wk7-d.now .wk7-c{background:var(--band);color:var(--on-brand);box-shadow:none}
 .lift-chip{flex:none;min-height:32px;padding:0 12px;border-radius:16px;box-shadow:inset 0 0 0 1.5px var(--line);display:inline-flex;align-items:center;font-size:13.5px;font-weight:700;white-space:nowrap}
 .wo-go{position:sticky;bottom:calc(92px + env(safe-area-inset-bottom));z-index:5;margin-top:14px}
+
+/* ---- yemek kısayolu penceresi (voice-sheet.js) ---- */
+.vs-slots{margin:2px 0 14px;flex-wrap:wrap}
+.vs-l{display:block;font-size:13px;font-weight:800;color:var(--muted);margin:0 0 6px}
+.vs-t{width:100%;box-sizing:border-box;min-height:96px;resize:none;font:inherit;font-size:18px;font-weight:600;line-height:1.35;
+  color:var(--ink);background:var(--raise);border:1.5px solid var(--line);border-radius:18px;padding:13px 15px}
+.vs-t:focus{outline:none;border-color:var(--band)}
+.vs-hint{font-size:13px;color:var(--muted);margin:9px 2px 4px;line-height:1.35}
+.vs-go{width:100%;min-height:52px;margin-top:10px}
+.vs-links{display:flex;justify-content:center;gap:26px;margin-top:6px}
+.vs-links .link,.vs-back{display:inline-flex;align-items:center;gap:7px;min-height:44px;font-weight:700}
+.vs-back{display:flex;justify-content:center;width:100%;margin-top:2px}
+.vs-note{font-size:13.5px;color:var(--muted);margin:0 0 10px;line-height:1.4}
+.vs-list{background:var(--raise);border:1px solid var(--line);border-radius:18px;padding:2px 14px}
+.vs-it{display:flex;align-items:center;gap:8px;min-height:60px;border-bottom:1px solid var(--line)}
+.vs-list > .vs-it:last-child,.vs-list > .vs-alts:last-child{border-bottom:0}
+.vs-it.off{opacity:.45}
+.vs-m{flex:1;min-width:0;display:flex;flex-direction:column;padding:8px 0}
+.vs-m b{font-size:16px;font-weight:700}
+.vs-m i{font-style:normal;font-size:13px;color:var(--muted);margin-top:1px}
+.vs-q{color:var(--ink);font-weight:700;margin-left:2px}
+.vs-miss .vs-m i{color:var(--ink)}
+.vs-chg{align-self:flex-start;min-height:34px;font-size:13.5px;font-weight:700;padding:0;margin-top:2px}
+.vs-g{flex:0 0 62px;width:62px;min-width:0;text-align:right;padding:9px 8px;font-weight:700}
+.vs-gu{font-size:13px;color:var(--muted);margin-left:-3px}
+.vs-x{flex:0 0 44px;height:44px;width:44px;padding:0;border:0;background:none;color:var(--muted);font-size:22px;line-height:1}
+.vs-alts{display:flex;flex-direction:column;gap:6px;padding:4px 0 12px;border-bottom:1px solid var(--line)}
+.vs-alt{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:48px;padding:6px 12px;text-align:left;
+  background:var(--shell);color:var(--ink);border:1.5px solid transparent;border-radius:14px}
+.vs-alt b{font-size:15px;font-weight:700}
+.vs-alt i{font-style:normal;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.vs-alt.sel{border-color:var(--band)}
+.vs-ex{margin-top:10px;background:var(--raise);border:1px solid var(--line);border-radius:18px;padding:2px 14px}
+.vs-xr{display:flex;align-items:center;gap:12px;min-height:56px;cursor:pointer}
+.vs-xr input{-webkit-appearance:none;appearance:none;flex:0 0 26px;width:26px;height:26px;margin:0;padding:0;position:relative;
+  border:2px solid var(--track);border-radius:50%;background:none}
+.vs-xr input:checked{background:var(--grad);border-color:transparent}
+.vs-xr input:checked::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid var(--on-brand);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.vs-foot{position:sticky;bottom:0;margin:6px -2px -2px;padding:4px 2px 10px;background:var(--surface)}
+.vs-xr span{display:flex;flex-direction:column}
+.vs-xr b{font-size:15px;font-weight:700}
+.vs-xr i{font-style:normal;font-size:13px;color:var(--muted)}
+.vs-tot{display:flex;justify-content:space-between;align-items:baseline;margin:14px 4px 12px;font-size:16px;font-weight:700}
+.vs-tot b{font-size:20px}
+
+.vs-mic{position:relative;width:190px;height:190px;margin:8px auto 4px;display:grid;place-items:center}
+.vs-mic i{position:absolute;inset:0;border-radius:50%;background:var(--band);opacity:.2;animation:vsPulse 1.9s ease-out infinite}
+.vs-mic i + i{inset:32px;opacity:.3;animation-delay:.55s}
+.vs-mic span{position:relative;width:80px;height:80px;border-radius:50%;background:var(--band);background-image:var(--grad-btn);color:var(--on-brand);display:grid;place-items:center}
+.vs-live{min-height:88px;text-align:center;font-size:21px;font-weight:600;line-height:1.35;padding:0 6px}
+.vs-live[data-empty]{color:var(--muted);font-size:18px}
+@keyframes vsPulse{0%{transform:scale(.86);opacity:.4}100%{transform:scale(1.06);opacity:0}}
+@media (prefers-reduced-motion:reduce){.vs-mic i{animation:none}}
