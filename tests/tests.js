@@ -5129,3 +5129,49 @@ test("hedefin: seçenek çizgisi gerçek 2 px kenarlık; yarım piksele düşen 
   ok(/main\.on \.oc\{border:2px solid var\(--on-edge\)/.test(css), "seçenekler 2 px kenarlıklı");
   ok(/main\.on \.oc\{[^}]*will-change:auto/.test(css), "seçenekte will-change katmanı kapalı");
 });
+
+/* ---- sesli giriş: cümleden besin listesi (voice-parse.js) ---- */
+const say = t => { const use = foodUsage(); return parseMeal(t, allFoods(), { usage: k => use[k] || 0, pop: foodPop }).items; };
+
+test("sesli giriş: virgülsüz cümle de besinlere ayrılır, miktar ve gram doğru", async () => {
+  state = await loadFixture();
+  const r = say("iki yumurta beş zeytin bir dilim beyaz peynir yedim");
+  eq(r.map(x => x.key), ["yumurta", "zeytin", "beyazpeynir"]);
+  eq(r.map(x => x.g), [100, 20, 30]);
+  ok(r.every(x => x.conf === "high"), "üçü de emin");
+  eq(say("iki yumurta beş zeytin bir dilim beyaz peynir").map(x => x.key), ["yumurta", "zeytin", "beyazpeynir"], "virgülsüz");
+});
+
+test("sesli giriş: Türkçe ekler, yarım ve buçuk, gram ve kaşık birimi", async () => {
+  state = await loadFixture();
+  eq(say("yumurtayı yedim")[0].key, "yumurta", "yumurtayı");
+  eq(say("zeytinleri yedim")[0].key, "zeytin", "zeytinleri");
+  const s = say("iki buçuk bardak süt içtim")[0];
+  eq(s.qty, 2.5); eq(s.unit, "bardak");
+  const t = say("200 gram tavuk göğsü")[0];
+  eq([t.key, t.g], ["tavuk", 200]);
+  const b = say("üç yemek kaşığı bal")[0];
+  eq([b.key, b.g], ["bal", 63]);
+  eq(say("yirmi beş gram badem")[0].g, 25, "yirmi beş");
+});
+
+test("sesli giriş: belirsiz sözcük sorulur, kesin olan sorulmaz", async () => {
+  state = await loadFixture();
+  const p = say("bir dilim peynir")[0];
+  eq(p.conf, "low", "peynir: hangisi?");
+  ok(p.alts.length >= 2 && p.alts.some(a => a.key === "beyazpeynir"), "adaylar beyaz peyniri içerir");
+  eq(say("domates")[0].conf, "high", "domates tek");
+  /* daha önce yenen tek aday açık ara öne geçer */
+  state.days[today()] = { log: [{ id:1, k:"beyazpeynir", n:"Beyaz peynir", g:30, p:20, c:1, f:20 }] };
+  const q = say("peynir")[0];
+  eq([q.key, q.conf], ["beyazpeynir", "high"], "alışkanlık: beyaz peynir");
+});
+
+test("sesli giriş: besinden sonra gelen miktar öncekine eklenir; bilinmeyen kelime atılır; hiçbiri bulunmazsa key null", async () => {
+  state = await loadFixture();
+  const a = say("yumurtayı haşladım iki tane yedim");
+  eq(a.length, 1); eq([a[0].key, a[0].g], ["yumurta", 100]);
+  eq(say("domates salatalık yedim").map(x => x.key), ["domates", "salatalik"], "ayırıcı yok");
+  const x = say("xyzzy blabla")[0];
+  eq(x.key, null); eq(x.g, 0);
+});
