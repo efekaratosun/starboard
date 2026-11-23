@@ -199,6 +199,11 @@ const FOODS = {
   adanakebap:{n:tx("Adana kebap"), por:[{n:tx("şiş"),g:100},{n:tx("porsiyon"),g:200}], p:18, c:2, f:22, lif:0.5, i:"meat", v:["demir","B12",tx("çinko")]},
   tavuksis:{n:tx("Tavuk şiş"), por:[{n:tx("şiş"),g:100},{n:tx("porsiyon"),g:200}], p:26, c:1, f:8, lif:0.3, i:"poultry", v:["B6","B12"]},
   izgarakofte:{n:tx("Izgara köfte"), b:"köfte", por:[{n:tx("porsiyon"),g:150},{n:tx("adet"),g:30}], p:18, c:4, f:16, lif:0.6, i:"meat", v:["demir","B12",tx("çinko")]},
+  /* Sesli girişte "et" ve "balık" önerileri için eklenen pişmiş yemekler. kcal100 kaynaktaki değerdir;
+     kaynakta olmayan makrolar kalori ile uyumlu tahmindir. */
+  danabiftekizgara:{n:tx("Dana biftek (ızgara, pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:29.7, c:0, f:7.3, lif:0, kcal100:184, i:"meat", v:["demir","B12",tx("çinko")], src:"web nutrola.app sırt bifteği, sığır, pişmiş, ızgara (USDA tabanlı), 100 g"},
+  levrekizgara:{n:tx("Levrek (ızgara, pişmiş)"), por:[{n:tx("porsiyon"),g:150}], p:23.6, c:0, f:2.6, lif:0, kcal100:124, i:"fish", v:["B12","D"], src:"USDA SR deniz levreği, pişmiş kuru ısı (FatSecret/Foodstruct), 100 g"},
+  hamsitava:{n:tx("Hamsi tava"), por:[{n:tx("porsiyon"),g:150},{n:tx("adet"),g:25,s:[3,5,8]}], p:18, c:2, f:10.4, lif:0, kcal100:176, i:"fish", cu:"tr", v:["D","B12","omega3","kalsiyum"], src:"web fatsecret hamsi-tava: 176 kcal, yağ 10,4 g / 100 g (protein ve karbonhidrat tahmini)"},
   tavuksote:{n:tx("Tavuk sote"), a:"tavuk", por:[{n:tx("porsiyon"),g:250}], p:20, c:5, f:7, lif:1, i:"poultry", v:["B6","C","B12"]},
   tavukdurum:{n:tx("Tavuk dürüm"), por:[{n:tx("adet"),g:300}], p:14, c:25, f:10, lif:2, i:"bread", v:["B6","C"]},
   balikekmek:{n:tx("Balık ekmek"), por:[{n:tx("adet"),g:300}], p:14, c:22, f:8, lif:1.5, i:"fish", v:["D","B12","omega3"]},
@@ -908,6 +913,18 @@ const NO_SUGGEST = new Set(["baklava","kunefe","kadayif","revani","lokum","tahin
   "pirincunu","nohutunu","sehriye","polenta","yufka","sarimsak","kestane",
   /* öğünün yağını tek başına taşıyamayacak tohumlar ve yağlar */
   "susam","ketentohumu","hindistancevizi","hindistancevizyagi"]);
+
+/* Tek başına yenmeyen malzemeler (un, şehriye, sarımsak...). Yağlar simgesinden (i:"oil") tanınır.
+   Sesli girişte kullanıcı bunları açıkça söylemedikçe öneri ya da aday olarak çıkmazlar. */
+const NO_STANDALONE = new Set(["pirincunu","nohutunu","sehriye","polenta","yufka","sarimsak"]);
+
+/* Sesli girişte kategori sözcükleri ("et", "ciğer", "balık") tek bir besine bağlanmaz;
+   bu listedeki pişmiş yemekler sorulur. Sıra: önerilme sırası (kullanıcının alıştığı önce gelir). */
+const VOICE_GROUPS = {
+  et:["danabiftekizgara","antrikotizgara","bonfilesis","etsote","kuzutandir"],
+  ciger:["arnavutciger","edirnecigeri","cigertava","cigersote","kuzucigeri","tavukcigeri"],
+  balik:["levrekizgara","izgarasomon","palamutizgara","hamsitava","hamsibugulama","barbun","izgarabalik"]
+};
 
 /* Otomatik önerilerde kullanılabilecek gözden geçirilmiş besinler.
    foods-usda.js veya foods-intl.js ile eklenen kayıtlar otomatik olarak

@@ -102,11 +102,11 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
 
 /* ---- genişletilmiş besin veritabanı ---- */
 const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
-test("besin veritabanı: 1325 yeni kayıt (382 USDA, 943 web) eklendi", () => {
+test("besin veritabanı: 1328 kaynaklı kayıt (383 USDA, 945 web) eklendi", () => {
   const added = sourcedFoods();
-  eq([added.length, Object.keys(FOODS).length], [1325, 1752]);
-  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 382);
-  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 943);
+  eq([added.length, Object.keys(FOODS).length], [1328, 1755]);
+  eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 383);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 945);
 });
 test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
   const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
@@ -5206,4 +5206,40 @@ test("sesli giriş: sıfat yerindeki sözcük besini seçtirmez; yalın söz yal
   eq(say("lor")[0].key, "lor", "lor");
   /* tam adla söylenen yemek aynen bulunur */
   eq(say("mercimek çorbası")[0].key, "mercimekcorba", "mercimek çorbası");
+});
+
+test("sesli giriş: et, ciğer, balık sorulur ve yalnız pişmiş yemekler önerilir; kalori kaynaktaki değerdir", async () => {
+  state = await loadFixture();
+  const keys = w => { const r = say(w)[0]; return [r.key, ...r.alts.map(a => a.key)]; };
+  const et = keys("et"), cg = keys("ciğer"), bl = keys("balık");
+  eq(say("et")[0].conf, "low", "et sorar");
+  ok(et.includes("danabiftekizgara") && et.includes("antrikotizgara"), "et: biftek ve antrikot " + et);
+  ok(cg.includes("arnavutciger") && cg.includes("edirnecigeri"), "ciğer: Arnavut ve Edirne " + cg);
+  eq(keys("pişmiş ciğer"), cg, "pişmiş ciğer = ciğer");
+  for (const k of ["levrekizgara", "izgarasomon", "palamutizgara", "hamsitava", "hamsibugulama", "barbun"])
+    ok(bl.includes(k), "balık: " + k);
+  /* öneriler pişmiş yemektir: çiğ, yağ ya da tek başına yenmeyen malzeme yok */
+  for (const k of [...et, ...cg, ...bl]){
+    const f = FOODS[k];
+    ok(f && !f.cigYenmez && f.i !== "oil" && !NO_STANDALONE.has(k), "uygun öneri: " + k);
+  }
+  /* kalori değerleri kaynaktan (100 g) */
+  eq(Math.round(foodEnergyPer100(FOODS.hamsitava)), 176, "hamsi tava");
+  eq(Math.round(foodEnergyPer100(FOODS.levrekizgara)), 124, "levrek ızgara");
+  eq(Math.round(foodEnergyPer100(FOODS.danabiftekizgara)), 184, "dana biftek ızgara");
+  /* alışkanlık: daha önce yenen önce gelir */
+  state.days[today()] = { log: [{ id:1, k:"edirnecigeri", n:"Edirne ciğeri", g:180, p:20, c:8, f:18 }] };
+  eq(say("ciğer")[0].key, "edirnecigeri", "alışkanlık sırayı değiştirir");
+});
+
+test("sesli giriş: pişirme biçimi eş anlamlıdır, pişirme yağı ayrı besin olmaz", async () => {
+  state = await loadFixture();
+  eq(say("kızarmış tavuk")[0].key, "tavukkizartmasi", "kızarmış tavuk");
+  eq(say("yağda kızarmış tavuk yedim").map(x => x.key), ["tavukkizartmasi"], "yağ önerilmez");
+  eq(say("kızarmış hamsi")[0].key, "hamsitava", "kızarmış hamsi = hamsi tava");
+  eq(say("tereyağında pişmiş yumurta").map(x => x.key), ["yumurta"], "tereyağı ayrı besin değil");
+  eq(say("iki kaşık zeytinyağı")[0].key, "zeytinyagi", "açıkça söylenen yağ yine bulunur");
+  /* belirsiz sözcüklerin adayları arasında yağ ya da un yok */
+  for (const w of ["tatlı", "çorba", "salata", "sos", "kızartma"])
+    for (const a of say(w)[0].alts) ok(FOODS[a.key] ? FOODS[a.key].i !== "oil" : true, w + ": yağ aday değil");
 });
