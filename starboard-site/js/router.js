@@ -65,6 +65,7 @@ function render(){
   </section>`;
   const titles = { today: onToday() ? greetTitle() : prettyDate(t), plan:tx("Programın"), meals:tx("Beslenme"), calendar:tx("Takvim") };
   const subs = { today: onToday() ? `${prettyDate(t)} · ${weekdayName(t)}` : tx("{0} · geçmiş gün", [(weekdayName(t))]),
+                 meals: program ? (() => { const k = logTotals(entry).kcal, g = program.kcal; return k > g ? tx("{0} / {1} kcal · {2} kcal aşıldı", [fmtN(k), fmtN(g), fmtN(k - g)]) : tx("{0} / {1} kcal · {2} kcal kaldı", [fmtN(k), fmtN(g), fmtN(g - k)]); })() : "",
                  plan: planTab === "today" && !onToday() && !(program && program.training.none) ? tx("{0} antrenmanı", [(prettyDate(t))]) : "" };
 
   titles.settings = tx("Ben");

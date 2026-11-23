@@ -526,7 +526,7 @@ function bodyCard(){
   const mood = avatarMood(e, program);
   const fig = `<button class="bc-fig" id="bc-fig" style="--av:${avColor(p)}" aria-label="${tx("Avatarını değiştir")}">
     ${avatarSVG(avKey(p), sx, wp, mood, "bc")}
-    <span class="bc-water num">💧 %${Math.round(wp*100)}</span>
+    <span class="bc-water num"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg>%${Math.round(wp*100)}</span>
     ${mood.line ? `<span class="bc-mood">${mood.line}</span>` : ""}
   </button>`;
 

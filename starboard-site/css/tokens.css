@@ -29,9 +29,9 @@
 
   /* yüzeyler: serin açık zemin, beyaz kartlar, lacivert yazı */
   /* index.html theme-color ile aynı tutulmalı. */
-  --bg:#F3F4F9; --surface:#FFFFFF; --raise:#FFFFFF;
-  --ink:#0D1230; --muted:#586079; --line:#E4E7F0;
-  --shell:#ECEEF6; --track:#E2E5EF; --tint:#FFE7DF;
+  --bg:#FFF0EA; --surface:#FFE3D8; --raise:#FFF8F4;
+  --ink:#2A1008; --muted:#7A3F2E; --line:#F3CBBC;
+  --shell:#FFE3D8; --track:#F0C2B2; --tint:#FFD3C2;
   /* karşılama sahnesi: açık tema = soluk gündüz gökyüzü */
   --sky-top:#D9E4F7; --sky-bot:#F3F4F9; --sky-star:#6B76B8; --sky-star-warm:#C8892E; --sky-star-cool:#5A7BD6;
   --sky-star-op:.5; --sky-deep-op:0; --onboarding-logo-glow:rgba(255,61,110,0);
@@ -43,32 +43,33 @@
   /* marka: doygun turuncu-pembe. --band yazı ve ince çizgiler (beyazda AA),
      --band-vivid grafik ve dolgu, --grad hero öğeleri, --grad-btn beyaz yazılı butonlar,
      --neon parlak vurgu (halka ucu, parlama). */
-  --band:#C22A08; --band-vivid:#FF4A1C; --on-brand:#FFFFFF;
-  --grad:linear-gradient(135deg,#FF6A13 0%,#FF2D72 100%);
-  --grad-btn:linear-gradient(135deg,#CC3300 0%,#D4145A 100%);
-  --g1:#FF6A13; --g2:#FF2D72;
-  --neon:#FF1F6E; --glow:color-mix(in srgb,#FF1F6E 34%,transparent);
+  --band:#4C1D95; --band-vivid:#4C1D95; --on-brand:#FFFFFF;
+  --grad:linear-gradient(135deg,#FF9E80 0%,#FF9E80 100%);
+  --grad-btn:linear-gradient(135deg,#4C1D95 0%,#4C1D95 100%);
+  --g1:#FF9E80; --g2:#4C1D95;
+  --neon:#4C1D95; --glow:color-mix(in srgb,#4C1D95 30%,transparent);
   /* anlam renkleri: yazı / grafik. Yazı renkleri beyazda ve kendi %14 zeminli
      rozetlerinde en az 4,5:1 kontrast verir (WCAG AA). */
   --good:#0A7A42; --good-vivid:#12C46E; --off:#A24F00; --bad:#C12834;
 
   /* makrolar: kalori, protein, yağ, karbonhidrat; -soft zemin (ay evresinin gölgesi), --over hedef aşımı (-soft gölgesi) */
-  --kcal:#FF6A00; --kcal-soft:#FFE8D4;
-  --protein:#EC1F5C; --protein-soft:#FDE0EA;
-  --fat:#E8AA00; --fat-soft:#FFF3C7;
-  --carb:#5A55F0; --carb-soft:#E5E4FF;
-  --over:#D1142C; --over-soft:#FFE0E3;
+  --kcal:#E8583A; --kcal-soft:#FAD2C7;
+  --protein:#5B2BB0; --protein-soft:#DEC9DE;
+  --fat:#9A4B7A; --fat-soft:#EBCFD4;
+  --carb:#C75F3F; --carb-soft:#FFE0D5;
+  --over:#B42318; --over-soft:#FFE0DA;
   /* Nutrition summary disks share OKLCH lightness and chroma within each theme. */
-  --moon-kcal:#F16B20; --moon-kcal-soft:#FDE7DB;
-  --moon-protein:#FF5088; --moon-protein-soft:#FFE3EC;
-  --moon-carb:#AC7BF9; --moon-carb-soft:#F2EAFE;
-  --moon-fat:#C58900; --moon-fat-soft:#F6ECD6;
-  --moon-over:#C73729; --moon-mark:#FFFFFF;
+  --moon-kcal:#E8583A; --moon-kcal-soft:#FAD2C7;
+  --moon-protein:#5B2BB0; --moon-protein-soft:#DEC9DE;
+  --moon-carb:#FF9E80; --moon-carb-soft:#FFE0D5;
+  --moon-fat:#9A4B7A; --moon-fat-soft:#EBCFD4;
+  --moon-over:#B42318; --moon-mark:#FFF8F4;
+  --moon-mark-kcal:#FFF8F4; --moon-mark-protein:#FFF8F4; --moon-mark-carb:#1A0A04; --moon-mark-fat:#FFF8F4;
   --moon-glow:.36;
   --moon-crater-fill:rgba(0,0,0,.24);
   --moon-crater-rim:rgba(255,255,255,.52);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#2BB84F;
-  --sleep:#6E4DFF; --water:#008FF5;
+  --sleep:#5B2BB0; --water:#C75F3F;
 
   /* besin grupları */
   --g-veg:#2FAE35; --g-fruit:#F0368A; --g-meat:#E8323C; --g-fish:#0A8FEA;
@@ -78,10 +79,10 @@
   --neutral:#7C4DFF; --neutral-t:#EFE8FF;
 
   /* takvim yoğunluğu: kırmızıdan yeşile */
-  --d1:#FFA894; --d2:#FFC48A; --d3:#FFE07A; --d4:#A7E38A; --d5:#10A95C;
-  --dnone:#F4695C; --dnone-ink:#3A120E;
-  --dtoday:#35CBF0; --dtoday-ink:#04303D;
-  --cal4-ink:var(--ink); --cal5-ink:#FFFFFF; --cal-lo-ink:var(--ink);
+  --d1:#FBE3DA; --d2:#FFD0C0; --d3:#FFB8A0; --d4:#FF9E80; --d5:#F27A57;
+  --dnone:transparent; --dnone-ink:var(--muted);
+  --dtoday:#4C1D95; --dtoday-ink:#FFF0EA;
+  --cal4-ink:var(--ink); --cal5-ink:#1A0A04; --cal-lo-ink:var(--ink);
 
   --chart-weight:#C9340C;
   --chart-kcal:#D47E00;
@@ -91,27 +92,28 @@
   --star-tile:#E8A33C;
 
   /* takımyıldız: gece gökyüzü */
-  --sky1:#141048; --sky2:#46289C; --star:#FFD36B; --star-off:rgba(255,255,255,.28);
-  --sky-ink:#F6F2FF; --sky-muted:#CFC6F2;
+  --sky1:#FFE3D8; --sky2:#FFE3D8; --star:#4C1D95; --star-off:rgba(154,107,128,.7);
+  --sky-ink:#2A1008; --sky-muted:#7A3F2E;
+  --fill:#FF9E80; --on-fill:#2A1008; --tap-edge:#9A6B80;
 
   /* sekme vurguları (varsayılan: marka) */
-  --accent:#FF4A1C; --accent2:#FF2D72;
+  --accent:#4C1D95; --accent2:#4C1D95;
 
   --sh1:0 1px 2px rgba(13,18,48,.05), 0 8px 24px rgba(13,18,48,.07);
   --sh2:0 2px 6px rgba(13,18,48,.07), 0 14px 32px rgba(13,18,48,.11);
   --r:20px;
   --font:"Saira", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-d:var(--font);
-  --bg-glow:radial-gradient(120% 50% at 50% -12%, color-mix(in srgb,#FF6A13 10%,transparent) 0%, transparent 70%);
+  --bg-glow:radial-gradient(120% 50% at 50% -12%, color-mix(in srgb,#FF9E80 18%,transparent) 0%, transparent 70%);
 }
 /* Koyu tema: ana tasarım. Derin lacivert zemin, neon vurgular.
    Aynı jetonlar iki kez yazılır: telefonun ayarı (media) ve elle seçim / önizleme. */
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
   /* index.html theme-color ile aynı tutulmalı. */
-  --bg:#060A19; --surface:#0E1430; --raise:#182042;
-  --ink:#F2F4FF; --muted:#A1A9CC; --line:#1F2850;
-  --shell:#121A38; --track:#222C55; --tint:#3A1630;
+  --bg:#0B0714; --surface:#1D1433; --raise:#261A42;
+  --ink:#F6F1FB; --muted:#B5A9C9; --line:#2D2147;
+  --shell:#1D1433; --track:#33245A; --tint:#33245A;
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
@@ -121,28 +123,29 @@
   --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-op:.45;
   --neb-dust:#E4DCFF; --neb-dust-op:.5; --neb-spark-op:.7;
 
-  --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
-  --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
-  --grad-btn:linear-gradient(135deg,#CC3300 0%,#D4145A 100%);
-  --g1:#FF7A1A; --g2:#FF3D86;
-  --neon:#FF4D94; --glow:color-mix(in srgb,#FF4D94 55%,transparent);
+  --band:#FF8A65; --band-vivid:#FF8A65; --on-brand:#1A0A04;
+  --grad:linear-gradient(135deg,#FF8A65 0%,#FF8A65 100%);
+  --grad-btn:linear-gradient(135deg,#FF8A65 0%,#FF8A65 100%);
+  --g1:#FF8A65; --g2:#FFB199;
+  --neon:#FF8A65; --glow:color-mix(in srgb,#FF8A65 45%,transparent);
   --good:#3EE08F; --good-vivid:#2FD483; --off:#FFB23F; --bad:#FF6B6B;
 
-  --kcal:#FF8A1F; --kcal-soft:#3A2410;
-  --protein:#FF4D7E; --protein-soft:#3C1428;
-  --fat:#FFD23F; --fat-soft:#373012;
-  --carb:#8C88FF; --carb-soft:#1F2052;
-  --over:#FF4D4D; --over-soft:#3D1519;
-  --moon-kcal:#FDA073; --moon-kcal-soft:#3E303D;
-  --moon-protein:#F898C6; --moon-protein-soft:#3D2E4E;
-  --moon-carb:#C7A7FF; --moon-carb-soft:#33315A;
-  --moon-fat:#DBB650; --moon-fat-soft:#373436;
-  --moon-over:#FF8B79; --moon-mark:var(--bg);
-  --moon-glow:.65;
+  --kcal:#FF8A65; --kcal-soft:#2A1A24;
+  --protein:#B79CFF; --protein-soft:#271C45;
+  --fat:#D58BC0; --fat-soft:#2E1B3A;
+  --carb:#FFB199; --carb-soft:#2D1E2F;
+  --over:#FF8A80; --over-soft:#3A1A22;
+  --moon-kcal:#FF8A65; --moon-kcal-soft:#321E2A;
+  --moon-protein:#B79CFF; --moon-protein-soft:#2A1F48;
+  --moon-carb:#FFB199; --moon-carb-soft:#33222F;
+  --moon-fat:#D58BC0; --moon-fat-soft:#331F3D;
+  --moon-over:#FF8A80; --moon-mark:#1A0A04;
+  --moon-mark-kcal:#1A0A04; --moon-mark-protein:#1A0A04; --moon-mark-carb:#1A0A04; --moon-mark-fat:#1A0A04;
+  --moon-glow:.8;
   --moon-crater-fill:rgba(0,0,0,.16);
   --moon-crater-rim:rgba(255,255,255,.38);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
-  --sleep:#9C86FF; --water:#3DB2FF;
+  --sleep:#B79CFF; --water:#FF8A65;
 
   --g-veg:#5EDB5A; --g-fruit:#FF5CA8; --g-meat:#FF5A5A; --g-fish:#3DB2FF;
   --g-dairy:#6F93FF; --g-grain:#FFB23F; --g-nuts:#D9A06B; --g-egg:#FFD23F;
@@ -150,10 +153,10 @@
   --male:#5AA7FF; --male-t:#16264A; --female:#FF7EB9; --female-t:#3A1A3A;
   --neutral:#A98BFF; --neutral-t:#251F4A;
 
-  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#836812; --d4:#5FAE3C; --d5:#2FD483;
-  --dnone:#B03225; --dnone-ink:#FFE7E3;
-  --dtoday:#3BD9F5; --dtoday-ink:#062733;
-  --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);
+  --d1:#2D191F; --d2:#4F2C2B; --d3:#7B4339; --d4:#B1604B; --d5:#F38361;
+  --dnone:transparent; --dnone-ink:var(--muted);
+  --dtoday:#FF8A65; --dtoday-ink:#1A0A04;
+  --cal4-ink:#1A0A04; --cal5-ink:#1A0A04; --cal-lo-ink:var(--ink);
 
   --chart-weight:#EC5A35;
   --chart-kcal:#C97D10;
@@ -162,20 +165,21 @@
   --chart-waist:#1FA35E;
   --star-tile:#FFC861;
 
-  --sky1:#080A26; --sky2:#28195E; --star:#FFD36B; --star-off:rgba(255,255,255,.22);
-  --sky-ink:#F3EEFF; --sky-muted:#B9B0DA;
+  --sky1:#1D1433; --sky2:#1D1433; --star:#FF8A65; --star-off:rgba(124,111,149,.8);
+  --sky-ink:#F6F1FB; --sky-muted:#B5A9C9;
+  --fill:#FF8A65; --on-fill:#1A0A04; --tap-edge:#7C6F95;
 
   --sh1:0 1px 0 rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.45);
   --sh2:0 2px 4px rgba(0,0,0,.45), 0 18px 44px rgba(0,0,0,.55);
   --edge:inset 0 1px 0 color-mix(in srgb, #FFFFFF 7%, transparent);
-  --bg-glow:radial-gradient(120% 50% at 50% -12%, color-mix(in srgb,#FF3D86 16%,transparent) 0%, transparent 70%);
+  --bg-glow:radial-gradient(120% 50% at 50% -12%, color-mix(in srgb,#B79CFF 14%,transparent) 0%, transparent 70%);
   }
 }
 :root[data-theme="dark"], .thm-dark{
   /* index.html theme-color ile aynı tutulmalı. */
-  --bg:#060A19; --surface:#0E1430; --raise:#182042;
-  --ink:#F2F4FF; --muted:#A1A9CC; --line:#1F2850;
-  --shell:#121A38; --track:#222C55; --tint:#3A1630;
+  --bg:#0B0714; --surface:#1D1433; --raise:#261A42;
+  --ink:#F6F1FB; --muted:#B5A9C9; --line:#2D2147;
+  --shell:#1D1433; --track:#33245A; --tint:#33245A;
   /* karşılama sahnesi: koyu tema = derin uzay */
   --sky-top:#010207; --sky-bot:#04061A; --sky-star:#F4F6FF; --sky-star-warm:#FFD9A8; --sky-star-cool:#BCD2FF;
   --sky-star-op:1; --sky-deep-op:1; --onboarding-logo-glow:rgba(255,90,150,.55);
@@ -185,28 +189,29 @@
   --neb-1:#2A34A0; --neb-2:#3C66D9; --neb-3:#6E4BD8; --neb-op:.45;
   --neb-dust:#E4DCFF; --neb-dust-op:.5; --neb-spark-op:.7;
 
-  --band:#FF7A4D; --band-vivid:#FF5A1F; --on-brand:#FFFFFF;
-  --grad:linear-gradient(135deg,#FF7A1A 0%,#FF3D86 100%);
-  --grad-btn:linear-gradient(135deg,#CC3300 0%,#D4145A 100%);
-  --g1:#FF7A1A; --g2:#FF3D86;
-  --neon:#FF4D94; --glow:color-mix(in srgb,#FF4D94 55%,transparent);
+  --band:#FF8A65; --band-vivid:#FF8A65; --on-brand:#1A0A04;
+  --grad:linear-gradient(135deg,#FF8A65 0%,#FF8A65 100%);
+  --grad-btn:linear-gradient(135deg,#FF8A65 0%,#FF8A65 100%);
+  --g1:#FF8A65; --g2:#FFB199;
+  --neon:#FF8A65; --glow:color-mix(in srgb,#FF8A65 45%,transparent);
   --good:#3EE08F; --good-vivid:#2FD483; --off:#FFB23F; --bad:#FF6B6B;
 
-  --kcal:#FF8A1F; --kcal-soft:#3A2410;
-  --protein:#FF4D7E; --protein-soft:#3C1428;
-  --fat:#FFD23F; --fat-soft:#373012;
-  --carb:#8C88FF; --carb-soft:#1F2052;
-  --over:#FF4D4D; --over-soft:#3D1519;
-  --moon-kcal:#FDA073; --moon-kcal-soft:#3E303D;
-  --moon-protein:#F898C6; --moon-protein-soft:#3D2E4E;
-  --moon-carb:#C7A7FF; --moon-carb-soft:#33315A;
-  --moon-fat:#DBB650; --moon-fat-soft:#373436;
-  --moon-over:#FF8B79; --moon-mark:var(--bg);
-  --moon-glow:.65;
+  --kcal:#FF8A65; --kcal-soft:#2A1A24;
+  --protein:#B79CFF; --protein-soft:#271C45;
+  --fat:#D58BC0; --fat-soft:#2E1B3A;
+  --carb:#FFB199; --carb-soft:#2D1E2F;
+  --over:#FF8A80; --over-soft:#3A1A22;
+  --moon-kcal:#FF8A65; --moon-kcal-soft:#321E2A;
+  --moon-protein:#B79CFF; --moon-protein-soft:#2A1F48;
+  --moon-carb:#FFB199; --moon-carb-soft:#33222F;
+  --moon-fat:#D58BC0; --moon-fat-soft:#331F3D;
+  --moon-over:#FF8A80; --moon-mark:#1A0A04;
+  --moon-mark-kcal:#1A0A04; --moon-mark-protein:#1A0A04; --moon-mark-carb:#1A0A04; --moon-mark-fat:#1A0A04;
+  --moon-glow:.8;
   --moon-crater-fill:rgba(0,0,0,.16);
   --moon-crater-rim:rgba(255,255,255,.38);
   --mp:var(--protein); --mc:var(--carb); --mf:var(--fat); --ml:#5EE07A;
-  --sleep:#9C86FF; --water:#3DB2FF;
+  --sleep:#B79CFF; --water:#FF8A65;
 
   --g-veg:#5EDB5A; --g-fruit:#FF5CA8; --g-meat:#FF5A5A; --g-fish:#3DB2FF;
   --g-dairy:#6F93FF; --g-grain:#FFB23F; --g-nuts:#D9A06B; --g-egg:#FFD23F;
@@ -214,10 +219,10 @@
   --male:#5AA7FF; --male-t:#16264A; --female:#FF7EB9; --female-t:#3A1A3A;
   --neutral:#A98BFF; --neutral-t:#251F4A;
 
-  --d1:#8A3A2A; --d2:#8A5A1E; --d3:#836812; --d4:#5FAE3C; --d5:#2FD483;
-  --dnone:#B03225; --dnone-ink:#FFE7E3;
-  --dtoday:#3BD9F5; --dtoday-ink:#062733;
-  --cal4-ink:#0E1419; --cal5-ink:#0E1419; --cal-lo-ink:var(--ink);
+  --d1:#2D191F; --d2:#4F2C2B; --d3:#7B4339; --d4:#B1604B; --d5:#F38361;
+  --dnone:transparent; --dnone-ink:var(--muted);
+  --dtoday:#FF8A65; --dtoday-ink:#1A0A04;
+  --cal4-ink:#1A0A04; --cal5-ink:#1A0A04; --cal-lo-ink:var(--ink);
 
   --chart-weight:#EC5A35;
   --chart-kcal:#C97D10;
@@ -226,20 +231,17 @@
   --chart-waist:#1FA35E;
   --star-tile:#FFC861;
 
-  --sky1:#080A26; --sky2:#28195E; --star:#FFD36B; --star-off:rgba(255,255,255,.22);
-  --sky-ink:#F3EEFF; --sky-muted:#B9B0DA;
+  --sky1:#1D1433; --sky2:#1D1433; --star:#FF8A65; --star-off:rgba(124,111,149,.8);
+  --sky-ink:#F6F1FB; --sky-muted:#B5A9C9;
+  --fill:#FF8A65; --on-fill:#1A0A04; --tap-edge:#7C6F95;
 
   --sh1:0 1px 0 rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.45);
   --sh2:0 2px 4px rgba(0,0,0,.45), 0 18px 44px rgba(0,0,0,.55);
   --edge:inset 0 1px 0 color-mix(in srgb, #FFFFFF 7%, transparent);
-  --bg-glow:radial-gradient(120% 50% at 50% -12%, color-mix(in srgb,#FF3D86 16%,transparent) 0%, transparent 70%);
+  --bg-glow:radial-gradient(120% 50% at 50% -12%, color-mix(in srgb,#B79CFF 14%,transparent) 0%, transparent 70%);
 }
 /* Her sekme küçük bir vurgu rengi taşır; ana renk marka rengi kalır. */
-body[data-tab="today"]{--accent:#FF7A00;--accent2:#FF2D72}
-body[data-tab="plan"]{--accent:#2F6BFF;--accent2:#8A4DFF}
-body[data-tab="meals"]{--accent:#1FC24A;--accent2:#B8E000}
-body[data-tab="calendar"]{--accent:#8A4DFF;--accent2:#FF2D9B}
-body[data-tab="settings"]{--accent:#7B84A8;--accent2:#A9B0CC}
+body[data-tab]{--accent:var(--band);--accent2:var(--band)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{

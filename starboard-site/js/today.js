@@ -213,6 +213,7 @@ function todayView(entry, program, key){
     .filter(([, a]) => a && a.ok).map(([k2]) => k2));
 
   return `
+  ${program ? moonsBlock(entry, program, "today") : ""}
   ${weekStrip(key)}
   ${eveningLine(entry, program, key)}
   ${program ? goalHero(key, sc) : `<section class="welcome">

@@ -537,16 +537,17 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.18.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.18.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[5].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[1].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[2].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
+  eq(APP_VERSION, "1.19.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.19.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[6].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[2].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[3].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -2287,7 +2288,9 @@ test("kendi yiyeceklerim: silinen yiyeceğin geçmiş günlerdeki kayıtları bo
     eq(totBefore.kcal, 395, "150 g mercimek köftesi + 30 g Nutella");
     viewDate = past; tab = "meals"; mealTab = "log"; addOpen = null; render();
     ok(app.innerHTML.includes("Annemin mercimek köftesi") && app.innerHTML.includes("Nutella"), "geçmiş günde satırlar görünür");
-    ok(app.querySelector(".moon-kcal .mn-t i").textContent.startsWith(`${fmtN(kcalBefore)} / `), "günün kalorisi kartta görünür");
+    tab = "today"; render();
+    ok(app.querySelector(".moon-kcal .mn-t i").textContent.startsWith(`${fmtN(kcalBefore)} / `), "günün kalorisi Bugün ekranındaki kartta görünür");
+    tab = "meals"; render();
     const line = [...app.querySelectorAll(".log-line")].find(l => l.textContent.includes("Annemin"));
     ok(line && line.textContent.includes("150 g") && line.textContent.includes("236"), "silinen yiyeceğin satırı gramla ve kaloriyle durur: " + (line && line.textContent));
     editLog = "101"; render();
@@ -2723,13 +2726,13 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.18.0");
+  eq(APP_VERSION, "1.19.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0", "1.19.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */
@@ -2923,18 +2926,21 @@ test("öneri: bir besini önerilerden çıkarma tabaktan çalışır ve Ayarlar 
 
 test("özet: dört ay görünür; Lif ve mikro besinler tek katlanır Ayrıntılar altında (varsayılan kapalı)", async () => {
   const { slots } = await sugFixture();
+  tab = "today"; render();   /* ay göstergeleri Bugün ekranında */
   try {
     ok(!app.querySelector('[data-fold="detail"]'), "kayıt yokken Ayrıntılar yok");
     const moons = app.querySelector(".moons");
     eq(moons.querySelectorAll(".moon").length, 4);
     ok(moons.firstElementChild.matches(".moon-kcal"), "kalori kartı ilk sırada");
-    eq(moons.previousElementSibling.textContent.trim(), "Bugün aldığın", "başlıkta kalori sayacı yok");
+    ok(!moons.previousElementSibling || !/Bugün aldığın/.test(moons.previousElementSibling.textContent), "ay göstergeleri başlıksız, Bugün ekranının üstünde");
     eq(app.querySelectorAll(".macro").length, 0, "çubuk kalmadı");
-    state.days[today()].log = [logItem("yulaf", 60, slots[0], 1), logItem("muz", 120, slots[0], 2)]; syncKcal(state.days[today()]); render();
+    state.days[today()].log = [logItem("yulaf", 60, slots[0], 1), logItem("muz", 120, slots[0], 2)]; syncKcal(state.days[today()]); tab = "meals"; render();
     const macros = [...app.querySelectorAll(".macro")];
     eq(macros.length, 1, "yalnızca katlanmış lif çubuk olarak kalır");
     ok(macros[0].closest(".fold"), "lif katlı bölümde");
+    tab = "today"; render();
     eq([...app.querySelectorAll(".moon .mn-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
+    tab = "meals"; render();
     const h = app.querySelector('[data-fold="detail"]');
     ok(h && h.textContent.includes("Ayrıntılar"), "Ayrıntılar başlığı");
     eq(h.getAttribute("aria-expanded"), "false", "kapalı başlar");
@@ -3113,6 +3119,7 @@ const moonOf = id => app.querySelectorAll(".moon")[["kcal", "protein", "carb", "
 
 test("ay: dört ay sırayla kalan miktarı yazar ve makro rengini taşır; gölge dairesi ayın içine kırpılır; hedef aşılınca dolunay ve +fazlalık", async () => {
   const { program, slots } = await sugFixture();
+  tab = "today"; render();   /* ay göstergeleri Bugün ekranında */
   try {
     eq([...app.querySelectorAll(".moon .mn-t b")].map(b => b.textContent), ["Kalori", "Protein", "Karbonhidrat", "Yağ"]);
     eq(app.querySelectorAll(".mring, .mrings, .mr-fg").length, 0, "eski halka kalmadı");
@@ -3291,10 +3298,9 @@ test("ay: aşımda makro rengi ve kart zemini korunur, halka ve ünlem yalnızca
         eq(getComputedStyle(over.querySelector(".mn-v")).fontWeight, "800");
         eq(getComputedStyle(normal.querySelector(".mn-v")).fontWeight, "800");
         eq(getComputedStyle(over.querySelector(".mn-v")).fontSize, getComputedStyle(normal.querySelector(".mn-v")).fontSize);
-        eq(getComputedStyle(ring).stroke, theme === "light" ? "rgb(255, 255, 255)" : "rgb(6, 10, 25)");
+        ok(contrast(overFill, getComputedStyle(ring).stroke) >= 3, theme + " " + over.className + " halka kontrastı (ay başına işaret rengi)");
         if (theme === "light") {
           const numberColor = getComputedStyle(over.querySelector(".mn-v")).color;
-          ok(contrast(overFill, getComputedStyle(ring).stroke) >= 3, over.className + " halka kontrastı");
           ok(contrast(numberColor, getComputedStyle(over).backgroundColor) >= 4.5, over.className + " aşım rakamı kontrastı");
         }
         ok(getComputedStyle(ring).stroke !== getComputedStyle(over.querySelector(".mn-v")).color);
@@ -3318,10 +3324,11 @@ test("ay: renk ve zemin jetonları üç tema bloğunda tanımlı", async () => {
 
 test("ay: sayfaya girerken fx-moon ile gölge kayarak açılır; hareket azaltılmışsa eski değerden değil doğrudan son değerde durur", async () => {
   const { program, slots } = await sugFixture();
+  tab = "today"; render();   /* ay göstergeleri Bugün ekranında */
   const realMM = window.matchMedia;
   try {
     window.matchMedia = () => ({ matches: false });
-    tab = "plan"; render(); tab = "meals"; render();
+    tab = "plan"; render(); tab = "today"; render();
     ok(app.querySelector(".mn-sh").classList.contains("fx-moon"), "girişte fx-moon");
     ok(app.querySelector(".mn-v [data-count]"), "rakam data-count ile sayılır (countUp)");
     render();
@@ -3342,6 +3349,7 @@ test("ay: sayfaya girerken fx-moon ile gölge kayarak açılır; hareket azaltı
 
 test("ay: İngilizcede de çalışır (kcal left, g left, +fazlalık), eksik çeviri kalmaz", async () => {
   const { program, slots } = await sugFixture();
+  tab = "today"; render();   /* ay göstergeleri Bugün ekranında */
   try {
     await withLang("en", async () => {
       I18N_MISSING.clear(); render();
@@ -4069,7 +4077,7 @@ test("şerit: Bugün ekranının en üstü devam eden takımyıldız ve son yedi
     skyLit(full, 3);
     tab = "today"; render();
     const main = app.querySelector("main"), box = app.querySelector(".wk-sky"), fig = app.querySelector("#wk-open");
-    ok(box && main.firstElementChild === box, "şerit sayfanın en üstünde");
+    ok(box && box === [...main.children].find(c => !c.matches(".moons, .metric-note")), "şerit ay göstergelerinin hemen altında, başka bir şeyin altında değil");
     eq(fig.tagName, "BUTTON");
     ok(fig.getAttribute("aria-haspopup") === "dialog", "pencere açtığı bildirilir");
     ok(!app.querySelector("[data-wk], section.sky, .sky-b, .atlas"), "eski gün düğmeleri, büyük kart ve atlas yok");
