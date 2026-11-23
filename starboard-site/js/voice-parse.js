@@ -29,7 +29,8 @@ const VP_UNIT2 = { "yemek kasigi":"yk", "tatli kasigi":"tk", "cay kasigi":"ck", 
   "cay bardagi":"cbardak", "kibrit kutusu":"kibrit" };
 const VP_UNIT1 = { adet:"adet", tane:"adet", dilim:"dilim", kase:"kase", kasik:"kasik", kasigi:"kasik",
   bardak:"bardak", bardagi:"bardak", fincan:"fincan", tabak:"tabak", porsiyon:"porsiyon", avuc:"avuc",
-  kutu:"kutu", paket:"paket", durum:"durum", parca:"parca", gram:"g", gr:"g", g:"g", ml:"ml" };
+  kutu:"kutu", paket:"paket", parca:"parca", olcek:"olcek", kepce:"kepce", sise:"sise",
+  gram:"g", gr:"g", g:"g", ml:"ml", kilo:"kg", kg:"kg", litre:"l", lt:"l" };
 
 /* Besin adındaki sözcüğe gelebilecek Türkçe ekler (ı→i, ü→u, ö→o ile sadeleşmiş). */
 const VP_EK = new Set(["i","u","a","e","yi","yu","ya","ye","in","un","an","en","nin","nun","ni","nu","na","ne",
@@ -73,7 +74,7 @@ function vpScore(toks, f){
   const viaAlias = toks.every(t => name.some(x => vpWordMatch(t, x)) || w.alias.some(x => vpWordMatch(t, x)));
   if (viaAlias && w.alias.length){
     const eq = w.alias.length === toks.length && toks.every(t => w.alias.some(x => vpWordMatch(t, x)));
-    return eq ? 80 : 65;
+    return eq ? 70 : 65;
   }
   return 0;
 }
@@ -107,6 +108,7 @@ function vpQuantity(tokens){
 function vpGrams(f, qty, unit){
   const q = qty == null ? 1 : qty;
   if (unit === "g" || unit === "ml") return { g: q, approx: false };
+  if (unit === "kg" || unit === "l") return { g: q * 1000, approx: false };
   const por = !f || !f.por ? [] : Array.isArray(f.por) ? f.por : [f.por];
   const base = f && f.unit ? f.unit : por.length ? por[0].g : 100;
   if (!unit) return { g: Math.round(q * base * 10) / 10, approx: false };
@@ -143,13 +145,17 @@ function vpSplitNumbers(toks){
 const vpBest = (toks, foods) => { let b = 0; for (const [, f] of foods){ const v = vpScore(toks, f); if (v > b) b = v; } return b; };
 
 /* "domates salatalık": bütünü eşleşmiyorsa soldan en uzun tam eşleşen parçalara bölünür. */
+/* "yumurtalı omlet": -lı/-siz ekli sözcük niteleyicidir, ayrı besin sayılmaz. */
+const vpMod = t => t.length > 4 && /(?:li|lu|siz|suz)$/.test(t);
+
 function vpSplitFoods(words, foods){
-  if (words.length < 2 || vpBest(words, foods) >= 100) return [words];
+  if (words.length < 2 || vpBest(words, foods) >= 90) return [words];
   const out = []; let i = 0;
+  if (words.length > 1 && vpMod(words[0]) && vpBest(words.slice(1), foods) >= 90) return [words.slice(1).concat([])].map(w => Object.assign(w, { mod: true }));
   while (i < words.length){
     let len = 0;
     for (let n = words.length - i; n >= 1; n--){
-      if (vpBest(words.slice(i, i + n), foods) >= 100){ len = n; break; }
+      if (vpBest(words.slice(i, i + n), foods) >= 90){ len = n; break; }
     }
     if (!len) return [words];
     out.push(words.slice(i, i + len)); i += len;
@@ -166,23 +172,31 @@ function parseMeal(text, foods, opts){
   const resolve = (raw, qty, unit, words) => {
     /* Hiçbir besinde karşılığı olmayan sözcük ("haşladım") gürültüdür, atılır. */
     const known = words.filter(t => foods.some(([, f]) => vpScore([t], f) > 0));
-    const dropped = known.length < words.length;
+    const dropped = known.length < words.length || !!words.mod;
     const none = { raw, qty, unit, key:null, name:"", g:0, conf:"low", alts:[], approx:false, dropped };
     if (!known.length) return none;
+    if (known.every(t => vpWordMatch(t, "su") || ["sade", "maden", "icme"].includes(t)) && known.some(t => vpWordMatch(t, "su"))){
+      const ml = { cbardak:100, fincan:100, sise:500, kase:250, tabak:250 };
+      const per = unit === "l" || unit === "kg" ? 1000 : unit === "ml" || unit === "g" ? 1 : ml[unit] || 200;
+      const v = Math.round((qty == null ? 1 : qty) * per);
+      return { raw, qty, unit, key:"__su", name:"Su", water:true, ml:v, g:v, conf:"high", alts:[], approx:false, dropped:false };
+    }
     const rows = foods.map(([k, f]) => [k, f, vpScore(known, f)]).filter(r => r[2] > 0);
     if (!rows.length) return none;
     const top = Math.max(...rows.map(r => r[2]));
+    /* İstenen birim (dilim, kase…) besinde tanımlıysa o aday öne geçer: "bir dilim ekmek" → Beyaz ekmek. */
+    const fit = r => (unit && !vpGrams(r[1], qty, unit).approx) ? 1 : 0;
     const pool = rows.filter(r => r[2] >= top - 30)
-      .sort((a, b) => (usage(b[0]) - usage(a[0])) || (pop(b[0]) - pop(a[0])) || (b[2] - a[2]) || a[1].n.length - b[1].n.length);
+      .sort((a, b) => (usage(b[0]) - usage(a[0])) || (fit(b) - fit(a)) || (Math.floor(b[2] / 6) - Math.floor(a[2] / 6)) || (pop(b[0]) - pop(a[0])) || (b[2] - a[2]) || a[1].n.length - b[1].n.length);
     const used = pool.filter(r => usage(r[0]) > 0);
     /* Bir aday açık ara öndeyse (tam ad eşleşmesi) ya da yalnız biri daha önce yenmişse emin. */
     const lead = top >= 90 && rows.filter(r => r[2] > top - 2).length === 1;
-    const one = pool.length === 1 || lead || used.length === 1;
+    const one = (pool.length === 1 && top >= 90) || lead || used.length === 1;
     const pick = lead && !used.length ? rows.find(r => r[2] === top) : pool[0];
     const mk = r => ({ key: r[0], name: r[1].n, ...vpGrams(r[1], qty, unit) });
     const g = mk(pick);
     return { raw, qty, unit, key: pick[0], name: pick[1].n, g: g.g, approx: g.approx, dropped,
-      conf: one ? "high" : "low", alts: one ? [] : pool.slice(0, 4).map(mk) };
+      conf: one && !words.mod ? "high" : "low", alts: one && !words.mod ? [] : pool.slice(0, 4).map(mk) };
   };
   for (const part of parts){
     const toks = part.split(/[^a-z0-9.,]+/).filter(t => t && !VP_STOP.has(t));
