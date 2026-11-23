@@ -396,7 +396,8 @@ function obProfile(){
     avoid: ob.avoid.slice(), sleepMin: ob.sleepMin, theme: ob.theme, units: ob.units
   };
   if (ob.targetWeight) profile.targetWeight = Math.round(ob.targetWeight * 10) / 10;
-  if (obWeightRange() && ob.targetWeeks) profile.targetWeeks = ob.targetWeeks.slice();
+  const range = obWeightRange();
+  if (range){ profile.targetWeeks = range.slice(); profile.paceWeeks = obPaceWeeks(); }
   profile.programId = defaultProgramId(profile.venue, profile.activity, profile.days);
   return profile;
 }
@@ -421,31 +422,78 @@ function obPersonalGoals(){
   </details>`;
 }
 
-/* İhtiyatlı bir planlama aralığı. Günlük kalori hedefi bu aralığa göre değiştirilmez. */
-function obWeightRange(){
+/* Süre paneli yalnızca yağ kaybında, yetişkinde, makul hedefte çıkar (hedef kilo ≤ %10 kayıp, BMI 25 ve üstü, hedef BMI 20 ve üstü).
+   safe = önerilen aralık (haftada 0,25-0,5 kg), min-max = kaydırıcının sınırı. Günlük kalori hedefi seçilen süreye göre buildProgram'da hesaplanır. */
+function obPaceBase(){
   const age = ageFromBirthDate(ob.birthDate);
   const loss = ob.weight - ob.targetWeight;
   const height2 = (ob.height / 100) ** 2;
-  if (!ob.weightPlanning || ob.goal !== "lose" || age === null || age < 18
-      || !ob.targetWeight || loss <= 0 || loss > ob.weight * .10
+  if (ob.goal !== "lose" || age === null || age < 18 || !ob.targetWeight || loss <= 0 || loss > ob.weight * .10
       || ob.weight / height2 < 25 || ob.targetWeight / height2 < 20) return null;
-  return [Math.max(4, Math.ceil(loss / .5)), Math.max(8, Math.ceil(loss / .25))];
+  const safe = [Math.max(4, Math.ceil(loss / .5)), Math.max(8, Math.ceil(loss / .25))];
+  const min = Math.max(4, Math.ceil(loss / .75)), max = Math.min(104, Math.max(safe[1] + 8, min + 8));
+  return { loss, safe, min, max, def: clamp(Math.round(loss / .35), safe[0], safe[1]) };
+}
+const obWeightRange = () => { const b = obPaceBase(); return b && ob.weightPlanning ? b.safe : null; };
+const obPaceWeeks = () => { const b = obPaceBase(); return b ? clamp(ob.paceWeeks ?? b.def, b.min, b.max) : null; };
+
+function obPaceStats(){
+  const wk = obPaceWeeks(), b = obPaceBase();
+  ob.paceWeeks = wk;
+  const p = buildProgram(obProfile(), ob.weight, 0);
+  const end = new Date(); end.setDate(end.getDate() + wk * 7);
+  return { wk, kg: b.loss / wk, kcal: p.kcal, floored: p.floored, safe: b.safe,
+    end: end.toLocaleDateString(locale(), { day:"numeric", month:"long" }) };
+}
+function obPaceNote(s, on){
+  return !on ? tx("Süreyi seçmek için aşağıdaki sağlık kutusunu işaretle.")
+    : s.floored ? tx("Günlük kalori güvenli alt sınırda tutuldu; hedefe bu süreden geç varabilirsin.")
+    : s.wk < s.safe[0] || s.wk > s.safe[1] ? tx("Bu hız önerilen aralığın dışında. Süre kişiden kişiye değişir.")
+    : tx("Önerilen aralık {0}-{1} hafta. Süre kişiden kişiye değişir.", [s.safe[0], s.safe[1]]);
+}
+function obPacePanel(){
+  const b = obPaceBase();
+  if (!b) return "";
+  const on = !!ob.weightPlanning, s = obPaceStats();
+  const pc = v => ((clamp(v, b.min, b.max) - b.min) / (b.max - b.min) * 100).toFixed(1);
+  return `<div class="ob-pace${on ? "" : " off"}" id="ob-pace" style="--lo:${pc(b.safe[0])}%;--hi:${pc(b.safe[1])}%;--pos:${pc(s.wk)}%">
+    <div class="ob-pace-h"><span class="og-t">${tx("Kaç haftada?")}</span><b class="num"><span id="ob-pace-w">${s.wk}</span> <small>${tx("hafta")}</small></b></div>
+    <input id="ob-pace-r" type="range" min="${b.min}" max="${b.max}" step="1" value="${s.wk}"${on ? "" : " disabled"} aria-label="${tx("Kaç haftada?")}">
+    <div class="ob-pace-s">
+      <div><i>${tx("Haftada")}</i><b class="num" id="ob-pace-k">${fmtN(+wOut(s.kg).toFixed(2))} ${wUnit()}</b></div>
+      <div><i>${tx("Günlük")}</i><b class="num" id="ob-pace-c">${fmtN(s.kcal)} kcal</b></div>
+      <div><i>${tx("Bitiş")}</i><b id="ob-pace-e">${s.end}</b></div>
+    </div>
+    <p class="metric-note" id="ob-pace-n">${obPaceNote(s, on)}</p></div>`;
+}
+function obPaceFill(){
+  const pane = document.getElementById("ob-pace"), r = document.getElementById("ob-pace-r");
+  if (!pane || !r) return;
+  ob.paceWeeks = +r.value;
+  const b = obPaceBase(), s = obPaceStats();
+  pane.style.setProperty("--pos", ((s.wk - b.min) / (b.max - b.min) * 100).toFixed(1) + "%");
+  document.getElementById("ob-pace-w").textContent = s.wk;
+  document.getElementById("ob-pace-k").textContent = fmtN(+wOut(s.kg).toFixed(2)) + " " + wUnit();
+  document.getElementById("ob-pace-c").textContent = fmtN(s.kcal) + " kcal";
+  document.getElementById("ob-pace-e").textContent = s.end;
+  document.getElementById("ob-pace-n").textContent = obPaceNote(s, !!ob.weightPlanning);
+  r.setAttribute("aria-valuetext", tx("{0} hafta", [s.wk]));
+}
+/* Hedef kilo, hedef ya da etkinlik değişince paneli baştan çiz (sayfa yeniden kurulmaz). */
+function obPaceRedraw(){
+  const n = num(obVal("ob-tw")); if (document.getElementById("ob-tw")){ const t = n === null ? null : wSave(n); if (t !== ob.targetWeight) ob.paceWeeks = null; ob.targetWeight = t; }
+  const pl = document.getElementById("ob-planning"); if (pl) ob.weightPlanning = pl.checked;
+  const box = document.getElementById("ob-pace-box"); if (!box) return;
+  box.innerHTML = obPacePanel(); wireObPace(true);
+}
+function wireObPace(fromRedraw){
+  const r = document.getElementById("ob-pace-r");
+  if (r) r.oninput = obPaceFill;
+  if (fromRedraw) return;
+  const tw = document.getElementById("ob-tw"); if (tw) tw.onchange = obPaceRedraw;
+  const pl = document.getElementById("ob-planning"); if (pl) pl.onchange = obPaceRedraw;
 }
 
-function obWeightPreview(){
-  const range = ob.targetWeeks || obWeightRange();
-  const p = buildProgram(obProfile(), ob.weight, 0);
-  const meals = buildMeals(p, 0, { meals:mealsFromPreset(ob.mealSet), diet:ob.diet, cuisine:ob.cuisine, exclude:ob.exclude });
-  return `<p>${tx("Hedef kilo ({0})", [wUnit()])} · <b>${fmtW(ob.targetWeight)}</b></p>
-    <p>${p.kcal} ${tx("kcal / gün")} · ${p.protein} g ${tx("protein")} · ${p.carb} g ${tx("Karbonhidrat")} · ${p.fat} g ${tx("Yağ")} · ${fmtV(p.water)} ${tx("su")}</p>
-    ${p.lbm !== null ? `<p class="metric-note">${tx("Yağ oranı kalori tahminine katıldı.")}</p>` : ""}
-    ${og(tx("Önerilen süre aralığı (hafta)"), `<div class="ob-birth">
-      <label>${tx("En kısa")}<input id="ob-week-min" type="number" inputmode="numeric" min="${obWeightRange()[0]}" max="104" value="${range[0] ?? ""}"></label>
-      <label>${tx("En uzun")}<input id="ob-week-max" type="number" inputmode="numeric" min="${obWeightRange()[0]}" max="104" value="${range[1] ?? ""}"></label></div>
-      <p class="metric-note">${tx("Bu aralığı planlama için kullan. Sonuç ve süre kişiden kişiye değişir.")}</p>`)}
-    ${og(tx("Örnek öğünler"), `<ul class="ob-example">${meals.meals.filter(m => m.items.some(it => it.key)).map(m =>
-      `<li><b>${esc(m.name)}</b><span>${m.items.filter(it => it.key).map(it => esc(it.text)).join(" · ")}</span></li>`).join("")}</ul>`)}`;
-}
 const OB_STEPS = [
   { id:"welcome" },
   { id:"you", t:tx("Seni tanıyalım"),
@@ -486,13 +534,14 @@ const OB_STEPS = [
     body: () => obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, ["goal", k], v.label]))
       + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" aria-label="${tx("Hedef kilon ({0})", [(wUnit())])}" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${obTwHint()}">
         <p class="ob-hint" id="ob-tw-hint">${tx("Önerilen: {0} {1}", [obTwHint(), wUnit()])}</p>`, true)
+      + `<div id="ob-pace-box">${obPacePanel()}</div>`
       + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, ["activity", k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
       + `<label class="ob-check" id="ob-planning-label" ${ob.goal === "lose" ? "" : "hidden"}><input id="ob-planning" type="checkbox"${ob.weightPlanning ? " checked" : ""}>
         <span class="ob-check-t">${tx("Kilo hedefim için süre aralığı göster. Hamile veya emziriyor değilim ve kilo kaybı için tıbbi gözetim gerektiren bir durumum yok.")}</span></label>`
       + obPersonalGoals(),
     read: () => {
       const n = num(obVal("ob-tw")), target = n === null ? null : wSave(n);
-      if (target !== ob.targetWeight) ob.targetWeeks = null;
+      if (target !== ob.targetWeight) ob.paceWeeks = null;
       ob.targetWeight = target;
       ob.weightPlanning = document.getElementById("ob-planning").checked;
       ob.personalOpen = app.querySelector(".ob-personal").open;
@@ -501,6 +550,7 @@ const OB_STEPS = [
       ob.customGoal = obVal("ob-personal-custom").trim().slice(0, 80);
       ob.medicationAt = obVal("ob-med-time");
     },
+    wire: () => wireObPace(),
     valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : [tx("Hedef kiloyu {0} ile {1} arasında gir ya da boş bırak.", [(fmtW0(30)), (fmtW0(300))]), "ob-tw"] },
   { id:"train", t:tx("Antrenman"),
     body: () => {
@@ -521,20 +571,13 @@ const OB_STEPS = [
       + og(tx("Yemediklerin"), `<input id="ob-exclude" type="search" aria-label="${tx("Besin ara")}" placeholder="${tx("Besin ara")}" autocomplete="off" aria-controls="ob-exclude-results">
         <div id="ob-exclude-results"></div>`, true),
     wire: wireObFoods },
-  { id:"weight-plan", t:tx("Hedef kilo planın"), body:obWeightPreview,
-    read: () => { ob.targetWeeks = [num(obVal("ob-week-min")), num(obVal("ob-week-max"))]; },
-    valid: () => {
-      const [lo, hi] = ob.targetWeeks;
-      return Number.isInteger(lo) && Number.isInteger(hi) && lo >= obWeightRange()[0] && hi >= lo && hi <= 104
-        ? "" : [tx("Önerilen alt sınırdan başlayarak 104 haftayı aşmayan bir aralık gir."), "ob-week-min"];
-    } },
   /* Yalnızca iPhone uygulamasında: hatırlatmalar kapalı gelir, burada açılabilir. */
   { id:"remind", t:tx("Hatırlatmalar"), s:tx("Su, antrenman, uyku ve doğum günü bildirimleri. Sonradan Ayarlar’dan değiştirebilirsin."),
     body: () => `<div class="ocs" data-field="remind">${obCard(ob.remind === "on", "on", "day", tx("Hatırlatmaları aç"))}${obCard(ob.remind !== "on", "off", "rest", tx("Şimdilik istemiyorum"))}</div>
       <div class="on-perm" id="ob-perm" role="status" hidden><b>${tx("Bildirimler kapalı")}</b><span>${tx("Hatırlatmaları almak için iPhone Ayarlar › Starboard › Bildirimler'den izin ver. İstersen şimdilik geçebilirsin.")}</span></div>` },
   { id:"summary" }
 ];
-const obList = () => OB_STEPS.filter(s => (s.id !== "remind" || IS_NATIVE) && (s.id !== "weight-plan" || obWeightRange()));
+const obList = () => OB_STEPS.filter(s => (s.id !== "remind" || IS_NATIVE));
 
 /* Girişte logo canlıdır: çubuklar yükselir, yıldız parlar. */
 const OB_LOGO = BRAND_SVG.replace(/<rect x=/g, '<rect class="lg-b" x=').replace('<path d=', '<path class="lg-s" d=');
@@ -610,6 +653,15 @@ function obBuild(){
   </div>`;
 }
 
+/* Örnek öğünler (eski "Hedef kilo planın" adımından buraya taşındı). */
+function obSummaryMeals(p){
+  const meals = buildMeals(p, 0, { meals:mealsFromPreset(ob.mealSet), diet:ob.diet, cuisine:ob.cuisine, exclude:ob.exclude });
+  const rows = meals.meals.filter(m => m.items.some(it => it.key));
+  if (!rows.length) return "";
+  return og(tx("Örnek öğünler"), `<ul class="ob-example">${rows.map(m =>
+    `<li><b>${esc(m.name)}</b><span>${m.items.filter(it => it.key).map(it => esc(it.text)).join(" · ")}</span></li>`).join("")}</ul>`);
+}
+
 function obSummary(){
   const pr = obProfile();
   const p = buildProgram(pr, ob.weight, 0);
@@ -629,6 +681,7 @@ function obSummary(){
     <div class="os-p">${iconBox(tr.none ? "rest" : "plan")}<span><b>${tr.none ? tx("Spor programı yok") : esc(tr.title)}</b>
       <i>${tr.none ? tx("İstediğin zaman Program sekmesinden kurabilir ya da kendi programını yazabilirsin.")
         : tx("Haftada {0} gün · {1}", [(tr.freq), (tr.days.filter(d => d.b && !/dinlenme/i.test(d.t)).map(d => WD_SHORT[d.wd]).join(", "))])}</i></span></div>
+    ${obSummaryMeals(p)}
     <div class="metric-note" style="text-align:center;margin-top:14px">${tx("Hepsini sonradan değiştirebilirsin.")}</div>
     <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Starboard tıbbi danışmanlık sunmaz. Sağlıkla ilgili sorularınız için hekiminize danışın.")}</div>
     <div class="metric-note" style="text-align:center;margin-top:6px">${tx("Veriler yalnızca bu cihazda saklanır")}</div>
@@ -851,6 +904,7 @@ function wireOb(st){
       const tw = document.getElementById("ob-tw"), hint = document.getElementById("ob-tw-hint");
       if (tw) tw.placeholder = obTwHint();
       if (hint) hint.textContent = tx("Önerilen: {0} {1}", [obTwHint(), wUnit()]);
+      ob.paceWeeks = null;
     }
     if (f === "activity"){
       if (!ob.planTouched) ob.noPlan = v === "sedentary";
@@ -860,6 +914,7 @@ function wireOb(st){
       x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", String(x === b));
     });
     obCardPress(box, v);
+    if (f === "goal" || f === "activity") obPaceRedraw();
     obErr("");
     if (f === "remind" && v === "on") obAskNotify(box);
   });

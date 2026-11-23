@@ -150,13 +150,13 @@ function wireSettings(){
     p.bodyFat = bf;
     p.name = document.getElementById("s-nm").value.trim().slice(0, 30) || undefined;
     const tw = num(document.getElementById("s-tw").value);
-    if (tw !== (p.targetWeight ? +wOut(p.targetWeight).toFixed(1) : null)) delete p.targetWeeks;
+    if (tw !== (p.targetWeight ? +wOut(p.targetWeight).toFixed(1) : null)) { delete p.targetWeeks; delete p.paceWeeks; }
     if (tw && wIn(tw) >= 30 && wIn(tw) <= 300) p.targetWeight = wSave(tw); else delete p.targetWeight;
     p.sex = document.getElementById("s-sex").value;
     p.avatar = stAvatar;
     p.activity = document.getElementById("s-act").value;
     p.goal = document.getElementById("s-goal").value;
-    if (p.goal !== "lose") delete p.targetWeeks;
+    if (p.goal !== "lose"){ delete p.targetWeeks; delete p.paceWeeks; }
     await saveState(state);
     tab = "today"; render(); window.scrollTo(0,0);
   };

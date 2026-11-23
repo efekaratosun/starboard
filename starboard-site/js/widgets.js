@@ -606,7 +606,7 @@ function wireHome(){
     const n = num(i.value);
     if (!n || wIn(n) < 30 || wIn(n) > 300){ toast(tx("{0} ile {1} arasında bir hedef gir.", [(fmtW0(30)), (fmtW0(300))])); return; }
     const target = wSave(n);
-    if (target !== state.profile.targetWeight) delete state.profile.targetWeeks;
+    if (target !== state.profile.targetWeight) { delete state.profile.targetWeeks; delete state.profile.paceWeeks; }
     state.profile.targetWeight = target;
     await saveState(state); render();
   };

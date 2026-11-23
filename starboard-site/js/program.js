@@ -167,6 +167,13 @@ function wireAvatar(idp, onPick, root){
   });
 }
 
+/* Seçilen süreye göre haftalık hız: (başlangıç − hedef) kg / hafta. Yalnızca yağ kaybında ve süre seçildiyse. */
+function paceRate(profile){
+  const w = profile.paceWeeks, s = profile.startWeight, t = profile.targetWeight;
+  if (profile.goal !== "lose" || !(w > 0) || !(s > t) || !(t > 0)) return null;
+  return clamp((s - t) / w, 0.1, 1);
+}
+
 function buildProgram(profile, weightKg, adjustment){
   const age = profileAge(profile);
   const bf = profile.bodyFat;
@@ -178,7 +185,9 @@ function buildProgram(profile, weightKg, adjustment){
   const tdee = bmr * ACTIVITY[profile.activity].m;
   const goal = GOAL[profile.goal];
   const floor = Math.max(bmr * 0.95, sexK(profile.sex, 1500, 1200));
-  const raw = tdee * goal.m + (adjustment || 0);
+  /* Süre seçildiyse günlük açık = haftalık hız × 7700 kcal / 7 gün; seçilmediyse eski oran. Alt sınır her durumda geçerli. */
+  const rate = paceRate(profile);
+  const raw = (rate ? tdee - rate * 1100 : tdee * goal.m) + (adjustment || 0);
   const floored = raw < floor;
   const kcal = Math.round(Math.max(raw, floor));
 

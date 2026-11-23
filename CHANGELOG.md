@@ -3,6 +3,12 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.20.0 (yayınlanmadı)
+
+### Değişti
+- Hedefin ekranında "Kaç haftada?" paneli: hedef kilo yazılınca kaydırıcıyla süre seçilir; haftalık hız, günlük kalori ve bitiş tarihi canlı değişir. Seçilen süre günlük kalori hedefini belirler (açık = haftalık hız × 7700 kcal / 7 gün; güvenli alt sınırın altına inmez, profilde paceWeeks). Eski ayrı "Hedef kilo planın" adımı kalktı, örnek öğünler özet ekranına taşındı; panel yalnızca yetişkin, yağ kaybı, makul hedef ve sağlık kutusu işaretliyken açılır.
+- Hedefin ekranındaki seçenek çizgileri gerçek 2 px kenarlık oldu (inset gölge yarım piksele denk gelince alt kenar inceliyordu).
+
 ## 1.19.0 (yayınlanmadı)
 
 ### Değişti

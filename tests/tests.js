@@ -537,17 +537,18 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.19.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.19.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[6].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[1].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[2].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[3].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
+  eq(APP_VERSION, "1.20.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.20.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[7].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[2].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[3].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[4].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -2726,13 +2727,13 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.19.0");
+  eq(APP_VERSION, "1.20.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0", "1.19.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0", "1.19.0", "1.20.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */
@@ -4972,4 +4973,59 @@ test("karşılama: Başlayalım ışık hızı geçişiyle ilk soruya geçer, ç
     sceneActive(false); sceneState = null;
     state = keep.st; ob = keep.ob; obStep = keep.step; app.innerHTML = "";
   }
+});
+
+test("süre: seçilen hafta sayısı günlük kaloriyi belirler; kısa süre daha düşük kalori, alt sınırın altına inmez", () => {
+  const base = { height:178, age:30, sex:"male", activity:"moderate", goal:"lose", startWeight:84, targetWeight:76,
+    venue:"gym", days:[1, 2, 4, 5], avoid:[], sleepMin:7, programId:"gym_ul4" };
+  const k = w => buildProgram({ ...base, paceWeeks:w }, 84, 0).kcal;
+  ok(k(16) < k(24) && k(24) < k(32), "daha kısa süre = daha düşük günlük kalori");
+  eq(paceRate({ ...base, paceWeeks:16 }), 0.5, "8 kg / 16 hafta = haftada 0,5 kg");
+  eq(paceRate({ ...base }), null, "süre seçilmediyse eski oran geçerli");
+  eq(paceRate({ ...base, goal:"maintain", paceWeeks:16 }), null, "yalnızca yağ kaybında");
+  eq(paceRate({ ...base, targetWeight:90, paceWeeks:16 }), null, "hedef şimdiki kilodan yüksekse yok");
+  const bmr = buildProgram(base, 84, 0).bmr;
+  const fast = buildProgram({ ...base, paceWeeks:1 }, 84, 0);
+  ok(fast.floored && fast.kcal >= Math.max(Math.round(bmr * 0.95), 1500) - 1, "çok kısa süre güvenli alt sınırın altına indirmez");
+  const none = buildProgram(base, 84, 0).kcal;
+  eq(buildProgram({ ...base, paceWeeks:24 }, 84, 0).kcal, Math.round(buildProgram(base, 84, 0).tdee - (8 / 24) * 1100), "açık = haftalık hız x 1100 kcal");
+  ok(none > 0);
+});
+
+test("hedefin: hafta paneli yalnızca uygun hedefte çıkar, kaydırıcı kaloriyi canlı değiştirir, sağlık kutusu işaretlenmeden kilitli", () => {
+  const keep = { ob, step:obStep, display:app.style.display };
+  try {
+    ob = { ...obDefaults(), name:"T", sex:"male", height:178, weight:84, goal:"lose", birthDate:"1996-05-10", targetWeight:76, weightPlanning:true, units:"metric" };
+    obStep = obList().findIndex(s => s.id === "goal");
+    app.innerHTML = ""; app.style.display = "block";
+    renderOnboarding();
+    ok(!obList().some(s => s.id === "weight-plan"), "eski ayrı adım kalktı");
+    const pane = document.getElementById("ob-pace"), r = document.getElementById("ob-pace-r");
+    ok(pane && r && !r.disabled, "panel çıkar ve açık");
+    const b = obPaceBase();
+    ok(b.safe[0] >= b.min && b.safe[1] <= b.max, "önerilen aralık kaydırıcının içinde");
+    const kc = () => document.getElementById("ob-pace-c").textContent;
+    r.value = b.safe[0]; r.dispatchEvent(new Event("input")); const fastKcal = kc();
+    r.value = b.safe[1]; r.dispatchEvent(new Event("input")); const slowKcal = kc();
+    ok(parseInt(fastKcal.replace(/\D/g, "")) < parseInt(slowKcal.replace(/\D/g, "")), "kısa süre daha düşük kalori yazar");
+    eq(ob.paceWeeks, b.safe[1], "seçim kaydedilir");
+    eq(obProfile().paceWeeks, b.safe[1], "profil seçilen süreyi taşır");
+    document.getElementById("ob-planning").checked = false;
+    ob.paceWeeks = null;
+    obPaceRedraw();
+    ok(document.getElementById("ob-pace-r").disabled && document.getElementById("ob-pace").classList.contains("off"), "kutu işaretsizken kilitli");
+    eq(obProfile().paceWeeks, undefined, "kutu işaretsizken süre profile girmez");
+    document.getElementById("ob-planning").checked = true; document.getElementById("ob-tw").value = "60"; obPaceRedraw();
+    ok(!document.getElementById("ob-pace"), "makul olmayan hedefte panel çıkmaz");
+    ob.goal = "maintain"; document.getElementById("ob-tw").value = "78"; obPaceRedraw();
+    ok(!document.getElementById("ob-pace"), "yağ kaybı değilse panel çıkmaz");
+  } finally {
+    ob = keep.ob; obStep = keep.step; app.style.display = keep.display; app.replaceChildren();
+  }
+});
+
+test("hedefin: seçenek çizgisi gerçek 2 px kenarlık; yarım piksele düşen gölge çizgisi değil", async () => {
+  const css = await fetch("../starboard-site/css/app.css").then(r => r.text());
+  ok(/main\.on \.oc\{border:2px solid var\(--on-edge\)/.test(css), "seçenekler 2 px kenarlıklı");
+  ok(/main\.on \.oc\{[^}]*will-change:auto/.test(css), "seçenekte will-change katmanı kapalı");
 });
