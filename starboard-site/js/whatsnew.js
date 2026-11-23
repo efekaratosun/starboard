@@ -8,6 +8,10 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.23.0", items:[
+    tx("Beslenme ekranı yenilendi: öğünler yukarıdan aşağı bir yıldız yolunda; biten öğün yıldız olur, üstte kalan kalorin görünür."),
+    tx("Sıradaki öğünün önerisi hemen görünür: tek dokunuşla ekle ya da kendin seç. Her öğünün yanındaki + ile besin ekleyebilirsin."),
+    tx("Protein artık Bugün listesinde günlük hedef olarak çıkmıyor; proteinini Beslenme ekranından izlemeye devam edersin.")] },
   { v:"1.22.0", items:[
     tx("Bugün ekranının hedef paneli yenilendi: şimdi yapacağın iş \"Sıradaki\" kartında büyük görünüyor ve tek dokunuşla yapılıyor."),
     tx("Üstte kaç hedefin kaldığı ve biten hedef kadar yanan yıldızlar var; kalan hedefler \"Sonra\" altında, bitenler tek satırda.")] },

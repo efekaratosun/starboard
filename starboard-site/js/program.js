@@ -459,7 +459,6 @@ function suggestedTitles(program, key){
   const out = [];
   if (day) out.push(day.b ? "Antrenman: " + day.t : "Dinlenme günü — 20 dk esneme");
   out.push(program.kcal + " kcal hedefini tut");
-  out.push(program.protein + " g protein al");
   out.push(program.water + " ml su iç");
   out.push(`${sleepBand()[0]}-${sleepBand()[1]} saat uyu`);
   out.push("Haftalık kilo ölçümü");

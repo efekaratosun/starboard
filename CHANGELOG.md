@@ -3,6 +3,12 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.23.0 (yayınlanmadı)
+
+### Değişti
+- Beslenme: öğün listesi "gün akışı" oldu. Üstte kalan kalori kartı (kcal kaldı + çubuk); öğünler dikey bir yıldız yolunda (dolu öğün yıldız, sıradaki öğün kesikli halka, boş öğün halka), başlığın altında yenen besinlerin adları. Sıradaki öğün = son dolu öğünden sonraki ilk boş öğün (bugünde); önerisi açılır bölümün dışında görünür: Öneriyi ekle (tek dokunuş) / Kendim seç. Her öğünde + düğmesi besin ekleme panelini açar. Açılır bölüm, Öneriler, Bu öğünü kaydet davranışları aynı. Geçmiş günde sıradaki öğün ve öneri kartı yok.
+- Bugün: "protein al" günlük hedefi kalktı (suggestedTitles ve skipTask); kayıtlı eski protein görevleri gizlenir ve puana girmez. Protein Beslenme ekranında izlenir.
+
 ## 1.22.0 (yayınlanmadı)
 
 ### Değişti
