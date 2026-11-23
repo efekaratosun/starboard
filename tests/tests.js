@@ -5131,7 +5131,7 @@ test("hedefin: seçenek çizgisi gerçek 2 px kenarlık; yarım piksele düşen 
 });
 
 /* ---- sesli giriş: cümleden besin listesi (voice-parse.js) ---- */
-const say = t => { const use = foodUsage(); return parseMeal(t, allFoods(), { usage: k => use[k] || 0, pop: foodPop }).items; };
+const say = t => { const use = foodUsage(); return parseMeal(t, allFoods(), { usage: k => use[k] || 0, pop: vpPopularity(foodPop) }).items; };
 
 test("sesli giriş: virgülsüz cümle de besinlere ayrılır, miktar ve gram doğru", async () => {
   state = await loadFixture();
@@ -5184,4 +5184,26 @@ test("sesli giriş: 'köfte' pişmiş ızgara köftedir, çiğ köfte yalnız '�
   eq([iki.key, iki.g], ["izgarakofte", 60], "iki köfte = 2 x 30 g");
   eq(say("çiğ köfte yedim")[0].key, "cigkofte", "çiğ denince çiğ köfte");
   eq(say("bir dilim peynir")[0].key, "beyazpeynir", "peynir → beyaz peynir önerilir (yine sorulur)");
+});
+
+test("sesli giriş: sıfat yerindeki sözcük besini seçtirmez; yalın söz yalın ürüne gider, kategori sözcükleri sorar", async () => {
+  state = await loadFixture();
+  /* yalın sözcük = asıl ürün: sıfatlı kayıtlar ancak sıfatıyla söylenince seçilir */
+  const t = say("tatlı")[0];
+  ok(t.key !== "tatlipatates", "tatlı → tatlı patates değil");
+  eq(say("tatlı patates")[0].key, "tatlipatates", "tatlı patates denince tatlı patates");
+  ok(say("pide")[0].key !== "pideekmegi" && say("pide")[0].name !== "Pide ekmeği", "pide → pide ekmeği değil");
+  /* belirlenen varsayılanlar */
+  eq([say("ekmek")[0].key, say("ekmek")[0].conf], ["beyazekmek", "high"], "ekmek");
+  eq([say("süt")[0].key, say("süt")[0].conf], ["tamyagsut", "high"], "süt → tam yağlı");
+  eq([say("tavuk")[0].key, say("tavuk")[0].conf], ["tavuk", "high"], "tavuk → tavuk göğsü");
+  eq([say("yulaf")[0].key, say("yulaf")[0].conf], ["yulaf", "high"], "yulaf → yulaf ezmesi");
+  /* kategori sözcükleri sorulur */
+  for (const w of ["çorba", "salata", "dolma", "börek", "kebap", "tatlı"])
+    eq(say(w)[0].conf, "low", w + " kategori: sorulur");
+  /* peynir türünü adıyla söyleyince asıl isim (peyniri) gerekmez */
+  eq([say("kaşar")[0].key, say("kaşar")[0].conf], ["kasar", "high"], "kaşar");
+  eq(say("lor")[0].key, "lor", "lor");
+  /* tam adla söylenen yemek aynen bulunur */
+  eq(say("mercimek çorbası")[0].key, "mercimekcorba", "mercimek çorbası");
 });

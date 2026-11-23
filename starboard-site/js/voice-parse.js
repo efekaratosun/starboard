@@ -37,8 +37,15 @@ const VP_EK = new Set(["i","u","a","e","yi","yu","ya","ye","in","un","an","en","
   "si","su","li","lu","la","le","yla","yle","ler","lar","leri","lari","lerin","larin","den","dan","ten","tan",
   "de","da","te","ta","ini","unu","ina","une","ina","ile","ci","cu"]);
 
+/* Tamlamada asıl ismin iyelik eki: "çorba" → çorbası, "peynir" → peyniri, "ekmek" → ekmeği. */
+const VP_IYELIK = new Set(["i", "si", "u", "su"]);
+
 function vpWordMatch(tok, word){
   if (tok === word) return true;
+  if (tok.length >= 4 && word.length > tok.length){
+    if (word.startsWith(tok) && VP_IYELIK.has(word.slice(tok.length))) return true;
+    if (/k$/.test(tok) && word.startsWith(tok.slice(0, -1) + "g") && VP_IYELIK.has(word.slice(tok.length))) return true;
+  }
   if (word.length < 3) return false;
   /* Ünsüz yumuşaması: ekmek → ekmegi, kurabiye → ..., çorap → çorabı. */
   const w2 = /[kp]$/.test(word) ? word.slice(0, -1) + (word.endsWith("k") ? "g" : "b") : null;
@@ -46,6 +53,16 @@ function vpWordMatch(tok, word){
     if (tok.length > w.length && tok.startsWith(w) && VP_EK.has(tok.slice(w.length))) return true;
   }
   return false;
+}
+
+const VP_KIND = new Set(["peyniri", "cayi", "kahvesi"]);
+
+/* Eşit adaylar arasında yaygın Türk besinleri öne geçsin: temel popülerlik (öğün setleri, tarifler)
+   artı hazır Türk ve öneri listeleri. foodPop dışarıdan verilir; listeler varsa kullanılır. */
+function vpPopularity(base){
+  const tr = typeof TR_FOODS !== "undefined" ? new Set(TR_FOODS) : new Set();
+  const sg = typeof SUGGEST_FOODS !== "undefined" ? SUGGEST_FOODS : new Set();
+  return k => (base ? base(k) : 0) + (tr.has(k) ? 3 : 0) + (sg.has(k) ? 2 : 0);
 }
 
 const VP_CACHE = new WeakMap();
@@ -56,8 +73,12 @@ function vpWords(f){
   const opt = vpFold((String(f.n || "").match(/\((.*?)\)/g) || []).join(" ")).split(/[^a-z0-9]+/).filter(Boolean);
   /* Takma ad virgülle birden çok ifade olabilir: "peynir, peynir inek". */
   const phrases = vpFold(f.a || "").split(/[,;]/).map(p => p.split(/[^a-z0-9]+/).filter(Boolean)).filter(p => p.length);
+  /* "Lor peyniri", "Ihlamur çayı": asıl isim yalnız belirten sözcükle de söylenir ("lor", "ihlamur"). */
+  const kind = req.length > 1 && VP_KIND.has(req[req.length - 1]) ? req.slice(0, -1) : null;
   const alias = phrases.flat();
-  c = { req, opt, alias, phrases };
+  /* b: "yalın söylenince varsayılan" besin ("köfte" → Izgara köfte); takma adlardan (arama) ayrıdır. */
+  const bare = vpFold(f.b || "").split(/[^a-z0-9]+/).filter(Boolean);
+  c = { req, opt, alias, phrases, bare, kind };
   VP_CACHE.set(f, c);
   return c;
 }
@@ -65,6 +86,8 @@ function vpWords(f){
 /* Sözcük kümesinin bir besine ne kadar uyduğu; 0 = uymuyor. Tam ad eşleşmesi en yüksek. */
 function vpScore(toks, f){
   const w = vpWords(f);
+  const said = p => p.length === toks.length && toks.every(t => p.some(x => vpWordMatch(t, x)));
+  if ((w.bare.length && said(w.bare)) || (w.kind && said(w.kind))) return 100;
   const name = [...w.req, ...w.opt];
   const all = toks.every(t => name.some(x => vpWordMatch(t, x)));
   if (all){
@@ -74,7 +97,11 @@ function vpScore(toks, f){
     const byName = extra === 0 ? 100 - 2 * Math.min(optLeft, 3) : Math.max(10, 60 - 6 * extra);
     /* Takma ad tam tutuyorsa ("köfte" → Izgara köfte) adın kısmi eşleşmesinden güçlüdür. */
     const aliasEq = w.phrases.some(p => p.length === toks.length && toks.every(t => p.some(x => vpWordMatch(t, x))));
-    return aliasEq && byName < 90 ? 75 : byName;
+    if (aliasEq && byName < 90) return 75;
+    /* Türkçede asıl isim sondadır: yalnız sıfat yerindeki sözcükle ("tatlı", "pide", "et") söylenen besin geri düşer. */
+    const head = w.req[w.req.length - 1];
+    const headSaid = w.req.length < 2 || toks.some(t => vpWordMatch(t, head));
+    return headSaid ? byName : Math.max(10, byName - 20);
   }
   const viaAlias = toks.every(t => name.some(x => vpWordMatch(t, x)) || w.alias.some(x => vpWordMatch(t, x)));
   if (viaAlias && w.alias.length){
@@ -199,9 +226,7 @@ function parseMeal(text, foods, opts){
       .sort((a, b) => (usage(b[0]) - usage(a[0])) || (fit(b) - fit(a)) || (Math.floor(b[2] / 6) - Math.floor(a[2] / 6)) || (pop(b[0]) - pop(a[0])) || (b[2] - a[2]) || a[1].n.length - b[1].n.length);
     const used = pool.filter(r => usage(r[0]) > 0);
     /* Bir aday açık ara öndeyse (tam ad eşleşmesi) ya da yalnız biri daha önce yenmişse emin. */
-    const lead = (top >= 90 && rows.filter(r => r[2] > top - 2).length === 1)
-      /* Takma adı tam tutan ve ötekilerden belirgin öndeki aday ("köfte" → Izgara köfte). */
-      || (top >= 70 && rows.filter(r => r[2] > top - 12).length === 1);
+    const lead = top >= 90 && rows.filter(r => r[2] > top - 2).length === 1;
     const one = (pool.length === 1 && top >= 90) || lead || used.length === 1;
     const pick = lead && !used.length ? rows.find(r => r[2] === top) : pool[0];
     const mk = r => ({ key: r[0], name: r[1].n, ...vpGrams(r[1], qty, unit) });
