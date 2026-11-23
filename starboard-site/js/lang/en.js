@@ -239,6 +239,7 @@ window.STARBOARD_EN = {
   "{0} · geçmiş gün": "{0} · past day",
   "Simgeler": "Symbols",
   "Beslenme ekranında dört öğün de aynı çalışıyor: öğüne dokununca ekranın altından kendi sayfası açılıyor.": "All four meals on the Nutrition screen now work the same: tap a meal and its own sheet slides up from the bottom.",
+  "Beslenme ekranı sadeleşti: kalan kalori ve lif-mikro besinler tek kartta, Sık yediklerin öğün sayfasında.": "The nutrition screen is simpler: calories left and fiber/micronutrients share one card, and your frequent foods live in the meal sheet.",
   "Boş öğünün önerisi sayfanın en üstünde: tek dokunuşla ekle, beğenmezsen başka öneri iste ya da kendin seç.": "The suggestion for an empty meal sits at the top of the sheet: add it with one tap, ask for another, or pick your own.",
   "Ekle · {0} kcal": "Add · {0} kcal",
   "Başka öneri": "Another suggestion",

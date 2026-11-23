@@ -1012,6 +1012,12 @@ main section.gl{background:none!important;border:0!important;box-shadow:none!imp
 .mt-sum-r b{font-family:var(--font-d);font-size:30px;font-weight:800;letter-spacing:-.6px}
 .mt-sum-r i{font-style:normal;font-size:14px;font-weight:700}
 .mt-sum-r > span:last-child{font-size:13.5px;font-weight:600;color:var(--muted)}
+.mt-sum > section.fold{background:none!important;box-shadow:none!important;border:0!important;border-radius:0;padding:0!important;margin:10px 0 0!important;border-top:1px solid var(--line)!important}
+.mt-sum .fold-h{min-height:44px;font-size:14px;letter-spacing:0;text-transform:none}
+.mt-sum .fold-h .count{font-size:13px;font-weight:600;color:var(--muted)}
+.mt-sum .fold-i{padding-top:4px}
+main section.favs,section.favs{background:none!important;box-shadow:none!important;border:0!important;padding:0!important;margin:-4px 0 6px!important}
+.favs .link{min-height:44px;padding:0 4px;font-size:14px}
 .mt-bar{height:8px;border-radius:4px;background:var(--track);margin-top:8px;overflow:hidden}
 .mt-bar i{display:block;height:100%;border-radius:4px;background:var(--band)}
 .mt-bar.over i{background:var(--off)}

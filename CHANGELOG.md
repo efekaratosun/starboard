@@ -3,6 +3,12 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.24.1 (yayınlanmadı)
+
+### Değişti
+- Beslenme sayfası sadeleşti: başlık altındaki kalori yazısı ve üstteki "Sık yediklerin" kartı kalktı (Sık yediklerin öğün sayfasında duruyor).
+- Lif ve mikro besinler (Ayrıntılar) özet kartının alt satırı oldu; "Dünün tamamını kopyala" küçük bağlantıya döndü.
+
 ## 1.24.0 (yayınlanmadı)
 
 ### Değişti
