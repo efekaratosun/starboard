@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.24.0 (yayınlanmadı)
+
+### Değişti
+- Beslenme: dört öğün de aynı mantıkta. Öğün satırı sade (düğüm, ad, yenenler/"boş", kcal, +); öğüne dokununca öğünün alt sayfası ekranın altından açılır (açık öğün CSS ile sabit alt sayfa olur; karartılmış alana dokunmak ya da × kapatır; açılışta hiçbir öğün açık gelmez). Boş öğünün önerisi sayfanın en üstünde tek satır: Ekle · N kcal (tek dokunuş), Başka öneri, İçindekiler (eski ayrıntılı liste). Önceki sürümdeki sıradaki öğün kartı kalktı; sıradaki öğün yalnızca düğümle ve "Sıradaki öğün" yazısıyla ayrılır. Alt sayfa açıkken alt gezinme gizlenir.
+
 ## 1.23.0 (yayınlanmadı)
 
 ### Değişti

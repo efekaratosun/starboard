@@ -8,6 +8,9 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.24.0", items:[
+    tx("Beslenme ekranında dört öğün de aynı çalışıyor: öğüne dokununca ekranın altından kendi sayfası açılıyor."),
+    tx("Boş öğünün önerisi sayfanın en üstünde: tek dokunuşla ekle, beğenmezsen başka öneri iste ya da kendin seç.")] },
   { v:"1.23.0", items:[
     tx("Beslenme ekranı yenilendi: öğünler yukarıdan aşağı bir yıldız yolunda; biten öğün yıldız olur, üstte kalan kalorin görünür."),
     tx("Sıradaki öğünün önerisi hemen görünür: tek dokunuşla ekle ya da kendin seç. Her öğünün yanındaki + ile besin ekleyebilirsin."),

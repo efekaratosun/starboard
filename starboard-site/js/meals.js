@@ -418,19 +418,26 @@ function copyItems(entry, items, slot){
   return ids;
 }
 
-/* Sıradaki öğünün önerisi, açılır bölümün dışında görünür: tek dokunuşla eklenir ya da kullanıcı kendi seçer. */
-function nowCardHTML(m, k, label){
+/* Öğünün alt sayfasında boş öğünün önerisi: tek satır, tek dokunuşla eklenir; içindekiler isteğe bağlı. */
+function sheetSug(m, k, label){
   const added = m.items.filter(i => i.key && i.g && foodOf(i.key));
   const kcal = added.reduce((a, i) => a + foodKcal(foodOf(i.key), i.g), 0);
   const names = m.items.map(i => { const f = i.key ? foodOf(i.key) : null; return esc(f ? f.n : i.text); }).join(" · ");
-  return `<div class="mt-card"><div class="mt-sug"><div class="mt-sug-h"><span>${tx("Öneri")}</span>${added.length ? `<span class="num">${tx("{0} kcal", [kcal])}</span>` : ""}</div>
+  return `<div class="mt-sheet-sug"><div class="mt-sug"><div class="mt-sug-h"><span>${tx("Öneri")}</span>${added.length ? `<span class="num">${tx("{0} kcal", [kcal])}</span>` : ""}</div>
     <div class="mt-sug-t">${names}</div></div>
-    <div class="row">${added.length ? `<button data-mt-sug="${k}" aria-label="${esc(label)}, ${tx("Öneriyi ekle")}">${tx("Öneriyi ekle")}</button>` : ""}
-      <button class="ghost" data-mt-add="${k}" aria-label="${esc(label)}, ${tx("Kendim seç")}">${tx("Kendim seç")}</button></div></div>`;
+    ${added.length ? `<button class="mt-sug-go" data-mt-sug="${k}" aria-label="${esc(label)}, ${tx("Öneriyi ekle")}">${tx("Ekle · {0} kcal", [kcal])}</button>` : ""}
+    <button class="link mt-sug-other" data-mt-other="${k}">${tx("Başka öneri")}</button></div>`;
 }
 
 /* Her öğün kendi kartı: o öğünün kayıtları ve besin eklemesi bir arada. */
+/* Alt sayfa uygulama açıldığında açık gelmesin: önceki oturumdan kalan açık öğünler bir kez kapatılır. */
+let _mealSheetsReset = false;
 function mealCards(entry, sug){
+  if (!_mealSheetsReset){
+    _mealSheetsReset = true;
+    const f = state.ui && state.ui.fold;
+    if (f) for (const k of Object.keys(f)) if (k.startsWith("meal_")) f[k] = false;
+  }
   const log = entry.log || [];
   const list = slotList();
   const known = new Set(list.map(([k]) => k));
@@ -454,12 +461,11 @@ function mealCards(entry, sug){
     const sm = !items.length && sug ? sug(k) : null;
     const expanded = !!sm && openSuggestions.has(k);
     const isNow = nowSlot === k, st = items.length ? "done" : isNow ? "now" : "empty";
-    const nowSug = isNow && !items.length && sug ? sug(k) : null;
-    const showNow = !!nowSug && !openSuggestions.has(k) && addOpen !== k;
     return `<div class="mt-i mt-${st}">${nodeSvg(st)}` + fold("meal_" + k, esc(l), items.length ? tx("{0} kcal", [itemsKcal(items)]) : `<span class="meal-empty">${tx("boş")}</span>`, `
+      ${sm && !expanded && addOpen !== k ? sheetSug(sm, k, l) : ""}
       ${addOpen !== k ? `<div class="row meal-actions">
-        <button data-addfood="${k}">${tx("Besin ekle")}</button>
-        ${sm ? `<button class="ghost" data-sug-toggle="${k}" aria-expanded="${expanded}" aria-controls="meal-sug-${k}" aria-label="${esc(l)}, ${tx("Öneriler")}">${tx("Öneriler")}</button>` : ""}
+        <button${sm && !expanded ? ' class="ghost"' : ""} data-addfood="${k}">${tx("Besin ekle")}</button>
+        ${sm ? `<button class="ghost" data-sug-toggle="${k}" aria-expanded="${expanded}" aria-controls="meal-sug-${k}" aria-label="${esc(l)}, ${tx("Öneriler")}">${tx("İçindekiler")}</button>` : ""}
       </div>` : ""}
       ${items.length ? items.map(logLine).join("")
         : expanded || addOpen === k ? ""
@@ -472,7 +478,7 @@ function mealCards(entry, sug){
           ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [onToday() ? tx("Dünküyle") : tx("Bir önceki günle"), yIt.length, itemsKcal(yIt)])}</button>` : ""}
     `, addOpen === k || saveMealOpen === k || expanded, items.length ? foodNames(items) : isNow ? tx("Sıradaki öğün") : "")
       + `<button class="mt-plus" data-mt-add="${k}" aria-label="${esc(l)}, ${tx("Besin ekle")}">+</button>`
-      + (showNow ? nowCardHTML(nowSug, k, l) : "") + `</div>`;
+      + `</div>`;
   });
 
   const other = log.filter(x => slotOf(x) === "__other");
@@ -1110,7 +1116,11 @@ function wireMealsRest(entry){
     app.querySelector(`[${selector}="${value}"]`)?.focus({ preventScroll: true });
   });
   app.querySelectorAll("[data-sug-add],[data-mt-sug]").forEach(b => b.onclick = () => addSuggested(entry, b.dataset.sugAdd || b.dataset.mtSug));
-  app.querySelectorAll("[data-sug-other]").forEach(b => b.onclick = () => { mealVariant++; render(); });
+  app.querySelectorAll("[data-sug-other],[data-mt-other]").forEach(b => b.onclick = () => { mealVariant++; render(); });
+  /* alt sayfa: karartılmış alana dokunmak ya da Esc kapatır */
+  app.querySelectorAll(".mt-i").forEach(el => el.addEventListener("click", e => {
+    if (e.target === el && el.querySelector(":scope > section.fold:not(.shut)")) el.querySelector(".fold-h").click();
+  }));
 
   app.querySelectorAll("[data-mex]").forEach(b => b.onclick = async () => {
     const prefs = mealPrefs();
