@@ -180,7 +180,7 @@ const OB_MOVES = {
 function obArt(kind, k){
   let art;
   if (kind === "goal"){
-    const planet = { lose:[3,15,-25], maintain:[3.8,17,0], gain:[4.6,19,27] }[k];
+    const planet = { lose:[3,15,-25], maintain:[3.8,17,0], gain:[4.6,19,27], mass:[5.2,20,40] }[k];
     const [size, x, angle] = planet;
     art = `<circle cx="12" cy="12" r="${size}"/><ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(${angle} 12 12)"/>
       <circle cx="${x}" cy="${k === "maintain" ? 17 : 6}" r="2" fill="currentColor"/>`;
@@ -398,14 +398,19 @@ function obProfile(){
   if (ob.targetWeight) profile.targetWeight = Math.round(ob.targetWeight * 10) / 10;
   const range = obWeightRange();
   if (range){ profile.targetWeeks = range.slice(); profile.paceWeeks = obPaceWeeks(); }
-  profile.programId = defaultProgramId(profile.venue, profile.activity, profile.days);
+  profile.programId = defaultProgramId(profile.venue, profile.activity, profile.days, profile.goal);
   return profile;
 }
 
 const obVal = id => { const e = document.getElementById(id); return e ? e.value : null; };
 
 /* Hedef kilo önerisi: hedefe göre (kas kazanımı ×1,05, yağ kaybı ×0,9, koruma ×1); hedef değişince güncellenir. */
-const obTwHint = () => Math.round(wOut(ob.weight || 75) * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1));
+const obTwHint = () => {
+  const w = ob.weight || 75;
+  let kg = w * (ob.goal === "gain" ? 1.05 : ob.goal === "lose" ? 0.9 : 1);
+  if (ob.goal === "mass") kg = clamp(22 * ((ob.height || 170) / 100) ** 2, w * 1.03, w * 1.10);   /* BMI 22, en çok +%10 */
+  return Math.round(wOut(kg));
+};
 
 function obPersonalGoals(){
   const goals = [
@@ -422,19 +427,22 @@ function obPersonalGoals(){
   </details>`;
 }
 
-/* Süre paneli yalnızca yağ kaybında, yetişkinde, makul hedefte çıkar (hedef kilo ≤ %10 kayıp, BMI 25 ve üstü, hedef BMI 20 ve üstü).
-   safe = önerilen aralık (haftada 0,25-0,5 kg), min-max = kaydırıcının sınırı. Günlük kalori hedefi seçilen süreye göre buildProgram'da hesaplanır. */
+/* Süre paneli (Yolculuk kartı): yağ kaybı, kas kazanımı ve kilo almada hedef kilo yazılınca açılır; koruma için yok.
+   Yetişkin (18+) ve hedef doğru yönde olmalı. Güvenlik uyarıları engellemez, panelde yazılır; kalori alt sınırı her durumda geçerli.
+   safe = önerilen aralık (PACE.safe, kg/hafta → hafta), min-max = kaydırıcının sınırı. Günlük kalori buildProgram'da süreye göre hesaplanır. */
 function obPaceBase(){
+  const c = PACE[ob.goal];
   const age = ageFromBirthDate(ob.birthDate);
-  const loss = ob.weight - ob.targetWeight;
-  const height2 = (ob.height / 100) ** 2;
-  if (ob.goal !== "lose" || age === null || age < 18 || !ob.targetWeight || loss <= 0 || loss > ob.weight * .10
-      || ob.weight / height2 < 25 || ob.targetWeight / height2 < 20) return null;
-  const safe = [Math.max(4, Math.ceil(loss / .5)), Math.max(8, Math.ceil(loss / .25))];
-  const min = Math.max(4, Math.ceil(loss / .75)), max = Math.min(104, Math.max(safe[1] + 8, min + 8));
-  return { loss, safe, min, max, def: clamp(Math.round(loss / .35), safe[0], safe[1]) };
+  if (!c || age === null || age < 18 || !ob.targetWeight || !ob.weight) return null;
+  const d = (ob.targetWeight - ob.weight) * c.dir;
+  if (!(d > 0)) return null;
+  const wk = r => Math.ceil(d / r);
+  const safe = [Math.max(4, wk(c.safe[1])), Math.max(8, wk(c.safe[0]))];
+  const min = Math.max(4, wk(c.lim[0])), max = Math.min(104, Math.max(safe[1] + 8, min + 8));
+  const mid = (c.safe[0] + c.safe[1]) / 2;
+  return { d, safe, min, max, def: clamp(Math.round(d / mid), safe[0], safe[1]) };
 }
-const obWeightRange = () => { const b = obPaceBase(); return b && ob.weightPlanning ? b.safe : null; };
+const obWeightRange = () => { const b = obPaceBase(); return b ? b.safe : null; };
 const obPaceWeeks = () => { const b = obPaceBase(); return b ? clamp(ob.paceWeeks ?? b.def, b.min, b.max) : null; };
 
 function obPaceStats(){
@@ -442,29 +450,54 @@ function obPaceStats(){
   ob.paceWeeks = wk;
   const p = buildProgram(obProfile(), ob.weight, 0);
   const end = new Date(); end.setDate(end.getDate() + wk * 7);
-  return { wk, kg: b.loss / wk, kcal: p.kcal, floored: p.floored, safe: b.safe,
+  return { wk, kg: b.d / wk, kcal: p.kcal, floored: p.floored, safe: b.safe,
     end: end.toLocaleDateString(locale(), { day:"numeric", month:"long" }) };
 }
-function obPaceNote(s, on){
-  return !on ? tx("Süreyi seçmek için aşağıdaki sağlık kutusunu işaretle.")
-    : s.floored ? tx("Günlük kalori güvenli alt sınırda tutuldu; hedefe bu süreden geç varabilirsin.")
-    : s.wk < s.safe[0] || s.wk > s.safe[1] ? tx("Bu hız önerilen aralığın dışında. Süre kişiden kişiye değişir.")
-    : tx("Önerilen aralık {0}-{1} hafta. Süre kişiden kişiye değişir.", [s.safe[0], s.safe[1]]);
+/* Panelin altındaki tek not: önce güvenlik uyarısı, sonra aralık notu. */
+function obPaceNote(s){
+  const h2 = (ob.height / 100) ** 2, bmiT = ob.targetWeight / h2, g = ob.goal;
+  if (g === "lose" && bmiT < 18.5) return tx("Bu hedef kilo BMI 18,5'in altında. Hekiminle konuşmadan bu hedefe gitme.");
+  if (g === "lose" && s.kg * s.wk > ob.weight * 0.15) return tx("Bu kayıp büyük. Hedefi aşamalı belirlemeyi düşün.");
+  if (isGainGoal(g) && bmiT > 25) return tx("Bu hedef kilo BMI 25'in üstünde.");
+  if (s.floored) return tx("Günlük kalori güvenli alt sınırda tutuldu; hedefe bu süreden geç varabilirsin.");
+  if (s.wk < s.safe[0] || s.wk > s.safe[1]) return tx("Bu hız önerilen aralığın dışında. Süre kişiden kişiye değişir.");
+  return tx("Önerilen aralık {0}-{1} hafta. Süre kişiden kişiye değişir.", [s.safe[0], s.safe[1]]);
 }
-function obPacePanel(){
+const obTwInput = () => `<input id="ob-tw" aria-label="${tx("Hedef kilon ({0})", [(wUnit())])}" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${obTwHint()}">`;
+
+/* Hedefin ekranının kilo bölümü: koruma = isteğe bağlı hedef kilo; diğerleri = Yolculuk kartı (hedef kilo + süre). */
+function obJourney(){
+  if (!PACE[ob.goal])
+    return og(tx("Hedef kilon ({0})", [(wUnit())]), `${obTwInput()}<p class="ob-hint" id="ob-tw-hint">${tx("Önerilen: {0} {1}", [obTwHint(), wUnit()])}</p>`, true);
   const b = obPaceBase();
-  if (!b) return "";
-  const on = !!ob.weightPlanning, s = obPaceStats();
-  const pc = v => ((clamp(v, b.min, b.max) - b.min) / (b.max - b.min) * 100).toFixed(1);
-  return `<div class="ob-pace${on ? "" : " off"}" id="ob-pace" style="--lo:${pc(b.safe[0])}%;--hi:${pc(b.safe[1])}%;--pos:${pc(s.wk)}%">
-    <div class="ob-pace-h"><span class="og-t">${tx("Kaç haftada?")}</span><b class="num"><span id="ob-pace-w">${s.wk}</span> <small>${tx("hafta")}</small></b></div>
-    <input id="ob-pace-r" type="range" min="${b.min}" max="${b.max}" step="1" value="${s.wk}"${on ? "" : " disabled"} aria-label="${tx("Kaç haftada?")}">
-    <div class="ob-pace-s">
-      <div><i>${tx("Haftada")}</i><b class="num" id="ob-pace-k">${fmtN(+wOut(s.kg).toFixed(2))} ${wUnit()}</b></div>
-      <div><i>${tx("Günlük")}</i><b class="num" id="ob-pace-c">${fmtN(s.kcal)} kcal</b></div>
-      <div><i>${tx("Bitiş")}</i><b id="ob-pace-e">${s.end}</b></div>
+  let panel = "";
+  if (b){
+    const s = obPaceStats();
+    const pc = v => ((clamp(v, b.min, b.max) - b.min) / (b.max - b.min) * 100).toFixed(1);
+    panel = `<div class="ob-pace" id="ob-pace" style="--lo:${pc(b.safe[0])}%;--hi:${pc(b.safe[1])}%;--pos:${pc(s.wk)}%">
+      <div class="ob-pace-h"><span class="og-t">${tx("Kaç haftada?")}</span><b class="num"><span id="ob-pace-w">${s.wk}</span> <small>${tx("hafta")}</small></b></div>
+      <input id="ob-pace-r" type="range" min="${b.min}" max="${b.max}" step="1" value="${s.wk}" aria-label="${tx("Kaç haftada?")}">
+      <div class="ob-pace-s">
+        <div><i>${tx("Haftada")}</i><b class="num" id="ob-pace-k">${fmtN(+wOut(s.kg).toFixed(2))} ${wUnit()}</b></div>
+        <div><i>${tx("Günlük")}</i><b class="num" id="ob-pace-c">${fmtN(s.kcal)} kcal</b></div>
+        <div><i>${tx("Bitiş")}</i><b id="ob-pace-e">${s.end}</b></div>
+      </div>
+      <p class="metric-note" id="ob-pace-n">${obPaceNote(s)}</p></div>`;
+  } else {
+    const age = ageFromBirthDate(ob.birthDate);
+    const msg = age !== null && age < 18 ? tx("18 yaşın altında süre planı yok; hedefini bir hekimle konuş.")
+      : !ob.targetWeight ? tx("Hedef kilonu yaz, kaç haftada varacağını seçelim.")
+      : tx("Hedef kilo seçtiğin hedefe uymuyor: kilo vermek için hedef daha düşük, kilo almak için daha yüksek olmalı.");
+    panel = `<p class="metric-note ob-pace-none" id="ob-pace-n">${msg}</p>`;
+  }
+  return `<div class="ob-journey">
+    <div class="ob-jr-row">
+      <div class="ob-jr-l"><i>${tx("Şimdi")}</i><b class="num">${fmtN(+wOut(ob.weight).toFixed(1))}<small> ${wUnit()}</small></b></div>
+      <svg class="ob-jr-arrow" viewBox="0 0 70 16" aria-hidden="true"><path d="M2 8h58" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 6"/><path d="M54 3l6 5-6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <label class="ob-jr-r" for="ob-tw"><i>${tx("Hedef kilon ({0})", [(wUnit())])}</i>${obTwInput()}</label>
     </div>
-    <p class="metric-note" id="ob-pace-n">${obPaceNote(s, on)}</p></div>`;
+    <p class="ob-hint" id="ob-tw-hint">${tx("Önerilen: {0} {1}", [obTwHint(), wUnit()])}</p>
+    ${panel}</div>`;
 }
 function obPaceFill(){
   const pane = document.getElementById("ob-pace"), r = document.getElementById("ob-pace-r");
@@ -476,22 +509,19 @@ function obPaceFill(){
   document.getElementById("ob-pace-k").textContent = fmtN(+wOut(s.kg).toFixed(2)) + " " + wUnit();
   document.getElementById("ob-pace-c").textContent = fmtN(s.kcal) + " kcal";
   document.getElementById("ob-pace-e").textContent = s.end;
-  document.getElementById("ob-pace-n").textContent = obPaceNote(s, !!ob.weightPlanning);
+  document.getElementById("ob-pace-n").textContent = obPaceNote(s);
   r.setAttribute("aria-valuetext", tx("{0} hafta", [s.wk]));
 }
-/* Hedef kilo, hedef ya da etkinlik değişince paneli baştan çiz (sayfa yeniden kurulmaz). */
+/* Hedef ya da hedef kilo değişince kartı baştan çiz (sayfa yeniden kurulmaz). */
 function obPaceRedraw(){
-  const n = num(obVal("ob-tw")); if (document.getElementById("ob-tw")){ const t = n === null ? null : wSave(n); if (t !== ob.targetWeight) ob.paceWeeks = null; ob.targetWeight = t; }
-  const pl = document.getElementById("ob-planning"); if (pl) ob.weightPlanning = pl.checked;
+  const tw = document.getElementById("ob-tw");
+  if (tw){ const n = num(tw.value), t = n === null ? null : wSave(n); if (t !== ob.targetWeight) ob.paceWeeks = null; ob.targetWeight = t; }
   const box = document.getElementById("ob-pace-box"); if (!box) return;
-  box.innerHTML = obPacePanel(); wireObPace(true);
+  box.innerHTML = obJourney(); wireObPace();
 }
-function wireObPace(fromRedraw){
-  const r = document.getElementById("ob-pace-r");
-  if (r) r.oninput = obPaceFill;
-  if (fromRedraw) return;
+function wireObPace(){
+  const r = document.getElementById("ob-pace-r"); if (r) r.oninput = obPaceFill;
   const tw = document.getElementById("ob-tw"); if (tw) tw.onchange = obPaceRedraw;
-  const pl = document.getElementById("ob-planning"); if (pl) pl.onchange = obPaceRedraw;
 }
 
 const OB_STEPS = [
@@ -531,19 +561,15 @@ const OB_STEPS = [
       return ob.bodyFat !== null && !(ob.bodyFat >= 3 && ob.bodyFat <= 60) ? [tx("Yağ oranını %3 ile %60 arasında gir ya da boş bırak."), "ob-bf"] : "";
     } },
   { id:"goal", t:tx("Hedefin"),
-    body: () => obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, ["goal", k], v.label]))
-      + og(tx("Hedef kilon ({0})", [(wUnit())]), `<input id="ob-tw" aria-label="${tx("Hedef kilon ({0})", [(wUnit())])}" type="number" inputmode="decimal" value="${ob.targetWeight != null ? +wOut(ob.targetWeight).toFixed(1) : ""}" placeholder="${obTwHint()}">
-        <p class="ob-hint" id="ob-tw-hint">${tx("Önerilen: {0} {1}", [obTwHint(), wUnit()])}</p>`, true)
-      + `<div id="ob-pace-box">${obPacePanel()}</div>`
+    body: () => obCards("goal", Object.entries(GOAL).map(([k, v]) => [k, ["goal", k], v.label]), "duo")
+      + `<div id="ob-pace-box">${obJourney()}</div>`
       + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, ["activity", k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
-      + `<label class="ob-check" id="ob-planning-label" ${ob.goal === "lose" ? "" : "hidden"}><input id="ob-planning" type="checkbox"${ob.weightPlanning ? " checked" : ""}>
-        <span class="ob-check-t">${tx("Kilo hedefim için süre aralığı göster. Hamile veya emziriyor değilim ve kilo kaybı için tıbbi gözetim gerektiren bir durumum yok.")}</span></label>`
+      + `<p class="ob-warn"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg><span>${tx("Hamilelik, emzirme ya da tıbbi gözetim gereken bir durumda hekimine danış. Starboard tıbbi danışmanlık sunmaz.")}</span></p>`
       + obPersonalGoals(),
     read: () => {
       const n = num(obVal("ob-tw")), target = n === null ? null : wSave(n);
       if (target !== ob.targetWeight) ob.paceWeeks = null;
       ob.targetWeight = target;
-      ob.weightPlanning = document.getElementById("ob-planning").checked;
       ob.personalOpen = app.querySelector(".ob-personal").open;
       for (const [id, k] of [["personal-sleep","sleepGoal"],["personal-water","waterGoal"],["sleep-notify","sleepNotify"],["water-notify","waterNotify"]])
         ob[k] = !!document.getElementById("ob-" + id)?.checked;
@@ -900,10 +926,6 @@ function wireOb(st){
     }
     else ob[f] = box.dataset.num ? Number(v) : v;
     if (f === "goal"){
-      document.getElementById("ob-planning-label").hidden = v !== "lose";
-      const tw = document.getElementById("ob-tw"), hint = document.getElementById("ob-tw-hint");
-      if (tw) tw.placeholder = obTwHint();
-      if (hint) hint.textContent = tx("Önerilen: {0} {1}", [obTwHint(), wUnit()]);
       ob.paceWeeks = null;
     }
     if (f === "activity"){

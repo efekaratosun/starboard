@@ -1334,8 +1334,8 @@ function weeklyRefresh(state){
   if (pct >= lo && pct <= hi)
     return { msg:tx("Hedeflenen hızda ilerliyorsun (%{0}/hafta). Kalori hedefi değişmiyor.", [(fmtFix(pct, 2))]), save:true };
 
-  const tooSlow = state.profile.goal === "gain" ? pct < lo : pct > hi;
-  const delta = state.profile.goal === "gain" ? (tooSlow ? STEP : -STEP) : (tooSlow ? -STEP : STEP);
+  const tooSlow = isGainGoal(state.profile.goal) ? pct < lo : pct > hi;
+  const delta = isGainGoal(state.profile.goal) ? (tooSlow ? STEP : -STEP) : (tooSlow ? -STEP : STEP);
   const next = clamp((state.adjustment||0) + delta, -MAX_ADJ, MAX_ADJ);
   if (next === (state.adjustment||0))
     return { msg:tx("Düzeltme sınırına ({0} kcal) ulaşıldı. Hedefi daha fazla kaydırmak yerine aktivite seviyeni gözden geçir.", [(MAX_ADJ)]), save:true };

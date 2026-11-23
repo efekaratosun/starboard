@@ -11,8 +11,11 @@ const ACTIVITY = {
 const GOAL = {
   lose:{label:tx("Yağ kaybı"), m:0.82, protein:2.4, range:[-1.00,-0.35]},
   maintain:{label:tx("Koruma"), m:1.00, protein:2.0, range:[-0.30,0.30]},
-  gain:{label:tx("Kas kazanımı"), m:1.12, protein:2.2, range:[0.15,0.50]}
+  gain:{label:tx("Kas kazanımı"), m:1.12, protein:2.2, range:[0.15,0.50]},
+  mass:{label:tx("Kilo alma"), m:1.15, protein:2.0, range:[0.30,0.80]}
 };
+/* Kas kazanımı ve kilo alma aynı yönde çalışır (kalori fazlası); farkları oran, protein ve güvenli haftalık hızdır. */
+const isGainGoal = g => g === "gain" || g === "mass";
 
 /* Doğum tarihi yerel takvim günü olarak saklanır. Eski profillerde kayıtlı yaş kullanılır. */
 function birthDateFromParts(year, month, day){
@@ -167,11 +170,17 @@ function wireAvatar(idp, onPick, root){
   });
 }
 
-/* Seçilen süreye göre haftalık hız: (başlangıç − hedef) kg / hafta. Yalnızca yağ kaybında ve süre seçildiyse. */
+/* Süre paneli: yön (dir: -1 verme, +1 alma) ve güvenli haftalık hız aralığı (kg/hafta); lim = kaydırıcının uç hızları. */
+const PACE = {
+  lose:{ dir:-1, safe:[0.25, 0.50], lim:[0.75, 0.15] },
+  gain:{ dir: 1, safe:[0.15, 0.35], lim:[0.50, 0.10] },
+  mass:{ dir: 1, safe:[0.25, 0.50], lim:[0.75, 0.15] }
+};
+/* Seçilen süreye göre haftalık hız: |hedef − başlangıç| kg / hafta; hedef doğru yönde değilse ya da süre seçilmediyse yok. */
 function paceRate(profile){
-  const w = profile.paceWeeks, s = profile.startWeight, t = profile.targetWeight;
-  if (profile.goal !== "lose" || !(w > 0) || !(s > t) || !(t > 0)) return null;
-  return clamp((s - t) / w, 0.1, 1);
+  const c = PACE[profile.goal], w = profile.paceWeeks, s = profile.startWeight, t = profile.targetWeight;
+  if (!c || !(w > 0) || !(s > 0) || !(t > 0) || !((t - s) * c.dir > 0)) return null;
+  return clamp(Math.abs(t - s) / w, 0.05, 1);
 }
 
 function buildProgram(profile, weightKg, adjustment){
@@ -187,7 +196,7 @@ function buildProgram(profile, weightKg, adjustment){
   const floor = Math.max(bmr * 0.95, sexK(profile.sex, 1500, 1200));
   /* Süre seçildiyse günlük açık = haftalık hız × 7700 kcal / 7 gün; seçilmediyse eski oran. Alt sınır her durumda geçerli. */
   const rate = paceRate(profile);
-  const raw = (rate ? tdee - rate * 1100 : tdee * goal.m) + (adjustment || 0);
+  const raw = (rate ? tdee + PACE[profile.goal].dir * rate * 1100 : tdee * goal.m) + (adjustment || 0);
   const floored = raw < floor;
   const kcal = Math.round(Math.max(raw, floor));
 
@@ -366,14 +375,19 @@ function sessionIcon(title, venue){
 }
 
 /* Varsayılan program: kategori içinde aktivite seviyesine en yakın gün sayısı. */
-function defaultProgramId(venue, activity, days){
+/* Kas kazanımı ve kilo almada güç programları öne alınır, haftada en az 3 gün. */
+const STRENGTH_FIRST = new Set(["gym_sl3", "gym_ul4", "gym_531", "gym_ppl5", "home_pack3", "home_bw3", "cal_basic3", "cal_ppl4", "kb_simple3"]);
+function defaultProgramId(venue, activity, days, goal){
   /* Gün seçtiyse program frekansı oradan; yoksa aktivite seviyesinden tahmin. */
-  const want = Array.isArray(days) ? days.length
-             : (activity === "sedentary" || activity === "light") ? 3
-             : activity === "moderate" ? 4 : 5;
+  let want = Array.isArray(days) ? days.length
+           : (activity === "sedentary" || activity === "light") ? 3
+           : activity === "moderate" ? 4 : 5;
+  const gain = isGainGoal(goal);
+  if (gain) want = Math.max(want, 3);
   const inVenue = Object.entries(PROGRAMS).filter(([,p]) => p.venue === venue);
   if (!inVenue.length) return "gym_ul4";
-  inVenue.sort((a,b) => Math.abs(a[1].freq - want) - Math.abs(b[1].freq - want));
+  const rank = id => gain && !STRENGTH_FIRST.has(id) ? 1 : 0;
+  inVenue.sort((a,b) => rank(a[0]) - rank(b[0]) || Math.abs(a[1].freq - want) - Math.abs(b[1].freq - want));
   return inVenue[0][0];
 }
 
@@ -395,7 +409,8 @@ function trainingPlan(profile){
   const goal = profile.goal;
   const cardio = { lose:tx("Haftada 3 × 30 dk tempolu kardiyo, antrenman sonrası."),
                    maintain:tx("Haftada 2 × 25 dk hafif kardiyo yeterli."),
-                   gain:tx("Kardiyoyu haftada 2 × 20 dk ile sınırla.") }[goal];
+                   gain:tx("Kardiyoyu haftada 2 × 20 dk ile sınırla."),
+                   mass:tx("Kardiyoyu haftada 2 × 20 dk ile sınırla.") }[goal];
 
   /* Kullanıcının kendi yazdığı program: hareketler hazır programlarla aynı
      biçime ("Ad 3×10") çevrilir, böylece kayıt ve antrenman modu aynen çalışır. */
@@ -414,7 +429,7 @@ function trainingPlan(profile){
   }
 
   const id = PROGRAMS[profile.programId] ? profile.programId
-           : defaultProgramId(profile.venue || "gym", profile.activity);
+           : defaultProgramId(profile.venue || "gym", profile.activity, undefined, profile.goal);
   const prog = PROGRAMS[id];
   const cat = VENUE[prog.venue];
   const wds = planDays(profile, prog.freq);
