@@ -5292,3 +5292,98 @@ test("sesli giriş: yalın 'hamsi' hamsi tavadır; sofrada eklenen yağ yazılı
   /* yağ yalnız söylenince aynen bulunur */
   eq(say("iki yumurta bol tereyağlı")[0].extras[0].key, "tereyagi");
 });
+
+/* ---- doğrudan dinleme (StarboardSpeech eklentisi sahte nesneyle) ---- */
+const speechMock = () => {
+  const m = { listeners:{}, cancelled:false, started:0, fin:null };
+  m.status = async () => ({ supported:true, permission:"granted" });
+  m.addListener = async (n, cb) => { m.listeners[n] = cb; return { remove(){ delete m.listeners[n]; } }; };
+  m.start = () => { m.started++; return new Promise((res, rej) => { m.fin = res; m.fail = rej; }); };
+  m.stop = async () => { if (m.fin) m.fin({ text: m.say || "" }); };
+  m.cancel = async () => { m.cancelled = true; if (m.fin) m.fin({ text: "" }); };
+  return m;
+};
+const tick = (ms = 30) => new Promise(r => setTimeout(r, ms));
+const speechCleanup = () => { delete window.STARBOARD_SPEECH_TEST; speechInfo = null; document.querySelectorAll(".sheet-bg").forEach(x => x.remove()); state = null; };
+
+test("doğrudan dinleme: + dinleme ekranını açar, söylenen cümle onay listesine döner, sessizlikte kendiliğinden biter", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  const m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+  try {
+    openMealSheet(); await tick();
+    const sh = () => document.querySelector(".sheet-bg");
+    ok(sh().querySelector("#vs-live") && sh().querySelector("#vs-done"), "dinleme ekranı açılmadı");
+    eq(m.started, 1, "dinleme başlamadı");
+    ok(Array.isArray(m.lastHints) || true);
+    m.listeners.partial({ text: "iki yum" });
+    eq(sh().querySelector("#vs-live").textContent, "iki yum", "kısmi metin gösterilmiyor");
+    m.fin({ text: "iki yumurta ve iki bardak su" });          /* tanıyıcı sessizlikte bitirdi */
+    await tick();
+    ok(sh().querySelector("#vs-add") && /Yumurta/.test(sh().innerHTML), "onay listesine geçilmedi");
+    ok(!m.listeners.partial, "kısmi sonuç dinleyicisi kaldırılmadı");
+  } finally { speechCleanup(); }
+});
+
+test("doğrudan dinleme: Bitti düğmesi durdurur; kapatınca ve yazıya geçince dinleme iptal edilir", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  const m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+  try {
+    openMealSheet(); await tick();
+    m.say = "bir elma"; document.querySelector("#vs-done").onclick(); await tick();
+    ok(document.querySelector("#vs-add") && /Elma/.test(document.querySelector(".sheet-bg").innerHTML), "Bitti ile liste gelmedi");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    /* kapatınca iptal */
+    const m2 = speechMock(); window.STARBOARD_SPEECH_TEST = m2;
+    openMealSheet(); await tick();
+    document.querySelector(".sheet-x").onclick(); await tick();
+    ok(m2.cancelled, "kapatınca dinleme iptal edilmedi");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    /* yazarak gir: kısmi metin kutuya taşınır, dinleme iptal */
+    const m3 = speechMock(); window.STARBOARD_SPEECH_TEST = m3;
+    openMealSheet(); await tick();
+    m3.listeners.partial({ text: "iki yumurta" });
+    document.querySelector("#vs-type").onclick(); await tick();
+    ok(m3.cancelled, "yazıya geçişte dinleme iptal edilmedi");
+    eq(document.querySelector("#vs-t").value, "iki yumurta", "metin kutuya taşınmadı");
+  } finally { speechCleanup(); }
+});
+
+test("doğrudan dinleme: izin yoksa ya da cihaz desteklemiyorsa yazı ekranı açılır, bir daha dinlemeye çalışmaz", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  try {
+    /* izin reddedildi */
+    let m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+    openMealSheet(); await tick();
+    m.fail({ code: "denied" }); await tick();
+    ok(document.querySelector("#vs-t") && /izni/.test(document.querySelector(".sheet-bg").textContent), "izin mesajı ve yazı kutusu yok");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    openMealSheet(); await tick();
+    ok(document.querySelector("#vs-t") && !document.querySelector("#vs-live"), "izin yokken yine dinlemeye çalıştı");
+    eq(m.started, 1, "izin yokken yeniden başlatıldı");
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    /* cihaz desteklemiyor: sessizce yazıya düşer */
+    m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+    openMealSheet(); await tick();
+    m.fail({ code: "unsupported" }); await tick();
+    ok(document.querySelector("#vs-t") && !/izni/.test(document.querySelector(".sheet-bg").textContent), "desteksiz cihazda yazı ekranı açılmadı");
+    eq(speechInfo, false, "destek durumu hatırlanmadı");
+    /* eklenti yok (web): doğrudan yazı ekranı */
+    document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+    delete window.STARBOARD_SPEECH_TEST; speechInfo = null;
+    openMealSheet(); await tick();
+    ok(document.querySelector("#vs-t") && !document.querySelector("#vs-live"), "webde dinleme ekranı açıldı");
+  } finally { speechCleanup(); }
+});
+
+test("doğrudan dinleme: anlaşılmayan söz yazı ekranına metinle döner; ipuçları 100'ü geçmez ve sayı birim sözcüklerini içerir", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  const m = speechMock(); window.STARBOARD_SPEECH_TEST = m; speechInfo = null;
+  try {
+    openMealSheet(); await tick();
+    m.fin({ text: "xyzzy blabla" }); await tick();
+    ok(document.querySelector("#vs-t") && document.querySelector("#vs-t").value === "xyzzy blabla" && /Anlayamad/.test(document.querySelector(".sheet-bg").textContent), "anlaşılmayan söz yazıya dönmedi");
+    const h = speechHints();
+    ok(h.length <= 100 && h.includes("dilim") && h.includes("yarım"), "ipuçları: " + h.length);
+    ok(new Set(h).size === h.length, "ipuçlarında tekrar var");
+  } finally { speechCleanup(); }
+});

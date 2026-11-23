@@ -30,6 +30,10 @@ if (IS_NATIVE && !window.storage){
    Web'de çağrılar sessizce hiçbir şey yapmaz; böylece kodun geri kalanı
    "iPhone'da mıyız" diye sormadan çağırabilir. Apple Sağlık da (eklentinin JS adı
    "Health") böyle çağrılır; sarmalayıcıları health.js içindedir. */
+/* Cihaz içi Türkçe konuşma tanıma: plugins/starboard-speech (jsName "StarboardSpeech").
+   Web'de ya da eklenti yoksa null. Ses yalnızca cihazda yazıya çevrilir. STARBOARD_SPEECH_TEST yalnız testler içindir. */
+const speechPlugin = () => window.STARBOARD_SPEECH_TEST || nativePlugin("StarboardSpeech");
+
 /* Eklenti çağrıları söz (promise) döndürür; reddedilirse sessizce yutulur. */
 const quiet = p => { if (p && p.catch) p.catch(() => {}); };
 const nativePlugin = name => {

@@ -1313,3 +1313,12 @@ details.about[open] summary::after{content:"−"}
 .vs-xr i{font-style:normal;font-size:13px;color:var(--muted)}
 .vs-tot{display:flex;justify-content:space-between;align-items:baseline;margin:14px 4px 12px;font-size:16px;font-weight:700}
 .vs-tot b{font-size:20px}
+
+.vs-mic{position:relative;width:190px;height:190px;margin:8px auto 4px;display:grid;place-items:center}
+.vs-mic i{position:absolute;inset:0;border-radius:50%;background:var(--band);opacity:.2;animation:vsPulse 1.9s ease-out infinite}
+.vs-mic i + i{inset:32px;opacity:.3;animation-delay:.55s}
+.vs-mic span{position:relative;width:80px;height:80px;border-radius:50%;background:var(--band);background-image:var(--grad-btn);color:var(--on-brand);display:grid;place-items:center}
+.vs-live{min-height:88px;text-align:center;font-size:21px;font-weight:600;line-height:1.35;padding:0 6px}
+.vs-live[data-empty]{color:var(--muted);font-size:18px}
+@keyframes vsPulse{0%{transform:scale(.86);opacity:.4}100%{transform:scale(1.06);opacity:0}}
+@media (prefers-reduced-motion:reduce){.vs-mic i{animation:none}}

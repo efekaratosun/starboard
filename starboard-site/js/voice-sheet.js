@@ -1,14 +1,42 @@
 "use strict";
 
 /* ---------------- yemek kısayolu: + düğmesi ----------------
-   Sabit + düğmesi artık yemek ekler: "Ne yedin?" yazılır (ya da klavyedeki mikrofonla söylenir),
-   cümle kendi besin listenle eşleşir, onay listesinde düzeltilir ve öğüne eklenir.
+   Sabit + düğmesi artık yemek ekler. iPhone'da tek dokunuşla doğrudan dinler ("yumurta zeytin peynir yedim");
+   ses cihazda yazıya çevrilir (StarboardSpeech). Dinleme yoksa (web, eski iPhone, izin verilmedi) aynı ekran
+   yazı kutusuyla açılır. Cümle kendi besin listenle eşleşir, onay listesinde düzeltilir ve öğüne eklenir.
    Her şey cihazda olur; ağa hiçbir şey çıkmaz (eşleştirme: voice-parse.js).
    Su, kilo, uyku, adım ve görev girişleri Bugün sayfasındaki kendi satırlarındadır. */
 
 function mealSheetParse(text){
   const use = foodUsage();
   return parseMeal(text, allFoods(), { usage: k => use[k] || 0, pop: vpPopularity(foodPop) }).items;
+}
+
+/* Konuşma desteği: { supported, permission } ya da false (eklenti yok / cihaz desteklemiyor). null: henüz bilinmiyor. */
+let speechInfo = null;
+function speechProbe(){
+  const S = speechPlugin();
+  if (!S) return Promise.resolve((speechInfo = false));
+  try {
+    return Promise.resolve(S.status()).then(r => (speechInfo = r && r.supported ? r : false), () => (speechInfo = false));
+  } catch(e){ return Promise.resolve((speechInfo = false)); }
+}
+if (speechPlugin()) speechProbe();
+
+/* Tanıyıcıya ipucu: sayı ve birim sözcükleri, alışkanlıkların, kendi besinlerin, yaygın Türk besinleri (en çok 100). */
+function speechHints(){
+  const out = ["iki", "üç", "dört", "beş", "yarım", "buçuk", "dilim", "kaşık", "bardak", "kase", "porsiyon", "adet", "tane", "gram"];
+  const seen = new Set(out);
+  const add = k => {
+    const f = foodOf(k);
+    if (!f) return;
+    const n = f.n.replace(/\s*\(.*?\)/g, "").trim().toLocaleLowerCase("tr");
+    if (n && !seen.has(n)){ seen.add(n); out.push(n); }
+  };
+  Object.keys(foodHabits()).forEach(add);
+  Object.keys((state && state.customFoods) || {}).forEach(add);
+  if (typeof TR_FOODS !== "undefined") TR_FOODS.forEach(add);
+  return out.slice(0, 100);
 }
 
 function openMealSheet(){
@@ -20,10 +48,18 @@ function openMealSheet(){
   let extras = [];
   let open = -1;          /* "Değiştir" listesi açık olan kalem */
   let busy = false;
+  let listen = null;      /* dinleme açıkken { h: kısmi sonuç dinleyicisi } */
 
   const el = document.createElement("div");
   el.className = "sheet-bg";
-  const close = () => sheetOut(el);
+  const close = () => { stopListen(true); sheetOut(el); };
+  const stopListen = cancel => {
+    if (!listen) return;
+    const l = listen; listen = null;
+    try { if (l.h && l.h.remove) l.h.remove(); } catch(e){}
+    const S = speechPlugin();
+    if (cancel && S) { try { quiet(S.cancel()); } catch(e){} }
+  };
 
   const slotChips = () => `<div class="chips vs-slots" role="group" aria-label="${tx("Öğün")}">${slotList().map(([id, name]) =>
     `<button class="chip${id === slot ? " sel" : ""}" data-vs-slot="${esc(id)}" aria-pressed="${id === slot}">${esc(name)}</button>`).join("")}</div>`;
@@ -41,17 +77,20 @@ function openMealSheet(){
 
   const links = () => `<div class="vs-links">
       ${barcodeAvailable() ? `<button class="link" id="vs-bc">${icon("barcode")}${tx("Barkod okut")}</button>` : ""}
+      ${listen ? `<button class="link" id="vs-type">${tx("Yazarak gir")}</button>` : ""}
       <button class="link" id="vs-hand">${tx("Elle ekle")}</button></div>`;
   const hookLinks = () => {
     const bc = el.querySelector("#vs-bc");
     if (bc) bc.onclick = () => { close(); startBarcodeFlow(); };
+    const ty = el.querySelector("#vs-type");
+    if (ty) ty.onclick = () => { const t = text; stopListen(true); text = t; drawWrite(); };
     el.querySelector("#vs-hand").onclick = () => {
       close(); tab = "meals"; mealTab = "log"; addOpen = slot; render(); window.scrollTo(0, 0);
     };
   };
 
   /* ---- 1. yazı ekranı ---- */
-  const drawWrite = err => {
+  const drawWrite = (err, noFocus) => {
     el.querySelector("#vs-b").innerHTML = `
       ${slotChips()}
       <label class="vs-l" for="vs-t">${tx("Ne yedin?")}</label>
@@ -64,19 +103,70 @@ function openMealSheet(){
     hookSlots(); hookLinks();
     const ta = el.querySelector("#vs-t");
     ta.oninput = () => { text = ta.value; };
-    const go = () => {
-      text = ta.value.trim();
-      if (!text){ drawWrite(tx("Önce ne yediğini yaz ya da söyle.")); return; }
-      const found = mealSheetParse(text);
-      if (!found.some(it => it.key)){ drawWrite(tx("Anlayamadım. Besinin adını biraz farklı söyle ya da Elle ekle'yi dene.")); return; }
-      rows = found.map(it => ({ ...it, keep: true }));
-      extras = [];
-      found.forEach((it, i) => (it.extras || []).forEach(x => extras.push({ ...x, on: !!x.auto })));
-      open = -1;
-      drawConfirm();
-    };
-    el.querySelector("#vs-list").onclick = go;
-    ta.focus({ preventScroll: true });
+    el.querySelector("#vs-list").onclick = () => submit(ta.value, false);
+    if (!noFocus) ta.focus({ preventScroll: true });
+  };
+
+  /* Yazılan ya da söylenen cümle: besinlere ayrılırsa onay listesi, anlaşılmazsa yazı ekranı. */
+  const submit = (raw, voice) => {
+    text = String(raw || "").trim();
+    if (!text){ drawWrite(tx("Önce ne yediğini yaz ya da söyle.")); return; }
+    const found = mealSheetParse(text);
+    if (!found.some(it => it.key)){
+      drawWrite(tx("Anlayamadım. Besinin adını biraz farklı söyle ya da Elle ekle'yi dene."), voice);
+      return;
+    }
+    rows = found.map(it => ({ ...it, keep: true }));
+    extras = [];
+    found.forEach(it => (it.extras || []).forEach(x => extras.push({ ...x, on: !!x.auto })));
+    open = -1;
+    drawConfirm();
+  };
+
+  /* ---- 0. dinleme ekranı: + ile doğrudan açılır (iPhone'da cihaz içi Türkçe tanıma varsa) ---- */
+  const drawListen = () => {
+    el.querySelector("#vs-b").innerHTML = `
+      ${slotChips()}
+      <div class="vs-mic" aria-hidden="true"><i></i><i></i><span><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM6 11a6 6 0 0 0 12 0M12 17v4"/></svg></span></div>
+      <div class="vs-live" id="vs-live" aria-live="polite" data-empty="1">${tx("Konuş, ben dinliyorum")}</div>
+      <div class="vs-hint" style="text-align:center">${tx("Sustuğunda kendiliğinden biter")}</div>
+      <button class="vs-go" id="vs-done">${tx("Bitti")}</button>
+      ${links()}`;
+    hookSlots(); hookLinks();
+    el.querySelector("#vs-done").onclick = () => { const S = speechPlugin(); if (S) { try { quiet(S.stop()); } catch(e){} } };
+  };
+
+  const startListen = async () => {
+    const S = speechPlugin();
+    if (!S){ drawWrite(); return; }
+    listen = { h: null };
+    const mine = listen;
+    drawListen();
+    try {
+      mine.h = await S.addListener("partial", e => {
+        const n = el.querySelector("#vs-live");
+        if (listen !== mine || !n || !e || typeof e.text !== "string" || !e.text) return;
+        text = e.text; n.textContent = e.text; n.removeAttribute("data-empty");
+      });
+    } catch(e){}
+    try {
+      const r = await S.start({ hints: speechHints() });
+      if (listen !== mine) return;                    /* kapatıldı ya da yazıya geçildi */
+      stopListen(false);
+      const t = String((r && r.text) || text || "").trim();
+      if (t) submit(t, true);
+      else drawWrite(tx("Seni duyamadım. Tekrar dene ya da yaz."), true);
+    } catch(e){
+      if (listen !== mine) return;
+      stopListen(false);
+      const code = e && e.code;
+      if (code === "denied"){
+        speechInfo = { supported: true, permission: "denied" };
+        drawWrite(tx("Mikrofon ya da konuşma izni verilmedi. Ayarlar'dan açabilirsin; şimdilik yazarak gir."), true);
+      } else if (code === "unsupported"){
+        speechInfo = false; drawWrite(undefined, true);
+      } else drawWrite(tx("Dinleme çalışmadı. Yazarak girebilirsin."), true);
+    }
   };
 
   /* ---- 2. onay listesi ---- */
@@ -186,7 +276,9 @@ function openMealSheet(){
     <div id="vs-b"></div>
   </div>`;
   document.body.appendChild(el);
-  drawWrite();
+  /* Dinleme destekleniyorsa ya da henüz bilinmiyorsa doğrudan dinler; izin reddedildiyse ya da yoksa yazı ekranı. */
+  const canListen = !!speechPlugin() && (speechInfo === null || (speechInfo && speechInfo.supported && speechInfo.permission !== "denied"));
+  if (canListen) startListen(); else drawWrite();
   el.onclick = ev => { if (ev.target === el) close(); };
   el.querySelector(".sheet-x").onclick = close;
 }
