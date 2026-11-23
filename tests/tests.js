@@ -537,19 +537,20 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.21.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.21.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[8].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[1].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[2].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[3].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[4].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[5].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
+  eq(APP_VERSION, "1.22.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.22.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[9].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[2].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[3].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[4].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[5].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[6].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -675,17 +676,44 @@ test("hareket: countAt sıfırdan hedefe yavaşlayarak sayar, uçlarda tam değe
   let prev = -1;
   for (let i = 0; i <= 20; i++){ const v = countAt(0, 2400, i / 20); ok(v >= prev, "azalmamalı"); prev = v; }
 });
-test("hareket: Bugün halkası sayfaya girerken .fx-ring ile sıfırdan dolar, sayfa içinde sınıf taşımaz", async () => {
+test("hareket: Bugün başlığında biten hedef kadar yıldız yanar (.gh-dots), halka yok", async () => {
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
   try {
-    tab = "plan"; render();
     tab = "today"; render();
-    const fg = app.querySelector(".gh-fg");
-    ok(fg && fg.classList.contains("fx-ring"), "girişte fx-ring yok");
-    ok(/--fx-len:\d/.test(fg.getAttribute("style")), "çevre uzunluğu yok");
-    eq(fg.getAttribute("stroke-dashoffset"), fg.dataset.to, "son değer HTML'de");
-    render();
-    ok(!app.querySelector(".gh-fg").classList.contains("fx-ring"), "aynı sekmede yeniden çizim halkayı baştan doldurmamalı");
+    const d = app.querySelector(".gh-dots");
+    ok(d, "yıldız dizisi yok");
+    ok(!app.querySelector(".gh-fg"), "eski halka kalktı");
+    const total = +app.querySelector(".gh-n").getAttribute("aria-label").match(/\d+/)[0];
+    eq(d.querySelectorAll(".lit").length + d.querySelectorAll("circle").length, total, "her hedef için bir nokta");
+  } finally { state = null; }
+});
+test("bugün: açık hedeflerin ilki 'Sıradaki' kartında, kalanlar SONRA altında, biten hedefler tek satırda; geçmiş günde kart yok", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  try {
+    tab = "today"; goalOpen = null; render();
+    const fc = app.querySelector(".fc");
+    if (fc){
+      eq(app.querySelectorAll(".fc").length, 1, "tek odak kartı");
+      ok(fc.querySelector(".fc-t").textContent.trim() && fc.querySelector(".fc-go"), "başlık ve düğme");
+      ok(!app.querySelector("#goal-list .g:not(.fc)[data-kind='" + fc.dataset.kind + "']"), "odak hedefi listede tekrarlanmaz");
+    }
+    const gd = app.querySelector("details.gd");
+    if (gd) ok(gd.querySelectorAll("summary em").length >= 1 && gd.querySelectorAll(".g").length === gd.querySelectorAll("summary em").length, "özet satırı ile içerik aynı sayıda");
+    viewDate = shiftDays(today(), -1); ensureDay(viewDate); render();
+    ok(!app.querySelector(".fc"), "geçmiş günde odak kartı yok");
+    ok(app.querySelector(".gh-dots"), "geçmiş günde de başlık var");
+  } finally { viewDate = null; state = null; }
+});
+test("bugün: odak kartı su hedefinde '+ Bardak' bir bardak ekler", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  try {
+    state.days[today()].water = 0; goalOpen = null;
+    tab = "today"; render();
+    const fc = app.querySelector(".fc[data-kind='water']");
+    if (!fc){ ok(true, "su bu fixture'da odak değil"); return; }
+    fc.querySelector(".fc-go").onclick();
+    await new Promise(r => setTimeout(r, 200));
+    ok((state.days[today()].water || 0) >= 200, "bir bardak eklendi: " + state.days[today()].water);
   } finally { state = null; }
 });
 test("hareket: countUp görünmeyen ya da hareketi azaltılmış öğeye dokunmaz; sayfa girişinde sayaçlar sıfırdan başlar", async () => {
@@ -2728,13 +2756,13 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.21.0");
+  eq(APP_VERSION, "1.22.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
     ok(STARBOARD_EN[n.items[0]], v + " maddesinin İngilizcesi");
   }
-  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
+  for (const v of ["1.13.0", "1.14.0", "1.15.0", "1.16.0", "1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0", "1.22.0"]) for (const n of WHATS_NEW.filter(x => x.v === v)) for (const it of n.items) ok(STARBOARD_EN[it] && STARBOARD_EN[it] !== it, v + " maddesinin İngilizcesi: " + it);
 });
 
 /* ---- sade beslenme ekranı ---- */
@@ -3820,8 +3848,9 @@ test("kısa yol: bağlam kayıttan okunur; düğme yalnızca bugün çıkar; ö�
       /* antrenman düğmesi antrenman modunu açar */
       shortcutPick = () => ({ kind: "train" });
       tab = "today"; render();
-      const t = app.querySelector("#today-sc");
-      ok(t && t.textContent.trim() === "Antrenmanı başlat");
+      /* günün odağı antrenmansa aynı iş iki düğmede tekrarlanmaz: odak kartındaki düğme açar */
+      const t = app.querySelector("#today-sc") || app.querySelector("#fc-train");
+      ok(t && /Antrenman/.test(t.textContent), "antrenman düğmesi: " + (t && t.textContent));
       t.onclick();
       ok(woEl, "antrenman modu açıldı");
       closeWorkout();

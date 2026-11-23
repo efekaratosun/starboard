@@ -969,3 +969,39 @@ main.on .ob-journey #ob-tw{width:118px;min-height:44px;margin-top:2px;padding:0 
 .ob-warn{display:flex;gap:10px;align-items:flex-start;margin:12px 4px 4px;font-size:13.5px;line-height:1.4;color:var(--on-muted)}
 .ob-warn .ico{width:18px;height:18px;flex:0 0 18px;margin-top:1px;stroke-width:1.6}
 .ob-warn span{flex:1}
+
+/* 1.22.0 Bugün hedef paneli: başlık + yıldız dizisi, "Sıradaki" odak kartı, tamamlananlar tek satırda */
+.gh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 4px 10px}
+.gh-t{flex:1;min-width:0}
+.gh-t > b{font-size:23px;line-height:1.15;letter-spacing:-.3px}
+.gh-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+.gh .gh-n{position:static;inset:auto;padding:0;display:inline;font-size:14px;font-weight:700;color:var(--muted);font-family:var(--font-d)}
+.gh .gh-n b{font-size:inherit;font-weight:inherit;color:inherit;line-height:1;margin:0}
+.gh-dots{width:122px;height:18px;display:block;overflow:visible}
+.gh-dots line{stroke:var(--track);stroke-width:2}
+.gh-dots line.on{stroke:var(--band)}
+.gh-dots circle{fill:none;stroke:var(--tap-edge);stroke-width:1.5}
+.gh-dots .lit{fill:var(--band)}
+.gh-r.flash .gh-dots .lit:last-of-type{animation:obBump .45s var(--e-spring,ease)}
+main section.gl{background:none;border:0;box-shadow:none;padding:4px 4px 16px}
+.fc{margin:2px 0 4px;border:0;border-radius:26px;background:var(--fill);color:var(--on-fill);padding:16px 18px 18px}
+.fc.g{border-bottom:0}
+.fc-h{display:flex;align-items:center;gap:12px}
+.fc-ic{width:52px;height:52px;flex:0 0 52px;border-radius:50%;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center}
+.fc-ic .ico{width:28px;height:28px}
+.fc-eb{font-size:12.5px;font-weight:700;letter-spacing:1.5px}
+.fc-t{font-family:var(--font-d);font-size:28px;font-weight:700;letter-spacing:-.5px;line-height:1.1;overflow-wrap:anywhere}
+.fc-s{font-size:15px;font-weight:700;margin-top:10px;line-height:1.35}
+.fc-bar{height:6px;border-radius:3px;background:rgba(0,0,0,.16);margin-top:8px;overflow:hidden}
+.fc-bar i{display:block;height:100%;border-radius:3px;background:var(--on-fill)}
+.fc-go{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;margin-top:14px;border-radius:24px;
+  background:var(--on-fill);color:var(--fill);font-size:16px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.fc-go:focus-visible{outline:2px solid var(--on-fill);outline-offset:3px}
+.fc-ed{margin-top:12px;padding:12px 14px;border-radius:18px;background:var(--bg);color:var(--ink)}
+.gl-lbl{font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--muted);margin:16px 4px 0}
+.gd{margin-top:6px;border-top:1px solid var(--line)}
+.gd > summary{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;min-height:48px;padding:6px 4px;cursor:pointer;font-size:14px;font-weight:700;color:var(--muted)}
+.gd > summary::-webkit-details-marker{display:none}
+.gd > summary em{font-style:normal;display:inline-flex;align-items:center;gap:5px;color:var(--ink)}
+.gd > summary em .ico{width:15px;height:15px;color:var(--band)}
+.gd > summary:focus-visible{outline:2px solid var(--band);outline-offset:-2px;border-radius:12px}
