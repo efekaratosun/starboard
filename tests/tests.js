@@ -1404,15 +1404,41 @@ test("görevler: eski İngilizce başlıklar tanınır, birikmiş kopyalar temiz
   state = null;
 });
 
-test("hızlı giriş: penceredeki metinler boş ya da undefined çıkmaz", async () => {
+test("yemek kısayolu: pencere açılır, cümle listelenir, metinler boş ya da undefined çıkmaz", async () => {
   state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
-  openQuickSheet();
-  const sheets = [...document.querySelectorAll(".sheet-bg")];
-  const html = sheets.map(e => e.innerHTML).join("");
-  sheets.forEach(e => e.remove());
-  ok(!/>undefined</.test(html), "pencerede undefined yazıyor");
-  const ses = currentProgram().training.days.find(d => d.wd === isoWeekday(today()));
-  if (ses && ses.b) ok(html.includes(esc(ses.t)), "antrenman adı görünmüyor");
+  openMealSheet();
+  const sheet = () => document.querySelector(".sheet-bg");
+  ok(sheet() && /Ne yedin\?/.test(sheet().innerHTML), "yazı ekranı açılmadı");
+  const ta = sheet().querySelector("#vs-t");
+  ta.value = "iki yumurta, bir dilim peynir ve iki bardak su";
+  ta.oninput();
+  sheet().querySelector("#vs-list").onclick();
+  const html = sheet().innerHTML;
+  ok(!/>undefined</.test(html) && !/undefined/.test(sheet().textContent), "pencerede undefined yazıyor");
+  ok(/Yumurta/.test(html) && /Hangisi\?/.test(html), "yumurta ve peynir sorusu görünmüyor");
+  ok(/su takibine yazılır/.test(html), "su ayrı gösterilmiyor");
+  /* ekleme: yumurta günlüğe, su su takibine */
+  const e = ensureDay(vKey()), before = (e.log || []).length, w0 = e.water || 0;
+  await sheet().querySelector("#vs-add").onclick();
+  const after = ensureDay(vKey());
+  ok((after.log || []).length > before, "günlüğe kalem eklenmedi");
+  ok((after.water || 0) >= w0 + 400, "su eklenmedi");
+  document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+  state = null;
+});
+
+test("yemek kısayolu: bulunamayan cümle hata verir, kilo penceresi açılır, eski hızlı giriş yok", async () => {
+  state = await loadFixture(); migrateMeals(); viewDate = null; ensureToday();
+  openMealSheet();
+  const s = document.querySelector(".sheet-bg");
+  s.querySelector("#vs-t").value = "xyzzy blabla"; s.querySelector("#vs-t").oninput();
+  s.querySelector("#vs-list").onclick();
+  ok(/Anlayamad/.test(s.innerHTML), "anlaşılmayan cümlede uyarı yok");
+  s.remove();
+  openWeightSheet();
+  ok(document.querySelector("#qs-w") && document.querySelector("#qs-w-ok"), "kilo penceresi açılmadı");
+  document.querySelectorAll(".sheet-bg").forEach(x => x.remove());
+  ok(typeof openQuickSheet === "undefined", "eski hızlı giriş hâlâ duruyor");
   state = null;
 });
 
