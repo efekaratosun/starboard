@@ -4738,6 +4738,26 @@ test("hatırlatmalar: izin reddedilirse seçim 'şimdilik istemiyorum'a döner v
   }
 });
 
+test("hedefin: hedef kilo önerisi hedefe göre değişir ve yazıyla gösterilir; onay kutuları etiketli", () => {
+  const prev = ob;
+  try {
+    const step = OB_STEPS.find(s => s.id === "goal");
+    ob = { ...obDefaults(), weight:80, goal:"maintain", units:"metric" };
+    eq(obTwHint(), 80);
+    ob.goal = "lose"; eq(obTwHint(), 72);
+    ob.goal = "gain"; eq(obTwHint(), 84);
+    app.innerHTML = step.body();
+    ok(app.querySelector("#ob-tw-hint").textContent.includes("84"));
+    eq(app.querySelector("#ob-tw").placeholder, "84");
+    eq(app.querySelectorAll(".ob-check input[type=checkbox]").length >= 3, true);
+    eq(app.querySelectorAll(".ob-check-t").length >= 3, true);
+    ok(app.querySelector(".ob-personal summary"));
+  } finally {
+    ob = prev;
+    app.replaceChildren();
+  }
+});
+
 test("profil kurulumu: zorunlu isim, simgesiz seçenekler ve altı ortak maskot", () => {
   const prev = ob;
   try {

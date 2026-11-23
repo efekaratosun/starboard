@@ -883,6 +883,8 @@ window.STARBOARD_EN = {
   "porsiyonu düzenle": "edit portion",
   "{0} değerini elle yaz": "Type the {0} value",
   "Bildirimler kapalı": "Notifications are off",
+  "Önerilen: {0} {1}": "Suggested: {0} {1}",
+  "Günlük rutinlerine eklenir": "Added to your daily routines",
   "Hatırlatmaları almak için iPhone Ayarlar › Starboard › Bildirimler'den izin ver. İstersen şimdilik geçebilirsin.": "To get reminders, allow notifications in iPhone Settings › Starboard › Notifications. You can also skip this for now.",
   "{0} arttır": "Increase {0}",
   /* birimler (1.5.0) */
