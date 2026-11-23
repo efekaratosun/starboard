@@ -34,6 +34,10 @@ public class StarboardSpeechPlugin: CAPPlugin, CAPBridgedPlugin {
     // MARK: - Public API
 
     @objc public func status(_ call: CAPPluginCall) {
+        DispatchQueue.main.async { self.statusMain(call) }
+    }
+
+    private func statusMain(_ call: CAPPluginCall) {
         let supported = Self.isOnDeviceTurkishSupported()
         let permission = Self.aggregatePermission()
         call.resolve([
@@ -43,6 +47,10 @@ public class StarboardSpeechPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc public func start(_ call: CAPPluginCall) {
+        DispatchQueue.main.async { self.startMain(call) }
+    }
+
+    private func startMain(_ call: CAPPluginCall) {
         guard activeStartCall == nil, !isSessionRunning else {
             call.reject("Another speech session is already active.", "error")
             return
@@ -66,6 +74,10 @@ public class StarboardSpeechPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc public func stop(_ call: CAPPluginCall) {
+        DispatchQueue.main.async { self.stopMain(call) }
+    }
+
+    private func stopMain(_ call: CAPPluginCall) {
         guard isSessionRunning else {
             call.resolve(["text": latestText])
             return
@@ -74,6 +86,10 @@ public class StarboardSpeechPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc public func cancel(_ call: CAPPluginCall) {
+        DispatchQueue.main.async { self.cancelMain(call) }
+    }
+
+    private func cancelMain(_ call: CAPPluginCall) {
         tearDownSession(notify: false)
         if let pending = activeStartCall {
             activeStartCall = nil
@@ -257,7 +273,14 @@ public class StarboardSpeechPlugin: CAPPlugin, CAPBridgedPlugin {
                     // User stopped or session ended; already handled elsewhere.
                     return
                 }
-                if self.isSessionRunning {
+                guard self.isSessionRunning else { return }
+                if nsError.domain == "kAFAssistantErrorDomain", nsError.code == 1110 {
+                    // Konuşma algılanmadı: hata değil, boş metinle biter.
+                    self.finishSession(resolving: nil, text: self.latestText)
+                } else if nsError.domain == "kAFAssistantErrorDomain", nsError.code == 1101 || nsError.code == 1107 {
+                    // Cihaz içi Türkçe model yok ya da kullanılamıyor.
+                    self.failSession(message: "On-device Turkish speech model is not available.", code: "unsupported")
+                } else {
                     self.failSession(message: error.localizedDescription)
                 }
             }
@@ -292,11 +315,11 @@ public class StarboardSpeechPlugin: CAPPlugin, CAPBridgedPlugin {
         extraCall?.resolve(["text": finalText])
     }
 
-    private func failSession(message: String) {
+    private func failSession(message: String, code: String = "error") {
         tearDownSession(notify: false)
         if let startCall = activeStartCall {
             activeStartCall = nil
-            startCall.reject(message, "error")
+            startCall.reject(message, code)
         }
     }
 
