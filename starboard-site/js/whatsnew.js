@@ -8,6 +8,9 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.20.0", items:[
+    tx("Hedefin ekranında artık kaç haftada hedef kiloya ineceğini kaydırıcıyla seçiyorsun; günlük kalorin seçtiğin süreye göre ayarlanıyor."),
+    tx("Hedefin ekranındaki seçeneklerin çizgileri daha belirgin.")] },
   { v:"1.19.0", items:[
     tx("Ana sayfalar yeni tasarıma geçti: sıcak Mercan renkleri, açık ve koyu temada."),
     tx("Bugün ekranının üstünde dört ay göstergesi ve altında takımyıldız şeridi var; Beslenme ekranı sadeleşti."),
