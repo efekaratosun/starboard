@@ -5261,6 +5261,24 @@ test("sesli giriş: meyve, tatlı, börek, pide, kahve, çorba, salata kategoril
   ok(say("pide")[0].key !== "pideekmegi", "pide → pide ekmeği değil");
 });
 
+test("sesli giriş: kategori sözcüğüne ek sözcük gelince tam ad kazanır, yalın grup sözcüğü sorar", async () => {
+  state = await loadFixture();
+  /* Ek sözcükle tam besin adı söylenince grubun ilk üyesine değil, kendi adına gider. */
+  const cs = say("çoban salata")[0];
+  eq([cs.key, cs.conf], ["cobansalata", "high"], "çoban salata → kendi adı");
+  eq(say("kıymalı pide")[0].key, "kiymalipide", "kıymalı pide → kendi adı");
+  eq(say("kıymalı pide")[0].conf, "high", "kıymalı pide emin");
+  /* Yalnız grup sözcüğü söylenince aday listesi sorulur. */
+  for (const w of ["salata", "pide", "meyve", "et", "ciğer", "balık", "yağ"]){
+    const r = say(w)[0];
+    eq(r.conf, "low", w + ": sorulur");
+    ok(r.alts.length > 1, w + ": aday listesi var");
+  }
+  eq(say("salata")[0].key, "mevsimsalata", "yalın salata → grubun ilk üyesi");
+  eq(say("pide")[0].key, "kiymalipide", "yalın pide → grubun ilk üyesi");
+  eq(say("pişmiş ciğer")[0].conf, "low", "pişmiş ciğer yine grup sorar");
+});
+
 test("sesli giriş: 'yağ' tek başına hangi yağ olduğunu sorar", async () => {
   state = await loadFixture();
   const y = say("yağ")[0];

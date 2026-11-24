@@ -285,9 +285,13 @@ function parseMeal(text, foods, opts){
       const v = Math.round((qty == null ? 1 : qty) * per);
       return { raw, qty, unit, key:"__su", name:"Su", water:true, ml:v, g:v, conf:"high", alts:[], approx:false, dropped:false };
     }
-    /* Kategori sözcüğü ("et", "ciğer", "balık", "pişmiş ciğer"): hazır pişmiş yemekler sorulur. */
+    /* Kategori sözcüğü ("et", "ciğer", "balık", "pişmiş ciğer"): hazır pişmiş yemekler sorulur.
+       Yol yalnız tek başına kategori sözcüğü söylenince çalışır ("pişmiş" öneki serbesttir).
+       Ek sözcük tam bir besin adıyla eşleşiyorsa ("çoban salata", "kıymalı pide") normal
+       eşleştirme kazanır; grubun ilk üyesine düşülmez. */
     const gkey = known.filter(t => t !== "pismis").join(" ");
-    const grp = vpGroup(gkey);
+    const grpWords = words.filter(t => t !== "pismis");
+    const grp = grpWords.length === 1 ? vpGroup(gkey) : null;
     if (grp){
       const byKey = new Map(foods);
       const rows2 = grp.filter(k => byKey.has(k)).map((k, i) => [k, byKey.get(k), 100 - i]);
