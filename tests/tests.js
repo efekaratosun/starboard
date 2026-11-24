@@ -5235,6 +5235,53 @@ test("sesli giriş: sıfat yerindeki sözcük besini seçtirmez; yalın söz yal
   eq(say("mercimek çorbası")[0].key, "mercimekcorba", "mercimek çorbası");
 });
 
+test("sesli giriş: meyve, tatlı, börek, pide, kahve, çorba, salata kategorileri sorulur", async () => {
+  state = await loadFixture();
+  const alts = w => { const r = say(w)[0]; return [r.conf, [r.key, ...r.alts.map(a => a.key)]]; };
+  const cases = [
+    ["meyve", ["elma", "muz", "portakal"]],
+    ["tatlı", ["baklava", "sutlac", "kunefe"]],
+    ["börek", ["suborek", "sigaraboregi", "kiymaliborek"]],
+    ["pide", ["kiymalipide", "kasarlipide", "ramazanpidesi"]],
+    ["kahve", ["turkkahvesi", "filtrekahve"]],
+    ["çorba", ["mercimekcorba", "ezogelin", "tarhana"]],
+    ["salata", ["mevsimsalata", "cobansalata", "piyaz"]]
+  ];
+  for (const [w, want] of cases){
+    const [conf, keys] = alts(w);
+    eq(conf, "low", w + " kategori: sorulur");
+    for (const k of want) ok(keys.includes(k), w + ": " + k);
+    const f = FOODS[keys[0]];
+    ok(f && !f.cigYenmez && f.i !== "oil", w + ": gerçekten yenen yemek önerilir");
+  }
+  /* sıra: en sık yenen yemek başta */
+  eq(say("meyve")[0].key, "elma", "meyve → elma");
+  eq(say("tatlı")[0].key, "baklava", "tatlı → baklava");
+  eq(say("kahve")[0].key, "turkkahvesi", "kahve → Türk kahvesi");
+  ok(say("pide")[0].key !== "pideekmegi", "pide → pide ekmeği değil");
+});
+
+test("sesli giriş: 'yağ' tek başına hangi yağ olduğunu sorar", async () => {
+  state = await loadFixture();
+  const y = say("yağ")[0];
+  eq(y.conf, "low", "yağ sorulur");
+  eq(y.key, "zeytinyagi", "zeytinyağı ilk öneri");
+  eq(y.g, 13, "bir yemek kaşığı");
+  ok(y.alts.some(a => a.key === "tereyagi") && y.alts.some(a => a.key === "aycicekyagi"), "öteki yağlar aday");
+  eq(say("yağı")[0].conf, "low", "yağı da sorulur");
+});
+
+test("sesli giriş: yağlı hali tabloda olmayan sebze çiğ kaloriyle yazılmaz, sorulur", async () => {
+  state = await loadFixture();
+  const s = say("zeytinyağlı ıspanak")[0];
+  eq(s.conf, "low", "düşük güvenle sorulur");
+  eq(s.extras, undefined, "ayrıca yağ eklenmez");
+  ok(s.alts.length > 1 && s.alts.some(a => a.key === "ispanakyemek"), "pişmiş ıspanak aday");
+  const k = say("zeytinyağlı pırasa")[0];
+  eq(k.conf, "low", "pırasa da sorulur");
+  ok(k.alts.some(a => a.key === "pirasa"), "pişmiş pırasa aday");
+});
+
 test("sesli giriş: et, ciğer, balık sorulur ve yalnız pişmiş yemekler önerilir; kalori kaynaktaki değerdir", async () => {
   state = await loadFixture();
   const keys = w => { const r = say(w)[0]; return [r.key, ...r.alts.map(a => a.key)]; };

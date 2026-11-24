@@ -216,8 +216,16 @@ function vpSide(k, f){
 /* Sofrada eklenen yağ: "zeytinyağlı limonlu salata" → salata + zeytinyağı. Yemeğin kendi pişirme yağı
    (iskender tereyağı, "yağda kızarmış") ayrıca yazılmaz. "Bol yağlı" yalnız eklenebilir (otomatik değil). */
 const VP_YAG = { zeytinyagli: "zeytinyagi", sizma: "zeytinyagi", tereyagli: "tereyagi" };
+const VP_YAG_TEK = new Set(["yag", "yagi", "yaglar", "yaglari"]);
 const VP_SOS_SIFAT = new Set(["limonlu", "sirkeli"]);
 const VP_BOL = new Set(["bol", "cok", "ekstra"]);
+
+/* Kategori sözcüğü ("meyve", "çorba"...) yiyecek adıyla eşleşmese de VOICE_GROUPS'ta aranır. */
+const vpGroup = k => (typeof VOICE_GROUPS !== "undefined"
+  && Object.prototype.hasOwnProperty.call(VOICE_GROUPS, k)) ? VOICE_GROUPS[k] : null;
+
+/* Pişmiş yemek işaretleri: yağlı hali tabloda olmayan sebzenin çiğ kaydı yerine önerilecek adaylar. */
+const VP_PREP = /(yemek|yemegi|dolma|sarma|kizartma|kizarmis|tava|sote|izgara|haslanmis|firin|kozlenmis|zeytinyagli|koftesi|pilaki|musakka|karniyarik|imambayildi|ezme|mucver|corba|guvec|turlu)/;
 
 function parseMeal(text, foods, opts){
   const o = opts || {};
@@ -234,9 +242,40 @@ function parseMeal(text, foods, opts){
     const g = bol ? (yk ? yk.g * 2 : 26) : (key === "tereyagi" && tk ? tk.g : yk ? yk.g : 13);
     return { key, name: f.n, g, auto, kind: bol ? "bol" : "sofra" };
   };
+  /* "Zeytinyağlı ıspanak" gibi yağlı hali tabloda olmayan sebzede çiğ kaydın kalorisi
+     sessizce yazılmaz: pişmiş benzeri varsa aday olur, her durumda düşük güvenle sorulur. */
+  const askOily = it => {
+    const f = it && it.key ? fmap.get(it.key) : null;
+    if (!f || f.i !== "veg") return false;
+    const base = vpFold(String(f.n || "").split("(")[0]).trim().split(" ").filter(Boolean).pop() || "";
+    if (base.length < 4) return false;
+    const mk = ([k, g]) => ({ key: k, name: g.n, ...vpGrams(g, it.qty, it.unit) });
+    const cooked = foods.filter(([k, g]) => k !== it.key && !g.cigYenmez && g.i !== "oil"
+        && VP_PREP.test(vpFold(String(g.n || ""))) && vpFold(String(g.n || "")).includes(base))
+      .sort((a, b) => ((vpFold(String(b[1].n)).includes("zeytinyagli") ? 1 : 0)
+          - (vpFold(String(a[1].n)).includes("zeytinyagli") ? 1 : 0))
+        || (pop(b[0]) - pop(a[0])) || (a[1].n.length - b[1].n.length))
+      .slice(0, 3).map(mk);
+    it.conf = "low";
+    it.alts = [it, ...cooked];
+    return true;
+  };
   const resolve = (raw, qty, unit, words) => {
-    /* Hiçbir besinde karşılığı olmayan sözcük ("haşladım") gürültüdür, atılır. */
-    const known = words.filter(t => foods.some(([, f]) => vpScore([t], f) > 0));
+    /* "yağ" tek başına söylendiğinde hangi yağ olduğu sorulur (zeytinyağı ilk öneri). */
+    if (words.length === 1 && VP_YAG_TEK.has(words[0])){
+      const rows2 = ["zeytinyagi", "tereyagi", "aycicekyagi", "hindistancevizyagi"]
+        .map((k, i) => [k, fmap.get(k), 100 - i]).filter(r => r[1]);
+      if (rows2.length){
+        rows2.sort((a, b) => (usage(b[0]) - usage(a[0])) || (b[2] - a[2]));
+        const mk2 = r => ({ key: r[0], name: r[1].n, ...vpGrams(r[1], qty, unit) });
+        const g2 = mk2(rows2[0]);
+        return { raw, qty, unit, key: rows2[0][0], name: rows2[0][1].n, g: g2.g, approx: g2.approx,
+          dropped: false, conf: "low", alts: rows2.map(mk2) };
+      }
+    }
+    /* Hiçbir besinde karşılığı olmayan sözcük ("haşladım") gürültüdür, atılır.
+       Kategori sözcüğü ("meyve") besin adıyla eşleşmese de grubu için tutulur. */
+    const known = words.filter(t => foods.some(([, f]) => vpScore([t], f) > 0) || vpGroup(t));
     let dropped = known.length < words.length || !!words.mod;
     const none = { raw, qty, unit, key:null, name:"", g:0, conf:"low", alts:[], approx:false, dropped };
     if (!known.length) return none;
@@ -248,7 +287,7 @@ function parseMeal(text, foods, opts){
     }
     /* Kategori sözcüğü ("et", "ciğer", "balık", "pişmiş ciğer"): hazır pişmiş yemekler sorulur. */
     const gkey = known.filter(t => t !== "pismis").join(" ");
-    const grp = typeof VOICE_GROUPS !== "undefined" ? VOICE_GROUPS[gkey] : null;
+    const grp = vpGroup(gkey);
     if (grp){
       const byKey = new Map(foods);
       const rows2 = grp.filter(k => byKey.has(k)).map((k, i) => [k, byKey.get(k), 100 - i]);
@@ -317,6 +356,8 @@ function parseMeal(text, foods, opts){
           const tail = list[list.length - 1], tf = tail && tail.key ? fmap.get(tail.key) : null;
           /* Sofrada yağ eklenen yiyecekler: salata ve ekmek. Öteki yemeklerde yağ pişirmeye dahildir. */
           if (oilKey && !bolYag && tf && (/salata/.test(vpFold(tail.name)) || tf.i === "bread")) extras.push(oilExtra(oilKey, false, true));
+          /* Yağlı hali tabloda olmayan pişmiş sebze: çiğ kaydı emin diye yazma, sor. */
+          if (oilKey && !bolYag && tail && tail.conf === "high") askOily(tail);
         } else list = [];
         if (bolYag && list.length){
           const tn = vpFold(list[list.length - 1].name || "");
