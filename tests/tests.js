@@ -762,12 +762,14 @@ test("beslenme: alt sayfada .mt-x kapatma düğmesi açıkkken var, tıklanınca
   state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
   try {
     tab = "meals"; mealTab = "log"; resetMealUI(); render();
-    const nowSlot = app.querySelector(".mt-now .fold-h")?.dataset.fold;
-    if (!nowSlot){ ok(true, "sıradaki öğün yok"); return; }
+    const firstHead = app.querySelector(".mt-i .fold-h");   /* gün saatinden bağımsız: ilk öğün */
+    ok(firstHead, "öğün başlığı bulunmalı (test boş geçemez)");
+    const nowSlot = firstHead.dataset.fold;
+    ok(nowSlot, "öğün anahtarı bulunmalı");
     const head = app.querySelector(`[data-fold="${nowSlot}"]`);
     if (!head.closest(".fold").classList.contains("shut")) head.click();
     head.click();
-    const sheet = app.querySelector(".mt-now > section.fold:not(.shut)");
+    const sheet = app.querySelector(".mt-i > section.fold:not(.shut)");
     ok(sheet, "öğüne dokununca alt sayfa açılır");
     const x = sheet.querySelector(".mt-x");
     ok(x, "açıkken .mt-x var");
