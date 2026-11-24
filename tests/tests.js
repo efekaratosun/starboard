@@ -757,6 +757,25 @@ test("beslenme: öğünler gün akışında; sıradaki öğünün önerisi gör�
     ok(!app.querySelector(".mt-now") && !app.querySelector(".mt-card"), "geçmiş günde öneri kartı yok");
   } finally { resetMealUI(); viewDate = null; state = null; }
 });
+test("beslenme: alt sayfada .mt-x kapatma düğmesi açıkkken var, tıklanınca shut olur, kapalıyken görünmez", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  try {
+    tab = "meals"; mealTab = "log"; resetMealUI(); render();
+    const nowSlot = app.querySelector(".mt-now .fold-h")?.dataset.fold;
+    if (!nowSlot){ ok(true, "sıradaki öğün yok"); return; }
+    const head = app.querySelector(`[data-fold="${nowSlot}"]`);
+    if (!head.closest(".fold").classList.contains("shut")) head.click();
+    head.click();
+    const sheet = app.querySelector(".mt-now > section.fold:not(.shut)");
+    ok(sheet, "öğüne dokununca alt sayfa açılır");
+    const x = sheet.querySelector(".mt-x");
+    ok(x, "açıkken .mt-x var");
+    x.click();
+    const sec = app.querySelector(`[data-fold="${nowSlot}"]`)?.closest(".fold");
+    ok(sec && sec.classList.contains("shut"), "tıklanınca shut olur");
+    ok(!app.querySelector(".mt-i > section.fold:not(.shut) .mt-x"), "kapalıyken görünmez");
+  } finally { resetMealUI(); viewDate = null; state = null; }
+});
 test("hareket: countUp görünmeyen ya da hareketi azaltılmış öğeye dokunmaz; sayfa girişinde sayaçlar sıfırdan başlar", async () => {
   const el = document.createElement("span");
   el.textContent = "1.234";

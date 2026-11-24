@@ -1059,11 +1059,12 @@ body:has(.mt-i > section.fold:not(.shut)){overflow:hidden}
 .mt-i > section.fold:not(.shut) .fold-h{padding-right:0;min-height:48px}
 .mt-i > section.fold:not(.shut) .fold-t{font-size:26px}
 .mt-i > section.fold:not(.shut) .fold-c{display:none}
-.mt-i > section.fold:not(.shut) .fold-h::after{content:"×";grid-area:ch;font-size:30px;font-weight:400;line-height:1;color:var(--muted);width:44px;text-align:center}
 .mt-i > section.fold:not(.shut)::before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--tap-edge);margin:-6px auto 10px;position:static}
 .mt-i:has(> section.fold:not(.shut)) > .mt-plus{visibility:hidden}
-.mt-sheet-sug{margin:0 0 12px}
-.mt-sheet-sug .mt-sug{margin-bottom:10px}
+.mt-i > section.fold .mt-x{position:absolute;top:10px;right:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--muted);font-size:24px;font-weight:400;line-height:1;cursor:pointer;z-index:90;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.mt-i > section.fold.shut .mt-x{display:none}
+.mt-i > section.fold .mt-x:focus-visible{outline:2px solid var(--band);outline-offset:2px}
+.mt-sheet-sug{margin:0 0 12px}.mt-sheet-sug .mt-sug{margin-bottom:10px}
 .mt-sug-go{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;border-radius:25px;background:var(--fill);color:var(--on-fill);font-size:16px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .mt-sug-go:focus-visible{outline:2px solid var(--band);outline-offset:3px}
 .mt-sug-other{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin-top:2px}

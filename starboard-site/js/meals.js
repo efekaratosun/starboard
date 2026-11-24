@@ -476,6 +476,7 @@ function mealCards(entry, sug){
       ${addOpen === k ? addPanel()
         : yIt.length ? `<button class="ghost rep" data-copymeal="${k}" style="margin-top:8px">
           ${tx("↺ {0} aynı ({1} kalem · {2} kcal)", [onToday() ? tx("Dünküyle") : tx("Bir önceki günle"), yIt.length, itemsKcal(yIt)])}</button>` : ""}
+      <button type="button" class="mt-x" aria-label="Kapat">x</button>
     `, addOpen === k || saveMealOpen === k || expanded, items.length ? foodNames(items) : isNow ? tx("Sıradaki öğün") : "")
       + `<button class="mt-plus" data-mt-add="${k}" aria-label="${esc(l)}, ${tx("Besin ekle")}">+</button>`
       + `</div>`;
@@ -483,7 +484,7 @@ function mealCards(entry, sug){
 
   const other = log.filter(x => slotOf(x) === "__other");
   if (other.length) cards.push(`<div class="mt-i mt-done">${nodeSvg("done")}` + fold("meal___other", tx("Diğer"), tx("{0} kcal", [itemsKcal(other)]),
-    other.map(logLine).join(""), false, foodNames(other)) + `</div>`);
+    other.map(logLine).join("") + `<button type="button" class="mt-x" aria-label="Kapat">x</button>`, false, foodNames(other)) + `</div>`);
 
   return `<div class="mt">${cards.join("")}</div>`;
 }
@@ -1113,6 +1114,12 @@ function wireMealsRest(entry){
   app.querySelectorAll(".mt-i").forEach(el => el.addEventListener("click", e => {
     if (e.target === el && el.querySelector(":scope > section.fold:not(.shut)")) el.querySelector(".fold-h").click();
   }));
+  /* alt sayfanın bağımsız kapatma düğmesi: ilgili başlığın click() mantığını kullanır */
+  app.querySelectorAll(".mt-x").forEach(b => b.onclick = (ev) => {
+    ev.stopPropagation();
+    const h = b.closest("section.fold")?.querySelector(".fold-h");
+    if (h) h.click();
+  });
 
   app.querySelectorAll("[data-mex]").forEach(b => b.onclick = async () => {
     const prefs = mealPrefs();
