@@ -923,7 +923,17 @@ const NO_STANDALONE = new Set(["pirincunu","nohutunu","sehriye","polenta","yufka
 const VOICE_GROUPS = {
   et:["danabiftekizgara","antrikotizgara","bonfilesis","etsote","kuzutandir"],
   ciger:["arnavutciger","edirnecigeri","cigertava","cigersote","kuzucigeri","tavukcigeri"],
-  balik:["levrekizgara","izgarasomon","palamutizgara","hamsitava","hamsibugulama","barbun","izgarabalik"]
+  balik:["levrekizgara","izgarasomon","palamutizgara","hamsitava","hamsibugulama","barbun","izgarabalik"],
+  meyve:["elma","muz","portakal","mandalina","cilek","uzum","karpuz","kavun","kivi","armut","seftali",
+    "kayisi","kiraz","erik","visne","nar","incir","hurma","ananas","greyfurt","yabanmersini"],
+  tatli:["baklava","sutlac","kunefe","kadayif","dondurma","revani","kazandibi","asure","lokum",
+    "tahinhelva","muhallebi","keskul","irmikhelvasi","gullac","kabaktatlisi","sutlucikolata","bitter"],
+  borek:["suborek","sigaraboregi","kiymaliborek","cigborek"],
+  pide:["kiymalipide","kasarlipide","ramazanpidesi"],
+  kahve:["turkkahvesi","filtrekahve"],
+  corba:["mercimekcorba","ezogelin","tarhana","yaylacorba","domatescorba","tavukcorba","iskembe",
+    "duguncorbasi","sebzecorbasi"],
+  salata:["mevsimsalata","cobansalata","piyaz"]
 };
 
 /* Otomatik önerilerde kullanılabilecek gözden geçirilmiş besinler.

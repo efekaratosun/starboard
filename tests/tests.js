@@ -537,25 +537,26 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.26.0");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[14].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 2, "1.26.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[1].items.length, 2, "1.25.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[2].items.length, 1, "1.24.1: tek kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[3].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[4].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[5].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[6].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[7].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[8].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[9].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[10].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[11].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
+  eq(APP_VERSION, "1.26.1");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[15].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 2, "1.26.1: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 2, "1.26.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[2].items.length, 2, "1.25.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[3].items.length, 1, "1.24.1: tek kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[4].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[5].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[6].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[7].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[8].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[9].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[10].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[11].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[12].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -755,6 +756,27 @@ test("beslenme: öğünler gün akışında; sıradaki öğünün önerisi gör�
     /* geçmiş günde sıradaki öğün ve öneri kartı yok */
     resetMealUI(); viewDate = shiftDays(today(), -1); ensureDay(viewDate); render();
     ok(!app.querySelector(".mt-now") && !app.querySelector(".mt-card"), "geçmiş günde öneri kartı yok");
+  } finally { resetMealUI(); viewDate = null; state = null; }
+});
+test("beslenme: alt sayfada .mt-x kapatma düğmesi açıkkken var, tıklanınca shut olur, kapalıyken görünmez", async () => {
+  state = await loadFixture(); migrateMeals(); notice = null; viewDate = null; ensureToday();
+  try {
+    tab = "meals"; mealTab = "log"; resetMealUI(); render();
+    const firstHead = app.querySelector(".mt-i .fold-h");   /* gün saatinden bağımsız: ilk öğün */
+    ok(firstHead, "öğün başlığı bulunmalı (test boş geçemez)");
+    const nowSlot = firstHead.dataset.fold;
+    ok(nowSlot, "öğün anahtarı bulunmalı");
+    const head = app.querySelector(`[data-fold="${nowSlot}"]`);
+    if (!head.closest(".fold").classList.contains("shut")) head.click();
+    head.click();
+    const sheet = app.querySelector(".mt-i > section.fold:not(.shut)");
+    ok(sheet, "öğüne dokununca alt sayfa açılır");
+    const x = sheet.querySelector(".mt-x");
+    ok(x, "açıkken .mt-x var");
+    x.click();
+    const sec = app.querySelector(`[data-fold="${nowSlot}"]`)?.closest(".fold");
+    ok(sec && sec.classList.contains("shut"), "tıklanınca shut olur");
+    ok(!app.querySelector(".mt-i > section.fold:not(.shut) .mt-x"), "kapalıyken görünmez");
   } finally { resetMealUI(); viewDate = null; state = null; }
 });
 test("hareket: countUp görünmeyen ya da hareketi azaltılmış öğeye dokunmaz; sayfa girişinde sayaçlar sıfırdan başlar", async () => {
@@ -2819,7 +2841,7 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.26.0");
+  eq(APP_VERSION, "1.26.1");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
@@ -5233,6 +5255,71 @@ test("sesli giriş: sıfat yerindeki sözcük besini seçtirmez; yalın söz yal
   eq(say("lor")[0].key, "lor", "lor");
   /* tam adla söylenen yemek aynen bulunur */
   eq(say("mercimek çorbası")[0].key, "mercimekcorba", "mercimek çorbası");
+});
+
+test("sesli giriş: meyve, tatlı, börek, pide, kahve, çorba, salata kategorileri sorulur", async () => {
+  state = await loadFixture();
+  const alts = w => { const r = say(w)[0]; return [r.conf, [r.key, ...r.alts.map(a => a.key)]]; };
+  const cases = [
+    ["meyve", ["elma", "muz", "portakal"]],
+    ["tatlı", ["baklava", "sutlac", "kunefe"]],
+    ["börek", ["suborek", "sigaraboregi", "kiymaliborek"]],
+    ["pide", ["kiymalipide", "kasarlipide", "ramazanpidesi"]],
+    ["kahve", ["turkkahvesi", "filtrekahve"]],
+    ["çorba", ["mercimekcorba", "ezogelin", "tarhana"]],
+    ["salata", ["mevsimsalata", "cobansalata", "piyaz"]]
+  ];
+  for (const [w, want] of cases){
+    const [conf, keys] = alts(w);
+    eq(conf, "low", w + " kategori: sorulur");
+    for (const k of want) ok(keys.includes(k), w + ": " + k);
+    const f = FOODS[keys[0]];
+    ok(f && !f.cigYenmez && f.i !== "oil", w + ": gerçekten yenen yemek önerilir");
+  }
+  /* sıra: en sık yenen yemek başta */
+  eq(say("meyve")[0].key, "elma", "meyve → elma");
+  eq(say("tatlı")[0].key, "baklava", "tatlı → baklava");
+  eq(say("kahve")[0].key, "turkkahvesi", "kahve → Türk kahvesi");
+  ok(say("pide")[0].key !== "pideekmegi", "pide → pide ekmeği değil");
+});
+
+test("sesli giriş: kategori sözcüğüne ek sözcük gelince tam ad kazanır, yalın grup sözcüğü sorar", async () => {
+  state = await loadFixture();
+  /* Ek sözcükle tam besin adı söylenince grubun ilk üyesine değil, kendi adına gider. */
+  const cs = say("çoban salata")[0];
+  eq([cs.key, cs.conf], ["cobansalata", "high"], "çoban salata → kendi adı");
+  eq(say("kıymalı pide")[0].key, "kiymalipide", "kıymalı pide → kendi adı");
+  eq(say("kıymalı pide")[0].conf, "high", "kıymalı pide emin");
+  /* Yalnız grup sözcüğü söylenince aday listesi sorulur. */
+  for (const w of ["salata", "pide", "meyve", "et", "ciğer", "balık", "yağ"]){
+    const r = say(w)[0];
+    eq(r.conf, "low", w + ": sorulur");
+    ok(r.alts.length > 1, w + ": aday listesi var");
+  }
+  eq(say("salata")[0].key, "mevsimsalata", "yalın salata → grubun ilk üyesi");
+  eq(say("pide")[0].key, "kiymalipide", "yalın pide → grubun ilk üyesi");
+  eq(say("pişmiş ciğer")[0].conf, "low", "pişmiş ciğer yine grup sorar");
+});
+
+test("sesli giriş: 'yağ' tek başına hangi yağ olduğunu sorar", async () => {
+  state = await loadFixture();
+  const y = say("yağ")[0];
+  eq(y.conf, "low", "yağ sorulur");
+  eq(y.key, "zeytinyagi", "zeytinyağı ilk öneri");
+  eq(y.g, 13, "bir yemek kaşığı");
+  ok(y.alts.some(a => a.key === "tereyagi") && y.alts.some(a => a.key === "aycicekyagi"), "öteki yağlar aday");
+  eq(say("yağı")[0].conf, "low", "yağı da sorulur");
+});
+
+test("sesli giriş: yağlı hali tabloda olmayan sebze çiğ kaloriyle yazılmaz, sorulur", async () => {
+  state = await loadFixture();
+  const s = say("zeytinyağlı ıspanak")[0];
+  eq(s.conf, "low", "düşük güvenle sorulur");
+  eq(s.extras, undefined, "ayrıca yağ eklenmez");
+  ok(s.alts.length > 1 && s.alts.some(a => a.key === "ispanakyemek"), "pişmiş ıspanak aday");
+  const k = say("zeytinyağlı pırasa")[0];
+  eq(k.conf, "low", "pırasa da sorulur");
+  ok(k.alts.some(a => a.key === "pirasa"), "pişmiş pırasa aday");
 });
 
 test("sesli giriş: et, ciğer, balık sorulur ve yalnız pişmiş yemekler önerilir; kalori kaynaktaki değerdir", async () => {

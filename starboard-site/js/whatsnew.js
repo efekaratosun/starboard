@@ -8,6 +8,9 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.26.1", items:[
+    tx("Sesli yemek eklemede meyve, tatlı, börek, pide, kahve, çorba ve salata gibi sözcükler söylenince seçenekler sorulur; çoban salata gibi tam adlar doğrudan bulunur."),
+    tx("Beslenme ekranında bir öğünün sayfasındaki kapatma (×) düğmesi iPhone'da çalışıyor.")] },
   { v:"1.26.0", items:[
     tx("+ düğmesi artık yemek ekler: ne yediğini söyle ya da yaz, uygulama kendi besin listenle eşleştirsin, sen onayla. Ses telefondan çıkmaz."),
     tx("Hızlı giriş kalktı: su, kilo, uyku, adım ve görev girişleri Bugün ekranındaki satırlarında.")] },

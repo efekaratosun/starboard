@@ -3,6 +3,12 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.1 (yayınlanmadı)
+
+### Düzeltildi
+- Sesli yemek eklemede kategori sözcükleri (meyve, tatlı, börek, pide, kahve, çorba, salata) ve yalın yağ aranınca seçenekler sorulur; çoban salata gibi tam adlar kendi adına gider.
+- Beslenme alt sayfalarındaki kapatma (×) düğmesi iPhone'da çalışıyor.
+
 ## 1.26.0 (yayınlanmadı)
 
 ### Eklendi
