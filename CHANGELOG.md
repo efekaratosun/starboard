@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.8 (yayınlanmadı)
+
+### Eklendi
+- Besin listesine KFC (Zinger, Tender ve diğerleri), Usta Dönerci, McChicken, Starbucks, Dunkin' ve Simit Sarayı ürünleri eklendi (15 ürün). Değerler web kaynaklarından, bazı gramajlar tahmindir.
+
 ## 1.26.7 (yayınlanmadı)
 
 ### Eklendi
