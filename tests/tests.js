@@ -102,11 +102,11 @@ test("besinler: porsiyon metni ve gramı üretilir", () => {
 
 /* ---- genişletilmiş besin veritabanı ---- */
 const sourcedFoods = () => Object.entries(FOODS).filter(([,f]) => f.src);
-test("besin veritabanı: 1361 kaynaklı kayıt (383 USDA, 978 web) eklendi", () => {
+test("besin veritabanı: 1376 kaynaklı kayıt (383 USDA, 993 web) eklendi", () => {
   const added = sourcedFoods();
-  eq([added.length, Object.keys(FOODS).length], [1361, 1788]);
+  eq([added.length, Object.keys(FOODS).length], [1376, 1803]);
   eq(added.filter(([,f]) => f.src.startsWith("USDA ")).length, 383);
-  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 978);
+  eq(added.filter(([,f]) => f.src.startsWith("web ")).length, 993);
 });
 test("besin veritabanı: yeni kayıtların makroları geçerli", () => {
   const bad = sourcedFoods().filter(([k,f]) => ![f.p, f.c, f.f, f.lif].every(v => typeof v === "number" && v >= 0 && v <= 100)
