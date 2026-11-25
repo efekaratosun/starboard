@@ -2,7 +2,7 @@
 
 /* ---------------- depolama ---------------- */
 /* Uygulama sürümü: Ayarlar'da ve yedek dosyasında görünür. Değişiklikler CHANGELOG.md'de. */
-const APP_VERSION = "1.26.2";
+const APP_VERSION = "1.26.3";
 
 /* Kayıt, KEY altında tek bir JSON olarak durur. Eski adla (OLD_KEYS) kaydedilmiş veri
    ilk açılışta okunur ve yeni adla yazılır; eski kayıt yedek olarak yerinde bırakılır. */

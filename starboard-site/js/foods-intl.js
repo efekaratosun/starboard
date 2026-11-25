@@ -62,7 +62,12 @@ Object.assign(FOODS, {
   chili:{n:tx("Chili con carne"), por:[{n:tx("kase"),g:250}], p:9, c:10, f:5, lif:4, i:"legume", cat:"yemek", cu:"intl", v:["demir","folat"]},
   nugget:{n:tx("Tavuk nugget"), por:[{n:tx("adet"),g:16,s:[4,6,10]}], p:15, c:16, f:19, lif:1, i:"poultry", cat:"yemek", cu:"intl"},
   hindisandvic:{n:tx("Hindi sandviç"), por:[{n:tx("adet"),g:220}], p:12, c:24, f:5, lif:2.5, i:"bread", cat:"yemek", cu:"intl"},
-  bkbigkingmenu:{n:tx("Burger King Big King® Menü"), a:tx("big king menü,bk big king menu"), por:[{n:tx("menü"),g:730}], p:4.45, c:18.53, f:8.48, lif:0, kcal100:152.8, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/menuler/big-king-menu-1 (25 Kasım 2026; menü gramajı tahmini 730 g)"}
+  bkbigkingmenu:{n:tx("Burger King Big King® Menü"), a:tx("big king menü,bk big king menu"), por:[{n:tx("menü"),g:730}], p:4.45, c:18.53, f:8.48, lif:0, kcal100:152.8, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/menuler/big-king-menu-1 (25 Kasım 2026; menü gramajı tahmini 730 g)"},
+  bkwhopper:{n:tx("Burger King Whopper®"), por:[{n:tx("adet"),g:290}], p:10.48, c:20.03, f:22.66, lif:0, kcal100:263.68, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/burgerler/whopper (25 Kasım 2026; gramaj tahmini 290 g)"},
+  bkchickenroyale:{n:tx("Burger King Chicken Royale®"), por:[{n:tx("adet"),g:220}], p:9.76, c:20.6, f:18.91, lif:0, kcal100:270.55, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/burgerler/chicken-royale (25 Kasım 2026; gramaj tahmini 220 g)"},
+  bkbigking:{n:tx("Burger King Big King®"), por:[{n:tx("adet"),g:215}], p:13.35, c:20.27, f:21.94, lif:0, kcal100:279.39, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/burgerler/big-king-1 (25 Kasım 2026; gramaj tahmini 215 g)"},
+  bkcheeseburger:{n:tx("Burger King Cheeseburger"), por:[{n:tx("adet"),g:120}], p:10.92, c:24.97, f:17.34, lif:0, kcal100:243.37, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/burgerler/cheeseburger (25 Kasım 2026; gramaj tahmini 120 g)"},
+  bkhamburger:{n:tx("Burger King Hamburger"), por:[{n:tx("adet"),g:105}], p:10.1, c:27.5, f:14.22, lif:0, kcal100:233.91, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/burgerler/hamburger (25 Kasım 2026; gramaj tahmini 105 g)"}
 });
 
 /* Simgesinden anlaşılmayan içerikler: diyet süzgeçleri bunlara bakar. */
