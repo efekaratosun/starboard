@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.4 (yayınlanmadı)
+
+### Eklendi
+- Besin listesine McDonald's ürünleri eklendi: Big Mac, Cheeseburger, Hamburger, Quarter Pounder with Cheese, Quarter Pounder Deluxe, Patates Kızartması (4 boy), Chicken McNuggets (4'lü ve 6'lı). Değerler ve gramajlar McDonald's Türkiye sitesindeki 100 g ve porsiyon değerlerinden hesaplandı.
+
 ## 1.26.3 (yayınlanmadı)
 
 ### Eklendi
