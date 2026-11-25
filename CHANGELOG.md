@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.7 (yayınlanmadı)
+
+### Eklendi
+- Besin listesine Domino's, Papa John's, Pizza Hut, Little Caesars ve Sbarro pizza dilimleri ile Arby's (Beef 'n Cheddar, Classic Roast Beef) ürünleri eklendi (11 ürün). Değerler web kaynaklarından, bazı gramajlar tahmindir.
+
 ## 1.26.6 (yayınlanmadı)
 
 ### Eklendi
