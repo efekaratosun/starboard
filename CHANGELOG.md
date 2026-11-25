@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.5 (yayınlanmadı)
+
+### Düzeltildi
+- Site yayını bazen ilk denemede başarısız oluyordu (GitHub yayın paketini hemen bulamıyordu); yayın akışına paketin kaydını bekleyen kısa bir adım eklendi.
+
 ## 1.26.4 (yayınlanmadı)
 
 ### Eklendi
