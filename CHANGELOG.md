@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.3 (yayınlanmadı)
+
+### Eklendi
+- Besin listesine Burger King burgerleri eklendi: Whopper, Chicken Royale, Big King, Cheeseburger, Hamburger (kalori ve makrolar Burger King sitesinden; gramajlar tahmin edildi).
+
 ## 1.26.2 (yayınlanmadı)
 
 ### Eklendi
