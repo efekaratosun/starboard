@@ -1,6 +1,6 @@
 /* Starboard: çevrimdışı çalışma. Sayfa önce ağdan denenir (güncellemeler hemen gelsin),
    ağ yoksa önbellekten açılır. */
-const CACHE = "starboard-1.26.6";
+const CACHE = "starboard-1.26.7";
 const SHELL = [
   "./", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png",
   "css/tokens.css", "css/components.css", "css/app.css", "fonts/saira-latin.woff2", "fonts/saira-latin-ext.woff2",
