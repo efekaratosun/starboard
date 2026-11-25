@@ -3,11 +3,6 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
-## 1.26.5 (yayınlanmadı)
-
-### Eklendi
-- Besin listesine Popeyes (Tenders, XL Sandviç, Patates, Biscuit) ve Subway (İtalyan B.M.T., Teriyaki Tavuk, Biftek & Peynir, Marinara Soslu Köfte, Hindi Jambon; 15 ve 30 cm) ürünleri eklendi. Gramajlar tahmindir.
-
 ## 1.26.4 (yayınlanmadı)
 
 ### Eklendi
