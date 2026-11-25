@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.26.2 (yayınlanmadı)
+
+### Eklendi
+- Besin listesine Burger King Big King® Menü eklendi (kalori ve makrolar Burger King sitesinden; menü gramajı 730 g olarak tahmin edildi).
+
 ## 1.26.1 (yayınlanmadı)
 
 ### Düzeltildi

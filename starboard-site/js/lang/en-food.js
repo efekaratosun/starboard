@@ -726,6 +726,7 @@ Object.assign(window.STARBOARD_EN, {
   "Chili con carne": "Chili con carne",
   "Tavuk nugget": "Chicken nuggets",
   "Hindi sandviç": "Turkey sandwich",
+  "Burger King Big King® Menü": "Burger King Big King® Meal",
   "Gece yulafı (overnight oats)": "Overnight oats",
   "Yulafı, yoğurdu, sütü ve chia tohumunu bir kavanozda karıştır.": "Mix the oats, yogurt, milk and chia seeds in a jar.",
   "Kapağını kapatıp bir gece buzdolabında beklet.": "Close the lid and refrigerate overnight.",
