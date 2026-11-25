@@ -61,7 +61,8 @@ Object.assign(FOODS, {
   kaliforniyaroll:{n:tx("Kaliforniya roll (suşi)"), a:tx("sushi"), por:[{n:tx("parça"),g:30,s:[6,8,12]}], p:3.5, c:19, f:3.5, lif:1.5, i:"fish", cat:"yemek", cu:"intl"},
   chili:{n:tx("Chili con carne"), por:[{n:tx("kase"),g:250}], p:9, c:10, f:5, lif:4, i:"legume", cat:"yemek", cu:"intl", v:["demir","folat"]},
   nugget:{n:tx("Tavuk nugget"), por:[{n:tx("adet"),g:16,s:[4,6,10]}], p:15, c:16, f:19, lif:1, i:"poultry", cat:"yemek", cu:"intl"},
-  hindisandvic:{n:tx("Hindi sandviç"), por:[{n:tx("adet"),g:220}], p:12, c:24, f:5, lif:2.5, i:"bread", cat:"yemek", cu:"intl"}
+  hindisandvic:{n:tx("Hindi sandviç"), por:[{n:tx("adet"),g:220}], p:12, c:24, f:5, lif:2.5, i:"bread", cat:"yemek", cu:"intl"},
+  bkbigkingmenu:{n:tx("Burger King Big King® Menü"), a:tx("big king menü,bk big king menu"), por:[{n:tx("menü"),g:730}], p:4.45, c:18.53, f:8.48, lif:0, kcal100:152.8, i:"meat", cat:"yemek", cu:"intl", src:"web burgerking.com.tr/urunler/menuler/big-king-menu-1 (25 Kasım 2026; menü gramajı tahmini 730 g)"}
 });
 
 /* Simgesinden anlaşılmayan içerikler: diyet süzgeçleri bunlara bakar. */
