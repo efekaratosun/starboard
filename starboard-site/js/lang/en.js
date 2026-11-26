@@ -236,6 +236,8 @@ window.STARBOARD_EN = {
   "Hızlı giriş": "Quick entry",
   "+ düğmesi artık yemek ekler: ne yediğini söyle ya da yaz, uygulama kendi besin listenle eşleştirsin, sen onayla. Ses telefondan çıkmaz.": "The + button now adds food: say or type what you ate, the app matches it to your own food list, and you confirm. Your voice never leaves the phone.",
   "Hızlı giriş kalktı: su, kilo, uyku, adım ve görev girişleri Bugün ekranındaki satırlarında.": "Quick entry is gone: water, weight, sleep, steps and tasks are entered from their rows on Today.",
+  "Düzen puanı ve Esneme payı ile kaçamak öğünü ya da kaçamak günü kazanabilirsin; Beslenme ekranından kullanırsın.": "Earn a cheat meal or cheat day with Routine points and Wiggle room; use it from the Nutrition screen.",
+  "Takvimde son 7 güne geç giriş yapabilirsin. 18 yaş altında ve kilo alma hedefinde bu özellik kapalıdır.": "You can log the last 7 days late in the calendar. This feature is off under 18 and for weight-gain goals.",
   "Sesli yemek eklemede meyve, tatlı, börek, pide, kahve, çorba ve salata gibi sözcükler söylenince seçenekler sorulur; çoban salata gibi tam adlar doğrudan bulunur.": "In voice add, saying words like fruit, dessert, pastry, pide, coffee, soup or salad now asks which one you mean; full names like shepherd's salad are found directly.",
   "Beslenme ekranında bir öğünün sayfasındaki kapatma (×) düğmesi iPhone'da çalışıyor.": "The close (×) button on a meal's page in Nutrition now works on iPhone.",
   "Konuş, ben dinliyorum": "Speak, I'm listening",
