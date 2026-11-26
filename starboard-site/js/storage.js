@@ -42,7 +42,7 @@ async function clearState(){
    bir sonrakine taşıyan adım eklenir. Adımlar sırayla çalışır, böylece çok eski
    bir kayıt ya da yedek de güncel biçime gelir. Kural: bir adım yayınlandıktan
    sonra değiştirilmez; yeni değişiklik yeni adım olarak eklenir. */
-const SCHEMA = 3;
+const SCHEMA = 4;
 const MIGRATIONS = {
   /* 1 -> 2: antrenman ortamı zorunlu alan oldu; tamamlanan günlere yıldız damgası eklendi. */
   1: s => {
@@ -68,6 +68,25 @@ const MIGRATIONS = {
       }
     } finally { state = keep; calcReset(); }
     if (!s.skyClosed) s.skyClosed = shiftDays(cw, -7);
+  },
+  /* 3 -> 4: ödül öğünü kullanımları kayıtta (s.cheat.uses); harcama pencereden hesaplanır. */
+  3: s => {
+    const normUse = u => {
+      if (!u || typeof u !== "object") return null;
+      const day = typeof u.day === "string" ? u.day : null;
+      const kind = u.kind === "meal" || u.kind === "day" ? u.kind : null;
+      return day && kind ? { day, kind } : null;
+    };
+    const normCheat = c => {
+      const uses = Array.isArray(c.uses) ? c.uses.map(normUse).filter(Boolean) : [];
+      const lastUse = c.lastUse === null || typeof c.lastUse === "string" ? c.lastUse : null;
+      return { uses, lastUse };
+    };
+    if (!s.cheat || typeof s.cheat !== "object") s.cheat = { uses: [], lastUse: null };
+    else {
+      const c = normCheat(s.cheat);
+      s.cheat = { uses: c.uses, lastUse: c.lastUse };
+    }
   }
 };
 

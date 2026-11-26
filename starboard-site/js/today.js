@@ -28,6 +28,58 @@ function eveMiss(kind, entry, program, a){
   }
   return "";
 }
+/* Ödül öğünü özeti: cheat.js hesapları; uygun değilse görünmez. */
+function cheatBandsMap(program, profile, days){
+  const R = kcalRange(program, profile), band = { lo: R.lo, hi: R.hi };
+  const out = {};
+  for (const k of Object.keys(days || {})) out[k] = band;
+  return out;
+}
+
+const CHEAT_KIND_TX = {
+  ok: () => tx("Düzenli gün"),
+  empty: () => tx("Henüz tamamlanmadı"),
+  late: () => tx("Geç tamamlandı"),
+  fail: () => tx("Kalori bandının dışında")
+};
+
+function cheatStatusKey(entry, program, key){
+  const now = new Date();
+  const nowDay = today4();
+  const mealIds = userMeals().map(m => m.id);
+  const band = kcalRange(program, state.profile);
+  const viewKey = key === today() && now.getHours() < 4 ? nowDay : key;
+  const viewEntry = (state.days && state.days[viewKey]) || entry;
+  return cheatDayScore(viewEntry, mealIds, band, program.kcal, viewKey, nowDay).kind;
+}
+
+function cheatTodayBlock(entry, program, key){
+  if (!program || !cheatEligible(state.profile)) return "";
+  const now = new Date();
+  const nowDay = today4();
+  const mealIds = userMeals().map(m => m.id);
+  const bands = cheatBandsMap(program, state.profile, state.days);
+  const period = cheatPeriod(state.days, mealIds, program.kcal, bands, nowDay);
+  const kind = cheatStatusKey(entry, program, key);
+  const status = (CHEAT_KIND_TX[kind] || CHEAT_KIND_TX.empty)();
+  const onNow = key === today();
+  const boundary = onNow
+    ? (now.getHours() < 4 ? tx("Dün (04:00'e kadar)") : tx("Gün 04:00'te başlar"))
+  : "";
+  const mealRight = period.meal > 0 ? `${fmtN(period.meal)} kcal` : "—";
+  const dayRight = period.day > 0 ? `${fmtN(period.day)} kcal` : "—";
+  return `<section class="cht" role="region" aria-label="${tx("Ödül öğünü durumu")}">
+    ${boundary ? `<p class="metric-note" style="margin:0 4px 8px">${esc(boundary)}</p>` : ""}
+    <p class="metric-note" style="margin:0 4px 10px"><b>${esc(status)}</b></p>
+    <div class="stats cal-stats" style="margin:0 4px 12px">
+      <div class="stat"><b class="num">${fmtN(period.P)}</b><span>${tx("Düzen puanı")}</span></div>
+      <div class="stat"><b class="num">${fmtN(period.K)}</b><span>${tx("Esneme payı")}</span></div>
+      <div class="stat"><b class="num">${esc(mealRight)}</b><span>${tx("Kaçamak öğünü")}</span></div>
+      <div class="stat"><b class="num">${esc(dayRight)}</b><span>${tx("Kaçamak günü")}</span></div>
+    </div>
+  </section>`;
+}
+
 function eveningLine(entry, program, key){
   if (key !== today() || nowHour() < 21 || !program) return "";
   let done = 0, total = 0;
@@ -248,6 +300,7 @@ function todayView(entry, program, key){
   return `
   ${program ? moonsBlock(entry, program, "today") : ""}
   ${weekStrip(key)}
+  ${cheatTodayBlock(entry, program, key)}
   ${eveningLine(entry, program, key)}
   ${program ? goalHero(key, sc) : `<section class="welcome">
     <span class="brand-i">${BRAND_SVG}</span>

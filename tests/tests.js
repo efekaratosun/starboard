@@ -44,6 +44,68 @@ test("tarih: bugünün anahtarı YYYY-AA-GG biçiminde", () => {
   ok(/^\d{4}-\d{2}-\d{2}$/.test(today()), "biçim tutmuyor: " + today());
 });
 
+/* ---- ödül öğünü (cheat.js) ---- */
+test("cheat: 04:00 gün sınırı ve takma adlar", () => {
+  eq(dayKey4(new Date("2026-06-15T03:30:00")), "2026-06-14");
+  eq(dayKey4(new Date("2026-06-15T04:00:00")), "2026-06-15");
+  eq(cheatDayKey(new Date("2026-01-01T03:59:00")), "2025-12-31");
+  ok(today4() === dayKey4(new Date()) && cheatDayKey(new Date()) === today4(), "takma adlar");
+});
+test("cheat: öğün tamamlanması girilmiş veya atlanmış", () => {
+  const ids = ["a", "b"];
+  eq(cheatMealsComplete(null, ids), false);
+  eq(cheatMealsComplete({ log: [{ slot: "a" }] }, ids), false);
+  eq(cheatMealsComplete({ log: [{ slot: "a" }], skipped: ["b"] }, ids), true);
+  eq(cheatMealsComplete({ log: [{ slot: "a" }, { slot: "b" }] }, ids), true);
+  eq(cheatMealsComplete({}, []), true);
+});
+test("cheat: gün türü ve P sınır değerleri", () => {
+  const ids = ["m1"], band = { lo: 2000, hi: 2500 };
+  eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2200 }, ids, band), "ok");
+  eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2600 }, ids, band), "fail");
+  eq(cheatDayKind({ log: [{ slot: "m1" }] }, ids, band), "empty");
+  eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2200, late: true }, ids, band), "late");
+  eq([cheatP("ok"), cheatP("fail"), cheatP("empty"), cheatP("late")], [1, -1, -2, 0]);
+});
+test("cheat: K ve B hesabı", () => {
+  const H = 2000;
+  eq(cheatKDay(2000, H, "ok", false), 0);
+  eq(cheatKDay(1700, H, "ok", false), 300);
+  eq(cheatKDay(1400, H, "ok", false), 300);
+  eq(cheatKDay(2100, H, "ok", false), -100);
+  eq(cheatKDay(2200, H, "empty", false), 0);
+  eq(cheatKDay(1800, H, "ok", true), 180);
+  eq(cheatKTotal([100, -50, -80]), 0);
+  eq(cheatKTotal([100, 50, -30]), 120);
+  eq(cheatB(2000), 600);
+  eq(cheatB(2050), 600);
+  eq(cheatB(2034), 600);
+});
+test("cheat: haklar, uygunluk, pencere ve harcama", () => {
+  const H = 2000, B = 600;
+  eq(cheatRights(7, B, H), { B, meal: 0, day: 0 });
+  eq(cheatRights(8, B, H).meal, B);
+  eq(cheatRights(8, B - 1, H).meal, 0);
+  eq(cheatRights(10, 2 * B, H).day, 2 * B);
+  eq(cheatRights(10, 2 * B - 1, H).day, 0);
+  eq(cheatEligible(profileOf({ goal: "maintain", age: 30 })), true);
+  eq(cheatEligible(profileOf({ goal: "gain", age: 30 })), false);
+  eq(cheatEligible(profileOf({ goal: "lose", age: 17 })), false);
+  eq(cheatEligible({ ...profileOf({ goal: "lose" }), healthFlag: true }), false);
+  const now = "2026-11-15";
+  ok(cheatEditable("2026-11-09", now) && !cheatEditable("2026-11-08", now));
+  ok(cheatEditable(now, now) && !cheatEditable("2026-11-16", now));
+  ok(cheatUseReady(null, now));
+  ok(!cheatUseReady("2026-11-14", now));
+  ok(cheatUseReady("2026-11-08", now));
+  const spent = cheatSpend({ P: 12, K: 1300, immune: { meal: 0, day: 0 } }, "meal", H);
+  ok(spent && spent.P === 4 && spent.K === 700);
+  eq(cheatSpend({ P: 5, K: 2000 }, "day", H), null);
+  eq(cheatLevel(9), 0);
+  eq(cheatLevel(10), 1);
+  eq(cheatLevel(30), 2);
+});
+
 /* ---- program hesabı: bugünkü sonuçlar sabitlendi; istemeden değişirse test kalır ---- */
 const GOLDEN = [
   [{}, 82, 0, { bmr:1788, tdee:2771, kcal:2771, protein:131, fat:77, carb:389, water:2870, floored:false }],
@@ -2178,7 +2240,7 @@ test("sağlık: web'de bölüm yok; uygulamada bölüm erişilebilir ve İngiliz
 });
 
 test("sağlık: kayıt şeması değişmedi; eski kayıt profile.health olmadan açılır", async () => {
-  eq(SCHEMA, 3, "Sağlık şemayı artırmadı; 3 takımyıldız kaydı (1.11.0)");
+  eq(SCHEMA, 4, "ödül öğünü kaydı şema 4; Sağlık ayrı adım eklemedi");
   const st = await loadFixture();
   ok(!st.profile.health, "örnek kayıtta Sağlık ayarı yok");
   const m = migrateState(st);
@@ -4375,7 +4437,7 @@ test("takımyıldız tamamlanınca: bir kez çıkar, eskisi sessiz geçer, Neler
 test("veri sürümü: 2 -> 3 takımyıldız kaydı; eski haftalar eski adıyla, yedekle uyumlu", async () => {
   const s = await loadFixture();
   migrateState(s);
-  eq(s.v, 3);
+  eq(s.v, SCHEMA);
   const cw = weekStart(today());
   const past = [...new Set(Object.keys(s.days).map(weekStart))].filter(ws => ws < cw);
   ok(past.length, "örnekte geçmiş hafta var");
@@ -4396,6 +4458,47 @@ test("veri sürümü: 2 -> 3 takımyıldız kaydı; eski haftalar eski adıyla, 
   const back = JSON.parse(JSON.stringify({ v: SCHEMA, state: s })).state;
   eq(migrateState(back), { changed: false, newer: false });
   eq(back.sky, s.sky);
+});
+
+test("veri sürümü: 3 -> 4 ödül öğünü kaydı; ikinci göç değiştirmez, günler korunur", async () => {
+  const s = await loadFixture();
+  s.v = 3;
+  if (!s.starred) s.starred = 1;
+  const daysBefore = JSON.stringify(s.days);
+  const profileBefore = JSON.stringify(s.profile);
+  const m = migrateState(s);
+  eq([m.changed, m.newer, s.v], [true, false, SCHEMA]);
+  eq(s.cheat, { uses: [], lastUse: null });
+  eq(JSON.stringify(s.days), daysBefore, "gün kayıtları");
+  eq(JSON.stringify(s.profile), profileBefore, "profil");
+  const snap = JSON.stringify(s);
+  eq(migrateState(s).changed, false);
+  eq(JSON.stringify(s), snap, "ikinci göç değiştirmez");
+
+  const b = await loadFixture();
+  b.v = 3;
+  b.cheat = {
+    uses: [
+      { day: "2026-11-10", kind: "meal" },
+      { day: "2026-11-09", kind: "day", note: "atılır değil, sadece day/kind kalır" },
+      { kind: "meal" },
+      { day: "x", kind: "snack" }
+    ],
+    lastUse: "2026-11-10",
+    spentP: 4,
+    spentK: 500
+  };
+  migrateState(b);
+  eq(b.cheat, { uses: [{ day: "2026-11-10", kind: "meal" }, { day: "2026-11-09", kind: "day" }], lastUse: "2026-11-10" });
+  const cheatSnap = JSON.stringify(b.cheat);
+  MIGRATIONS[3](b);
+  eq(JSON.stringify(b.cheat), cheatSnap, "göç adımı tekrarı cheat'i değiştirmez");
+
+  const c = await loadFixture();
+  c.v = 3;
+  c.cheat = { lastUse: null };
+  MIGRATIONS[3](c);
+  eq(c.cheat, { uses: [], lastUse: null }, "eksik uses tamamlanır");
 });
 
 test("takımyıldız: İngilizcede tam çevrilir; pencereler erişilebilir", async () => {
