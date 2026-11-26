@@ -124,7 +124,7 @@ test("cheat: dönem özeti ve önceki kullanımlar canlı hesaba yansır", () =>
   const prior = cheatSpend({ P: 12, K: period.K + 700, immune: { meal: 0, day: 0 } }, "meal", H);
   ok(prior && prior.P === 4 && prior.K === period.K + 100);
   const prof = profileOf({ goal: "lose", age: 30 });
-  const program = buildProgram(prof, 82, 0);
+  const program = { kcal: H };
   const daysNow = {};
   for (let i = 0; i < 7; i++) daysNow[shiftDays(today(), -i)] = { log: [{ slot: "m1" }], kcal: H };
   const useDay = shiftDays(today(), -1);
@@ -142,7 +142,7 @@ test("cheat: yedi gün bekleme, uygunluk kapısı, Bugün bloğu ve İngilizce",
     state.cheat = { uses: [], lastUse: null };
     notice = null; viewDate = null; tab = "today";
     const now = "2026-11-15";
-    ok(cheatUseReady(shiftDays(now, -6), now));
+    ok(cheatUseReady(shiftDays(now, -7), now));
     ok(!cheatUseReady(shiftDays(now, -1), now));
     state.profile.goal = "gain";
     render();
@@ -1304,6 +1304,26 @@ test("veri sürümü: daha yeni biçimdeki kayda dokunulmaz", async () => {
   const before = JSON.stringify(s);
   eq(migrateState(s), { changed:false, newer:true });
   eq(JSON.stringify(s), before);
+});
+test("veri sürümü: 3'ten 4'e kaçamak kaydı normalize edilir", async () => {
+  const s = await loadFixture();
+  s.v = 3;
+  s.cheat = { uses: [{ day: "2026-11-10", kind: "meal" }, { day: "bozuk", kind: "day" }, null, { day: "2026-11-11", kind: "x" }], lastUse: 42 };
+  const m = migrateState(s);
+  eq([m.changed, m.newer], [true, false]);
+  eq(s.v, SCHEMA);
+  eq(s.cheat, { uses: [{ day: "2026-11-10", kind: "meal" }, { day: "bozuk", kind: "day" }], lastUse: null });
+  const before = JSON.stringify(s);
+  eq(migrateState(s).changed, false);
+  eq(JSON.stringify(s), before);
+});
+test("veri sürümü: 3'ten 4'e kaçamak alanı yoksa boş oluşturulur", async () => {
+  const s = await loadFixture();
+  s.v = 3;
+  delete s.cheat;
+  migrateState(s);
+  eq(s.v, SCHEMA);
+  eq(s.cheat, { uses: [], lastUse: null });
 });
 test("depolama: eski adla duran kayıt okunur, yeni adla yazılır, silince ikisi de gider", async () => {
   /* Bu test tarayıcı deposuna dokunur; mevcut değerleri saklayıp geri koyar. */
