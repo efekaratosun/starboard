@@ -1,6 +1,19 @@
 "use strict";
 
 /* ---- ayarlar ---- */
+function settingsHealthNote(p){
+  const on = !!p.healthFlag;
+  return `<div class="field">
+    <span class="lbl">${tx("Sağlık notu")}</span>
+    <label for="s-health-flag" style="display:flex;align-items:flex-start;gap:12px;margin-top:8px;cursor:pointer;font-weight:500;line-height:1.45">
+      <input id="s-health-flag" type="checkbox"${on ? " checked" : ""} style="margin-top:3px">
+      <span><b style="display:block;font-weight:600">${tx("Hamilelik veya emzirme dönemindeyim, hekimim tıbbi bir diyet önerdi ya da yeme bozukluğu geçmişim var")}</b>
+      <i class="metric-note" style="display:block;margin-top:4px;font-style:normal">${tx("İstersen işaretle. Bu bilgi yalnızca cihazında kalır.")}</i></span>
+    </label>
+    <p class="metric-note" id="s-health-warn"${on ? "" : " hidden"} style="margin-top:10px">${tx("Bunun için hekiminle konuşmanı öneririz")}</p>
+  </div>`;
+}
+
 function settingsView(){
   const p = state.profile;
   const sel = (v, k) => v === k ? " selected" : "";
@@ -32,6 +45,7 @@ function settingsView(){
       <select id="s-act">${Object.entries(ACTIVITY).map(([k,v])=>`<option value="${k}"${sel(p.activity,k)}>${v.label} (${v.d})</option>`).join("")}</select></div>
     <div class="field"><label for="s-goal">${tx("Hedef")}</label>
       <select id="s-goal">${Object.entries(GOAL).map(([k,v])=>`<option value="${k}"${sel(p.goal,k)}>${v.label}</option>`).join("")}</select></div>
+    ${settingsHealthNote(p)}
     <button id="s-save">${tx("Kaydet")}</button>
   </section>
 
@@ -122,6 +136,10 @@ function settingsView(){
 function wireSettings(){
   wireReminders();
   wireHealth();
+  document.getElementById("s-health-flag")?.addEventListener("change", () => {
+    const w = document.getElementById("s-health-warn");
+    if (w) w.hidden = !document.getElementById("s-health-flag").checked;
+  });
   document.getElementById("s-meal-prefs").onclick = () => openPrefsSheet();
   let stAvatar = avKey(state.profile);
   wireAvatar("st", k => { stAvatar = k; });
@@ -157,6 +175,9 @@ function wireSettings(){
     p.activity = document.getElementById("s-act").value;
     p.goal = document.getElementById("s-goal").value;
     if (!PACE[p.goal]){ delete p.targetWeeks; delete p.paceWeeks; }
+    const healthOn = !!document.getElementById("s-health-flag")?.checked;
+    if (healthOn){ p.healthFlag = true; p.cheatEligible = false; }
+    else { delete p.healthFlag; delete p.cheatEligible; }
     await saveState(state);
     tab = "today"; render(); window.scrollTo(0,0);
   };
