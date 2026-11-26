@@ -2240,7 +2240,7 @@ test("sağlık: web'de bölüm yok; uygulamada bölüm erişilebilir ve İngiliz
 });
 
 test("sağlık: kayıt şeması değişmedi; eski kayıt profile.health olmadan açılır", async () => {
-  eq(SCHEMA, 3, "Sağlık şemayı artırmadı; 3 takımyıldız kaydı (1.11.0)");
+  eq(SCHEMA, 4, "ödül öğünü kaydı şema 4; Sağlık ayrı adım eklemedi");
   const st = await loadFixture();
   ok(!st.profile.health, "örnek kayıtta Sağlık ayarı yok");
   const m = migrateState(st);
@@ -4437,7 +4437,7 @@ test("takımyıldız tamamlanınca: bir kez çıkar, eskisi sessiz geçer, Neler
 test("veri sürümü: 2 -> 3 takımyıldız kaydı; eski haftalar eski adıyla, yedekle uyumlu", async () => {
   const s = await loadFixture();
   migrateState(s);
-  eq(s.v, 3);
+  eq(s.v, SCHEMA);
   const cw = weekStart(today());
   const past = [...new Set(Object.keys(s.days).map(weekStart))].filter(ws => ws < cw);
   ok(past.length, "örnekte geçmiş hafta var");
@@ -4458,6 +4458,47 @@ test("veri sürümü: 2 -> 3 takımyıldız kaydı; eski haftalar eski adıyla, 
   const back = JSON.parse(JSON.stringify({ v: SCHEMA, state: s })).state;
   eq(migrateState(back), { changed: false, newer: false });
   eq(back.sky, s.sky);
+});
+
+test("veri sürümü: 3 -> 4 ödül öğünü kaydı; ikinci göç değiştirmez, günler korunur", async () => {
+  const s = await loadFixture();
+  s.v = 3;
+  if (!s.starred) s.starred = 1;
+  const daysBefore = JSON.stringify(s.days);
+  const profileBefore = JSON.stringify(s.profile);
+  const m = migrateState(s);
+  eq([m.changed, m.newer, s.v], [true, false, SCHEMA]);
+  eq(s.cheat, { uses: [], lastUse: null });
+  eq(JSON.stringify(s.days), daysBefore, "gün kayıtları");
+  eq(JSON.stringify(s.profile), profileBefore, "profil");
+  const snap = JSON.stringify(s);
+  eq(migrateState(s).changed, false);
+  eq(JSON.stringify(s), snap, "ikinci göç değiştirmez");
+
+  const b = await loadFixture();
+  b.v = 3;
+  b.cheat = {
+    uses: [
+      { day: "2026-11-10", kind: "meal" },
+      { day: "2026-11-09", kind: "day", note: "atılır değil, sadece day/kind kalır" },
+      { kind: "meal" },
+      { day: "x", kind: "snack" }
+    ],
+    lastUse: "2026-11-10",
+    spentP: 4,
+    spentK: 500
+  };
+  migrateState(b);
+  eq(b.cheat, { uses: [{ day: "2026-11-10", kind: "meal" }, { day: "2026-11-09", kind: "day" }], lastUse: "2026-11-10" });
+  const cheatSnap = JSON.stringify(b.cheat);
+  MIGRATIONS[3](b);
+  eq(JSON.stringify(b.cheat), cheatSnap, "göç adımı tekrarı cheat'i değiştirmez");
+
+  const c = await loadFixture();
+  c.v = 3;
+  c.cheat = { lastUse: null };
+  MIGRATIONS[3](c);
+  eq(c.cheat, { uses: [], lastUse: null }, "eksik uses tamamlanır");
 });
 
 test("takımyıldız: İngilizcede tam çevrilir; pencereler erişilebilir", async () => {
