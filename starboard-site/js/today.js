@@ -60,20 +60,24 @@ function cheatTodayBlock(entry, program, key){
   const mealIds = userMeals().map(m => m.id);
   const bands = cheatBandsMap(program, state.profile, state.days);
   const period = cheatPeriod(state.days, mealIds, program.kcal, bands, nowDay);
+  const account = typeof cheatLiveAccount === "function" ? cheatLiveAccount(program, period) : { P: period.P, K: period.K, immune: { meal: 0, day: 0 } };
+  const imm = account.immune || { meal: 0, day: 0 };
+  const canMeal = period.meal > 0 && cheatSpend({ ...account, immune: imm }, "meal", program.kcal);
+  const canDay = period.day > 0 && cheatSpend({ ...account, immune: imm }, "day", program.kcal);
   const kind = cheatStatusKey(entry, program, key);
   const status = (CHEAT_KIND_TX[kind] || CHEAT_KIND_TX.empty)();
   const onNow = key === today();
   const boundary = onNow
     ? (now.getHours() < 4 ? tx("Dün (04:00'e kadar)") : tx("Gün 04:00'te başlar"))
-  : "";
-  const mealRight = period.meal > 0 ? `${fmtN(period.meal)} kcal` : "—";
-  const dayRight = period.day > 0 ? `${fmtN(period.day)} kcal` : "—";
+    : "";
+  const mealRight = canMeal ? `${fmtN(period.meal)} kcal` : "—";
+  const dayRight = canDay ? `${fmtN(period.day)} kcal` : "—";
   return `<section class="cht" role="region" aria-label="${tx("Ödül öğünü durumu")}">
     ${boundary ? `<p class="metric-note" style="margin:0 4px 8px">${esc(boundary)}</p>` : ""}
     <p class="metric-note" style="margin:0 4px 10px"><b>${esc(status)}</b></p>
     <div class="stats cal-stats" style="margin:0 4px 12px">
-      <div class="stat"><b class="num">${fmtN(period.P)}</b><span>${tx("Düzen puanı")}</span></div>
-      <div class="stat"><b class="num">${fmtN(period.K)}</b><span>${tx("Esneme payı")}</span></div>
+      <div class="stat"><b class="num">${fmtN(account.P)}</b><span>${tx("Düzen puanı")}</span></div>
+      <div class="stat"><b class="num">${fmtN(account.K)}</b><span>${tx("Esneme payı")}</span></div>
       <div class="stat"><b class="num">${esc(mealRight)}</b><span>${tx("Kaçamak öğünü")}</span></div>
       <div class="stat"><b class="num">${esc(dayRight)}</b><span>${tx("Kaçamak günü")}</span></div>
     </div>

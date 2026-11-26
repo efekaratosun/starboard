@@ -105,6 +105,80 @@ test("cheat: haklar, uygunluk, pencere ve harcama", () => {
   eq(cheatLevel(10), 1);
   eq(cheatLevel(30), 2);
 });
+test("cheat: geç girişte düzen puanı sıfır, esneme payı yüzde doksan", () => {
+  const ids = ["m1"], band = { lo: 2000, hi: 2500 }, H = 2000, now = "2026-06-15";
+  eq(cheatKDay(1700, H, "late", true), 270);
+  eq(cheatDayScore({ log: [{ slot: "m1" }], kcal: 1700, late: true }, ids, band, H, "2026-06-14", now),
+    { kind: "late", P: 0, K: 270 });
+});
+test("cheat: dönem özeti ve önceki kullanımlar canlı hesaba yansır", () => {
+  const H = 2000, ids = ["m1"], band = { lo: 1800, hi: 2800 }, now = "2026-11-15", B = cheatB(H);
+  const days = {};
+  for (let i = 0; i < 7; i++) days[shiftDays(now, -i)] = { log: [{ slot: "m1" }], kcal: H };
+  const bands = Object.fromEntries(Object.keys(days).map(k => [k, band]));
+  const period = cheatPeriod(days, ids, H, bands, now);
+  eq(period.P, 7);
+  eq(period.meal, 0);
+  const rights = cheatRights(12, period.K + 700, H);
+  eq(rights.meal, B);
+  const prior = cheatSpend({ P: 12, K: period.K + 700, immune: { meal: 0, day: 0 } }, "meal", H);
+  ok(prior && prior.P === 4 && prior.K === period.K + 100);
+  const prof = profileOf({ goal: "lose", age: 30 });
+  const program = buildProgram(prof, 82, 0);
+  const daysNow = {};
+  for (let i = 0; i < 7; i++) daysNow[shiftDays(today(), -i)] = { log: [{ slot: "m1" }], kcal: H };
+  const useDay = shiftDays(today(), -1);
+  state = { profile: prof, days: daysNow, cheat: { uses: [{ day: useDay, kind: "meal" }], lastUse: useDay } };
+  const rich = { P: 12, K: B + 200, meal: B, day: 0, B };
+  const live = cheatLiveAccount(program, rich);
+  ok(live.P === 4 && live.K === rich.K - B, "kayıtlı kullanım düşürür");
+  state = null;
+});
+test("cheat: yedi gün bekleme, uygunluk kapısı, Bugün bloğu ve İngilizce", async () => {
+  const prev = { state, tab, viewDate, notice };
+  try {
+    state = await loadFixture();
+    migrateMeals(); migrateState(state);
+    state.cheat = { uses: [], lastUse: null };
+    notice = null; viewDate = null; tab = "today";
+    const now = "2026-11-15";
+    ok(cheatUseReady(shiftDays(now, -6), now));
+    ok(!cheatUseReady(shiftDays(now, -1), now));
+    state.profile.goal = "gain";
+    render();
+    ok(!app.querySelector(".cht"), "kilo alma hedefinde blok yok");
+    state.profile.goal = "lose";
+    state.profile.age = 17;
+    render();
+    ok(!app.querySelector(".cht"), "on sekiz yaş altında blok yok");
+    state.profile.age = 30;
+    state.profile.healthFlag = true;
+    render();
+    ok(!app.querySelector(".cht"), "sağlık işaretinde blok yok");
+    delete state.profile.healthFlag;
+    const mealIds = userMeals().map(m => m.id);
+    const band = kcalRange(buildProgram(state.profile, 82, 0), state.profile);
+    for (let i = 0; i < 7; i++) {
+      const k = shiftDays(today(), -i);
+      state.days[k] = { ...(state.days[k] || { tasks: [] }), log: mealIds.map(id => ({ slot: id, n: "x", kcal: 100 })), kcal: 2000 };
+    }
+    render();
+    ok(app.querySelector(".cht"), "uygun profilde Bugün bloğu");
+    await withLang("en", async () => {
+      I18N_MISSING.clear();
+      render();
+      ok(app.querySelector(".cht[aria-label='Cheat status']"), "İngilizce aria-label");
+      ok(app.textContent.includes("Routine points") && app.textContent.includes("Wiggle room"), "durum etiketleri");
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+    for (const k of ["Kalori bandının dışında", "Ödül öğünü durumu", "Ekstra bütçe: {0} / {1} kcal"]) {
+      ok(STARBOARD_EN[k] && STARBOARD_EN[k] !== k, k + " İngilizcesi");
+    }
+  } finally {
+    ({ state, tab, viewDate, notice } = prev);
+    if (state) { tab = "today"; render(); } else state = null;
+  }
+});
 
 /* ---- program hesabı: bugünkü sonuçlar sabitlendi; istemeden değişirse test kalır ---- */
 const GOLDEN = [
