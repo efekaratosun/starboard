@@ -43,10 +43,10 @@ function cheatMealsComplete(entry, mealIds){
 /* başarılı ok | başarısız fail | girilmemiş empty | geç late */
 function cheatDayKind(entry, mealIds, band){
   band = band || {};
+  if (entry && entry.late) return "late";
   if (!cheatMealsComplete(entry, mealIds)) return "empty";
   const kcal = entry && typeof entry.kcal === "number" ? entry.kcal : null;
   if (kcal === null) return "empty";
-  if (entry && entry.late) return "late";
   const lo = band.lo, hi = band.hi;
   if (typeof lo !== "number" || typeof hi !== "number") return "empty";
   return kcal >= lo && kcal <= hi ? "ok" : "fail";

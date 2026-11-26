@@ -65,6 +65,8 @@ test("cheat: gün türü ve P sınır değerleri", () => {
   eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2600 }, ids, band), "fail");
   eq(cheatDayKind({ log: [{ slot: "m1" }] }, ids, band), "empty");
   eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2200, late: true }, ids, band), "late");
+  eq(cheatDayKind({ log: [{ slot: "m1" }], late: true }, ids, band), "late");
+  eq(cheatDayKind({ log: [], late: true }, ids, band), "late");
   eq([cheatP("ok"), cheatP("fail"), cheatP("empty"), cheatP("late")], [1, -1, -2, 0]);
 });
 test("cheat: K ve B hesabı", () => {
@@ -106,9 +108,15 @@ test("cheat: haklar, uygunluk, pencere ve harcama", () => {
   eq(cheatLevel(30), 2);
 });
 test("cheat: geç girişte düzen puanı sıfır, esneme payı yüzde doksan", () => {
-  const ids = ["m1"], band = { lo: 2000, hi: 2500 }, H = 2000, now = "2026-06-15";
+  const ids = ["m1", "m2"], band = { lo: 2000, hi: 2500 }, H = 2000, now = "2026-06-15";
   eq(cheatKDay(1700, H, "late", true), 270);
   eq(cheatDayScore({ log: [{ slot: "m1" }], kcal: 1700, late: true }, ids, band, H, "2026-06-14", now),
+    { kind: "late", P: 0, K: 270 });
+  eq(cheatDayScore({ log: [{ slot: "m1" }], late: true }, ids, band, H, "2026-06-14", now),
+    { kind: "late", P: 0, K: 0 });
+  eq(cheatDayScore({ log: [], late: true }, ids, band, H, "2026-06-14", now),
+    { kind: "late", P: 0, K: 0 });
+  eq(cheatDayScore({ log: [{ slot: "m1" }], kcal: 1700, late: true }, ["m1"], band, H, now, now),
     { kind: "late", P: 0, K: 270 });
 });
 test("cheat: dönem özeti ve önceki kullanımlar canlı hesaba yansır", () => {
