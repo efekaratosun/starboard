@@ -863,6 +863,9 @@ window.STARBOARD_EN = {
   "{0} kalem girilmiş": "{0} items entered",
   "Görevler": "Goals",
   "Gelecek bir gün; girişi o gün geldiğinde açılır.": "A future day; entry opens when that day comes.",
+  "Dün için kayıt yok, istersen şimdi tamamlayabilirsin.": "No entry for yesterday; you can complete it now if you want.",
+  "{0} için kayıt yok, istersen şimdi tamamlayabilirsin.": "No entry for {0}; you can complete it now if you want.",
+  "Son 7 gün dışındaki günlere artık veri girilemez.": "You can no longer enter data for days older than the last 7.",
 
   "{0} g protein al": "Eat {0} g of protein",
   "{0}-{1} saat uyu": "Sleep {0}-{1} hours",
