@@ -80,12 +80,31 @@ function cheatB(target){
   return Math.round(0.30 * target / 50) * 50;
 }
 
-/* Haklar: öğün P≥8 ve K≥B (tavan B); gün P≥10 ve K≥2B (tavan 2B). */
+/* Haklar: öğün P≥8 ve K≥B (tavan B); gün P≥10 ve K≥2B (tavan 2B).
+   Gün hakkı varken öğün hakkı dönmez (öğün → gün yükselmesi). */
 function cheatRights(pTotal, kTotal, target){
   const B = cheatB(target);
-  const meal = pTotal >= CHEAT_P_MEAL && kTotal >= B ? B : 0;
   const day = pTotal >= CHEAT_P_DAY && kTotal >= 2 * B ? 2 * B : 0;
+  const meal = day > 0 ? 0 : (pTotal >= CHEAT_P_MEAL && kTotal >= B ? B : 0);
   return { B, meal, day };
+}
+
+/* Kötü günde kaybedilen hak; öğün→gün yükselmesinde öğün düşüşü yanma sayılmaz. */
+function cheatRightsLost(before, after){
+  const bM = (before && before.meal) || 0, aM = (after && after.meal) || 0;
+  const bD = (before && before.day) || 0, aD = (after && after.day) || 0;
+  const lost = { meal: 0, day: 0 };
+  const upgraded = aD > bD && bM > aM;
+  if (!upgraded && bM > aM) lost.meal = bM - aM;
+  if (bD > aD) lost.day = bD - aD;
+  return lost;
+}
+
+/* Hesap: gün türü ve hak değişimine göre immune güncelle. */
+function cheatAccountAfterDay(account, beforeRights, afterRights, dayKind){
+  const base = { meal: 0, day: 0, immune: { meal: 0, day: 0 }, ...(account || {}) };
+  const lost = cheatRightsLost(beforeRights, afterRights);
+  return { ...base, immune: cheatImmuneAfterBad(base, dayKind, lost) };
 }
 
 /* Yanmaz hak: kötü günde harcanmayan kredi (kayıtta immune alanında tutulur). */
@@ -162,10 +181,10 @@ function cheatDayScore(entry, mealIds, band, target, day, nowDay){
   };
 }
 
-/* Dönem özeti: P toplamı, K havuzu, hak ve seviye. */
+/* Dönem özeti: düzenlenebilir 7 gün; P toplamı, K havuzu, hak ve seviye. */
 function cheatPeriod(days, mealIds, target, bandsByDay, nowDay){
   nowDay = nowDay || today4();
-  const keys = Object.keys(days || {}).sort();
+  const keys = Object.keys(days || {}).sort().filter(k => cheatEditable(k, nowDay));
   let pSum = 0;
   const kParts = [];
   for (const k of keys){
