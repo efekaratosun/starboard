@@ -441,6 +441,11 @@ window.STARBOARD_EN = {
   "Kaçamak öğünü": "Cheat meal",
   "Kaçamak günü": "Cheat day",
   "Ödül öğünü durumu": "Cheat status",
+  "Ekstra bütçe: {0} / {1} kcal": "Extra budget: {0} / {1} kcal",
+  "{0} kullanılsın mı?": "Use {0}?",
+  "Ekstra {0} kcal bütçe açılır; düzen puanı ve esneme payından düşülür.": "Unlocks an extra {0} kcal budget; routine points and wiggle room are reduced.",
+  "Şu an kullanılamıyor.": "Not available right now.",
+  "{0} kaydedildi. 7 gün sonra tekrar kullanabilirsin.": "{0} saved. You can use it again in 7 days.",
   "Dün (04:00'e kadar)": "Yesterday (until 04:00)",
   "Gün 04:00'te başlar": "Day starts at 04:00",
 
