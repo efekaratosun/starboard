@@ -428,6 +428,17 @@ window.STARBOARD_EN = {
   "tamamlandı olarak işaretle": "mark as completed",
   "Bu görev girdiğin verilerden işaretlendi.": "This goal was marked from the data you entered.",
   "Henüz tamamlanmadı. {0}": "Not completed yet. {0}",
+  "Düzenli gün": "On track",
+  "Henüz tamamlanmadı": "Not finished yet",
+  "Geç tamamlandı": "Logged late",
+  "Kalori bandının dışında": "Outside calorie band",
+  "Düzen puanı": "Routine points",
+  "Esneme payı": "Wiggle room",
+  "Kaçamak öğünü": "Cheat meal",
+  "Kaçamak günü": "Cheat day",
+  "Ödül öğünü durumu": "Cheat status",
+  "Dün (04:00'e kadar)": "Yesterday (until 04:00)",
+  "Gün 04:00'te başlar": "Day starts at 04:00",
 
   /* ---- beslenme ---- */
   "{0} · {1} porsiyon · P{2} K{3} Y{4} · lif {5} g": "{0} · {1} servings · P{2} C{3} F{4} · fiber {5} g",
