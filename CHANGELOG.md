@@ -3,6 +3,13 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.27.0 (yayınlanmadı)
+
+### Eklendi
+- Kaçamak öğünü ve kaçamak günü eklendi: Düzen puanı (Routine points) ve Esneme payı (Wiggle room) son 14 günün düzenine göre hesaplanır, hak kazanınca bir öğün ya da gün için ayrılan pay Beslenme ekranından kullanılır.
+- Takvimde son 7 güne geç giriş yapılabilir; geç girilen günlerin Düzen puanı 0 sayılır, esneme payı %90 kredilenir. Gün sınırı 04:00'tür.
+- 18 yaş altında ve kilo alma hedefinde özellik kapalıdır; Ayarlar'da sağlık notu işaretlenirse de kapanır. Veri biçimi 4'e yükseltildi (göç adımı eklendi).
+
 ## 1.26.8 (yayınlanmadı)
 
 ### Eklendi

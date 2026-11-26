@@ -274,6 +274,100 @@ function detailSection(tot, program){
     }).join("")}`);
 }
 
+function cheatMealBands(program){
+  const R = kcalRange(program, state.profile), band = { lo: R.lo, hi: R.hi };
+  return Object.fromEntries(Object.keys(state.days || {}).map(k => [k, band]));
+}
+
+function cheatImmuneNow(program, nowDay){
+  if (typeof cheatAccountAfterDay !== "function") return { meal: 0, day: 0 };
+  const target = program.kcal, mealIds = userMeals().map(m => m.id);
+  const bands = cheatMealBands(program);
+  const keys = Object.keys(state.days || {}).sort().filter(k => cheatEditable(k, nowDay));
+  let pSum = 0, kParts = [], immune = { meal: 0, day: 0 };
+  let prevRights = cheatRights(0, 0, target);
+  for (const k of keys){
+    const entry = state.days[k] || {};
+    const sc = cheatDayScore(entry, mealIds, bands[k] || {}, target, k, nowDay);
+    pSum += sc.P;
+    kParts.push(sc.K);
+    const rights = cheatRights(pSum, cheatKTotal(kParts), target);
+    immune = cheatAccountAfterDay({ immune }, prevRights, rights, sc.kind).immune;
+    prevRights = rights;
+  }
+  return immune;
+}
+
+function cheatLiveAccount(program, period){
+  const nowDay = today4();
+  let account = {
+    P: period.P, K: period.K,
+    immune: cheatImmuneNow(program, nowDay),
+    lastUse: (state.cheat && state.cheat.lastUse) || null
+  };
+  const target = program.kcal;
+  for (const u of ((state.cheat && state.cheat.uses) || [])){
+    if (!u || (u.kind !== "meal" && u.kind !== "day") || typeof u.day !== "string") continue;
+    if (!cheatEditable(u.day, nowDay)) continue;
+    const next = cheatSpend(account, u.kind, target);
+    if (next) account = next;
+  }
+  return account;
+}
+
+/* Kaçamak hakkı: Bugün sekmesinde; uygun değilse ya da bekleme varsa gizlenir. */
+function cheatMealUsePanel(program){
+  if (!program || !onToday()
+      || typeof cheatEligible !== "function" || !cheatEligible(state.profile)
+      || typeof cheatPeriod !== "function" || typeof cheatUseReady !== "function") return "";
+  const lastUse = state.cheat && state.cheat.lastUse;
+  const nowDay = today4();
+  if (!cheatUseReady(lastUse, nowDay)) return "";
+  const mealIds = userMeals().map(m => m.id);
+  const bands = cheatMealBands(program);
+  const period = cheatPeriod(state.days, mealIds, program.kcal, bands, nowDay);
+  if (!(period.meal > 0 || period.day > 0)) return "";
+  const account = cheatLiveAccount(program, period);
+  const canMeal = period.meal > 0 && cheatSpend({ ...account }, "meal", program.kcal);
+  const canDay = period.day > 0 && cheatSpend({ ...account }, "day", program.kcal);
+  if (!canMeal && !canDay) return "";
+  const B = period.B || cheatB(program.kcal);
+  return `<section class="cht" style="margin:0 4px 14px" role="region" aria-label="${tx("Ödül öğünü durumu")}">
+    <p class="metric-note" style="margin:0 0 10px">${tx("Ekstra bütçe: {0} / {1} kcal", [fmtN(B), fmtN(2 * B)])}</p>
+    <div class="row">${canMeal
+      ? `<button type="button" data-cheat-use="meal">${tx("Kaçamak öğünü")} · ${tx("{0} kcal", [fmtN(period.meal)])}</button>` : ""
+    }${canDay
+      ? `<button type="button" class="ghost" data-cheat-use="day">${tx("Kaçamak günü")} · ${tx("{0} kcal", [fmtN(period.day)])}</button>` : ""
+    }</div>
+  </section>`;
+}
+
+async function useCheatAllowance(kind, program){
+  if (!program || kind !== "meal" && kind !== "day"
+      || typeof cheatSpend !== "function" || typeof cheatUseReady !== "function") return;
+  const nowDay = today4();
+  if (!cheatUseReady(state.cheat && state.cheat.lastUse, nowDay)) return;
+  const mealIds = userMeals().map(m => m.id);
+  const bands = cheatMealBands(program);
+  const period = cheatPeriod(state.days, mealIds, program.kcal, bands, nowDay);
+  const kcal = kind === "day" ? period.day : period.meal;
+  if (!(kcal > 0)) return;
+  const label = kind === "day" ? tx("Kaçamak günü") : tx("Kaçamak öğünü");
+  const yes = await askSheet({
+    title: tx("{0} kullanılsın mı?", [label]),
+    body: tx("Ekstra {0} kcal bütçe açılır; düzen puanı ve esneme payından düşülür.", [fmtN(kcal)]),
+    ok: tx("Kullan"), cancel: tx("Vazgeç")
+  });
+  if (!yes) return;
+  const spent = cheatSpend(cheatLiveAccount(program, period), kind, program.kcal);
+  if (!spent){ toast(tx("Şu an kullanılamıyor.")); return; }
+  if (!state.cheat) state.cheat = { uses: [], lastUse: null };
+  state.cheat.uses = (state.cheat.uses || []).concat([{ day: nowDay, kind }]);
+  state.cheat.lastUse = spent.lastUse;
+  await saveState(state); render();
+  toast(tx("{0} kaydedildi. 7 gün sonra tekrar kullanabilirsin.", [label]));
+}
+
 function logView(program, entry){
   const log = entry.log || [];
   const tot = logTotals(entry);
@@ -290,6 +384,7 @@ function logView(program, entry){
     <div class="mt-bar${left < 0 ? " over" : ""}"><i style="width:${clamp(tot.kcal / program.kcal * 100, 0, 100).toFixed(0)}%"></i></div>
     ${log.length ? detailSection(tot, program) : ""}</div>
   ${favBlock(entry)}
+  ${cheatMealUsePanel(program)}
 
   ${onToday() && anySug && Math.abs(off) > program.kcal * 0.08
     ? `<div class="metric-note" style="margin:0 4px 10px"><b class="out">${tx("Öneri hedeften {0} kcal {1}.", [Math.abs(off), off > 0 ? tx("yüksek") : tx("düşük")])}</b></div>` : ""}
@@ -1085,6 +1180,8 @@ alk:+m.per100.alk.toFixed(1), lif:+m.per100.lif.toFixed(1), kcal100:m.per100.kca
 }
 
 function wireMealsRest(entry){
+  const program = currentProgram();
+  app.querySelectorAll("[data-cheat-use]").forEach(b => b.onclick = () => useCheatAllowance(b.dataset.cheatUse, program));
   app.querySelectorAll("[data-micro-source]").forEach(b => b.onclick = () => {
     const key = b.dataset.microSource;
     const previous = app.querySelector('[data-micro-source][aria-expanded="true"]');

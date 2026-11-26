@@ -310,6 +310,28 @@ function marksLabel(k, program){
   return out.length ? ", " + out.join(", ") : "";
 }
 
+/* Son 7 gün + bugün (cheatEditable ile aynı pencere). */
+function dayCanEdit(k, t){
+  if (k > t) return false;
+  if (k === t) return true;
+  if (typeof cheatEditable === "function") return cheatEditable(k, t);
+  return k > shiftDays(t, -7);
+}
+
+function dayDetailEmpty(k, t){
+  if (k === t) return tx("Bu güne hiç veri girilmemiş.{0}", [tx(" Gün bitmediği için takvimde kırmızı görünmüyor.")]);
+  if (dayCanEdit(k, t))
+    return k === shiftDays(t, -1)
+      ? tx("Dün için kayıt yok, istersen şimdi tamamlayabilirsin.")
+      : tx("{0} için kayıt yok, istersen şimdi tamamlayabilirsin.", [prettyDate(k)]);
+  return tx("Bu güne hiç veri girilmemiş.{0}", [tx(" Takvimde kırmızı görünmesinin sebebi bu.")]);
+}
+
+function markDayLate(entry, k, t){
+  if (k === t || !dayCanEdit(k, t)) return;
+  entry.late = true;
+}
+
 /* ---- gün özeti ----
    Takvimde bir güne dokununca o gün buraya açılır; düzenlemek istersen
    giriş ekranına oradan geçilir. Sekme değiştirmeden gezinmeyi sağlar. */
@@ -328,6 +350,7 @@ function dayDetail(){
   const exN = session && session.b ? exercisesOf(session) : [];
   const liftN = exN.filter(n => liftHas((d.lifts || {})[n])).length;
   const logN = (d.log || []).length;
+  const canEdit = dayCanEdit(k, t);
 
   const row = (lbl, val, note) => `<div class="macro"><span class="lbl">${lbl}${
     note ? `<div class="metric-note">${note}</div>` : ""}</span><span class="v num">${val}</span></div>`;
@@ -335,9 +358,9 @@ function dayDetail(){
   return `<section>
     <div class="dd-h">
       <div><b>${prettyDate(k)}</b><i>${weekdayName(k)}${k === t ? tx(" · bugün") : ""}</i></div>
-      <button class="ghost" id="dd-edit">${empty ? tx("Veri gir") : tx("Düzenle")}</button>
+      <button class="ghost" id="dd-edit"${canEdit ? "" : " disabled"}>${empty ? tx("Veri gir") : tx("Düzenle")}</button>
     </div>
-    ${empty ? `<div class="empty" style="margin-top:14px">${tx("Bu güne hiç veri girilmemiş.{0}", [(k === t ? tx(" Gün bitmediği için takvimde kırmızı görünmüyor.") : tx(" Takvimde kırmızı görünmesinin sebebi bu."))])}</div>` : `
+    ${empty ? `<div class="empty" style="margin-top:14px">${dayDetailEmpty(k, t)}</div>` : `
     ${row(tx("Kilo"), typeof d.weight === "number" ? fmtW(d.weight) : "—")}
     ${row(tx("Kalori"), typeof d.kcal === "number" ? `${d.kcal} kcal` : "—",
         typeof d.kcal === "number" && program
@@ -375,10 +398,17 @@ function wireCalendar(){
 
   const edit = document.getElementById("dd-edit");
   if (edit) edit.onclick = () => {
-    const k = calSel;
+    const k = calSel, t = today();
+    if (!dayCanEdit(k, t)) {
+      toast(tx("Son 7 gün dışındaki günlere artık veri girilemez."));
+      return;
+    }
     resetMealUI();
-    if (k !== today()) ensureDay(k);
-    viewDate = k === today() ? null : k;
+    if (k !== t) {
+      const entry = ensureDay(k);
+      markDayLate(entry, k, t);
+    }
+    viewDate = k === t ? null : k;
     tab = "today";
     saveState(state); render(); window.scrollTo(0,0);
   };

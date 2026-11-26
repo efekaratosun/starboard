@@ -8,6 +8,9 @@
    ayrıntılı liste CHANGELOG.md'dedir. Maddeler kısa tutulur. */
 const WHATS_NEW = [
   /* Aynı sürümün birden çok kaydı olabilir; gösterilirken tek başlık altında birleşir. */
+  { v:"1.27.0", items:[
+    tx("Düzen puanı ve Esneme payı ile kaçamak öğünü ya da kaçamak günü kazanabilirsin; Beslenme ekranından kullanırsın."),
+    tx("Takvimde son 7 güne geç giriş yapabilirsin. 18 yaş altında ve kilo alma hedefinde bu özellik kapalıdır.")] },
   { v:"1.26.1", items:[
     tx("Sesli yemek eklemede meyve, tatlı, börek, pide, kahve, çorba ve salata gibi sözcükler söylenince seçenekler sorulur; çoban salata gibi tam adlar doğrudan bulunur."),
     tx("Beslenme ekranında bir öğünün sayfasındaki kapatma (×) düğmesi iPhone'da çalışıyor.")] },

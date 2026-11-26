@@ -44,6 +44,150 @@ test("tarih: bugünün anahtarı YYYY-AA-GG biçiminde", () => {
   ok(/^\d{4}-\d{2}-\d{2}$/.test(today()), "biçim tutmuyor: " + today());
 });
 
+/* ---- ödül öğünü (cheat.js) ---- */
+test("cheat: 04:00 gün sınırı ve takma adlar", () => {
+  eq(dayKey4(new Date("2026-06-15T03:30:00")), "2026-06-14");
+  eq(dayKey4(new Date("2026-06-15T04:00:00")), "2026-06-15");
+  eq(cheatDayKey(new Date("2026-01-01T03:59:00")), "2025-12-31");
+  ok(today4() === dayKey4(new Date()) && cheatDayKey(new Date()) === today4(), "takma adlar");
+});
+test("cheat: öğün tamamlanması girilmiş veya atlanmış", () => {
+  const ids = ["a", "b"];
+  eq(cheatMealsComplete(null, ids), false);
+  eq(cheatMealsComplete({ log: [{ slot: "a" }] }, ids), false);
+  eq(cheatMealsComplete({ log: [{ slot: "a" }], skipped: ["b"] }, ids), true);
+  eq(cheatMealsComplete({ log: [{ slot: "a" }, { slot: "b" }] }, ids), true);
+  eq(cheatMealsComplete({}, []), true);
+});
+test("cheat: gün türü ve P sınır değerleri", () => {
+  const ids = ["m1"], band = { lo: 2000, hi: 2500 };
+  eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2200 }, ids, band), "ok");
+  eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2600 }, ids, band), "fail");
+  eq(cheatDayKind({ log: [{ slot: "m1" }] }, ids, band), "empty");
+  eq(cheatDayKind({ log: [{ slot: "m1" }], kcal: 2200, late: true }, ids, band), "late");
+  eq(cheatDayKind({ log: [{ slot: "m1" }], late: true }, ids, band), "late");
+  eq(cheatDayKind({ log: [], late: true }, ids, band), "late");
+  eq([cheatP("ok"), cheatP("fail"), cheatP("empty"), cheatP("late")], [1, -1, -2, 0]);
+});
+test("cheat: K ve B hesabı", () => {
+  const H = 2000;
+  eq(cheatKDay(2000, H, "ok", false), 0);
+  eq(cheatKDay(1700, H, "ok", false), 300);
+  eq(cheatKDay(1400, H, "ok", false), 300);
+  eq(cheatKDay(2100, H, "ok", false), -100);
+  eq(cheatKDay(2200, H, "empty", false), 0);
+  eq(cheatKDay(1800, H, "ok", true), 180);
+  eq(cheatKTotal([100, -50, -80]), 0);
+  eq(cheatKTotal([100, 50, -30]), 120);
+  eq(cheatB(2000), 600);
+  eq(cheatB(2050), 600);
+  eq(cheatB(2034), 600);
+});
+test("cheat: haklar, uygunluk, pencere ve harcama", () => {
+  const H = 2000, B = 600;
+  eq(cheatRights(7, B, H), { B, meal: 0, day: 0 });
+  eq(cheatRights(8, B, H).meal, B);
+  eq(cheatRights(8, B - 1, H).meal, 0);
+  eq(cheatRights(10, 2 * B, H).day, 2 * B);
+  eq(cheatRights(10, 2 * B - 1, H).day, 0);
+  eq(cheatEligible(profileOf({ goal: "maintain", age: 30 })), true);
+  eq(cheatEligible(profileOf({ goal: "gain", age: 30 })), false);
+  eq(cheatEligible(profileOf({ goal: "lose", age: 17 })), false);
+  eq(cheatEligible({ ...profileOf({ goal: "lose" }), healthFlag: true }), false);
+  const now = "2026-11-15";
+  ok(cheatEditable("2026-11-09", now) && !cheatEditable("2026-11-08", now));
+  ok(cheatEditable(now, now) && !cheatEditable("2026-11-16", now));
+  ok(cheatUseReady(null, now));
+  ok(!cheatUseReady("2026-11-14", now));
+  ok(cheatUseReady("2026-11-08", now));
+  const spent = cheatSpend({ P: 12, K: 1300, immune: { meal: 0, day: 0 } }, "meal", H);
+  ok(spent && spent.P === 4 && spent.K === 700);
+  eq(cheatSpend({ P: 5, K: 2000 }, "day", H), null);
+  eq(cheatLevel(9), 0);
+  eq(cheatLevel(10), 1);
+  eq(cheatLevel(30), 2);
+});
+test("cheat: geç girişte düzen puanı sıfır, esneme payı yüzde doksan", () => {
+  const ids = ["m1", "m2"], band = { lo: 2000, hi: 2500 }, H = 2000, now = "2026-06-15";
+  eq(cheatKDay(1700, H, "late", true), 270);
+  eq(cheatDayScore({ log: [{ slot: "m1" }], kcal: 1700, late: true }, ids, band, H, "2026-06-14", now),
+    { kind: "late", P: 0, K: 270 });
+  eq(cheatDayScore({ log: [{ slot: "m1" }], late: true }, ids, band, H, "2026-06-14", now),
+    { kind: "late", P: 0, K: 0 });
+  eq(cheatDayScore({ log: [], late: true }, ids, band, H, "2026-06-14", now),
+    { kind: "late", P: 0, K: 0 });
+  eq(cheatDayScore({ log: [{ slot: "m1" }], kcal: 1700, late: true }, ["m1"], band, H, now, now),
+    { kind: "late", P: 0, K: 270 });
+});
+test("cheat: dönem özeti ve önceki kullanımlar canlı hesaba yansır", () => {
+  const H = 2000, ids = ["m1"], band = { lo: 1800, hi: 2800 }, now = "2026-11-15", B = cheatB(H);
+  const days = {};
+  for (let i = 0; i < 7; i++) days[shiftDays(now, -i)] = { log: [{ slot: "m1" }], kcal: H };
+  const bands = Object.fromEntries(Object.keys(days).map(k => [k, band]));
+  const period = cheatPeriod(days, ids, H, bands, now);
+  eq(period.P, 7);
+  eq(period.meal, 0);
+  const rights = cheatRights(12, period.K + 700, H);
+  eq(rights.meal, B);
+  const prior = cheatSpend({ P: 12, K: period.K + 700, immune: { meal: 0, day: 0 } }, "meal", H);
+  ok(prior && prior.P === 4 && prior.K === period.K + 100);
+  const prof = profileOf({ goal: "lose", age: 30 });
+  const program = { kcal: H };
+  const daysNow = {};
+  for (let i = 0; i < 7; i++) daysNow[shiftDays(today(), -i)] = { log: [{ slot: "m1" }], kcal: H };
+  const useDay = shiftDays(today(), -1);
+  state = { profile: prof, days: daysNow, cheat: { uses: [{ day: useDay, kind: "meal" }], lastUse: useDay } };
+  const rich = { P: 12, K: B + 200, meal: B, day: 0, B };
+  const live = cheatLiveAccount(program, rich);
+  ok(live.P === 4 && live.K === rich.K - B, "kayıtlı kullanım düşürür");
+  state = null;
+});
+test("cheat: yedi gün bekleme, uygunluk kapısı, Bugün bloğu ve İngilizce", async () => {
+  const prev = { state, tab, viewDate, notice };
+  try {
+    state = await loadFixture();
+    migrateMeals(); migrateState(state);
+    state.cheat = { uses: [], lastUse: null };
+    notice = null; viewDate = null; tab = "today";
+    const now = "2026-11-15";
+    ok(cheatUseReady(shiftDays(now, -7), now));
+    ok(!cheatUseReady(shiftDays(now, -1), now));
+    state.profile.goal = "gain";
+    render();
+    ok(!app.querySelector(".cht"), "kilo alma hedefinde blok yok");
+    state.profile.goal = "lose";
+    state.profile.age = 17;
+    render();
+    ok(!app.querySelector(".cht"), "on sekiz yaş altında blok yok");
+    state.profile.age = 30;
+    state.profile.healthFlag = true;
+    render();
+    ok(!app.querySelector(".cht"), "sağlık işaretinde blok yok");
+    delete state.profile.healthFlag;
+    const mealIds = userMeals().map(m => m.id);
+    const band = kcalRange(buildProgram(state.profile, 82, 0), state.profile);
+    for (let i = 0; i < 7; i++) {
+      const k = shiftDays(today(), -i);
+      state.days[k] = { ...(state.days[k] || { tasks: [] }), log: mealIds.map(id => ({ slot: id, n: "x", kcal: 100 })), kcal: 2000 };
+    }
+    render();
+    ok(app.querySelector(".cht"), "uygun profilde Bugün bloğu");
+    await withLang("en", async () => {
+      I18N_MISSING.clear();
+      render();
+      ok(app.querySelector(".cht[aria-label='Cheat status']"), "İngilizce aria-label");
+      ok(app.textContent.includes("Routine points") && app.textContent.includes("Wiggle room"), "durum etiketleri");
+      eq([...I18N_MISSING], [], "İngilizce karşılığı olmayan metinler");
+    });
+    for (const k of ["Kalori bandının dışında", "Ödül öğünü durumu", "Ekstra bütçe: {0} / {1} kcal"]) {
+      ok(STARBOARD_EN[k] && STARBOARD_EN[k] !== k, k + " İngilizcesi");
+    }
+  } finally {
+    ({ state, tab, viewDate, notice } = prev);
+    if (state) { tab = "today"; render(); } else state = null;
+  }
+});
+
 /* ---- program hesabı: bugünkü sonuçlar sabitlendi; istemeden değişirse test kalır ---- */
 const GOLDEN = [
   [{}, 82, 0, { bmr:1788, tdee:2771, kcal:2771, protein:131, fat:77, carb:389, water:2870, floored:false }],
@@ -537,26 +681,27 @@ test("yenilikler: görülmeyen sürümler gösterilir, bir kez görülünce bir 
   const after180 = unseenNews("1.8.0");
   eq(after180.map(n => n.v), [...new Set(WHATS_NEW.filter(n => !n.native && verCmp(n.v, "1.8.0") > 0).map(n => n.v))], "aynı sürümün kayıtları tek başlıkta birleşir");
   eq(after180.find(n => n.v === "1.9.0").items, v190.filter(n => !n.native).flatMap(n => n.items), "web'de yalnızca web maddeleri");
-  eq(APP_VERSION, "1.26.8");
-  eq(unseenNews("1.9.1").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
-  eq(unseenNews("1.12.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
-  eq(unseenNews("1.12.0")[15].items.length, 2, "1.13.0: halkalar ve şerit");
-  eq(unseenNews("1.13.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
-  eq(unseenNews("1.13.0")[0].items.length, 2, "1.26.1: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[1].items.length, 2, "1.26.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[2].items.length, 2, "1.25.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[3].items.length, 1, "1.24.1: tek kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[4].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[5].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[6].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[7].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[8].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[9].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[10].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[11].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
-  eq(unseenNews("1.13.0")[12].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
-  eq(unseenNews("1.14.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
-  eq(unseenNews("1.15.0").map(n => n.v), ["1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
+  eq(APP_VERSION, "1.27.0");
+  eq(unseenNews("1.9.1").map(n => n.v), ["1.27.0", "1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0", "1.12.0", "1.11.0", "1.10.0"], "1.10.0 - 1.24.0 web maddeleri görünür");
+  eq(unseenNews("1.12.0").map(n => n.v), ["1.27.0", "1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0", "1.13.0"], "1.13.0 maddeleri tek başlıkta birleşir");
+  eq(unseenNews("1.12.0")[16].items.length, 2, "1.13.0: halkalar ve şerit");
+  eq(unseenNews("1.13.0").map(n => n.v), ["1.27.0", "1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0", "1.14.0"], "1.13.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0, 1.15.0 ve 1.14.0");
+  eq(unseenNews("1.13.0")[0].items.length, 2, "1.27.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[1].items.length, 2, "1.26.1: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[2].items.length, 2, "1.26.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[3].items.length, 2, "1.25.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[4].items.length, 1, "1.24.1: tek kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[5].items.length, 2, "1.24.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[6].items.length, 3, "1.23.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[7].items.length, 2, "1.22.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[8].items.length, 3, "1.21.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[9].items.length, 2, "1.20.0: iki kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[10].items.length, 3, "1.19.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[11].items.length, 3, "1.18.0: üç kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[12].items.length, 6, "1.17.0: altı kısa kullanıcı maddesi");
+  eq(unseenNews("1.13.0")[13].items.length, 8, "1.16.0: sekiz kısa kullanıcı maddesi");
+  eq(unseenNews("1.14.0").map(n => n.v), ["1.27.0", "1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0", "1.15.0"], "1.14.0'ı görmüş kullanıcıya 1.18.0, 1.17.0, 1.16.0 ve 1.15.0");
+  eq(unseenNews("1.15.0").map(n => n.v), ["1.27.0", "1.26.1", "1.26.0", "1.25.0", "1.24.1", "1.24.0", "1.23.0", "1.22.0", "1.21.0", "1.20.0", "1.19.0", "1.18.0", "1.17.0", "1.16.0"], "1.15.0'ı görmüş kullanıcıya 1.18.0, 1.17.0 ve 1.16.0");
   ok(verCmp(WHATS_NEW[0].v, APP_VERSION) <= 0, "yenilik listesi uygulamadan ileride");
   eq(verCmp("1.10.0", "1.9.2") > 0, true);
   /* native: true maddeler yalnızca iPhone uygulamasında gösterilir; testler web'de çalışır. */
@@ -1168,6 +1313,26 @@ test("veri sürümü: daha yeni biçimdeki kayda dokunulmaz", async () => {
   const before = JSON.stringify(s);
   eq(migrateState(s), { changed:false, newer:true });
   eq(JSON.stringify(s), before);
+});
+test("veri sürümü: 3'ten 4'e kaçamak kaydı normalize edilir", async () => {
+  const s = await loadFixture();
+  s.v = 3;
+  s.cheat = { uses: [{ day: "2026-11-10", kind: "meal" }, { day: "bozuk", kind: "day" }, null, { day: "2026-11-11", kind: "x" }], lastUse: 42 };
+  const m = migrateState(s);
+  eq([m.changed, m.newer], [true, false]);
+  eq(s.v, SCHEMA);
+  eq(s.cheat, { uses: [{ day: "2026-11-10", kind: "meal" }, { day: "bozuk", kind: "day" }], lastUse: null });
+  const before = JSON.stringify(s);
+  eq(migrateState(s).changed, false);
+  eq(JSON.stringify(s), before);
+});
+test("veri sürümü: 3'ten 4'e kaçamak alanı yoksa boş oluşturulur", async () => {
+  const s = await loadFixture();
+  s.v = 3;
+  delete s.cheat;
+  migrateState(s);
+  eq(s.v, SCHEMA);
+  eq(s.cheat, { uses: [], lastUse: null });
 });
 test("depolama: eski adla duran kayıt okunur, yeni adla yazılır, silince ikisi de gider", async () => {
   /* Bu test tarayıcı deposuna dokunur; mevcut değerleri saklayıp geri koyar. */
@@ -2178,7 +2343,7 @@ test("sağlık: web'de bölüm yok; uygulamada bölüm erişilebilir ve İngiliz
 });
 
 test("sağlık: kayıt şeması değişmedi; eski kayıt profile.health olmadan açılır", async () => {
-  eq(SCHEMA, 3, "Sağlık şemayı artırmadı; 3 takımyıldız kaydı (1.11.0)");
+  eq(SCHEMA, 4, "ödül öğünü kaydı şema 4; Sağlık ayrı adım eklemedi");
   const st = await loadFixture();
   ok(!st.profile.health, "örnek kayıtta Sağlık ayarı yok");
   const m = migrateState(st);
@@ -2841,7 +3006,7 @@ test("kolay ekleme: erişilebilirlik (etiketler, adlı düğmeler, toast'ta dü�
 });
 
 test("kolay ekleme: yenilik maddesi, sürüm ve İngilizcesi", () => {
-  eq(APP_VERSION, "1.26.8");
+  eq(APP_VERSION, "1.27.0");
   for (const v of ["1.9.1", "1.10.0", "1.11.0", "1.12.0", "1.14.0"]) {
     const n = WHATS_NEW.find(x => x.v === v);
     ok(n && !n.native && n.items.length === 1, v + " için web'de görünen kısa madde");
@@ -4375,7 +4540,7 @@ test("takımyıldız tamamlanınca: bir kez çıkar, eskisi sessiz geçer, Neler
 test("veri sürümü: 2 -> 3 takımyıldız kaydı; eski haftalar eski adıyla, yedekle uyumlu", async () => {
   const s = await loadFixture();
   migrateState(s);
-  eq(s.v, 3);
+  eq(s.v, SCHEMA);
   const cw = weekStart(today());
   const past = [...new Set(Object.keys(s.days).map(weekStart))].filter(ws => ws < cw);
   ok(past.length, "örnekte geçmiş hafta var");
@@ -4396,6 +4561,47 @@ test("veri sürümü: 2 -> 3 takımyıldız kaydı; eski haftalar eski adıyla, 
   const back = JSON.parse(JSON.stringify({ v: SCHEMA, state: s })).state;
   eq(migrateState(back), { changed: false, newer: false });
   eq(back.sky, s.sky);
+});
+
+test("veri sürümü: 3 -> 4 ödül öğünü kaydı; ikinci göç değiştirmez, günler korunur", async () => {
+  const s = await loadFixture();
+  s.v = 3;
+  if (!s.starred) s.starred = 1;
+  const daysBefore = JSON.stringify(s.days);
+  const profileBefore = JSON.stringify(s.profile);
+  const m = migrateState(s);
+  eq([m.changed, m.newer, s.v], [true, false, SCHEMA]);
+  eq(s.cheat, { uses: [], lastUse: null });
+  eq(JSON.stringify(s.days), daysBefore, "gün kayıtları");
+  eq(JSON.stringify(s.profile), profileBefore, "profil");
+  const snap = JSON.stringify(s);
+  eq(migrateState(s).changed, false);
+  eq(JSON.stringify(s), snap, "ikinci göç değiştirmez");
+
+  const b = await loadFixture();
+  b.v = 3;
+  b.cheat = {
+    uses: [
+      { day: "2026-11-10", kind: "meal" },
+      { day: "2026-11-09", kind: "day", note: "atılır değil, sadece day/kind kalır" },
+      { kind: "meal" },
+      { day: "x", kind: "snack" }
+    ],
+    lastUse: "2026-11-10",
+    spentP: 4,
+    spentK: 500
+  };
+  migrateState(b);
+  eq(b.cheat, { uses: [{ day: "2026-11-10", kind: "meal" }, { day: "2026-11-09", kind: "day" }], lastUse: "2026-11-10" });
+  const cheatSnap = JSON.stringify(b.cheat);
+  MIGRATIONS[3](b);
+  eq(JSON.stringify(b.cheat), cheatSnap, "göç adımı tekrarı cheat'i değiştirmez");
+
+  const c = await loadFixture();
+  c.v = 3;
+  c.cheat = { lastUse: null };
+  MIGRATIONS[3](c);
+  eq(c.cheat, { uses: [], lastUse: null }, "eksik uses tamamlanır");
 });
 
 test("takımyıldız: İngilizcede tam çevrilir; pencereler erişilebilir", async () => {

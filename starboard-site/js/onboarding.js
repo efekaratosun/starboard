@@ -396,6 +396,7 @@ function obProfile(){
     avoid: ob.avoid.slice(), sleepMin: ob.sleepMin, theme: ob.theme, units: ob.units
   };
   if (ob.targetWeight) profile.targetWeight = Math.round(ob.targetWeight * 10) / 10;
+  if (ob.healthFlag) profile.healthFlag = true;
   const range = obWeightRange();
   if (range){ profile.targetWeeks = range.slice(); profile.paceWeeks = obPaceWeeks(); }
   profile.programId = defaultProgramId(profile.venue, profile.activity, profile.days, profile.goal);
@@ -411,6 +412,14 @@ const obTwHint = () => {
   if (ob.goal === "mass") kg = clamp(22 * ((ob.height || 170) / 100) ** 2, w * 1.03, w * 1.10);   /* BMI 22, en çok +%10 */
   return Math.round(wOut(kg));
 };
+
+/* İsteğe bağlı: cihazda kalır; ödül öğünü gibi özellikleri kişiselleştirir (cheat.js). */
+function obHealthNote(){
+  return og(tx("Sağlık notu"), `<label class="ob-check" id="ob-health-label">
+    <input id="ob-health-flag" type="checkbox"${ob.healthFlag ? " checked" : ""}>
+    <span class="ob-check-t"><b>${tx("Hamilelik veya emzirme dönemindeyim, hekimim tıbbi bir diyet önerdi ya da yeme bozukluğu geçmişim var")}</b>
+    <i>${tx("İstersen işaretle. Bu bilgi yalnızca cihazında kalır.")}</i></span></label>`, true);
+}
 
 function obPersonalGoals(){
   const goals = [
@@ -565,6 +574,7 @@ const OB_STEPS = [
       + `<div id="ob-pace-box">${obJourney()}</div>`
       + og(tx("Günlük hareketin"), obCards("activity", Object.entries(ACTIVITY).map(([k, v]) => [k, ["activity", k], v.label, v.d[0].toLocaleUpperCase("tr") + v.d.slice(1)])))
       + `<p class="ob-warn"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg><span>${tx("Hamilelik, emzirme ya da tıbbi gözetim gereken bir durumda hekimine danış. Starboard tıbbi danışmanlık sunmaz.")}</span></p>`
+      + obHealthNote()
       + obPersonalGoals(),
     read: () => {
       const n = num(obVal("ob-tw")), target = n === null ? null : wSave(n);
@@ -575,6 +585,7 @@ const OB_STEPS = [
         ob[k] = !!document.getElementById("ob-" + id)?.checked;
       ob.customGoal = obVal("ob-personal-custom").trim().slice(0, 80);
       ob.medicationAt = obVal("ob-med-time");
+      ob.healthFlag = !!document.getElementById("ob-health-flag")?.checked;
     },
     wire: () => wireObPace(),
     valid: () => ob.targetWeight === null || (ob.targetWeight >= 30 && ob.targetWeight <= 300) ? "" : [tx("Hedef kiloyu {0} ile {1} arasında gir ya da boş bırak.", [(fmtW0(30)), (fmtW0(300))]), "ob-tw"] },
