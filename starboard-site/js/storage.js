@@ -85,10 +85,7 @@ const MIGRATIONS = {
     if (!s.cheat || typeof s.cheat !== "object") s.cheat = { uses: [], lastUse: null };
     else {
       const c = normCheat(s.cheat);
-      delete s.cheat.spentP;
-      delete s.cheat.spentK;
-      s.cheat.uses = c.uses;
-      s.cheat.lastUse = c.lastUse;
+      s.cheat = { uses: c.uses, lastUse: c.lastUse };
     }
   }
 };
