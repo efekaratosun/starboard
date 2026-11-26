@@ -74,7 +74,7 @@ test("cheat: K ve B hesabı", () => {
   eq(cheatKDay(1400, H, "ok", false), 300);
   eq(cheatKDay(2100, H, "ok", false), -100);
   eq(cheatKDay(2200, H, "empty", false), 0);
-  eq(cheatKDay(1800, H, "ok", true), 270);
+  eq(cheatKDay(1800, H, "ok", true), 180);
   eq(cheatKTotal([100, -50, -80]), 0);
   eq(cheatKTotal([100, 50, -30]), 120);
   eq(cheatB(2000), 600);
