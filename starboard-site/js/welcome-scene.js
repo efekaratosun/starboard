@@ -21,7 +21,7 @@ function sceneRng(seed){
 function sceneStarLayer(cls, n, size, seed){
   const r = sceneRng(seed);
   const s = [];
-  for (let i = 0; i < n; i++) s.push(`${(r() * 108 - 4).toFixed(1)}vw ${(r() * 108 - 4).toFixed(1)}vh 0 ${size}px`);
+  for (let i = 0; i < n; i++) s.push(`${(r() * 108 - 4).toFixed(1)}vw ${(r() * 108 - 4).toFixed(1)}lvh 0 ${size}px`);
   return `<i class="sk-l ${cls}" style="box-shadow:${s.join(",")}"></i>`;
 }
 function sceneTwinkles(n, seed){
