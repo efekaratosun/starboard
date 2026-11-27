@@ -118,6 +118,11 @@ button.g-h:focus-visible{outline:2px solid var(--band);outline-offset:-2px;borde
 
 /* ===== ilk giriş: her ekranda tek soru ===== */
 main.on{min-height:100dvh;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom));max-width:520px;margin:0 auto}
+/* giriş ekranında sayfa lastiği yok: yıldızlı arka plan .on-bg fixed kalır (iPhone Safari).
+   body'nin genel alt boşluğu burada gereksiz kaydırma yaratıyordu; main.on kendi safe-area boşluğunu taşıyor.
+   İçerik 100dvh'yi aşarsa (soru ekranları) normal kaydırma çalışmaya devam eder. */
+html:has(main.on),body:has(main.on){overscroll-behavior:none}
+body:has(main.on){padding-bottom:0}
 .on-top{display:flex;align-items:center;gap:12px;margin-bottom:30px}
 .on-back{all:unset;box-sizing:border-box;width:44px;height:44px;flex:0 0 44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   background:var(--surface);color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}

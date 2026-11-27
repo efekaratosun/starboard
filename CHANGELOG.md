@@ -3,6 +3,11 @@
 Sürüm numarası `starboard-site/js/storage.js` içindeki `APP_VERSION` değeridir ve Ayarlar'ın altında görünür.
 Biçim: ANA.ÖZELLİK.DÜZELTME. Veri biçimi değişirse ayrıca `SCHEMA` artırılır ve bir göç adımı eklenir.
 
+## 1.27.2 (yayınlanmadı)
+
+### Düzeltildi
+- Giriş ekranında gereksiz sayfa kaydırması kapatıldı; iPhone'da yıldızlı arka plan kaydırınca oynamamalı.
+
 ## 1.27.1 (yayınlanmadı)
 
 ### Düzeltildi
